@@ -444,10 +444,16 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
         for who,expected_bytes,success in [("Alice P",b"ALICE-P\n",args.lecture_privee=="autorisee"),
             ("Alice nouvelle lecture P",b"ALICE-P\n",args.lecture_privee=="autorisee"),
             ("Alice L",b"ALICE-L\n",True),("Alice nouvelle lecture L",b"ALICE-L\n",True),
+            ("Alice nouvelle lecture L avant P",b"ALICE-L\n",True),
             ("Bob P",b"",False)]:
             wanted=(bytes(8)+(8).to_bytes(8,"little")+expected_bytes) if success else (5).to_bytes(8,"little")+bytes(16)
             expected=expected and records.get(who)==wanted
         expected=expected and b"NARV VFS lecture rc=0 octets=8" in raw and b"NARV VFS refus octets=0" in raw
+        sequence=[b"NARV Alice nouvelle authentification ",b"NARV Alice nouvelle lecture L avant P ",
+            b"NARV Alice nouvelle lecture P ",b"NARV Alice nouvelle lecture L "]
+        offsets=[raw.find(marker) for marker in sequence]
+        observed["sequence_meme_session_L_P_L"]=all(i>=0 for i in offsets) and offsets==sorted(set(offsets))
+        expected=expected and observed["sequence_meme_session_L_P_L"]
         if args.mutation:
             for name,wanted in [("Alice authentification apres retrait",None),
                 ("Alice P apres retrait",(5).to_bytes(8,"little")+bytes(16)),

@@ -42,4 +42,15 @@ class AdministrativeRoute(unittest.TestCase):
                 with self.assertRaises(Refus):self.actor.call('exec-route',kind,server,domain,instance,fresh)
         self.assertFalse((self.root/'exec-route.log').exists())
 
+class ReceptionSerie(unittest.TestCase):
+    def test_echeance_fragmentee_attend_la_fin_de_ligne(self):
+        import re
+        from exec_deux_vm import REFUS_TICKET
+        prefix=b'NAEXEC refus owner=5 ticket=103 statut=10 maintenant=5644 echeance='
+        for fin in (b'6',b'62',b'6210',b'6210\r'):
+            self.assertIsNone(re.search(REFUS_TICKET,prefix+fin))
+        for fin in (b'6210\n',b'6210\r\n'):
+            result=re.search(REFUS_TICKET,prefix+fin)
+            self.assertEqual(tuple(map(int,result.groups())),(5,103,10,5644,6210))
+
 if __name__=='__main__':unittest.main()

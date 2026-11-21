@@ -59,6 +59,7 @@ pub(super) fn failed(t:&mut Ticket) {
 pub(super) fn wait(owner:Pid,key:u64)->Res<()> {
     let required=with(|s| {
         resources(s,owner,"consommation");
+        let result=(|| {
         let t=ticket(s,owner,key)?;
         hal::log(format_args!("NAEXEC attente owner={} ticket={key} maintenant={} echeance={}",owner.number,ticks(),t.deadline));
         validate(s,owner,t)?;
@@ -67,16 +68,19 @@ pub(super) fn wait(owner:Pid,key:u64)->Res<()> {
         if current(s,r.registry)?.instance!=r.registry_instance {return Err(REVOKED);}
         s.processes.get_mut(owner).exec[0].remote.as_mut().unwrap().waiting=true;
         Ok(true)
+        })();
+        // Les compteurs endpoints/nodes/waits sont globaux. Garder Core
+        // verrouillé entre les deux mesures du refus : l'activité d'un autre
+        // processus ne doit pas être attribuée à cet appel sans création.
+        if result.is_err() {resources(s,owner,"refus_sans_creation");}
+        result
     });
-    if let Err(status)=required {
-        with(|s|resources(s,owner,"refus_sans_creation"));
-        return Err(status);
-    }
     if !required? {return Ok(());}
     loop {
         let ready=with(|s| {
             let t=ticket(s,owner,key)?;
             if let Err(e)=validate(s,owner,t) {
+                hal::log(format_args!("NAEXEC refus owner={} ticket={key} statut={e} maintenant={} echeance={}",owner.number,ticks(),t.deadline));
                 invalidate(&mut s.processes.get_mut(owner).exec[0],e);return Err(e);
             }
             let r=t.remote.as_ref().ok_or(REVOKED)?;
@@ -173,4 +177,13 @@ pub(in crate::sched::process::ipc) fn resources(s:&Core,owner:Pid,label:&str) {
     let joins=s.processes.get(owner).join_rights.len();
     let free=heap::with_pages(|m|Ok(m.free_pages()));
     hal::log(format_args!("NAEXEC ressources phase={label} owner={} roots={} handles={handles} endpoints={endpoints} nodes={nodes} waits={waits} processus={live} threads={threads} joins={joins} cadres_ipc={} cadres_libres={free:?}",owner.number,s.ipc.root_count(owner.number),s.ipc.pages()));
+    for process in s.processes.slots.iter().flatten().filter(|p|
+        p.outcome.is_none() && (p.pid==owner || matches!(p.service_id,22|23))) {
+        let pid=process.pid;
+        let (roots,handles,waits,ipc)=s.ipc.tls_snapshot(pid);
+        let (pages,stack)=process.space.as_ref().map(|v|v.page_counts()).unwrap_or((0,0));
+        let threads=s.slots.iter().flatten().filter(|t|t.owner==Some(pid)).count();
+        hal::log(format_args!("NAEXEC acteur phase={label} owner={} pid={} service={} roots={roots} handles={handles} waits={waits} pages={pages} pile={stack} threads={threads} cadres_ipc={ipc}",owner.number,pid.number,process.service_id));
+    }
+
 }

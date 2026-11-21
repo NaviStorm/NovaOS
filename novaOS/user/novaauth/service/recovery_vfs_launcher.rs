@@ -39,19 +39,20 @@ pub(super) fn launch()->rt::Result<u64> {
     report(b"NARV Alice L ",&command(&alice,3,2,l)?)?;
     report(b"NARV Alice fermeture ",&command(&alice,4,3,0)?)?;
     report(b"NARV Alice nouvelle authentification ",&command(&alice,5,1,0)?)?;
-    let last_private=command(&alice,6,2,p)?;
+    report(b"NARV Alice nouvelle lecture L avant P ",&command(&alice,6,2,l)?)?;
+    let last_private=command(&alice,7,2,p)?;
     report(b"NARV Alice nouvelle lecture P ",&last_private)?;
-    report(b"NARV Alice nouvelle lecture L ",&command(&alice,7,2,l)?)?;
+    report(b"NARV Alice nouvelle lecture L ",&command(&alice,8,2,l)?)?;
     if last_private[..8]==[0;8] {
         // Retrait explicitement demandé par Alice dans ce seul scénario QEMU.
-        let result=command(&alice,8,4,p)?;
+        let result=command(&alice,9,4,p)?;
         report(b"NARV Alice retrait ",&result)?;
         if result[..8]==22u64.to_le_bytes() {
-            report(b"NARV Alice reconciliation ",&command(&alice,9,5,0)?)?;
+            report(b"NARV Alice reconciliation ",&command(&alice,10,5,0)?)?;
         }
-        report(b"NARV Alice authentification apres retrait ",&command(&alice,10,1,0)?)?;
-        report(b"NARV Alice P apres retrait ",&command(&alice,11,2,p)?)?;
-        report(b"NARV Alice L apres retrait ",&command(&alice,12,2,l)?)?;
+        report(b"NARV Alice authentification apres retrait ",&command(&alice,11,1,0)?)?;
+        report(b"NARV Alice P apres retrait ",&command(&alice,12,2,p)?)?;
+        report(b"NARV Alice L apres retrait ",&command(&alice,13,2,l)?)?;
         let mut capture=[0;128];capture[..8].copy_from_slice(b"NARCAP01");
         rt::send_for(registre[2],21,&capture,5000)?;
         let reply=rt::receive_for(registre[1],15000)?;

@@ -1,0 +1,872 @@
+[
+  {
+    "cas": "course-admission-aarch64-4096-atomique",
+    "classification": "Expiration TLS observée, refus sûr",
+    "transition": "Récupération initiale, avant ticket ; quarantaine. Cause du temps consommé à déterminer, sans attribution automatique à la charge hôte.",
+    "trace_originale": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-consolidation-autorite-3749cdd/course-admission-aarch64-4096-atomique/VM-A/invite.serial",
+    "erreur_banc": "registre en quarantaine ; aucun ticket créé",
+    "erreur_tls_hote": null,
+    "horloges_tls_ms": [
+      {
+        "debut": 688,
+        "echeance": 10688,
+        "fin": 11532
+      }
+    ],
+    "evenements_natifs": [
+      "DEBUG pid=7 NARV registre quarantaine generation non activable"
+    ],
+    "ordre_durable": [
+      [
+        1,
+        "enrollment"
+      ],
+      [
+        2,
+        "RETRAIT_EN_COURS"
+      ],
+      [
+        3,
+        "RETIREE"
+      ],
+      [
+        4,
+        "activation"
+      ]
+    ],
+    "admissions": [],
+    "ressources_originales": {
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          125,
+          64,
+          26
+        ]
+      },
+      "drainage_signataire": true,
+      "drainage_registre": false,
+      "pics_racines_par_pid": {
+        "2": 2,
+        "3": 4,
+        "4": 3,
+        "5": 0,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4
+      }
+    },
+    "limite": "Les mesures manquantes restent non démontrées ; ne pas interpréter leur absence comme restitution ou fuite."
+  },
+  {
+    "cas": "course-retrait-aarch64-4096-atomique",
+    "classification": "Expiration TLS observée, refus sûr",
+    "transition": "Récupération initiale, avant ticket ; quarantaine. Cause du temps consommé à déterminer, sans attribution automatique à la charge hôte.",
+    "trace_originale": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-consolidation-autorite-3749cdd/course-retrait-aarch64-4096-atomique/VM-A/invite.serial",
+    "erreur_banc": "registre en quarantaine ; aucun ticket créé",
+    "erreur_tls_hote": null,
+    "horloges_tls_ms": [
+      {
+        "debut": 248,
+        "echeance": 10248,
+        "fin": 10444
+      }
+    ],
+    "evenements_natifs": [
+      "DEBUG pid=7 NARV registre quarantaine generation non activable"
+    ],
+    "ordre_durable": [
+      [
+        1,
+        "enrollment"
+      ],
+      [
+        2,
+        "RETRAIT_EN_COURS"
+      ],
+      [
+        3,
+        "RETIREE"
+      ],
+      [
+        4,
+        "activation"
+      ]
+    ],
+    "admissions": [],
+    "ressources_originales": {
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          125,
+          64,
+          26
+        ]
+      },
+      "drainage_signataire": true,
+      "drainage_registre": false,
+      "pics_racines_par_pid": {
+        "2": 2,
+        "3": 4,
+        "4": 3,
+        "5": 0,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4
+      }
+    },
+    "limite": "Les mesures manquantes restent non démontrées ; ne pas interpréter leur absence comme restitution ou fuite."
+  },
+  {
+    "cas": "course-retrait-x86_64-4096-atomique",
+    "classification": "Expiration attendue du défi ; recette interrompue",
+    "transition": "Authentification initiale, avant ticket. Nouvelle authentification explicite dans la même instance lors de la commande suivante.",
+    "trace_originale": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-consolidation-autorite-3749cdd/course-retrait-x86_64-4096-atomique/VM-A/invite.serial",
+    "erreur_banc": "authentification initiale refusée",
+    "erreur_tls_hote": null,
+    "horloges_tls_ms": [
+      {
+        "debut": 576,
+        "echeance": 10576,
+        "fin": 10068
+      }
+    ],
+    "evenements_natifs": [
+      "NXLOGIN route shell=5 verificateur=6 signataire=9",
+      "DEBUG pid=6 NXLOGIN refus defi expire",
+      "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=1 decision=0 valide=0 echeance=0 retour=5 fin=13968",
+      "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=2 decision=19776 valide=1 echeance=78376 retour=0 fin=19780"
+    ],
+    "ordre_durable": [
+      [
+        1,
+        "enrollment"
+      ],
+      [
+        2,
+        "RETRAIT_EN_COURS"
+      ],
+      [
+        3,
+        "RETIREE"
+      ],
+      [
+        4,
+        "activation"
+      ]
+    ],
+    "admissions": [],
+    "ressources_originales": {
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          66,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          66,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          66,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          132,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          132,
+          64,
+          31
+        ]
+      },
+      "drainage_signataire": true,
+      "drainage_registre": true,
+      "pics_racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 2,
+        "12": 2,
+        "15": 2,
+        "16": 4,
+        "17": 2
+      }
+    },
+    "limite": "Les mesures manquantes restent non démontrées ; ne pas interpréter leur absence comme restitution ou fuite."
+  },
+  {
+    "cas": "indisponible-aarch64-4096-atomique",
+    "classification": "Expiration TLS observée, refus sûr",
+    "transition": "Récupération initiale, avant ticket ; quarantaine. Cause du temps consommé à déterminer, sans attribution automatique à la charge hôte.",
+    "trace_originale": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-consolidation-autorite-3749cdd/indisponible-aarch64-4096-atomique/VM-A/invite.serial",
+    "erreur_banc": "registre en quarantaine ; aucun ticket créé",
+    "erreur_tls_hote": null,
+    "horloges_tls_ms": [
+      {
+        "debut": 428,
+        "echeance": 10428,
+        "fin": 11688
+      }
+    ],
+    "evenements_natifs": [
+      "DEBUG pid=7 NARV registre quarantaine generation non activable"
+    ],
+    "ordre_durable": [
+      [
+        1,
+        "enrollment"
+      ],
+      [
+        2,
+        "RETRAIT_EN_COURS"
+      ],
+      [
+        3,
+        "RETIREE"
+      ],
+      [
+        4,
+        "activation"
+      ]
+    ],
+    "admissions": [],
+    "ressources_originales": {
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          125,
+          64,
+          26
+        ]
+      },
+      "drainage_signataire": true,
+      "drainage_registre": false,
+      "pics_racines_par_pid": {
+        "2": 2,
+        "3": 4,
+        "4": 3,
+        "5": 0,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4
+      }
+    },
+    "limite": "Les mesures manquantes restent non démontrées ; ne pas interpréter leur absence comme restitution ou fuite."
+  },
+  {
+    "cas": "perte-admission-aarch64-4096-atomique",
+    "classification": "Défaut du banc : annulation durable non poursuivie",
+    "transition": "Admission puis consultation, annulation locale irréversible et reçu terminal durable ; attente erronée de création GDB.",
+    "trace_originale": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-consolidation-autorite-3749cdd/perte-admission-aarch64-4096-atomique/VM-A/invite.serial",
+    "erreur_banc": "point GDB non atteint",
+    "erreur_tls_hote": null,
+    "horloges_tls_ms": [
+      {
+        "debut": 256,
+        "echeance": 10256,
+        "fin": 9572
+      }
+    ],
+    "evenements_natifs": [
+      "NXLOGIN route shell=5 verificateur=6 signataire=9",
+      "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=1 decision=15848 valide=1 echeance=74364 retour=0 fin=15852",
+      "NAEXEC ressources phase=avant_ticket owner=5 roots=2 handles=8 endpoints=49 nodes=102 waits=14 processus=15 threads=1 joins=0 cadres_ipc=58 cadres_libres=Ok(59266)",
+      "DEBUG pid=6 NXBAIL op=NSHEXEND tag=7 decision=28492 valide=1 echeance=74364 retour=0 fin=28492",
+      "NAEXEC ressources phase=consommation owner=5 roots=3 handles=9 endpoints=50 nodes=104 waits=14 processus=15 threads=1 joins=0 cadres_ipc=59 cadres_libres=Ok(59265)",
+      "NAEXEC attente owner=5 ticket=4611686018427388007 maintenant=7123 echeance=8022",
+      "NAEXEC transition registry=7 owner=5 kind=0 value=6",
+      "DEBUG pid=7 NAEXEC registre statut=0000000000000016",
+      "DEBUG pid=7 NAEXEC registre statut=000000000000000c",
+      "NAEXEC transition registry=7 owner=5 kind=3 value=2",
+      "DEBUG pid=7 NAEXEC registre statut=0000000000000000",
+      "NAEXEC ressources phase=fermeture owner=5 roots=2 handles=8 endpoints=49 nodes=102 waits=13 processus=15 threads=1 joins=0 cadres_ipc=59 cadres_libres=Ok(59284)"
+    ],
+    "ordre_durable": [
+      [
+        1,
+        "enrollment"
+      ],
+      [
+        2,
+        "RETRAIT_EN_COURS"
+      ],
+      [
+        3,
+        "RETIREE"
+      ],
+      [
+        4,
+        "activation"
+      ],
+      [
+        5,
+        "admission"
+      ],
+      [
+        6,
+        "cancelled"
+      ]
+    ],
+    "admissions": [
+      [
+        "FF4E6AC896ACD607DD597A8AD63C1B5E",
+        2,
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        5,
+        6
+      ]
+    ],
+    "ressources_originales": {
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ]
+      },
+      "drainage_signataire": true,
+      "drainage_registre": true,
+      "pics_racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 3,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 2,
+        "12": 2,
+        "15": 2,
+        "16": 4,
+        "17": 2
+      }
+    },
+    "limite": "Les mesures manquantes restent non démontrées ; ne pas interpréter leur absence comme restitution ou fuite."
+  },
+  {
+    "cas": "perte-admission-x86_64-4096-atomique",
+    "classification": "Défaut du banc : annulation durable non poursuivie",
+    "transition": "Admission puis consultation, annulation locale irréversible et reçu terminal durable ; attente erronée de création GDB.",
+    "trace_originale": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-consolidation-autorite-3749cdd/perte-admission-x86_64-4096-atomique/VM-A/invite.serial",
+    "erreur_banc": "point GDB non atteint",
+    "erreur_tls_hote": null,
+    "horloges_tls_ms": [
+      {
+        "debut": 532,
+        "echeance": 10532,
+        "fin": 9828
+      }
+    ],
+    "evenements_natifs": [
+      "NXLOGIN route shell=5 verificateur=6 signataire=9",
+      "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=1 decision=16112 valide=1 echeance=74716 retour=0 fin=16116",
+      "NAEXEC ressources phase=avant_ticket owner=5 roots=2 handles=8 endpoints=49 nodes=102 waits=14 processus=15 threads=1 joins=0 cadres_ipc=58 cadres_libres=Ok(59765)",
+      "DEBUG pid=6 NXBAIL op=NSHEXEND tag=7 decision=28964 valide=1 echeance=74716 retour=0 fin=28964",
+      "NAEXEC ressources phase=consommation owner=5 roots=3 handles=9 endpoints=50 nodes=104 waits=14 processus=15 threads=1 joins=0 cadres_ipc=59 cadres_libres=Ok(59764)",
+      "NAEXEC attente owner=5 ticket=4611686018427388007 maintenant=7242 echeance=8128",
+      "NAEXEC transition registry=7 owner=5 kind=0 value=6",
+      "DEBUG pid=7 NAEXEC registre statut=0000000000000016",
+      "DEBUG pid=7 NAEXEC registre statut=000000000000000c",
+      "NAEXEC transition registry=7 owner=5 kind=3 value=2",
+      "DEBUG pid=7 NAEXEC registre statut=0000000000000000",
+      "NAEXEC ressources phase=fermeture owner=5 roots=2 handles=8 endpoints=49 nodes=102 waits=13 processus=15 threads=1 joins=0 cadres_ipc=59 cadres_libres=Ok(59784)"
+    ],
+    "ordre_durable": [
+      [
+        1,
+        "enrollment"
+      ],
+      [
+        2,
+        "RETRAIT_EN_COURS"
+      ],
+      [
+        3,
+        "RETIREE"
+      ],
+      [
+        4,
+        "activation"
+      ],
+      [
+        5,
+        "admission"
+      ],
+      [
+        6,
+        "cancelled"
+      ]
+    ],
+    "admissions": [
+      [
+        "F7E4C17821F36E640FD292907D6F8AFC",
+        2,
+        "0000000000000000000000000000000000000000000000000000000000000000",
+        5,
+        6
+      ]
+    ],
+    "ressources_originales": {
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          66,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          66,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          66,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          132,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          132,
+          64,
+          31
+        ]
+      },
+      "drainage_signataire": true,
+      "drainage_registre": true,
+      "pics_racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 3,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 2,
+        "12": 2,
+        "15": 2,
+        "16": 4,
+        "17": 2
+      }
+    },
+    "limite": "Les mesures manquantes restent non démontrées ; ne pas interpréter leur absence comme restitution ou fuite."
+  },
+  {
+    "cas": "perte-admission-x86_64-4096-atomique-reprise",
+    "classification": "Expiration TLS observée, refus sûr",
+    "transition": "Récupération initiale, avant ticket ; quarantaine. Cause du temps consommé à déterminer, sans attribution automatique à la charge hôte.",
+    "trace_originale": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-consolidation-autorite-3749cdd/perte-admission-x86_64-4096-atomique-reprise/VM-A/invite.serial",
+    "erreur_banc": "b'NXR_(\\\\d+)__FIN\\\\r?\\\\n'",
+    "erreur_tls_hote": "TimeoutError: TLS hôte : 45 s actives dépassées",
+    "horloges_tls_ms": [
+      {
+        "debut": 548,
+        "echeance": 10548,
+        "fin": 10600
+      }
+    ],
+    "evenements_natifs": [
+      "NXLOGIN route shell=5 verificateur=6 signataire=9",
+      "DEBUG pid=6 NXLOGIN refus defi expire",
+      "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=1 decision=0 valide=0 echeance=0 retour=5 fin=14704",
+      "DEBUG pid=6 NXLOGIN refus defi expire",
+      "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=2 decision=0 valide=0 echeance=0 retour=5 fin=18036"
+    ],
+    "ordre_durable": [
+      [
+        1,
+        "enrollment"
+      ],
+      [
+        2,
+        "RETRAIT_EN_COURS"
+      ],
+      [
+        3,
+        "RETIREE"
+      ],
+      [
+        4,
+        "activation"
+      ]
+    ],
+    "admissions": [],
+    "ressources_originales": {
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          66,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          66,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          66,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          132,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          132,
+          64,
+          31
+        ]
+      },
+      "drainage_signataire": true,
+      "drainage_registre": true,
+      "pics_racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 2,
+        "12": 2,
+        "15": 2,
+        "16": 4,
+        "17": 2
+      }
+    },
+    "limite": "Les mesures manquantes restent non démontrées ; ne pas interpréter leur absence comme restitution ou fuite."
+  },
+  {
+    "cas": "perte-issue-aarch64-4096-atomique",
+    "classification": "Indéterminé : aucune admission observée avant arrêt du banc",
+    "transition": "Demande locale préparée ; point de création non atteint. Ni annulation ni admission durables établies ; ne pas conclure à un défaut ou à une annulation sur timeout.",
+    "trace_originale": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-consolidation-autorite-3749cdd/perte-issue-aarch64-4096-atomique/VM-A/invite.serial",
+    "erreur_banc": "point GDB non atteint",
+    "erreur_tls_hote": null,
+    "horloges_tls_ms": [
+      {
+        "debut": 236,
+        "echeance": 10236,
+        "fin": 9628
+      }
+    ],
+    "evenements_natifs": [
+      "NXLOGIN route shell=5 verificateur=6 signataire=9",
+      "DEBUG pid=6 NXBAIL op=NSHOPEN1 tag=1 decision=16700 valide=1 echeance=74524 retour=0 fin=16700",
+      "NAEXEC ressources phase=avant_ticket owner=5 roots=2 handles=8 endpoints=49 nodes=102 waits=14 processus=15 threads=1 joins=0 cadres_ipc=58 cadres_libres=Ok(59266)",
+      "DEBUG pid=6 NXBAIL op=NSHEXEND tag=7 decision=37616 valide=1 echeance=74524 retour=0 fin=37616",
+      "NAEXEC ressources phase=consommation owner=5 roots=3 handles=9 endpoints=50 nodes=104 waits=13 processus=15 threads=1 joins=0 cadres_ipc=59 cadres_libres=Ok(59265)",
+      "NAEXEC attente owner=5 ticket=4611686018427388007 maintenant=9404 echeance=10084",
+      "NAEXEC transition registry=7 owner=5 kind=0 value=6"
+    ],
+    "ordre_durable": [
+      [
+        1,
+        "enrollment"
+      ],
+      [
+        2,
+        "RETRAIT_EN_COURS"
+      ],
+      [
+        3,
+        "RETIREE"
+      ],
+      [
+        4,
+        "activation"
+      ]
+    ],
+    "admissions": [],
+    "ressources_originales": {
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          57,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          125,
+          64,
+          31
+        ]
+      },
+      "drainage_signataire": true,
+      "drainage_registre": true,
+      "pics_racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 3,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 2,
+        "12": 2,
+        "15": 2,
+        "16": 4,
+        "17": 2
+      }
+    },
+    "limite": "Les mesures manquantes restent non démontrées ; ne pas interpréter leur absence comme restitution ou fuite."
+  }
+]
