@@ -16,7 +16,9 @@ def main():
         p.add_argument('--'+name,type=lambda v:Path(v).resolve(),required=True)
     p.add_argument('--tentatives',type=int,default=10)
     p.add_argument('--expire-premier',action='store_true')
+    p.add_argument('--retard-secondes',type=float,default=1.6)
     a=p.parse_args()
+    if not 0<a.retard_secondes<=4:raise Refus('retard de panne hors borne')
     if not 1<=a.tentatives<=12:raise Refus('borne du témoin de connexion : 1..12')
     a.mode='nominal';a.vue=a.activation=a.exec_admission=True;a.vfs=a.mutation=False;a.lecture_privee='autorisee'
     a.legacy_disk=a.genese.with_name('autorite.raw');a.sortie.mkdir(parents=True,exist_ok=False);a.secrets.mkdir(mode=0o700,parents=True,exist_ok=False)
@@ -29,7 +31,7 @@ def main():
                 # Retard de réponse explicite : le temps invité continue, aucun
                 # changement d'horloge/de délai, aucune mutation rejouée.
                 fault['injectee']=True;fault['debut_ns']=time.monotonic_ns()
-                time.sleep(1.6);fault['fin_ns']=time.monotonic_ns()
+                time.sleep(a.retard_secondes);fault['fin_ns']=time.monotonic_ns()
     def scenario(serial,control,disk,out):
         serial.expect(rb'NAEXEC registre pret puis connexion du vrai nsh',100)
         if b'nsh> ' not in serial.data:serial.expect(rb'nsh> ',20)
