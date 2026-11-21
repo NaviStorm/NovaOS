@@ -82,3 +82,91 @@ Les racines, handles, endpoints, nœuds, processus, threads et droits de collect
 La campagne 2622173 s'arrête après six scénarios réussis sur le septième, création retardée x86_64/P9-4096. Le troisième enfant B (PID 20) est créé sous bail valide, sort à 0, et ses ressources sont restituées. La commande distincte `echo NXR_$?__FIN` du banc arrive ensuite à 75 312 ms pour une échéance de 75 292 ms : NSHLIVE1 retourne 5 et le shell refuse la saisie. Ce résultat n'est ni une fuite, ni un lancement après expiration, ni un échec de cut. Il reste enregistré comme échec du parcours de qualification, sans le convertir en succès.
 
 Les mesures indépendantes 2 et 3 demandent désormais, comme les cycles 4 à 6, une nouvelle authentification explicite avant le lancement. Il n'y a ni prolongation de bail, ni renouvellement pendant une transaction, ni répétition de la commande précédente après perte de son statut. Les décisions natives de connexion et leurs échéances sont archivées. Le noyau, NovaAuth et les bornes restent inchangés ; seuls l'ordonnancement du banc et le rapport changent. Les résultats mémoire déjà acquis restent conservés ; ce protocole complémentaire doit réussir sur les quatre profils. La campagne globale reste incomplète.
+
+
+## Bilan consolidé du 21 novembre 2026
+
+Le candidat de code et de banc est `5abb9818313e4608c47d45991ce4a56c11f3ee35`.
+Les binaires EXEC proviennent de `262217378bf13f1c820b39e7f9966bcf3962fee8` ;
+les binaires VFS de `270fc58e0d954418726d6228cf0a1ba10bb62cfd`.
+Les différences ultérieures affectent les sondes EXEC, le banc et les documents,
+sans changement du chemin VFS qualifié. Les correspondances d'artefacts et leurs
+copies exactes sont archivées. Les quatre ELF historiques ont été exécutés sur
+un export QEMU neuf de `5abb981`, avec leurs octets historiques inchangés.
+
+| Contrôle | Résultat observé | Portée |
+|---|---|---|
+| Mémoire, six lancements B | 4/4 profils réussis avec le protocole 2622173, puis 4/4 avec les baux explicites 5abb981 | Plateau exact 2/3, réutilisation des 32 cadres, cycles 4–6 sans croissance ; aucune restitution physique de ces cadres revendiquée |
+| Admission acquittée, création retardée | 4/4 profils réussis sur le banc 5abb981 | B bloquée pendant RETRAIT_EN_COURS, issue A démontrée avant RETIREE |
+| Récupération VFS 2-sur-2 | 4/4 profils réussis, cinq démarrages par profil | Lecture privée réelle avant retrait, refus après restauration, puis lecture légitime / refus privé / lecture légitime dans la nouvelle session |
+| Ancien état et autorité hors ligne | Refus sur les quatre profils VFS | Aucun accès privé obtenu par le seul rejeu d'une tête historique |
+| Contrôles ABI | 9/9 réussis | 48 sélecteurs conservés |
+| ELF historiques | 4/4 réussis | AArch64 EL0 et x86_64 Ring 3, sdk-example et threads-test ; restitution vérifiée |
+| Tests hôtes ciblés | 103/103 réussis | Banc, oracles de ressources et conversion d'échéances ; distincts des essais invités |
+| Noyaux ordinaires | Identité binaire conservée avec la base vérifiée | Comparaison 97cee19, puis examen des différences QEMU/banc uniquement ; aucune activation ordinaire |
+
+Les mesures détaillées sont dans
+[la synthèse vérifiable](validation/novaauth-memoire-5abb981.json).
+Les traces de chargement et de nettoyage conservent les mesures avant, pendant et
+après chaque cycle. Le pic d'allocations actives, les pages résidentes et le cache
+ne sont pas confondus. Les variations de 24 octets du vecteur Space sont expliquées
+exactement ; aucun dépassement de la référence chaude n'est admis.
+
+### Réserves bloquantes distinctes de la mémoire
+
+La campagne globale de 32 cas reste **incomplète**. Le protocole 2622173 donne
+six réussites puis un échec sur sept tentatives (expiration de bail entre la
+commande réussie et la lecture de son statut). Le protocole 5abb981 donne quatre
+réussites, un échec et vingt-sept cas non exécutés ; un rejeu diagnostique isolé
+et une sonde instrumentée supplémentaires échouent aussi. Les succès de versions
+ou de scénarios différents ne sont pas additionnés pour annoncer 32/32.
+
+Sur x86_64/P9-4096, deux défis explicitement demandés expirent lors du cas
+perte-admission, avant ticket. Une exécution isolée reproduit des expirations,
+d'abord en A puis pendant la réauthentification de B. La charge ou la concurrence
+hôte ne sont donc pas retenues comme cause démontrée. Les anciens résultats
+négatifs restent archivés, avec les décisions natives de refus et le drainage.
+
+Une sonde dans un export privé, **non intégrée au candidat**, mesure : création du
+défi à 151 232 ms, échéance à 152 732 ms, réponse du signataire à 151 232 ms,
+retour de la vérification fraîche de liaison à 152 736 ms. Le segment mesuré dure
+1 504 ms ; le refus à quatre millisecondes au-delà de l'échéance est sûr. La
+consultation fraîche de l'autorité après signature appartient à ce segment et
+reste indispensable. La répartition précise entre transport, ordonnanceur et
+autorité n'est pas établie. Aucun cache de décision ni allongement du défi n'a
+été introduit pour obtenir un succès.
+
+Ce parcours révèle également une limite du banc : le vérificateur atteint ses
+seize messages DEBUG ; le marqueur NXBAIL suivant n'est plus disponible, et
+l'oracle refuse de conclure à une connexion. Le quota reste inchangé. Le défaut
+de visibilité du banc reste à corriger par un encodage borné des événements,
+sans supprimer les refus ni affaiblir les contrôles. Le patch et le binaire de
+sonde sont conservés séparément des binaires qualifiés.
+
+La réserve instrumentée AArch64 de **301 cadres** reste ouverte. La stabilité
+NovaFS sur six cycles ne résout ni cette réserve séparée, ni les expirations de
+défi, et ne prouve pas une borne sur un nombre illimité de cycles. Aucun essai
+UTM ou matériel physique n'a été exécuté dans cette campagne.
+
+**Verdict : qualification mémoire ciblée réussie sur les quatre profils QEMU ;
+consolidation non apte à fusionner en l'état.** Il reste à résoudre les deux
+réserves d'authentification/visibilité, puis à rejouer les 32 cas bloquants sur le
+candidat final. Aucune fusion dans main, aucun tag et aucune qualification de
+production ne découlent de ce bilan.
+
+### Conservation des preuves
+
+Racine durable : `/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/`.
+L'archive `qualification-memoire-novafs-5abb981-preuves.tar.gz` contient
+**1 774 fichiers de preuve plus le manifeste**, y compris les résultats négatifs.
+Les 1 775 membres ont été décompressés et comparés par SHA-256 aux originaux.
+
+- Archive : `c4827a21be87ee01d6bd524e3034f778b45a1f2a40ee3432eda491f5a3f4d9b6`.
+- `preuves-levee-blocages-b08ba80/SHA256SUMS` : `09d224b6367c68fca013da1dce4a50b2c7405d41c1af98efeffa7e396d4d8697`.
+- Manifeste privé des 602 artefacts et fichiers de laboratoire : `ec41916f9008495ea301f8b3597090de9abd0c641294421c494d88566ce7b357`.
+
+Les binaires exacts et secrets de laboratoire restent dans
+`artefacts-prives-levee-blocages-b08ba80/`, hors Git et hors temporaires. Seuls les
+sources et rapports sont publiables sur la branche dédiée. Les 1 800 preuves
+initiales du candidat b08ba80 restent intactes ; leur archive et leur manifeste
+ont été vérifiés séparément (`verification-preuves-initiales.json`).
