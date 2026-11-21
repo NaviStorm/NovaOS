@@ -36,3 +36,9 @@ nova-cli = { path = ".." }
 panic = "abort"
 lto = true
 codegen-units = 1
+
+[[bin]]
+name = "admin-sonde"
+path = "src/bin/admin-sonde.rs"
+required-features = ["guest", "administration-qemu"]
+test = false
