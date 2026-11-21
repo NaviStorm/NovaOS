@@ -8,8 +8,13 @@ fn perform() -> rt::Result<()> {
     let mut request = [0; 128];
     request[..8].copy_from_slice(b"NXACMD01");
     let mut repeats = 1;
+    let mut mode = 0;
     match launch.streams.argv.as_slice() {
         [] | ["--self"] => request[8]=1,
+        ["--lost-reply"] => {request[8]=1;mode=1;},
+        ["--concurrent-writer"] => {request[8]=1;mode=2;},
+        ["--concurrent-reader"] => {request[8]=1;mode=3;},
+        ["--expire"] => {request[8]=1;mode=4;},
         ["--twice"] => {request[8]=1;repeats=2;},
         ["--user", name] | ["--group", name] => {
             if name.is_empty() || name.len()>32 {return Err(rt::BAD_ARGUMENT);}
@@ -23,6 +28,9 @@ fn perform() -> rt::Result<()> {
         } else {b"admin-sonde [--self|--twice|--user NAME|--group NAME]\nQEMU probe. Native statuses; no mutation.\n"}),
         _ => return Err(rt::BAD_ARGUMENT),
     }
+    if matches!(mode, 1..=3) {
+        return transport_probe(&launch, &request, mode);
+    }
     let mut conversation = Conversation::new(&launch);
     for _ in 0..repeats {
         let reply = conversation.exchange(&request)?;
@@ -34,6 +42,105 @@ fn perform() -> rt::Result<()> {
             return Err(status);
         }
     }
+    if mode == 4 {
+        // Un bail inchangé expire dans l'invité ; aucune horloge ou gestion de
+        // processus supplémentaire n'est accordée à cet ELF.
+        for _ in 0..8 {
+            match rt::receive_for(launch.endpoint(), 15000) {
+                Err(rt::TIMED_OUT) => (),
+                Err(rt::REVOKED) => {
+                    if !matches!(
+                        rt::receive_for(launch.endpoint(), 0),
+                        Err(rt::REVOKED | rt::DENIED)
+                    ) {
+                        return Err(201);
+                    }
+                    return Err(rt::REVOKED);
+                }
+                _ => return Err(202),
+            }
+        }
+        return Err(203);
+    }
+    Ok(())
+}
+fn transport_probe(
+    launch: &AdministrativeLaunch<'_>,
+    request: &[u8; 128],
+    mode: u8,
+) -> rt::Result<()> {
+    use nova_exec_client::admin_wire::{self, Direction, Inbox};
+    let key = launch.endpoint();
+    let mut inbox = Inbox::new();
+    rt::send_for(
+        key,
+        1,
+        &admin_wire::frame(1, Direction::Request, request, 0).map_err(|_| rt::BAD_ARGUMENT)?,
+        5000,
+    )?;
+    let ack = rt::receive_for(key, 5000)?;
+    if ack.kind != 1 || ack.tag != 1 || ack.len != 8 || ack.payload[..8] != [0; 8] {
+        return Err(204);
+    }
+    if mode == 2 {
+        launch.streams.write_stdout(b"R")?;
+    }
+    if mode == 3 {
+        let mut ready = [0];
+        if launch.streams.read_stdin(&mut ready)? != 1 || ready != *b"R" {
+            return Err(205);
+        }
+    }
+    rt::send_for(
+        key,
+        1,
+        &admin_wire::frame(1, Direction::Request, request, 96).map_err(|_| rt::BAD_ARGUMENT)?,
+        5000,
+    )?;
+    let mut answer = [0; 128];
+    for frame in 0..2 {
+        let m = rt::receive_for(key, 5000)?;
+        if m.kind != 1 || m.len != 128 || m.tag != 1 || m.handle != 0 || m.aux != 0 {
+            return Err(206);
+        }
+        let complete = inbox
+            .accept(&m.payload, Direction::Response)
+            .map_err(|_| 207u64)?;
+        if mode == 1 && frame == 0 {
+            if complete {
+                return Err(208);
+            }
+            // Première partie reçue : le registre a décidé. Perdre le suffixe
+            // n'autorise aucune répétition de cette requête.
+            rt::value(rt::call(rt::IPC_CLOSE, key, 0, 0))?;
+            answer[..8].copy_from_slice(&22u64.to_le_bytes());
+            launch.streams.write_stdout(&answer[..64])?;
+            return Err(22);
+        }
+        if complete {
+            answer.copy_from_slice(inbox.message().map_err(|_| 209u64)?.1);
+        }
+    }
+    let status = u64::from_le_bytes(answer[..8].try_into().unwrap());
+    if status != 0 {
+        return Err(status);
+    }
+    if mode == 3 {
+        let mut producer = [0; 64];
+        let mut at = 0;
+        while at < 64 {
+            let n = launch.streams.read_stdin(&mut producer[at..])?;
+            if n == 0 {
+                return Err(210);
+            }
+            at += n;
+        }
+        if producer != answer[..64] {
+            return Err(211);
+        }
+    }
+    launch.streams.write_stdout(&answer[..64])?;
+    rt::value(rt::call(rt::IPC_CLOSE, key, 0, 0))?;
     Ok(())
 }
 #[unsafe(no_mangle)]
