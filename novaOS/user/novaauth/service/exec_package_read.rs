@@ -2,6 +2,14 @@
 //! Aucun Ledger, aucune mutation de politique, aucun droit d'installation.
 use super::*;
 pub(super) struct Upload {bytes:[u8;240],next:u64}
+struct MemoryMeasure;
+fn memory_measure(phase:u8) {
+    let mut line=*b"NXHEAP phase=0 vivants=0000000000000000";line[13]=b'0'+phase;
+    let live=crate::heap::live_bytes();let hex=b"0123456789abcdef";
+    for i in 0..16 {line[22+i]=hex[(live>>((15-i)*4))&15];}
+    rt::call(rt::DEBUG_WRITE,line.as_ptr() as u64,line.len() as u64,0);
+}
+impl Drop for MemoryMeasure {fn drop(&mut self) {memory_measure(1);}}
 fn word(b:&[u8])->u64 {u64::from_le_bytes(b[..8].try_into().unwrap())}
 impl Session<'_, '_> {
     pub(super) fn package_request(&mut self,q:&Frame,_a:&mut Frame)->rt::Result<()> {
@@ -26,6 +34,7 @@ impl Session<'_, '_> {
         }
     }
     fn load_attested(&mut self,q:&Frame,d:&[u8;240])->rt::Result<()> {
+        memory_measure(0);let _memory=MemoryMeasure;
         if &d[..8]!=b"NXRES001" || d[8..40]!=q[56..88] || d[40..56]!=q[8..24] || d[56..72]==[0;16] || d[152..184]==[0;32] || d[234..]!=[0;6] {return Err(rt::DENIED);}
         #[cfg(target_arch="aarch64")] let machine=183u16;
         #[cfg(target_arch="x86_64")] let machine=62u16;

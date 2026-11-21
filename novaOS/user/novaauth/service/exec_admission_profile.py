@@ -7,6 +7,14 @@ def install(root):
         p=root/name;s=p.read_text()
         if s.count(old)!=1:raise ValueError(f'ancrage admission absent ou ambigu : {name}: {old[:60]}')
         p.write_text(s.replace(old,new))
+    # Diagnostic du tas NovaFS dans la copie QEMU seulement. Comptabiliser les
+    # octets vivants distingue une fuite d'un suffixe libre gardé par dlmalloc.
+    heap=(root/'novaOS/user/heap.rs').read_text()
+    heap=heap.replace('struct Pages;', 'static LIVE: core::sync::atomic::AtomicUsize = core::sync::atomic::AtomicUsize::new(0);\npub(crate) fn live_bytes()->usize {LIVE.load(core::sync::atomic::Ordering::Relaxed)}\nstruct Pages;')
+    heap=heap.replace('unsafe { self.0.lock().malloc(l.size(), l.align()) }', 'let p=unsafe { self.0.lock().malloc(l.size(), l.align()) };\n        if !p.is_null() {LIVE.fetch_add(l.size(),core::sync::atomic::Ordering::Relaxed);}\n        p')
+    heap=heap.replace('unsafe { self.0.lock().free(p, l.size(), l.align()) }', 'unsafe { self.0.lock().free(p, l.size(), l.align()) };\n        LIVE.fetch_sub(l.size(),core::sync::atomic::Ordering::Relaxed);')
+    (root/'novaOS/user/novafs/heap_diagnostic.rs').write_text(heap)
+    edit('novaOS/user/novafs/main.rs','#[path = "../heap.rs"]','#[path = "heap_diagnostic.rs"]')
     base='novaOS/kernel/src/sched/process/ipc/'
     path=base+'exec.rs'
     edit(path,'use super::*;','use super::*;\n#[path="exec_authority_lab.rs"]\nmod authority;\npub(super) use authority::intercept as authority_intercept;\npub(super) use authority::resources as resource_trace;')
