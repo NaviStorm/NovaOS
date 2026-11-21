@@ -82,13 +82,18 @@ fn transport_probe(
     if ack.kind != 1 || ack.tag != 1 || ack.len != 8 || ack.payload[..8] != [0; 8] {
         return Err(204);
     }
+    // Neuf trames dépassent le pipe borné à huit trames. Le producteur
+    // reste dans sa requête R1 partielle jusqu'à la première réception du
+    // lecteur, effectuée seulement après son propre ACK R1.
     if mode == 2 {
-        launch.streams.write_stdout(b"R")?;
+        launch.streams.write_stdout(&[b'R'; 9 * 128])?;
     }
     if mode == 3 {
-        let mut ready = [0];
-        if launch.streams.read_stdin(&mut ready)? != 1 || ready != *b"R" {
-            return Err(205);
+        let mut ready = [0; 128];
+        for _ in 0..9 {
+            if launch.streams.read_stdin(&mut ready)? != 128 || ready != [b'R'; 128] {
+                return Err(205);
+            }
         }
     }
     rt::send_for(
@@ -126,16 +131,11 @@ fn transport_probe(
         return Err(status);
     }
     if mode == 3 {
-        let mut producer = [0; 64];
-        let mut at = 0;
-        while at < 64 {
-            let n = launch.streams.read_stdin(&mut producer[at..])?;
-            if n == 0 {
-                return Err(210);
-            }
-            at += n;
+        let mut producer = [0; 128];
+        if launch.streams.read_stdin(&mut producer)? != 64 {
+            return Err(210);
         }
-        if producer != answer[..64] {
+        if producer[..64] != answer[..64] {
             return Err(211);
         }
     }

@@ -61,7 +61,7 @@ def main():
                 report['concurrence']={'producteur':producer,'lecteur':reader,'statut_producteur':pr,'statut_lecteur':rr,'statut_pipe':rc}
                 if producer==reader or rc or pr or rr or actual!={(producer,2):(0,b''),(reader,1):(64,oracle),(reader,2):(0,b'')}:
                     raise Refus('conversations concurrentes divergentes : '+repr(report['concurrence']))
-                # Le lecteur ne lit le jeton de synchronisation qu'après l'ACK
+                # Le lecteur ne draine les neuf trames de synchronisation qu'après l'ACK
                 # de sa première trame. Le producteur conserve alors sa requête
                 # partielle, donc deux conversations ont réellement coexisté.
                 rc,_=serial.command('session reauthentifier')
