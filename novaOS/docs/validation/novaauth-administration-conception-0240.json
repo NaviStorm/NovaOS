@@ -1,0 +1,433 @@
+{
+  "base": "5c7f1bfa313a3859ccc0830660438e76d598acb1",
+  "nature": "audit documentaire ; aucun test fonctionnel exécuté",
+  "sources": [
+    {
+      "path": "novaOS/user/novaauth/src/lib.rs",
+      "sha256": "60574a163aeef46880c70280c2d0e5b46cabb3bfcbbcdd753ed7034fe6c5e86c",
+      "blob": "a5c146f6689e5f6fd541794a30f05838b70f7cb3"
+    },
+    {
+      "path": "novaOS/user/novaauth/src/policy.rs",
+      "sha256": "918273e69d836e17154edd0c023814fb8f62aa35fa0c22b46c0c93459a4c6383",
+      "blob": "04fcce3b86f4230366fe94b50b26616bef4758f9"
+    },
+    {
+      "path": "novaOS/user/novaauth/Cargo.toml",
+      "sha256": "485ab3f9469b23931692c8579df2c3bf3083242dc42cc5aeb8c1f6b2501ee449",
+      "blob": "fabade1b7fb83fc63aa7409bd93fb1abb84bf898"
+    },
+    {
+      "path": "novaOS/user/novaauth/src/recuperation.rs",
+      "sha256": "029784dc01ba1374ad78834beb0fdee9145ecfa0f24971cf3a6bc2a21f0e0aa1",
+      "blob": "d3c967b1af36e93422e73c35eedff6a4efce4601"
+    },
+    {
+      "path": "novaOS/user/novaauth/src/recuperation_store.rs",
+      "sha256": "664dfc53c13b9324c91340ad8f3da9e950c9803e3fd1bb9a48d060b261795519",
+      "blob": "7ec151c9822a2bf4460f3df054b1177658801de8"
+    },
+    {
+      "path": "novaOS/user/novaauth/service/src/lib.rs",
+      "sha256": "ae4e464468a0fe39c91bc6b56c01e953ce14890c9969c159d58afdc0e197f592",
+      "blob": "07510f48931955788a71470b8dd11b24372c9e30"
+    },
+    {
+      "path": "novaOS/user/novaauth/service/src/sessions.rs",
+      "sha256": "b81d3e30e1941aea5e424fd4f6b20cabd367138f3d48d0eeca21360c1da67657",
+      "blob": "9cf8e5e8a15111a18396313bfe212beab72e79ff"
+    },
+    {
+      "path": "novaOS/user/novaauth/service/src/admission.rs",
+      "sha256": "307b09c988eb4d11fc30af78e33b13f2b3408bf67f0ed549ddc7aace036f8990",
+      "blob": "91e037be8afd54f763c4949f7367d0f59c86668a"
+    },
+    {
+      "path": "novaOS/user/novaauth/service/src/bin/registre-incarnation.rs",
+      "sha256": "2adaddb3730f6f9b3b46afe0edb82a0be743830d4745ae04d6a05266f95e7fc2",
+      "blob": "639746c9fb2bbe63d670f5052dbd71c229f9e905"
+    },
+    {
+      "path": "novaOS/user/novaauth/service/src/bin/common/client_api.rs",
+      "sha256": "337cb72112491becdffc1db26eba308929cf99bc2ccbdbb293a3d401808a1e5b",
+      "blob": "60cbe0a8adb04517a7c34ccad73f5317decd09ae"
+    },
+    {
+      "path": "novaOS/user/novaauth/autorite_qemu/admission_rpc.py",
+      "sha256": "e80af72d5031dbfefce759becc75b433ea90d142a6890e093b422567a429fa45",
+      "blob": "67739942eed1e0e063647c36e10479c0a06abf81"
+    },
+    {
+      "path": "novaOS/user/services/journal_access.rs",
+      "sha256": "158201e793cc006923f49d34e542c7b4fb53cb1855246fe41b9eebe8553d45ed",
+      "blob": "dd2d84118261d67fe7e39c4c6e20af393b6434a6"
+    },
+    {
+      "path": "components/shell/journal.rs",
+      "sha256": "fa33882931354ebf7e8cef55ddb8572aedbb9e9ffc73c18ec39248b907fb7a4c",
+      "blob": "fbba493fa4a6ddd49f61fee5831c7d5c8939fc65"
+    },
+    {
+      "path": "components/libraries/documentation_locale.rs",
+      "sha256": "571d84ebce9734ed8cd46b8dc04d9ecca4045a22207fcab150ab50e95426083c",
+      "blob": "63b8e2e081c036269a399b65a075604a55b15048"
+    },
+    {
+      "path": "components/libraries/documentation.rs",
+      "sha256": "be45a3b21886c1cc6aacee94a0c9d4ec98e0d5698449ba1562f5d69835a49d79",
+      "blob": "a8028034d4a40c195835373c59071c9a3e022f2e"
+    },
+    {
+      "path": "novaOS/user/novaauth/tests/registry.rs",
+      "sha256": "d82bc402af7f554c82c16aa54dc7e613a93033c1539ba13b4cec5e6e6ec5b86a",
+      "blob": "cb1aea667a02e71240346f1c9988df45f2f2e7c7"
+    },
+    {
+      "path": "novaOS/docs/novaauth-qualification-globale-v0.24.0.md",
+      "sha256": "95cdca409072f7a3e64573eac535b4cfa15d9b407885347456719a2cc8de791c",
+      "blob": "340170889107e675507b028b755cbd6b757f4217"
+    },
+    {
+      "path": "novaOS/docs/validation/novaauth-qualification-globale-aa489ca.json",
+      "sha256": "aaf568f10298eb7ec8f25b53135a06b88f083332c7ed0872c6c026dc85192479",
+      "blob": "ddae83754bb7583480a1a842e012c668d21be439"
+    }
+  ],
+  "recettes": [
+    {
+      "id": "A01",
+      "titre": "Consultations et langues",
+      "attendu": "help/version/man sans authentification ni capacité métier ; fr et autres locales selon arbitrage ; stdout/stderr et code 0 ; aucune mutation, tmp ou STOP.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A02",
+      "titre": "Analyse et modes nsh",
+      "attendu": "Option inconnue, doublon, argument vide, nom invalide, -- ; même résultat interactif/script/nsh -c ; false=1, false --help=0, exit --help poursuit la session et exit ferme normalement.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A03",
+      "titre": "Identité administrative",
+      "attendu": "Admin authentifié admis ; non-admin, faux nom admin, session substituée/expirée ou preuve de facteur déclarée refusés. Aucune promotion implicite.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A04",
+      "titre": "Création et persistance",
+      "attendu": "Créer Alice/Bob non-admin avec facteurs attestés distincts ; redémarrer ; IDs, comptes et groupes présents ; aucune donnée privée créée/lue par défaut.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A05",
+      "titre": "Renommage",
+      "attendu": "Même ID et mêmes propriétaires ; l’ancien nom ne redirige pas une confirmation déjà préparée vers un nouveau compte.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A06",
+      "titre": "Désactivation",
+      "attendu": "Refus nouvelles sessions/admissions ; délégations retirées ; compte et données conservés ; aucun Enable implicite ; état partiel affiché tant que les effecteurs requis ne sont pas acquittés.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A07",
+      "titre": "Suppression et nom réutilisé",
+      "attendu": "Tombe conservée, ancienne référence de facteur non réaffectée ; nouveau compte même nom mais nouvel ID ; aucun droit, groupe, cache, fichier ou tâche hérité.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A08",
+      "titre": "Données après suppression",
+      "attendu": "SHA des fichiers synthétiques inchangés, propriétaire ancien ID, ACL/surprotection conservées ; refus au compte recréé et à l’admin sans délégation du propriétaire ; aucune purge automatique.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A09",
+      "titre": "Dernier admin existant",
+      "attendu": "Depuis le premier administrateur, Disable/Delete du compte admin refusés sans mutation. Vérifier également les tentatives indirectes par nom, groupe ou paramètre client.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A10",
+      "titre": "Dernier admin futur et concurrence",
+      "attendu": "Conditionné à un futur contrat multi-admin/facteurs : deux retraits simultanés ne laissent pas zéro admin utilisable ; refus du retrait du dernier facteur ; exception impossible sans procédure indépendante validée. Non exécutable sur l’API actuelle.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A11",
+      "titre": "Récupération indépendante",
+      "attendu": "Ancienne génération, approbation absente/expirée/rejouée ou mauvais serveur refusés ; nouvelle incarnation approuvée ne vaut pas validation de l’ancien triplet ni autorité admin supplémentaire.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A12",
+      "titre": "Appartenances et origines",
+      "attendu": "Lecture directe + écriture par G ; retirer Alice de G avec instance active ; lecture demeure, écriture et sous-délégations de groupe refusées après acquittement ; capacités indépendantes intactes.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A13",
+      "titre": "Persistance du retrait",
+      "attendu": "Redémarrer et réauthentifier réellement Alice : lecture directe valide, écriture retirée refusée ; un simple contrôle du registre ne remplace pas l’authentification et le VFS invité.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A14",
+      "titre": "Même installation deux utilisateurs",
+      "attendu": "Droit persistant d’Alice sur installation attestée commune ; Alice lit, Bob refusé ; aucune propagation implicite par le nom/chemin/ID de l’installation.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A15",
+      "titre": "Suppression de groupe proposée",
+      "attendu": "Avant implémentation de DeleteGroup, commande non distribuée ; ensuite groupe vide sans références uniquement, refus des membres/règles/admissions en vol et non-réutilisation de son ID.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A16",
+      "titre": "Surprotection et objet substitué",
+      "attendu": "Droit admin ne donne pas lecture de dossier ; faux OID, chemin changeant de cible, handle d’un autre propriétaire, ACL ou surprotection incompatible : refus.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A17",
+      "titre": "Concurrence des mutations",
+      "attendu": "Deux créations depuis la même tête : une réussite et un conflit explicite ou sérialisation contrôlée, jamais perte du premier résultat ; seconde soumission éventuelle explicite après relecture et nouvelle confirmation.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A18",
+      "titre": "Confirmation",
+      "attendu": "Pas de mutation en préparation ; empreinte liée à cible/arguments/tête/session ; refus d’une confirmation périmée, substituée ou réutilisée par autre session. Script sans confirmation explicite refusé.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A19",
+      "titre": "Publication interrompue",
+      "attendu": "Injecter avant décision et après décision durable avant réponse ; triplet complet visible ou refus sécurisé, jamais mélange ; création confirmée présente au reboot.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A20",
+      "titre": "UNCERTAIN et réponses perdues",
+      "attendu": "Perdre l’acquittement de mutation, query par même ID ; aucune seconde mutation ; réemploi ID avec contenu différent refusé ; None/timeout non interprété comme annulation.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A21",
+      "titre": "Ordre distant et drainage",
+      "attendu": "Enveloppe signée avant fermeture locale puis retardée ; ordonner admission/retrait durable ; EN_COURS maintenu tant qu’une issue admise manque ; aucune activation B avant RETIREE.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A22",
+      "titre": "Admission acquittée, création retardée",
+      "attendu": "Deux VM, autorité unique : A vivante non expirée ; création retardée après admission ; B bloquée ; enfant identifié/collecté ou annulation irréversible démontrée ; aucun nouveau PID A après RETIREE.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A23",
+      "titre": "VFS pendant écriture et fermeture",
+      "attendu": "Écriture engagée lors de fermeture de session : réveil, retrait des délégations temporaires, résultat confirmé ou UNCERTAIN par ID ; pas de répétition ; test distinct du retrait de groupe.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A24",
+      "titre": "Restauration complète et VFS",
+      "attendu": "Alice lit exactement le témoin avant instantané ; révocation durable ; restauration de tous disques locaux, autorité conservée ; refus effectif et zéro octet privé ; autorité injoignable : refus aussi.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A25",
+      "titre": "Reprise 2-sur-2 et disponibilité",
+      "attendu": "Nouvelle incarnation approuvée, deux remises, triplet exact à la tête durable ; réauthentifier Alice, lire autorisé, refuser révoqué sans octet, puis nouvelle opération autorisée dans la même session.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A26",
+      "titre": "Anciens tickets et sessions",
+      "attendu": "Ancien EXEC_TICKET non expiré depuis A vivante retirée refusé sans PID ; B ne peut le réutiliser ; nouveau ticket B fonctionne ; concurrence un seul enfant, reprise après reboot distincte.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A27",
+      "titre": "Quotas et restitution",
+      "attendu": "Quatre racines max par acteur à chaque phase ; cinquième LIMIT sans allocation résiduelle ; saturation/échec allocation ; mesurer handles/endpoints/processus/threads/cadres avant-pendant-après ; plateau cache séparé de fuite.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A28",
+      "titre": "Audit",
+      "attendu": "Identité de l’émetteur authentifiée, déduplication par ID, issue connue/incertaine ; saturation/panne/reprise ; accès lecture séparé ; aucune clé, secret ou contenu privé dans traces.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A29",
+      "titre": "Bornes et corruption",
+      "attendu": "Noms, slots 16 Kio et limites 64 du registre ; dépassement refusé avant décision ; triplet manquant/altéré et état de même génération mais empreinte différente refusés, sans nouvel enrôlement.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    },
+    {
+      "id": "A30",
+      "titre": "Compatibilité",
+      "attendu": "Neuf contrôles ABI, 48 sélecteurs, quatre ELF historiques inchangés, pipes cat|wc et cat|head avec statuts exacts, sessions/VFS/IPC ; ordinaire sans raccord labo. Compatibilité distincte de reproductibilité.",
+      "profils": {
+        "aarch64-512": "prévu, non exécuté",
+        "aarch64-4096": "prévu, non exécuté",
+        "x86_64-512": "prévu, non exécuté",
+        "x86_64-4096": "prévu, non exécuté"
+      }
+    }
+  ],
+  "reservations": [
+    "301 cadres AArch64 instrumentés",
+    "reproductibilité entre environnements"
+  ],
+  "utilitaires": "en pause jusqu’à autorisation MOA/MOE explicite"
+}
