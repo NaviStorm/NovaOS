@@ -11,6 +11,9 @@ def snapshots(raw):
     return globals,actors
 
 def verify(raw,probe=False,warm=False):
+    full_raw=raw
+    if not probe and b"NAEXEC ressources phase=avant_ticket" in raw:
+        raw=raw[raw.index(b"NAEXEC ressources phase=avant_ticket"):]
     g,a=snapshots(raw)
     first='consommation' if probe else 'avant_ticket'
     last='refus_sans_creation' if probe else 'fermeture'
@@ -37,8 +40,32 @@ def verify(raw,probe=False,warm=False):
                 if left[field]!=right[field]:raise Refus('restitution acteur différente : '+str(pid)+' '+field)
         if any(r['roots']>4 or r['waits']>r['threads'] for r in a if r['pid']==pid):raise Refus('quota acteur dépassé')
     if warm:
-        if len(after)!=2:raise Refus('deux lancements B requis pour mesurer le plateau')
+        if len(after)!=warm or warm not in (3,6):raise Refus('trois ou six lancements B requis pour mesurer le plateau')
         for field in ('cadres_ipc','cadres_libres','endpoints','nodes','processus','threads','joins'):
-            if after[0][field]!=after[1][field]:raise Refus('état chaud non stable : '+field)
-    return {'avant':before,'pendant':[r for r in g if r['phase']=='consommation'],'apres':after,'acteurs':a,'restitution_verifiee':True,'plateau_chaud':warm,
-            'reference':'racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact au second ; attentes propres bornées'}
+            if any(end[field]!=after[1][field] for end in after[2:]):raise Refus('état chaud non stable : '+field)
+    memory=memory_cycles(full_raw,warm) if warm else []
+    return {'memoire_novafs':memory,'avant':before,'pendant':[r for r in g if r['phase']=='consommation'],'apres':after,'acteurs':a,'restitution_verifiee':True,'plateau_chaud':warm,
+            'reference':'racines/handles/objets/processus/threads identiques ; pool IPC au plus un cadre au premier lancement, plateau exact après échauffement et cycles supplémentaires ; attentes propres bornées'}
+
+
+def memory_cycles(raw,count):
+    records=[list(int(v,16) for v in m.split()) for m in re.findall(rb'NXMEM ((?:[0-9a-f]{16} ){13})\r?\n',raw)]
+    if len(records)!=count:raise Refus('mesures du tas NovaFS incomplètes')
+    result=[]
+    for i,v in enumerate(records):
+        live,blocks,grow,returned,calls=v[:5]
+        end_live,end_blocks,end_grow,end_returned,end_calls=v[5:10]
+        cache,end_cache,budget=v[10:]
+        if budget!=1065472 or max(cache,end_cache)>budget:raise Refus('budget cache historique dépassé')
+        if end_live-end_cache>live-cache:raise Refus('allocations vivantes hors cache non restituées')
+        if end_grow<grow or end_returned<returned or end_calls<=calls:raise Refus('compteurs allocation incohérents')
+        reuse=end_grow==grow
+        if i>=2 and not reuse:raise Refus('réutilisation sans attribution physique non démontrée')
+        result.append({'cycle':i+1,'actifs_demandes_avant':live,'actifs_demandes_apres':end_live,
+            'blocs_actifs_avant':blocks,'blocs_actifs_apres':end_blocks,'cache_avant':cache,'cache_apres':end_cache,'budget_cache':budget,
+            'cadres_tas_avant':grow-returned,'cadres_tas_apres':end_grow-end_returned,
+            'cadres_attribues':end_grow-grow,'cadres_restitues':end_returned-returned,
+            'allocations_servies':end_calls-calls,'reutilisation_sans_attribution_physique':reuse,
+            'octets_residents_non_demandes':(end_grow-end_returned)*4096-end_live,
+            'limite':'Les octets non demandés incluent espace libre et métadonnées dlmalloc ; ce compteur seul ne prouve pas leur libération physique.'})
+    return result

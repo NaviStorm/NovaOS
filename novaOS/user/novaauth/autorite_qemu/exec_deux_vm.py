@@ -127,10 +127,11 @@ def main():
         def routes():
             with closing(open_database(api.path)) as db:
                 return [(i.hex(),s) for i,s in db.execute('SELECT incarnation,state FROM exec_routes ORDER BY incarnation')]
-        def ready(serial,reference=None,out=None):
-            marker=serial.expect(rb'NAEXEC registre pret puis connexion du vrai nsh|NARV registre quarantaine generation non activable',100)
-            if b'quarantaine' in marker[0]:raise Refus('registre en quarantaine ; aucun ticket créé')
-            if b'nsh> ' not in serial.data:serial.expect(rb'nsh> ',20)
+        def ready(serial,reference=None,out=None,explicit=False):
+            if not explicit:
+                marker=serial.expect(rb'NAEXEC registre pret puis connexion du vrai nsh|NARV registre quarantaine generation non activable',100)
+                if b'quarantaine' in marker[0]:raise Refus('registre en quarantaine ; aucun ticket créé')
+                if b'nsh> ' not in serial.data:serial.expect(rb'nsh> ',20)
             if reference is not None:
                 if not any(i==report['incarnation_A'] and state=='RETIREE' for i,state in routes()):
                     raise Refus('rejeu B avant retrait durable de A')
@@ -139,12 +140,12 @@ def main():
                 start=serial.offset
                 # echo $? exigerait lui-même une authentification après un
                 # refus frontal : observer d'abord la décision native complète.
-                serial.submit('true');serial.expect(rb'nsh> ',30)
+                serial.submit('session reauthentifier' if explicit else 'true');serial.expect(rb'nsh> ',30)
                 trace=bytes(serial.data[start:serial.offset])
                 decisions=re.findall(rb'NXBAIL op=NSHOPEN1 tag=(\d+) decision=(\d+) valide=(\d+) echeance=(\d+) retour=(\d+) fin=(\d+)\r?\n',trace)
                 if not decisions:raise Refus('décision native de connexion absente')
                 decision=list(map(int,decisions[-1]))
-                report.setdefault('authentifications',[]).append({'instance':str(out),'essai':attempt+1,'decision':decision})
+                report.setdefault('authentifications',[]).append({'instance':str(out),'essai':attempt+1,'reauthentification_explicite':explicit,'decision':decision})
                 if decision[4]==0 and decision[2]==1:break
                 if b'NXLOGIN refus defi expire' not in trace:raise Refus('authentification refusée sans expiration du défi')
                 report.setdefault('defis_expires',[]).append({'instance':str(out),'decision':decision})
@@ -302,22 +303,33 @@ def main():
                     states=sorted(r[1] for r in rows())
                     wanted=sorted([1,report['issue_A_avant_retrait'][0][1]]) if a.perte_reponse=='admission' else ([1,2] if a.course_retrait=='retrait-premier' else [1]*expected)
                     if status!=0 or len(rows())!=expected or states!=wanted:raise Refus('lancement B non confirmé')
-                    # Deuxième lancement : vérifier le plateau du pool IPC
-                    # après son premier agrandissement légitime.
-                    warm_status,warm_output=t.command('cut --version')
-                    (o/'cut-version-chaud.bin').write_bytes(warm_output)
-                    if warm_status!=0 or len(rows())!=expected+1 or rows()[-1][1]!=1:
-                        raise Refus('second lancement B non confirmé')
-                    report['statut_B_chaud']=warm_status
-                    # Exclure les deux sondes historiques du bilan des lancements B.
-                    begin=bytes(t.data).index(b'NAEXEC ressources phase=avant_ticket')
-                    report['ressources_B']=verify_resources(bytes(t.data[begin:]),warm=True)
+                    # Accord MOA : trois lancements et plateau après échauffement.
+                    report['statuts_B_chauds']=[]
+                    for number in (2,3):
+                        code,output=t.command('cut --version')
+                        (o/f'cut-version-chaud-{number}.bin').write_bytes(output)
+                        if code!=0 or len(rows())!=expected+number-1 or rows()[-1][1]!=1:
+                            raise Refus('lancement B chaud non confirmé')
+                        report['statuts_B_chauds'].append(code)
+                    report['ressources_B']=verify_resources(bytes(t.data),warm=3)
+                    def extra_cycles():
+                        # Demande explicite, entre transactions, jamais de prolongation
+                        # du bail initial. Trois cycles supplémentaires par même nsh.
+                        report['cycles_supplementaires']=[]
+                        for number in (4,5,6):
+                            ready(t,out=o,explicit=True)
+                            code,output=t.command('cut --version')
+                            (o/f'cut-version-cycle-{number}.bin').write_bytes(output)
+                            if code!=0 or len(rows())!=expected+number-1 or rows()[-1][1]!=1:
+                                raise Refus('cycle mémoire supplémentaire non confirmé')
+                            report['cycles_supplementaires'].append({'cycle':number,'statut':code,'reauthentification_explicite':True})
+                        report['ressources_B']=verify_resources(bytes(t.data),warm=6)
                     # B demeure vivante pendant le réveil de A.
                     if report.get('A_refusee_avant_RETIREE'):
-                        report['succes']=True
+                        extra_cycles();report['succes']=True
                         return {'succes':True,'statut_cut':status,'A_refusee_avant_RETIREE':True}
                     if a.admis_retarde or a.perte_reponse=='admission':
-                        report['succes']=True
+                        extra_cycles();report['succes']=True
                         return {'succes':True,'incarnation':new.hex(),'statut_cut':status,'deux_VM':True,'A_achevee_avant_RETIREE':report['A_achevee_avant_RETIREE']}
                     a.pause_transport.resume();debug.resume()
                     serial.expect(REFUS_TICKET,30)
@@ -328,8 +340,8 @@ def main():
                     if report['refus_A'][1]!=report['reference_A'] or report['refus_A'][2]!=10 or report['refus_A'][3]>=report['refus_A'][4] or report['enfants_A']!=0:raise Refus('référence, statut de retrait, expiration ou création A interdite')
                     if b'NAUTH incarnation locale retiree' not in serial.data:raise Refus('cause retrait non démontrée')
                     report['admissions_apres_reveil_A']=rows()
-                    if len(rows())!=expected+1:raise Refus('admission supplémentaire après retrait')
-                    report['succes']=True
+                    if len(rows())!=expected+2:raise Refus('admission supplémentaire après retrait')
+                    extra_cycles();report['succes']=True
                     return {'succes':True,'incarnation':new.hex(),'statut_cut':status,'deux_VM':True}
                 b=copy.copy(a);b.pause_transport=Clock();b.sortie=root/'VM-B';b.genese=root/'instantane.p9';b.legacy_disk=root/'instantane-ancienne-autorite.raw'
                 if a.admis_retarde:

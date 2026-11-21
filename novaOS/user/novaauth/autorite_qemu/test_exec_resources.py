@@ -1,5 +1,5 @@
 import unittest
-from exec_resources import verify
+from exec_resources import verify, memory_cycles
 from reprise import Refus
 
 def sample(phase,ipc=58,free=1000):
@@ -13,11 +13,27 @@ class Resources(unittest.TestCase):
         raw=sample('consommation')+sample('refus_sans_creation')
         self.assertEqual(raw.count(b'NAEXEC ressources phase=consommation '),1)
         self.assertEqual(raw.count(b'phase=consommation'),4)
-    def test_first_pool_frame_requires_stable_second_launch(self):
-        raw=sample('avant_ticket')+sample('consommation')+sample('fermeture',59,1020)
-        raw+=sample('avant_ticket',59,1000)+sample('consommation',59,1000)+sample('fermeture',59,1020)
-        self.assertTrue(verify(raw,warm=True)['plateau_chaud'])
-        with self.assertRaises(Refus):verify(raw.replace(b'cadres_libres=Ok(1020)',b'cadres_libres=Ok(900)'),warm=True)
+    def test_plateau_after_measured_warmup_and_additional_cycles(self):
+        raw=b''
+        for i in range(6):
+            free=1020 if i==0 else 988
+            raw+=sample('avant_ticket',58,free-20)+sample('consommation',59,free-21)+sample('fermeture',59,free)
+            values=[100,2,4,0,1,100,2,4,0,2,40,40,1065472]
+            raw+=b'NXMEM '+b''.join(f'{v:016x} '.encode() for v in values)+b'\r\n'
+            if i==2:self.assertTrue(verify(raw,warm=3)['plateau_chaud'])
+        self.assertTrue(verify(raw,warm=6)['plateau_chaud'])
+        with self.assertRaises(Refus):verify(raw.replace(b'cadres_libres=Ok(988)',b'cadres_libres=Ok(900)'),warm=6)
+        # Une croissance tardive n'est pas cachée par le plateau initial.
+        changed=raw.rsplit(b'cadres_libres=Ok(988)',1)
+        with self.assertRaises(Refus):verify(b'cadres_libres=Ok(987)'.join(changed),warm=6)
+    def test_physical_growth_or_unexplained_live_growth_is_rejected(self):
+        valid=[100,2,4,0,1,100,2,4,0,2,40,40,1065472]
+        def line(v):return b'NXMEM '+b''.join(f'{x:016x} '.encode() for x in v)+b'\n'
+        raw=line(valid)*3
+        self.assertTrue(memory_cycles(raw,3)[2]['reutilisation_sans_attribution_physique'])
+        for index,value in [(7,5),(5,101),(12,1065473)]:
+            bad=valid.copy();bad[index]=value
+            with self.assertRaises(Refus):memory_cycles(line(valid)*2+line(bad),3)
     def test_missing_actor_or_endpoint_leak_is_rejected(self):
         raw=sample('avant_ticket')+sample('consommation')+sample('fermeture')
         self.assertTrue(verify(raw)['restitution_verifiee'])

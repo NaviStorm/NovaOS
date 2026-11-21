@@ -2,22 +2,19 @@
 //! Aucun Ledger, aucune mutation de politique, aucun droit d'installation.
 use super::*;
 pub(super) struct Upload {bytes:[u8;240],next:u64}
-struct MemoryMeasure;
-fn memory_measure(phase:u8) {
-    let mut line=*b"NXHEAP phase=0 vivants=0000000000000000";line[13]=b'0'+phase;
-    let live=crate::heap::live_bytes();let hex=b"0123456789abcdef";let start=line.len()-16;
-    for i in 0..16 {line[start+i]=hex[(live>>((15-i)*4))&15];}
-    rt::call(rt::DEBUG_WRITE,line.as_ptr() as u64,line.len() as u64,0);
-}
-fn cache_measure(phase:u8,stats:novafs::CacheStats) {
-    let mut line=*b"NXCACHE phase=0 0000000000000000 0000000000000000 0000000000000000";
-    line[14]=b'0'+phase;let hex=b"0123456789abcdef";
-    for (column,value) in [stats.pages,stats.charged_bytes,stats.budget_bytes].into_iter().enumerate() {
-        for i in 0..16 {line[16+column*17+i]=hex[(value>>((15-i)*4))&15];}
+// Un seul message par chargement respecte le quota DEBUG historique.
+// Compteurs : octets demandés vivants, blocs vivants, pages attribuées,
+// pages rendues, appels malloc réussis (avant puis après), cache avant/après/budget.
+struct MemoryMeasure {before:[usize;5],cache:[usize;3]}
+impl Drop for MemoryMeasure {
+    fn drop(&mut self) {
+        let after=crate::heap::memory_snapshot();let mut values=[0usize;13];
+        values[..5].copy_from_slice(&self.before);values[5..10].copy_from_slice(&after);values[10..].copy_from_slice(&self.cache);
+        let mut line=[b' ';6+13*17];line[..6].copy_from_slice(b"NXMEM ");let hex=b"0123456789abcdef";
+        for (column,value) in values.into_iter().enumerate() {for i in 0..16 {line[6+column*17+i]=hex[(value>>((15-i)*4))&15];}}
+        rt::call(rt::DEBUG_WRITE,line.as_ptr() as u64,line.len() as u64,0);
     }
-    rt::call(rt::DEBUG_WRITE,line.as_ptr() as u64,line.len() as u64,0);
 }
-impl Drop for MemoryMeasure {fn drop(&mut self) {memory_measure(1);}}
 fn word(b:&[u8])->u64 {u64::from_le_bytes(b[..8].try_into().unwrap())}
 impl Session<'_, '_> {
     pub(super) fn package_request(&mut self,q:&Frame,_a:&mut Frame)->rt::Result<()> {
@@ -42,7 +39,7 @@ impl Session<'_, '_> {
         }
     }
     fn load_attested(&mut self,q:&Frame,d:&[u8;240])->rt::Result<()> {
-        memory_measure(0);let _memory=MemoryMeasure;
+        let mut memory=MemoryMeasure {before:crate::heap::memory_snapshot(),cache:[0;3]};
         if &d[..8]!=b"NXRES001" || d[8..40]!=q[56..88] || d[40..56]!=q[8..24] || d[56..72]==[0;16] || d[152..184]==[0;32] || d[234..]!=[0;6] {return Err(rt::DENIED);}
         #[cfg(target_arch="aarch64")] let machine=183u16;
         #[cfg(target_arch="x86_64")] let machine=62u16;
@@ -51,7 +48,7 @@ impl Session<'_, '_> {
         if len==0 || len>novaos_identity::distribution::MAX_IMAGE as u64 {return Err(rt::LIMIT);}
         self.mount_volume()?;let fs=self.fs.as_ref().ok_or(rt::CLOSED)?;
         if d[80..96]!=fs.ids().fs || d[96..112]!=fs.ids().lv {return Err(rt::DENIED);}
-        cache_measure(0,fs.cache_stats());
+        let cache=fs.cache_stats();memory.cache[0]=cache.charged_bytes;memory.cache[2]=cache.budget_bytes;
         let stat=fs.stat_id(object).map_err(error)?;
         if stat.kind!=Kind::File || stat.revision!=revision || offset.checked_add(len).is_none_or(|end|end>stat.size) {return Err(rt::REVOKED);}
         let mut bytes=Vec::new();bytes.try_reserve_exact(len as usize).map_err(|_|rt::LIMIT)?;
@@ -70,7 +67,7 @@ impl Session<'_, '_> {
         for (index,chunk) in bytes.chunks(4096).enumerate() {
             let mut f=frame(b"NXLDDATA");f[24..32].copy_from_slice(&((index*4096) as u64).to_le_bytes());f[32..40].copy_from_slice(&(chunk.as_ptr() as u64).to_le_bytes());f[40..48].copy_from_slice(&(chunk.len() as u64).to_le_bytes());rt::send_for(tx,3,&f,250)?;
         }
-        cache_measure(1,fs.cache_stats());
+        memory.cache[1]=fs.cache_stats().charged_bytes;
         rt::send_for(tx,4,&frame(b"NXLDSEAL"),250)
     }
 }

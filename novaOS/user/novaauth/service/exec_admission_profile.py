@@ -10,9 +10,11 @@ def install(root):
     # Diagnostic du tas NovaFS dans la copie QEMU seulement. Comptabiliser les
     # octets vivants distingue une fuite d'un suffixe libre gardé par dlmalloc.
     heap=(root/'novaOS/user/heap.rs').read_text()
-    heap=heap.replace('struct Pages;', 'static LIVE: core::sync::atomic::AtomicUsize = core::sync::atomic::AtomicUsize::new(0);\npub(crate) fn live_bytes()->usize {LIVE.load(core::sync::atomic::Ordering::Relaxed)}\nstruct Pages;')
-    heap=heap.replace('unsafe { self.0.lock().malloc(l.size(), l.align()) }', 'let p=unsafe { self.0.lock().malloc(l.size(), l.align()) };\n        if !p.is_null() {LIVE.fetch_add(l.size(),core::sync::atomic::Ordering::Relaxed);}\n        p')
-    heap=heap.replace('unsafe { self.0.lock().free(p, l.size(), l.align()) }', 'unsafe { self.0.lock().free(p, l.size(), l.align()) };\n        LIVE.fetch_sub(l.size(),core::sync::atomic::Ordering::Relaxed);')
+    counters='use core::sync::atomic::{AtomicUsize,Ordering};\nstatic LIVE:AtomicUsize=AtomicUsize::new(0);\nstatic BLOCKS:AtomicUsize=AtomicUsize::new(0);\nstatic GROW:AtomicUsize=AtomicUsize::new(0);\nstatic SHRINK:AtomicUsize=AtomicUsize::new(0);\nstatic CALLS:AtomicUsize=AtomicUsize::new(0);\npub(crate) fn memory_snapshot()->[usize;5] {\n    [LIVE.load(Ordering::Relaxed),BLOCKS.load(Ordering::Relaxed),GROW.load(Ordering::Relaxed),SHRINK.load(Ordering::Relaxed),CALLS.load(Ordering::Relaxed)]\n}\nstruct Pages;'
+    heap=heap.replace('struct Pages;',counters)
+    heap=heap.replace('call(HEAP_RESIZE, old as u64, new as u64, 0).status == OK', 'let ok=call(HEAP_RESIZE,old as u64,new as u64,0).status==OK;\n    if ok {if new>old {GROW.fetch_add((new-old)/4096,Ordering::Relaxed);} else {SHRINK.fetch_add((old-new)/4096,Ordering::Relaxed);}}\n    ok')
+    heap=heap.replace('unsafe { self.0.lock().malloc(l.size(), l.align()) }', 'let p=unsafe { self.0.lock().malloc(l.size(), l.align()) };\n        if !p.is_null() {LIVE.fetch_add(l.size(),Ordering::Relaxed);BLOCKS.fetch_add(1,Ordering::Relaxed);CALLS.fetch_add(1,Ordering::Relaxed);}\n        p')
+    heap=heap.replace('unsafe { self.0.lock().free(p, l.size(), l.align()) }', 'unsafe { self.0.lock().free(p, l.size(), l.align()) };\n        LIVE.fetch_sub(l.size(),Ordering::Relaxed);BLOCKS.fetch_sub(1,Ordering::Relaxed);')
     (root/'novaOS/user/novafs/heap_diagnostic.rs').write_text(heap)
     edit('novaOS/user/novafs/main.rs','#[path = "../heap.rs"]','#[path = "heap_diagnostic.rs"]')
     base='novaOS/kernel/src/sched/process/ipc/'
