@@ -1,0 +1,3575 @@
+{
+  "reference": "669326751aa8fd98a5591d4672c4153bbe295ca8",
+  "candidat_fonctionnel": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+  "arbre_fonctionnel": "0582fba456a5a7903c08a520b55dfbf473e28c3f",
+  "qualification_globale_NovaAuth": false,
+  "qualification_securite_R2": "36 cellules couvertes dans le périmètre documenté",
+  "matrice": [
+    {
+      "scenario": "S1",
+      "intitule": "Auto-attribution de privilèges",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "observe": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-lectures-01",
+          "resultats_sha256": "1bbd51347bb3978a8e312cc07877aa5f91c75d8075d4b324b47eff4a5aa08af6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S2",
+      "intitule": "Écriture directe du registre",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "observe": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "portee": "Refus avant accès au stockage ; aucun accès général aux trois objets n’est délégué pour fabriquer ce test.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-lectures-01",
+          "resultats_sha256": "1bbd51347bb3978a8e312cc07877aa5f91c75d8075d4b324b47eff4a5aa08af6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S3",
+      "intitule": "Références réelles d’Alice",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "observe": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s3-02",
+          "resultats_sha256": "7f0e98b53245487c4e1ce2d7abe9d72c89d8d67e55f7b61cdfbbff5f27c2f5a7",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "separation": {
+              "ticket_Alice": 5,
+              "canal_Alice": 5,
+              "session_Alice": 5,
+              "admission_session_Alice": 5,
+              "enfants_Bob": 0,
+              "lancement_Alice": 0,
+              "session_Bob_preservee": true,
+              "routes": [
+                {
+                  "pid": 11,
+                  "instance": "764dcdea9f93c8a8b02b0e665b479c690b000000000000800100000000000000",
+                  "session": "f275347bd306428dcf45613b6dd0cf164356b953059d35a458813ceeabd77b7c"
+                },
+                {
+                  "pid": 5,
+                  "instance": "764dcdea9f93c8a8b02b0e665b479c6905000000000000800100000000000000",
+                  "session": "34580619937ac59b94f34124807c4d945738951d127d5b1ba11776c5f261d7c9"
+                }
+              ]
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test separation whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S4",
+      "intitule": "Requête administrative directe",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "observe": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-lectures-01",
+          "resultats_sha256": "1bbd51347bb3978a8e312cc07877aa5f91c75d8075d4b324b47eff4a5aa08af6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S5",
+      "intitule": "Substitution identité/session/cible",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "observe": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-lectures-01",
+          "resultats_sha256": "1bbd51347bb3978a8e312cc07877aa5f91c75d8075d4b324b47eff4a5aa08af6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s3-02",
+          "resultats_sha256": "7f0e98b53245487c4e1ce2d7abe9d72c89d8d67e55f7b61cdfbbff5f27c2f5a7",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "separation": {
+              "ticket_Alice": 5,
+              "canal_Alice": 5,
+              "session_Alice": 5,
+              "admission_session_Alice": 5,
+              "enfants_Bob": 0,
+              "lancement_Alice": 0,
+              "session_Bob_preservee": true,
+              "routes": [
+                {
+                  "pid": 11,
+                  "instance": "764dcdea9f93c8a8b02b0e665b479c690b000000000000800100000000000000",
+                  "session": "f275347bd306428dcf45613b6dd0cf164356b953059d35a458813ceeabd77b7c"
+                },
+                {
+                  "pid": 5,
+                  "instance": "764dcdea9f93c8a8b02b0e665b479c6905000000000000800100000000000000",
+                  "session": "34580619937ac59b94f34124807c4d945738951d127d5b1ba11776c5f261d7c9"
+                }
+              ]
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test separation whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S6",
+      "intitule": "Tickets expirés, révoqués, consommés",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "observe": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s6-expire-01",
+          "resultats_sha256": "c95e9892b2f04815f42cb9e5b2a7be256fb705812ba99f8c7e27272e4d2df1fa",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "ade87e09bc58922d8e74bdb3cc1703631707b13c",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "expire",
+              "statut_natif": 8,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test expire whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [],
+                "statut_ticket": 8,
+                "stdout_octets": 0,
+                "stderr_octets": 0,
+                "octets_conformes": true
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s6-recu-01",
+          "resultats_sha256": "f0da48a7cef647eade0f6eaef9f971d209246f3241f85f770a652c83349a4df9",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "recu",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test recu whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s6-concurrent-01",
+          "resultats_sha256": "926ba75a889c3340a16965ea154e72313bd757f12cb48648bfcca42b208cca7f",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "concurrent",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test concurrent whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-desactivation-02",
+          "resultats_sha256": "3770215792cf42e8a75d3e2017cbbee3de466982e0af9c112e7706a7560f68d5",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "19e5a055fd4dd90e4b6c30bfe236f5dd6b896b56",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 4895,
+              "expiration_ticks": 5738,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "nouvelle_session_bob": {
+              "instance": "33c470b7de283b94996fe3bd76d9dc2a0b000000000000800100000000000000",
+              "session": "1a7c275861c2609a43cee123a7294bb26069310a7848dd023b7b1c8fd7a7b65c",
+              "ancien_ticket": 10,
+              "ancienne_session": 5,
+              "nouveau_lancement": 0
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm 210236e2bfb1486130f59d266f1353cc3bdafbd338146875f46b1042c6a00728 --request 210236e2bfb1486130f59d266f1353cc",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --confirm aff4713723ccd7ba9220f332b0143f8022c78b5980678290a9e46d14e993a719 --request aff4713723ccd7ba9220f332b0143f80",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S7",
+      "intitule": "Concurrence et dernier administrateur",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "observe": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "portee": "Les requêtes se chevauchent réellement dans les canaux. Le moteur transactionnel refuse actuellement la désactivation de tout administrateur, dès Prepare et à nouveau à Confirm. Aucun scénario de suppression définitive, promotion ou transfert du dernier rôle n’est implémenté. Interleavings observés, sans preuve exhaustive.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-desactivation-s7-course-02",
+          "resultats_sha256": "b2263e3f66d6b521f4fab76cac8b531fe131852a3d466d5a3cd17692c4923ce9",
+          "source": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "banc": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 5092,
+              "expiration_ticks": 5994,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "course": {
+              "debut_bob_ticks": 5092,
+              "fin_bob_ticks": 5161,
+              "statut_spawn": 10,
+              "debut_confirmation_ticks": 5092,
+              "fin_confirmation_ticks": 7001,
+              "enfants": [],
+              "aucune_creation_apres_RETIREE": true
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm c7f7ef37e2a171c7ab8dbce53d301f66458fd303fd1426a7394a069276a56d6e --request c7f7ef37e2a171c7ab8dbce53d301f66",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --outcome c7f7ef37e2a171c7ab8dbce53d301f66",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s7-dernier-02",
+          "resultats_sha256": "cf98718566fa03cdad2aa1f90d4f7abcafcf21d96768f4ecd1862f4d8bb8d369",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "sonde": "066e559cc7894c7461f191c3400807b750056653",
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "admin-sonde --last-admin-writer | admin-sonde --last-admin-reader",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21,
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 64,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "refus_preparations": [
+                  5,
+                  5
+                ],
+                "statuts_natifs": [
+                  0,
+                  0
+                ],
+                "statut_natif": 0
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-groupe-s7-publication-03",
+          "resultats_sha256": "105daa9e324c22e98e445eecab1861692391b130d13f13a1d72fc66b11dd6883",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "sonde": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "admin-sonde --prepare-group",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "admin-sonde --confirm-writer 0cd4f84381cd4782ea336bdcaacb6438 0cd4f84381cd4782ea336bdcaacb6438e054ca2e9f0b921835e8f1221a81bf0c | admin-sonde --last-admin-reader-with-mutation",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22,
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 128,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statuts_requetes": [
+                  0,
+                  5
+                ],
+                "statuts_natifs": [
+                  0,
+                  0
+                ],
+                "statut_natif": 0
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s6-concurrent-01",
+          "resultats_sha256": "926ba75a889c3340a16965ea154e72313bd757f12cb48648bfcca42b208cca7f",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "concurrent",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test concurrent whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S8",
+      "intitule": "UNCERTAIN et réponse perdue",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "observe": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-groupe-s8-01",
+          "resultats_sha256": "8dd57069f64e52f4fdaf4fe1e8762cca0243c0096aa8c4619f35f3f90813a75b",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "groupadd equipe-r2 --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "groupadd equipe-r2 --confirm 612d64086ca32a4ec841986f005bd76ced776cfcb46653858c769d89cce432e8 --request 612d64086ca32a4ec841986f005bd76c",
+                "statut_shell": 20,
+                "statut_attendu": 20,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 0,
+                "stderr_octets": 95,
+                "octets_conformes": true,
+                "statut_natif": 20
+              },
+              {
+                "commande": "groupadd --outcome 612d64086ca32a4ec841986f005bd76c",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S9",
+      "intitule": "Désactivation et réactivation",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "observe": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "portee": "Bob conserve son identité et ses droits ordinaires actuels ; pas de modification d’appartenance pendant désactivation, ce chemin fonctionnel restant distinct.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-desactivation-02",
+          "resultats_sha256": "3770215792cf42e8a75d3e2017cbbee3de466982e0af9c112e7706a7560f68d5",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "19e5a055fd4dd90e4b6c30bfe236f5dd6b896b56",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 4895,
+              "expiration_ticks": 5738,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "nouvelle_session_bob": {
+              "instance": "33c470b7de283b94996fe3bd76d9dc2a0b000000000000800100000000000000",
+              "session": "1a7c275861c2609a43cee123a7294bb26069310a7848dd023b7b1c8fd7a7b65c",
+              "ancien_ticket": 10,
+              "ancienne_session": 5,
+              "nouveau_lancement": 0
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm 210236e2bfb1486130f59d266f1353cc3bdafbd338146875f46b1042c6a00728 --request 210236e2bfb1486130f59d266f1353cc",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --confirm aff4713723ccd7ba9220f332b0143f8022c78b5980678290a9e46d14e993a719 --request aff4713723ccd7ba9220f332b0143f80",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S1",
+      "intitule": "Auto-attribution de privilèges",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "observe": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-4096-lectures-01",
+          "resultats_sha256": "3c21de8bd5b440259bf8e9fbf45c299195bbd374554573b86732e2172510b91c",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S2",
+      "intitule": "Écriture directe du registre",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "observe": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "portee": "Refus avant accès au stockage ; aucun accès général aux trois objets n’est délégué pour fabriquer ce test.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-4096-lectures-01",
+          "resultats_sha256": "3c21de8bd5b440259bf8e9fbf45c299195bbd374554573b86732e2172510b91c",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S3",
+      "intitule": "Références réelles d’Alice",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "observe": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s3-03",
+          "resultats_sha256": "090f38af17a1fbcb125f4d62781dfdb5aeeab3497faad4352fb4c6d17fc52ad3",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "separation": {
+              "ticket_Alice": 5,
+              "canal_Alice": 5,
+              "session_Alice": 5,
+              "admission_session_Alice": 5,
+              "enfants_Bob": 0,
+              "lancement_Alice": 0,
+              "session_Bob_preservee": true,
+              "routes": [
+                {
+                  "pid": 11,
+                  "instance": "a5bf5c0934936c587f376abf93f144b80b000000000000800100000000000000",
+                  "session": "7333f15b4eb6be3c87eaf0a2f24383e6b7743eb0e58816a3b16f890bfe753877"
+                },
+                {
+                  "pid": 5,
+                  "instance": "a5bf5c0934936c587f376abf93f144b805000000000000800100000000000000",
+                  "session": "b93b345e932c347a3f4eb790ac61f730a90718038526621d99e3fb66240e5d0d"
+                }
+              ]
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test separation whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S4",
+      "intitule": "Requête administrative directe",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "observe": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-4096-lectures-01",
+          "resultats_sha256": "3c21de8bd5b440259bf8e9fbf45c299195bbd374554573b86732e2172510b91c",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S5",
+      "intitule": "Substitution identité/session/cible",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "observe": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-4096-lectures-01",
+          "resultats_sha256": "3c21de8bd5b440259bf8e9fbf45c299195bbd374554573b86732e2172510b91c",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s3-03",
+          "resultats_sha256": "090f38af17a1fbcb125f4d62781dfdb5aeeab3497faad4352fb4c6d17fc52ad3",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "separation": {
+              "ticket_Alice": 5,
+              "canal_Alice": 5,
+              "session_Alice": 5,
+              "admission_session_Alice": 5,
+              "enfants_Bob": 0,
+              "lancement_Alice": 0,
+              "session_Bob_preservee": true,
+              "routes": [
+                {
+                  "pid": 11,
+                  "instance": "a5bf5c0934936c587f376abf93f144b80b000000000000800100000000000000",
+                  "session": "7333f15b4eb6be3c87eaf0a2f24383e6b7743eb0e58816a3b16f890bfe753877"
+                },
+                {
+                  "pid": 5,
+                  "instance": "a5bf5c0934936c587f376abf93f144b805000000000000800100000000000000",
+                  "session": "b93b345e932c347a3f4eb790ac61f730a90718038526621d99e3fb66240e5d0d"
+                }
+              ]
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test separation whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S6",
+      "intitule": "Tickets expirés, révoqués, consommés",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "observe": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s6-expire-02",
+          "resultats_sha256": "c1d1fc74d30f0546b939bf59ede1144047cc3c47fbcaff760d41de698444ff5f",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "expire",
+              "statut_natif": 8,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test expire whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [],
+                "statut_ticket": 8,
+                "stdout_octets": 0,
+                "stderr_octets": 0,
+                "octets_conformes": true
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s6-recu-02",
+          "resultats_sha256": "9fabdbbebc6aa475b3e3507ea9055ca42c3521c9700210f852aa4fe33706fc4c",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "recu",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test recu whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s6-concurrent-02",
+          "resultats_sha256": "b6321e6c68710895a3dddea3255e803e37dcdd6ddc355a1a84b824c5adbb7526",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "concurrent",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test concurrent whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-desactivation-03",
+          "resultats_sha256": "d8734d965134e38f4c14391b1c9ab9c158a7d0a693f0d84a40afa13462ccaacb",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "669326751aa8fd98a5591d4672c4153bbe295ca8",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 4934,
+              "expiration_ticks": 5751,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "nouvelle_session_bob": {
+              "instance": "038be6fdf22acd0b529f2befdf85d8500b000000000000800100000000000000",
+              "session": "4d6a0ec2d9df72ff134461575260ffa190a49825a4a6ad4cf9ce1ac9fc438ded",
+              "ancien_ticket": 10,
+              "ancienne_session": 5,
+              "nouveau_lancement": 0
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm 4495845f8eea47ab77b7cd931e30b937422607605129bb1b6193466f7263e38c --request 4495845f8eea47ab77b7cd931e30b937",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --confirm a56dbd8ca3cb051c09d25984fb1c3353de2efd0eedfe0bb88b0858b65455cc05 --request a56dbd8ca3cb051c09d25984fb1c3353",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S7",
+      "intitule": "Concurrence et dernier administrateur",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "observe": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "portee": "Les requêtes se chevauchent réellement dans les canaux. Le moteur transactionnel refuse actuellement la désactivation de tout administrateur, dès Prepare et à nouveau à Confirm. Aucun scénario de suppression définitive, promotion ou transfert du dernier rôle n’est implémenté. Interleavings observés, sans preuve exhaustive.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-desactivation-s7-course-03",
+          "resultats_sha256": "b1dfd8d96b07b536c8bc14a53a713e01ba49fa99596fff3f530950aa3cf96f80",
+          "source": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "banc": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 5036,
+              "expiration_ticks": 5939,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "course": {
+              "debut_bob_ticks": 5035,
+              "fin_bob_ticks": 5104,
+              "statut_spawn": 10,
+              "debut_confirmation_ticks": 5035,
+              "fin_confirmation_ticks": 6873,
+              "enfants": [],
+              "aucune_creation_apres_RETIREE": true
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm 91147152306f75a27cb0bf90e129d22050f4f9b6399a906d0834d03aba6bdd6a --request 91147152306f75a27cb0bf90e129d220",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --outcome 91147152306f75a27cb0bf90e129d220",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s7-dernier-03",
+          "resultats_sha256": "fe9710512a4028f09a8309b3934eb4e6d4bfe3a083cab3910fd55f80710a0aa0",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "sonde": "066e559cc7894c7461f191c3400807b750056653",
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "admin-sonde --last-admin-writer | admin-sonde --last-admin-reader",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21,
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 64,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "refus_preparations": [
+                  5,
+                  5
+                ],
+                "statuts_natifs": [
+                  0,
+                  0
+                ],
+                "statut_natif": 0
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-groupe-s7-publication-04",
+          "resultats_sha256": "e53e43a7d930b3f678b80adbee401d536ee6a898c065976e11e469efeccdb700",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "sonde": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "admin-sonde --prepare-group",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "admin-sonde --confirm-writer e7e8aa9b2a749f3c9c83b17145230d72 e7e8aa9b2a749f3c9c83b17145230d72fa66177d8b8e2880e8383fc36534fbe6 | admin-sonde --last-admin-reader-with-mutation",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22,
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 128,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statuts_requetes": [
+                  0,
+                  5
+                ],
+                "statuts_natifs": [
+                  0,
+                  0
+                ],
+                "statut_natif": 0
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s6-concurrent-02",
+          "resultats_sha256": "b6321e6c68710895a3dddea3255e803e37dcdd6ddc355a1a84b824c5adbb7526",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "concurrent",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test concurrent whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S8",
+      "intitule": "UNCERTAIN et réponse perdue",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "observe": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-groupe-s8-01",
+          "resultats_sha256": "9b7474fe682a0d7ab72b457896428b397c5e77e3ed6d0f5354232662d9cd4a3e",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "groupadd equipe-r2 --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "groupadd equipe-r2 --confirm b6f0f402a89c26b31696e969747053a41c2af721591c8dfd3bef1d6185d7ccad --request b6f0f402a89c26b31696e969747053a4",
+                "statut_shell": 20,
+                "statut_attendu": 20,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 0,
+                "stderr_octets": 95,
+                "octets_conformes": true,
+                "statut_natif": 20
+              },
+              {
+                "commande": "groupadd --outcome b6f0f402a89c26b31696e969747053a4",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S9",
+      "intitule": "Désactivation et réactivation",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "observe": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "portee": "Bob conserve son identité et ses droits ordinaires actuels ; pas de modification d’appartenance pendant désactivation, ce chemin fonctionnel restant distinct.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-desactivation-03",
+          "resultats_sha256": "d8734d965134e38f4c14391b1c9ab9c158a7d0a693f0d84a40afa13462ccaacb",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "669326751aa8fd98a5591d4672c4153bbe295ca8",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 4934,
+              "expiration_ticks": 5751,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "nouvelle_session_bob": {
+              "instance": "038be6fdf22acd0b529f2befdf85d8500b000000000000800100000000000000",
+              "session": "4d6a0ec2d9df72ff134461575260ffa190a49825a4a6ad4cf9ce1ac9fc438ded",
+              "ancien_ticket": 10,
+              "ancienne_session": 5,
+              "nouveau_lancement": 0
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm 4495845f8eea47ab77b7cd931e30b937422607605129bb1b6193466f7263e38c --request 4495845f8eea47ab77b7cd931e30b937",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --confirm a56dbd8ca3cb051c09d25984fb1c3353de2efd0eedfe0bb88b0858b65455cc05 --request a56dbd8ca3cb051c09d25984fb1c3353",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S1",
+      "intitule": "Auto-attribution de privilèges",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "observe": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-512-lectures-01",
+          "resultats_sha256": "5f9b1b083f5e54d1bb304d9b0a6dfda7c31e7597efb3466a225c8fe1182559b6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S2",
+      "intitule": "Écriture directe du registre",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "observe": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "portee": "Refus avant accès au stockage ; aucun accès général aux trois objets n’est délégué pour fabriquer ce test.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-512-lectures-01",
+          "resultats_sha256": "5f9b1b083f5e54d1bb304d9b0a6dfda7c31e7597efb3466a225c8fe1182559b6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S3",
+      "intitule": "Références réelles d’Alice",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "observe": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s3-03",
+          "resultats_sha256": "00a24d63e0020c42bf46a01ae3abb1e3baa0c2106feacb1b4483003e485911d5",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "separation": {
+              "ticket_Alice": 5,
+              "canal_Alice": 5,
+              "session_Alice": 5,
+              "admission_session_Alice": 5,
+              "enfants_Bob": 0,
+              "lancement_Alice": 0,
+              "session_Bob_preservee": true,
+              "routes": [
+                {
+                  "pid": 11,
+                  "instance": "c2bdf67851588a0233c4b3547edf884a0b000000000000800100000000000000",
+                  "session": "0d9db56db6ca581cb96c808132e0ac2099668583ab58330580b7957e113842b1"
+                },
+                {
+                  "pid": 5,
+                  "instance": "c2bdf67851588a0233c4b3547edf884a05000000000000800100000000000000",
+                  "session": "be2ccfc55f96266959265bef0578000d4c38fb284ab29e3de2fc1865cb218e01"
+                }
+              ]
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test separation whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S4",
+      "intitule": "Requête administrative directe",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "observe": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-512-lectures-01",
+          "resultats_sha256": "5f9b1b083f5e54d1bb304d9b0a6dfda7c31e7597efb3466a225c8fe1182559b6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S5",
+      "intitule": "Substitution identité/session/cible",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "observe": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-512-lectures-01",
+          "resultats_sha256": "5f9b1b083f5e54d1bb304d9b0a6dfda7c31e7597efb3466a225c8fe1182559b6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s3-03",
+          "resultats_sha256": "00a24d63e0020c42bf46a01ae3abb1e3baa0c2106feacb1b4483003e485911d5",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "separation": {
+              "ticket_Alice": 5,
+              "canal_Alice": 5,
+              "session_Alice": 5,
+              "admission_session_Alice": 5,
+              "enfants_Bob": 0,
+              "lancement_Alice": 0,
+              "session_Bob_preservee": true,
+              "routes": [
+                {
+                  "pid": 11,
+                  "instance": "c2bdf67851588a0233c4b3547edf884a0b000000000000800100000000000000",
+                  "session": "0d9db56db6ca581cb96c808132e0ac2099668583ab58330580b7957e113842b1"
+                },
+                {
+                  "pid": 5,
+                  "instance": "c2bdf67851588a0233c4b3547edf884a05000000000000800100000000000000",
+                  "session": "be2ccfc55f96266959265bef0578000d4c38fb284ab29e3de2fc1865cb218e01"
+                }
+              ]
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test separation whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S6",
+      "intitule": "Tickets expirés, révoqués, consommés",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "observe": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s6-expire-02",
+          "resultats_sha256": "f9cfc2253dea0a89efa5900492de471d326cad663971f9cff776382bb6ca9e94",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "expire",
+              "statut_natif": 8,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test expire whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [],
+                "statut_ticket": 8,
+                "stdout_octets": 0,
+                "stderr_octets": 0,
+                "octets_conformes": true
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s6-recu-02",
+          "resultats_sha256": "1c606f696538ce2c228d08338cb3a3c7f8efa83046433432059082406a6f9d99",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "recu",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test recu whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s6-concurrent-02",
+          "resultats_sha256": "b7892b64c1b3f2ca5e5dcf278abefc3cca13bf7b8731ddae3ecd0dc402d07491",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "concurrent",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test concurrent whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-desactivation-04",
+          "resultats_sha256": "739fefa3e6fe885e126074dc21022808b477c0f43fe30f147d178da2df8c380a",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "2cd07474763b6715a554c1a8788dc160984c51a7",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 3573,
+              "expiration_ticks": 4548,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "nouvelle_session_bob": {
+              "instance": "d87bc08ce36042582349c18712b3c4160b000000000000800100000000000000",
+              "session": "a0a50be5d61962752bd46bc5b1a3c2eed8622bf7cbe2473b6d6520b1be6c7613",
+              "ancien_ticket": 10,
+              "ancienne_session": 5,
+              "nouveau_lancement": 0
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm 62bf570c3aa0e7ae1580ba644755ec5a556839bd8733beec30f13469be1ada6f --request 62bf570c3aa0e7ae1580ba644755ec5a",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --confirm 2f35060a52d36b6782d982de35dccbed704938107d6aa568b6d4223e123b37f6 --request 2f35060a52d36b6782d982de35dccbed",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S7",
+      "intitule": "Concurrence et dernier administrateur",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "observe": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "portee": "Les requêtes se chevauchent réellement dans les canaux. Le moteur transactionnel refuse actuellement la désactivation de tout administrateur, dès Prepare et à nouveau à Confirm. Aucun scénario de suppression définitive, promotion ou transfert du dernier rôle n’est implémenté. Interleavings observés, sans preuve exhaustive.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-desactivation-s7-course-03",
+          "resultats_sha256": "01842518cd5130abd9b90e00713db89ff25c5502d6e04839ad60b7233304218e",
+          "source": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "banc": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 3576,
+              "expiration_ticks": 4602,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "course": {
+              "debut_bob_ticks": 3576,
+              "fin_bob_ticks": 3620,
+              "statut_spawn": 10,
+              "debut_confirmation_ticks": 3576,
+              "fin_confirmation_ticks": 4470,
+              "enfants": [],
+              "aucune_creation_apres_RETIREE": true
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm a2a3cbdd5716f1154ac124ae645d3e5acc4029392c5b460f2a70ea9109d14503 --request a2a3cbdd5716f1154ac124ae645d3e5a",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --outcome a2a3cbdd5716f1154ac124ae645d3e5a",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s7-dernier-03",
+          "resultats_sha256": "935c5bc28c8fe5ff76fc751322af9cb4329a828f880c924c68de68fa3a391ef7",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "sonde": "066e559cc7894c7461f191c3400807b750056653",
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "admin-sonde --last-admin-writer | admin-sonde --last-admin-reader",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21,
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 64,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "refus_preparations": [
+                  5,
+                  5
+                ],
+                "statuts_natifs": [
+                  0,
+                  0
+                ],
+                "statut_natif": 0
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-groupe-s7-publication-04",
+          "resultats_sha256": "efa1274ca3f34937e21ba767fbf225c4762e8986c0e78014112a9ab63e1b1360",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "sonde": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "admin-sonde --prepare-group",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "admin-sonde --confirm-writer 12d3623a347b17b7da5652e53772e269 12d3623a347b17b7da5652e53772e26938f234e980d12a42b5459bfd5309816c | admin-sonde --last-admin-reader-with-mutation",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22,
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 128,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statuts_requetes": [
+                  0,
+                  5
+                ],
+                "statuts_natifs": [
+                  0,
+                  0
+                ],
+                "statut_natif": 0
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s6-concurrent-02",
+          "resultats_sha256": "b7892b64c1b3f2ca5e5dcf278abefc3cca13bf7b8731ddae3ecd0dc402d07491",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "concurrent",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test concurrent whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S8",
+      "intitule": "UNCERTAIN et réponse perdue",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "observe": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-groupe-s8-01",
+          "resultats_sha256": "a5e13e01958648fe804362d07d802fd6eafb9f4352b4cb428c68a514976216b8",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "groupadd equipe-r2 --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "groupadd equipe-r2 --confirm 7288fdd0ad566d148a4114c785c452be0b41991cb97465aec4ae3ff215b35745 --request 7288fdd0ad566d148a4114c785c452be",
+                "statut_shell": 20,
+                "statut_attendu": 20,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 0,
+                "stderr_octets": 95,
+                "octets_conformes": true,
+                "statut_natif": 20
+              },
+              {
+                "commande": "groupadd --outcome 7288fdd0ad566d148a4114c785c452be",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S9",
+      "intitule": "Désactivation et réactivation",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "observe": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "portee": "Bob conserve son identité et ses droits ordinaires actuels ; pas de modification d’appartenance pendant désactivation, ce chemin fonctionnel restant distinct.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-desactivation-04",
+          "resultats_sha256": "739fefa3e6fe885e126074dc21022808b477c0f43fe30f147d178da2df8c380a",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "2cd07474763b6715a554c1a8788dc160984c51a7",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 3573,
+              "expiration_ticks": 4548,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "nouvelle_session_bob": {
+              "instance": "d87bc08ce36042582349c18712b3c4160b000000000000800100000000000000",
+              "session": "a0a50be5d61962752bd46bc5b1a3c2eed8622bf7cbe2473b6d6520b1be6c7613",
+              "ancien_ticket": 10,
+              "ancienne_session": 5,
+              "nouveau_lancement": 0
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm 62bf570c3aa0e7ae1580ba644755ec5a556839bd8733beec30f13469be1ada6f --request 62bf570c3aa0e7ae1580ba644755ec5a",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --confirm 2f35060a52d36b6782d982de35dccbed704938107d6aa568b6d4223e123b37f6 --request 2f35060a52d36b6782d982de35dccbed",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S1",
+      "intitule": "Auto-attribution de privilèges",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "observe": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-4096-lectures-01",
+          "resultats_sha256": "784b9a07bb506df92557e9f497ddda70e58d5179934ac55cf7b366fe27d8f5da",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S2",
+      "intitule": "Écriture directe du registre",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "observe": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "portee": "Refus avant accès au stockage ; aucun accès général aux trois objets n’est délégué pour fabriquer ce test.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-4096-lectures-01",
+          "resultats_sha256": "784b9a07bb506df92557e9f497ddda70e58d5179934ac55cf7b366fe27d8f5da",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S3",
+      "intitule": "Références réelles d’Alice",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "observe": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s3-03",
+          "resultats_sha256": "c66b88942db6aa6092b15ad17f085852f01bb5c479e31f2677a7ce476e94b9d4",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "separation": {
+              "ticket_Alice": 5,
+              "canal_Alice": 5,
+              "session_Alice": 5,
+              "admission_session_Alice": 5,
+              "enfants_Bob": 0,
+              "lancement_Alice": 0,
+              "session_Bob_preservee": true,
+              "routes": [
+                {
+                  "pid": 11,
+                  "instance": "7eb46d1ba710b72036a1f4c5408e25380b000000000000800100000000000000",
+                  "session": "6b559e52bc737ef61b73f51f92fd8886752d6b2fbb815972edc78822d5439459"
+                },
+                {
+                  "pid": 5,
+                  "instance": "7eb46d1ba710b72036a1f4c5408e253805000000000000800100000000000000",
+                  "session": "8a5df2a403a5ae4183b73e35a56785bbd09e6e19475d80f9303d720984c9e2fb"
+                }
+              ]
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test separation whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S4",
+      "intitule": "Requête administrative directe",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "observe": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-4096-lectures-01",
+          "resultats_sha256": "784b9a07bb506df92557e9f497ddda70e58d5179934ac55cf7b366fe27d8f5da",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S5",
+      "intitule": "Substitution identité/session/cible",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "observe": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-4096-lectures-01",
+          "resultats_sha256": "784b9a07bb506df92557e9f497ddda70e58d5179934ac55cf7b366fe27d8f5da",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s3-03",
+          "resultats_sha256": "c66b88942db6aa6092b15ad17f085852f01bb5c479e31f2677a7ce476e94b9d4",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "separation": {
+              "ticket_Alice": 5,
+              "canal_Alice": 5,
+              "session_Alice": 5,
+              "admission_session_Alice": 5,
+              "enfants_Bob": 0,
+              "lancement_Alice": 0,
+              "session_Bob_preservee": true,
+              "routes": [
+                {
+                  "pid": 11,
+                  "instance": "7eb46d1ba710b72036a1f4c5408e25380b000000000000800100000000000000",
+                  "session": "6b559e52bc737ef61b73f51f92fd8886752d6b2fbb815972edc78822d5439459"
+                },
+                {
+                  "pid": 5,
+                  "instance": "7eb46d1ba710b72036a1f4c5408e253805000000000000800100000000000000",
+                  "session": "8a5df2a403a5ae4183b73e35a56785bbd09e6e19475d80f9303d720984c9e2fb"
+                }
+              ]
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test separation whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S6",
+      "intitule": "Tickets expirés, révoqués, consommés",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "observe": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s6-expire-02",
+          "resultats_sha256": "ba5a4299b1e592e93877ebba6d1cfb2bd9a34188988c299f2d3571e7d4c88e7f",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "expire",
+              "statut_natif": 8,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test expire whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [],
+                "statut_ticket": 8,
+                "stdout_octets": 0,
+                "stderr_octets": 0,
+                "octets_conformes": true
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s6-recu-02",
+          "resultats_sha256": "07c02d7ee327c4f0b603860cff51cda4a6f404a902315b13011b16fbe775cb72",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "recu",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test recu whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s6-concurrent-02",
+          "resultats_sha256": "a750e789d7480043d1ec5f5312c5b5691ea662ab0947874d0f2a57220ec02ccd",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "concurrent",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test concurrent whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-desactivation-04",
+          "resultats_sha256": "f592c1077c7032903ab0af55a0fe8c678595130d4ccc98096e7fce581c2afa3e",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "2cd07474763b6715a554c1a8788dc160984c51a7",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 2504,
+              "expiration_ticks": 3584,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "nouvelle_session_bob": {
+              "instance": "fcce75a6f65d3a702a108e6df512ab240b000000000000800100000000000000",
+              "session": "c04b705b996c3948cb00627e22e3e165482658c8879067567b6848a15f511267",
+              "ancien_ticket": 10,
+              "ancienne_session": 5,
+              "nouveau_lancement": 0
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm 3526b61000d9c35004f4ce0e9e0d903107003a20bc37a319f778d216a3cac044 --request 3526b61000d9c35004f4ce0e9e0d9031",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --confirm bf43b58385b2e691a0a21eef3889aa7b0661633f4a16bee624e6fe807971141b --request bf43b58385b2e691a0a21eef3889aa7b",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S7",
+      "intitule": "Concurrence et dernier administrateur",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "observe": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "portee": "Les requêtes se chevauchent réellement dans les canaux. Le moteur transactionnel refuse actuellement la désactivation de tout administrateur, dès Prepare et à nouveau à Confirm. Aucun scénario de suppression définitive, promotion ou transfert du dernier rôle n’est implémenté. Interleavings observés, sans preuve exhaustive.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-desactivation-s7-course-03",
+          "resultats_sha256": "da3378ead79f9898ef2ea7eb3d118509e5e9b1b18f51f275cab95fb00f91ca84",
+          "source": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "banc": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 2525,
+              "expiration_ticks": 3635,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "course": {
+              "debut_bob_ticks": 2525,
+              "fin_bob_ticks": 2552,
+              "statut_spawn": 10,
+              "debut_confirmation_ticks": 2525,
+              "fin_confirmation_ticks": 3265,
+              "enfants": [],
+              "aucune_creation_apres_RETIREE": true
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm df97f08efd14b090d41a597cb295d689629e040525c4ccb0a00453a4ffcbc89f --request df97f08efd14b090d41a597cb295d689",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --outcome df97f08efd14b090d41a597cb295d689",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s7-dernier-03",
+          "resultats_sha256": "b7321a1a3796fcff5ec01208181f50431e936a4d66c8ed7c550b9cc8b5796ed3",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "sonde": "066e559cc7894c7461f191c3400807b750056653",
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "admin-sonde --last-admin-writer | admin-sonde --last-admin-reader",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21,
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 64,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "refus_preparations": [
+                  5,
+                  5
+                ],
+                "statuts_natifs": [
+                  0,
+                  0
+                ],
+                "statut_natif": 0
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-groupe-s7-publication-04",
+          "resultats_sha256": "010a3cb242b765ad0981db4879d0464f58f179dd1777b0d25d4b506d8efa83be",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "sonde": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "admin-sonde --prepare-group",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "admin-sonde --confirm-writer 6e0c7b36e99fc4ea7b62ff42064ab2e2 6e0c7b36e99fc4ea7b62ff42064ab2e2af466ef934973f0f4ae8d85783624b5c | admin-sonde --last-admin-reader-with-mutation",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22,
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 128,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statuts_requetes": [
+                  0,
+                  5
+                ],
+                "statuts_natifs": [
+                  0,
+                  0
+                ],
+                "statut_natif": 0
+              },
+              {
+                "commande": "whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s6-concurrent-02",
+          "resultats_sha256": "a750e789d7480043d1ec5f5312c5b5691ea662ab0947874d0f2a57220ec02ccd",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "etat_ticket": {
+              "mode": "concurrent",
+              "statut_natif": 12,
+              "controle_Alice": 0
+            },
+            "commandes": [
+              {
+                "commande": "ticket-test concurrent whoami",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 6,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S8",
+      "intitule": "UNCERTAIN et réponse perdue",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "observe": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-groupe-s8-01",
+          "resultats_sha256": "304fb4926f17861c5c99cf793bc85b3be4fb26ae2b7c613216e5abbf82f68eac",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "commandes": [
+              {
+                "commande": "groupadd equipe-r2 --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "groupadd equipe-r2 --confirm 210dd91b84fc5cd58fc468546b4b1c5cf10c3e91d0ee5a6f00490f995dd7c6fd --request 210dd91b84fc5cd58fc468546b4b1c5c",
+                "statut_shell": 20,
+                "statut_attendu": 20,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 0,
+                "stderr_octets": 95,
+                "octets_conformes": true,
+                "statut_natif": 20
+              },
+              {
+                "commande": "groupadd --outcome 210dd91b84fc5cd58fc468546b4b1c5c",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    },
+    {
+      "scenario": "S9",
+      "intitule": "Désactivation et réactivation",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "observe": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "portee": "Bob conserve son identité et ses droits ordinaires actuels ; pas de modification d’appartenance pendant désactivation, ce chemin fonctionnel restant distinct.",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-desactivation-04",
+          "resultats_sha256": "f592c1077c7032903ab0af55a0fe8c678595130d4ccc98096e7fce581c2afa3e",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "2cd07474763b6715a554c1a8788dc160984c51a7",
+          "sonde": null,
+          "reutilisee": false,
+          "observations_brutes": {
+            "ticket_bob": {
+              "reference": 4611686018427388047,
+              "presentation_ticks": 2504,
+              "expiration_ticks": 3584,
+              "frequence_hz": 250,
+              "statut_natif": 10,
+              "enfants_supplementaires": 0
+            },
+            "nouvelle_session_bob": {
+              "instance": "fcce75a6f65d3a702a108e6df512ab240b000000000000800100000000000000",
+              "session": "c04b705b996c3948cb00627e22e3e165482658c8879067567b6848a15f511267",
+              "ancien_ticket": 10,
+              "ancienne_session": 5,
+              "nouveau_lancement": 0
+            },
+            "commandes": [
+              {
+                "commande": "usermod --disable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  21
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --disable bob --confirm 3526b61000d9c35004f4ce0e9e0d903107003a20bc37a319f778d216a3cac044 --request 3526b61000d9c35004f4ce0e9e0d9031",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  22
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --prepare",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  23
+                ],
+                "shell": 5,
+                "stdout_octets": 134,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              },
+              {
+                "commande": "usermod --enable bob --confirm bf43b58385b2e691a0a21eef3889aa7b0661633f4a16bee624e6fe807971141b --request bf43b58385b2e691a0a21eef3889aa7b",
+                "statut_shell": 0,
+                "statut_attendu": 0,
+                "pid": [
+                  24
+                ],
+                "shell": 5,
+                "stdout_octets": 70,
+                "stderr_octets": 0,
+                "octets_conformes": true,
+                "statut_natif": 0
+              }
+            ],
+            "fermeture_deux_sessions": true,
+            "drainage_global": true
+          }
+        }
+      ]
+    }
+  ],
+  "details_temporaux": [
+    {
+      "profil": "x86_64/512",
+      "s9_marge_presentation_ms": 3372.0,
+      "s9_ticket": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 4895,
+        "expiration_ticks": 5738,
+        "frequence_hz": 250,
+        "statut_natif": 10,
+        "enfants_supplementaires": 0
+      },
+      "s9_nouvelle_session": {
+        "instance": "33c470b7de283b94996fe3bd76d9dc2a0b000000000000800100000000000000",
+        "session": "1a7c275861c2609a43cee123a7294bb26069310a7848dd023b7b1c8fd7a7b65c",
+        "ancien_ticket": 10,
+        "ancienne_session": 5,
+        "nouveau_lancement": 0
+      },
+      "s7_course": {
+        "debut_bob_ticks": 5092,
+        "fin_bob_ticks": 5161,
+        "statut_spawn": 10,
+        "debut_confirmation_ticks": 5092,
+        "fin_confirmation_ticks": 7001,
+        "enfants": [],
+        "aucune_creation_apres_RETIREE": true
+      },
+      "s7_ticket": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 5092,
+        "expiration_ticks": 5994,
+        "frequence_hz": 250,
+        "statut_natif": 10,
+        "enfants_supplementaires": 0
+      },
+      "s7_marge_retour_ms": 3332.0
+    },
+    {
+      "profil": "x86_64/4096",
+      "s9_marge_presentation_ms": 3268.0,
+      "s9_ticket": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 4934,
+        "expiration_ticks": 5751,
+        "frequence_hz": 250,
+        "statut_natif": 10,
+        "enfants_supplementaires": 0
+      },
+      "s9_nouvelle_session": {
+        "instance": "038be6fdf22acd0b529f2befdf85d8500b000000000000800100000000000000",
+        "session": "4d6a0ec2d9df72ff134461575260ffa190a49825a4a6ad4cf9ce1ac9fc438ded",
+        "ancien_ticket": 10,
+        "ancienne_session": 5,
+        "nouveau_lancement": 0
+      },
+      "s7_course": {
+        "debut_bob_ticks": 5035,
+        "fin_bob_ticks": 5104,
+        "statut_spawn": 10,
+        "debut_confirmation_ticks": 5035,
+        "fin_confirmation_ticks": 6873,
+        "enfants": [],
+        "aucune_creation_apres_RETIREE": true
+      },
+      "s7_ticket": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 5036,
+        "expiration_ticks": 5939,
+        "frequence_hz": 250,
+        "statut_natif": 10,
+        "enfants_supplementaires": 0
+      },
+      "s7_marge_retour_ms": 3340.0
+    },
+    {
+      "profil": "aarch64/512",
+      "s9_marge_presentation_ms": 3900.0,
+      "s9_ticket": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 3573,
+        "expiration_ticks": 4548,
+        "frequence_hz": 250,
+        "statut_natif": 10,
+        "enfants_supplementaires": 0
+      },
+      "s9_nouvelle_session": {
+        "instance": "d87bc08ce36042582349c18712b3c4160b000000000000800100000000000000",
+        "session": "a0a50be5d61962752bd46bc5b1a3c2eed8622bf7cbe2473b6d6520b1be6c7613",
+        "ancien_ticket": 10,
+        "ancienne_session": 5,
+        "nouveau_lancement": 0
+      },
+      "s7_course": {
+        "debut_bob_ticks": 3576,
+        "fin_bob_ticks": 3620,
+        "statut_spawn": 10,
+        "debut_confirmation_ticks": 3576,
+        "fin_confirmation_ticks": 4470,
+        "enfants": [],
+        "aucune_creation_apres_RETIREE": true
+      },
+      "s7_ticket": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 3576,
+        "expiration_ticks": 4602,
+        "frequence_hz": 250,
+        "statut_natif": 10,
+        "enfants_supplementaires": 0
+      },
+      "s7_marge_retour_ms": 3928.0
+    },
+    {
+      "profil": "aarch64/4096",
+      "s9_marge_presentation_ms": 4320.0,
+      "s9_ticket": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 2504,
+        "expiration_ticks": 3584,
+        "frequence_hz": 250,
+        "statut_natif": 10,
+        "enfants_supplementaires": 0
+      },
+      "s9_nouvelle_session": {
+        "instance": "fcce75a6f65d3a702a108e6df512ab240b000000000000800100000000000000",
+        "session": "c04b705b996c3948cb00627e22e3e165482658c8879067567b6848a15f511267",
+        "ancien_ticket": 10,
+        "ancienne_session": 5,
+        "nouveau_lancement": 0
+      },
+      "s7_course": {
+        "debut_bob_ticks": 2525,
+        "fin_bob_ticks": 2552,
+        "statut_spawn": 10,
+        "debut_confirmation_ticks": 2525,
+        "fin_confirmation_ticks": 3265,
+        "enfants": [],
+        "aucune_creation_apres_RETIREE": true
+      },
+      "s7_ticket": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 2525,
+        "expiration_ticks": 3635,
+        "frequence_hz": 250,
+        "statut_natif": 10,
+        "enfants_supplementaires": 0
+      },
+      "s7_marge_retour_ms": 4332.0
+    }
+  ],
+  "nouveaux_essais": {
+    "qemu": 40,
+    "reussis": 35,
+    "echecs_conserves": 5,
+    "preflight_sans_vm": 1
+  },
+  "temps": {
+    "debut_utc": "2026-11-22T19:15:05Z",
+    "attente_verrou_s": 0.015298374,
+    "execution_banc_s": 979.482348376,
+    "conflits_planification_evites": [],
+    "coordination_detaillee": "campagne-consolidee.json",
+    "fin_hors_scellement_publication_utc": "2026-11-22T20:23:41.496470+00:00",
+    "travail_actif_s": 4116.481171626,
+    "diagnostic_developpement_verification_hors_banc_s": 3136.99882325,
+    "borne": "Inclut analyse, développement, compilations, tests hôtes et préparation du rapport ; scellement/publication comptabilisés dans le reçu de publication adjacent."
+  },
+  "ressources": {
+    "racines_max": 4,
+    "pics": {
+      "endpoints": 64,
+      "nodes": 135,
+      "espaces": 18,
+      "cadres_ipc": 74
+    },
+    "retour_zero_tous_essais_retenus": true,
+    "tls_ms_mesures_min_max": [
+      2648,
+      3536
+    ],
+    "limite": "TLS : uniquement échanges horodatés visibles ; pas de preuve de toutes les allocations physiques du moteur NovaFS."
+  },
+  "tests_hotes": {
+    "administration_python": 62,
+    "exec_client_rust": 18,
+    "registre_rust": 8,
+    "abi": 9,
+    "succes": true
+  },
+  "reserves": [
+    "301 cadres instrumentés AArch64, réserve historique inchangée",
+    "Reproductibilité binaire entre environnements non résolue",
+    "Quatre ELF historiques non réexécutés ; sources ordinaires et ABI inchangées",
+    "Qualification QEMU de laboratoire uniquement",
+    "Fonctions administratives R2 restantes, dont création utilisateur et appartenances, à finaliser séparément ; aucune suppression définitive"
+  ],
+  "archives_precedentes": {
+    "repertoire": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122",
+    "fichiers": 310,
+    "manifeste_sha256": "638396286251ae1c210cecc0f0fa1f8c21b7b85e83d46a03aa438d4207e0f349",
+    "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122.tar.gz",
+    "archive_sha256": "a61acbbde07257befc4199154587648bd4aa04642e4ce1d421df04d16f4afa15",
+    "sources": "19e5a055fd4dd90e4b6c30bfe236f5dd6b896b56",
+    "qualification_globale": false
+  },
+  "restriction_plateforme_observee": true,
+  "preuves": {
+    "repertoire": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267",
+    "fichiers_preuve": 1897,
+    "fichiers_archive_avec_manifeste": 1898,
+    "manifeste_sha256": "d697c9ff155932a6acbc692ee8ec17e8279db83a5f5242bacab086f684924883",
+    "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267.tar.gz",
+    "archive_sha256": "5b6f9dc0140ce3bd7d862ea6329893ce1b2e84d05c2b2e79723e4586a75be5a5",
+    "archive_octets": 17017009,
+    "verification_archive_octet_par_octet": true,
+    "exclusion_explicite_artefacts_prives": true
+  },
+  "restriction_plateforme_detail": "Revue automatique : archive récursive refusée ; remplacée après inventaire par une liste explicite sans ELF/ISO/clés."
+}
