@@ -1,4 +1,4 @@
-"""Témoin QEMU séparé : Bob s'authentifie sur un événement privé unique.
+"""Témoin QEMU séparé : Bob s'authentifie puis attend un événement privé corrélé au ticket.
 Les parcours négatifs ordinaires restent intacts, sans nouvelle racine IPC.
 """
 from pathlib import Path
@@ -65,7 +65,7 @@ INITIAL = r'''
     // ordonne uniquement le banc : il ne constitue jamais une authentification.
     let event=rt::receive_for(rt::config(17),15000)?;
     if event.kind!=1 || event.tag!=0x4e58523253544152 || event.len!=128
-        || &event.payload[..8]!=b"NXR2GO01" || event.payload[120..]!=[0;8]
+        || &event.payload[..8]!=b"NXR2AU01" || event.payload[120..]!=[0;8]
         || event.payload[8..40]==[0;32] || event.payload[40..72]==[0;32]
         || event.payload[72..88]==[0;16] || event.payload[88..120]==[0;32] {
         return Err(rt::DENIED);
@@ -81,6 +81,13 @@ INITIAL = r'''
     login.authenticate()?;
     if login.identity!=target {return Err(rt::DENIED);}
     mark(b"NAR2 Bob authentifie route distincte")?;
+    // Deuxième étape du même scénario : ne charger/émettre aucun ticket avant
+    // que l'ELF de confirmation d'Alice soit effectivement résident.
+    let issue=rt::receive_for(rt::config(17),15000)?;
+    if issue.kind!=1 || issue.tag!=event.tag || issue.len!=128
+        || &issue.payload[..8]!=b"NXR2GO01" || issue.payload[8..]!=event.payload[8..] {
+        return Err(rt::DENIED);
+    }
     mark(b"NAR2 Bob preparation terminee emission ticket")?;
 '''
 

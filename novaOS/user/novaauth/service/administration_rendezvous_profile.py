@@ -49,7 +49,7 @@ TRIGGER = r'''
                 if !self.bob_triggered && login.slot==0 && peer.slot==1
                     && matches!(admin_command::decode(request),
                         Ok(admin_command::Command::Prepare(admin_command::Mutation::Disable(admin_command::Selector::Name("bob"))))) {
-                    if peer.live.is_some() || answer[8..24]==[0;16] || answer[24..56]==[0;32] {return Err(rt::DENIED);}
+                    if answer[8..24]==[0;16] || answer[24..56]==[0;32] {return Err(rt::DENIED);}
                     let identity=(answer[8..24].try_into().unwrap(),answer[24..56].try_into().unwrap(),sid);
                     if let Some(first)=self.prepared {
                         if first!=identity {return Err(rt::DENIED);}
@@ -65,7 +65,16 @@ TRIGGER = r'''
                         // Même borne que l'attente client (5000 ticks), réduite
                         // à l'échéance de la capacité ; jamais de renouvellement.
                         defer=Some((sid,now()?.saturating_add(20_000).min(meta[29])));
-                    } else {self.prepared=Some(identity);}
+                    } else {
+                        if peer.live.is_some() {return Err(rt::DENIED);}
+                        self.prepared=Some(identity);
+                        let mut event=[0;128];event[..8].copy_from_slice(b"NXR2AU01");
+                        event[8..40].copy_from_slice(&peer.route.client);
+                        event[40..72].copy_from_slice(&login.route.client);
+                        event[72..88].copy_from_slice(&answer[8..24]);
+                        event[88..120].copy_from_slice(&answer[24..56]);
+                        rt::send_for(peer.port(16),0x4e58523253544152,&event,25)?;
+                    }
                 }
 '''
 SEND = r'''

@@ -213,10 +213,14 @@ def main():
                 item['stdout_octets'] = len(expected)
                 item['stderr_octets'] = len(expected_stderr)
                 item['octets_conformes'] = True
-                if a.ticket_vivant and i==1:
+                if a.ticket_vivant and i==0:
+                    # Authentifier Bob hors de l'attente NXADMIN1 de l'ELF de
+                    # confirmation. Le ticket n'existe pas encore à ce point.
                     bob_pid=events.actor(b'NAR2 Bob attente declenchement authentification')
                     events.expect(bob_pid,b'NAR2 Bob authentifie route distincte',40)
                     events.expect(bob_pid,('NAR2 Bob declenchement operation='+intention['operation']).encode(),40)
+                if a.ticket_vivant and i==1:
+                    bob_pid=events.actor(b'NAR2 Bob attente declenchement authentification')
                     events.expect(bob_pid,b'NAR2 Bob ticket vivant non consomme',40)
                     with observer.guard: routes=list(observer.routes)
                     selected={r[0]:r for r in routes}
