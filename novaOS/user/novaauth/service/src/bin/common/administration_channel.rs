@@ -171,6 +171,15 @@ impl Channels {
                 context[104..112].copy_from_slice(&meta[27].to_le_bytes());
                 context[112..120].copy_from_slice(&current.epoch.to_le_bytes());
                 exchange(login, &context)?;
+                #[cfg(feature="administration-r2-guest")]
+                if !matches!(admin_command::decode(request),Ok(admin_command::Command::Read(_))) {
+                    // Aucun de ces champs ne vient du paquet ELF : sid a été
+                    // inspecté et la route appartient à cette instance nsh.
+                    let mut binding=[0;128];binding[..8].copy_from_slice(b"NXABND02");
+                    binding[8..40].copy_from_slice(&sid);
+                    binding[40..72].copy_from_slice(&login.route.client);
+                    exchange(login,&binding)?;
+                }
                 answer = exchange(login, request.try_into().unwrap())?;
                 Ok(())
             })();

@@ -11,25 +11,58 @@ use novaos_identity::{
     policy::Image,
     recuperation_view::View,
 };
+#[derive(Clone, Copy)]
 struct Context {
     reference: [u8; 16],
     head: [u8; 32],
     image: Image,
     scope: Scope,
     epoch: u64,
+    #[cfg(feature="administration-r2-guest")]
+    binding: Option<[[u8;32];2]>,
 }
+#[cfg(feature="administration-r2-guest")]
+#[path="administration_mutations.rs"]
+mod mutations;
 pub struct Port {
     context: Option<Context>,
+    #[cfg(feature="administration-r2-guest")]
+    transactions: mutations::Transactions,
 }
 impl Port {
     pub fn new() -> Self {
-        Self { context: None }
+        Self { context: None,
+            #[cfg(feature="administration-r2-guest")]
+            transactions: mutations::Transactions::new() }
     }
     pub fn clear(&mut self) {
         self.context = None;
     }
     pub fn accepts(q: &[u8; 128]) -> bool {
+        #[cfg(feature="administration-r2-guest")]
+        if &q[..8]==b"NXABND02" {return true;}
         matches!(&q[..8], b"NXASCP01" | b"NXACTX01" | b"NXACMD01")
+    }
+    #[cfg(feature="administration-r2-guest")]
+    pub fn reconcile(&mut self,state:&mut View,storage:&mut crate::recovery_store::Storage)->rt::Result<()> {
+        self.transactions.reconcile(state,storage)
+    }
+    #[cfg(feature="administration-r2-guest")]
+    pub fn request_r2(&mut self,state:&mut View,storage:&mut crate::recovery_store::Storage,
+                      q:&[u8;128],answer:&mut [u8;128])->rt::Result<()> {
+        if &q[..8]==b"NXABND02" {
+            let c=self.context.as_mut().ok_or(rt::DENIED)?;
+            if c.binding.is_some() || q[8..40]==[0;32] || q[40..72]==[0;32] || q[72..]!=[0;56] {
+                self.clear();return Err(rt::DENIED);
+            }
+            c.binding=Some([q[8..40].try_into().unwrap(),q[40..72].try_into().unwrap()]);
+            return Ok(());
+        }
+        if &q[..8]==b"NXACMD01" && !matches!(admin_command::decode(q),Ok(Command::Read(_))) {
+            let c=self.context.take().ok_or(rt::DENIED)?;
+            return self.transactions.request(state,storage,c,q,answer);
+        }
+        self.request(state,q,answer)
     }
     pub fn request(
         &mut self,
@@ -85,6 +118,8 @@ impl Port {
                     },
                     scope: Scope::parse(scope as u8).map_err(|_| rt::DENIED)?,
                     epoch: common::number(&q[112..]),
+                    #[cfg(feature="administration-r2-guest")]
+                    binding: None,
                 };
                 let grant = state
                     .resolve_verified_factor(c.reference)

@@ -42,7 +42,15 @@ impl Pending {
             current[32..64]!=incarnation::identity() || current[72..80]!=state.head().generation.to_be_bytes() || current[80..]!=state.head().digest {
             return Err(rt::DENIED);
         }
-        let p=state.administration_publication(grant,operation,change,retired).map_err(|_|rt::DENIED)?;
+        let p=state.administration_publication(grant,operation,change,retired).map_err(|e|match e {
+            novaos_identity::Fault::Conflict=>24,
+            novaos_identity::Fault::Limit=>rt::LIMIT,
+            novaos_identity::Fault::BadInput=>rt::BAD_ARGUMENT,
+            novaos_identity::Fault::Uncertain=>UNCERTAIN,
+            novaos_identity::Fault::Unavailable=>rt::TIMED_OUT,
+            novaos_identity::Fault::Corrupt|novaos_identity::Fault::StateMismatch=>rt::REFUSED,
+            _=>rt::DENIED,
+        })?;
         Ok(Self{plan:p.triplet,previous:current,submitted:false,started:false,confirmed:false,reference,captured:false,administration:Some(p.metadata)})
     }
     pub fn backup(&mut self,epoch:u64,recipients:[[u8;32];2])->rt::Result<()> {

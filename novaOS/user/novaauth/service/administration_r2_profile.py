@@ -76,6 +76,12 @@ def install(root):
     if scope == 0 {''')
     edit('novaOS/kernel/build.rs', '"--features","administration-guest","--bins"',
          '"--features","administration-r2-guest","--bins"')
+    edit('novaOS/user/novaauth/service/src/bin/common/recovery_view.rs',
+         '            sequence=m.tag;\n            if crate::administration_registry::Port::accepts',
+         '            sequence=m.tag;\n            administration.reconcile(&mut state,&mut recovered.storage)?;\n            if crate::administration_registry::Port::accepts')
+    edit('novaOS/user/novaauth/service/src/bin/common/recovery_view.rs',
+         'administration.request(&state,&m.payload,&mut answer)',
+         'administration.request_r2(&mut state,&mut recovered.storage,&m.payload,&mut answer)')
 
     # Autorisation MOA/MOE : conversations duplex privées, export R2 seulement.
     import runpy
