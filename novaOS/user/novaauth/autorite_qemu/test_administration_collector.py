@@ -1,6 +1,6 @@
 """Sélection du vCPU observé ; oracles hôtes, pas preuves invitées."""
 import unittest
-from administration_collector_qemu import stopped_thread
+from administration_collector_qemu import stopped_thread, advance_probe
 from administration_outputs import Refus
 
 
@@ -23,6 +23,33 @@ class StoppedCPU(unittest.TestCase):
         class Debug:
             def command(self, packet): return 'E01'
         with self.assertRaises(Refus): stopped_thread(Debug(),'T05thread:01;')
+
+
+class BoundedStep(unittest.TestCase):
+    def run_step(self, pcs, stacks=None, cpu='01'):
+        class Debug:
+            def __init__(self): self.i=-1;self.steps=0
+            def register(self, index):
+                if index==31:return 80 if stacks is None or self.i<0 else stacks[self.i]
+                return pcs[self.i]
+            def command(self, packet):
+                if packet.startswith('vCont;s:'):
+                    self.i+=1;self.steps+=1;return 'T05thread:'+cpu+';'
+                return 'QC'+cpu if packet=='qC' else 'OK'
+        d=Debug();events=[]
+        try:advance_probe(d,'aarch64',100,'01',lambda **kw:events.append(kw))
+        finally:self.steps=d.steps;self.events=events
+    def test_one_stalled_stop_then_real_progress(self):
+        self.run_step([100,104]);self.assertEqual(self.steps,2)
+        self.assertEqual([r['pc'] for r in self.events],[100,104])
+    def test_stall_is_bounded_and_never_success(self):
+        with self.assertRaises(Refus):self.run_step([100,100,100])
+        self.assertEqual(self.steps,3)
+    def test_wrong_cpu_and_changed_stack_are_not_retryable(self):
+        with self.assertRaises(Refus):self.run_step([100],cpu='02')
+        self.assertEqual(self.steps,1)
+        with self.assertRaises(Refus):self.run_step([100],stacks=[64])
+        self.assertEqual(self.steps,1)
 
 
 if __name__=='__main__': unittest.main()

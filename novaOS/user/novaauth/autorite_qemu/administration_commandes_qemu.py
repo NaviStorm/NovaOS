@@ -7,6 +7,7 @@ explicite et consultation du même reçu, sans répétition de mutation.
 """
 import argparse
 import copy
+import hashlib
 import json
 import re
 from contextlib import ExitStack
@@ -24,8 +25,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
-    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation'], required=True)
+    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation', 'creation', 'refus-facteurs'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+    parser.add_argument('--redemarrage-issue', action='store_true', help='création, capture native, arrêt complet et consultation après reprise approuvée')
     parser.add_argument('--course',action='store_true',help='ticket Bob présenté pendant la confirmation Alice')
     parser.add_argument('--mutation-concurrente',action='store_true',help='confirmation de groupe concurrente au refus du dernier administrateur')
     parser.add_argument('--dernier-concurrent',action='store_true',help='deux requêtes partielles simultanées contre le dernier administrateur')
@@ -43,6 +45,8 @@ def main():
                  'sortie', 'detenteur', 'capture', 'triplet', 'kernel'):
         parser.add_argument('--' + name, type=lambda v: Path(v).resolve(), required=True)
     a = parser.parse_args()
+    from certificats import validity
+    certificate_dates = validity(a.cles)
     if a.separation and (a.ticket_vivant or a.reactivation or a.securite):parser.error('profils de recette distincts')
     if a.mutation_concurrente and a.lot!='groupe':parser.error("mutation concurrente : lot groupe requis")
     a.dernier_concurrent=a.dernier_concurrent or a.mutation_concurrente
@@ -55,6 +59,8 @@ def main():
         parser.error('le témoin de ticket vivant exige le lot désactivation')
     if (a.reauth_issue or a.recu_supprime) and a.lot not in ('groupe','desactivation'):
         parser.error('options de publication réservées aux lots de mutation')
+    if a.redemarrage_issue and (a.lot!='creation' or a.recu_supprime or a.reauth_issue):parser.error('reprise réservée à la création nominale avec capture native')
+    a.capture_administrative = a.redemarrage_issue
     a.mode = 'nominal'
     a.vue = a.activation = a.exec_admission = a.administration_r2 = True
     a.collecteur_r2 = True
@@ -78,6 +84,8 @@ def main():
     if len(ids) != 48:
         raise Refus('identités témoins invalides')
     alice, bob, group = (ids[i:i+16].hex() for i in (0, 16, 32))
+    case_status = {}
+    catalog=json.loads((Path(__file__).parent/'references-administration-r2/catalogue-public.json').read_text())
     cases = [('whoami', b'alice\n'),
              ('id', f'subject={alice} name=alice state=ACTIVE groups=base({group})\n'.encode()),
              ('groups', b'base\n')]
@@ -86,8 +94,9 @@ def main():
     # Deux parcours indépendants : le total de connexions du relais hôte reste
     # borné à 128 et chaque parcours commence avec une nouvelle session.
     # L'essai initial de six commandes ayant saturé ce relais est conservé.
+    report['validite_certificats_hote'] = certificate_dates
     cases = cases[:3] if a.lot == 'lectures' else cases[3:]
-    if a.lot in ('groupe','desactivation','renommage','appartenance'):
+    if a.lot in ('groupe','desactivation','renommage','appartenance','creation'):
         intention = {}
 
         def preparation(data):
@@ -101,7 +110,7 @@ def main():
         def complete(_):
             return ('request=' + intention['operation'] + ' generation='+str(int.from_bytes(raw[96:104],'big')+1)+' state=COMPLETE\n').encode()
 
-        command={'groupe':'groupadd equipe-r2','desactivation':'usermod --disable bob','renommage':'usermod --rename robert bob','appartenance':'usermod --add-group equipe-r2 bob'}[a.lot]
+        command={'groupe':'groupadd equipe-r2','desactivation':'usermod --disable bob','renommage':'usermod --rename robert bob','appartenance':'usermod --add-group equipe-r2 bob','creation':'useradd --factor-reference '+catalog['references']['carol']+' --group base carol'}[a.lot]
         binary=command.split()[0]
         report['portee']='création de groupe' if a.lot=='groupe' else 'désactivation de Bob après fermeture de sa session ; aucun témoin de ticket vivant'
         if a.ticket_vivant:report['portee']='désactivation de Bob avec ticket vivant ; refus avant expiration exigé'
@@ -115,6 +124,14 @@ def main():
         if a.lot == 'appartenance':
             report['portee']='ajout natif à un groupe existant ; aucun retrait de droit'
             cases[-1]=('groups bob',b'base equipe-r2\n')
+        if a.lot == 'creation':
+            report['portee']='création native avec facteur préprovisionné ; aucune promotion administrative'
+            def created_identity(_):
+                generation=int.from_bytes(raw[96:104],'big')+1
+                subject=hashlib.sha256(b'NovaAuth/subject/1'+raw[8:24]+generation.to_bytes(8,'little')+bytes.fromhex(intention['operation'])+b'\x01').digest()[:16].hex()
+                report['nouvelle_identite']=subject
+                return f'subject={subject} name=carol state=ACTIVE groups=base({group})\n'.encode()
+            cases[-1]=('id carol',created_identity)
         if a.reactivation:
             second={}
             def prepare_reactivation(data):
@@ -131,6 +148,11 @@ def main():
             cases=cases[:2]
             cases += [('usermod --enable bob --prepare',prepare_reactivation),
                       (lambda:'usermod --enable bob --confirm '+second['confirmation']+' --request '+second['operation'],reactivated)]
+    elif a.lot == 'refus-facteurs':
+        report['portee']='facteur inconnu et déjà attribué refusés ; contrôle positif Alice'
+        cases=[('useradd --factor-reference '+('ff'*16)+' --group base inconnu --prepare',b''),
+               ('useradd --factor-reference '+catalog['references']['alice']+' --group base doublon --prepare',b''),('whoami',b'alice\n')]
+        case_status={0:(3,b'Administrative failure: native=5 status=3\n'),1:(4,b'Administrative failure: native=24 status=4\n')}
     elif a.lot == 'documentation':
         expected=(Path(__file__).parent/'references-administration-r2')
         cases=[('LANG=fr; groups man',(expected/'groups-fr.txt').read_bytes()),
@@ -225,6 +247,8 @@ def main():
                     expected = b''
                     expected_stderr = ('Administrative failure: native=22 status=20\nrequest=' +
                                        intention['operation'] + ' --outcome\n').encode()
+                if i in case_status:
+                    expected_status,expected_stderr=case_status[i]
                 if a.reauth_issue and i == 2:
                     observer.expect_successor(report['commandes'][0]['shell'])
                     serial.submit('session reauthentifier')
@@ -307,6 +331,8 @@ def main():
                     raise Refus('octets non conformes : ' + command)
                 item['stdout_octets'] = len(expected)
                 item['stderr_octets'] = len(expected_stderr)
+                match_native = re.search(rb'native=([0-9]+)', streams[2])
+                if match_native: item['statut_novaAuth'] = int(match_native[1])
                 item['octets_conformes'] = True
                 if a.ticket_vivant and i==0:
                     # Authentifier Bob hors de l'attente NXADMIN1 de l'ELF de
@@ -448,7 +474,40 @@ def main():
         try:
             case = copy.copy(a)
             case.sortie = root / 'invite'
-            return run(case, env, scenario=scenario, rpc_hook=rpc_hook)
+            result = run(case, env, scenario=scenario, rpc_hook=rpc_hook)
+            if result or not a.redemarrage_issue:return result
+            # L'invité A est arrêté et ses ressources drainées avant toute reprise.
+            first=copy.deepcopy(report)
+            report['succes']=False
+            report['reprise']={'resultat':'non terminee'}
+            (root/'avant-redemarrage.json').write_text(json.dumps(first,indent=2)+'\n')
+            paths=list((case.sortie/'captures-invite').glob('*/manifeste.bin'))
+            if len(paths)!=1:raise Refus('capture native administrative absente ou ambiguë')
+            manifest=paths[0].read_bytes();folder=paths[0].parent
+            if b'NAR2 sauvegarde administrative confirmee' not in (case.sortie/'invite.serial').read_bytes():
+                raise Refus('capture non acquittée dans le registre invité')
+            from rpc_recuperation import Dispatcher
+            from recuperation import digest
+            old_route=route(api)
+            packet,sig=api.begin_withdrawal(SERVER,DOMAIN,old_route,signature(admin,'withdraw',old_route))
+            (root/'retrait-reprise-en-cours.bin').write_bytes(packet+sig)
+            packet,sig=api.drain(SERVER,DOMAIN,old_route)
+            (root/'retrait-reprise-definitif.bin').write_bytes(packet+sig)
+            keys=[holders[0].keys[0],holders[1].keys[0],holders[0].keys[1],holders[1].keys[1],holders[0].keys[2],holders[1].keys[2]]
+            admin.call('mandate',SERVER,DOMAIN,dispatcher.peer_key,dispatcher.measurement,digest(manifest),
+                int.from_bytes(manifest[78:86],'big'),manifest[270:302],keys)
+            resumed=Dispatcher(dispatcher.authority,dispatcher.enrollment,SERVER,DOMAIN,
+                dispatcher.peer_key,dispatcher.measurement,{digest(manifest):manifest},
+                {digest(manifest):[q.read_bytes() for q in sorted(folder.glob('*.chiffre'))]},
+                dispatcher.approve_independently,dispatcher.deliver_independently,dispatcher.retrieve_independently)
+            after=copy.copy(case);after.sortie=root/'redemarrage';after.genese=case.sortie/'identites.p9'
+            cases=[('useradd --outcome '+intention['operation'],complete),('id carol',created_identity),('whoami',b'alice\n')]
+            report['commandes']=[];report['evenements']=[];report['succes']=False
+            result=run(after,(resumed,holders,admin),scenario=scenario,rpc_hook=rpc_hook)
+            report['reprise']={'arret_complet':True,'capture_native':True,'ancienne_incarnation':old_route.hex(),
+                'nouvelle_incarnation':route(api).hex(),'meme_operation':intention['operation'],'resultat':result}
+            if route(api)==old_route:raise Refus('incarnation réutilisée au redémarrage')
+            return result
         finally:
             (root / 'commandes-resultats.json').write_text(json.dumps(report, indent=2) + '\n')
 

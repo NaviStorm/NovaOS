@@ -1,0 +1,16 @@
+{
+  "format": "NAR2FAC1",
+  "domain": "07070707070707070707070707070707",
+  "count": 2,
+  "bytes": 96,
+  "sha256": "46d85e0db0d4f58082b92ed70b58546939be2cd9aaa8456b3285686cb248f5cf",
+  "public_keys": {
+    "alice": "f4d7927c3b3e5a080cd3a5bb7268323d8a52971e725c2bb0c9155bf494d98cd3",
+    "carol": "4c892f6bfd3d8b2fab0df5752cc7b44b071012fb8ee25fcaacd0548524506d7a"
+  },
+  "references": {
+    "alice": "542ff9ee08772313d8134d8363ce239e",
+    "carol": "d3e1962bb9c6e8962e338b1972b5359f"
+  },
+  "attestation": "inclusion dans la mesure SHA-256 du registre approuv\u00e9e par l autorit\u00e9 ind\u00e9pendante"
+}

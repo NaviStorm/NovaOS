@@ -42,4 +42,4 @@ def install(root):
          '            || !matches!(q[113], 0 | 2)\n            || q[114..120] != [0; 6]')
     edit(path, '            role: q[112],', '            role: q[112],\n            locale: q[113],')
     edit(path, '            config[48..56].copy_from_slice(&(a.argv_len as u64).to_le_bytes());',
-         '            config[8..16].copy_from_slice(&(a.locale as u64).to_le_bytes());\n            config[48..56].copy_from_slice(&(a.argv_len as u64).to_le_bytes());')
+         '            config[56..64].copy_from_slice(&(a.locale as u64).to_le_bytes());\n            config[48..56].copy_from_slice(&(a.argv_len as u64).to_le_bytes());')

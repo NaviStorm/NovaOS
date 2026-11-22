@@ -246,7 +246,10 @@ impl RegistryView {
                     auth.epoch,
                 )
             }
-            _ => (4, [0; 16], 0),
+            Operation::Rename { .. } => (5, [0;16], 0),
+            Operation::CreateGroup { .. } => (6, [0;16], 0),
+            Operation::AddMember { .. } => (7, [0;16], 0),
+            Operation::RemoveMember { .. } => (4, [0;16], 0),
         };
         // Contrôles du rôle, du dernier administrateur, de la tête et du reçu
         // terminal dans le plan existant. Aucun octet n'est publié ici.

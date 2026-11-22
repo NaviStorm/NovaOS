@@ -9,6 +9,21 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey,
 from cryptography.x509.oid import ExtendedKeyUsageOID, NameOID
 
 
+def validity(directory, now=None, remaining_seconds=360):
+    """Préflight hôte seulement ; ne remplace jamais la validation TLS."""
+    now = now or datetime.now(timezone.utc)
+    if remaining_seconds < 0:
+        raise ValueError("marge de qualification négative")
+    end = now + timedelta(seconds=remaining_seconds)
+    dates = {}
+    for label in ("ca", "autorite", "serveur"):
+        cert = x509.load_der_x509_certificate((directory / (label + ".der")).read_bytes())
+        if not cert.not_valid_before_utc <= now < cert.not_valid_after_utc or end >= cert.not_valid_after_utc:
+            raise ValueError("certificat QEMU expiré ou échéance trop proche : " + label)
+        dates[label] = dict(debut=cert.not_valid_before_utc.isoformat(), fin=cert.not_valid_after_utc.isoformat())
+    return dates
+
+
 def issue(guest_public, directory):
     guest = Ed25519PublicKey.from_public_bytes(guest_public.read_bytes())
     directory.mkdir(mode=0o700, exist_ok=False)

@@ -10,6 +10,8 @@ use sha2::{Digest, Sha256};
 const UNCERTAIN: u64 = 22;
 #[path="administration_retirement.rs"]
 mod retirement;
+#[path="administration_factors_lab.rs"]
+mod factors;
 #[derive(Clone, Copy)]
 struct Prepared {
     context: Context,
@@ -121,9 +123,9 @@ impl Transactions {
                 let plan = Pending::from_administration(state, grant, operation, current,
                                                         c.reference, operation_kind, retired.as_ref())?;
                 drop(plan);
-                // Le retrait de groupe et les facteurs nouveaux ne sont pas annoncés
-                // opérationnels avant raccord de leurs effecteurs/provisionneur.
-                if !matches!(change, Mutation::CreateGroup(_) | Mutation::Rename {..} | Mutation::Disable(_) | Mutation::Reactivate(_) | Mutation::AddMember {..}) {
+                // Le retrait de groupe reste refusé avant raccord de ses effecteurs.
+                // Create utilise exclusivement le catalogue public approuvé.
+                if !matches!(change, Mutation::Create {..} | Mutation::CreateGroup(_) | Mutation::Rename {..} | Mutation::Disable(_) | Mutation::Reactivate(_) | Mutation::AddMember {..}) {
                     return Err(rt::REFUSED);
                 }
                 let slot = self.prepared.iter().position(|p| p.is_some_and(|p| p.binding == binding))
@@ -196,17 +198,21 @@ impl Transactions {
                 let (original, _, terminal) = message.history(&key, &reply[HEADER+8..HEADER+n])
                     .map_err(|_| rt::DENIED)?;
                 if original[160..176] != grant.subject()
-                    || !matches!((original[208],terminal.is_some()),(4,false)|(2,true)|(3,false)) {
+                    || !matches!((original[208],terminal.is_some()),(1,false)|(4,false)|(2,true)|(2,false)|(3,false)|(5,false)|(6,false)|(7,false)) {
                     return Err(rt::DENIED);
                 }
                 let generation = u64::from_be_bytes(original[72..80].try_into().unwrap())
                     .checked_add(1).ok_or(rt::LIMIT)?;
                 if generation > state.head().generation { return Err(UNCERTAIN); }
-                // Le reçu UPDATE seul n'atteste pas une future propagation de
-                // retrait de groupe. Ne pas inventer COMPLETE après redémarrage
-                // ou pour une opération dont le traitement local n'est plus
-                // connu. Le raccord durable des autres issues reste à qualifier.
-                if !self.completed.contains(&Some((operation, grant.subject(), generation))) {
+                // Un type sans retrait et son historique authentifié permettent
+                // la reprise sans cache. UPDATE historique demeure conservateur.
+                // Le reçu RETIREE, vérifié séparément, reste indispensable au retrait.
+                let durable = message.durable_non_retiring_history(&key, &reply[HEADER+8..HEADER+n], &grant.subject())
+                    .map_err(|_|rt::DENIED)?;
+                let retired = message.durable_retired_history(&key, &reply[HEADER+8..HEADER+n], &grant.subject())
+                    .map_err(|_|rt::DENIED)?;
+                let legacy_local=original[208]==4 && self.completed.contains(&Some((operation, grant.subject(), generation)));
+                if durable != Some(generation) && retired != Some(generation) && !legacy_local {
                     return Err(UNCERTAIN);
                 }
                 completed(answer, operation, generation);
@@ -225,6 +231,10 @@ fn authorize(state: &View, grant: Grant, c: Context, change: Mutation<'_>) -> rt
 fn operation_for<'a>(state: &View, grant: Grant, change: Mutation<'a>) -> rt::Result<Operation<'a>> {
     let user = |s| state.user_info(grant, Some(selected(s))).map(|u| u.id).map_err(|_| rt::DENIED);
     Ok(match change {
+        Mutation::Create {name,group,factor} => {
+            factors::authorize(state.head().domain,factor)?;
+            Operation::Create {name,factor,group:state.group_info(grant,selected(group)).map_err(|_|rt::DENIED)?.id}
+        },
         Mutation::CreateGroup(name) => Operation::CreateGroup { name },
         Mutation::AddMember {user: s, group: g} => Operation::AddMember {
             subject: user(s)?,

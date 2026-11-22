@@ -147,4 +147,30 @@ class Mutations(unittest.TestCase):
         with self.assertRaises(reprise.Refus): self.send(rpc.HISTORY,query,administration=False)
         with self.assertRaises(reprise.Refus): self.send(rpc.HISTORY,query[:128]+bytes(32))
 
+
+class PersistentAdditive(unittest.TestCase):
+    setUp = Mutations.setUp
+    send = Mutations.send
+    change = Mutations.change
+    def test_additive_mutations_have_readonly_history_after_reopening_authority(self):
+        f=self.f
+        for kind in (epochs.RENAME,epochs.CREATE_GROUP,epochs.ADD_MEMBER):
+            op=bytes([kind])*16
+            args=(f.current(),op,bytes([kind])*32,f.principal,1,bytes(16),0,kind)
+            packet=epochs.Epochs.change(*args)
+            self.send(rpc.PUBLISH,packet)
+            # Nouvelle instance de service, même base durable ; pas de cache.
+            f.api=epochs.Epochs(reprise.Recovery(f.path,f.key))
+            for fresh in (b'F'*32,b'G'*32):
+                q=f.current().packet()+op+fresh
+                answer=self.send(rpc.HISTORY,q)
+                f.key.public_key().verify(answer[-64:],epochs.HISTORY+answer[:-64])
+                self.assertEqual(answer[160:369],packet)
+            with reprise.transaction(f.path) as db:
+                self.assertEqual(db.execute('SELECT count(*) FROM admin_changes WHERE op=?',(op,)).fetchone(),(1,))
+            with self.assertRaises(reprise.Refus):self.send(rpc.PUBLISH,packet)
+    def test_new_non_retiring_kinds_reject_withdrawal_metadata(self):
+        for kind in (epochs.RENAME,epochs.CREATE_GROUP,epochs.ADD_MEMBER):
+            with self.assertRaises(reprise.Refus):self.change(b'R'*16,b'N'*32,kind)
+
 if __name__ == '__main__': unittest.main()

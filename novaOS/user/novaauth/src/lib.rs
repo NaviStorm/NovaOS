@@ -10,6 +10,8 @@ use sha2::{Digest, Sha256};
 pub mod lab;
 #[cfg(feature = "administration-lab")]
 pub mod administration;
+#[cfg(feature = "administration-lab")]
+pub mod enrollment_catalog;
 #[cfg(feature = "recuperation-lab")]
 pub mod recuperation;
 #[cfg(feature = "recuperation-lab")]

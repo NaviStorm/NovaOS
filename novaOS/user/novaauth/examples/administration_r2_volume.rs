@@ -111,7 +111,8 @@ fn main() {
     // décisions aux dix états (genèse incluse) de la fixture avec alias.
     // Ce disque sert à fabriquer/vérifier la fixture ; l'invité consulte
     // exclusivement l'autorité indépendante, pas ce journal local.
-    let mut ledger = Ledger::new(image("autorite.raw", if a.get(10).is_some() {25} else if a.get(9).is_some() {24} else {12}));
+    // Les E/S directes QEMU sur Darwin exigent un multiple de 16 Kio.
+    let mut ledger = Ledger::new(image("autorite.raw", if a.get(10).is_some() {28} else if a.get(9).is_some() {24} else {12}));
     let domain = [7; 16];
     let mut fs = provision(
         image("identites.p9", 512),

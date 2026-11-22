@@ -1,6 +1,6 @@
 # NovaAuth v0.24.0 — R2 : résultats administratifs persistants
 
-Statut : proposition soumise à arbitrage, sans implémentation. Référence :
+Statut : raccord QEMU approuvé par décision MOA/MOE du 23 novembre 2026 ; qualification en cours. Référence :
 `46d04ff29e9c22e26c8d4261ba4c742c132eec67`. Profil QEMU uniquement.
 
 ## Défaut observé dans les sources
@@ -54,11 +54,11 @@ consultation du même identifiant, vérification P9 et absence de seconde mutati
 Contrôle négatif : génération non activée, retrait sans acquittement terminal et
 référence appartenant à un autre administrateur restent refusés ou UNCERTAIN.
 
-## Arbitrage requis
+## Historique de l’arbitrage
 
 Le contrôle automatique d'approbation a refusé le changement, au motif qu'il
 modifie le protocole privé et les critères de succès durables après redémarrage.
-L'autorisation demandée couvre uniquement ces types additifs et la preuve durable
-de remplacement. Aucun changement contesté n'a été appliqué. Le raccord des
+La décision MOA/MOE a ensuite autorisé ces types additifs et la preuve durable
+de remplacement. Le code a été appliqué seulement après cette autorisation. Le raccord des
 facteurs de création et celui des effecteurs d'appartenance restent des travaux
 séparés ; cette proposition ne leur accorde aucune nouvelle autorité.

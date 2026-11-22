@@ -17,6 +17,7 @@ QUERY = b"NovaAuth/QEMU/administration-query/v1\0"
 HISTORY = b"NovaAuth/QEMU/administration-history/v1\0"
 RETIRED = b"NovaAuth/QEMU/subject-retired/v1\0"
 CREATE, DISABLE, REACTIVATE, UPDATE = 1, 2, 3, 4
+RENAME, CREATE_GROUP, ADD_MEMBER = 5, 6, 7
 ALL_EFFECTS = 7  # vérificateurs, lanceur, VFS : attestations privées vérifiées par R
 SCHEMA = """
 CREATE TABLE admin_domains(server BLOB, domain BLOB, PRIMARY KEY(server,domain));
@@ -148,12 +149,14 @@ class Epochs:
     @staticmethod
     def change(state, op, next_head, principal, principal_epoch, subject, epoch, kind):
         fixed(op,16);fixed(next_head,32);fixed(principal,16)
-        if not isinstance(subject,bytes) or len(subject)!=16 or kind not in (CREATE,DISABLE,REACTIVATE,UPDATE):
+        if not isinstance(subject,bytes) or len(subject)!=16 or kind not in (CREATE,DISABLE,REACTIVATE,UPDATE,RENAME,CREATE_GROUP,ADD_MEMBER):
             raise Refus("mutation administrative invalide")
         if not 0 < principal_epoch < 2**63 or not 0 <= epoch < 2**63 or state.generation >= 2**63-1:
             raise Refus("époque hors plage")
-        if kind != UPDATE:
+        if kind in (CREATE,DISABLE,REACTIVATE):
             fixed(subject,16)
+        if kind in (RENAME,CREATE_GROUP,ADD_MEMBER) and (subject != bytes(16) or epoch != 0):
+            raise Refus("métadonnées sans retrait non canoniques")
         return state.packet()+op+next_head+principal+struct.pack('>Q',principal_epoch)+subject+struct.pack('>QB',epoch,kind)
 
     def publish(self, state, op, next_head, principal, principal_epoch, subject, epoch, kind, proof):

@@ -11,6 +11,27 @@ def stopped_thread(debug, stop):
     if debug.command('Hg'+thread)!='OK':raise Refus('sélection du CPU arrêté refusée')
     return thread
 
+def advance_probe(debug, arch, pc, thread, diagnostic):
+    # Un arrêt GDB peut rendre le même PC sans avoir exécuté l'instruction.
+    # Trois demandes au maximum, même CPU et pile inchangée tant que PC stagne.
+    # Ne jamais déplacer PC, réinterpréter l'événement ou accepter un pas absent.
+    sp_index = 31 if arch == 'aarch64' else 7
+    pc_index = 32 if arch == 'aarch64' else 16
+    before_sp = debug.register(sp_index)
+    for attempt in range(1, 4):
+        answer = debug.command('vCont;s:' + thread)
+        after_thread = stopped_thread(debug, answer)
+        after_pc = debug.register(pc_index)
+        diagnostic(pas=answer, pc=after_pc, cpu=debug.command('qC'), cpu_cible=thread, tentative=attempt)
+        if int(after_thread, 16) != int(thread, 16):
+            raise Refus('pas ciblé sur un autre CPU')
+        if after_pc != pc:
+            return
+        if debug.register(sp_index) != before_sp:
+            raise Refus('PC inchangé avec pile modifiée')
+    raise Refus('pas ciblé sans progression après trois demandes')
+
+
 class Observer:
     def __init__(self,control,arch,kernel,out):
         self.routes=[];self.records=[];self.error=None;self.collector=None;self.last_pc=None
@@ -98,12 +119,7 @@ class Observer:
                     d.breakpoint(pc,False)
                     # Le pas historique non ciblé pouvait reprendre un autre
                     # vCPU. Ne jamais dédupliquer l'événement ni déplacer PC.
-                    answer=d.command('vCont;s:'+thread)
-                    after_thread=stopped_thread(d,answer)
-                    after_pc=d.register(32 if self.arch=='aarch64' else 16)
-                    diagnostic(pas=answer,pc=after_pc,cpu=d.command('qC'),cpu_cible=thread)
-                    if int(after_thread,16)!=int(thread,16) or after_pc==pc:
-                        raise Refus('pas ciblé sans progression du CPU observé')
+                    advance_probe(d,self.arch,pc,thread,diagnostic)
                     d.breakpoint(pc);d.send('vCont;c')
         except Exception as e:
             if not self.done.is_set():self.error=type(e).__name__+': '+str(e)

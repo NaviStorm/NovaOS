@@ -14,6 +14,10 @@ pub const CREATE: u8 = 1;
 pub const DISABLE: u8 = 2;
 pub const REACTIVATE: u8 = 3;
 pub const UPDATE: u8 = 4;
+// Types privés additifs autorisés pour les mutations sans révocation.
+pub const RENAME: u8 = 5;
+pub const CREATE_GROUP: u8 = 6;
+pub const ADD_MEMBER: u8 = 7;
 fn word(b: &[u8], at: usize) -> u64 {
     u64::from_be_bytes(b[at..at + 8].try_into().unwrap())
 }
@@ -49,8 +53,9 @@ impl<'a> Message<'a> {
                     || word(b, 176) == 0
                     || word(b, 176) >= 1 << 63
                     || word(b, 200) >= 1 << 63
-                    || !matches!(b[208], CREATE | DISABLE | REACTIVATE | UPDATE)
-                    || (b[208] != UPDATE && b[184..200] == [0; 16])
+                    || !matches!(b[208], CREATE | DISABLE | REACTIVATE | UPDATE | RENAME | CREATE_GROUP | ADD_MEMBER)
+                    || (matches!(b[208], CREATE | DISABLE | REACTIVATE) && b[184..200] == [0; 16])
+                    || (matches!(b[208], RENAME | CREATE_GROUP | ADD_MEMBER) && b[184..208] != [0;24])
                     || (b[208] == CREATE && word(b, 200) != 0)
                     || (matches!(b[208], DISABLE | REACTIVATE) && word(b, 200) == 0)
                 {
@@ -152,6 +157,45 @@ impl<'a> Message<'a> {
             return Err(Error::Order);
         }
         Ok((original, reply[369], terminal))
+    }
+
+    /// Réponse authentifiée, auteur courant et génération publiée inclus dans
+    /// la tête interrogée. Le registre vérifie cette tête contre son triplet P9
+    /// activé avant l'appel. UPDATE historique ne devient jamais une preuve de
+    /// drainage. Une consultation ne publie et ne rejoue aucune mutation.
+    pub fn durable_non_retiring_history(
+        &self, key: &VerifyingKey, reply: &[u8], principal: &[u8;16],
+    ) -> Result<Option<u64>> {
+        let (original, mask, terminal) = self.history(key, reply)?;
+        if original[160..176] != *principal { return Err(Error::Scope); }
+        let generation = word(original,72).checked_add(1).ok_or(Error::Limit)?;
+        let current = word(self.bytes,72);
+        if generation > current { return Ok(None); }
+        if generation == current && original[128..160] != self.bytes[80..112] {
+            return Err(Error::Scope);
+        }
+        if matches!(original[208], CREATE | REACTIVATE | RENAME | CREATE_GROUP | ADD_MEMBER)
+            && mask == 0 && terminal.is_none() {
+            Ok(Some(generation))
+        } else { Ok(None) }
+    }
+
+    /// Une désactivation ne se réconcilie qu'avec RETIREE authentifié et lié
+    /// exactement au retrait. Une publication seule reste UNCERTAIN.
+    pub fn durable_retired_history(&self,key:&VerifyingKey,reply:&[u8],principal:&[u8;16]) -> Result<Option<u64>> {
+        let (original,mask,terminal)=self.history(key,reply)?;
+        if original[160..176]!=*principal {return Err(Error::Scope);}
+        if original[208]!=DISABLE || mask!=7 {return Ok(None);}
+        let Some(t)=terminal else{return Ok(None)};
+        let generation=word(original,72).checked_add(1).ok_or(Error::Limit)?;
+        if generation>word(self.bytes,72) {return Ok(None);}
+        if generation==word(self.bytes,72) && original[128..160]!=self.bytes[80..112] {return Err(Error::Scope);}
+        verify(key,b"NovaAuth/QEMU/subject-retired/v1\0",&t[..128],&t[128..])?;
+        if t[..32]!=original[..32] || t[32..48]!=original[184..200]
+            || t[48..56]!=original[200..208] || t[56..72]!=original[112..128]
+            || word(t,72)!=generation || word(t,80)==0 || t[88]!=1
+            || t[89..96]!=[0;7] || t[96..128]!=original[80..112] {return Err(Error::Scope);}
+        Ok(Some(generation))
     }
 
     /// Lecture pure, avec défi frais. Un reçu terminal éventuel doit encore

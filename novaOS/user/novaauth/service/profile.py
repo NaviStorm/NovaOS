@@ -7,7 +7,9 @@ import runpy
 import subprocess
 import tarfile
 
-def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False, incarnation=False, horloge=False, tete=False, lecture=False, recovery=False, source_ref=None, triplet=False, activation=False, vue=False, vfs=False, exec_admission=False, administration=False, administration_r2=False, administration_ticket_vivant=False, administration_securite=False, administration_reactivation=False, administration_separation=False, administration_tickets=False, administration_race=False, administration_last_admin=False):
+def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False, incarnation=False, horloge=False, tete=False, lecture=False, recovery=False, source_ref=None, triplet=False, activation=False, vue=False, vfs=False, exec_admission=False, administration=False, administration_r2=False, administration_ticket_vivant=False, administration_securite=False, administration_reactivation=False, administration_separation=False, administration_tickets=False, administration_race=False, administration_last_admin=False, administration_capture=False):
+    if administration_capture and not administration_last_admin:
+        raise ValueError('capture administrative : profil last-admin requis')
     administration_tickets = administration_tickets or administration_last_admin
     administration_ticket_vivant = administration_ticket_vivant or administration_reactivation or administration_race
     administration_r2 = administration_r2 or administration_ticket_vivant or administration_securite or administration_separation or administration_tickets
@@ -85,6 +87,8 @@ def prepare(destination, policies=False, retired_reply=False, shell=False, selec
             runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_race_profile.py"))["install"](destination)
         if administration_last_admin:
             runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_last_admin_profile.py"))["install"](destination)
+        if administration_capture:
+            runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_capture_profile.py"))["install"](destination)
         if transport:
             apply(destination, "sonde-transport.patch")
         refresh_documentation_links(destination)
@@ -150,7 +154,8 @@ if __name__=="__main__":
     mode.add_argument("--incarnation-registre", action="store_true", help="preuve de possession du signataire et du registre isolés sur la route privée")
     mode.add_argument("--budget-autorite", action="store_true", help="deux processus de mesure des routes privées")
     mode.add_argument("--transport-autorite", action="store_true", help="sonde de transport hors P9 sur export à 514 pages")
+    parser.add_argument("--capture-administrative", action="store_true", help="Capture native après mutation, uniquement pour la reprise R2")
     args=parser.parse_args()
     prepare(args.destination.resolve(), args.politiques, args.reponse_retiree, args.lancement or args.selection_smp or args.bail,
             args.selection_smp, args.bail,
-            args.budget_autorite, args.transport_autorite, args.incarnation_registre, args.horloge_signataire, args.tete_independante, args.lecture_dossier, args.recuperation_2sur2, args.source_ref, args.recuperation_triplet, args.recuperation_activation, args.recuperation_vue, args.recuperation_vfs, args.admission_exec, args.administration, args.administration_r2, args.administration_ticket_vivant, args.administration_securite, args.administration_reactivation, args.administration_separation, args.administration_tickets, args.administration_race, args.administration_last_admin)
+            args.budget_autorite, args.transport_autorite, args.incarnation_registre, args.horloge_signataire, args.tete_independante, args.lecture_dossier, args.recuperation_2sur2, args.source_ref, args.recuperation_triplet, args.recuperation_activation, args.recuperation_vue, args.recuperation_vfs, args.admission_exec, args.administration, args.administration_r2, args.administration_ticket_vivant, args.administration_securite, args.administration_reactivation, args.administration_separation, args.administration_tickets, args.administration_race, args.administration_last_admin, args.capture_administrative)

@@ -659,3 +659,26 @@ fn publication_metadata_is_derived_from_the_authorized_exact_plan() {
     );
     assert_eq!(&created.metadata[40..49], &[0, 0, 0, 0, 0, 0, 0, 0, 1]);
 }
+
+#[test]
+fn concurrent_enrollments_cannot_assign_one_factor_twice() {
+    for sector in [512, 4096] {
+        let mut f = Fixture::new(sector);
+        let before = f.view();
+        let grant = before.resolve_verified_factor([1; 16]).unwrap();
+        let a = before.administration_plan(grant, [80; 16],
+            Operation::Create {name:"carol", factor:[80;16], group:f.group}, None).unwrap();
+        let b = before.administration_plan(grant, [81; 16],
+            Operation::Create {name:"david", factor:[80;16], group:f.group}, None).unwrap();
+        f.publish(&a);
+        assert!(matches!(f.authority.decide(before.head(), *b.head()), Err(Fault::Conflict)));
+        let after=f.view();
+        let current=after.resolve_verified_factor([1;16]).unwrap();
+        let snapshot=Triplet::capture(&f.fs,&f.authority,DOMAIN).unwrap().encode();
+        assert!(matches!(after.administration_plan(current, [82;16],
+            Operation::Create {name:"david", factor:[80;16], group:f.group}, None), Err(Fault::Conflict)));
+        assert_eq!(Triplet::capture(&f.fs,&f.authority,DOMAIN).unwrap().encode(),snapshot);
+        assert!(after.user_info(current,Some(Selector::Name("carol"))).is_ok());
+        assert!(after.user_info(current,Some(Selector::Name("david"))).is_err());
+    }
+}
