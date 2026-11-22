@@ -21,6 +21,23 @@ def install(root):
                 '    tls.open(TlsContext::new(&cfg, &mut p)).map_err(|e|{crate::recovery_bridge::trace(format_args!("R2TLS handshake={:?}",e));e})?;')
     p.write_text(s)
 
+    # Le secteur de transport P9/4096 était sérialisé par 43 trames PIECE
+    # à chaque fragment TLS. Réutiliser la voie PAGE déjà négociée et déléguée.
+    p=root/'novaOS/user/novafs/device.rs';s=p.read_text()
+    old='        block.transfer(sector, page * (4096 / size) as u64, write)'
+    if s.count(old)!=1:raise ValueError('ancrage transport hors P9 ambigu')
+    p.write_text(s.replace(old, BULK))
+
+BULK = r'''        let first=page * (4096 / size) as u64;
+        let cap=crate::runtime::config(10);
+        if size==4096 && cap!=0 {
+            // read_page/write_page conservent la négociation FEATURE_PAGE et
+            // le repli historique ; aucun handle ni droit supplémentaire.
+            let buffer:&mut [u8;4096]=sector.try_into().map_err(|_|crate::runtime::BAD_ARGUMENT)?;
+            if write {block.write_page(first,cap,buffer)}
+            else {block.read_page(first,cap,buffer)}
+        } else {block.transfer(sector,first,write)}'''
+
 TRACE=r'''
 static NATIVE:core::sync::atomic::AtomicU64=core::sync::atomic::AtomicU64::new(0);
 pub(crate) fn trace(args:core::fmt::Arguments) {
