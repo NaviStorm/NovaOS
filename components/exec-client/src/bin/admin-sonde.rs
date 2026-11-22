@@ -12,6 +12,7 @@ fn perform() -> rt::Result<()> {
     let mut repeats = 1;
     let mut mode = 0;
     let mut expected_status = 0;
+    let mut producer_mutation=false;
     match launch.streams.argv.as_slice() {
         [] | ["--self"] => request[8]=1,
         ["--lost-reply"] => {request[8]=1;mode=1;},
@@ -20,6 +21,17 @@ fn perform() -> rt::Result<()> {
         [flag @ ("--last-admin-writer"|"--last-admin-reader")] => {
             request[8]=18;request[32]=2;request[33]=5;request[40..45].copy_from_slice(b"alice");
             mode=if *flag=="--last-admin-writer" {2}else{3};expected_status=rt::DENIED;
+        },
+        ["--confirm-writer", operation, digest] => {
+            use nova_exec_client::admin_cli::{self, Action, Program};
+            let Action::Confirm{request:id,digest:seal,..}=admin_cli::parse(Program::Groupadd,
+                &["equipe-r2","--request",operation,"--confirm",digest]).map_err(|_|rt::BAD_ARGUMENT)?
+                else {return Err(rt::BAD_ARGUMENT);};
+            request[8]=32;request[16..32].copy_from_slice(&id);request[32..64].copy_from_slice(&seal);mode=2;
+        },
+        ["--last-admin-reader-with-mutation"] => {
+            request[8]=18;request[32]=2;request[33]=5;request[40..45].copy_from_slice(b"alice");
+            mode=3;expected_status=rt::DENIED;producer_mutation=true;
         },
         ["--expire"] => {request[8]=1;mode=4;},
         ["--denied-same-channel"] => {request[8]=1;mode=5;},
@@ -44,13 +56,13 @@ fn perform() -> rt::Result<()> {
         },
         ["--version"] => return launch.streams.write_stdout(b"admin-sonde 0.24.0 QEMU NXADMIN1\n"),
         ["--help"] | ["man"] => return launch.streams.write_stdout(if launch.streams.french {
-            b"admin-sonde [--self|--twice|--user NOM|--group NOM]\nSonde QEMU. Statuts natifs ; aucune mutation.\n"
-        } else {b"admin-sonde [--self|--twice|--user NAME|--group NAME]\nQEMU probe. Native statuses; no mutation.\n"}),
+            b"admin-sonde [--self|--twice|--user NOM|--group NOM]\nSonde QEMU. Statuts natifs ; mutations de qualification avec confirmation explicite.\n"
+        } else {b"admin-sonde [--self|--twice|--user NAME|--group NAME]\nQEMU probe. Native statuses; qualification mutations require explicit confirmation.\n"}),
         _ => return Err(rt::BAD_ARGUMENT),
     }
     if mode>=5 {return refusals(&launch,&request,mode);}
     if matches!(mode, 1..=3) {
-        return transport_probe(&launch, &request, mode, expected_status);
+        return transport_probe(&launch, &request, mode, expected_status, producer_mutation);
     }
     let mut conversation = Conversation::new(&launch);
     for _ in 0..repeats {
@@ -228,6 +240,7 @@ fn transport_probe(
     request: &[u8; 128],
     mode: u8,
     expected_status: u64,
+    producer_mutation: bool,
 ) -> rt::Result<()> {
     use nova_exec_client::admin_wire::{self, Direction, Inbox};
     let key = launch.endpoint();
@@ -295,7 +308,13 @@ fn transport_probe(
         if launch.streams.read_stdin(&mut producer)? != 64 {
             return Err(210);
         }
-        if producer[..64] != answer[..64] {
+        if producer_mutation {
+            if producer[..8]!=[0;8] || producer[8..24]==[0;16]
+                || producer[24..32]!=24u64.to_le_bytes() || producer[32]!=1 || producer[33..64]!=[0;31] {
+                return Err(211);
+            }
+            launch.streams.write_stdout(&producer[..64])?;
+        } else if producer[..64] != answer[..64] {
             return Err(211);
         }
     }
