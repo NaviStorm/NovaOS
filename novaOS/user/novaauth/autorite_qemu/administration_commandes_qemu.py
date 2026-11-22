@@ -26,7 +26,7 @@ def main():
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
-    parser.add_argument('--etat-ticket',choices=['expire','recu'],help='état EXEC_TICKET S6 distinct du témoin révoqué')
+    parser.add_argument('--etat-ticket',choices=['expire','recu','concurrent'],help='état EXEC_TICKET S6 distinct du témoin révoqué')
     parser.add_argument('--separation',action='store_true',help='références réelles Alice/Bob, sans transfert de droits')
     parser.add_argument('--reactivation',action='store_true',help='recette S9 après retrait effectif')
     parser.add_argument('--securite',action='store_true',help='sonde directe étendue, distincte du témoin temporel')
@@ -325,8 +325,13 @@ def main():
             elif a.etat_ticket:
                 bob=[events.actor(b'NAR2 Bob authentifie route distincte')]
                 if len(by_shell)!=1 or bob[0] in by_shell:raise Refus('enfant Bob inattendu S6')
-                if a.etat_ticket=='recu' and not re.search(rb'NXEXEC pid=([0-9]+) statut=0 collecte unique',serial.data):raise Refus('collecte unique absente')
+                if a.etat_ticket in ('recu','concurrent') and not re.search(rb'NXEXEC pid=([0-9]+) statut=0 collecte unique',serial.data):raise Refus('collecte unique absente')
                 report['etat_ticket']={'mode':a.etat_ticket,'statut_natif':8 if a.etat_ticket=='expire' else 12,'controle_Alice':0}
+                if a.etat_ticket=='concurrent':
+                    rows=re.findall(rb'NXEXEC concurrence ticket=(\d+) thread=(\d+) statut=(\d+) droit_collecte=(\d+) anciens_spawns_refuses=3/3',serial.data)
+                    if len(rows)!=2 or len({r[0] for r in rows})!=1 or len({r[1] for r in rows})!=2 or sorted(int(r[2]) for r in rows)!=[0,12]:
+                        raise Refus('consommation concurrente non démontrée')
+                    report['concurrence_threads']=[{'thread':int(r[1]),'statut':int(r[2]),'anciens_spawns_refuses':3} for r in rows]
             elif a.separation:
                 bob=[events.actor(b'NAR2 Bob references pret')]
                 if len(by_shell)!=1 or bob[0] in by_shell or re.search(rb'NAEXEC enfant owner='+str(bob[0]).encode()+rb' child=',serial.data):
