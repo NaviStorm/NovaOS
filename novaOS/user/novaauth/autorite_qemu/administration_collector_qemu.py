@@ -1,5 +1,5 @@
 """Observation QEMU privée : lectures GDB seulement, aucun handle aux sessions."""
-import json, os, socket, threading, time
+import hashlib, json, os, socket, threading, time
 from types import SimpleNamespace
 from exec_vm_debug import Debug,symbol
 from administration_outputs import Collector,read_stopped,Refus
@@ -40,11 +40,17 @@ class Observer:
                     # Une période sans sortie n'est pas une panne de l'invité.
                     # Le délai global du banc borne la collecte ; cette attente
                     # n'altère ni les horloges ni les échéances NovaAuth.
-                    try:d.stopped()
+                    try:stop=d.stopped()
                     except TimeoutError:continue
                     pc=d.register(32 if self.arch=='aarch64' else 16)
                     self.last_pc=pc
                     kind=self.addresses.get(pc)
+                    def diagnostic(**fields):
+                        # CPU/PC et empreinte seulement : aucun contenu de
+                        # session, pointeur de données ou mémoire arbitraire.
+                        with (self.out/'collecteur-arrets.jsonl').open('a') as f:
+                            f.write(json.dumps(fields)+'\n')
+                    diagnostic(arret=stop,pc=pc,cpu=d.command('qC'),sonde=kind)
                     if kind is None:raise Refus('arrêt hors sondes R2')
                     with self.guard:
                         if kind=='session':
@@ -53,6 +59,7 @@ class Observer:
                             if size!=80 or not ptr:raise Refus('session de sonde invalide')
                             raw=bytes.fromhex(d.command(f'm{ptr:x},{size:x}'))
                             if len(raw)!=80 or raw[:8]!=b'NXR2SES1':raise Refus('session non canonique')
+                            diagnostic(session_sha256=hashlib.sha256(raw).hexdigest())
                             route=(int.from_bytes(raw[8:16],'little'),raw[16:48],raw[48:80])
                             if route in self.routes or len(self.routes)>=2:raise Refus('route réutilisée ou hors borne')
                             self.routes.append(route)
@@ -65,6 +72,7 @@ class Observer:
                             with (self.out/'sorties-noyau.bin').open('ab') as f:f.write(raw)
                     d.breakpoint(pc,False)
                     answer=d.command('s')
+                    diagnostic(pas=answer,pc=d.register(32 if self.arch=='aarch64' else 16),cpu=d.command('qC'))
                     if not answer.startswith(('T05','S05')):raise Refus('pas de sonde inattendu')
                     d.breakpoint(pc);d.resume()
         except Exception as e:
