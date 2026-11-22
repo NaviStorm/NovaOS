@@ -52,7 +52,7 @@ def main():
             if b'nsh> ' not in serial.data:serial.expect(rb'nsh> ',20)
             rc,raw=serial.command('true')
             if rc:raise Refus('authentification Alice refusée')
-            for label in [b'NAR2 Bob authentifie route distincte',b'NAR2 Bob consultation propre terminee']:
+            for label in [b'NAR2 Bob authentifie route distincte',b'NAR2 Bob refus serveur et substitutions verifies']:
                 if label not in serial.data:serial.expect(re.escape(label),40)
             rc,raw=serial.command('admin-sonde --self')
             (out/'alice-consultation.bin').write_bytes(raw)
@@ -68,13 +68,28 @@ def main():
                 path=out/f'flux-{binding.shell}-{binding.child}-{binding.fd}.bin';path.write_bytes(data)
                 streams.append({'shell':binding.shell,'pid':binding.child,'fd':binding.fd,'octets':len(data),'fichier':path.name})
             by_shell={}
-            for binding,closed,data in rows:by_shell.setdefault(binding.shell,{})[binding.fd]=data
+            for binding,closed,data in rows:
+                by_shell.setdefault(binding.shell,{}).setdefault(binding.child,{})[binding.fd]=data
             bob_oracle=a.genese.with_name('oracle-bob.bin').read_bytes()
-            if len(by_shell)!=2 or sorted(by_shell.values(),key=lambda v:v[1])!=sorted([{1:oracle,2:b''},{1:bob_oracle,2:b''}],key=lambda v:v[1]):
-                raise Refus('sorties binaires Alice/Bob non conformes')
+            level=b'EL0' if a.arch=='aarch64' else b'Ring3'
+            codes=dict((int(p),int(c)) for p,c in re.findall(rb'PROC pid=(\d+) niveau='+level+rb' pc=0x[0-9a-f]+ sortie=(\d+)',serial.data))
+            expected_bob=[(0,bob_oracle),(5,(5).to_bytes(8,'little')+bytes(56)),
+                          (5,(5).to_bytes(8,'little')+bytes(56)),
+                          (3,(3).to_bytes(8,'little')+bytes(56)),
+                          (5,(5).to_bytes(8,'little')+bytes(56)),
+                          (3,(3).to_bytes(8,'little')+bytes(56)),(0,bob_oracle)]
+            witnessed=[]
+            for shell,children in by_shell.items():
+                actual=[(codes.get(pid),fds.get(1),fds.get(2)) for pid,fds in sorted(children.items())]
+                if actual==[(0,oracle,b'')]:witnessed.append('Alice')
+                elif actual==[(code,data,b'') for code,data in expected_bob]:witnessed.append('Bob')
+                else:raise Refus('sorties ou statuts natifs non conformes : '+str(shell))
+            if sorted(witnessed)!=['Alice','Bob']:raise Refus('sessions manquantes ou confondues')
+            report['refus_bob']=['annuaire Alice','requête ajout administratif directe','contexte forgé','métadonnées forgées','rejeu de trame']
             report['sorties_exclusivement_hote']=streams
             report['enrolement_époques']=enrolled
             report['bob_consultation_statut_zero']=True
+            observer.close()
             report['succes']=True
             return report
         try:

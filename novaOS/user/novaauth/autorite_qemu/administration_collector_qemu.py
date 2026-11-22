@@ -1,12 +1,12 @@
 """Observation QEMU privée : lectures GDB seulement, aucun handle aux sessions."""
-import os, socket, threading, time
+import json, os, socket, threading, time
 from types import SimpleNamespace
 from exec_vm_debug import Debug,symbol
 from administration_outputs import Collector,read_stopped,Refus
 
 class Observer:
     def __init__(self,control,arch,kernel,out):
-        self.routes=[];self.records=[];self.error=None;self.collector=None
+        self.routes=[];self.records=[];self.error=None;self.collector=None;self.last_pc=None
         self.done=threading.Event();self.ready=threading.Event();self.guard=threading.Lock()
         self.addresses={symbol(kernel,'nova_r2_session_observe'):'session',symbol(kernel,'nova_r2_output_observe'):'output'}
         self.control,self.arch,self.out=control,arch,out
@@ -37,8 +37,13 @@ class Observer:
                 for at in self.addresses:d.breakpoint(at)
                 d.resume();self.ready.set()
                 while not self.done.is_set():
-                    d.stopped()
+                    # Une période sans sortie n'est pas une panne de l'invité.
+                    # Le délai global du banc borne la collecte ; cette attente
+                    # n'altère ni les horloges ni les échéances NovaAuth.
+                    try:d.stopped()
+                    except TimeoutError:continue
                     pc=d.register(32 if self.arch=='aarch64' else 16)
+                    self.last_pc=pc
                     kind=self.addresses.get(pc)
                     if kind is None:raise Refus('arrêt hors sondes R2')
                     with self.guard:
@@ -66,6 +71,10 @@ class Observer:
             if not self.done.is_set():self.error=type(e).__name__+': '+str(e)
             self.ready.set()
         finally:
+            (self.out/'collecteur-diagnostic.json').write_text(json.dumps({
+                'erreur':self.error,'dernier_pc':self.last_pc,
+                'sessions':len(self.routes),'evenements':len(self.records),
+                'arret_demande':self.done.is_set()},indent=2)+'\n')
             os.close(wr)
             if self.debug:self.debug.close()
     def outputs(self):

@@ -20,6 +20,14 @@ fn perform() -> rt::Result<()> {
         ["--invalid-frame"] => {request[8]=1;mode=7;},
         ["--forged-context"] => {request[8]=1;mode=8;},
         ["--forged-meta"] => {request[8]=1;mode=9;},
+        ["--add-self", user, group] => {
+            request[8]=21;
+            for (offset,name) in [(32,*user),(72,*group)] {
+                if name.is_empty() || name.len()>32 {return Err(rt::BAD_ARGUMENT);}
+                request[offset]=2;request[offset+1]=name.len() as u8;
+                request[offset+8..offset+8+name.len()].copy_from_slice(name.as_bytes());
+            }
+        },
         ["--twice"] => {request[8]=1;repeats=2;},
         ["--user", name] | ["--group", name] => {
             if name.is_empty() || name.len()>32 {return Err(rt::BAD_ARGUMENT);}

@@ -114,6 +114,19 @@ impl Port {
                     return Err(rt::REVOKED);
                 }
                 let cmd = admin_command::decode(q).map_err(|_| rt::BAD_ARGUMENT)?;
+                #[cfg(feature="administration-r2-guest")]
+                if let Command::Prepare(change) = cmd {
+                    let action=match change {
+                        admin_command::Mutation::CreateGroup(_) |
+                        admin_command::Mutation::AddMember {..} |
+                        admin_command::Mutation::RemoveMember {..} => Action::Groups,
+                        _ => Action::Users,
+                    };
+                    // Même une mutation pas encore raccordée doit passer le
+                    // contrôle serveur ; le canal SELF ne donne aucun pouvoir.
+                    state.authorize_administrative(grant,c.image,c.scope,action)
+                        .map_err(|_|rt::DENIED)?;
+                }
                 let read = match cmd {
                     Command::Read(r) => r,
                     _ => return Err(rt::REFUSED),

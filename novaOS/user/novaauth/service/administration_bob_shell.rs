@@ -17,6 +17,17 @@ pub(super) fn session()->rt::Result<()> {
     let status=login.execute("admin-sonde", &["--self"])?;
     if status!=0 {return Err(status);}
     mark(b"NAR2 Bob consultation propre terminee")?;
+    for (args,expected) in [
+        (&["--user","alice"][..],rt::DENIED),
+        (&["--add-self","bob","administrateurs"][..],rt::DENIED),
+        (&["--forged-context"][..],rt::BAD_ARGUMENT),
+        (&["--forged-meta"][..],rt::DENIED),
+        (&["--replay"][..],rt::BAD_ARGUMENT),
+    ] {
+        if login.execute("admin-sonde",args)?!=expected {return Err(rt::REFUSED);}
+    }
+    if login.execute("admin-sonde",&["--self"])?!=0 {return Err(rt::REFUSED);}
+    mark(b"NAR2 Bob refus serveur et substitutions verifies")?;
     loop {
         match rt::receive_for(rt::config(1),25) {
             Err(rt::TIMED_OUT|rt::WOULD_BLOCK)=>(),
