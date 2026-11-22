@@ -4,33 +4,39 @@ use ed25519_dalek::{Signer,SigningKey};
 use embedded_tls::TlsError;
 use novaos_recovery::{exec_admission as exec,framing::{Header,HEADER,MAX}};
 
+#[cfg(not(feature="administration-r2-guest"))]
+use novaos_recovery::exec_admission as wire;
+#[cfg(feature="administration-r2-guest")]
+use novaos_recovery::subject_admission as wire;
+
 pub fn serve(key:&SigningKey,port:u64,id:&[u8;32],first:rt::ReceiveV1)->rt::Result<()> {
     let mut request=[0;MAX];let h=rpc::receive(port,first,&mut request,||Ok(2000))?;
     let n=usize::from(h.size);
-    if h.sequence!=1 || !matches!((h.operation,n),(40,320)|(41,353)|(42,352)) ||
-        request[HEADER..HEADER+16]!=incarnation::SERVER ||
+    let valid_size=match h.operation {40=>n==64+wire::SIZE,41=>n==97+wire::SIZE,42=>n==96+wire::SIZE,_=>false};
+    if h.sequence!=1 || !valid_size ||
+       request[HEADER..HEADER+16]!=incarnation::SERVER ||
         request[HEADER+16..HEADER+32]!=incarnation::DOMAIN || request[HEADER+32..HEADER+64]!=*id {
         return Err(rt::DENIED);
     }
     let body=&request[HEADER+64..HEADER+n];
-    let q=exec::Request::parse(&body[..exec::SIZE]).map_err(|_|rt::BAD_ARGUMENT)?;
+    let q=wire::Request::parse(&body[..wire::SIZE]).map_err(|_|rt::BAD_ARGUMENT)?;
     q.scope(&incarnation::SERVER,&incarnation::DOMAIN,id).map_err(|_|rt::DENIED)?;
     let mut signed=[0;512];
     let size=match h.operation {
         40=>{
             signed[..exec::ADMIT.len()].copy_from_slice(exec::ADMIT);
-            signed[exec::ADMIT.len()..exec::ADMIT.len()+exec::SIZE].copy_from_slice(q.bytes());
-            exec::ADMIT.len()+exec::SIZE
+            signed[exec::ADMIT.len()..exec::ADMIT.len()+wire::SIZE].copy_from_slice(q.bytes());
+            exec::ADMIT.len()+wire::SIZE
         }
         41=>{
-            let data=q.finish(body[exec::SIZE],body[exec::SIZE+1..].try_into().map_err(|_|rt::BAD_ARGUMENT)?)
+            let data=q.finish(body[wire::SIZE],body[wire::SIZE+1..].try_into().map_err(|_|rt::BAD_ARGUMENT)?)
                 .map_err(|_|rt::BAD_ARGUMENT)?;
             signed[..exec::FINISH.len()].copy_from_slice(exec::FINISH);
             signed[exec::FINISH.len()..exec::FINISH.len()+65].copy_from_slice(&data);
             exec::FINISH.len()+65
         }
         42=>{
-            if body[exec::SIZE..]==[0;32] {return Err(rt::BAD_ARGUMENT);}
+            if body[wire::SIZE..]==[0;32] {return Err(rt::BAD_ARGUMENT);}
             signed[..exec::QUERY.len()].copy_from_slice(exec::QUERY);
             signed[exec::QUERY.len()..exec::QUERY.len()+body.len()].copy_from_slice(body);
             exec::QUERY.len()+body.len()

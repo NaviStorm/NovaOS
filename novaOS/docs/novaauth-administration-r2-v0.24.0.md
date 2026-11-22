@@ -35,9 +35,19 @@ Le reçu d'admission signe la position durable et les **280 octets complets**. L
 
 Preuves et quatre exécutables de tests hôtes exacts : `/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/`. Manifeste de ce point : `SHA256-etape-a.txt`, **14 fichiers relus et vérifiés**, SHA-256 `bd46a8a23b59d82ef473549691ac1d24fa7567e7b22f33388ad76588f2fecc9d`.
 
+## Raccord de compilation R2
+
+Le profil explicite `--administration-r2` ajoute `NXLDUSR1` sur la route privée déjà authentifiée du vérificateur. Le noyau vérifie le nonce de sélection, la session, le sujet et la tête, et fige l'époque dans le ticket, y compris pour le lecteur préparé d'un pipe. Ni l'ELF ni NovaFS ne fournissent cette époque. Une réponse de portée administrative est acceptée seulement pour la même époque. Les métadonnées privées du registre passent de 29 à 32 mots ; aucun handle, racine IPC, sélecteur ou droit public n'est ajouté. Le champ `Binding.epoch` demeure la révision d'installation.
+
+Le signataire signe les 280 octets, après validation de la taille et du couple serveur/domaine/incarnation. Les anciennes variantes restent sélectionnées hors du profil R2. Les profils ordinaires ne sont pas modifiés.
+
+Les exports QEMU compilent pour les deux architectures : x86_64 en 24,34 s et AArch64 en 22,71 s. Les neuf contrôles ABI réussissent. **Il s'agit de compilations et de contrôles statiques, pas d'une qualification QEMU de R2.** Les journaux conservent l'avertissement de `rust-objcopy` : sa bibliothèque LLVM est absente, et l'étape facultative de réduction du binaire échoue ; les compilations se terminent néanmoins au statut 0. La configuration du Mac n'a pas été modifiée.
+
+Les deux noyaux exacts sont conservés dans une archive privée, car ils embarquent des secrets de laboratoire. Les sept preuves complémentaires figurent dans `SHA256-raccord-admissions-01.txt` (empreinte `3999639f0d7935d2c41ac28ebd6ad2d1438d4ffa6ef0858299907483402b8bb8`). Les preuves R1 et le manifeste de l'étape A sont conservés sans modification.
+
 ## Raccords restant à réaliser
 
-1. Transporter le sujet et l'époque immuables depuis la session attestée jusqu'au ticket et à l'admission distante, sans les confondre avec la révision d'installation.
+1. Terminer le raccord du banc à la variante d'admission R2 et à l'enrôlement des époques dans l'autorité ; exercer les refus dans l'invité.
 2. Relier préparation, confirmation et consultation d'issue à la même session administrative et aux capacités courantes ; publier le triplet par NovaFS seulement après les contrôles et reçus prévus.
 3. Acquitter effectivement les révocations des vérificateurs, tickets et effecteurs VFS. Un retrait de groupe doit préserver les origines de droits indépendantes.
 4. Réaliser les commandes natives et la documentation ARC-026, puis la recette de réactivation sans consultation intermédiaire des anciens objets, avant leur expiration.

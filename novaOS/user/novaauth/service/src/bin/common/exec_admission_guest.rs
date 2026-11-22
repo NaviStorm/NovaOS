@@ -1,6 +1,11 @@
 //! Pompe du registre isolé. Seul le noyau produit l'identité et l'issue locales.
 use crate::{common,incarnation,recovery_rpc as rpc,runtime as rt,tete};
-use novaos_recovery::{exec_admission::{Request,RECEIPT},framing::{MAX,HEADER}};
+use novaos_recovery::{exec_admission::RECEIPT,framing::{MAX,HEADER}};
+#[cfg(not(feature="administration-r2-guest"))]
+use novaos_recovery::exec_admission::{Request,SIZE};
+#[cfg(feature="administration-r2-guest")]
+use novaos_recovery::subject_admission::{Request,SIZE};
+const WORDS:usize=if cfg!(feature="administration-r2-guest"){32}else{29};
 use ed25519_dalek::{VerifyingKey,Signature};
 const LIST:u64=0x4e58474154454c53;
 const READ:u64=0x4e58474154450000;
@@ -11,8 +16,8 @@ fn notify(port:u64,operation:u64)->rt::Result<u64> {
     let r=rt::call(rt::IPC_NOTIFY,port,operation,0);
     if r.status==0 {Ok(r.value)} else {Err(r.status)}
 }
-fn metadata(port:u64)->rt::Result<[u64;29]> {
-    let mut words=[0;29];for (i,w) in words.iter_mut().enumerate(){*w=notify(port,READ|i as u64)?;}Ok(words)
+fn metadata(port:u64)->rt::Result<[u64;WORDS]> {
+    let mut words=[0;WORDS];for (i,w) in words.iter_mut().enumerate(){*w=notify(port,READ|i as u64)?;}Ok(words)
 }
 fn bytes<const N:usize>(words:&[u64])->[u8;N] {
     let mut out=[0;N];for (w,b) in words.iter().zip(out.chunks_exact_mut(8)){b.copy_from_slice(&w.to_le_bytes());}out
@@ -61,13 +66,19 @@ impl Pump {
             let generation=u64::from_be_bytes(head[72..80].try_into().unwrap());
             let op:[u8;16]=common::random()?[..16].try_into().unwrap();
             command(leaf,0,op,generation,[0;32])?;
-            let mut q=[0;256];q[..8].copy_from_slice(b"NAEXEC01");
+            let mut q=[0;SIZE];
+            q[..8].copy_from_slice(if cfg!(feature="administration-r2-guest"){b"NAEXAD01"}else{b"NAEXEC01"});
+            #[cfg(feature="administration-r2-guest")]
+            {
+                q[256..272].copy_from_slice(&bytes::<16>(&m[29..31]));
+                q[272..].copy_from_slice(&m[31].to_be_bytes());
+            }
             q[8..24].copy_from_slice(&incarnation::SERVER);q[24..40].copy_from_slice(&incarnation::DOMAIN);
             q[40..72].copy_from_slice(&incarnation::identity());q[72..80].copy_from_slice(&generation.to_be_bytes());
             q[80..112].copy_from_slice(&head[80..112]);q[112..144].copy_from_slice(&bytes::<32>(&m[4..8]));
             q[144..176].copy_from_slice(&bytes::<32>(&m[8..12]));q[176..192].copy_from_slice(&bytes::<16>(&m[12..14]));
             q[192..224].copy_from_slice(&bytes::<32>(&m[14..18]));q[224..232].copy_from_slice(&m[1].to_le_bytes());
-            q[232..240].copy_from_slice(b"NATICK01");q[240..].copy_from_slice(&op);
+            q[232..240].copy_from_slice(b"NATICK01");q[240..256].copy_from_slice(&op);
             self.pending=Some(Pending {leaf,request:Request::parse(&q).map_err(|_|rt::REFUSED)?,sent:false,finish_sent:false});
         }
         let p=match self.pending.as_mut() {
@@ -75,7 +86,7 @@ impl Pump {
             None=>return Err(UNCERTAIN), // aucune reprise supposant une annulation
         };
         let m=metadata(leaf)?;let op=bytes::<16>(&m[26..28]);
-        if op!=p.request.bytes()[240..] {return Err(rt::DENIED);}
+        if op!=p.request.bytes()[240..256] {return Err(rt::DENIED);}
         let mut answer=[0;MAX];
         if m[0]==1 {
             if !p.sent {
@@ -100,7 +111,7 @@ impl Pump {
         let state=if m[0]==4 {1}else{2};let child=bytes::<32>(&m[22..26]);
         if !p.finish_sent {
             p.finish_sent=true;
-            let mut q=[0;289];q[..256].copy_from_slice(p.request.bytes());q[256]=state;q[257..].copy_from_slice(&child);
+            let mut q=[0;SIZE+33];q[..SIZE].copy_from_slice(p.request.bytes());q[SIZE]=state;q[SIZE+1..].copy_from_slice(&child);
             let n=exchange(41,&q,&mut answer)?;let b=&answer[HEADER+8..HEADER+8+n];
             let expected=p.request.finish(state,&child).map_err(|_|rt::REFUSED)?;
             if n!=137 || b[8..73]!=expected || b[..8]==[0;8] {return Err(rt::REFUSED);}
@@ -115,7 +126,7 @@ impl Pump {
 }
 impl Pending {
     fn query(&self,answer:&mut [u8;MAX])->rt::Result<novaos_recovery::exec_admission::Outcome> {
-        let fresh=*common::random()?;let mut q=[0;288];q[..256].copy_from_slice(self.request.bytes());q[256..].copy_from_slice(&fresh);
+        let fresh=*common::random()?;let mut q=[0;SIZE+32];q[..SIZE].copy_from_slice(self.request.bytes());q[SIZE..].copy_from_slice(&fresh);
         let n=exchange(42,&q,answer)?;
         self.request.outcome(&key()?,&fresh,&answer[HEADER+8..HEADER+8+n]).map_err(|_|rt::REFUSED)
     }
