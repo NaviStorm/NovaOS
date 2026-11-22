@@ -1,7 +1,7 @@
 """Tests hôtes de synchronisation ; aucune qualification invitée déduite."""
 import re
 import unittest
-from administration_events import Events, Refus, command_status_pattern
+from administration_events import Events, Refus, command_status_pattern, observed_command_status_pattern
 
 class Serial:
     def __init__(self, data):
@@ -68,6 +68,16 @@ class CommandStatusTests(unittest.TestCase):
         self.assertEqual(m[1],b'0')
         self.assertEqual(bytes(s.data[s.offset:]),raw[len(b'NXR2_1_0__FIN'):])
         self.assertIsNotNone(s.expect(rb'nsh> ',1))
+    def test_atomic_status_survives_interleaved_prompt(self):
+        # Fin exacte de l'essai S9 AArch64/P9-512, tentative 03.
+        raw=(b'DEBUG pid=5 NXR2_1_0__FIN\r\n'
+             b'DEBUG pid=11 NAR2 Bob attennte reash> ctivation explicite\r\n')
+        self.assertIsNone(re.search(rb'nsh> ',raw))
+        m=re.search(observed_command_status_pattern('NXR2_1_'),raw)
+        self.assertEqual((int(m[1]),int(m[2])),(5,0))
+        for incomplete in (b'',b'DEBUG pid=5 NXR2_1_0__FI',b'NXR2_1_0__FIN'):
+            self.assertIsNone(re.search(observed_command_status_pattern('NXR2_1_'),incomplete))
+
     def test_normal_status_and_native_failure_are_preserved(self):
         for code in [0,3,12,20]:
             m=re.search(command_status_pattern('NXR2_2_'),f'NXR2_2_{code}__FIN\r\n'.encode())

@@ -193,7 +193,9 @@ def main():
                 pattern=observed_command_status_pattern(step) if a.ticket_vivant else command_status_pattern(step)
                 status = serial.expect(pattern, 80)
                 shell_status=int(status[2] if a.ticket_vivant else status[1])
-                if i != len(cases)-1 or a.reactivation:
+                # Le marqueur DEBUG atomique identifie la fin et le statut.
+                # Le prompt CONSOLE peut être entrelacé avec Bob sur le port série.
+                if not a.ticket_vivant and i != len(cases)-1:
                     serial.expect(rb'nsh> ', 20)
                 output = bytes(serial.data[start:serial.offset])
                 (out / f'commande-{i:02}.bin').write_bytes(output)
