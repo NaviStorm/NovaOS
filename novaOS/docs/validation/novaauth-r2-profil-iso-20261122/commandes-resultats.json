@@ -1,0 +1,20 @@
+{
+  "succes": false,
+  "architecture": "x86_64",
+  "secteur": 4096,
+  "portee": "d\u00e9sactivation de Bob avec ticket vivant ; refus avant expiration exig\u00e9",
+  "lot": "desactivation",
+  "commandes": [
+    {
+      "commande": "usermod --disable bob --prepare",
+      "statut_shell": 3,
+      "statut_attendu": 0,
+      "pid": [
+        21
+      ]
+    }
+  ],
+  "drapeaux_locale": 0,
+  "langue_ELF": "en",
+  "evenements": []
+}
