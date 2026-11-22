@@ -165,34 +165,9 @@ def main():
                 # précédente ne peut terminer la commande courante.
                 step = 'NXR2_' + str(i) + '_'
                 line=command + '; echo ' + step + '$?__FIN' + ('; exit' if i == len(cases)-1 else '')
-                prefilled=a.ticket_vivant and i==1
-                if prefilled:
-                    # Préparer la ligne au terminal avant émission du ticket.
-                    # Aucune commande exécutée sans LF ; aucune mutation ni
-                    # prolongation de droit. Au début de l'émission du ticket, seul LF
-                    # déclenche le véritable ELF usermod de confirmation.
-                    bob_pid = events.actor(b'NAR2 Bob attente declenchement authentification')
-                    events.expect(bob_pid, b'NAR2 Bob authentifie route distincte', 40)
-                    events.expect(bob_pid, ('NAR2 Bob declenchement operation=' + intention['operation']).encode(), 40)
-                    alice_pid = report['commandes'][0]['shell']
-                    with observer.guard:
-                        routes = list(observer.routes)
-                    selected = {r[0]: r for r in routes}
-                    if len(routes) != 2 or set(selected) != {alice_pid, bob_pid}:
-                        raise Refus('deux routes authentifiées distinctes absentes')
-                    report['sessions_temoin'] = {
-                        name: {'pid': pid, 'instance': selected[pid][1].hex(),
-                               'session': selected[pid][2].hex()}
-                        for name, pid in [('Alice', alice_pid), ('Bob', bob_pid)]}
-                    for record in events.records:
-                        route = selected[record['pid']]
-                        record.update(instance=route[1].hex(), session=route[2].hex())
-                    serial.send(line.encode())
-                    events.expect(bob_pid, b'NAR2 Bob preparation terminee emission ticket', 40)
                 serial.offset = len(serial.data)
                 start = serial.offset
-                if prefilled:serial.send(b'\n')
-                else:serial.submit(line)
+                serial.submit(line)
                 status = serial.expect(re.escape(step.encode()) + rb'(\d+)__FIN\r?\n', 80)
                 if i != len(cases)-1:
                     serial.expect(rb'nsh> ', 20)
@@ -234,6 +209,21 @@ def main():
                 item['stdout_octets'] = len(expected)
                 item['stderr_octets'] = len(expected_stderr)
                 item['octets_conformes'] = True
+                if a.ticket_vivant and i==1:
+                    bob_pid=events.actor(b'NAR2 Bob attente declenchement authentification')
+                    events.expect(bob_pid,b'NAR2 Bob authentifie route distincte',40)
+                    events.expect(bob_pid,('NAR2 Bob declenchement operation='+intention['operation']).encode(),40)
+                    events.expect(bob_pid,b'NAR2 Bob ticket vivant non consomme',40)
+                    with observer.guard: routes=list(observer.routes)
+                    selected={r[0]:r for r in routes}
+                    if len(routes)!=2 or set(selected)!={alice_pid,bob_pid}:
+                        raise Refus('deux routes authentifiées distinctes absentes')
+                    report['sessions_temoin']={name:{'pid':pid,'instance':selected[pid][1].hex(),'session':selected[pid][2].hex()}
+                        for name,pid in [('Alice',alice_pid),('Bob',bob_pid)]}
+                    for record in events.records:
+                        route=selected[record['pid']]
+                        record.update(instance=route[1].hex(),session=route[2].hex())
+
             serial.expect(rb'BLOC bilan mode=41 service=Exit\(0\) bloc=Exit\(0\) pilote=Exit\(0\) client=Exit\(0\) retrait=Ok\(\(\)\)', 40)
             rows = observer.outputs()
             by_shell = {}
