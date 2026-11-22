@@ -71,6 +71,13 @@ pub enum Operation<'a> {
     },
 }
 
+/// Métadonnées dérivées du même plan que les trois objets, jamais des champs
+/// fournis par l'ELF. L'autorité ferme les époques dans la transaction de tête.
+pub struct Publication {
+    pub triplet: Triplet,
+    pub metadata: [u8; 49],
+}
+
 pub const RETIRED_PREFIX: &[u8] = b"NovaAuth/QEMU/subject-retired/v1\0";
 /// Reçu terminal authentifié, distinct d'un retrait demandé ou en cours.
 /// Le service choisit la clé et le serveur attendus depuis sa configuration de
@@ -203,6 +210,52 @@ impl RegistryView {
             },
         })
     }
+    pub fn administration_publication(
+        &self,
+        grant: Grant,
+        request: Id,
+        operation: Operation<'_>,
+        retired: Option<&Retired>,
+    ) -> Result<Publication> {
+        let principal_epoch = self.authentication_epoch(grant)?;
+        let transition = match &operation {
+            Operation::Create { .. } => (1, [0; 16], 0),
+            Operation::Disable { subject } | Operation::Reactivate { subject } => {
+                let auth = self
+                    .state
+                    .user(*subject)?
+                    .authentication
+                    .as_ref()
+                    .ok_or(Fault::Denied)?;
+                (
+                    if matches!(&operation, Operation::Disable { .. }) {
+                        2
+                    } else {
+                        3
+                    },
+                    *subject,
+                    auth.epoch,
+                )
+            }
+            _ => (4, [0; 16], 0),
+        };
+        // Contrôles du rôle, du dernier administrateur, de la tête et du reçu
+        // terminal dans le plan existant. Aucun octet n'est publié ici.
+        let triplet = self.administration_plan(grant, request, operation, retired)?;
+        let subject = if transition.0 == 1 {
+            created_user(triplet.head())
+        } else {
+            transition.1
+        };
+        let mut metadata = [0; 49];
+        metadata[..16].copy_from_slice(&grant.subject());
+        metadata[16..24].copy_from_slice(&principal_epoch.to_be_bytes());
+        metadata[24..40].copy_from_slice(&subject);
+        metadata[40..48].copy_from_slice(&transition.2.to_be_bytes());
+        metadata[48] = transition.0;
+        Ok(Publication { triplet, metadata })
+    }
+
     /// Préparation privée sur une tête exacte. L'appelant vérifie également les
     /// portées, la session et le facteur attesté ; publication via NovaFS seulement.
     pub fn administration_plan(

@@ -30,6 +30,11 @@ def request(database, key, peer, scope, operation, body, *, administration=False
         data,sig = api.admit(admission,q)
     elif operation == FINISH and len(q) == 97:
         data,sig = api.finish(admission,q[0],q[1:33],q[33:])
+        if administration:
+            from administration_epochs import Epochs, SubjectAdmission
+            from administration_mutation_rpc import progress
+            if isinstance(admission, SubjectAdmission):
+                progress(Epochs(authority), server, domain)
     elif operation == QUERY and len(q) == 96:
         data,sig = api.query(admission,q[:32],q[32:])
     else:

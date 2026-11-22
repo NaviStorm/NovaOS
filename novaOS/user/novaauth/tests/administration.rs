@@ -493,3 +493,164 @@ fn attested_channel_never_grants_account_privilege_and_update_requires_reauthori
         }
     }
 }
+
+/// La réactivation ne rétablit pas une appartenance retirée pendant la
+/// désactivation. Le reçu clôt l'ancienne époque, il ne restaure pas l'état.
+#[test]
+fn reactivation_keeps_current_memberships_and_same_identity_after_restart() {
+    for sector in [512, 4096] {
+        let mut f = Fixture::new(sector);
+        let before = f.view();
+        let old = before.resolve_verified_factor([2; 16]).unwrap();
+        let epoch = before.authentication_epoch(old).unwrap();
+        let p = before
+            .administration_plan(
+                before.resolve_verified_factor([1; 16]).unwrap(),
+                [3; 16],
+                Operation::Disable { subject: f.alice },
+                None,
+            )
+            .unwrap();
+        f.publish(&p);
+        let disabled = f.view();
+        let removed = disabled
+            .administration_plan(
+                disabled.resolve_verified_factor([1; 16]).unwrap(),
+                [4; 16],
+                Operation::RemoveMember {
+                    subject: f.alice,
+                    group: f.group,
+                },
+                None,
+            )
+            .unwrap();
+        f.publish(&removed);
+        let state = f.view();
+        let key = SigningKey::from_bytes(&[27; 32]);
+        let b = body(
+            f.alice,
+            epoch,
+            [3; 16],
+            p.head().generation,
+            before.head().digest,
+        );
+        let retired = Retired::verify(SERVER, &key.verifying_key(), &b, &sign(&key, &b)).unwrap();
+        let enabled = state
+            .administration_plan(
+                state.resolve_verified_factor([1; 16]).unwrap(),
+                [5; 16],
+                Operation::Reactivate { subject: f.alice },
+                Some(&retired),
+            )
+            .unwrap();
+        f.publish(&enabled);
+        f.fs = Engine::mount_current(f.fs.unmount().unwrap(), IDS, Mode::ReadWrite).unwrap();
+        let current = f.view();
+        assert!(current.user_info(old, None).is_err());
+        let fresh = current.resolve_verified_factor([2; 16]).unwrap();
+        let user = current.user_info(fresh, None).unwrap();
+        assert_eq!(user.id, f.alice);
+        assert_eq!(user.status, Status::Active);
+        assert!(user.groups.is_empty());
+        assert!(current.authentication_epoch(fresh).unwrap() > epoch);
+        // Résoudre un facteur n'est pas une authentification : les tests de
+        // session imposent séparément un nouveau défi et une nouvelle preuve.
+    }
+}
+
+#[test]
+fn publication_metadata_is_derived_from_the_authorized_exact_plan() {
+    let mut f = Fixture::new(512);
+    let before = f.view();
+    let admin = before.resolve_verified_factor([1; 16]).unwrap();
+    let alice = before.resolve_verified_factor([2; 16]).unwrap();
+    assert!(
+        before
+            .administration_publication(
+                alice,
+                [3; 16],
+                Operation::Disable { subject: f.alice },
+                None
+            )
+            .is_err()
+    );
+    let disabled = before
+        .administration_publication(
+            admin,
+            [3; 16],
+            Operation::Disable { subject: f.alice },
+            None,
+        )
+        .unwrap();
+    assert_eq!(&disabled.metadata[..16], &f.admin);
+    assert_eq!(
+        &disabled.metadata[16..24],
+        &before.authentication_epoch(admin).unwrap().to_be_bytes()
+    );
+    assert_eq!(&disabled.metadata[24..40], &f.alice);
+    assert_eq!(
+        &disabled.metadata[40..48],
+        &before.authentication_epoch(alice).unwrap().to_be_bytes()
+    );
+    assert_eq!(disabled.metadata[48], 2);
+    f.publish(&disabled.triplet);
+    let state = f.view();
+    let admin = state.resolve_verified_factor([1; 16]).unwrap();
+    assert!(
+        state
+            .administration_publication(
+                admin,
+                [4; 16],
+                Operation::Reactivate { subject: f.alice },
+                None
+            )
+            .is_err()
+    );
+    let key = SigningKey::from_bytes(&[27; 32]);
+    let b = body(
+        f.alice,
+        2,
+        [3; 16],
+        disabled.triplet.head().generation,
+        before.head().digest,
+    );
+    let retired = Retired::verify(SERVER, &key.verifying_key(), &b, &sign(&key, &b)).unwrap();
+    let next = state
+        .administration_publication(
+            admin,
+            [4; 16],
+            Operation::Reactivate { subject: f.alice },
+            Some(&retired),
+        )
+        .unwrap();
+    assert_eq!(&next.metadata[24..40], &f.alice);
+    assert_eq!(&next.metadata[40..48], &2u64.to_be_bytes());
+    assert_eq!(next.metadata[48], 3);
+    let reactivated = view(&next.triplet);
+    let grant = reactivated.resolve_verified_factor([2; 16]).unwrap();
+    assert_eq!(
+        reactivated.authentication_epoch(grant).unwrap(),
+        next.triplet.head().generation
+    );
+    assert!(next.triplet.head().generation > 2);
+    f.publish(&next.triplet);
+    let state = f.view();
+    let admin = state.resolve_verified_factor([1; 16]).unwrap();
+    let created = state
+        .administration_publication(
+            admin,
+            [5; 16],
+            Operation::Create {
+                name: "bob",
+                factor: [7; 16],
+                group: f.group,
+            },
+            None,
+        )
+        .unwrap();
+    assert_eq!(
+        &created.metadata[24..40],
+        &created_user(created.triplet.head())
+    );
+    assert_eq!(&created.metadata[40..49], &[0, 0, 0, 0, 0, 0, 0, 0, 1]);
+}

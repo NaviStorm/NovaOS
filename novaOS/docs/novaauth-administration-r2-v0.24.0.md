@@ -45,6 +45,28 @@ Les exports QEMU compilent pour les deux architectures : x86_64 en 24,34 s et AA
 
 Les deux noyaux exacts sont conservés dans une archive privée, car ils embarquent des secrets de laboratoire. Les sept preuves complémentaires figurent dans `SHA256-raccord-admissions-01.txt` (empreinte `3999639f0d7935d2c41ac28ebd6ad2d1438d4ffa6ef0858299907483402b8bb8`). Les preuves R1 et le manifeste de l'étape A sont conservés sans modification.
 
+## Publication administrative R2, raccord encore incomplet
+
+Les plans administratifs réutilisent les mêmes `State/apply`, triplet et écrivain NovaFS. Le registre dérive le sujet, l'époque et le type de changement du plan autorisé ; l'ELF ne les choisit pas. Le signataire QEMU R2 dispose d'une route privée additionnelle sur le canal existant :
+
+| Message privé | Corps signé hors préfixe | Effet |
+| --- | --- | --- |
+| 50 — publication | 209 octets : état 112, opération 16, nouvelle empreinte 32, principal 16, époque principale 8, sujet 16, époque cible 8, type 1 | Compare/publie la tête et les métadonnées dans la transaction existante |
+| 51 — acquittement des effecteurs | 129 octets : état 112, opération 16, masque 1 | Acquittement durable, distinct du reçu terminal |
+| 52 — consultation | 160 octets : état 112, opération 16, défi frais 32 | Lecture pure des acquittements et du reçu terminal éventuel |
+
+Les identités sont des octets exacts et les compteurs réseau sont big-endian. Le signataire vérifie chaque taille et le serveur/domaine/incarnation ; la signature couvre le préfixe de séparation puis tout le corps. Le reçu de publication confirme la tête atomique historique : il ne vaut ni clôture de session ni reçu terminal `RETIREE`. La vérification de ce dernier reste nécessaire avant réactivation. Aucun nouveau sélecteur, processus ou racine IPC n'est ajouté. Les messages n'embarquent ni secret de facteur ni triplet clair.
+
+Après un acquittement d'effecteur ou une preuve terminale de lancement, l'autorité peut progresser vers `RETIREE` **seulement** si les trois effecteurs et toutes les admissions sont déjà démontrés. Une consultation ne fait progresser aucune mutation. Le test R2 ajouté au commit 03b61 a été précisé pour exiger cette progression après une annulation irréversible, puis vérifier que le même retrait n'est pas exécuté deux fois ; les assertions historiques de `test_admission_exec` sont inchangées.
+
+Le chemin `Pending` réutilise la préparation, la relecture P9, les reçus et la réconciliation par identifiant. Il refuse de soumettre deux fois une mutation. **Les commandes R1 continuent toutefois à refuser les mutations : leur préparation/confirmation et les acquittements réels des effecteurs ne sont pas encore raccordés.** Un succès hôte ne vaut pas un acquittement invité.
+
+Résultats de cette étape : autorité Python **31/31** ; codecs natifs **10/10** sur Darwin ARM64 et **10/10** sous Rosetta x86_64 ; registre **8/8** par architecture avec secteurs simulés 512/4096 ; sessions **7/7** sur Darwin ARM64 ; ABI **9/9**. Les deux exports QEMU compilent. Le nouveau témoin de persistance retire un groupe pendant la désactivation, réactive avec le reçu terminal puis remonte P9 : identité stable, nouvelle époque, appartenance toujours absente et ancien grant refusé. Il ne remplace pas une authentification dans l'invité.
+
+Archive : `SHA256-mutations-03.txt`, 33 fichiers, SHA-256 `419199ef7bf636f44b85a92a0c21d27357e4a6fb0cad4a964bde8e5946def1d3`. Les neuf exécutables de tests exacts sont sauvegardés ; les noyaux contenant les secrets de laboratoire restent dans l'archive privée. L'échec initial de préparation de l'export (chemin d'import Python absent avec `runpy`) est conservé et corrigé en utilisant le point d'entrée standard du profil. Aucun changement de configuration du Mac.
+
+Aucun essai QEMU R2 ni nouvelle qualification des quatre ELF historiques exécuté à cette étape. Leur compatibilité R2, les ressources en exécution et les quatre profils restent à vérifier. Les délais et budgets sont inchangés.
+
 ## Raccords restant à réaliser
 
 1. Terminer le raccord du banc à la variante d'admission R2 et à l'enrôlement des époques dans l'autorité ; exercer les refus dans l'invité.

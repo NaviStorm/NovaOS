@@ -68,6 +68,9 @@ fn exchange(key: &SigningKey, id: &[u8; 32]) -> rt::Result<()> {
 #[cfg(feature="exec-admission-guest")]
 #[path="common/exec_admission_bridge.rs"]
 mod exec_admission_bridge;
+#[cfg(feature="administration-r2-guest")]
+#[path="common/administration_bridge.rs"]
+mod administration_bridge;
 fn serve() -> rt::Result<()> {
     let id = incarnation::identity();
     let port = rt::config(8);
@@ -102,6 +105,12 @@ fn serve() -> rt::Result<()> {
         }
         #[cfg(feature="vfs-guest")]
         if issued && recovery_done && recovery_bridge::is_request(&m) {
+            #[cfg(feature="administration-r2-guest")]
+            if novaos_recovery::framing::Header::parse(&m.payload[..novaos_recovery::framing::HEADER])
+                .is_ok_and(|h|matches!(h.operation,50..=52)) {
+                administration_bridge::serve(&key,port,&id,m)?;
+                continue;
+            }
             #[cfg(feature="exec-admission-guest")]
             if novaos_recovery::framing::Header::parse(&m.payload[..novaos_recovery::framing::HEADER])
                 .is_ok_and(|h|matches!(h.operation,40..=42)) {

@@ -566,3 +566,6 @@ pub mod exec_admission;
 
 #[cfg(feature = "administration-lab")]
 pub mod subject_admission;
+
+#[cfg(feature = "administration-lab")]
+pub mod administration;

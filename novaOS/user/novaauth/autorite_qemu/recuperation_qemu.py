@@ -260,7 +260,14 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
                                 from admission_rpc import request as exec_request
                                 result=exec_request(dispatcher.authority.path,
                                     Ed25519PrivateKey.from_private_bytes(args.decision.read_bytes()),
-                                    (args.cles/"serveur.pub").read_bytes(),(SERVER,DOMAIN),operation,body)
+                                    (args.cles/"serveur.pub").read_bytes(),(SERVER,DOMAIN),operation,body,
+                                    administration=getattr(args,"administration_r2",False))
+                            elif getattr(args,"administration_r2",False) and operation in (50,51,52):
+                                from administration_mutation_rpc import request as admin_request
+                                result=admin_request(dispatcher.authority.path,
+                                    Ed25519PrivateKey.from_private_bytes(args.decision.read_bytes()),
+                                    (args.cles/"serveur.pub").read_bytes(),(SERVER,DOMAIN),operation,body,
+                                    administration=True)
                             elif args.vfs and operation in (32,33,34):
                                 result=capture_store.request(operation,body)
                             elif args.vfs and operation in (30,31):

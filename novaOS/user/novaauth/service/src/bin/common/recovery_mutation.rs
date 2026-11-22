@@ -15,6 +15,8 @@ pub struct Pending {
     confirmed:bool,
     reference:[u8;16],
     captured:bool,
+    #[cfg(feature="administration-r2-guest")]
+    administration:Option<[u8;49]>,
 }
 fn verify(prefix:&[u8],data:&[u8],sig:&[u8])->rt::Result<()> {
     let mut signed=[0;512];let n=prefix.len()+data.len();
@@ -30,7 +32,18 @@ impl Pending {
             return Err(rt::DENIED);
         }
         let plan=state.revoke_plan(grant,object,operation).map_err(|_|rt::DENIED)?;
-        Ok(Self {plan,previous:current,submitted:false,started:false,confirmed:false,reference,captured:false})
+        Ok(Self {plan,previous:current,submitted:false,started:false,confirmed:false,reference,captured:false,
+            #[cfg(feature="administration-r2-guest")] administration:None})
+    }
+    #[cfg(feature="administration-r2-guest")]
+    pub fn from_administration(state:&View,grant:Grant,operation:[u8;16],current:[u8;112],reference:[u8;16],
+        change:novaos_identity::administration::Operation<'_>,retired:Option<&novaos_identity::administration::Retired>)->rt::Result<Self> {
+        if current[..16]!=crate::incarnation::SERVER || current[16..32]!=state.head().domain ||
+            current[32..64]!=incarnation::identity() || current[72..80]!=state.head().generation.to_be_bytes() || current[80..]!=state.head().digest {
+            return Err(rt::DENIED);
+        }
+        let p=state.administration_publication(grant,operation,change,retired).map_err(|_|rt::DENIED)?;
+        Ok(Self{plan:p.triplet,previous:current,submitted:false,started:false,confirmed:false,reference,captured:false,administration:Some(p.metadata)})
     }
     pub fn backup(&mut self,epoch:u64,recipients:[[u8;32];2])->rt::Result<()> {
         if !self.confirmed || self.captured {return Err(rt::DENIED);}
@@ -62,6 +75,13 @@ impl Pending {
         self.submitted=true;
         let mut client=rpc::Client::new(rt::config(8),incarnation::identity());
         let mut answer=[0;MAX];
+        #[cfg(feature="administration-r2-guest")]
+        let n=if let Some(metadata)=self.administration {
+            let mut packet=[0;209];packet[..160].copy_from_slice(&self.proposal());packet[160..].copy_from_slice(&metadata);
+            novaos_recovery::administration::Message::parse(novaos_recovery::administration::PUBLISH,&packet).map_err(|_|UNCERTAIN)?;
+            client.exchange(novaos_recovery::administration::PUBLISH,&packet,&mut answer).map_err(|_|UNCERTAIN)?
+        }else{client.exchange(30,&self.proposal(),&mut answer).map_err(|_|UNCERTAIN)?};
+        #[cfg(not(feature="administration-r2-guest"))]
         let n=client.exchange(30,&self.proposal(),&mut answer).map_err(|_|UNCERTAIN)?;
         if n!=72 || common::number(&answer[HEADER..])!=0 {return Err(UNCERTAIN);}
         verify(RECEIPT,&self.packet(),&answer[HEADER+8..HEADER+n]).map_err(|_|UNCERTAIN)?;

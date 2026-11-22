@@ -54,8 +54,11 @@ class Route(unittest.TestCase):
         self.send(rpc.FINISH, tail=bytes([execs.CANCELLED])+bytes(32))
         terminal = self.send(rpc.QUERY, tail=b'G'*32)
         self.assertNotEqual(first, terminal)
-        f.api.drain(*f.scope,b'R'*16)
+        # R2 progresse après la preuve terminale authentifiée, pas sur QUERY.
+        with self.assertRaisesRegex(reprise.Refus, 'terminé'):
+            f.api.drain(*f.scope,b'R'*16)
         with reprise.transaction(f.path) as db:
+            self.assertEqual(db.execute("SELECT state FROM subject_epochs WHERE subject=? AND epoch=2",(f.alice,)).fetchone(),(execs.RETIRED,))
             self.assertEqual(db.execute("SELECT count(*) FROM exec_events WHERE kind='admission'").fetchone(), (1,))
             self.assertEqual(db.execute("SELECT count(*) FROM exec_events WHERE kind='cancelled'").fetchone(), (1,))
 
