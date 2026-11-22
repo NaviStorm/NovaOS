@@ -1,0 +1,45 @@
+{
+  "commit": "00521f5b8314949727af8df7d07af4563fa06a9c",
+  "profil": "x86_64/P9-4096",
+  "essais_qemu": 1,
+  "verdict": "NON PROBANT R2 — erreur de configuration de l’ISO",
+  "cause": "cmdline cli au lieu de novaauth-sessions ; AUTH_SESSIONS_LAB reste false",
+  "tests_hotes": {
+    "reussis": 41,
+    "echecs": 0
+  },
+  "construction_x86_64": "réussie",
+  "scenarios": {
+    "ticket Bob vivant et non consommé": "NON EXÉCUTÉ : raccord non activé",
+    "révocation par Alice": "NON EXÉCUTÉ : raccord non activé",
+    "REVOKED avant expiration": "NON EXÉCUTÉ : raccord non activé",
+    "absence de création interdite après révocation": "NON EXÉCUTÉ : raccord non activé",
+    "reçu durable RETIREE": "NON EXÉCUTÉ : raccord non activé",
+    "drainage du parcours R2": "NON EXÉCUTÉ : raccord non activé"
+  },
+  "observations": {
+    "service_nvfs": 21,
+    "services_bloc_pilote_client": 11,
+    "deux_sessions_authentifiees": false,
+    "connexions_autorite": 0,
+    "p9_inchange": true,
+    "ancienne_autorite_inchangee": true,
+    "drainage_global_apres_echec": "endpoints=0 nodes=0 espaces=0 cadres_ipc=0 ; ne qualifie pas le drainage R2",
+    "plafond_racines": {
+      "2": 2,
+      "3": 4,
+      "4": 3,
+      "5": 0,
+      "1": 4
+    }
+  },
+  "restriction_plateforme": null,
+  "relance": false,
+  "artefacts_sha256": {
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/synchronisation-d237d2f/x86_64.iso": "0c6ce3a22d595f5884394e9ee73a953533ecb9690aaa89e0074e76536fdcc0cc",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/synchronisation-d237d2f/x86_64-kernel.elf": "4590760d0160b865fc29748a1c4c4273019b68ecc05725b5dd31f8d7ae9e5ab8",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/synchronisation-d237d2f/x86_64-registre.elf": "442ed94ac904c7faf5360c9d765af69ad4f70182fe6e699ae55f7d7c81afa61a",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/synchronisation-d237d2f/genese-x86_64-4096/identites.p9": "43c92266917eac0e41231c8997de2812a34223a219eb9ad49588b349586d7dd1",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/synchronisation-d237d2f/genese-x86_64-4096/autorite.raw": "105acaa8a0f3cbc84af09633c21a227b1622fa5a742e4d2cbccbfc87551c523a"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "debut_utc": "2026-11-22T11:33:55.488331+00:00",
+  "cloture_mesure_utc": "2026-11-22T11:44:42.643941+00:00",
+  "temps_total_ecoule_s": 647.153017625,
+  "attente_verrou_s": 0.000355792,
+  "execution_qemu_s": 100.904992916,
+  "tests_hotes_s": 2.751,
+  "construction_s": 22.62183645903133,
+  "developpement_diagnostic_archivage_s": 520.8748324579685,
+  "budget_actif_s": 647.1526618329999,
+  "limite_actif_s": 1800,
+  "borne": "Temps \u00e9coul\u00e9 conservateur ; pr\u00e9paration de publication incluse jusqu\u2019\u00e0 cet enregistrement. Aucun temps invit\u00e9 soustrait aux horodatages h\u00f4tes."
+}
