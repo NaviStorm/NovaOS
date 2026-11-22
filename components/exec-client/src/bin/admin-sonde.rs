@@ -11,11 +11,16 @@ fn perform() -> rt::Result<()> {
     request[..8].copy_from_slice(b"NXACMD01");
     let mut repeats = 1;
     let mut mode = 0;
+    let mut expected_status = 0;
     match launch.streams.argv.as_slice() {
         [] | ["--self"] => request[8]=1,
         ["--lost-reply"] => {request[8]=1;mode=1;},
         ["--concurrent-writer"] => {request[8]=1;mode=2;},
         ["--concurrent-reader"] => {request[8]=1;mode=3;},
+        [flag @ ("--last-admin-writer"|"--last-admin-reader")] => {
+            request[8]=18;request[32]=2;request[33]=5;request[40..45].copy_from_slice(b"alice");
+            mode=if *flag=="--last-admin-writer" {2}else{3};expected_status=rt::DENIED;
+        },
         ["--expire"] => {request[8]=1;mode=4;},
         ["--denied-same-channel"] => {request[8]=1;mode=5;},
         ["--replay"] => {request[8]=1;mode=6;},
@@ -45,7 +50,7 @@ fn perform() -> rt::Result<()> {
     }
     if mode>=5 {return refusals(&launch,&request,mode);}
     if matches!(mode, 1..=3) {
-        return transport_probe(&launch, &request, mode);
+        return transport_probe(&launch, &request, mode, expected_status);
     }
     let mut conversation = Conversation::new(&launch);
     for _ in 0..repeats {
@@ -222,6 +227,7 @@ fn transport_probe(
     launch: &AdministrativeLaunch<'_>,
     request: &[u8; 128],
     mode: u8,
+    expected_status: u64,
 ) -> rt::Result<()> {
     use nova_exec_client::admin_wire::{self, Direction, Inbox};
     let key = launch.endpoint();
@@ -281,8 +287,8 @@ fn transport_probe(
         }
     }
     let status = u64::from_le_bytes(answer[..8].try_into().unwrap());
-    if status != 0 {
-        return Err(status);
+    if status != expected_status {
+        return Err(if status==0 {rt::REFUSED}else{status});
     }
     if mode == 3 {
         let mut producer = [0; 128];

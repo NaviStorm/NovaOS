@@ -26,6 +26,7 @@ def main():
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+    parser.add_argument('--dernier-concurrent',action='store_true',help='deux requêtes partielles simultanées contre le dernier administrateur')
     parser.add_argument('--bob-minimal',action='store_true',help='Bob authentifié puis fermé, contrôles négatifs séparés')
     parser.add_argument('--etat-ticket',choices=['expire','recu','concurrent'],help='état EXEC_TICKET S6 distinct du témoin révoqué')
     parser.add_argument('--separation',action='store_true',help='références réelles Alice/Bob, sans transfert de droits')
@@ -41,6 +42,7 @@ def main():
         parser.add_argument('--' + name, type=lambda v: Path(v).resolve(), required=True)
     a = parser.parse_args()
     if a.separation and (a.ticket_vivant or a.reactivation or a.securite):parser.error('profils de recette distincts')
+    a.bob_minimal=a.bob_minimal or a.dernier_concurrent
     a.ticket_vivant = a.ticket_vivant or a.reactivation
     atomic_status = a.ticket_vivant or a.separation or bool(a.etat_ticket) or a.bob_minimal
     if a.etat_ticket and (a.separation or a.ticket_vivant or a.securite):parser.error("profils de recette distincts")
@@ -128,6 +130,9 @@ def main():
         cases=[('ticket-test '+a.etat_ticket+' whoami',b'' if a.etat_ticket=='expire' else b'alice\n')]
         if a.etat_ticket=='expire':cases.append(('whoami',b'alice\n'))
         report['portee']='S6 ticket '+a.etat_ticket+' et contrôle positif Alice'
+    if a.dernier_concurrent:
+        cases=[('admin-sonde --last-admin-writer | admin-sonde --last-admin-reader',(5).to_bytes(8,'little')+bytes(56)),('whoami',b'alice\n')]
+        report['portee']='S7 deux préparations concurrentes du retrait du dernier administrateur, puis lecture Alice'
     if a.commande:
         cases = [(cmd, expected) for cmd, expected in cases if isinstance(cmd, str) and cmd.split()[0] == a.commande]
         if not cases:
@@ -231,6 +236,19 @@ def main():
                 item = {'commande': command, 'statut_shell': shell_status,
                         'statut_attendu': expected_status, 'pid': sorted(pids)}
                 report['commandes'].append(item)
+                if a.dernier_concurrent and i==0:
+                    match=re.search(rb'NXPIPE producteur=(\d+) statut=0 lecteur=(\d+) statut=0',output)
+                    if shell_status!=0 or not match or match[1]==match[2]:raise Refus('deux PID/statuts du pipe absents')
+                    writer,reader=map(int,match.groups());item['pid']=[writer,reader]
+                    rows=[(binding,closed,data) for binding,closed,data in observer.outputs() if binding.child in (writer,reader)]
+                    actual={(b.child,b.fd):data for b,_,data in rows}
+                    if len(rows)!=3 or any(not closed for _,closed,_ in rows) or actual!={(writer,2):b'',(reader,1):expected,(reader,2):b''}:
+                        raise Refus('refus natifs concurrent dernier administrateur non conformes')
+                    shells={b.shell for b,_,_ in rows}
+                    if len(shells)!=1 or int(status[1]) not in shells:raise Refus('pipe hors session Alice')
+                    item.update(shell=next(iter(shells)),stdout_octets=64,stderr_octets=0,octets_conformes=True,refus_preparations=[5,5])
+                    (out/'concurrence-refus.bin').write_bytes(expected)
+                    continue
                 no_child=a.etat_ticket=='expire' and i==0
                 if shell_status != expected_status or len(pids) != (0 if no_child else 1):
                     raise Refus('statut ou PID non conforme : ' + command)
@@ -368,6 +386,9 @@ def main():
             codes = dict((int(p), int(c)) for p, c in re.findall(rb'PROC pid=(\d+) niveau=' + level + rb' pc=0x[0-9a-f]+ sortie=(\d+)', serial.data))
             for item in report['commandes']:
                 if item.get('statut_ticket')==8:continue
+                if a.dernier_concurrent and len(item['pid'])==2:
+                    item['statuts_natifs']=[codes.get(pid) for pid in item['pid']]
+                    if item['statuts_natifs']!=[0,0]:raise Refus('ELF concurrents non terminés normalement')
                 item['statut_natif'] = codes.get(item['pid'][0])
                 if item['statut_natif'] != item['statut_attendu']:
                     raise Refus('statut natif absent ou non conforme')
