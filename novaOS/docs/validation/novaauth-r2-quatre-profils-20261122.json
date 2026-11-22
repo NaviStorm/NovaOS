@@ -1,0 +1,1766 @@
+{
+  "date": "2026-11-22",
+  "depart": "dbb20cc4d92c002be3ed06c52e9e8483bd483cc4",
+  "reference_fonctionnelle": "c1084f9fdf3f5c36030c5b0fd85119c23f26c81d",
+  "candidat_fonctionnel": "c80bdcb580b77d3ce6ae47f0c05645ccd4212859",
+  "arbre_fonctionnel": "8d4bdbd7b54f0d5187d3b89b406afc7533f3262c",
+  "verdict": "Temoin Alice/Bob qualifie sur quatre profils : deux essais nouveaux x86_64/P9-512 et trois preuves applicables de c1084f9. Pas de qualification globale R2.",
+  "nouveaux_essais": [
+    {
+      "profil": "x86_64/P9-512",
+      "essai": "page01",
+      "source": "c80bdcb580b77d3ce6ae47f0c05645ccd4212859",
+      "banc": "c80bdcb580b77d3ce6ae47f0c05645ccd4212859",
+      "succes": true,
+      "artefacts_sha256": {
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64.iso": "54f5408d1eb08cc3f52c5a811e9bd8c36b52dfc71b67ceb724c213653beb9190",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-kernel.elf": "a5098ce7ce66809a5eded2b502ea434262bd7647177d5162c9abc0c4eb488b35",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-registre.elf": "2ddf743288c3bc656826b0c118f6db04a452675b38a953107bf9f9da73b95206",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/identites.p9": "1619a2e0fdee69f63e999a10dff4c31d3f24f2dfef96a8ef00a6cd3d268c8728",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/autorite.raw": "105acaa8a0f3cbc84af09633c21a227b1622fa5a742e4d2cbccbfc87551c523a"
+      },
+      "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-512-dbb20cc/r2-commandes-x86_64-512-desactivation-page01",
+      "tls_ms": 2888,
+      "tls_debut_ms": 856,
+      "tls_echeance_ms": 10856,
+      "tls_fin_ms": 3744,
+      "authentifications": {
+        "Alice": {
+          "tag": 1,
+          "defi_ms": 5412,
+          "expiration_defi_ms": 6912,
+          "signature_ms": 5416,
+          "verification_ms": 5748,
+          "statut": 0,
+          "expiration_bail_ms": 66024,
+          "fin_ms": 6288
+        },
+        "Bob": {
+          "tag": 1,
+          "defi_ms": 10932,
+          "expiration_defi_ms": 12432,
+          "signature_ms": 10936,
+          "verification_ms": 11188,
+          "statut": 0,
+          "expiration_bail_ms": 71444,
+          "fin_ms": 11680
+        }
+      },
+      "chargements": [
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 7432
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 7432
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 7432
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 13204
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 13204
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 13204
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSIZE",
+          "ms": 17504
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSEAL",
+          "ms": 17504
+        },
+        {
+          "pid": 11,
+          "etape": "SEALED",
+          "ms": 17504
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 28424
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 28424
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 28424
+        }
+      ],
+      "confirmation": [
+        {
+          "etape": 20,
+          "ms": 20100
+        },
+        {
+          "etape": 21,
+          "ms": 20668
+        },
+        {
+          "etape": 22,
+          "ms": 26948
+        }
+      ],
+      "ticket_presentation_ms": 20400,
+      "ticket_expiration_ms": 23640,
+      "marge_avant_expiration_ms": 3240,
+      "ticket_statut": 10,
+      "enfant_bob": 0,
+      "mutations_administratives": 1,
+      "recu_RETIREE_signature_verifiee": true,
+      "recu_sha256": "5cbae54ec245d60c3145b2c3852196792d5adf45a9d286a90d5262b2f14fc0a3",
+      "effets_acquittes": 7,
+      "racines_pic": 4,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 4,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2,
+        "21": 3,
+        "22": 3,
+        "23": 3
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ]
+      },
+      "drainage_global": true,
+      "commandes": [
+        {
+          "pid": [
+            21
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            22
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            23
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "attente_s": 0.000339583,
+      "execution_banc_s": 35.778981375,
+      "qemu_hote_s": 34.971017833,
+      "acquisition": "2026-11-22T17:12:09.810716+00:00",
+      "liberation": "2026-11-22T17:12:45.635568+00:00"
+    },
+    {
+      "profil": "x86_64/P9-512",
+      "essai": "page02",
+      "source": "c80bdcb580b77d3ce6ae47f0c05645ccd4212859",
+      "banc": "c80bdcb580b77d3ce6ae47f0c05645ccd4212859",
+      "succes": true,
+      "artefacts_sha256": {
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64.iso": "54f5408d1eb08cc3f52c5a811e9bd8c36b52dfc71b67ceb724c213653beb9190",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-kernel.elf": "a5098ce7ce66809a5eded2b502ea434262bd7647177d5162c9abc0c4eb488b35",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-registre.elf": "2ddf743288c3bc656826b0c118f6db04a452675b38a953107bf9f9da73b95206",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/identites.p9": "1619a2e0fdee69f63e999a10dff4c31d3f24f2dfef96a8ef00a6cd3d268c8728",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/autorite.raw": "105acaa8a0f3cbc84af09633c21a227b1622fa5a742e4d2cbccbfc87551c523a"
+      },
+      "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-512-dbb20cc/r2-commandes-x86_64-512-desactivation-page02",
+      "tls_ms": 2852,
+      "tls_debut_ms": 844,
+      "tls_echeance_ms": 10844,
+      "tls_fin_ms": 3696,
+      "authentifications": {
+        "Alice": {
+          "tag": 1,
+          "defi_ms": 5452,
+          "expiration_defi_ms": 6952,
+          "signature_ms": 5456,
+          "verification_ms": 5704,
+          "statut": 0,
+          "expiration_bail_ms": 65956,
+          "fin_ms": 6204
+        },
+        "Bob": {
+          "tag": 1,
+          "defi_ms": 10824,
+          "expiration_defi_ms": 12324,
+          "signature_ms": 10828,
+          "verification_ms": 11068,
+          "statut": 0,
+          "expiration_bail_ms": 71328,
+          "fin_ms": 11588
+        }
+      },
+      "chargements": [
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 7332
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 7332
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 7332
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 13140
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 13140
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 13140
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSIZE",
+          "ms": 17344
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSEAL",
+          "ms": 17344
+        },
+        {
+          "pid": 11,
+          "etape": "SEALED",
+          "ms": 17344
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 28040
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 28040
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 28040
+        }
+      ],
+      "confirmation": [
+        {
+          "etape": 20,
+          "ms": 19868
+        },
+        {
+          "etape": 21,
+          "ms": 20420
+        },
+        {
+          "etape": 22,
+          "ms": 26632
+        }
+      ],
+      "ticket_presentation_ms": 20160,
+      "ticket_expiration_ms": 23448,
+      "marge_avant_expiration_ms": 3288,
+      "ticket_statut": 10,
+      "enfant_bob": 0,
+      "mutations_administratives": 1,
+      "recu_RETIREE_signature_verifiee": true,
+      "recu_sha256": "c1b4666a21c0fc668bb0f49953fc241c086900d361a7ae97f1659bbd7586d101",
+      "effets_acquittes": 7,
+      "racines_pic": 4,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 4,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2,
+        "21": 3,
+        "22": 3,
+        "23": 3
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ]
+      },
+      "drainage_global": true,
+      "commandes": [
+        {
+          "pid": [
+            21
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            22
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            23
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "attente_s": 0.000420083,
+      "execution_banc_s": 35.159444583,
+      "qemu_hote_s": 34.368170875,
+      "acquisition": "2026-11-22T17:13:09.591004+00:00",
+      "liberation": "2026-11-22T17:13:44.798102+00:00"
+    }
+  ],
+  "preuves_reutilisees": [
+    {
+      "profil": "x86_64/P9-4096",
+      "essai": "01",
+      "source": "c1084f9fdf3f5c36030c5b0fd85119c23f26c81d",
+      "banc": "c1084f9fdf3f5c36030c5b0fd85119c23f26c81d",
+      "succes": true,
+      "artefacts_sha256": {
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/x86_64.iso": "57a427de800668557c639fb7aefa259d542fea07441d972a59ed152c12024688",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/x86_64-kernel.elf": "7143e97731e56a15e2e2b3b6ca3a221085aafaf7842c364b8a3a9c576d4b753a",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/x86_64-registre.elf": "5b816927d57ba230ad32b11201447b586c0bb15541187ccdb7fd5e14ea4e3135",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/genese-x86_64-4096/identites.p9": "43c92266917eac0e41231c8997de2812a34223a219eb9ad49588b349586d7dd1",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/genese-x86_64-4096/autorite.raw": "105acaa8a0f3cbc84af09633c21a227b1622fa5a742e4d2cbccbfc87551c523a"
+      },
+      "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/consolidation-c7e5238/r2-commandes-x86_64-4096-desactivation-01",
+      "tls_ms": 2940,
+      "tls_debut_ms": 848,
+      "tls_echeance_ms": 10848,
+      "tls_fin_ms": 3788,
+      "authentifications": {
+        "Alice": {
+          "tag": 1,
+          "defi_ms": 5508,
+          "expiration_defi_ms": 7008,
+          "signature_ms": 5512,
+          "verification_ms": 5860,
+          "statut": 0,
+          "expiration_bail_ms": 66124,
+          "fin_ms": 6388
+        },
+        "Bob": {
+          "tag": 1,
+          "defi_ms": 11084,
+          "expiration_defi_ms": 12584,
+          "signature_ms": 11088,
+          "verification_ms": 11344,
+          "statut": 0,
+          "expiration_bail_ms": 71584,
+          "fin_ms": 11820
+        }
+      },
+      "chargements": [
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 7492
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 7492
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 7492
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 13380
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 13380
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 13380
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSIZE",
+          "ms": 17696
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSEAL",
+          "ms": 17696
+        },
+        {
+          "pid": 11,
+          "etape": "SEALED",
+          "ms": 17696
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 28440
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 28440
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 28440
+        }
+      ],
+      "confirmation": [
+        {
+          "etape": 20,
+          "ms": 20220
+        },
+        {
+          "etape": 21,
+          "ms": 20784
+        },
+        {
+          "etape": 22,
+          "ms": 26988
+        }
+      ],
+      "ticket_presentation_ms": 20516,
+      "ticket_expiration_ms": 23792,
+      "marge_avant_expiration_ms": 3276,
+      "ticket_statut": 10,
+      "enfant_bob": 0,
+      "mutations_administratives": 1,
+      "recu_RETIREE_signature_verifiee": true,
+      "recu_sha256": "c4d0e05613e5badad30e72e7374d0c0f768c357fb6d41c902104b8c132e73e98",
+      "effets_acquittes": 7,
+      "racines_pic": 4,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 4,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2,
+        "21": 3,
+        "22": 3,
+        "23": 3
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ]
+      },
+      "drainage_global": true,
+      "commandes": [
+        {
+          "pid": [
+            21
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            22
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            23
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "attente_s": 0.000361375,
+      "execution_banc_s": 35.541401459,
+      "qemu_hote_s": 34.736481708,
+      "acquisition": "2026-11-22T16:40:08.208087+00:00",
+      "liberation": "2026-11-22T16:40:43.794353+00:00"
+    },
+    {
+      "profil": "aarch64/P9-512",
+      "essai": "01",
+      "source": "c1084f9fdf3f5c36030c5b0fd85119c23f26c81d",
+      "banc": "c1084f9fdf3f5c36030c5b0fd85119c23f26c81d",
+      "succes": true,
+      "artefacts_sha256": {
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/aarch64.iso": "3f7c23b0ba47b690771cdea42885557ca3fabc7c7b7ed8897df766d5e040c0bd",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/aarch64-kernel.elf": "a9017df70c12ecbaa1e8ab8d4c05ae6781ffc3de63ac055a09212e9b78432f13",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/aarch64-registre.elf": "261ee8f87b73390b98882e4a8ac9c248d284096fc9b0dd51254012d77e90c970",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/genese-aarch64-512/identites.p9": "d57e39eb7be544bd8f59bb9b85a075c61a0dbafbad609c11b1570539a9ff73eb",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/genese-aarch64-512/autorite.raw": "4dc616a7a5cc4835949bf90f711b25b5c7cb714f8d92919bb15738dd44631ed8"
+      },
+      "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/consolidation-c7e5238/r2-commandes-aarch64-512-desactivation-01",
+      "tls_ms": 3332,
+      "tls_debut_ms": 372,
+      "tls_echeance_ms": 10372,
+      "tls_fin_ms": 3704,
+      "authentifications": {
+        "Alice": {
+          "tag": 1,
+          "defi_ms": 4644,
+          "expiration_defi_ms": 6144,
+          "signature_ms": 4648,
+          "verification_ms": 4872,
+          "statut": 0,
+          "expiration_bail_ms": 65040,
+          "fin_ms": 5216
+        },
+        "Bob": {
+          "tag": 1,
+          "defi_ms": 8132,
+          "expiration_defi_ms": 9632,
+          "signature_ms": 8136,
+          "verification_ms": 8300,
+          "statut": 0,
+          "expiration_bail_ms": 68464,
+          "fin_ms": 8632
+        }
+      },
+      "chargements": [
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 5920
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 5924
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 5924
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 9668
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 9668
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 9668
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSIZE",
+          "ms": 12348
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSEAL",
+          "ms": 12348
+        },
+        {
+          "pid": 11,
+          "etape": "SEALED",
+          "ms": 12348
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 18112
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 18112
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 18112
+        }
+      ],
+      "confirmation": [
+        {
+          "etape": 20,
+          "ms": 13916
+        },
+        {
+          "etape": 21,
+          "ms": 14264
+        },
+        {
+          "etape": 22,
+          "ms": 17212
+        }
+      ],
+      "ticket_presentation_ms": 14100,
+      "ticket_expiration_ms": 18036,
+      "marge_avant_expiration_ms": 3936,
+      "ticket_statut": 10,
+      "enfant_bob": 0,
+      "mutations_administratives": 1,
+      "recu_RETIREE_signature_verifiee": true,
+      "recu_sha256": "3cd75b1ed125a428e167efb323c3ffe07d1dfc70626bb3bcbc26b8b878a752cc",
+      "effets_acquittes": 7,
+      "racines_pic": 4,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 4,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2,
+        "21": 3,
+        "22": 3,
+        "23": 3
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ]
+      },
+      "drainage_global": true,
+      "commandes": [
+        {
+          "pid": [
+            21
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            22
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            23
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "attente_s": 0.000353541,
+      "execution_banc_s": 37.626290209,
+      "qemu_hote_s": 36.818832792,
+      "acquisition": "2026-11-22T16:41:45.106721+00:00",
+      "liberation": "2026-11-22T16:42:22.778179+00:00"
+    },
+    {
+      "profil": "aarch64/P9-4096",
+      "essai": "01",
+      "source": "c1084f9fdf3f5c36030c5b0fd85119c23f26c81d",
+      "banc": "c1084f9fdf3f5c36030c5b0fd85119c23f26c81d",
+      "succes": true,
+      "artefacts_sha256": {
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/aarch64.iso": "3f7c23b0ba47b690771cdea42885557ca3fabc7c7b7ed8897df766d5e040c0bd",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/aarch64-kernel.elf": "a9017df70c12ecbaa1e8ab8d4c05ae6781ffc3de63ac055a09212e9b78432f13",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/aarch64-registre.elf": "261ee8f87b73390b98882e4a8ac9c248d284096fc9b0dd51254012d77e90c970",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/genese-aarch64-4096/identites.p9": "31dfa1a8c80ace3354bf3e25f1d2b480cae117ab3a8a5c1f219a048f1cd29ec2",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/genese-aarch64-4096/autorite.raw": "4dc616a7a5cc4835949bf90f711b25b5c7cb714f8d92919bb15738dd44631ed8"
+      },
+      "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/consolidation-c7e5238/r2-commandes-aarch64-4096-desactivation-01",
+      "tls_ms": 2736,
+      "tls_debut_ms": 364,
+      "tls_echeance_ms": 10364,
+      "tls_fin_ms": 3100,
+      "authentifications": {
+        "Alice": {
+          "tag": 1,
+          "defi_ms": 3916,
+          "expiration_defi_ms": 5416,
+          "signature_ms": 3920,
+          "verification_ms": 4112,
+          "statut": 0,
+          "expiration_bail_ms": 64216,
+          "fin_ms": 4324
+        },
+        "Bob": {
+          "tag": 1,
+          "defi_ms": 6228,
+          "expiration_defi_ms": 7728,
+          "signature_ms": 6228,
+          "verification_ms": 6336,
+          "statut": 0,
+          "expiration_bail_ms": 66440,
+          "fin_ms": 6544
+        }
+      },
+      "chargements": [
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 4788
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 4788
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 4788
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 7212
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 7212
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 7212
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSIZE",
+          "ms": 8964
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSEAL",
+          "ms": 8964
+        },
+        {
+          "pid": 11,
+          "etape": "SEALED",
+          "ms": 8964
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 13236
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 13240
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 13240
+        }
+      ],
+      "confirmation": [
+        {
+          "etape": 20,
+          "ms": 9980
+        },
+        {
+          "etape": 21,
+          "ms": 10192
+        },
+        {
+          "etape": 22,
+          "ms": 12624
+        }
+      ],
+      "ticket_presentation_ms": 10092,
+      "ticket_expiration_ms": 14416,
+      "marge_avant_expiration_ms": 4324,
+      "ticket_statut": 10,
+      "enfant_bob": 0,
+      "mutations_administratives": 1,
+      "recu_RETIREE_signature_verifiee": true,
+      "recu_sha256": "c1a687d7c6c39372e77607a0bfb3bc631286f8f40e4922d72353da58096a0dc5",
+      "effets_acquittes": 7,
+      "racines_pic": 4,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 4,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2,
+        "21": 3,
+        "22": 3,
+        "23": 3
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ]
+      },
+      "drainage_global": true,
+      "commandes": [
+        {
+          "pid": [
+            21
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            22
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            23
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "attente_s": 0.000321083,
+      "execution_banc_s": 28.276802333,
+      "qemu_hote_s": 27.498856875,
+      "acquisition": "2026-11-22T16:42:50.570582+00:00",
+      "liberation": "2026-11-22T16:43:18.891232+00:00"
+    }
+  ],
+  "applicabilite": {
+    "reference": "c1084f9fdf3f5c36030c5b0fd85119c23f26c81d",
+    "candidat": "c80bdcb580b77d3ce6ae47f0c05645ccd4212859",
+    "entrees_invite": 711,
+    "identiques": 709,
+    "differentes": [
+      "novaOS/user/novafs/device.rs",
+      "novaOS/user/storage/medium.rs"
+    ],
+    "comparaison_apres_exclusion_bloc_conditionnel": "identité exacte des deux fichiers",
+    "aarch64": "deux ajouts exclus à la compilation par cfg(target_arch=x86_64)",
+    "x86_64_4096": "branche ajoutée conditionnée à size==512 ; chemin existant 4096 conservé exactement",
+    "adaptateur_hote": "ancien binaire et preuves conservés pour les trois profils ; option r2_page_512 explicite pour les deux nouveaux essais seulement",
+    "source_ordinaire_et_abi": "diff vide",
+    "banc_et_oracles_historiques": "diff vide",
+    "preuve": "comparaison-sources-generees.json",
+    "portee": "applicabilité fonctionnelle du témoin, pas identité des nouvelles compilations ni qualification globale R2"
+  },
+  "diagnostic": [
+    {
+      "essai": "diagnostic01",
+      "ordre_durable": [
+        [
+          1,
+          "enrollment"
+        ],
+        [
+          2,
+          "RETRAIT_EN_COURS"
+        ],
+        [
+          3,
+          "RETIREE"
+        ],
+        [
+          4,
+          "activation"
+        ],
+        [
+          5,
+          "admin-enrollment"
+        ],
+        [
+          6,
+          "admission"
+        ],
+        [
+          7,
+          "created"
+        ],
+        [
+          8,
+          "admission"
+        ],
+        [
+          9,
+          "created"
+        ],
+        [
+          10,
+          "admin-change"
+        ],
+        [
+          11,
+          "admin-effects"
+        ],
+        [
+          12,
+          "subject-retired"
+        ]
+      ],
+      "cellules_nbd": [
+        {
+          "operation": 0,
+          "offset": 2101248,
+          "taille": 512,
+          "statut": 0,
+          "nombre": 2011
+        },
+        {
+          "operation": 1,
+          "offset": 2097152,
+          "taille": 512,
+          "statut": 0,
+          "nombre": 1207
+        }
+      ],
+      "sondes_invite": [
+        {
+          "pid": 11,
+          "etape": 30,
+          "ms_invite": 49972
+        },
+        {
+          "pid": 11,
+          "etape": 31,
+          "ms_invite": 58960
+        },
+        {
+          "pid": 11,
+          "etape": 32,
+          "ms_invite": 60080
+        },
+        {
+          "pid": 6,
+          "etape": 33,
+          "ms_invite": 60080
+        },
+        {
+          "pid": 6,
+          "etape": 34,
+          "ms_invite": 61208
+        },
+        {
+          "pid": 6,
+          "etape": 35,
+          "ms_invite": 61248
+        },
+        {
+          "pid": 6,
+          "etape": 36,
+          "ms_invite": 62368
+        },
+        {
+          "pid": 6,
+          "etape": 20,
+          "ms_invite": 63512
+        },
+        {
+          "pid": 6,
+          "etape": 21,
+          "ms_invite": 65664
+        },
+        {
+          "pid": 6,
+          "etape": 22,
+          "ms_invite": 76676
+        }
+      ],
+      "resident_NovaFS": [
+        [
+          "186",
+          "64"
+        ]
+      ]
+    },
+    {
+      "essai": "page01",
+      "ordre_durable": [
+        [
+          1,
+          "enrollment"
+        ],
+        [
+          2,
+          "RETRAIT_EN_COURS"
+        ],
+        [
+          3,
+          "RETIREE"
+        ],
+        [
+          4,
+          "activation"
+        ],
+        [
+          5,
+          "admin-enrollment"
+        ],
+        [
+          6,
+          "admission"
+        ],
+        [
+          7,
+          "created"
+        ],
+        [
+          8,
+          "admission"
+        ],
+        [
+          9,
+          "created"
+        ],
+        [
+          10,
+          "admin-change"
+        ],
+        [
+          11,
+          "admin-effects"
+        ],
+        [
+          12,
+          "subject-retired"
+        ],
+        [
+          13,
+          "admission"
+        ],
+        [
+          14,
+          "created"
+        ]
+      ],
+      "cellules_nbd": [
+        {
+          "operation": 0,
+          "offset": 2101248,
+          "taille": 4096,
+          "statut": 0,
+          "nombre": 2482
+        },
+        {
+          "operation": 1,
+          "offset": 2097152,
+          "taille": 4096,
+          "statut": 0,
+          "nombre": 1488
+        }
+      ],
+      "sondes_invite": [
+        {
+          "pid": 6,
+          "etape": 20,
+          "ms_invite": 20100
+        },
+        {
+          "pid": 6,
+          "etape": 21,
+          "ms_invite": 20668
+        },
+        {
+          "pid": 6,
+          "etape": 22,
+          "ms_invite": 26948
+        }
+      ],
+      "resident_NovaFS": [
+        [
+          "186",
+          "64"
+        ],
+        [
+          "202",
+          "64"
+        ],
+        [
+          "218",
+          "64"
+        ]
+      ]
+    },
+    {
+      "essai": "page02",
+      "ordre_durable": [
+        [
+          1,
+          "enrollment"
+        ],
+        [
+          2,
+          "RETRAIT_EN_COURS"
+        ],
+        [
+          3,
+          "RETIREE"
+        ],
+        [
+          4,
+          "activation"
+        ],
+        [
+          5,
+          "admin-enrollment"
+        ],
+        [
+          6,
+          "admission"
+        ],
+        [
+          7,
+          "created"
+        ],
+        [
+          8,
+          "admission"
+        ],
+        [
+          9,
+          "created"
+        ],
+        [
+          10,
+          "admin-change"
+        ],
+        [
+          11,
+          "admin-effects"
+        ],
+        [
+          12,
+          "subject-retired"
+        ],
+        [
+          13,
+          "admission"
+        ],
+        [
+          14,
+          "created"
+        ]
+      ],
+      "cellules_nbd": [
+        {
+          "operation": 0,
+          "offset": 2101248,
+          "taille": 4096,
+          "statut": 0,
+          "nombre": 2479
+        },
+        {
+          "operation": 1,
+          "offset": 2097152,
+          "taille": 4096,
+          "statut": 0,
+          "nombre": 1488
+        }
+      ],
+      "sondes_invite": [
+        {
+          "pid": 6,
+          "etape": 20,
+          "ms_invite": 19868
+        },
+        {
+          "pid": 6,
+          "etape": 21,
+          "ms_invite": 20420
+        },
+        {
+          "pid": 6,
+          "etape": 22,
+          "ms_invite": 26632
+        }
+      ],
+      "resident_NovaFS": [
+        [
+          "186",
+          "64"
+        ],
+        [
+          "218",
+          "64"
+        ]
+      ]
+    }
+  ],
+  "preuves_anterieures": [
+    {
+      "manifeste": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/consolidation-c7e5238/SHA256SUMS",
+      "sha256": "5069aa58e8149d9df951f1105452545062eda95f1f5f58f36fceadf11a1f5936",
+      "fichiers_verifies": 261
+    },
+    {
+      "manifeste": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c7e5238/SHA256SUMS",
+      "sha256": "d91401871118ad8875ba64617686c0d51fb3ac3ec2b0251cec9b41907c189cbd",
+      "fichiers_verifies": 28
+    },
+    {
+      "manifeste": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/consolidation-c1084f9/SHA256SUMS",
+      "sha256": "2091837a1dc23856f41e6641d9b8dbc7ea2d32815229da94d2da001032ffda0c",
+      "fichiers_verifies": 79
+    }
+  ],
+  "manifestes_prives": [
+    {
+      "manifeste": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/SHA256SUMS",
+      "sha256": "5ef409667e1af02f3f2a1a4ed94c92eb1392c5e63b9f15964db1745650ee19bb",
+      "fichiers": 27
+    },
+    {
+      "manifeste": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/SHA256SUMS",
+      "sha256": "553c7744b27f6d84db31a9409d5775300e4d81d693f93ad36684f54f84b45376",
+      "fichiers": 40
+    }
+  ],
+  "tests_hotes": {
+    "sondes": 32,
+    "banc_final": 33,
+    "adaptateur_historique": 7,
+    "adaptateur_page512": 7,
+    "succes": true
+  },
+  "coordination": [
+    {
+      "debut_attente": "2026-11-22T17:02:28.782860+00:00",
+      "debut_attente_ns": 370990082715791,
+      "architecture": "x86_64",
+      "secteur": 512,
+      "conflits_evites": [],
+      "acquisition": "2026-11-22T17:02:28.783353+00:00",
+      "acquisition_ns": 370990083077541,
+      "attente_secondes": 0.00036175,
+      "commit_de_reference": "f5ba0978848159d5bf95f6008cbf8e98c83c936e",
+      "commit_banc": "f5ba0978848159d5bf95f6008cbf8e98c83c936e",
+      "arbre_sources": "9ad13ab052fa8491490ab6c02ff629cbd06956aa",
+      "arbre_banc": "9ad13ab052fa8491490ab6c02ff629cbd06956aa",
+      "artefacts_sha256": {
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/x86_64.iso": "fe40b77c4e24610758c7176c0a75f265b49259c34d6d2c753baea06e44942803",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/x86_64-kernel.elf": "f894b01f130072a08f73a07ce83043f268e5dfc6a6f0836ee1ff3030cb03c150",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/x86_64-registre.elf": "60f88451795dcbe79b7c80b80f8ff2507fc45d34c7fb05cfe588a5601ad9d5a1",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/genese-x86_64-512/identites.p9": "1619a2e0fdee69f63e999a10dff4c31d3f24f2dfef96a8ef00a6cd3d268c8728",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/genese-x86_64-512/autorite.raw": "105acaa8a0f3cbc84af09633c21a227b1622fa5a742e4d2cbccbfc87551c523a"
+      },
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+        "x86_64",
+        "512",
+        "--kernel",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/x86_64-kernel.elf",
+        "--iso",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/x86_64.iso",
+        "--registre",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/x86_64-registre.elf",
+        "--genese",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/genese-x86_64-512/identites.p9",
+        "--triplet",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/genese-x86_64-512/triplet.bin",
+        "--cles",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/certificats",
+        "--decision",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+        "--detenteur",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+        "--capture",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+        "--sortie",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-512-dbb20cc/r2-commandes-x86_64-512-desactivation-diagnostic01",
+        "--secrets",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-f5ba097/r2-commandes-x86_64-512-desactivation-diagnostic01",
+        "--lot",
+        "desactivation",
+        "--ticket-vivant"
+      ],
+      "execution_ns": 370990129295000,
+      "code": 1,
+      "execution_secondes": 80.440407625,
+      "liberation": "2026-11-22T17:03:49.270314+00:00",
+      "verrou_libere": true
+    },
+    {
+      "debut_attente": "2026-11-22T17:12:09.810241+00:00",
+      "debut_attente_ns": 371571107598625,
+      "architecture": "x86_64",
+      "secteur": 512,
+      "conflits_evites": [],
+      "acquisition": "2026-11-22T17:12:09.810716+00:00",
+      "acquisition_ns": 371571107938208,
+      "attente_secondes": 0.000339583,
+      "commit_de_reference": "c80bdcb580b77d3ce6ae47f0c05645ccd4212859",
+      "commit_banc": "c80bdcb580b77d3ce6ae47f0c05645ccd4212859",
+      "arbre_sources": "8d4bdbd7b54f0d5187d3b89b406afc7533f3262c",
+      "arbre_banc": "8d4bdbd7b54f0d5187d3b89b406afc7533f3262c",
+      "artefacts_sha256": {
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64.iso": "54f5408d1eb08cc3f52c5a811e9bd8c36b52dfc71b67ceb724c213653beb9190",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-kernel.elf": "a5098ce7ce66809a5eded2b502ea434262bd7647177d5162c9abc0c4eb488b35",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-registre.elf": "2ddf743288c3bc656826b0c118f6db04a452675b38a953107bf9f9da73b95206",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/identites.p9": "1619a2e0fdee69f63e999a10dff4c31d3f24f2dfef96a8ef00a6cd3d268c8728",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/autorite.raw": "105acaa8a0f3cbc84af09633c21a227b1622fa5a742e4d2cbccbfc87551c523a"
+      },
+      "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+      "adaptateur_option": "--cfg r2_page_512",
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+        "x86_64",
+        "512",
+        "--kernel",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-kernel.elf",
+        "--iso",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64.iso",
+        "--registre",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-registre.elf",
+        "--genese",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/identites.p9",
+        "--triplet",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/triplet.bin",
+        "--cles",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/certificats",
+        "--decision",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+        "--detenteur",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+        "--capture",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+        "--sortie",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-512-dbb20cc/r2-commandes-x86_64-512-desactivation-page01",
+        "--secrets",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/r2-commandes-x86_64-512-desactivation-page01",
+        "--lot",
+        "desactivation",
+        "--ticket-vivant"
+      ],
+      "execution_ns": 371571153651625,
+      "code": 0,
+      "execution_secondes": 35.778981375,
+      "liberation": "2026-11-22T17:12:45.635568+00:00",
+      "verrou_libere": true
+    },
+    {
+      "debut_attente": "2026-11-22T17:13:09.590436+00:00",
+      "debut_attente_ns": 371630887566333,
+      "architecture": "x86_64",
+      "secteur": 512,
+      "conflits_evites": [],
+      "acquisition": "2026-11-22T17:13:09.591004+00:00",
+      "acquisition_ns": 371630887986416,
+      "attente_secondes": 0.000420083,
+      "commit_de_reference": "c80bdcb580b77d3ce6ae47f0c05645ccd4212859",
+      "commit_banc": "c80bdcb580b77d3ce6ae47f0c05645ccd4212859",
+      "arbre_sources": "8d4bdbd7b54f0d5187d3b89b406afc7533f3262c",
+      "arbre_banc": "8d4bdbd7b54f0d5187d3b89b406afc7533f3262c",
+      "artefacts_sha256": {
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64.iso": "54f5408d1eb08cc3f52c5a811e9bd8c36b52dfc71b67ceb724c213653beb9190",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-kernel.elf": "a5098ce7ce66809a5eded2b502ea434262bd7647177d5162c9abc0c4eb488b35",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-registre.elf": "2ddf743288c3bc656826b0c118f6db04a452675b38a953107bf9f9da73b95206",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/identites.p9": "1619a2e0fdee69f63e999a10dff4c31d3f24f2dfef96a8ef00a6cd3d268c8728",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/autorite.raw": "105acaa8a0f3cbc84af09633c21a227b1622fa5a742e4d2cbccbfc87551c523a"
+      },
+      "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+      "adaptateur_option": "--cfg r2_page_512",
+      "commande": [
+        "/opt/homebrew/opt/python@3.15/bin/python3.15",
+        "-B",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+        "x86_64",
+        "512",
+        "--kernel",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-kernel.elf",
+        "--iso",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64.iso",
+        "--registre",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/x86_64-registre.elf",
+        "--genese",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/identites.p9",
+        "--triplet",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/genese-x86_64-512/triplet.bin",
+        "--cles",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/certificats",
+        "--decision",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+        "--detenteur",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+        "--capture",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+        "--sortie",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-512-dbb20cc/r2-commandes-x86_64-512-desactivation-page02",
+        "--secrets",
+        "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-c80bdcb/r2-commandes-x86_64-512-desactivation-page02",
+        "--lot",
+        "desactivation",
+        "--ticket-vivant"
+      ],
+      "execution_ns": 371630935484833,
+      "code": 0,
+      "execution_secondes": 35.159444583,
+      "liberation": "2026-11-22T17:13:44.798102+00:00",
+      "verrou_libere": true
+    }
+  ],
+  "temps": {
+    "attente_s": 0.001121416,
+    "execution_banc_s": 151.37883358300002,
+    "developpement_diagnostic_verification_rapport_s": 1486.3313774590133,
+    "actif_s": 1637.7102110420133,
+    "budget_s": 3600,
+    "releve_utc": "2026-11-22T17:22:37.742157+00:00",
+    "limite": "Releve avant scellement et publication. Les delais invites sont compares uniquement entre horloges monotones invitees."
+  },
+  "reserves": [
+    "301 cadres instrumentes AArch64",
+    "reproductibilite des compilations entre environnements",
+    "deux reussites ne prouvent pas une borne temporelle sous toute charge",
+    "qualification QEMU de ce seul temoin ; neuf scenarios supplementaires non executes"
+  ],
+  "abi_selecteurs": 48,
+  "fusion": false,
+  "tag": false,
+  "activation_ordinaire": false
+}
