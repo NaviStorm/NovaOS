@@ -1,0 +1,27 @@
+[
+  {
+    "profil": "x86_64/P9-512",
+    "statut": "ACQUIS antérieur, non rejoué",
+    "preuve": "ticket-vivant-e7ddc8e/r2-commandes-x86_64-512-desactivation-essai03-chevauchement",
+    "marge_ms": 996
+  },
+  {
+    "profil": "x86_64/P9-4096",
+    "statut": "ECHEC",
+    "essais": 1,
+    "ticket_vivant": false,
+    "refus_REVOKED_avant_expiration": "NON EXERCE",
+    "retrait_durable": "NON EXERCE",
+    "restitution_globale": "NON QUALIFIEE"
+  },
+  {
+    "profil": "AArch64/P9-512",
+    "statut": "NON EXECUTE : arrêt au premier échec",
+    "essais": 0
+  },
+  {
+    "profil": "AArch64/P9-4096",
+    "statut": "NON EXECUTE : arrêt au premier échec",
+    "essais": 0
+  }
+]

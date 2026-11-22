@@ -1,0 +1,109 @@
+{
+  "commit": "a079427cb31274b5235e206735448231f3a6900e",
+  "profil": "x86_64/P9-4096",
+  "verdict": "ECHEC, arrêt au premier profil",
+  "authentifications": [
+    {
+      "tag": 1,
+      "defi_emis_ms": 12368,
+      "defi_expire_ms": 13868,
+      "signe_ms": 12372,
+      "verifie_ms": 13368,
+      "statut": 0,
+      "bail_expire_ms": 74412,
+      "fin_ms": 15448,
+      "bail_debut_ms": 14412
+    },
+    {
+      "tag": 1,
+      "defi_emis_ms": 51232,
+      "defi_expire_ms": 52732,
+      "signe_ms": 51236,
+      "verifie_ms": 52320,
+      "statut": 0,
+      "bail_expire_ms": 113400,
+      "fin_ms": 54472,
+      "bail_debut_ms": 53400
+    }
+  ],
+  "emission_ticket": {
+    "operation": "NSHEXEND",
+    "tag": 11,
+    "decision_ms": 78680,
+    "bail_expire_ms": 74412,
+    "retard_ms": 4268,
+    "statut_natif": 5,
+    "ticket_vivant_emis": false
+  },
+  "marqueur_deja_dans_sortie_preparation": true,
+  "confirmation_executee": false,
+  "generation": 23,
+  "mutations_administratives": 0,
+  "epochs": [
+    [
+      "E7DCFC8994F427B1EBC8302659E784EF",
+      1,
+      "ACTIVE",
+      23
+    ],
+    [
+      "FDB851F42231A8DB4A0A6FC75F9BB46A",
+      2,
+      "ACTIVE",
+      23
+    ]
+  ],
+  "admissions_par_sujet": [
+    [
+      "E7DCFC8994F427B1EBC8302659E784EF",
+      1
+    ],
+    [
+      "FDB851F42231A8DB4A0A6FC75F9BB46A",
+      1
+    ]
+  ],
+  "persistance": {
+    "triplet_identique": true,
+    "donnees_privees_inchangees": true,
+    "generation": 23
+  },
+  "racines_pic": 4,
+  "restitution_Bob_et_ELF_prepare": true,
+  "drainage_global_invite_non_qualifie": true,
+  "motif_drainage": "Arrêt du banc sur timeout de marqueur puis terminaison de QEMU ; aucun bilan final invité global.",
+  "verrou_libere": true,
+  "attente_verrou_s": 0.000386458,
+  "execution_s": 122.485097375,
+  "traces": [
+    {
+      "ligne": 216,
+      "trace": "DEBUG pid=11 NAR2 Bob authentifie route distincte"
+    },
+    {
+      "ligne": 325,
+      "trace": "DEBUG pid=11 NAR2 Bob attente preparation Alice ticket non emis"
+    },
+    {
+      "ligne": 376,
+      "trace": "DEBUG pid=11 NAR2 Bob preparation terminee emission ticket"
+    },
+    {
+      "ligne": 412,
+      "trace": "DEBUG pid=6 NXBAIL op=NSHEXEND tag=11 decision=78680 valide=0 echeance=74412 retour=5 fin=78684"
+    },
+    {
+      "ligne": 413,
+      "trace": "PROC pid=11 niveau=Ring3 pc=0x102c55c sortie=5"
+    },
+    {
+      "ligne": 431,
+      "trace": "NAEXEC restitue pid=11 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=57 nodes=118 espaces=17 cadres_ipc=66 cadres_libres=Ok(59413)"
+    },
+    {
+      "ligne": 456,
+      "trace": "NXR_0__FIN"
+    }
+  ],
+  "limite_cause": "Le bail expiré et le marqueur manqué sont démontrés. La cause du surcoût du parcours 4096 n’est pas établie ; aucune attribution automatique à la charge hôte."
+}
