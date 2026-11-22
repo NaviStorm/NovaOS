@@ -3,6 +3,8 @@
 use super::*;
 #[path = "../../../../../../../components/exec-client/src/admin_wire.rs"]
 mod admin_wire;
+#[path = "../../../../../../../components/exec-client/src/admin_command.rs"]
+mod admin_command;
 use admin_wire::{Direction, Inbox};
 use novaos_auth_session::epoch_sessions::EpochBinding;
 const LIST: u64 = 0x4e5841444c495354;
@@ -140,6 +142,10 @@ impl Channels {
                 if request.len() != 128 {
                     return Err(rt::BAD_ARGUMENT);
                 }
+                // Le client ne peut pas injecter NXACTX01/NXASCP01 sur la route
+                // privée du registre. Le décodage côté client n'est pas fiable.
+                admin_command::decode(request.try_into().map_err(|_| rt::BAD_ARGUMENT)?)
+                    .map_err(|_| rt::BAD_ARGUMENT)?;
                 let mut meta = [0; 31];
                 for (i, w) in meta.iter_mut().enumerate() {
                     *w = rt::value(rt::call(rt::IPC_NOTIFY, key, i as u64, META))?;
