@@ -8,6 +8,10 @@ Le commit de livraison ajoute uniquement le présent bilan et ses références d
 
 ## Verdict et portée
 
+L’[audit de clôture R2](novaauth-r2-audit-cloture-20261122.md) complète ce bilan :
+les 36 cellules restent acquises, mais les opérations administratives manquantes
+interdisent encore la clôture fonctionnelle.
+
 Les neuf scénarios S1–S9 disposent de preuves invitées applicables sur les quatre
 profils, dans le périmètre décrit ci-dessous. 40 exécutions QEMU nouvelles :
 35 réussies, cinq échecs conservés puis corrigés et rejoués ; un échec de préparation

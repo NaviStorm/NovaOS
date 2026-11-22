@@ -1,0 +1,4272 @@
+{
+  "reference": "43e5cf9c9bb69af94902d886a249df8d3979478d",
+  "base_fonctionnelle": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+  "branche": "codex/novaauth-administration-0240-phase1",
+  "decision": "C — Clôture refusée",
+  "produit_modifie": false,
+  "qualification_production": false,
+  "matrice_securite": [
+    {
+      "scenario": "S1",
+      "intitule": "Auto-attribution de privilèges",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "observe": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-lectures-01",
+          "resultats_sha256": "1bbd51347bb3978a8e312cc07877aa5f91c75d8075d4b324b47eff4a5aa08af6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S2",
+      "intitule": "Écriture directe du registre",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "observe": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "portee": "Refus avant accès au stockage ; aucun accès général aux trois objets n’est délégué pour fabriquer ce test.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-lectures-01",
+          "resultats_sha256": "1bbd51347bb3978a8e312cc07877aa5f91c75d8075d4b324b47eff4a5aa08af6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S3",
+      "intitule": "Références réelles d’Alice",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "observe": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s3-02",
+          "resultats_sha256": "7f0e98b53245487c4e1ce2d7abe9d72c89d8d67e55f7b61cdfbbff5f27c2f5a7",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S4",
+      "intitule": "Requête administrative directe",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "observe": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-lectures-01",
+          "resultats_sha256": "1bbd51347bb3978a8e312cc07877aa5f91c75d8075d4b324b47eff4a5aa08af6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S5",
+      "intitule": "Substitution identité/session/cible",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "observe": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-lectures-01",
+          "resultats_sha256": "1bbd51347bb3978a8e312cc07877aa5f91c75d8075d4b324b47eff4a5aa08af6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s3-02",
+          "resultats_sha256": "7f0e98b53245487c4e1ce2d7abe9d72c89d8d67e55f7b61cdfbbff5f27c2f5a7",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S6",
+      "intitule": "Tickets expirés, révoqués, consommés",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "observe": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s6-expire-01",
+          "resultats_sha256": "c95e9892b2f04815f42cb9e5b2a7be256fb705812ba99f8c7e27272e4d2df1fa",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "ade87e09bc58922d8e74bdb3cc1703631707b13c",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s6-recu-01",
+          "resultats_sha256": "f0da48a7cef647eade0f6eaef9f971d209246f3241f85f770a652c83349a4df9",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s6-concurrent-01",
+          "resultats_sha256": "926ba75a889c3340a16965ea154e72313bd757f12cb48648bfcca42b208cca7f",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-desactivation-02",
+          "resultats_sha256": "3770215792cf42e8a75d3e2017cbbee3de466982e0af9c112e7706a7560f68d5",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "19e5a055fd4dd90e4b6c30bfe236f5dd6b896b56",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S7",
+      "intitule": "Concurrence et dernier administrateur",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "observe": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "portee": "Les requêtes se chevauchent réellement dans les canaux. Le moteur transactionnel refuse actuellement la désactivation de tout administrateur, dès Prepare et à nouveau à Confirm. Aucun scénario de suppression définitive, promotion ou transfert du dernier rôle n’est implémenté. Interleavings observés, sans preuve exhaustive.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-desactivation-s7-course-02",
+          "resultats_sha256": "b2263e3f66d6b521f4fab76cac8b531fe131852a3d466d5a3cd17692c4923ce9",
+          "source": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "banc": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s7-dernier-02",
+          "resultats_sha256": "cf98718566fa03cdad2aa1f90d4f7abcafcf21d96768f4ecd1862f4d8bb8d369",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "sonde": "066e559cc7894c7461f191c3400807b750056653",
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-groupe-s7-publication-03",
+          "resultats_sha256": "105daa9e324c22e98e445eecab1861692391b130d13f13a1d72fc66b11dd6883",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "sonde": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-lectures-s6-concurrent-01",
+          "resultats_sha256": "926ba75a889c3340a16965ea154e72313bd757f12cb48648bfcca42b208cca7f",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S8",
+      "intitule": "UNCERTAIN et réponse perdue",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "observe": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-512-groupe-s8-01",
+          "resultats_sha256": "8dd57069f64e52f4fdaf4fe1e8762cca0243c0096aa8c4619f35f3f90813a75b",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S9",
+      "intitule": "Désactivation et réactivation",
+      "profil": "x86_64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "observe": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "portee": "Bob conserve son identité et ses droits ordinaires actuels ; pas de modification d’appartenance pendant désactivation, ce chemin fonctionnel restant distinct.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-512-desactivation-02",
+          "resultats_sha256": "3770215792cf42e8a75d3e2017cbbee3de466982e0af9c112e7706a7560f68d5",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "19e5a055fd4dd90e4b6c30bfe236f5dd6b896b56",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S1",
+      "intitule": "Auto-attribution de privilèges",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "observe": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-4096-lectures-01",
+          "resultats_sha256": "3c21de8bd5b440259bf8e9fbf45c299195bbd374554573b86732e2172510b91c",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S2",
+      "intitule": "Écriture directe du registre",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "observe": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "portee": "Refus avant accès au stockage ; aucun accès général aux trois objets n’est délégué pour fabriquer ce test.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-4096-lectures-01",
+          "resultats_sha256": "3c21de8bd5b440259bf8e9fbf45c299195bbd374554573b86732e2172510b91c",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S3",
+      "intitule": "Références réelles d’Alice",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "observe": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s3-03",
+          "resultats_sha256": "090f38af17a1fbcb125f4d62781dfdb5aeeab3497faad4352fb4c6d17fc52ad3",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S4",
+      "intitule": "Requête administrative directe",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "observe": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-4096-lectures-01",
+          "resultats_sha256": "3c21de8bd5b440259bf8e9fbf45c299195bbd374554573b86732e2172510b91c",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S5",
+      "intitule": "Substitution identité/session/cible",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "observe": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-x86_64-4096-lectures-01",
+          "resultats_sha256": "3c21de8bd5b440259bf8e9fbf45c299195bbd374554573b86732e2172510b91c",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s3-03",
+          "resultats_sha256": "090f38af17a1fbcb125f4d62781dfdb5aeeab3497faad4352fb4c6d17fc52ad3",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S6",
+      "intitule": "Tickets expirés, révoqués, consommés",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "observe": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s6-expire-02",
+          "resultats_sha256": "c1d1fc74d30f0546b939bf59ede1144047cc3c47fbcaff760d41de698444ff5f",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s6-recu-02",
+          "resultats_sha256": "9fabdbbebc6aa475b3e3507ea9055ca42c3521c9700210f852aa4fe33706fc4c",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s6-concurrent-02",
+          "resultats_sha256": "b6321e6c68710895a3dddea3255e803e37dcdd6ddc355a1a84b824c5adbb7526",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-desactivation-03",
+          "resultats_sha256": "d8734d965134e38f4c14391b1c9ab9c158a7d0a693f0d84a40afa13462ccaacb",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "669326751aa8fd98a5591d4672c4153bbe295ca8",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S7",
+      "intitule": "Concurrence et dernier administrateur",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "observe": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "portee": "Les requêtes se chevauchent réellement dans les canaux. Le moteur transactionnel refuse actuellement la désactivation de tout administrateur, dès Prepare et à nouveau à Confirm. Aucun scénario de suppression définitive, promotion ou transfert du dernier rôle n’est implémenté. Interleavings observés, sans preuve exhaustive.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-desactivation-s7-course-03",
+          "resultats_sha256": "b1dfd8d96b07b536c8bc14a53a713e01ba49fa99596fff3f530950aa3cf96f80",
+          "source": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "banc": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s7-dernier-03",
+          "resultats_sha256": "fe9710512a4028f09a8309b3934eb4e6d4bfe3a083cab3910fd55f80710a0aa0",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "sonde": "066e559cc7894c7461f191c3400807b750056653",
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-groupe-s7-publication-04",
+          "resultats_sha256": "e53e43a7d930b3f678b80adbee401d536ee6a898c065976e11e469efeccdb700",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "sonde": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-lectures-s6-concurrent-02",
+          "resultats_sha256": "b6321e6c68710895a3dddea3255e803e37dcdd6ddc355a1a84b824c5adbb7526",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S8",
+      "intitule": "UNCERTAIN et réponse perdue",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "observe": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-groupe-s8-01",
+          "resultats_sha256": "9b7474fe682a0d7ab72b457896428b397c5e77e3ed6d0f5354232662d9cd4a3e",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S9",
+      "intitule": "Désactivation et réactivation",
+      "profil": "x86_64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "observe": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "portee": "Bob conserve son identité et ses droits ordinaires actuels ; pas de modification d’appartenance pendant désactivation, ce chemin fonctionnel restant distinct.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-x86_64-4096-desactivation-03",
+          "resultats_sha256": "d8734d965134e38f4c14391b1c9ab9c158a7d0a693f0d84a40afa13462ccaacb",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "669326751aa8fd98a5591d4672c4153bbe295ca8",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S1",
+      "intitule": "Auto-attribution de privilèges",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "observe": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-512-lectures-01",
+          "resultats_sha256": "5f9b1b083f5e54d1bb304d9b0a6dfda7c31e7597efb3466a225c8fe1182559b6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S2",
+      "intitule": "Écriture directe du registre",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "observe": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "portee": "Refus avant accès au stockage ; aucun accès général aux trois objets n’est délégué pour fabriquer ce test.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-512-lectures-01",
+          "resultats_sha256": "5f9b1b083f5e54d1bb304d9b0a6dfda7c31e7597efb3466a225c8fe1182559b6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S3",
+      "intitule": "Références réelles d’Alice",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "observe": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s3-03",
+          "resultats_sha256": "00a24d63e0020c42bf46a01ae3abb1e3baa0c2106feacb1b4483003e485911d5",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S4",
+      "intitule": "Requête administrative directe",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "observe": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-512-lectures-01",
+          "resultats_sha256": "5f9b1b083f5e54d1bb304d9b0a6dfda7c31e7597efb3466a225c8fe1182559b6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S5",
+      "intitule": "Substitution identité/session/cible",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "observe": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-512-lectures-01",
+          "resultats_sha256": "5f9b1b083f5e54d1bb304d9b0a6dfda7c31e7597efb3466a225c8fe1182559b6",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s3-03",
+          "resultats_sha256": "00a24d63e0020c42bf46a01ae3abb1e3baa0c2106feacb1b4483003e485911d5",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S6",
+      "intitule": "Tickets expirés, révoqués, consommés",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "observe": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s6-expire-02",
+          "resultats_sha256": "f9cfc2253dea0a89efa5900492de471d326cad663971f9cff776382bb6ca9e94",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s6-recu-02",
+          "resultats_sha256": "1c606f696538ce2c228d08338cb3a3c7f8efa83046433432059082406a6f9d99",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s6-concurrent-02",
+          "resultats_sha256": "b7892b64c1b3f2ca5e5dcf278abefc3cca13bf7b8731ddae3ecd0dc402d07491",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-desactivation-04",
+          "resultats_sha256": "739fefa3e6fe885e126074dc21022808b477c0f43fe30f147d178da2df8c380a",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "2cd07474763b6715a554c1a8788dc160984c51a7",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S7",
+      "intitule": "Concurrence et dernier administrateur",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "observe": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "portee": "Les requêtes se chevauchent réellement dans les canaux. Le moteur transactionnel refuse actuellement la désactivation de tout administrateur, dès Prepare et à nouveau à Confirm. Aucun scénario de suppression définitive, promotion ou transfert du dernier rôle n’est implémenté. Interleavings observés, sans preuve exhaustive.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-desactivation-s7-course-03",
+          "resultats_sha256": "01842518cd5130abd9b90e00713db89ff25c5502d6e04839ad60b7233304218e",
+          "source": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "banc": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s7-dernier-03",
+          "resultats_sha256": "935c5bc28c8fe5ff76fc751322af9cb4329a828f880c924c68de68fa3a391ef7",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "sonde": "066e559cc7894c7461f191c3400807b750056653",
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-groupe-s7-publication-04",
+          "resultats_sha256": "efa1274ca3f34937e21ba767fbf225c4762e8986c0e78014112a9ab63e1b1360",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "sonde": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-lectures-s6-concurrent-02",
+          "resultats_sha256": "b7892b64c1b3f2ca5e5dcf278abefc3cca13bf7b8731ddae3ecd0dc402d07491",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S8",
+      "intitule": "UNCERTAIN et réponse perdue",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "observe": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-groupe-s8-01",
+          "resultats_sha256": "a5e13e01958648fe804362d07d802fd6eafb9f4352b4cb428c68a514976216b8",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S9",
+      "intitule": "Désactivation et réactivation",
+      "profil": "aarch64/512",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "observe": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "portee": "Bob conserve son identité et ses droits ordinaires actuels ; pas de modification d’appartenance pendant désactivation, ce chemin fonctionnel restant distinct.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-512-desactivation-04",
+          "resultats_sha256": "739fefa3e6fe885e126074dc21022808b477c0f43fe30f147d178da2df8c380a",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "2cd07474763b6715a554c1a8788dc160984c51a7",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S1",
+      "intitule": "Auto-attribution de privilèges",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "observe": "DENIED(5), Bob non administrateur, aucune mutation de privilèges ; contrôles positifs Alice.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-4096-lectures-01",
+          "resultats_sha256": "784b9a07bb506df92557e9f497ddda70e58d5179934ac55cf7b366fe27d8f5da",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S2",
+      "intitule": "Écriture directe du registre",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "observe": "APPEND au port administratif BAD_ARGUMENT(3) ; sans capacité de stockage DENIED(5) ; triplet et données inchangés.",
+      "portee": "Refus avant accès au stockage ; aucun accès général aux trois objets n’est délégué pour fabriquer ce test.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-4096-lectures-01",
+          "resultats_sha256": "784b9a07bb506df92557e9f497ddda70e58d5179934ac55cf7b366fe27d8f5da",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S3",
+      "intitule": "Références réelles d’Alice",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "observe": "Ticket, handle IPC et session authentiques Alice présentés par Bob : DENIED(5), aucun enfant Bob ; Alice lance son propre ticket (0).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s3-03",
+          "resultats_sha256": "c66b88942db6aa6092b15ad17f085852f01bb5c479e31f2677a7ce476e94b9d4",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S4",
+      "intitule": "Requête administrative directe",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "observe": "Confirm et Outcome directs de Bob : DENIED(5), sans passage par un contrôle CLI ni mutation.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-4096-lectures-01",
+          "resultats_sha256": "784b9a07bb506df92557e9f497ddda70e58d5179934ac55cf7b366fe27d8f5da",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        }
+      ]
+    },
+    {
+      "scenario": "S5",
+      "intitule": "Substitution identité/session/cible",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "observe": "Identité/cible forgée : DENIED(5) ; contexte et métadonnées invalides : BAD_ARGUMENT(3) ; session Alice substituée : DENIED(5).",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/r2-commandes-aarch64-4096-lectures-01",
+          "resultats_sha256": "784b9a07bb506df92557e9f497ddda70e58d5179934ac55cf7b366fe27d8f5da",
+          "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+          "sonde": null,
+          "reutilisee": true
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s3-03",
+          "resultats_sha256": "c66b88942db6aa6092b15ad17f085852f01bb5c479e31f2677a7ce476e94b9d4",
+          "source": "d8f7abc17232511a7cb7e221e2f1f4c103d780ba",
+          "banc": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S6",
+      "intitule": "Tickets expirés, révoqués, consommés",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "observe": "Expiré : TIMED_OUT(8) ; révoqué avant expiration : REVOKED(10) ; consommé : REFUSED(12). Deux threads : un succès, un refus, un enfant, une collecte ; reçu retrouvé sans relancement.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s6-expire-02",
+          "resultats_sha256": "ba5a4299b1e592e93877ebba6d1cfb2bd9a34188988c299f2d3571e7d4c88e7f",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s6-recu-02",
+          "resultats_sha256": "07c02d7ee327c4f0b603860cff51cda4a6f404a902315b13011b16fbe775cb72",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s6-concurrent-02",
+          "resultats_sha256": "a750e789d7480043d1ec5f5312c5b5691ea662ab0947874d0f2a57220ec02ccd",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-desactivation-04",
+          "resultats_sha256": "f592c1077c7032903ab0af55a0fe8c678595130d4ccc98096e7fce581c2afa3e",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "2cd07474763b6715a554c1a8788dc160984c51a7",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S7",
+      "intitule": "Concurrence et dernier administrateur",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "observe": "Admission Bob concurrente à Confirm Alice : REVOKED(10) avant expiration, aucun enfant, retrait durable. Deux requêtes de retrait dernier administrateur : DENIED(5). Publication de groupe concurrente : succès(0), retrait administrateur DENIED(5).",
+      "portee": "Les requêtes se chevauchent réellement dans les canaux. Le moteur transactionnel refuse actuellement la désactivation de tout administrateur, dès Prepare et à nouveau à Confirm. Aucun scénario de suppression définitive, promotion ou transfert du dernier rôle n’est implémenté. Interleavings observés, sans preuve exhaustive.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-desactivation-s7-course-03",
+          "resultats_sha256": "da3378ead79f9898ef2ea7eb3d118509e5e9b1b18f51f275cab95fb00f91ca84",
+          "source": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "banc": "6b6f21219fd90cfd2288fdd46a65fb6e3e31c4fc",
+          "sonde": null,
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s7-dernier-03",
+          "resultats_sha256": "b7321a1a3796fcff5ec01208181f50431e936a4d66c8ed7c550b9cc8b5796ed3",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "sonde": "066e559cc7894c7461f191c3400807b750056653",
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-groupe-s7-publication-04",
+          "resultats_sha256": "010a3cb242b765ad0981db4879d0464f58f179dd1777b0d25d4b506d8efa83be",
+          "source": "7ca56d3ea452f40d9918deb5917d5d697402fb47",
+          "banc": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "sonde": "55838a0863c205087a136fd99ab76fe2d467dd6a",
+          "reutilisee": false
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-lectures-s6-concurrent-02",
+          "resultats_sha256": "a750e789d7480043d1ec5f5312c5b5691ea662ab0947874d0f2a57220ec02ccd",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S8",
+      "intitule": "UNCERTAIN et réponse perdue",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "observe": "Après perte du reçu durable : UNCERTAIN(22), CLI20. Outcome explicite du même identifiant : COMPLETE(0), une seule mutation durable et un seul groupe créé.",
+      "portee": "Interfaces et modèle QEMU explicitement testés ; pas de qualification de production.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-groupe-s8-01",
+          "resultats_sha256": "304fb4926f17861c5c99cf793bc85b3be4fb26ae2b7c613216e5abbf82f68eac",
+          "source": "2615e51f10d34d21ae3fae7c4c9233ea4c24ff40",
+          "banc": "019071eaf9c60eb884c4703eae58b04c62409f6e",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    },
+    {
+      "scenario": "S9",
+      "intitule": "Désactivation et réactivation",
+      "profil": "aarch64/4096",
+      "etat": "qualifie_dans_le_perimetre_decrit",
+      "attendu": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "observe": "Ticket vivant retiré : REVOKED(10). Après réactivation : ancien ticket10, ancienne session5 ; nouvelle authentification explicite, SID distinct et lancement Bob0, droits courants préservés.",
+      "portee": "Bob conserve son identité et ses droits ordinaires actuels ; pas de modification d’appartenance pendant désactivation, ce chemin fonctionnel restant distinct.",
+      "traitement_audit": "preuve_reutilisee_sans_reexecution",
+      "preuves": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/r2-commandes-aarch64-4096-desactivation-04",
+          "resultats_sha256": "f592c1077c7032903ab0af55a0fe8c678595130d4ccc98096e7fce581c2afa3e",
+          "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+          "banc": "2cd07474763b6715a554c1a8788dc160984c51a7",
+          "sonde": null,
+          "reutilisee": false
+        }
+      ]
+    }
+  ],
+  "matrice_administration": [
+    {
+      "recette": "A01",
+      "etat": "partiel",
+      "portee": "R2 requis",
+      "description": "Six ELF exécutés ; aides bilingues testées sur hôte. Locale NXADMIN1 nulle ; man du shell ne trouve pas ces pages.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A02",
+      "etat": "partiel",
+      "portee": "R2 requis",
+      "description": "Parseur hôte acquis ; parité des commandes administratives interactif/script/nsh -c non qualifiée intégralement.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A03",
+      "etat": "qualifie_limite",
+      "portee": "R2 requis",
+      "description": "S1/S3/S4/S5 : principal, portée, instance et session vérifiés côté serveur ; contrôles positifs Alice.",
+      "profils": {
+        "aarch64/512": "qualifie_limite",
+        "aarch64/4096": "qualifie_limite",
+        "x86_64/512": "qualifie_limite",
+        "x86_64/4096": "qualifie_limite"
+      }
+    },
+    {
+      "recette": "A04",
+      "etat": "non_implémente",
+      "portee": "R2 bloquant",
+      "description": "CreateUser retourne REFUSED(12) ; facteur attesté non raccordé. Création groupe seule qualifiée.",
+      "profils": {
+        "aarch64/512": "non_implémente",
+        "aarch64/4096": "non_implémente",
+        "x86_64/512": "non_implémente",
+        "x86_64/4096": "non_implémente"
+      }
+    },
+    {
+      "recette": "A05",
+      "etat": "non_qualifie_invite",
+      "portee": "R2 bloquant",
+      "description": "Rename est raccordé au moteur ; renommage réussi et conservation des propriétaires à qualifier dans les invités.",
+      "profils": {
+        "aarch64/512": "non_qualifie_invite",
+        "aarch64/4096": "non_qualifie_invite",
+        "x86_64/512": "non_qualifie_invite",
+        "x86_64/4096": "non_qualifie_invite"
+      }
+    },
+    {
+      "recette": "A06",
+      "etat": "qualifie_limite",
+      "portee": "R2 requis",
+      "description": "Désactivation/RETIREE et S9 sur quatre profils ; pas de suppression de données.",
+      "profils": {
+        "aarch64/512": "qualifie_limite",
+        "aarch64/4096": "qualifie_limite",
+        "x86_64/512": "qualifie_limite",
+        "x86_64/4096": "qualifie_limite"
+      }
+    },
+    {
+      "recette": "A07",
+      "etat": "hors_perimetre",
+      "portee": "exclu explicitement",
+      "description": "Suppression définitive non autorisée, aucune commande destructive.",
+      "profils": {
+        "aarch64/512": "hors_perimetre",
+        "aarch64/4096": "hors_perimetre",
+        "x86_64/512": "hors_perimetre",
+        "x86_64/4096": "hors_perimetre"
+      }
+    },
+    {
+      "recette": "A08",
+      "etat": "hors_perimetre",
+      "portee": "exclu explicitement",
+      "description": "Devenir des données après suppression soumis à contrat séparé ; aucune suppression automatique.",
+      "profils": {
+        "aarch64/512": "hors_perimetre",
+        "aarch64/4096": "hors_perimetre",
+        "x86_64/512": "hors_perimetre",
+        "x86_64/4096": "hors_perimetre"
+      }
+    },
+    {
+      "recette": "A09",
+      "etat": "qualifie_limite",
+      "portee": "R2 requis",
+      "description": "Refus transactionnel de tout administrateur, confirmé sous concurrence S7 ; absence de privilège par nom de groupe.",
+      "profils": {
+        "aarch64/512": "qualifie_limite",
+        "aarch64/4096": "qualifie_limite",
+        "x86_64/512": "qualifie_limite",
+        "x86_64/4096": "qualifie_limite"
+      }
+    },
+    {
+      "recette": "A10",
+      "etat": "hors_perimetre",
+      "portee": "arbitrage distinct",
+      "description": "Promotion/transfert multi-admin et exception de récupération non exposés ; aucune qualification générale du dernier admin futur.",
+      "profils": {
+        "aarch64/512": "hors_perimetre",
+        "aarch64/4096": "hors_perimetre",
+        "x86_64/512": "hors_perimetre",
+        "x86_64/4096": "hors_perimetre"
+      }
+    },
+    {
+      "recette": "A11",
+      "etat": "partiel",
+      "portee": "socle antérieur / production différée",
+      "description": "Récupération 2-sur-2 de laboratoire conservée ; récupération administrative de production absente.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A12",
+      "etat": "non_implémente",
+      "portee": "R2 bloquant",
+      "description": "AddMember/RemoveMember refusés par le port ; contrôle des origines de droits et effecteurs non raccordé aux commandes.",
+      "profils": {
+        "aarch64/512": "non_implémente",
+        "aarch64/4096": "non_implémente",
+        "x86_64/512": "non_implémente",
+        "x86_64/4096": "non_implémente"
+      }
+    },
+    {
+      "recette": "A13",
+      "etat": "non_qualifie_invite",
+      "portee": "R2 bloquant",
+      "description": "Test hôte de persistance présent ; pas de retrait de groupe puis reboot, réauthentification et VFS via R2.",
+      "profils": {
+        "aarch64/512": "non_qualifie_invite",
+        "aarch64/4096": "non_qualifie_invite",
+        "x86_64/512": "non_qualifie_invite",
+        "x86_64/4096": "non_qualifie_invite"
+      }
+    },
+    {
+      "recette": "A14",
+      "etat": "partiel",
+      "portee": "socle antérieur",
+      "description": "Isolation Alice/Bob R2 établie ; installation commune et politiques de dossier restent une recette distincte.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A15",
+      "etat": "hors_perimetre",
+      "portee": "exclu explicitement",
+      "description": "Suppression de groupe non exposée, pas de nouvelle implémentation autorisée.",
+      "profils": {
+        "aarch64/512": "hors_perimetre",
+        "aarch64/4096": "hors_perimetre",
+        "x86_64/512": "hors_perimetre",
+        "x86_64/4096": "hors_perimetre"
+      }
+    },
+    {
+      "recette": "A16",
+      "etat": "partiel",
+      "portee": "R2 requis",
+      "description": "S2/S3/S5 : refus sans capacité/identité substituée. Ne remplace pas toutes les recettes ACL et surprotection VFS.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A17",
+      "etat": "qualifie_limite",
+      "portee": "R2 requis",
+      "description": "S7 : deux requêtes partielles, publication groupe et refus dernier administrateur ; moteur réévalué sur tête courante, interleavings limités.",
+      "profils": {
+        "aarch64/512": "qualifie_limite",
+        "aarch64/4096": "qualifie_limite",
+        "x86_64/512": "qualifie_limite",
+        "x86_64/4096": "qualifie_limite"
+      }
+    },
+    {
+      "recette": "A18",
+      "etat": "qualifie_limite",
+      "portee": "R2 requis",
+      "description": "Préparation sans publication, confirmation liée principal/session/installation/tête, contrôle serveur et refus de substitution.",
+      "profils": {
+        "aarch64/512": "qualifie_limite",
+        "aarch64/4096": "qualifie_limite",
+        "x86_64/512": "qualifie_limite",
+        "x86_64/4096": "qualifie_limite"
+      }
+    },
+    {
+      "recette": "A19",
+      "etat": "partiel",
+      "portee": "R2 bloquant",
+      "description": "P9 atomique existant ; interruption/reboot de publication administrative R2 à qualifier, aucune équivalence présumée avec coupure physique.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A20",
+      "etat": "partiel",
+      "portee": "R2 bloquant",
+      "description": "S8 perte de reçu, même processus registre : une mutation. Après reboot/éviction cache de deux entrées, Outcome conserve UNCERTAIN.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A21",
+      "etat": "qualifie_limite",
+      "portee": "R2 requis",
+      "description": "S7/S9 distinguent blocage local et reçu terminal avec trois effecteurs ; maintien historique de la barrière par incarnation.",
+      "profils": {
+        "aarch64/512": "qualifie_limite",
+        "aarch64/4096": "qualifie_limite",
+        "x86_64/512": "qualifie_limite",
+        "x86_64/4096": "qualifie_limite"
+      }
+    },
+    {
+      "recette": "A22",
+      "etat": "socle_anterieur",
+      "portee": "recette distincte",
+      "description": "Deux VM/admission retardée acquises par incarnation ; non réexécutées ici, pas une nouvelle preuve par sujet R2.",
+      "profils": {
+        "aarch64/512": "socle_anterieur",
+        "aarch64/4096": "socle_anterieur",
+        "x86_64/512": "socle_anterieur",
+        "x86_64/4096": "socle_anterieur"
+      }
+    },
+    {
+      "recette": "A23",
+      "etat": "socle_anterieur",
+      "portee": "recette distincte",
+      "description": "Écriture VFS engagée à fermeture : ne pas assimiler aux retraits de groupe ni au seul témoin EXEC_TICKET.",
+      "profils": {
+        "aarch64/512": "socle_anterieur",
+        "aarch64/4096": "socle_anterieur",
+        "x86_64/512": "socle_anterieur",
+        "x86_64/4096": "socle_anterieur"
+      }
+    },
+    {
+      "recette": "A24",
+      "etat": "partiel",
+      "portee": "R2 requis",
+      "description": "Rollback VFS antérieur conservé ; restauration de tous disques après mutations R2 et nouvelle authentification à qualifier.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A25",
+      "etat": "partiel",
+      "portee": "R2 requis",
+      "description": "Récupération initiale 2-sur-2 utilisée par les bancs ; ne démontre pas toutes les restaurations après nouvelles mutations R2.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A26",
+      "etat": "qualifie_limite",
+      "portee": "R2 requis",
+      "description": "S3/S6/S9 : anciens tickets/session refusés, ticket non expiré REVOKED, nouveau SID et lancement autorisé.",
+      "profils": {
+        "aarch64/512": "qualifie_limite",
+        "aarch64/4096": "qualifie_limite",
+        "x86_64/512": "qualifie_limite",
+        "x86_64/4096": "qualifie_limite"
+      }
+    },
+    {
+      "recette": "A27",
+      "etat": "qualifie_limite",
+      "portee": "R2 requis",
+      "description": "Racines <=4, cinquième LIMIT, drainage et ressources des témoins ; réserve globale AArch64 maintenue.",
+      "profils": {
+        "aarch64/512": "qualifie_limite",
+        "aarch64/4096": "qualifie_limite",
+        "x86_64/512": "qualifie_limite",
+        "x86_64/4096": "qualifie_limite"
+      }
+    },
+    {
+      "recette": "A28",
+      "etat": "partiel",
+      "portee": "R2 requis / production différée",
+      "description": "Reçus et traces par identifiant présents ; aucun nouveau service audit durable ni preuve de saturation/reprise de production.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A29",
+      "etat": "partiel",
+      "portee": "R2 requis",
+      "description": "Bornes codec/unitaires et refus S5 ; corruption exhaustive et limite 64 via commandes non qualifiées dans invités.",
+      "profils": {
+        "aarch64/512": "partiel",
+        "aarch64/4096": "partiel",
+        "x86_64/512": "partiel",
+        "x86_64/4096": "partiel"
+      }
+    },
+    {
+      "recette": "A30",
+      "etat": "qualifie_limite",
+      "portee": "R2 requis",
+      "description": "9 ABI antérieurs applicables, quatre ELF historiques rejoués ; IPC ordinaire et stockage ciblés ajoutés, pas de qualification de production.",
+      "profils": {
+        "aarch64/512": "qualifie_limite",
+        "aarch64/4096": "qualifie_limite",
+        "x86_64/512": "qualifie_limite",
+        "x86_64/4096": "qualifie_limite"
+      }
+    }
+  ],
+  "commandes": [
+    {
+      "commande": "whoami / id / groups (appartenances)",
+      "serveur": "raccordé",
+      "preuve": "Consultations QEMU quatre profils 2f86d1c, contrôles positifs S1/S3/S7/S9 ; pas un annuaire des groupes"
+    },
+    {
+      "commande": "groupadd",
+      "serveur": "raccordé",
+      "preuve": "Préparer/confirmer/Outcome et S7/S8 ; une génération et un groupe durable"
+    },
+    {
+      "commande": "usermod --disable / --enable",
+      "serveur": "raccordé",
+      "preuve": "S9 quatre profils ; reçu terminal, nouvelle authentification et nouveaux droits courants"
+    },
+    {
+      "commande": "usermod --rename",
+      "serveur": "raccordé",
+      "preuve": "Tests hôtes ; réussite invitée complète non qualifiée"
+    },
+    {
+      "commande": "useradd",
+      "serveur": "REFUSED(12)",
+      "preuve": "ELF --version exécuté, opération Create non raccordée au facteur attesté"
+    },
+    {
+      "commande": "usermod --add-group / --remove-group",
+      "serveur": "REFUSED(12)",
+      "preuve": "Moteur et parser existants ; effecteurs de droits par origine non raccordés"
+    },
+    {
+      "commande": "consultation groupe par nom/ID",
+      "serveur": "vue privée disponible",
+      "preuve": "Pas de façade native pour packet(3) ; groups interroge utilisateur puis ses appartenances"
+    },
+    {
+      "commande": "--help / --version / argument man",
+      "serveur": "local au client",
+      "preuve": "18 tests hôtes ; version des six ELF QEMU. man commande via nsh absent du catalogue, locale zéro"
+    },
+    {
+      "commande": "--outcome après reboot/éviction",
+      "serveur": "UNCERTAIN(22)",
+      "preuve": "Reçu durable vérifié mais completed[2] volatile requis ; clôture d’issue non récupérable automatiquement"
+    }
+  ],
+  "historiques": [
+    {
+      "architecture": "aarch64",
+      "profil": "sdk-example",
+      "candidat": "43e5cf9c9bb69af94902d886a249df8d3979478d",
+      "export": "administration-reactivation",
+      "code_compilation": 0,
+      "compilation_s": 22.811648792,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--features",
+        "thread-probe,novaauth-sessions-lab"
+      ],
+      "elf_sha256": "db2d14ec8a1f8d1ac22acc331ee4d3d90336a90adc8d50ca057c3129e129c3a8",
+      "noyau_prive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/aarch64-sdk-example/noyau.elf",
+      "noyau_sha256": "74410c6324d3790c63857033c98b71a732d1021dfb042648fed587ac8df1d731",
+      "execution_s": 7.528304291,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "sortie": 0,
+        "restitution": true
+      },
+      "erreur": null,
+      "succes": true,
+      "journal": "serie-aarch64-sdk-example-2cpu.log",
+      "journal_sha256": "e810a3653e249cf1de2c2cdd78e4ee9e0721da00df3457d22d6af9d07ab7d1f8",
+      "iso_prive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/aarch64-sdk-example/sonde.iso",
+      "iso_sha256": "87e7c527a30eadb1c7897ae95356bf7c7b72d4a1dc6113b50da019d8f97d06c0"
+    },
+    {
+      "architecture": "aarch64",
+      "profil": "threads-test",
+      "candidat": "43e5cf9c9bb69af94902d886a249df8d3979478d",
+      "export": "administration-reactivation",
+      "code_compilation": 0,
+      "compilation_s": 22.515893166,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--features",
+        "thread-probe,novaauth-sessions-lab"
+      ],
+      "elf_sha256": "fa1640df7589a2700f172acc43197c2904e6e2f833fb748048bc15984575cbd9",
+      "noyau_prive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/aarch64-threads-test/noyau.elf",
+      "noyau_sha256": "6dc1193839c2f238cb961c6cbfa582627f86ca4c598688a4c15b3e8108a5814b",
+      "execution_s": 6.717512167,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "cpu_final": 1,
+        "preemptions": [
+          6,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 61109,
+        "cadres_apres": 61109,
+        "blocs": 4,
+        "tcb_apres": 3
+      },
+      "erreur": null,
+      "succes": true,
+      "journal": "serie-aarch64-threads-test-2cpu-archive.log",
+      "journal_sha256": "82efb634cfd7f97d3ca0b8dc514f0d09fa038f753880055490ec5b79791a9cfd",
+      "iso_prive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/aarch64-threads-test/sonde.iso",
+      "iso_sha256": "cba88af8308c125f2bcac5814cb5b104be23397638bf3df1ed7974fcad2a583b"
+    },
+    {
+      "architecture": "x86_64",
+      "profil": "sdk-example",
+      "candidat": "43e5cf9c9bb69af94902d886a249df8d3979478d",
+      "export": "administration-reactivation",
+      "code_compilation": 0,
+      "compilation_s": 22.545733666,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none",
+        "--features",
+        "thread-probe,novaauth-sessions-lab"
+      ],
+      "elf_sha256": "1ad5ebf8b6a0d80b10d2df826500f39052fdc222fac418640b408b9657d78c6e",
+      "noyau_prive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/x86_64-sdk-example/noyau.elf",
+      "noyau_sha256": "0032f2754a0e4bfd987608e1929a25365e6e513ce2e1a0055c0c382988f49dc0",
+      "execution_s": 2.191095917,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "sortie": 0,
+        "restitution": true
+      },
+      "erreur": null,
+      "succes": true,
+      "journal": "serie-x86_64-sdk-example-2cpu.log",
+      "journal_sha256": "c28012398ecf98e2d24a0453b076002e97af9de9d47ab29d578f6067b535fc71",
+      "iso_prive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/x86_64-sdk-example/sonde.iso",
+      "iso_sha256": "ce595ce39da0d5c601916d904d09d84dc1874034a78338ae89f9e7798be8d515"
+    },
+    {
+      "architecture": "x86_64",
+      "profil": "threads-test",
+      "candidat": "43e5cf9c9bb69af94902d886a249df8d3979478d",
+      "export": "administration-reactivation",
+      "code_compilation": 0,
+      "compilation_s": 22.299278417,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none",
+        "--features",
+        "thread-probe,novaauth-sessions-lab"
+      ],
+      "elf_sha256": "6073a78fb2ffa5c716e75ac942932728faa218d614c3dedf6f30c9f067f6b30c",
+      "noyau_prive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/x86_64-threads-test/noyau.elf",
+      "noyau_sha256": "5c62226252c09af316b53bed1af792b55ad1e275737186bb7bebf0a6345721ab",
+      "execution_s": 2.569846542,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "cpu_final": 1,
+        "preemptions": [
+          5,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 61624,
+        "cadres_apres": 61624,
+        "blocs": 4,
+        "tcb_apres": 3
+      },
+      "erreur": null,
+      "succes": true,
+      "journal": "serie-x86_64-threads-test-2cpu-archive.log",
+      "journal_sha256": "5c29ee23a32462d5f69e3a2bcb1dbc98e6b8d85821516036a86a0eb4ea003cb8",
+      "iso_prive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/x86_64-threads-test/sonde.iso",
+      "iso_sha256": "c926de140a3bebff0bfaa6bb79211c5e22ac7e37acdcaa33e88f8446b7c27e4a"
+    }
+  ],
+  "reconstructions": [
+    {
+      "label": "A",
+      "architecture": "aarch64",
+      "profil": "sdk-example",
+      "compilation_s": 14.147985875,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--features",
+        "thread-probe"
+      ],
+      "elf": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/A-aarch64-sdk-example.elf",
+      "elf_sha256": "742d4c39885bd1a43409eb6d8dde3cab02381a4ab5d3a4da0483c2b8d93090f9",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/A-aarch64-sdk-example/noyau.elf",
+      "kernel_sha256": "e09b51ab7c54ec273cbd4cd750d49985d7eafb2dd6025c5e82b5d9b498bfe29b",
+      "execution_s": 7.452883208,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "sortie": 0,
+        "restitution": true
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-A-serie-aarch64-sdk-example-2cpu.log",
+          "sha256": "fb72d7e3b13e97da983ec3e2f0fad012d424ab11fe51b2e908fbfd06b72b4b4e"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/A-aarch64-sdk-example/sonde.iso",
+          "sha256": "9c0f359919604d77cc9221b23043311ac5c4b1e6b3f900886839c846e07ebccc"
+        }
+      ]
+    },
+    {
+      "label": "A",
+      "architecture": "aarch64",
+      "profil": "threads-test",
+      "compilation_s": 13.90683875,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--features",
+        "thread-probe"
+      ],
+      "elf": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/A-aarch64-threads-test.elf",
+      "elf_sha256": "611be0985b3e21ff24bf61a6097bcfbb7f7b46d779fe5bba778fb1267837a328",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/A-aarch64-threads-test/noyau.elf",
+      "kernel_sha256": "82388ad56ff5d8f452299b4d554cd0e271d1eb93db1f1523239af950d27666fc",
+      "execution_s": 6.736726083,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "cpu_final": 1,
+        "preemptions": [
+          6,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 61980,
+        "cadres_apres": 61980,
+        "blocs": 4,
+        "tcb_apres": 3
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-A-serie-aarch64-threads-test-2cpu-reconstruit.log",
+          "sha256": "f06badbf8496db8f02937cdc8eef6a63b2be66414949ffdb4bff0677c13f4074"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/A-aarch64-threads-test/sonde.iso",
+          "sha256": "9e73ecdd82685655c5a3658e5b1e1eece83f404ee6c4598c3a115ad922b2661b"
+        }
+      ]
+    },
+    {
+      "label": "A",
+      "architecture": "x86_64",
+      "profil": "sdk-example",
+      "compilation_s": 13.936260417,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none",
+        "--features",
+        "thread-probe"
+      ],
+      "elf": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/A-x86_64-sdk-example.elf",
+      "elf_sha256": "910a23c80c23de8711daead42f754d6f70cf030c328a86481ffc20454eea3d47",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/A-x86_64-sdk-example/noyau.elf",
+      "kernel_sha256": "74d64deab5f1eb36df4d4cd6e7357dbc4040129e0d1420de4987811b8ec2fef5",
+      "execution_s": 2.244284125,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "sortie": 0,
+        "restitution": true
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-A-serie-x86_64-sdk-example-2cpu.log",
+          "sha256": "c87433a6650814abd13d1831f8923f8badb682bf8a33cb96e4d30e403e3d8e04"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/A-x86_64-sdk-example/sonde.iso",
+          "sha256": "b905fb9e5100d976ee766de6800d1ba9b442946a184428313d60c389cbe8e8b4"
+        }
+      ]
+    },
+    {
+      "label": "A",
+      "architecture": "x86_64",
+      "profil": "threads-test",
+      "compilation_s": 14.616092542,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none",
+        "--features",
+        "thread-probe"
+      ],
+      "elf": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/A-x86_64-threads-test.elf",
+      "elf_sha256": "2d3d14a7b1b5ceb789ff36e23ed6958bf1b840cc22fb921076da3a8adf3af7ac",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/A-x86_64-threads-test/noyau.elf",
+      "kernel_sha256": "cc26b2489c6d38c9229d185f0a51d43480b25e73f7b37bbaa4c42d07fb108048",
+      "execution_s": 2.579984542,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "cpu_final": 1,
+        "preemptions": [
+          5,
+          4
+        ],
+        "migrations": 2,
+        "cadres_avant": 62488,
+        "cadres_apres": 62488,
+        "blocs": 4,
+        "tcb_apres": 3
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-A-serie-x86_64-threads-test-2cpu-reconstruit.log",
+          "sha256": "8029675b91383f0540c98ba28290976097d33cc5a25ea26d6ec9595851fc07ed"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/A-x86_64-threads-test/sonde.iso",
+          "sha256": "beae039ea1db0b9780b60065b01f1b7de540353f538b3c837cad09984d8ccf2d"
+        }
+      ]
+    },
+    {
+      "label": "B",
+      "architecture": "aarch64",
+      "profil": "sdk-example",
+      "compilation_s": 14.769130375,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--features",
+        "thread-probe"
+      ],
+      "elf": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/B-aarch64-sdk-example.elf",
+      "elf_sha256": "82d6b338ca82ffb9e140a619a567e74371718ed860a9087c0093812728d1403e",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/B-aarch64-sdk-example/noyau.elf",
+      "kernel_sha256": "fac93df738e43462b1d1a123971cb6c90e964d8892d71a98d13a32e5d6aa9c63",
+      "execution_s": 6.344402667,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "sortie": 0,
+        "restitution": true
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-B-serie-aarch64-sdk-example-2cpu.log",
+          "sha256": "fb72d7e3b13e97da983ec3e2f0fad012d424ab11fe51b2e908fbfd06b72b4b4e"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/B-aarch64-sdk-example/sonde.iso",
+          "sha256": "d03021f5b436bba36e6a1da8aba9aa4d0e4ca61cd0c56ac553bc453a49d9cd56"
+        }
+      ]
+    },
+    {
+      "label": "B",
+      "architecture": "aarch64",
+      "profil": "threads-test",
+      "compilation_s": 14.497827833,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat",
+        "--features",
+        "thread-probe"
+      ],
+      "elf": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/B-aarch64-threads-test.elf",
+      "elf_sha256": "21f7e3dd48b728f2dafe9d1cd86bdb95166f9ed299fd9e80b56003b457c390ff",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/B-aarch64-threads-test/noyau.elf",
+      "kernel_sha256": "03b37bc8d40f492847055300e09b89f24b942924419b2fd730e808f892771e41",
+      "execution_s": 6.722023,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "EL0",
+        "cpu_final": 1,
+        "preemptions": [
+          5,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 61980,
+        "cadres_apres": 61980,
+        "blocs": 4,
+        "tcb_apres": 3
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-B-serie-aarch64-threads-test-2cpu-reconstruit.log",
+          "sha256": "64695d45b8ab80a9a482cb79f3cb9f3b6be8b0d962861a482533fa9b17669d01"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/B-aarch64-threads-test/sonde.iso",
+          "sha256": "9333492f7a04594b6254c8d0d985a145e632379aabd91700dace0597f964720c"
+        }
+      ]
+    },
+    {
+      "label": "B",
+      "architecture": "x86_64",
+      "profil": "sdk-example",
+      "compilation_s": 14.546713541,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none",
+        "--features",
+        "thread-probe"
+      ],
+      "elf": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/B-x86_64-sdk-example.elf",
+      "elf_sha256": "cb3d198b3d60d4a0ee175aea017d907f01ca1daf4da3862e03ba3064728eb0a1",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/B-x86_64-sdk-example/noyau.elf",
+      "kernel_sha256": "371281b092a37888be35606d142579a73eb5f1cccb8cea54ae033dae657e0083",
+      "execution_s": 2.248325167,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "sortie": 0,
+        "restitution": true
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-B-serie-x86_64-sdk-example-2cpu.log",
+          "sha256": "c87433a6650814abd13d1831f8923f8badb682bf8a33cb96e4d30e403e3d8e04"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/B-x86_64-sdk-example/sonde.iso",
+          "sha256": "deccd1f62115ae67028c257b28ae4349e338dbddefc2dd00a862119cc1487ccc"
+        }
+      ]
+    },
+    {
+      "label": "B",
+      "architecture": "x86_64",
+      "profil": "threads-test",
+      "compilation_s": 14.458776417,
+      "commande": [
+        "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+        "build",
+        "-p",
+        "novaos",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none",
+        "--features",
+        "thread-probe"
+      ],
+      "elf": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/B-x86_64-threads-test.elf",
+      "elf_sha256": "18c120d7e5b6a8f2132fdc738304fc508d97cace2eab67f75f9204af98afc34a",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/B-x86_64-threads-test/noyau.elf",
+      "kernel_sha256": "65577779a9ee30b6ded32f0b186b0b776faaf0cea33c286dc53673fb1162d30c",
+      "execution_s": 2.568693667,
+      "resultat": {
+        "vcpus": 2,
+        "niveau": "Ring3",
+        "cpu_final": 1,
+        "preemptions": [
+          5,
+          5
+        ],
+        "migrations": 2,
+        "cadres_avant": 62488,
+        "cadres_apres": 62488,
+        "blocs": 4,
+        "tcb_apres": 3
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-B-serie-x86_64-threads-test-2cpu-reconstruit.log",
+          "sha256": "afe66ad301d7618c0b3bc8f68914ce3396ca2c7072ee63a87f66ab0e6767f614"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/B-x86_64-threads-test/sonde.iso",
+          "sha256": "8e19696bb01aa4098959d99e239368fc3985165b734626a07b2e74d4a413a9c5"
+        }
+      ]
+    },
+    {
+      "label": "A",
+      "architecture": "aarch64",
+      "profil": "ipc-ordinaire",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-A-aarch64.elf",
+      "kernel_sha256": "9fc8d47c9d403364a2a6ec0451f88d568cf41ee7afe65a420b3978ae3a14d487",
+      "execution_s": 7.354162667,
+      "resultat": {
+        "architecture": "aarch64",
+        "mode": "test",
+        "ram_mio": 256,
+        "elf_sha256": "9fc8d47c9d403364a2a6ec0451f88d568cf41ee7afe65a420b3978ae3a14d487",
+        "cas_ns": {
+          "T01": 3416000,
+          "T02": 9836000,
+          "T03": 4962992,
+          "T04": 4957008,
+          "T05/T06": 9505008,
+          "T07/T15": 4952992,
+          "T06/T08/T18": 14308992,
+          "T10": 5256992,
+          "lots": 4678000,
+          "T11": 4950000,
+          "T12/T18": 4704000,
+          "T04/T11": 9986000,
+          "T12": 34912000,
+          "T13": 498685008,
+          "pipe": 15083008,
+          "T16": 9782000,
+          "T18": 29927008,
+          "T14": 9446000
+        },
+        "phases": {
+          "init": {
+            "image": 1110,
+            "tables": 140,
+            "kpile": 0,
+            "upile": 0,
+            "heap": 0,
+            "buddy": 0,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 0,
+            "heap_va": 65536,
+            "libres": 54290,
+            "cache": 0,
+            "chargeur": 7799,
+            "restitue": 0,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1250,
+            "retenu": 9518,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_repos": {
+            "image": 1110,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62047,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1292,
+            "retenu": 1761,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_reprise": {
+            "image": 1110,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62047,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1292,
+            "retenu": 1761,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_actifs": {
+            "image": 1110,
+            "tables": 233,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 3,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61634,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1705,
+            "retenu": 2174,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_saturation": {
+            "image": 1110,
+            "tables": 233,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 71,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61566,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1773,
+            "retenu": 2242,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_detruits": {
+            "image": 1110,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62047,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1292,
+            "retenu": 1761,
+            "dma": 0,
+            "elf_preparation": 0
+          }
+        },
+        "secondes": 0.736
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-A-serie-aarch64-ipc-test-256.log",
+          "sha256": "f612bf794b020c3b28ce628a53526a1ed07fb99e4760aad30d9155849fedd709"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/A-aarch64-ipc-ordinaire/sonde.iso",
+          "sha256": "960e6952902697a368d10727513b022c784cd2ec52649fde18d7f0430d32e8d7"
+        }
+      ]
+    },
+    {
+      "label": "A",
+      "architecture": "x86_64",
+      "profil": "ipc-ordinaire",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-A-x86_64.elf",
+      "kernel_sha256": "725cb1bcded0579b123d5ed69e972fa5fe414a988b8a929568f0f8a22bb488be",
+      "execution_s": 3.223031875,
+      "resultat": {
+        "architecture": "x86_64",
+        "mode": "test",
+        "ram_mio": 256,
+        "elf_sha256": "725cb1bcded0579b123d5ed69e972fa5fe414a988b8a929568f0f8a22bb488be",
+        "cas_ns": {
+          "T01": 2471179,
+          "T02": 8364222,
+          "T03": 3516832,
+          "T04": 4179612,
+          "T05/T06": 8164289,
+          "T07/T15": 3656785,
+          "T06/T08/T18": 11240267,
+          "T10": 5030329,
+          "lots": 3482843,
+          "T11": 3686775,
+          "T12/T18": 3692773,
+          "T04/T11": 7451525,
+          "T12": 28055684,
+          "T13": 452797657,
+          "pipe": 11229271,
+          "T16": 8671120,
+          "T18": 19883398,
+          "T14": 3694773
+        },
+        "phases": {
+          "init": {
+            "image": 1192,
+            "tables": 139,
+            "kpile": 0,
+            "upile": 0,
+            "heap": 0,
+            "buddy": 0,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 0,
+            "heap_va": 65536,
+            "libres": 51592,
+            "cache": 0,
+            "chargeur": 11015,
+            "restitue": 0,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1331,
+            "retenu": 12346,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_repos": {
+            "image": 1192,
+            "tables": 145,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62565,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1373,
+            "retenu": 1373,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_reprise": {
+            "image": 1192,
+            "tables": 145,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62565,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1373,
+            "retenu": 1373,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_actifs": {
+            "image": 1192,
+            "tables": 232,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 3,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62152,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1786,
+            "retenu": 1786,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_saturation": {
+            "image": 1192,
+            "tables": 232,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 71,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62084,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1854,
+            "retenu": 1854,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_detruits": {
+            "image": 1192,
+            "tables": 145,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62565,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1373,
+            "retenu": 1373,
+            "dma": 0,
+            "elf_preparation": 0
+          }
+        },
+        "secondes": 0.617
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-A-serie-x86_64-ipc-test-256.log",
+          "sha256": "fc197e7c6b098efc4bd50c5704db284ad466e75d0612dfc172d04155313e3086"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/A-x86_64-ipc-ordinaire/sonde.iso",
+          "sha256": "c0fecbaded54a88ae7640fa16297d6a2fd88bad4a163a54cdb31a27a9081197f"
+        }
+      ]
+    },
+    {
+      "label": "B",
+      "architecture": "aarch64",
+      "profil": "ipc-ordinaire",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-B-aarch64.elf",
+      "kernel_sha256": "73675e12fc432916a54b02d2eda229bec397f24bfef8bfcd744433af70cc7a6a",
+      "execution_s": 7.393483375,
+      "resultat": {
+        "architecture": "aarch64",
+        "mode": "test",
+        "ram_mio": 256,
+        "elf_sha256": "73675e12fc432916a54b02d2eda229bec397f24bfef8bfcd744433af70cc7a6a",
+        "cas_ns": {
+          "T01": 3402992,
+          "T02": 9843008,
+          "T03": 4948000,
+          "T04": 4928992,
+          "T05/T06": 9524992,
+          "T07/T15": 4934000,
+          "T06/T08/T18": 14250000,
+          "T10": 5217008,
+          "lots": 4639008,
+          "T11": 4820000,
+          "T12/T18": 4960000,
+          "T04/T11": 9165008,
+          "T12": 35017008,
+          "T13": 497358000,
+          "pipe": 15168000,
+          "T16": 9984992,
+          "T18": 36019008,
+          "T14": 5168992
+        },
+        "phases": {
+          "init": {
+            "image": 1110,
+            "tables": 140,
+            "kpile": 0,
+            "upile": 0,
+            "heap": 0,
+            "buddy": 0,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 0,
+            "heap_va": 65536,
+            "libres": 54290,
+            "cache": 0,
+            "chargeur": 7799,
+            "restitue": 0,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1250,
+            "retenu": 9518,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_repos": {
+            "image": 1110,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62047,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1292,
+            "retenu": 1761,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_reprise": {
+            "image": 1110,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62047,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1292,
+            "retenu": 1761,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_actifs": {
+            "image": 1110,
+            "tables": 233,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 3,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61634,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1705,
+            "retenu": 2174,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_saturation": {
+            "image": 1110,
+            "tables": 233,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 71,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61566,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1773,
+            "retenu": 2242,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_detruits": {
+            "image": 1110,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62047,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1292,
+            "retenu": 1761,
+            "dma": 0,
+            "elf_preparation": 0
+          }
+        },
+        "secondes": 0.733
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-B-serie-aarch64-ipc-test-256.log",
+          "sha256": "b8b34f917b21a0ac350f055a828df57dbf8ffefaab3f6c33cb4979ee93272aeb"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/B-aarch64-ipc-ordinaire/sonde.iso",
+          "sha256": "79c890f24fc9663d1d3fe6776b7fdd6e2b49c216f08bc4c5b6df758ba12cd84f"
+        }
+      ]
+    },
+    {
+      "label": "B",
+      "architecture": "x86_64",
+      "profil": "ipc-ordinaire",
+      "kernel": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-B-x86_64.elf",
+      "kernel_sha256": "072c71f651d3fd88e2aa14fb069349726abea5a7335e6702519392de11d08eac",
+      "execution_s": 3.232580708,
+      "resultat": {
+        "architecture": "x86_64",
+        "mode": "test",
+        "ram_mio": 256,
+        "elf_sha256": "072c71f651d3fd88e2aa14fb069349726abea5a7335e6702519392de11d08eac",
+        "cas_ns": {
+          "T01": 3661742,
+          "T02": 7291389,
+          "T03": 3718909,
+          "T04": 3650709,
+          "T05/T06": 8355511,
+          "T07/T15": 3678792,
+          "T06/T08/T18": 12487633,
+          "T10": 6917292,
+          "lots": 4766984,
+          "T11": 3684809,
+          "T12/T18": 3679795,
+          "T04/T11": 8703532,
+          "T12": 27608993,
+          "T13": 462058492,
+          "pipe": 11331241,
+          "T16": 7461890,
+          "T18": 19954538,
+          "T14": 4973590
+        },
+        "phases": {
+          "init": {
+            "image": 1192,
+            "tables": 139,
+            "kpile": 0,
+            "upile": 0,
+            "heap": 0,
+            "buddy": 0,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 0,
+            "heap_va": 65536,
+            "libres": 51592,
+            "cache": 0,
+            "chargeur": 11015,
+            "restitue": 0,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1331,
+            "retenu": 12346,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_repos": {
+            "image": 1192,
+            "tables": 145,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62565,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1373,
+            "retenu": 1373,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_reprise": {
+            "image": 1192,
+            "tables": 145,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62565,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1373,
+            "retenu": 1373,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_actifs": {
+            "image": 1192,
+            "tables": 232,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 3,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62152,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1786,
+            "retenu": 1786,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_saturation": {
+            "image": 1192,
+            "tables": 232,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 71,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62084,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1854,
+            "retenu": 1854,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_detruits": {
+            "image": 1192,
+            "tables": 145,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62565,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1373,
+            "retenu": 1373,
+            "dma": 0,
+            "elf_preparation": 0
+          }
+        },
+        "secondes": 0.63
+      },
+      "erreur": null,
+      "succes": true,
+      "journaux": [
+        {
+          "chemin": "reconstruit-B-serie-x86_64-ipc-test-256.log",
+          "sha256": "84894fb9564135a646dece697076b0bade2e8a503bd8db21606e69e5e732083b"
+        }
+      ],
+      "iso": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/reconstruits/B-x86_64-ipc-ordinaire/sonde.iso",
+          "sha256": "cd4dc8c9d636844223f90016abdeb957d5bf7cbb0e4b2c2bf8c82a1f8c8310d4"
+        }
+      ]
+    }
+  ],
+  "stockage": [
+    {
+      "architecture": "aarch64",
+      "contexte": "A",
+      "secteur": 512,
+      "noyau": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-A-aarch64.elf",
+      "noyau_sha256": "9fc8d47c9d403364a2a6ec0451f88d568cf41ee7afe65a420b3978ae3a14d487",
+      "image_initiale_sha256": "245e1cb968ca8139206a8db848b29304621aeefcc030e56698d45f075a9a5352",
+      "attendu": "lecture NovaOS LF, statut 0, fermeture stockage OK et processus/IPC restitués",
+      "lecture_ms": 100.501167,
+      "ressources_finales": [
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "statut": 0,
+      "execution_s": 7.530950458,
+      "succes": true,
+      "erreur": null,
+      "image_finale_sha256": "605b3152e11b8ade90586fe417aa907016f12d4553937f20481f69ad020af0bc",
+      "artefacts": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/A-aarch64/serie.iso",
+          "sha256": "784eb781cfb4766fabc51fe4827cbe8fd170b0218bc1b85ce508ee0d1e66918b"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/A-aarch64/serie.vm.json",
+          "sha256": "b6c344d47316f065bdb76a067399868c401d0a6e3ec94572613ae7033f6521aa"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/A-aarch64/volume.raw",
+          "sha256": "605b3152e11b8ade90586fe417aa907016f12d4553937f20481f69ad020af0bc"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/A-aarch64/serie.serial",
+          "sha256": "e91f4b52459330db5fce08245fd3147f82ed36e440e7f22c376e75372b2dbd9c"
+        }
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "contexte": "A",
+      "secteur": 512,
+      "noyau": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-A-x86_64.elf",
+      "noyau_sha256": "725cb1bcded0579b123d5ed69e972fa5fe414a988b8a929568f0f8a22bb488be",
+      "image_initiale_sha256": "245e1cb968ca8139206a8db848b29304621aeefcc030e56698d45f075a9a5352",
+      "attendu": "lecture NovaOS LF, statut 0, fermeture stockage OK et processus/IPC restitués",
+      "lecture_ms": 84.919417,
+      "ressources_finales": [
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "statut": 0,
+      "execution_s": 3.238019625,
+      "succes": true,
+      "erreur": null,
+      "image_finale_sha256": "8ade450ff5e0bf84a83775b0700ed78c41f5f0d958c79fc842cf7c0de857fe2b",
+      "artefacts": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/A-x86_64/serie.iso",
+          "sha256": "ad53df7cc286164137cf3e2786efb8b65c49c2fb47cf4efcd47073b93b3e682b"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/A-x86_64/serie.vm.json",
+          "sha256": "09f2f65772cb7d8155be30e53e9857d95e89716b00bec0f150047e59a06b8d11"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/A-x86_64/volume.raw",
+          "sha256": "8ade450ff5e0bf84a83775b0700ed78c41f5f0d958c79fc842cf7c0de857fe2b"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/A-x86_64/serie.serial",
+          "sha256": "00c9bd797f76aead459f4821242059c1af2e6d8800020a374ccc38d22c0c87ad"
+        }
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "contexte": "B",
+      "secteur": 512,
+      "noyau": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-B-aarch64.elf",
+      "noyau_sha256": "73675e12fc432916a54b02d2eda229bec397f24bfef8bfcd744433af70cc7a6a",
+      "image_initiale_sha256": "245e1cb968ca8139206a8db848b29304621aeefcc030e56698d45f075a9a5352",
+      "attendu": "lecture NovaOS LF, statut 0, fermeture stockage OK et processus/IPC restitués",
+      "lecture_ms": 100.885,
+      "ressources_finales": [
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "statut": 0,
+      "execution_s": 7.484620458,
+      "succes": true,
+      "erreur": null,
+      "image_finale_sha256": "1a26da78d827844f01c59269ecacc35a71f6f364a7f02d129b00922a4d76e8f0",
+      "artefacts": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/B-aarch64/serie.iso",
+          "sha256": "4692bfa99b17f6d62c351f75c10a212e1c0806d8c61d42435b82ad7ea63a4d14"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/B-aarch64/serie.vm.json",
+          "sha256": "8571a8967a0812d2cc9e8428b4056f804d82ef51ac1cf3eb6a14b8760002b4b1"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/B-aarch64/volume.raw",
+          "sha256": "1a26da78d827844f01c59269ecacc35a71f6f364a7f02d129b00922a4d76e8f0"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/B-aarch64/serie.serial",
+          "sha256": "67c2c7711a30b348aaa841e5af74e5a857cf1d28b094ee6ee632bea40ad3ee39"
+        }
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "contexte": "B",
+      "secteur": 512,
+      "noyau": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-B-x86_64.elf",
+      "noyau_sha256": "072c71f651d3fd88e2aa14fb069349726abea5a7335e6702519392de11d08eac",
+      "image_initiale_sha256": "245e1cb968ca8139206a8db848b29304621aeefcc030e56698d45f075a9a5352",
+      "attendu": "lecture NovaOS LF, statut 0, fermeture stockage OK et processus/IPC restitués",
+      "lecture_ms": 84.732625,
+      "ressources_finales": [
+        [
+          "0",
+          "0",
+          "0"
+        ]
+      ],
+      "statut": 0,
+      "execution_s": 3.206698458,
+      "succes": true,
+      "erreur": null,
+      "image_finale_sha256": "82e6d98a7a3da5af395211e02d776359ddfc56865bde478bec800961eb7e6367",
+      "artefacts": [
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/B-x86_64/serie.iso",
+          "sha256": "cb4174bac3508e780653632fd611837d9353e7db762bd02d3408c23019a1b22e"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/B-x86_64/serie.vm.json",
+          "sha256": "16f03c90980452c0b9218459c50927b479e575e155aaa6d234e4b8cf6a3bc271"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/B-x86_64/volume.raw",
+          "sha256": "82e6d98a7a3da5af395211e02d776359ddfc56865bde478bec800961eb7e6367"
+        },
+        {
+          "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-audit-r2-43e5cf9/stockage-ordinaire/B-x86_64/serie.serial",
+          "sha256": "869b0c410a0bb18317f1c6a78dd816528fe6751ddd55f178120663d77102d12f"
+        }
+      ]
+    }
+  ],
+  "memoire": {
+    "mesures": [
+      {
+        "architecture": "aarch64",
+        "profil": "profil",
+        "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-autorite-invite-1e9fec9/final/serie-profil-aarch64-ipc.log",
+        "copie": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/historique-memoire-profil-aarch64.log",
+        "sha256": "3f5a068935bfb08b571fcbd9ae00b7ba5ccf4bd9035762cebef139949a7ca4e3",
+        "phases": {
+          "ipc_repos": {
+            "image": 1697,
+            "tables": 147,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 27496,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61459,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 8398,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1880,
+            "retenu": 2349,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_reprise": {
+            "image": 1697,
+            "tables": 147,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 27496,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61459,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 8398,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1880,
+            "retenu": 2349,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_actifs": {
+            "image": 1697,
+            "tables": 234,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 3,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 27496,
+            "meta_actifs": 12240,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61046,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 8398,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 2293,
+            "retenu": 2762,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_saturation": {
+            "image": 1697,
+            "tables": 234,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 71,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 27496,
+            "meta_actifs": 12240,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 60978,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 8398,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 2361,
+            "retenu": 2830,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_detruits": {
+            "image": 1697,
+            "tables": 147,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 27496,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61459,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 8398,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1880,
+            "retenu": 2349,
+            "dma": 0,
+            "elf_preparation": 0
+          }
+        },
+        "retour_exact": true,
+        "seuil": 2048,
+        "ecart_seuil": 301
+      },
+      {
+        "architecture": "aarch64",
+        "profil": "ordinaire",
+        "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-autorite-invite-1e9fec9/final/serie-ordinaire-aarch64-ipc.log",
+        "copie": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/historique-memoire-ordinaire-aarch64.log",
+        "sha256": "3245b509121a86754a0acffce63cba02ac7db4dcd2e928608eca5a5db91d18de",
+        "phases": {
+          "ipc_repos": {
+            "image": 1110,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62047,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1292,
+            "retenu": 1761,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_reprise": {
+            "image": 1110,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62047,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1292,
+            "retenu": 1761,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_actifs": {
+            "image": 1110,
+            "tables": 233,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 3,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61634,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1705,
+            "retenu": 2174,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_saturation": {
+            "image": 1110,
+            "tables": 233,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 71,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61566,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1773,
+            "retenu": 2242,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_detruits": {
+            "image": 1110,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62047,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 7799,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 469,
+            "resident": 1292,
+            "retenu": 1761,
+            "dma": 0,
+            "elf_preparation": 0
+          }
+        },
+        "retour_exact": true,
+        "seuil": 2048,
+        "ecart_seuil": -287
+      },
+      {
+        "architecture": "x86_64",
+        "profil": "profil",
+        "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-autorite-invite-1e9fec9/final/serie-profil-x86_64-ipc.log",
+        "copie": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/historique-memoire-profil-x86_64.log",
+        "sha256": "957025eaeae085defa012a866973947e00ec8ffed576984250c486c6977db477",
+        "phases": {
+          "ipc_repos": {
+            "image": 1736,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 27496,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62020,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11566,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1918,
+            "retenu": 1918,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_reprise": {
+            "image": 1736,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 27496,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62020,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11566,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1918,
+            "retenu": 1918,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_actifs": {
+            "image": 1736,
+            "tables": 233,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 3,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 27496,
+            "meta_actifs": 12240,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61607,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11566,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 2331,
+            "retenu": 2331,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_saturation": {
+            "image": 1736,
+            "tables": 233,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 71,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 27496,
+            "meta_actifs": 12240,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 61539,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11566,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 2399,
+            "retenu": 2399,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_detruits": {
+            "image": 1736,
+            "tables": 146,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 27496,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62020,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11566,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1918,
+            "retenu": 1918,
+            "dma": 0,
+            "elf_preparation": 0
+          }
+        },
+        "retour_exact": true,
+        "seuil": 2048,
+        "ecart_seuil": -130
+      },
+      {
+        "architecture": "x86_64",
+        "profil": "ordinaire",
+        "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-autorite-invite-1e9fec9/final/serie-ordinaire-x86_64-ipc.log",
+        "copie": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/historique-memoire-ordinaire-x86_64.log",
+        "sha256": "399eaa27dc44f4f9a934931700bd7663faa68c0ab2af907e38ace81d8982b665",
+        "phases": {
+          "ipc_repos": {
+            "image": 1192,
+            "tables": 145,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62565,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1373,
+            "retenu": 1373,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_reprise": {
+            "image": 1192,
+            "tables": 145,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62565,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1373,
+            "retenu": 1373,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_actifs": {
+            "image": 1192,
+            "tables": 232,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 3,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62152,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1786,
+            "retenu": 1786,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_saturation": {
+            "image": 1192,
+            "tables": 232,
+            "kpile": 304,
+            "upile": 17,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 71,
+            "utilisateur": 34,
+            "processus": 17,
+            "meta_octets": 23712,
+            "meta_actifs": 11288,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62084,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1854,
+            "retenu": 1854,
+            "dma": 0,
+            "elf_preparation": 0
+          },
+          "ipc_detruits": {
+            "image": 1192,
+            "tables": 145,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 3,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23712,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 62565,
+            "cache": 0,
+            "chargeur": 0,
+            "restitue": 11015,
+            "extra_elf": 0,
+            "video": 469,
+            "ram_video": 0,
+            "resident": 1373,
+            "retenu": 1373,
+            "dma": 0,
+            "elf_preparation": 0
+          }
+        },
+        "retour_exact": true,
+        "seuil": 2048,
+        "ecart_seuil": -675
+      }
+    ],
+    "delta_profil_moins_ordinaire_aarch64": {
+      "image": 587,
+      "tables": 1,
+      "kpile": 0,
+      "upile": 0,
+      "heap": 0,
+      "buddy": 0,
+      "ipc": 0,
+      "utilisateur": 0,
+      "processus": 0,
+      "meta_octets": 3784,
+      "meta_actifs": 0,
+      "tcb_octets": 0,
+      "heap_va": 0,
+      "libres": -588,
+      "cache": 0,
+      "chargeur": 0,
+      "restitue": 599,
+      "extra_elf": 0,
+      "video": 0,
+      "ram_video": 0,
+      "resident": 588,
+      "retenu": 588,
+      "dma": 0,
+      "elf_preparation": 0
+    },
+    "conclusion": "587 cadres image et 1 table ; restitution exacte observée ; dépassement réel de 301 cadres, réserve non levée"
+  },
+  "reproductibilite": [
+    {
+      "type": "noyau",
+      "architecture": "aarch64",
+      "a": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-A-aarch64.elf",
+      "b": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-B-aarch64.elf",
+      "sha_a": "9fc8d47c9d403364a2a6ec0451f88d568cf41ee7afe65a420b3978ae3a14d487",
+      "sha_b": "73675e12fc432916a54b02d2eda229bec397f24bfef8bfcd744433af70cc7a6a",
+      "identiques": false,
+      "entree_identique": true,
+      "segments_identiques": false,
+      "segments_a": [
+        {
+          "flags": 6,
+          "adresse": 18446744071562067968,
+          "fichier_octets": 680,
+          "memoire_octets": 680,
+          "sha256": "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+        },
+        {
+          "flags": 5,
+          "adresse": 18446744071562072064,
+          "fichier_octets": 737664,
+          "memoire_octets": 737664,
+          "sha256": "c0a83bc33babf255e2c9d5f22958d7943428a51bcbf7a19be092353a4933b9f3"
+        },
+        {
+          "flags": 4,
+          "adresse": 18446744071562813440,
+          "fichier_octets": 3750627,
+          "memoire_octets": 3750627,
+          "sha256": "a9213e5dd824168871734dcea7ce0fbe10337c6c4c02cb9f520d263962d315d5"
+        },
+        {
+          "flags": 6,
+          "adresse": 18446744071566565376,
+          "fichier_octets": 28768,
+          "memoire_octets": 48776,
+          "sha256": "fecc4d9a8f62b80842914a620a3499346922db606c8ed5079fe1a6c50d009797"
+        }
+      ],
+      "segments_b": [
+        {
+          "flags": 6,
+          "adresse": 18446744071562067968,
+          "fichier_octets": 680,
+          "memoire_octets": 680,
+          "sha256": "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+        },
+        {
+          "flags": 5,
+          "adresse": 18446744071562072064,
+          "fichier_octets": 737664,
+          "memoire_octets": 737664,
+          "sha256": "c0a83bc33babf255e2c9d5f22958d7943428a51bcbf7a19be092353a4933b9f3"
+        },
+        {
+          "flags": 4,
+          "adresse": 18446744071562813440,
+          "fichier_octets": 3750627,
+          "memoire_octets": 3750627,
+          "sha256": "424ed815ee84bcd7265ac41e0790b2bd5dfc458599aed300a0b833587a13316d"
+        },
+        {
+          "flags": 6,
+          "adresse": 18446744071566565376,
+          "fichier_octets": 28768,
+          "memoire_octets": 48776,
+          "sha256": "fecc4d9a8f62b80842914a620a3499346922db606c8ed5079fe1a6c50d009797"
+        }
+      ],
+      "ecarts_sections": [
+        {
+          "section": ".rodata",
+          "allouee": true,
+          "taille_a": 3750627,
+          "taille_b": 3750627,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "a9213e5dd824168871734dcea7ce0fbe10337c6c4c02cb9f520d263962d315d5",
+          "sha_b": "424ed815ee84bcd7265ac41e0790b2bd5dfc458599aed300a0b833587a13316d"
+        },
+        {
+          "section": ".strtab",
+          "allouee": false,
+          "taille_a": 196652,
+          "taille_b": 196542,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "2114fdb3f59ddcdde7231de86997843c94f6c3bc10c27f19d299b074ab8fb419",
+          "sha_b": "1298ab177bc6c49e345c6ce12087e95615c09109fd0f5d98b50c6caad383f160"
+        },
+        {
+          "section": ".symtab",
+          "allouee": false,
+          "taille_a": 152520,
+          "taille_b": 152520,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "f2f17137cf1468a2a7ee08eb0937292b64971eaa3a610634e298e65b93e31f9d",
+          "sha_b": "cd09c465ab41700a967f799342bf6da6e39c428088b23b994729fda5f74f6d5e"
+        }
+      ]
+    },
+    {
+      "type": "ELF SDK",
+      "architecture": "aarch64",
+      "profil": "sdk-example",
+      "a": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/A-aarch64-sdk-example.elf",
+      "b": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/B-aarch64-sdk-example.elf",
+      "sha_a": "742d4c39885bd1a43409eb6d8dde3cab02381a4ab5d3a4da0483c2b8d93090f9",
+      "sha_b": "82d6b338ca82ffb9e140a619a567e74371718ed860a9087c0093812728d1403e",
+      "identiques": false,
+      "entree_identique": true,
+      "segments_identiques": false,
+      "segments_a": [
+        {
+          "flags": 5,
+          "adresse": 16777216,
+          "fichier_octets": 8160,
+          "memoire_octets": 8160,
+          "sha256": "8b83e8408ff2d6c2a63841f55641eb9a498a06d79d677a46d2679ec666540696"
+        },
+        {
+          "flags": 4,
+          "adresse": 16785408,
+          "fichier_octets": 1675,
+          "memoire_octets": 1675,
+          "sha256": "d812ab7039c180af6bac4f5307817d21f5c7a9f32b53eef8ff94b1c0e91f9e70"
+        },
+        {
+          "flags": 6,
+          "adresse": 16789504,
+          "fichier_octets": 0,
+          "memoire_octets": 32,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "segments_b": [
+        {
+          "flags": 5,
+          "adresse": 16777216,
+          "fichier_octets": 8160,
+          "memoire_octets": 8160,
+          "sha256": "8b83e8408ff2d6c2a63841f55641eb9a498a06d79d677a46d2679ec666540696"
+        },
+        {
+          "flags": 4,
+          "adresse": 16785408,
+          "fichier_octets": 1675,
+          "memoire_octets": 1675,
+          "sha256": "6b404d70a59e875ef937b2079d7377cb9405c523e747ad4a85f705371631bf89"
+        },
+        {
+          "flags": 6,
+          "adresse": 16789504,
+          "fichier_octets": 0,
+          "memoire_octets": 32,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "ecarts_sections": [
+        {
+          "section": ".rodata",
+          "allouee": true,
+          "taille_a": 1675,
+          "taille_b": 1675,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "d812ab7039c180af6bac4f5307817d21f5c7a9f32b53eef8ff94b1c0e91f9e70",
+          "sha_b": "6b404d70a59e875ef937b2079d7377cb9405c523e747ad4a85f705371631bf89"
+        },
+        {
+          "section": ".strtab",
+          "allouee": false,
+          "taille_a": 4143,
+          "taille_b": 4143,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "e84632cd22fe25f74b0f0da793664055b1d6386c25202c8c205d1f78c5574cf4",
+          "sha_b": "952d5e7543dafcb068423f472e426dc51bde9a81338cbdbbbc0d7cb309826e1f"
+        },
+        {
+          "section": ".symtab",
+          "allouee": false,
+          "taille_a": 7296,
+          "taille_b": 7296,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "13842e92b71c199c887f4eb46e6990e027d764488e085620b2427b3f15de9b13",
+          "sha_b": "41661d806d9085f8a7119d92ddcae2ab842e547af8eafaa27fdd0cef15cbe881"
+        }
+      ]
+    },
+    {
+      "type": "ELF SDK",
+      "architecture": "aarch64",
+      "profil": "threads-test",
+      "a": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/A-aarch64-threads-test.elf",
+      "b": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/B-aarch64-threads-test.elf",
+      "sha_a": "611be0985b3e21ff24bf61a6097bcfbb7f7b46d779fe5bba778fb1267837a328",
+      "sha_b": "21f7e3dd48b728f2dafe9d1cd86bdb95166f9ed299fd9e80b56003b457c390ff",
+      "identiques": false,
+      "entree_identique": true,
+      "segments_identiques": false,
+      "segments_a": [
+        {
+          "flags": 5,
+          "adresse": 16777216,
+          "fichier_octets": 29572,
+          "memoire_octets": 29572,
+          "sha256": "b8a9ef75d1baa07fe95f20a96c395369674ebf224dd8040d58181c6f0a5e018f"
+        },
+        {
+          "flags": 4,
+          "adresse": 16809984,
+          "fichier_octets": 8715,
+          "memoire_octets": 8715,
+          "sha256": "12dd8d5420a487f5fc7ad3bf5823b78abb4b1da64fbdc7d55aa6e29a1f0b8b6a"
+        },
+        {
+          "flags": 6,
+          "adresse": 16822272,
+          "fichier_octets": 0,
+          "memoire_octets": 104,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "segments_b": [
+        {
+          "flags": 5,
+          "adresse": 16777216,
+          "fichier_octets": 29572,
+          "memoire_octets": 29572,
+          "sha256": "dd6bb98cdc02611ffb7cf8a92580a3cf4a2d9f057d16ae3ce735318b9e51c5f2"
+        },
+        {
+          "flags": 4,
+          "adresse": 16809984,
+          "fichier_octets": 8715,
+          "memoire_octets": 8715,
+          "sha256": "f513aff3b11a415de33d849e6e481c78bbfca6df9256f5179b525905d17077ff"
+        },
+        {
+          "flags": 6,
+          "adresse": 16822272,
+          "fichier_octets": 0,
+          "memoire_octets": 104,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "ecarts_sections": [
+        {
+          "section": ".rodata",
+          "allouee": true,
+          "taille_a": 8715,
+          "taille_b": 8715,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "12dd8d5420a487f5fc7ad3bf5823b78abb4b1da64fbdc7d55aa6e29a1f0b8b6a",
+          "sha_b": "f513aff3b11a415de33d849e6e481c78bbfca6df9256f5179b525905d17077ff"
+        },
+        {
+          "section": ".strtab",
+          "allouee": false,
+          "taille_a": 11127,
+          "taille_b": 11127,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "c4ce958d2743f79a7b98f8ef560b266158cf3615d4da5282404ca0cd44b5a611",
+          "sha_b": "fa6cc1fad86fb56c31023aef363ac9a8d53e87b408439ecd02c9e016577d4714"
+        },
+        {
+          "section": ".text",
+          "allouee": true,
+          "taille_a": 29572,
+          "taille_b": 29572,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "b8a9ef75d1baa07fe95f20a96c395369674ebf224dd8040d58181c6f0a5e018f",
+          "sha_b": "dd6bb98cdc02611ffb7cf8a92580a3cf4a2d9f057d16ae3ce735318b9e51c5f2"
+        }
+      ]
+    },
+    {
+      "type": "noyau",
+      "architecture": "x86_64",
+      "a": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-A-x86_64.elf",
+      "b": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/ordinaire-B-x86_64.elf",
+      "sha_a": "725cb1bcded0579b123d5ed69e972fa5fe414a988b8a929568f0f8a22bb488be",
+      "sha_b": "072c71f651d3fd88e2aa14fb069349726abea5a7335e6702519392de11d08eac",
+      "identiques": false,
+      "entree_identique": true,
+      "segments_identiques": false,
+      "segments_a": [
+        {
+          "flags": 6,
+          "adresse": 18446744071562067968,
+          "fichier_octets": 488,
+          "memoire_octets": 488,
+          "sha256": "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+        },
+        {
+          "flags": 5,
+          "adresse": 18446744071562072064,
+          "fichier_octets": 932932,
+          "memoire_octets": 932932,
+          "sha256": "32c9a2c4570f83c483c9bc81771fe90de801b10ce9329772b1c53e8c0f4cb145"
+        },
+        {
+          "flags": 4,
+          "adresse": 18446744071563005952,
+          "fichier_octets": 3868643,
+          "memoire_octets": 3868643,
+          "sha256": "4f9e8226ef026f3bbacc533cdc6a3bcdd73674f88f9c52f841eaf15df9fa18d1"
+        },
+        {
+          "flags": 6,
+          "adresse": 18446744071566876672,
+          "fichier_octets": 33488,
+          "memoire_octets": 69962,
+          "sha256": "5c19593f6c8ffc4058a8372bd4af7f22f739bd8367d6fd6c1bc6f7d25c720c69"
+        }
+      ],
+      "segments_b": [
+        {
+          "flags": 6,
+          "adresse": 18446744071562067968,
+          "fichier_octets": 488,
+          "memoire_octets": 488,
+          "sha256": "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+        },
+        {
+          "flags": 5,
+          "adresse": 18446744071562072064,
+          "fichier_octets": 932932,
+          "memoire_octets": 932932,
+          "sha256": "32c9a2c4570f83c483c9bc81771fe90de801b10ce9329772b1c53e8c0f4cb145"
+        },
+        {
+          "flags": 4,
+          "adresse": 18446744071563005952,
+          "fichier_octets": 3868643,
+          "memoire_octets": 3868643,
+          "sha256": "b3e01ab3aa1c4c870785a1c5835548017276c85fafed4e5448d32800a7946291"
+        },
+        {
+          "flags": 6,
+          "adresse": 18446744071566876672,
+          "fichier_octets": 33488,
+          "memoire_octets": 69962,
+          "sha256": "5c19593f6c8ffc4058a8372bd4af7f22f739bd8367d6fd6c1bc6f7d25c720c69"
+        }
+      ],
+      "ecarts_sections": [
+        {
+          "section": ".rodata",
+          "allouee": true,
+          "taille_a": 3868643,
+          "taille_b": 3868643,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "4f9e8226ef026f3bbacc533cdc6a3bcdd73674f88f9c52f841eaf15df9fa18d1",
+          "sha_b": "b3e01ab3aa1c4c870785a1c5835548017276c85fafed4e5448d32800a7946291"
+        },
+        {
+          "section": ".strtab",
+          "allouee": false,
+          "taille_a": 199099,
+          "taille_b": 199124,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "1fc49f3bb02349cf570e888b101fc6c44b2315a4294a59fb87cf2e5b2c605f28",
+          "sha_b": "a241f64cdd0e4394156ebc927962fde533f2697a8efa5a5ad3fc92d72fb11bf3"
+        },
+        {
+          "section": ".symtab",
+          "allouee": false,
+          "taille_a": 53136,
+          "taille_b": 53136,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "22b7e8e508915f9609c06646fbc895ffb101995d99260f21b956c35d2e470b53",
+          "sha_b": "7a1feffe477343f948babc293f44339908aea9fc650d02783eec667b7c6ebc32"
+        }
+      ]
+    },
+    {
+      "type": "ELF SDK",
+      "architecture": "x86_64",
+      "profil": "sdk-example",
+      "a": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/A-x86_64-sdk-example.elf",
+      "b": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/B-x86_64-sdk-example.elf",
+      "sha_a": "910a23c80c23de8711daead42f754d6f70cf030c328a86481ffc20454eea3d47",
+      "sha_b": "cb3d198b3d60d4a0ee175aea017d907f01ca1daf4da3862e03ba3064728eb0a1",
+      "identiques": false,
+      "entree_identique": true,
+      "segments_identiques": false,
+      "segments_a": [
+        {
+          "flags": 5,
+          "adresse": 16777216,
+          "fichier_octets": 7587,
+          "memoire_octets": 7587,
+          "sha256": "31e9be83087f4205b28681ffb134373ff308a27b0385f6a1e1b3ef72a30c8521"
+        },
+        {
+          "flags": 4,
+          "adresse": 16785408,
+          "fichier_octets": 1768,
+          "memoire_octets": 1768,
+          "sha256": "078d26118f90e90d645cad7e0245d152c7928fcc364f63ab178d5202af77d913"
+        },
+        {
+          "flags": 6,
+          "adresse": 16789504,
+          "fichier_octets": 0,
+          "memoire_octets": 32,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "segments_b": [
+        {
+          "flags": 5,
+          "adresse": 16777216,
+          "fichier_octets": 7587,
+          "memoire_octets": 7587,
+          "sha256": "31e9be83087f4205b28681ffb134373ff308a27b0385f6a1e1b3ef72a30c8521"
+        },
+        {
+          "flags": 4,
+          "adresse": 16785408,
+          "fichier_octets": 1768,
+          "memoire_octets": 1768,
+          "sha256": "b2cb1b5659044e4c1e3dd15f97db563894d95860c592ecc16504e2d41b556b5e"
+        },
+        {
+          "flags": 6,
+          "adresse": 16789504,
+          "fichier_octets": 0,
+          "memoire_octets": 32,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "ecarts_sections": [
+        {
+          "section": ".rodata",
+          "allouee": true,
+          "taille_a": 1768,
+          "taille_b": 1768,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "078d26118f90e90d645cad7e0245d152c7928fcc364f63ab178d5202af77d913",
+          "sha_b": "b2cb1b5659044e4c1e3dd15f97db563894d95860c592ecc16504e2d41b556b5e"
+        },
+        {
+          "section": ".strtab",
+          "allouee": false,
+          "taille_a": 3461,
+          "taille_b": 3461,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "d5f89ba38d082942f60621de40bc76e6d310242e70e848b25c86b4a912f92235",
+          "sha_b": "1c8a44e705975c2dcfa674ba60eb86a6599a3008aa94f85b2453dfb52546adba"
+        }
+      ]
+    },
+    {
+      "type": "ELF SDK",
+      "architecture": "x86_64",
+      "profil": "threads-test",
+      "a": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/A-x86_64-threads-test.elf",
+      "b": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/B-x86_64-threads-test.elf",
+      "sha_a": "2d3d14a7b1b5ceb789ff36e23ed6958bf1b840cc22fb921076da3a8adf3af7ac",
+      "sha_b": "18c120d7e5b6a8f2132fdc738304fc508d97cace2eab67f75f9204af98afc34a",
+      "identiques": false,
+      "entree_identique": true,
+      "segments_identiques": false,
+      "segments_a": [
+        {
+          "flags": 5,
+          "adresse": 16777216,
+          "fichier_octets": 31365,
+          "memoire_octets": 31365,
+          "sha256": "3cf1cc1d0667af010853b7a16e0a0440bf949956c5b1506dde9f8c89c16c32e2"
+        },
+        {
+          "flags": 4,
+          "adresse": 16809984,
+          "fichier_octets": 8872,
+          "memoire_octets": 8872,
+          "sha256": "c124ada03db2c21f88a484bf80ddf93ed9fc5f5bb25e865f89328f29909ea059"
+        },
+        {
+          "flags": 6,
+          "adresse": 16822272,
+          "fichier_octets": 0,
+          "memoire_octets": 104,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "segments_b": [
+        {
+          "flags": 5,
+          "adresse": 16777216,
+          "fichier_octets": 31365,
+          "memoire_octets": 31365,
+          "sha256": "91be9e140c55740afbcf05235cf651ab59f0e065eafd627dd70b5bc53b05970f"
+        },
+        {
+          "flags": 4,
+          "adresse": 16809984,
+          "fichier_octets": 8872,
+          "memoire_octets": 8872,
+          "sha256": "015e9dc6c26d8dc559a218d258348220cbdd91481e85ddeea17eb06d6bac51a7"
+        },
+        {
+          "flags": 6,
+          "adresse": 16822272,
+          "fichier_octets": 0,
+          "memoire_octets": 104,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "ecarts_sections": [
+        {
+          "section": ".rodata",
+          "allouee": true,
+          "taille_a": 8872,
+          "taille_b": 8872,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "c124ada03db2c21f88a484bf80ddf93ed9fc5f5bb25e865f89328f29909ea059",
+          "sha_b": "015e9dc6c26d8dc559a218d258348220cbdd91481e85ddeea17eb06d6bac51a7"
+        },
+        {
+          "section": ".strtab",
+          "allouee": false,
+          "taille_a": 9606,
+          "taille_b": 9606,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "7b214334cb22bd8fa875bb6b32c00e4d08896aab0de6b3101b4282244efa9408",
+          "sha_b": "dd395f3e41f71199aa37c1a11e37fccdfb5b3450901cb1da49309eb09c2d81a1"
+        },
+        {
+          "section": ".text",
+          "allouee": true,
+          "taille_a": 31365,
+          "taille_b": 31365,
+          "adresse_identique": true,
+          "octets_identiques": false,
+          "sha_a": "3cf1cc1d0667af010853b7a16e0a0440bf949956c5b1506dde9f8c89c16c32e2",
+          "sha_b": "91be9e140c55740afbcf05235cf651ab59f0e065eafd627dd70b5bc53b05970f"
+        }
+      ]
+    }
+  ],
+  "reproduction_chemin_identique": {
+    "noyaux": [
+      {
+        "architecture": "aarch64",
+        "code": 0,
+        "compilation_s": 14.6860715,
+        "commande": [
+          "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+          "build",
+          "--release",
+          "--locked",
+          "--offline",
+          "--target",
+          "aarch64-unknown-none-softfloat"
+        ],
+        "sha256": "9fc8d47c9d403364a2a6ec0451f88d568cf41ee7afe65a420b3978ae3a14d487",
+        "precedent": "9fc8d47c9d403364a2a6ec0451f88d568cf41ee7afe65a420b3978ae3a14d487",
+        "identique": true,
+        "chemin_source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/audit-r2-repro-A-43e5cf9",
+        "chemin_target": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/audit-r2-repro-A-43e5cf9/target",
+        "ancienne_construction": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/audit-r2-repro-A-43e5cf9/target-construction-A-conservee"
+      },
+      {
+        "architecture": "x86_64",
+        "code": 0,
+        "compilation_s": 14.53935225,
+        "commande": [
+          "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+          "build",
+          "--release",
+          "--locked",
+          "--offline",
+          "--target",
+          "x86_64-unknown-none"
+        ],
+        "sha256": "725cb1bcded0579b123d5ed69e972fa5fe414a988b8a929568f0f8a22bb488be",
+        "precedent": "725cb1bcded0579b123d5ed69e972fa5fe414a988b8a929568f0f8a22bb488be",
+        "identique": true,
+        "chemin_source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/audit-r2-repro-A-43e5cf9",
+        "chemin_target": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/audit-r2-repro-A-43e5cf9/target",
+        "ancienne_construction": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/audit-r2-repro-A-43e5cf9/target-construction-A-conservee"
+      }
+    ],
+    "sdk": [
+      {
+        "architecture": "aarch64",
+        "profil": "sdk-example",
+        "compilation_s": 0.395692708,
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/audit-r2-sdk-A-aarch64-sdk-example/nova-system-0.2.0/build.py",
+          "aarch64"
+        ],
+        "sha256": "742d4c39885bd1a43409eb6d8dde3cab02381a4ab5d3a4da0483c2b8d93090f9",
+        "precedent": "742d4c39885bd1a43409eb6d8dde3cab02381a4ab5d3a4da0483c2b8d93090f9",
+        "identique": true
+      },
+      {
+        "architecture": "aarch64",
+        "profil": "threads-test",
+        "compilation_s": 0.522831792,
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/audit-r2-sdk-A-aarch64-threads-test/nova-system-0.2.0/build.py",
+          "aarch64",
+          "--features",
+          "qualification"
+        ],
+        "sha256": "611be0985b3e21ff24bf61a6097bcfbb7f7b46d779fe5bba778fb1267837a328",
+        "precedent": "611be0985b3e21ff24bf61a6097bcfbb7f7b46d779fe5bba778fb1267837a328",
+        "identique": true
+      },
+      {
+        "architecture": "x86_64",
+        "profil": "sdk-example",
+        "compilation_s": 0.404056708,
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/audit-r2-sdk-A-x86_64-sdk-example/nova-system-0.2.0/build.py",
+          "x86_64"
+        ],
+        "sha256": "910a23c80c23de8711daead42f754d6f70cf030c328a86481ffc20454eea3d47",
+        "precedent": "910a23c80c23de8711daead42f754d6f70cf030c328a86481ffc20454eea3d47",
+        "identique": true
+      },
+      {
+        "architecture": "x86_64",
+        "profil": "threads-test",
+        "compilation_s": 0.525178125,
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/audit-r2-sdk-A-x86_64-threads-test/nova-system-0.2.0/build.py",
+          "x86_64",
+          "--features",
+          "qualification"
+        ],
+        "sha256": "2d3d14a7b1b5ceb789ff36e23ed6958bf1b840cc22fb921076da3a8adf3af7ac",
+        "precedent": "2d3d14a7b1b5ceb789ff36e23ed6958bf1b840cc22fb921076da3a8adf3af7ac",
+        "identique": true
+      }
+    ]
+  },
+  "preuves_acquises": [
+    {
+      "nom": "securite_finale",
+      "fichiers": 1897,
+      "manifeste": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/finalisation-securite-6693267/SHA256SUMS",
+      "sha256": "d697c9ff155932a6acbc692ee8ec17e8279db83a5f5242bacab086f684924883",
+      "verifie": true
+    },
+    {
+      "nom": "securite_initiale",
+      "fichiers": 310,
+      "manifeste": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122/SHA256SUMS",
+      "sha256": "638396286251ae1c210cecc0f0fa1f8c21b7b85e83d46a03aa438d4207e0f349",
+      "verifie": true
+    }
+  ],
+  "artefacts_anterieurs": {
+    "verifications": 205,
+    "fichiers_distincts": 102
+  },
+  "controles_hotes_anterieurs": {
+    "resultats": {
+      "administration_python": 62,
+      "exec_client_rust": 18,
+      "registre_rust": 8,
+      "abi": 9,
+      "succes": true
+    },
+    "traitement": "Réutilisés sans nouvelle exécution, aucune source fonctionnelle modifiée"
+  },
+  "coordination": [
+    {
+      "proprietaire": "audit-cloture-R2",
+      "token": "fa58d8b9455c4dc0b3efbc86e627d323",
+      "pid": 45662,
+      "attente_debut_utc": "2026-11-22T22:08:32.540224+00:00",
+      "attente_s": 7.5166e-05,
+      "acquisition_utc": "2026-11-22T22:08:32.540453+00:00",
+      "liberation_utc": "2026-11-22T22:08:51.611647+00:00",
+      "execution_s": 19.006758917,
+      "verrou_libere": true
+    },
+    {
+      "proprietaire": "audit-cloture-R2-reconstructions",
+      "token": "944356b1ac5e41fdb329dc74ee3ff362",
+      "pid": 50024,
+      "attente_debut_utc": "2026-11-22T22:17:30.219694+00:00",
+      "attente_s": 0.0001055,
+      "acquisition_utc": "2026-11-22T22:17:30.219980+00:00",
+      "liberation_utc": "2026-11-22T22:18:28.417394+00:00",
+      "execution_s": 58.100581084,
+      "verrou_libere": true
+    },
+    {
+      "proprietaire": "audit-cloture-R2-stockage-reconstruit",
+      "token": "f6aad02ef9bc46ef927a5e751b435266",
+      "pid": 53545,
+      "attente_debut_utc": "2026-11-22T22:22:12.247775+00:00",
+      "attente_s": 0.00011325,
+      "acquisition_utc": "2026-11-22T22:22:12.248130+00:00",
+      "liberation_utc": "2026-11-22T22:22:33.770667+00:00",
+      "execution_s": 21.460288999,
+      "verrou_libere": true
+    }
+  ],
+  "temps": {
+    "debut_utc": "2026-11-22T22:00:01Z",
+    "borne_utc": "2026-11-22T22:26:12.227014+00:00",
+    "travail_actif_mural_s": 1571.2267200840001,
+    "attente_s": 0.000293916,
+    "compilation_cumulee_s": 303.90112254,
+    "execution_qemu_cumulee_s": 98.567629,
+    "developpement_produit_s": 0,
+    "diagnostic_et_outils_audit_fenetre_s": 1571.2267200840001,
+    "diagnostic_hors_compilation_execution_min_s": 1168.7579685440003,
+    "methode": "Fenêtre active murale ; compilations et diagnostics ont parfois été simultanés. Durées cumulées des sous-processus non additives ; minimum hors compilation/exécution indiqué sans prétendre à une mesure fine du temps de réflexion. Scellement/publication mesurés au reçu adjacent."
+  },
+  "restrictions": {
+    "daybreak": false,
+    "modification_systeme": false,
+    "incident": "Assertion de chemin documentaire du script audit corrigée, sans effet sur produit ni essais ; contrôle des 3 chemins exacts"
+  },
+  "reserves": [
+    "301 cadres AArch64 du profil instrumenté réel, pas fuite démontrée ; seuil inchangé",
+    "Non reproductible entre chemins ; reproductible dans même chemin testé, non preuve entre OS/toolchains",
+    "Production, UTM, matériel et perte alimentation non qualifiés"
+  ],
+  "scellement": {
+    "reference": "43e5cf9c9bb69af94902d886a249df8d3979478d",
+    "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122.tar.gz",
+    "archive_sha256": "d67f487bd94db98829fd111309b5d2a122b2715d6690ff87a23e3131cd60eedd",
+    "archive_octets": 2013992,
+    "manifeste": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122/SHA256SUMS",
+    "manifeste_sha256": "c91a9b96df7e919fda665be2d90889ee5841e8666745e70384274f6bcffdbe33",
+    "preuves_publiques": 118,
+    "membres_archive": 119,
+    "artefacts_conserves_hors_archive": 63,
+    "borne_scellement_utc": "2026-11-22T22:31:10.354207+00:00",
+    "secrets": "Aucun secret connu détecté ; ELF/ISO/images exclus de l’archive publique."
+  },
+  "archives_preuve": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/audit-cloture-43e5cf9-20261122",
+  "matrice_reference": "validation/novaauth-r2-securite-finalisation-20261122.json",
+  "preuves_reexecutees": 20,
+  "scenarios_securite_reexecutes": 0
+}
