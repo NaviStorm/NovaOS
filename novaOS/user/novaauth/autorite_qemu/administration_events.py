@@ -6,6 +6,14 @@ import re
 from reprise import Refus
 
 
+def command_status_pattern(step):
+    # __FIN termine déjà le statut. CONSOLE et DEBUG peuvent s'entrelacer
+    # avant le LF suivant ; les octets des ELF restent collectés séparément.
+    if re.fullmatch(r'NXR2_[0-9]+_', step) is None:
+        raise Refus('étape de commande invalide')
+    return re.escape(step.encode()) + rb'(\d+)__FIN'
+
+
 class Events:
     def __init__(self, serial, start):
         self.serial, self.start = serial, start

@@ -1,7 +1,7 @@
 """Tests hôtes de synchronisation ; aucune qualification invitée déduite."""
 import re
 import unittest
-from administration_events import Events, Refus
+from administration_events import Events, Refus, command_status_pattern
 
 class Serial:
     def __init__(self, data):
@@ -56,5 +56,29 @@ class EventTests(unittest.TestCase):
         self.assertEqual(e.actor(b'auth'),11)
         s.data.extend(b'DEBUG pid=5 auth\n')
         with self.assertRaises(Refus):e.actor(b'auth')
+
+
+class CommandStatusTests(unittest.TestCase):
+    def test_real_aarch64_interleaving_after_complete_status(self):
+        # Suffixe exact de l'échec AArch64/P9-512, essai 01.
+        raw = b'NXR2_1_0__FINDEBU\r\nG pid=11 NAR2 Bob fermetnsh> ure acquittee\r\n'
+        s=Serial(b''); s.pending=raw
+        self.assertIsNone(re.search(rb'NXR2_1_(\d+)__FIN\r?\n',raw))
+        m=s.expect(command_status_pattern('NXR2_1_'),1)
+        self.assertEqual(m[1],b'0')
+        self.assertEqual(bytes(s.data[s.offset:]),raw[len(b'NXR2_1_0__FIN'):])
+        self.assertIsNotNone(s.expect(rb'nsh> ',1))
+    def test_normal_status_and_native_failure_are_preserved(self):
+        for code in [0,3,12,20]:
+            m=re.search(command_status_pattern('NXR2_2_'),f'NXR2_2_{code}__FIN\r\n'.encode())
+            self.assertEqual(int(m[1]),code)
+    def test_echo_incomplete_other_step_and_absence_do_not_pass(self):
+        for raw in [b'',b'echo NXR2_1_$?__FIN',b'NXR2_1_0__FI',b'NXR2_0_0__FIN']:
+            self.assertIsNone(re.search(command_status_pattern('NXR2_1_'),raw))
+    def test_previous_command_not_reused(self):
+        s=Serial(b'NXR2_1_0__FIN')
+        with self.assertRaises(TimeoutError):s.expect(command_status_pattern('NXR2_1_'),1)
+    def test_invalid_step_refused(self):
+        with self.assertRaises(Refus):command_status_pattern('NXR2_.*_')
 
 if __name__=='__main__':unittest.main()

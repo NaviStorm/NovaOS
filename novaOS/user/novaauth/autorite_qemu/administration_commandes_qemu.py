@@ -17,7 +17,7 @@ from exec_deux_vm import route, signature
 from reprise import Refus, transaction
 import admission_exec as execs
 from administration_epochs import Epochs, initialize
-from administration_events import Events
+from administration_events import Events, command_status_pattern
 
 
 def main():
@@ -168,7 +168,7 @@ def main():
                 serial.offset = len(serial.data)
                 start = serial.offset
                 serial.submit(line)
-                status = serial.expect(re.escape(step.encode()) + rb'(\d+)__FIN\r?\n', 80)
+                status = serial.expect(command_status_pattern(step), 80)
                 if i != len(cases)-1:
                     serial.expect(rb'nsh> ', 20)
                 output = bytes(serial.data[start:serial.offset])
