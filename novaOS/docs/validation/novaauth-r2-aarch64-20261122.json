@@ -1,0 +1,619 @@
+{
+  "date": "2026-11-22",
+  "source_initiale": "b88a613b13895a38384cdcd9ea55fe294308bbdb",
+  "sources_invite_final": "35156744e89ad3868fe0d06e3af0217e2ca4ced1",
+  "banc_final": "c6716de119d45e4fbe65185726206254f89b821c",
+  "resultats": [
+    {
+      "profil": "AArch64/P9-512",
+      "essai": "03",
+      "source": "35156744e89ad3868fe0d06e3af0217e2ca4ced1",
+      "banc": "35156744e89ad3868fe0d06e3af0217e2ca4ced1",
+      "succes": true,
+      "tls_ms": 3324,
+      "tls_debut_ms": 376,
+      "tls_echeance_ms": 10376,
+      "tls_fin_ms": 3700,
+      "authentifications": {
+        "Alice": {
+          "tag": 1,
+          "defi_ms": 4620,
+          "expiration_defi_ms": 6120,
+          "signature_ms": 4620,
+          "verification_ms": 4852,
+          "statut": 0,
+          "expiration_bail_ms": 65020,
+          "fin_ms": 5196
+        },
+        "Bob": {
+          "tag": 1,
+          "defi_ms": 11112,
+          "expiration_defi_ms": 12612,
+          "signature_ms": 11116,
+          "verification_ms": 11284,
+          "statut": 0,
+          "expiration_bail_ms": 71452,
+          "fin_ms": 11620
+        }
+      },
+      "chargements": [
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 5904
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 5904
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 5904
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 8800
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 8800
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 8800
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSIZE",
+          "ms": 12324
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSEAL",
+          "ms": 12324
+        },
+        {
+          "pid": 11,
+          "etape": "SEALED",
+          "ms": 12324
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 18016
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 18016
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 18016
+        }
+      ],
+      "confirmation": [
+        {
+          "etape": 20,
+          "ms": 13888
+        },
+        {
+          "etape": 21,
+          "ms": 14232
+        },
+        {
+          "etape": 22,
+          "ms": 17116
+        }
+      ],
+      "ticket_presentation_ms": 14072,
+      "ticket_expiration_ms": 18004,
+      "marge_avant_expiration_ms": 3932,
+      "ticket_statut": 10,
+      "enfant_bob": 0,
+      "mutations_administratives": 1,
+      "recu_RETIREE_signature_verifiee": true,
+      "recu_sha256": "57b8661be118b97c04e748f125f03660ae21bb57d1c9b9dd654e81903258a0ae",
+      "effets_acquittes": 7,
+      "racines_pic": 4,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 4,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2,
+        "21": 3,
+        "22": 3,
+        "23": 3
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ]
+      },
+      "drainage_global": true,
+      "commandes": [
+        {
+          "pid": [
+            21
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            22
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            23
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "attente_s": 0.000355375,
+      "execution_banc_s": 37.370493833,
+      "qemu_hote_s": 36.567509333,
+      "acquisition": "2026-11-22T16:13:52.060264+00:00",
+      "liberation": "2026-11-22T16:14:29.475549+00:00"
+    },
+    {
+      "profil": "AArch64/P9-4096",
+      "essai": "02",
+      "source": "35156744e89ad3868fe0d06e3af0217e2ca4ced1",
+      "banc": "c6716de119d45e4fbe65185726206254f89b821c",
+      "succes": true,
+      "tls_ms": 2624,
+      "tls_debut_ms": 368,
+      "tls_echeance_ms": 10368,
+      "tls_fin_ms": 2992,
+      "authentifications": {
+        "Alice": {
+          "tag": 1,
+          "defi_ms": 3800,
+          "expiration_defi_ms": 5300,
+          "signature_ms": 3800,
+          "verification_ms": 4012,
+          "statut": 0,
+          "expiration_bail_ms": 64120,
+          "fin_ms": 4224
+        },
+        "Bob": {
+          "tag": 1,
+          "defi_ms": 8080,
+          "expiration_defi_ms": 9580,
+          "signature_ms": 8080,
+          "verification_ms": 8184,
+          "statut": 0,
+          "expiration_bail_ms": 68292,
+          "fin_ms": 8396
+        }
+      },
+      "chargements": [
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 4684
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 4684
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 4684
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 6576
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 6576
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 6576
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSIZE",
+          "ms": 8860
+        },
+        {
+          "pid": 11,
+          "etape": "NXLDSEAL",
+          "ms": 8860
+        },
+        {
+          "pid": 11,
+          "etape": "SEALED",
+          "ms": 8860
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSIZE",
+          "ms": 13104
+        },
+        {
+          "pid": 5,
+          "etape": "NXLDSEAL",
+          "ms": 13104
+        },
+        {
+          "pid": 5,
+          "etape": "SEALED",
+          "ms": 13104
+        }
+      ],
+      "confirmation": [
+        {
+          "etape": 20,
+          "ms": 9880
+        },
+        {
+          "etape": 21,
+          "ms": 10092
+        },
+        {
+          "etape": 22,
+          "ms": 12504
+        }
+      ],
+      "ticket_presentation_ms": 10004,
+      "ticket_expiration_ms": 14300,
+      "marge_avant_expiration_ms": 4296,
+      "ticket_statut": 10,
+      "enfant_bob": 0,
+      "mutations_administratives": 1,
+      "recu_RETIREE_signature_verifiee": true,
+      "recu_sha256": "4da19ed79d91b5d46cb86fce8f3d00f9a721a8418cc18ba5aa5cec3bcd2c443f",
+      "effets_acquittes": 7,
+      "racines_pic": 4,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 4,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2,
+        "21": 3,
+        "22": 3,
+        "23": 3
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ]
+      },
+      "drainage_global": true,
+      "commandes": [
+        {
+          "pid": [
+            21
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            22
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "pid": [
+            23
+          ],
+          "statut_natif": 0,
+          "statut_shell": 0,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "attente_s": 0.000391541,
+      "execution_banc_s": 28.493871792,
+      "qemu_hote_s": 27.699241,
+      "acquisition": "2026-11-22T16:15:25.815613+00:00",
+      "liberation": "2026-11-22T16:15:54.355578+00:00"
+    }
+  ],
+  "statuts_stricts": [
+    {
+      "profil": "AArch64/P9-512",
+      "statuts": [
+        {
+          "etape": 0,
+          "pid": 5,
+          "statut": 0,
+          "position": 26239
+        },
+        {
+          "etape": 1,
+          "pid": 5,
+          "statut": 0,
+          "position": 44837
+        },
+        {
+          "etape": 2,
+          "pid": 5,
+          "statut": 0,
+          "position": 54084
+        }
+      ],
+      "debug_messages_alice": 3
+    },
+    {
+      "profil": "AArch64/P9-4096",
+      "statuts": [
+        {
+          "etape": 0,
+          "pid": 5,
+          "statut": 0,
+          "position": 26239
+        },
+        {
+          "etape": 1,
+          "pid": 5,
+          "statut": 0,
+          "position": 44880
+        },
+        {
+          "etape": 2,
+          "pid": 5,
+          "statut": 0,
+          "position": 54084
+        }
+      ],
+      "debug_messages_alice": 3
+    }
+  ],
+  "echecs": [
+    {
+      "profil": "AArch64/P9-512",
+      "essai": "01",
+      "resultat": "ECHEC_COLLECTEUR",
+      "erreur": "b'NXR2_1_(\\\\d+)__FIN\\\\r?\\\\n'",
+      "tls_ms": 3348,
+      "marge_refus_ms": 3936,
+      "recu_invite_visible": true,
+      "qualification_complete": false,
+      "drainage_final_non_qualifie": true
+    },
+    {
+      "profil": "AArch64/P9-4096",
+      "essai": "01",
+      "resultat": "ECHEC_COLLECTEUR",
+      "erreur": "b'NXR2_1_(\\\\d+)__FIN'",
+      "tls_ms": 2628,
+      "marge_refus_ms": 4320,
+      "recu_invite_visible": true,
+      "qualification_complete": false,
+      "drainage_final_non_qualifie": true
+    }
+  ],
+  "verrou": [
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "acquisition": "2026-11-22T16:07:22.840026+00:00",
+      "liberation": "2026-11-22T16:08:58.483083+00:00",
+      "attente_secondes": 0.000375833,
+      "execution_secondes": 95.598393875,
+      "code": 1,
+      "verrou_libere": true,
+      "conflits_evites": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "acquisition": "2026-11-22T16:15:25.815613+00:00",
+      "liberation": "2026-11-22T16:15:54.355578+00:00",
+      "attente_secondes": 0.000391541,
+      "execution_secondes": 28.493871792,
+      "code": 0,
+      "verrou_libere": true,
+      "conflits_evites": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "acquisition": "2026-11-22T16:03:02.288576+00:00",
+      "liberation": "2026-11-22T16:04:40.406565+00:00",
+      "attente_secondes": 0.000596625,
+      "execution_secondes": 98.071474875,
+      "code": 1,
+      "verrou_libere": true,
+      "conflits_evites": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "acquisition": "2026-11-22T16:06:20.121623+00:00",
+      "liberation": "2026-11-22T16:06:57.663629+00:00",
+      "attente_secondes": 0.000349416,
+      "execution_secondes": 37.497745375,
+      "code": 0,
+      "verrou_libere": true,
+      "conflits_evites": []
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "acquisition": "2026-11-22T16:13:52.060264+00:00",
+      "liberation": "2026-11-22T16:14:29.475549+00:00",
+      "attente_secondes": 0.000355375,
+      "execution_secondes": 37.370493833,
+      "code": 0,
+      "verrou_libere": true,
+      "conflits_evites": []
+    }
+  ],
+  "temps": {
+    "debut_utc": "2026-11-22T15:58:23+00:00",
+    "fin_releve_utc": "2026-11-22T16:19:25.939616+00:00",
+    "ecoule_s": 1262.9330557080102,
+    "attente_verrou_s": 0.00206879,
+    "execution_banc_s": 297.03197975,
+    "compilation_s": 45.04812225000933,
+    "preparation_diagnostic_correction_rapport_hors_banc_s": 965.8990071680101,
+    "travail_actif_s": 1262.9309869180101,
+    "budget_s": 3600,
+    "note": "Durées hôtes arrêtées après sauvegarde des artefacts, avant manifeste public et publication. Compilation incluse dans préparation. Les activités documentaires simultanées à un essai sont incluses dans son intervalle, sans double comptage. Aucune comparaison avec une horloge invitée."
+  },
+  "x86_64_reexecute": false,
+  "x86_64_512_rejeu_cible_requis": true,
+  "scenarios_securite_complementaires_non_executes": true,
+  "artefacts_finaux": {
+    "aarch64.iso": "9ba0ff28a6137b11ff453410447d7bc539d5f202ce175f0ecd0f44736630778c",
+    "aarch64-kernel.elf": "9a25729b854ce31f82f4503136ef50bef2f0945a8af0744cf52720376d37d405",
+    "aarch64-registre.elf": "8d5ffa24f316fa6123297d9d1a411b9549b1f2198dbb6d53f726ea168dd69e2a"
+  },
+  "archives_privees": [
+    {
+      "repertoire": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/aarch64-b88a613",
+      "fichiers": 51,
+      "manifeste_sha256": "5e081130558ebd6cfc1dae0b5cdfd9224b07f6157082997a0eefd0e21d8cf24c"
+    },
+    {
+      "repertoire": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/aarch64-3515674",
+      "fichiers": 39,
+      "manifeste_sha256": "59ab6d0a7af87224043037b750faf6736770057cca4a51d25f5678cb19ccb83e"
+    }
+  ]
+}
