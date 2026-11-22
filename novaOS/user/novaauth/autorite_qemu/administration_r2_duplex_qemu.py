@@ -70,9 +70,9 @@ def main():
             # les octets restent contrôlés indépendamment ci-dessous.
             serial.offset=len(serial.data)
             start=serial.offset
-            serial.submit('alice-seulement --self; echo NXR_$?__FIN')
+            serial.submit('alice-seulement --self; echo NXR_$?__FIN'+('; exit' if a.fermer else ''))
             status=serial.expect(rb'NXR_(\d+)__FIN\r?\n')
-            serial.expect(rb'nsh> ')
+            if not a.fermer:serial.expect(rb'nsh> ')
             rc,raw=int(status[1]),bytes(serial.data[start:serial.offset])
             (out/'alice-consultation.bin').write_bytes(raw)
             oracle=a.genese.with_name('oracle-self.bin').read_bytes()
@@ -113,7 +113,6 @@ def main():
             report['statut_shell_dans_meme_ligne']=True
             observer.close()
             if a.fermer:
-                serial.send(b'exit\n')
                 serial.expect(rb'BLOC bilan mode=41 service=Exit\(0\) bloc=Exit\(0\) pilote=Exit\(0\) client=Exit\(0\) retrait=Ok\(\(\)\)',40)
                 for pid in by_shell:
                     if not re.search(rb'NAEXEC restitue pid='+str(pid).encode()+rb' roots=0 handles=0 waits=0 pages=0 pile=0 threads=0',serial.data):
