@@ -1,0 +1,69 @@
+{
+  "succes": false,
+  "architecture": "x86_64",
+  "secteur": 4096,
+  "portee": "d\u00e9sactivation de Bob avec ticket vivant ; refus avant expiration exig\u00e9",
+  "lot": "desactivation",
+  "commandes": [
+    {
+      "commande": "usermod --disable bob --prepare",
+      "statut_shell": 0,
+      "statut_attendu": 0,
+      "pid": [
+        21
+      ],
+      "shell": 5,
+      "stdout_octets": 134,
+      "stderr_octets": 0,
+      "octets_conformes": true
+    },
+    {
+      "commande": "usermod --disable bob --confirm 7962aabb67a457274ab286de7c4bb5c8ba78afad3231922373810b0f626ceeac --request 7962aabb67a457274ab286de7c4bb5c8",
+      "statut_shell": 126,
+      "statut_attendu": 0,
+      "pid": []
+    }
+  ],
+  "drapeaux_locale": 0,
+  "langue_ELF": "en",
+  "evenements": [
+    {
+      "pid": 11,
+      "etape": "NAR2 Bob authentifie route distincte",
+      "position_trace": 25673,
+      "deja_recu": false,
+      "instance": "3acd345bee2db35cdbc2fdc82b95f8660b000000000000800100000000000000",
+      "session": "5afad23a4883dc1ab6c4c392a1b73df1242d414d008c9864857669659c814283"
+    },
+    {
+      "pid": 11,
+      "etape": "NAR2 Bob declenchement operation=7962aabb67a457274ab286de7c4bb5c8",
+      "position_trace": 21204,
+      "deja_recu": true,
+      "instance": "3acd345bee2db35cdbc2fdc82b95f8660b000000000000800100000000000000",
+      "session": "5afad23a4883dc1ab6c4c392a1b73df1242d414d008c9864857669659c814283"
+    },
+    {
+      "pid": 11,
+      "etape": "NAR2 Bob preparation terminee emission ticket",
+      "position_trace": 25724,
+      "deja_recu": false
+    }
+  ],
+  "intention": {
+    "operation": "7962aabb67a457274ab286de7c4bb5c8",
+    "confirmation": "7962aabb67a457274ab286de7c4bb5c8ba78afad3231922373810b0f626ceeac"
+  },
+  "sessions_temoin": {
+    "Alice": {
+      "pid": 5,
+      "instance": "3acd345bee2db35cdbc2fdc82b95f86605000000000000800100000000000000",
+      "session": "d655a61f8de420836303eecedbe4a1092bc4cf72d0c6b9f6c6b61b31d528ab89"
+    },
+    "Bob": {
+      "pid": 11,
+      "instance": "3acd345bee2db35cdbc2fdc82b95f8660b000000000000800100000000000000",
+      "session": "5afad23a4883dc1ab6c4c392a1b73df1242d414d008c9864857669659c814283"
+    }
+  }
+}

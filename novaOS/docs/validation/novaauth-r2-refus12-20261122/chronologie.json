@@ -1,0 +1,127 @@
+{
+  "source_guest": "be3707b90008365037cc02c31180bfa42a0d3a9e",
+  "banc": "bf66f21",
+  "archive_precedente_verifiee_fichiers": 39,
+  "horloge": "monotone invitée ms ; ticks convertis avec HZ=250",
+  "authentifications": [
+    {
+      "tag": 1,
+      "defi_ms": 12448,
+      "defi_expiration_ms": 13948,
+      "signature_ms": 12448,
+      "verification_ms": 13512,
+      "statut": 0,
+      "bail_expiration_ms": 74596,
+      "fin_ms": 15660
+    },
+    {
+      "tag": 1,
+      "defi_ms": 33424,
+      "defi_expiration_ms": 34924,
+      "signature_ms": 33428,
+      "verification_ms": 34480,
+      "statut": 0,
+      "bail_expiration_ms": 95508,
+      "fin_ms": 36556
+    }
+  ],
+  "presentations_alice": [
+    {
+      "ticks": 6343,
+      "ms": 25372,
+      "expiration_ticket_ms": 29308
+    },
+    {
+      "ticks": 14348,
+      "ms": 57392,
+      "expiration_ticket_ms": 61320
+    }
+  ],
+  "identites": {
+    "Alice": {
+      "pid": 5,
+      "instance": "3acd345bee2db35cdbc2fdc82b95f86605000000000000800100000000000000",
+      "session": "d655a61f8de420836303eecedbe4a1092bc4cf72d0c6b9f6c6b61b31d528ab89"
+    },
+    "Bob": {
+      "pid": 11,
+      "instance": "3acd345bee2db35cdbc2fdc82b95f8660b000000000000800100000000000000",
+      "session": "5afad23a4883dc1ab6c4c392a1b73df1242d414d008c9864857669659c814283"
+    }
+  },
+  "intention": {
+    "operation": "7962aabb67a457274ab286de7c4bb5c8",
+    "confirmation": "7962aabb67a457274ab286de7c4bb5c8ba78afad3231922373810b0f626ceeac"
+  },
+  "evenements_ordonnes_non_tous_horodates": [
+    {
+      "ligne": 151,
+      "texte": "DEBUG pid=11 NAR2 Bob attente declenchement authentification"
+    },
+    {
+      "ligne": 153,
+      "texte": "-disable bob --prepare; echo NXR2_0_$?__FIN"
+    },
+    {
+      "ligne": 265,
+      "texte": "NAEXEC attente owner=5 ticket=4611686018427388029 maintenant=6343 echeance=7327"
+    },
+    {
+      "ligne": 275,
+      "texte": "NAEXEC enfant owner=5 child=21"
+    },
+    {
+      "ligne": 277,
+      "texte": "DEBUG pid=11 NAR2 Bob declenchement operation=7962aabb67a457274ab286de7c4bb5c8"
+    },
+    {
+      "ligne": 279,
+      "texte": "PROC pid=21 niveau=Ring3 pc=0x1004e91 sortie=0"
+    },
+    {
+      "ligne": 326,
+      "texte": "NXR2_0_0__FIN"
+    },
+    {
+      "ligne": 327,
+      "texte": "nsh> DEBUG pid=11 NAR2 Bob authentifie route distincte"
+    },
+    {
+      "ligne": 328,
+      "texte": "DEBUG pid=11 NAR2 Bob preparation terminee emission ticket"
+    },
+    {
+      "ligne": 337,
+      "texte": "nsh> 7a457274ab286de7c4bb5c8; echo NXR2_1_$?__FIN"
+    },
+    {
+      "ligne": 364,
+      "texte": "DEBUG pid=11 NAR2 Bob ticket vivant non consomme"
+    },
+    {
+      "ligne": 411,
+      "texte": "NAEXEC attente owner=5 ticket=4611686018427388040 maintenant=14348 echeance=15330"
+    },
+    {
+      "ligne": 413,
+      "texte": "PROC pid=11 niveau=Ring3 pc=0x102c652 sortie=12"
+    },
+    {
+      "ligne": 441,
+      "texte": "NAEXEC enfant owner=5 child=22"
+    },
+    {
+      "ligne": 464,
+      "texte": "PROC pid=22 niveau=Ring3 pc=0x1004e91 sortie=3"
+    },
+    {
+      "ligne": 486,
+      "texte": "DEBUG pid=6 NXBAIL op=NSHLIVE1 tag=12 decision=77640 valide=0 echeance=74596 retour=5 fin=77644"
+    },
+    {
+      "ligne": 508,
+      "texte": "NXR2_1_126__FIN"
+    }
+  ],
+  "limites": "Aucune échéance du ticket Bob ni heure précise de sa sortie dans cette trace ; ne pas inventer."
+}
