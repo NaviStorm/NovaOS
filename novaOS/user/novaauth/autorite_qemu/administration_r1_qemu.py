@@ -51,18 +51,29 @@ def main():
                     raise Refus('résultat ou octets R1 incorrects : '+repr(row))
             if a.etendu:
                 report['refus_cibles']=[]
+                report['authentifications_intermediaires']=[]
+                def reauthenticate(label):
+                    rc,trace=serial.command('session reauthentifier')
+                    (out/('authentification-'+label+'.bin')).write_bytes(trace)
+                    report['authentifications_intermediaires'].append({'avant':label,'statut':rc})
+                    if rc:raise Refus('nouvelle authentification explicite refusée : '+label)
                 for option,status,expected in [
                     ('--denied-same-channel',0,bytes(8)+(5).to_bytes(8,'little')+bytes(48)),
                     ('--replay',3,(3).to_bytes(8,'little')+bytes(56)),
                     ('--invalid-frame',3,(3).to_bytes(8,'little')+bytes(56)),
                     ('--forged-context',3,(3).to_bytes(8,'little')+bytes(56)),
                     ('--forged-meta',5,(5).to_bytes(8,'little')+bytes(56))]:
+                    # Groupes indépendants, aucune relance après mutation ni
+                    # prolongation d'un bail au milieu de la conversation.
+                    if option in ('--denied-same-channel','--invalid-frame','--forged-meta'):
+                        reauthenticate(option[2:])
                     rc,raw=serial.command('admin-sonde '+option)
                     streams=re.findall(rb'NXFLUX pid=([0-9]+) fd=([12]) octets=([0-9]+) prefixe=([0-9a-f]*)',raw)
                     actual={int(fd):(int(n),bytes.fromhex(h.decode())) for _,fd,n,h in streams}
                     row={'option':option,'statut':rc,'attendu':status,'flux':[(int(pid),int(fd),int(n),h.decode()) for pid,fd,n,h in streams]}
                     report['refus_cibles'].append(row)
                     if rc!=status or actual!={1:(64,expected),2:(0,b'')}:raise Refus('refus R1 non conforme : '+repr(row))
+                reauthenticate('perte-et-concurrence')
                 rc,raw=serial.command('admin-sonde --lost-reply')
                 expected=(22).to_bytes(8,'little')+bytes(56)
                 streams=re.findall(rb'NXFLUX pid=([0-9]+) fd=([12]) octets=([0-9]+) prefixe=([0-9a-f]*)',raw)
