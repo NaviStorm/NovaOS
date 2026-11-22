@@ -3,7 +3,7 @@
 Le lanceur doit posséder le verrou QEMU commun. Aucun droit du collecteur n'est
 remis aux invités. Les sorties Bob devront être vérifiées par la sonde privée.
 """
-import argparse, copy, json, re
+import argparse, copy, json, re, time
 from contextlib import ExitStack
 from pathlib import Path
 from recuperation_qemu import fixture, run, SERVER, DOMAIN
@@ -52,8 +52,21 @@ def main():
             if b'nsh> ' not in serial.data:serial.expect(rb'nsh> ',20)
             rc,raw=serial.command('true')
             if rc:raise Refus('authentification Alice refusée')
-            for label in [b'NAR2 Bob authentifie route distincte',b'NAR2 Bob refus serveur et substitutions verifies']:
-                if label not in serial.data:serial.expect(re.escape(label),40)
+            marker=re.escape(b'NAR2 Bob authentifie route distincte')
+            # La session de Bob est indépendante et peut avoir répondu pendant
+            # la commande d'Alice. Reprendre cette trace unique, sans renvoyer
+            # aucune commande ni demander une seconde authentification.
+            known=re.search(marker,serial.data)
+            if known:serial.offset=known.end()
+            else:serial.expect(marker,40)
+            level=b'EL0' if a.arch=='aarch64' else b'Ring3'
+            report['terminaisons_bob']=[]
+            for expected in (0,):
+                start=time.monotonic_ns()
+                m=serial.expect(rb'PROC pid=(\d+) niveau='+level+rb' pc=0x[0-9a-f]+ sortie=(\d+)',40)
+                report['terminaisons_bob'].append({'pid':int(m[1]),'attendu':expected,'observe':int(m[2]),'attente_ns':time.monotonic_ns()-start})
+                if int(m[2])!=expected:raise Refus('statut natif Bob inattendu')
+            serial.expect(re.escape(b'NAR2 Bob refus serveur et substitutions verifies'),40)
             rc,raw=serial.command('admin-sonde --self')
             (out/'alice-consultation.bin').write_bytes(raw)
             oracle=a.genese.with_name('oracle-self.bin').read_bytes()
@@ -71,13 +84,10 @@ def main():
             for binding,closed,data in rows:
                 by_shell.setdefault(binding.shell,{}).setdefault(binding.child,{})[binding.fd]=data
             bob_oracle=a.genese.with_name('oracle-bob.bin').read_bytes()
-            level=b'EL0' if a.arch=='aarch64' else b'Ring3'
             codes=dict((int(p),int(c)) for p,c in re.findall(rb'PROC pid=(\d+) niveau='+level+rb' pc=0x[0-9a-f]+ sortie=(\d+)',serial.data))
-            expected_bob=[(0,bob_oracle),(5,(5).to_bytes(8,'little')+bytes(56)),
-                          (5,(5).to_bytes(8,'little')+bytes(56)),
-                          (3,(3).to_bytes(8,'little')+bytes(56)),
-                          (5,(5).to_bytes(8,'little')+bytes(56)),
-                          (3,(3).to_bytes(8,'little')+bytes(56)),(0,bob_oracle)]
+            denied=(5).to_bytes(8,'little')+bytes(56)
+            malformed=(3).to_bytes(8,'little')+bytes(56)
+            expected_bob=[(0,b''.join([bob_oracle,denied,denied,bob_oracle,denied,malformed,malformed,bob_oracle]))]
             witnessed=[]
             for shell,children in by_shell.items():
                 actual=[(codes.get(pid),fds.get(1),fds.get(2)) for pid,fds in sorted(children.items())]
@@ -86,6 +96,7 @@ def main():
                 else:raise Refus('sorties ou statuts natifs non conformes : '+str(shell))
             if sorted(witnessed)!=['Alice','Bob']:raise Refus('sessions manquantes ou confondues')
             report['refus_bob']=['annuaire Alice','requête ajout administratif directe','contexte forgé','métadonnées forgées','rejeu de trame']
+            report['statuts_requetes_bob']=[0,5,5,0,5,3,3,0]
             report['sorties_exclusivement_hote']=streams
             report['enrolement_époques']=enrolled
             report['bob_consultation_statut_zero']=True

@@ -5,6 +5,7 @@ use nova_cli::runtime as rt;
 use nova_exec_client::admin::{AdministrativeLaunch, Conversation};
 fn perform() -> rt::Result<()> {
     let launch = AdministrativeLaunch::current()?;
+    if launch.streams.argv.as_slice()==["--r2-refus"] {return r2_refus(&launch);}
     let mut request = [0; 128];
     request[..8].copy_from_slice(b"NXACMD01");
     let mut repeats = 1;
@@ -125,6 +126,61 @@ fn refusals(launch: &AdministrativeLaunch<'_>, request: &[u8;128], mode:u8) -> r
     if answer[..8]!=rt::BAD_ARGUMENT.to_le_bytes() || answer[8..]!=[0;120] {return Err(223);}
     launch.streams.write_stdout(&answer[..64])?;
     Err(rt::BAD_ARGUMENT)
+}
+/// Même processus et même canal : chaque opération doit rester contrôlée par
+/// le serveur. Les refus n'autorisent ni une autre identité ni une mutation.
+fn r2_refus(launch:&AdministrativeLaunch<'_>)->rt::Result<()> {
+    use nova_exec_client::admin_wire::{self,Direction,Inbox};
+    let mut c=Conversation::new(launch);
+    let mut own=[0;128];own[..8].copy_from_slice(b"NXACMD01");own[8]=1;
+    let original=c.exchange(&own)?;
+    if original[..8]!=[0;8] || original[58]!=0 {return Err(224);}
+    launch.streams.write_stdout(&original[..64])?;
+    fn named(q:&mut [u8],name:&[u8]) {q[0]=2;q[1]=name.len() as u8;q[8..8+name.len()].copy_from_slice(name);}
+    let mut other=own;other[8]=2;named(&mut other[32..72],b"alice");
+    let mut promote=own;promote[8]=21;named(&mut promote[32..72],b"bob");named(&mut promote[72..112],b"administrateurs");
+    for q in [&other,&promote] {
+        let denied=c.exchange(q)?;
+        if denied[..8]!=rt::DENIED.to_le_bytes() || denied[8..]!=[0;120] {return Err(225);}
+        launch.streams.write_stdout(&denied[..64])?;
+    }
+    let again=c.exchange(&own)?;
+    if again!=original {return Err(226);}
+    launch.streams.write_stdout(&again[..64])?;
+    let status=rt::call(rt::IPC_NOTIFY,launch.endpoint(),0,0x4e5841444d455441).status;
+    if status!=rt::DENIED {return Err(227);}
+    let mut denied=[0;64];denied[..8].copy_from_slice(&status.to_le_bytes());
+    launch.streams.write_stdout(&denied)?;
+    // Le client normal refuse ce contexte au décodage. Le témoin l'envoie
+    // directement pour exercer aussi le refus du vérificateur, puis son rejeu.
+    let raw=|id:u64,q:&[u8;128],replay:bool|->rt::Result<[u8;128]> {
+        for offset in if replay {&[0][..]} else {&[0,96][..]} {
+            let f=admin_wire::frame(id,Direction::Request,q,*offset).map_err(|_|228u64)?;
+            rt::send_for(launch.endpoint(),id,&f,5000)?;
+            if !replay && *offset==0 {
+                let ack=rt::receive_for(launch.endpoint(),5000)?;
+                if ack.kind!=1 || ack.tag!=id || ack.len!=8 || ack.handle!=0 || ack.aux!=0 || ack.payload[..8]!=[0;8] {return Err(229);}
+            }
+        }
+        let mut inbox=Inbox::new();let mut out=[0;128];let mut complete=false;
+        for _ in 0..2 {
+            let m=rt::receive_for(launch.endpoint(),5000)?;
+            if m.kind!=1 || m.tag!=id || m.len!=128 || m.handle!=0 || m.aux!=0 {return Err(230);}
+            complete=inbox.accept(&m.payload,Direction::Response).map_err(|_|231u64)?;
+            if complete {out.copy_from_slice(inbox.message().map_err(|_|232u64)?.1);}
+        }
+        if !complete {return Err(233);}
+        Ok(out)
+    };
+    let mut forged=own;forged[..8].copy_from_slice(b"NXACTX01");
+    for replay in [false,true] {
+        let refused=raw(5,&forged,replay)?;
+        if refused[..8]!=rt::BAD_ARGUMENT.to_le_bytes() || refused[8..]!=[0;120] {return Err(234);}
+        launch.streams.write_stdout(&refused[..64])?;
+    }
+    let final_view=raw(6,&own,false)?;
+    if final_view!=original {return Err(235);}
+    launch.streams.write_stdout(&final_view[..64])
 }
 fn transport_probe(
     launch: &AdministrativeLaunch<'_>,
