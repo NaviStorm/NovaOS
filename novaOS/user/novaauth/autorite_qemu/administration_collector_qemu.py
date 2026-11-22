@@ -11,6 +11,7 @@ class Observer:
         self.addresses={symbol(kernel,'nova_r2_session_observe'):'session',symbol(kernel,'nova_r2_output_observe'):'output'}
         self.control,self.arch,self.out=control,arch,out
         self.debug=None;self.thread=threading.Thread(target=self.worker,name='collecteur-sorties-R2')
+        self.expected_successor=None;self.successor_used=False
         self.thread.start()
         if not self.ready.wait(15):
             self.close()
@@ -21,6 +22,15 @@ class Observer:
             raise
     def check(self):
         if self.error:raise Refus('collecteur : '+self.error)
+    def expect_successor(self, shell):
+        self.check()
+        with self.guard:
+            routes=[r for r in self.routes if r[0]==shell]
+            if self.successor_used or self.expected_successor is not None or len(routes)!=1:
+                raise Refus('succession non ciblée ou déjà consommée')
+            if any(not s.closed for s in self.collector.streams.values() if s.binding.shell==shell):
+                raise Refus('sorties non drainées avant réauthentification')
+            self.expected_successor=routes[0]
     def worker(self):
         rd,wr=os.pipe()
         try:
@@ -61,10 +71,16 @@ class Observer:
                             if len(raw)!=80 or raw[:8]!=b'NXR2SES1':raise Refus('session non canonique')
                             diagnostic(session_sha256=hashlib.sha256(raw).hexdigest())
                             route=(int.from_bytes(raw[8:16],'little'),raw[16:48],raw[48:80])
-                            if route in self.routes or len(self.routes)>=2:raise Refus('route réutilisée ou hors borne')
-                            self.routes.append(route)
-                            self.collector=Collector(self.routes)
-                            for record in self.records:self.collector.accept(record)
+                            if self.expected_successor is not None:
+                                previous=self.expected_successor
+                                self.collector.replace_session(previous,route)
+                                self.routes[self.routes.index(previous)]=route
+                                self.expected_successor=None;self.successor_used=True
+                            else:
+                                if route in self.routes or len(self.routes)>=2:raise Refus('route réutilisée ou hors borne')
+                                self.routes.append(route)
+                                self.collector=Collector(self.routes)
+                                for record in self.records:self.collector.accept(record)
                             with (self.out/'sessions-noyau.bin').open('ab') as f:f.write(raw)
                         else:
                             if self.collector is None or len(self.records)>=2048:raise Refus('sortie sans route ou quota dépassé')
@@ -82,6 +98,7 @@ class Observer:
             (self.out/'collecteur-diagnostic.json').write_text(json.dumps({
                 'erreur':self.error,'dernier_pc':self.last_pc,
                 'sessions':len(self.routes),'evenements':len(self.records),
+                'succession_explicite':self.successor_used,
                 'arret_demande':self.done.is_set()},indent=2)+'\n')
             os.close(wr)
             if self.debug:self.debug.close()

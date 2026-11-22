@@ -99,5 +99,25 @@ class Outputs(unittest.TestCase):
             self.assertEqual(d.calls[-1],'m1234,110')
             self.assertEqual(len(d.calls),3)
 
+    def test_explicit_successor_keeps_history_and_rejects_old_session(self):
+        c=Collector([A,B]);c.accept(record());c.accept(record(event=1,seq=1,data=b'old'))
+        next_a=(*A[:2], b'n'*32)
+        with self.assertRaises(Refus):c.replace_session(A,next_a)
+        c.accept(record(event=2,seq=2));c.replace_session(A,next_a)
+        self.assertEqual(c.output(*A,30,1),b'old')
+        self.assertEqual(c.bytes,3)
+        self.assertIn(B,c.sessions)
+        with self.assertRaises(Refus):c.accept(record(child=31,endpoint=101))
+        c.accept(record(session=next_a,child=31,endpoint=101))
+        c.accept(record(session=next_a,child=31,endpoint=101,event=2,seq=1))
+        with self.assertRaises(Refus):c.replace_session(next_a,(*A[:2],b'o'*32))
+
+    def test_successor_cannot_substitute_bob_or_reuse_a_session(self):
+        for successor in [A,B,(*A[:2],B[2]),(A[0],B[1],b'n'*32),(*A[:2],bytes(32))]:
+            c=Collector([A,B])
+            with self.assertRaises(Refus):c.replace_session(A,successor)
+            self.assertEqual(c.sessions,frozenset([A,B]))
+            self.assertIsNone(c.retired_session)
+
 
 if __name__=='__main__': unittest.main()

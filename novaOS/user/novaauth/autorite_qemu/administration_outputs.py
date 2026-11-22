@@ -54,6 +54,27 @@ class Collector:
         self.streams = {}
         self.byte_limit = byte_limit
         self.bytes = 0
+        self.retired_session = None
+
+    def replace_session(self, previous, current):
+        """Une succession explicitement demandée par le banc, deux routes maximum.
+
+        Les enregistrements anciens restent conservés ; ils ne sont jamais
+        réacceptés. Aucun transfert de sortie ni droit dans l'invité.
+        """
+        if self.retired_session is not None or previous not in self.sessions:
+            raise Refus('succession absente ou déjà consommée')
+        if current[:2] != previous[:2] or current[2] == previous[2]:
+            raise Refus('substitution de route ou rejeu de session')
+        if any(not s.closed and (s.binding.shell, s.binding.shell_instance, s.binding.session) == previous
+               for s in self.streams.values()):
+            raise Refus('ancienne sortie non drainée')
+        next_sessions = (self.sessions - {previous}) | {current}
+        # Réutiliser toutes les vérifications historiques, sans modifier leurs
+        # attentes ni les bornes de flux, d'octets, d'enfants ou de routes.
+        checked = Collector(next_sessions, self.byte_limit)
+        self.sessions = checked.sessions
+        self.retired_session = previous
 
     def accept(self, record):
         if len(record) != WIRE:

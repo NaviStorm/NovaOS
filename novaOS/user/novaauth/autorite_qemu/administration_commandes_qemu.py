@@ -122,6 +122,7 @@ def main():
                 raise Refus('témoin négatif Bob absent')
             for i, (command, expected) in enumerate(cases):
                 if a.reauth_issue and i == 2:
+                    observer.expect_successor(report['commandes'][0]['shell'])
                     serial.submit('session reauthentifier')
                     serial.expect('NovaAuth : nouvelle session authentifiée'.encode(), 40)
                     serial.expect(rb'nsh> ', 20)
@@ -147,6 +148,10 @@ def main():
                 if len(rows) != 2 or any(not closed for _, closed, _ in rows):
                     raise Refus('sorties non drainées : ' + command)
                 streams = {b.fd: data for b, _, data in rows}
+                shells = {b.shell for b, _, _ in rows}
+                if len(shells) != 1:
+                    raise Refus('sorties rattachées à plusieurs shells')
+                item['shell'] = next(iter(shells))
                 for fd, data in streams.items():
                     (out / f'commande-{i:02}-fd{fd}.bin').write_bytes(data)
                 if callable(expected):
