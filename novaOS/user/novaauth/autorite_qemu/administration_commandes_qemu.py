@@ -24,7 +24,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
-    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage'], required=True)
+    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
     parser.add_argument('--course',action='store_true',help='ticket Bob présenté pendant la confirmation Alice')
     parser.add_argument('--mutation-concurrente',action='store_true',help='confirmation de groupe concurrente au refus du dernier administrateur')
@@ -87,7 +87,7 @@ def main():
     # borné à 128 et chaque parcours commence avec une nouvelle session.
     # L'essai initial de six commandes ayant saturé ce relais est conservé.
     cases = cases[:3] if a.lot == 'lectures' else cases[3:]
-    if a.lot in ('groupe','desactivation','renommage'):
+    if a.lot in ('groupe','desactivation','renommage','appartenance'):
         intention = {}
 
         def preparation(data):
@@ -99,9 +99,9 @@ def main():
             return data
 
         def complete(_):
-            return ('request=' + intention['operation'] + ' generation=24 state=COMPLETE\n').encode()
+            return ('request=' + intention['operation'] + ' generation='+str(int.from_bytes(raw[96:104],'big')+1)+' state=COMPLETE\n').encode()
 
-        command={'groupe':'groupadd equipe-r2','desactivation':'usermod --disable bob','renommage':'usermod --rename robert bob'}[a.lot]
+        command={'groupe':'groupadd equipe-r2','desactivation':'usermod --disable bob','renommage':'usermod --rename robert bob','appartenance':'usermod --add-group equipe-r2 bob'}[a.lot]
         binary=command.split()[0]
         report['portee']='création de groupe' if a.lot=='groupe' else 'désactivation de Bob après fermeture de sa session ; aucun témoin de ticket vivant'
         if a.ticket_vivant:report['portee']='désactivation de Bob avec ticket vivant ; refus avant expiration exigé'
@@ -112,6 +112,9 @@ def main():
         if a.lot == 'renommage':
             report['portee']='renommage natif, identité stable, aucun changement des droits'
             cases[-1]=('id --subject-id '+bob,f'subject={bob} name=robert state=ACTIVE groups=base({group})\n'.encode())
+        if a.lot == 'appartenance':
+            report['portee']='ajout natif à un groupe existant ; aucun retrait de droit'
+            cases[-1]=('groups bob',b'base equipe-r2\n')
         if a.reactivation:
             second={}
             def prepare_reactivation(data):
@@ -128,6 +131,11 @@ def main():
             cases=cases[:2]
             cases += [('usermod --enable bob --prepare',prepare_reactivation),
                       (lambda:'usermod --enable bob --confirm '+second['confirmation']+' --request '+second['operation'],reactivated)]
+    elif a.lot == 'documentation':
+        expected=(Path(__file__).parent/'references-administration-r2')
+        cases=[('LANG=fr; groups man',(expected/'groups-fr.txt').read_bytes()),
+               ('LANG=en; man groups',(expected/'groups-en.txt').read_bytes())]
+        report['portee']='LANG=fr/en et man générique : flux de documentation exacts'
     elif a.lot == 'vue-groupe':
         report['portee']='consultation native du groupe et de ses membres autorisés'
         expected=f'group={group} name=base members={alice} {bob}\n'.encode()

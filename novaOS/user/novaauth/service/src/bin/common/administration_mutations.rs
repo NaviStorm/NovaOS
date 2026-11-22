@@ -121,9 +121,9 @@ impl Transactions {
                 let plan = Pending::from_administration(state, grant, operation, current,
                                                         c.reference, operation_kind, retired.as_ref())?;
                 drop(plan);
-                // La clôture et les facteurs nouveaux ne sont pas annoncés
+                // Le retrait de groupe et les facteurs nouveaux ne sont pas annoncés
                 // opérationnels avant raccord de leurs effecteurs/provisionneur.
-                if !matches!(change, Mutation::CreateGroup(_) | Mutation::Rename {..} | Mutation::Disable(_) | Mutation::Reactivate(_)) {
+                if !matches!(change, Mutation::CreateGroup(_) | Mutation::Rename {..} | Mutation::Disable(_) | Mutation::Reactivate(_) | Mutation::AddMember {..}) {
                     return Err(rt::REFUSED);
                 }
                 let slot = self.prepared.iter().position(|p| p.is_some_and(|p| p.binding == binding))
@@ -226,6 +226,10 @@ fn operation_for<'a>(state: &View, grant: Grant, change: Mutation<'a>) -> rt::Re
     let user = |s| state.user_info(grant, Some(selected(s))).map(|u| u.id).map_err(|_| rt::DENIED);
     Ok(match change {
         Mutation::CreateGroup(name) => Operation::CreateGroup { name },
+        Mutation::AddMember {user: s, group: g} => Operation::AddMember {
+            subject: user(s)?,
+            group: state.group_info(grant,selected(g)).map_err(|_|rt::DENIED)?.id,
+        },
         Mutation::Rename {user: s, name} => Operation::Rename {subject: user(s)?, name},
         Mutation::Disable(s) => Operation::Disable {subject: user(s)?},
         Mutation::Reactivate(s) => Operation::Reactivate {subject: user(s)?},

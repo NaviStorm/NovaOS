@@ -92,3 +92,5 @@ def install(root):
     for phase in ("install", "services", "verifier", "scoped_cleanup", "shell_probe", "shared_sessions", "startup_words", "isolate_closed_route", "route_observer", "output_endpoint_closed"):
         routes[phase](root)
     runpy.run_path(str(root/"novaOS/user/novaauth/service/administration_retirement_profile.py"))["install"](root)
+
+    runpy.run_path(str(root / "novaOS/user/novaauth/service/administration_locale_profile.py"))["install"](root)

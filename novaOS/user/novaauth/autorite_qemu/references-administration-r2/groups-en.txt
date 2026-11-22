@@ -1,0 +1,5 @@
+groups [--subject-id ID | NAME] | groups (--group NAME | --group-id ID)
+Stable native identities; no POSIX UID/GID.
+--help, man: this manual; --version: version; --: end of options.
+CLI statuses: 0 complete, 2 syntax, 3 denied, 4 conflict, 5 limit, 6 inconsistent state, 7 revoked/expired, 20 UNCERTAIN.
+Diagnostics go to stderr; results to stdout. No implicit access to private data.

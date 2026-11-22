@@ -111,7 +111,7 @@ fn main() {
     // décisions aux dix états (genèse incluse) de la fixture avec alias.
     // Ce disque sert à fabriquer/vérifier la fixture ; l'invité consulte
     // exclusivement l'autorité indépendante, pas ce journal local.
-    let mut ledger = Ledger::new(image("autorite.raw", if a.get(9).is_some() {24} else {12}));
+    let mut ledger = Ledger::new(image("autorite.raw", if a.get(10).is_some() {25} else if a.get(9).is_some() {24} else {12}));
     let domain = [7; 16];
     let mut fs = provision(
         image("identites.p9", 512),
@@ -244,6 +244,11 @@ fn main() {
                 head=reg.provision_administrative_image(head,[161+slot*8+i as u8;16],recipient,image,Some(administration::Scope::parse(bits).unwrap())).unwrap();
             }
         }
+    }
+    if let Some(name)=a.get(10) {
+        assert_eq!(name,"equipe-r2");
+        let grant=reg.grant_attested(owner).unwrap();
+        reg.mutate(grant,[190;16],Change::AddGroup(name)).unwrap();
     }
     drop(reg);
     let mut identities=Vec::new();identities.extend_from_slice(&owner);identities.extend_from_slice(&bob);identities.extend_from_slice(&group);

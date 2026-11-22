@@ -1,0 +1,5 @@
+groups [--subject-id ID | NAME] | groups (--group NAME | --group-id ID)
+Identifiants natifs stables ; aucun UID/GID POSIX.
+--help, man : cette notice ; --version : version ; -- : fin des options.
+Statuts CLI : 0 complet, 2 syntaxe, 3 refus, 4 conflit, 5 limite, 6 incohérence, 7 révoqué/expiré, 20 UNCERTAIN.
+Messages et diagnostics sur stderr ; résultats sur stdout. Aucun accès implicite aux données privées.
