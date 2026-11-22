@@ -26,6 +26,7 @@ def main():
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+    parser.add_argument('--securite',action='store_true',help='sonde directe étendue, distincte du témoin temporel')
     parser.add_argument('--ticket-vivant',action='store_true',help='désactivation pendant que Bob conserve un ticket non consommé')
     parser.add_argument('--reauth-issue', action='store_true',
                         help='authentification explicite neuve après publication, avant consultation de son issue')
@@ -35,6 +36,7 @@ def main():
                  'sortie', 'detenteur', 'capture', 'triplet', 'kernel'):
         parser.add_argument('--' + name, type=lambda v: Path(v).resolve(), required=True)
     a = parser.parse_args()
+    if a.securite and a.ticket_vivant:parser.error('les deux profils sont distincts')
     if a.ticket_vivant and a.lot!='desactivation':
         parser.error('le témoin de ticket vivant exige le lot désactivation')
     if (a.reauth_issue or a.recu_supprime) and a.lot not in ('groupe','desactivation'):
@@ -244,6 +246,11 @@ def main():
             denied = (5).to_bytes(8, 'little') + bytes(56)
             malformed = (3).to_bytes(8, 'little') + bytes(56)
             bob_expected = b''.join([bob_oracle, denied, denied, bob_oracle, denied, malformed, malformed, bob_oracle])
+            if a.securite:
+                bob_expected += denied*2 + (malformed+denied)*3 + denied*3 + bob_oracle
+                report['refus_directs']={'confirm':5,'outcome':5,'append_canal_administratif':[3]*3,
+                    'append_sans_capacite':[5]*3,'cibles_substituees':[5]*3,
+                    'vue_Bob_inchangee':True,'octets_stdout':len(bob_expected)}
             bob = [s for s, children in by_shell.items() if list(children.values()) == [{1: bob_expected, 2: b''}]]
             if a.ticket_vivant:
                 bob = [events.actor(b'NAR2 Bob attente declenchement authentification')]

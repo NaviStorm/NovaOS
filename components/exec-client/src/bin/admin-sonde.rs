@@ -5,7 +5,8 @@ use nova_cli::runtime as rt;
 use nova_exec_client::admin::{AdministrativeLaunch, Conversation};
 fn perform() -> rt::Result<()> {
     let launch = AdministrativeLaunch::current()?;
-    if launch.streams.argv.as_slice()==["--r2-refus"] {return r2_refus(&launch);}
+    if launch.streams.argv.as_slice()==["--r2-refus"] {return r2_refus(&launch,false);}
+    if launch.streams.argv.as_slice()==["--r2-securite"] {return r2_refus(&launch,true);}
     let mut request = [0; 128];
     request[..8].copy_from_slice(b"NXACMD01");
     let mut repeats = 1;
@@ -129,7 +130,7 @@ fn refusals(launch: &AdministrativeLaunch<'_>, request: &[u8;128], mode:u8) -> r
 }
 /// Même processus et même canal : chaque opération doit rester contrôlée par
 /// le serveur. Les refus n'autorisent ni une autre identité ni une mutation.
-fn r2_refus(launch:&AdministrativeLaunch<'_>)->rt::Result<()> {
+fn r2_refus(launch:&AdministrativeLaunch<'_>, security:bool)->rt::Result<()> {
     use nova_exec_client::admin_wire::{self,Direction,Inbox};
     let mut c=Conversation::new(launch);
     let mut own=[0;128];own[..8].copy_from_slice(b"NXACMD01");own[8]=1;
@@ -180,7 +181,42 @@ fn r2_refus(launch:&AdministrativeLaunch<'_>)->rt::Result<()> {
     }
     let final_view=raw(6,&own,false)?;
     if final_view!=original {return Err(235);}
-    launch.streams.write_stdout(&final_view[..64])
+    launch.streams.write_stdout(&final_view[..64])?;
+    if !security {return Ok(());}
+    // Requêtes directes, sans le décodeur du client de commandes. Le serveur
+    // doit refuser avant mutation ; aucune capacité nouvelle dans ce témoin.
+    let mut sequence=7;
+    let mut check=|q:&[u8;128],expected:u64|->rt::Result<()> {
+        let answer=raw(sequence,q,false)?;sequence+=1;
+        if answer[..8]!=expected.to_le_bytes() || answer[8..]!=[0;120] {return Err(236);}
+        launch.streams.write_stdout(&answer[..64])
+    };
+    let mut confirm=own;confirm[8]=32;confirm[16..32].fill(0x71);confirm[32..64].fill(0x72);
+    check(&confirm,rt::DENIED)?;
+    let mut outcome=own;outcome[8]=33;outcome[16..32].fill(0x71);
+    check(&outcome,rt::DENIED)?;
+    // Format réel APPEND du port privé de stockage : tables 0/1/2. Bob ne
+    // possède pas ce port. Le canal administratif refuse ces trames, puis le
+    // noyau refuse l'envoi direct sans handle. Il ne s'agit pas d'un refus VFS
+    // après ouverture : aucun droit d'ouverture n'a été attribué à cet ELF.
+    for table in 0..3 {
+        let mut append=[0;128];append[0]=2;append[1]=table;
+        append[8..24].fill(0x73);append[28]=1;append[32]=0x74;
+        check(&append,rt::BAD_ARGUMENT)?;
+        let status=rt::send_for(0,1,&append,0).err().ok_or(238u64)?;
+        if status!=rt::DENIED {return Err(status);}
+        let mut denied=[0;64];denied[..8].copy_from_slice(&status.to_le_bytes());
+        launch.streams.write_stdout(&denied)?;
+    }
+    // Cibles distinctes : les noms ne confèrent jamais les droits du titulaire.
+    for (code,name) in [(18,b"alice".as_slice()),(19,b"bob".as_slice()),(22,b"alice".as_slice())] {
+        let mut q=own;q[8]=code;named(&mut q[32..72],name);
+        if code==22 {named(&mut q[72..112],b"base");}
+        check(&q,rt::DENIED)?;
+    }
+    let unchanged=raw(sequence,&own,false)?;
+    if unchanged!=original {return Err(239);}
+    launch.streams.write_stdout(&unchanged[..64])
 }
 fn transport_probe(
     launch: &AdministrativeLaunch<'_>,
