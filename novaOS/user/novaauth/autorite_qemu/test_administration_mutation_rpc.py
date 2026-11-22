@@ -18,7 +18,7 @@ class Mutations(unittest.TestCase):
         self.peer = self.f.server.public_key().public_bytes_raw()
 
     def send(self, operation, data, *, administration=True):
-        prefix = {rpc.PUBLISH: epochs.CHANGE, rpc.ACKNOWLEDGE: epochs.EFFECTS, rpc.OUTCOME: epochs.QUERY}[operation]
+        prefix = {rpc.PUBLISH: epochs.CHANGE, rpc.ACKNOWLEDGE: epochs.EFFECTS, rpc.OUTCOME: epochs.QUERY, rpc.HISTORY: epochs.HISTORY}[operation]
         f = self.f
         body = b''.join(f.scope) + f.incarnation + data + f.server.sign(prefix + data)
         return rpc.request(f.path, f.key, self.peer, f.scope, operation, body, administration=administration)
@@ -125,5 +125,26 @@ class Mutations(unittest.TestCase):
         self.disable()
         with self.assertRaises(reprise.Refus): self.ack(8)
         self.assertEqual(len(self.outcome()),225)
+
+    def test_history_is_readonly_and_binds_original_principal_to_fresh_query(self):
+        f=self.f
+        original=self.disable()
+        query=f.current().packet()+b'R'*16+b'F'*32
+        first=self.send(rpc.HISTORY,query)
+        f.key.public_key().verify(first[-64:],epochs.HISTORY+first[:-64])
+        self.assertEqual(len(first),434)
+        self.assertEqual(first[:160],query)
+        self.assertEqual(first[160:369],original)
+        self.assertEqual(first[320:336],f.principal)
+        self.ack(7)
+        second=self.send(rpc.HISTORY,query[:-32]+b'G'*32)
+        self.assertEqual(len(second),626)
+        self.assertEqual(second[160:369],original)
+        f.key.public_key().verify(second[-64:],epochs.HISTORY+second[:-64])
+        with reprise.transaction(f.path) as db:
+            self.assertEqual(db.execute("SELECT count(*) FROM exec_events WHERE kind='admin-change'").fetchone(),(1,))
+            self.assertEqual(db.execute("SELECT count(*) FROM exec_events WHERE kind='subject-retired'").fetchone(),(1,))
+        with self.assertRaises(reprise.Refus): self.send(rpc.HISTORY,query,administration=False)
+        with self.assertRaises(reprise.Refus): self.send(rpc.HISTORY,query[:128]+bytes(32))
 
 if __name__ == '__main__': unittest.main()

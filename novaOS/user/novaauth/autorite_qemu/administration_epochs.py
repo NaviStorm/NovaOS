@@ -14,6 +14,7 @@ ENROLL = b"NovaAuth/QEMU/administration-enroll/v1\0"
 CHANGE = b"NovaAuth/QEMU/administration-change/v1\0"
 EFFECTS = b"NovaAuth/QEMU/administration-effects/v1\0"
 QUERY = b"NovaAuth/QEMU/administration-query/v1\0"
+HISTORY = b"NovaAuth/QEMU/administration-history/v1\0"
 RETIRED = b"NovaAuth/QEMU/subject-retired/v1\0"
 CREATE, DISABLE, REACTIVATE, UPDATE = 1, 2, 3, 4
 ALL_EFFECTS = 7  # vérificateurs, lanceur, VFS : attestations privées vérifiées par R
@@ -251,3 +252,26 @@ class Epochs:
                 raise Refus("issue inconnue, aucune preuve de non-admission")
             data = packet+bytes([row[0]])+(row[1] or b'')+(row[2] or b'')
         return data,self.authority.key.sign(QUERY+data)
+
+    def history(self, state, op, fresh, proof):
+        """Reçu historique authentifié pour retrouver l'auteur après redémarrage.
+
+        Consultation privée du registre ; aucun accès direct depuis un ELF.
+        Le registre doit encore vérifier le principal courant et la publication.
+        N'avance aucun drainage et ne republie jamais une mutation.
+        """
+        packet = state.packet()+fixed(op,16)+fixed(fresh,32)
+        with transaction(self.path) as db:
+            key, _ = self._scope(db,state)
+            verify(key,HISTORY,packet,proof)
+            row = db.execute("SELECT packet,effects,terminal,terminal_signature FROM admin_changes WHERE op=? AND server=? AND domain=?",
+                             (op,state.server,state.domain)).fetchone()
+            if row is None:
+                raise Refus("issue inconnue, aucune preuve de non-admission")
+            original, effects, terminal, signature = row
+            if len(original)!=209 or original[:32]!=packet[:32] or original[112:128]!=op:
+                raise Refus("historique incohérent")
+            # La décision déjà durable est attestée dans la réponse fraîche.
+            # Ni signature d'une nouvelle publication ni nouvel effet métier.
+            data=packet+original+bytes([effects])+(terminal or b'')+(signature or b'')
+        return data,self.authority.key.sign(HISTORY+data)

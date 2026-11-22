@@ -5,6 +5,8 @@ use ed25519_dalek::{Signature, VerifyingKey};
 pub const PUBLISH: u16 = 50;
 pub const ACKNOWLEDGE: u16 = 51;
 pub const OUTCOME: u16 = 52;
+pub const HISTORY: u16 = 53;
+pub const HISTORY_PREFIX: &[u8] = b"NovaAuth/QEMU/administration-history/v1\0";
 pub const CHANGE: &[u8] = b"NovaAuth/QEMU/administration-change/v1\0";
 pub const EFFECTS: &[u8] = b"NovaAuth/QEMU/administration-effects/v1\0";
 pub const QUERY: &[u8] = b"NovaAuth/QEMU/administration-query/v1\0";
@@ -25,7 +27,7 @@ impl<'a> Message<'a> {
         let size = match operation {
             PUBLISH => 209,
             ACKNOWLEDGE => 129,
-            OUTCOME => 160,
+            OUTCOME | HISTORY => 160,
             _ => return Err(Error::Format),
         };
         if b.len() != size
@@ -56,7 +58,7 @@ impl<'a> Message<'a> {
                 }
             }
             ACKNOWLEDGE if !(1..=7).contains(&b[128]) => return Err(Error::Format),
-            OUTCOME if b[128..] == [0; 32] => return Err(Error::Format),
+            OUTCOME | HISTORY if b[128..] == [0; 32] => return Err(Error::Format),
             _ => (),
         }
         Ok(Self {
@@ -82,6 +84,7 @@ impl<'a> Message<'a> {
         let prefix = match self.operation {
             PUBLISH => CHANGE,
             ACKNOWLEDGE => EFFECTS,
+            HISTORY => HISTORY_PREFIX,
             _ => QUERY,
         };
         let n = prefix.len() + self.bytes.len();
@@ -117,6 +120,40 @@ impl<'a> Message<'a> {
         }
         Ok(position)
     }
+    /// Historique signé avec auteur et époque d'origine. Le principal de la
+    /// session courante doit être comparé par le registre avant toute divulgation.
+    pub fn history<'b>(
+        &self,
+        key: &VerifyingKey,
+        reply: &'b [u8],
+    ) -> Result<(&'b [u8], u8, Option<&'b [u8]>)> {
+        if self.operation != HISTORY
+            || !matches!(reply.len(), 434 | 626)
+            || reply[..160] != *self.bytes
+        {
+            return Err(Error::Scope);
+        }
+        let end = reply.len() - 64;
+        verify_bound::<640>(key, HISTORY_PREFIX, &reply[..end], &reply[end..])?;
+        let original = &reply[160..369];
+        Message::parse(PUBLISH, original)?;
+        if original[..32] != self.bytes[..32]
+            || original[112..128] != self.bytes[112..128]
+            || reply[369] > 7
+        {
+            return Err(Error::Scope);
+        }
+        let terminal = if end == 562 {
+            Some(&reply[370..562])
+        } else {
+            None
+        };
+        if terminal.is_some() && (original[208] != DISABLE || reply[369] != 7) {
+            return Err(Error::Order);
+        }
+        Ok((original, reply[369], terminal))
+    }
+
     /// Lecture pure, avec défi frais. Un reçu terminal éventuel doit encore
     /// être vérifié par Retired::verify contre le retrait enregistré du sujet.
     pub fn outcome<'b>(
@@ -145,7 +182,15 @@ impl<'a> Message<'a> {
     }
 }
 fn verify(key: &VerifyingKey, prefix: &[u8], body: &[u8], signature: &[u8]) -> Result<()> {
-    let mut out = [0; 512];
+    verify_bound::<512>(key, prefix, body, signature)
+}
+fn verify_bound<const N: usize>(
+    key: &VerifyingKey,
+    prefix: &[u8],
+    body: &[u8],
+    signature: &[u8],
+) -> Result<()> {
+    let mut out = [0; N];
     let n = prefix.len() + body.len();
     if n > out.len() {
         return Err(Error::Limit);

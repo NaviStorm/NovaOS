@@ -41,3 +41,35 @@ requête les capacités effectives ; la présence de cette feuille ne suffit pas
 Les mutations administratives ne sont pas disponibles dans ce raccord R1.
 Un échange interrompu ferme la conversation et rend `UNCERTAIN`, sans répétition
 automatique. Voir le [contrat et les limites de qualification R1](../../novaOS/docs/novaauth-administration-r1-qualification-v0.24.0.md).
+
+
+## Façades R2 en cours de raccordement
+
+La même feature expérimentale construit six ELF indépendants : `whoami`, `id`,
+`groups`, `useradd`, `usermod` et `groupadd`. Leur parseur et leur client NXADMIN1
+sont testés sur l'hôte ; leur compilation sur les deux cibles nues ne constitue
+pas encore une qualification des mutations dans l'invité.
+
+Chaque ELF expose `--help`, `--version` et l'argument `man`, localement et sans
+requête administrative. L'entrée du catalogue `man` du shell reste à raccorder.
+Les notices et diagnostics utilisent le bit de langue fourni par le chargeur
+(fr en français, sinon anglais). Les identifiants, empreintes et états de sortie
+sont des champs de protocole stables. stdout et stderr conservent leurs octets.
+
+Une mutation s'effectue en deux invocations : arguments métier avec `--prepare`,
+puis les mêmes arguments avec `--confirm EMPREINTE --request ID`. La seconde
+invocation revérifie la préparation avant de confirmer une seule fois. Le
+registre devra rendre cette préparation idempotente pour la même session,
+tête et action, et rejeter tout changement de contexte. Une perte de réponse
+renvoie `UNCERTAIN` et l'identifiant connu ; `--outcome ID` consulte seulement
+l'issue. Ce client n'accorde aucun droit, ne supprime aucun utilisateur, groupe
+ou fichier et n'ajoute aucun privilège administratif.
+
+Le format de réponse de confirmation/issue est privé à R2 : statut natif u64 LE
+aux octets 0–7, identifiant aux octets 8–23, génération u64 LE aux octets 24–31,
+état complet égal à 1 à l'octet 32, reste nul. Un état incomplet ne devient pas
+un succès CLI. Les réponses de consultation partagent une empreinte de tête
+aux octets 80–111 ; une énumération mélangeant deux têtes est refusée.
+
+Le raccord serveur de ces mutations, les effecteurs de révocation et les deux
+sessions doivent encore être qualifiés sous QEMU avant de déclarer R2 achevée.

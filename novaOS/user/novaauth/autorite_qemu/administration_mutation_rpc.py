@@ -7,7 +7,7 @@ import struct
 from reprise import Recovery, Refus, Published, fixed
 from administration_epochs import Epochs
 
-PUBLISH, ACKNOWLEDGE, OUTCOME = 50, 51, 52
+PUBLISH, ACKNOWLEDGE, OUTCOME, HISTORY = 50, 51, 52, 53
 
 
 def state(raw):
@@ -47,7 +47,7 @@ def progress(api, server, domain):
 def request(database, key, peer, scope, operation, body, *, administration=False):
     if not administration:
         raise Refus("route administrative R2 non activée")
-    sizes = {PUBLISH: 209, ACKNOWLEDGE: 129, OUTCOME: 160}
+    sizes = {PUBLISH: 209, ACKNOWLEDGE: 129, OUTCOME: 160, HISTORY: 160}
     size = sizes.get(operation)
     if size is None or len(body) != 64 + size + 64:
         raise Refus("opération ou taille administrative invalide")
@@ -72,6 +72,8 @@ def request(database, key, peer, scope, operation, body, *, administration=False
     if operation == ACKNOWLEDGE:
         result, signature = api.acknowledge(current, data[112:128], data[128], proof)
         progress(api, server, domain)
+    elif operation == HISTORY:
+        result, signature = api.history(current, data[112:128], data[128:160], proof)
     else:
         # Lecture pure. Ne fait pas progresser le retrait et ne répète rien.
         result, signature = api.outcome(current, data[112:128], data[128:160], proof)

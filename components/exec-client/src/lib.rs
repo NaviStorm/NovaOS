@@ -121,3 +121,6 @@ mod tests {
         assert!(Launch::decode(&page).is_err());
     }
 }
+
+#[cfg(feature = "administration-qemu")]
+pub mod admin_cli;

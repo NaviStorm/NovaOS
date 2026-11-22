@@ -42,3 +42,39 @@ name = "admin-sonde"
 path = "src/bin/admin-sonde.rs"
 required-features = ["guest", "administration-qemu"]
 test = false
+
+[[bin]]
+name = "whoami"
+path = "src/bin/whoami.rs"
+required-features = ["guest", "administration-qemu"]
+test = false
+
+[[bin]]
+name = "id"
+path = "src/bin/id.rs"
+required-features = ["guest", "administration-qemu"]
+test = false
+
+[[bin]]
+name = "groups"
+path = "src/bin/groups.rs"
+required-features = ["guest", "administration-qemu"]
+test = false
+
+[[bin]]
+name = "useradd"
+path = "src/bin/useradd.rs"
+required-features = ["guest", "administration-qemu"]
+test = false
+
+[[bin]]
+name = "usermod"
+path = "src/bin/usermod.rs"
+required-features = ["guest", "administration-qemu"]
+test = false
+
+[[bin]]
+name = "groupadd"
+path = "src/bin/groupadd.rs"
+required-features = ["guest", "administration-qemu"]
+test = false

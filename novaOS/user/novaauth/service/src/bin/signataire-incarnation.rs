@@ -107,7 +107,7 @@ fn serve() -> rt::Result<()> {
         if issued && recovery_done && recovery_bridge::is_request(&m) {
             #[cfg(feature="administration-r2-guest")]
             if novaos_recovery::framing::Header::parse(&m.payload[..novaos_recovery::framing::HEADER])
-                .is_ok_and(|h|matches!(h.operation,50..=52)) {
+                .is_ok_and(|h|matches!(h.operation,50..=53)) {
                 administration_bridge::serve(&key,port,&id,m)?;
                 continue;
             }
