@@ -23,6 +23,7 @@ def main():
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions'], required=True)
+    parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
     for name in ('iso', 'registre', 'genese', 'cles', 'decision', 'secrets',
                  'sortie', 'detenteur', 'capture', 'triplet', 'kernel'):
         parser.add_argument('--' + name, type=lambda v: Path(v).resolve(), required=True)
@@ -58,6 +59,10 @@ def main():
     # borné à 128 et chaque parcours commence avec une nouvelle session.
     # L'essai initial de six commandes ayant saturé ce relais est conservé.
     cases = cases[:3] if a.lot == 'lectures' else cases[3:]
+    if a.commande:
+        cases = [(cmd, expected) for cmd, expected in cases if cmd.split()[0] == a.commande]
+        if not cases:
+            parser.error('commande absente du lot demandé')
     with ExitStack() as stack:
         env = fixture(a, stack)
         dispatcher, holders, admin = env
