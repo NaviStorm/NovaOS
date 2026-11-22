@@ -59,7 +59,7 @@ INITIAL = r'''
     mark(b"NAR2 Bob attente declenchement authentification")?;
     // Canal privé préexistant du vérificateur, sans droit nouveau. Ce message
     // ordonne uniquement le banc : il ne constitue jamais une authentification.
-    let event=rt::receive_for(rt::config(17),25000)?;
+    let event=rt::receive_for(rt::config(17),15000)?;
     if event.kind!=1 || event.tag!=0x4e58523253544152 || event.len!=128
         || &event.payload[..8]!=b"NXR2GO01" || event.payload[120..]!=[0;8]
         || event.payload[8..40]==[0;32] || event.payload[40..72]==[0;32]
