@@ -63,3 +63,14 @@ l'ancien ticket et de l'ancienne session. Un nouveau lancement doit réussir.
 Ce déclenchement utilise la conversation privée de qualification déjà approuvée,
 lie les deux instances et l'opération, et ne constitue pas une authentification.
 Les résultats invités restent à établir ; les huit tests du moteur sont hôtes.
+
+### Premier essai S9 : saturation du banc
+
+Sur x86_64/P9-512, commit `71bba986ac39258de35eb3b91db79f35420ed50d`,
+la désactivation et la réactivation sont confirmées (générations 24/25).
+Une nouvelle session distincte est authentifiée ; l'ancien ticket est refusé
+10 et l'ancienne session 5. Le relais atteint ensuite sa borne de 128 connexions
+avant le lancement positif de Bob : l'essai complet est en échec.
+La correction de scénario retire uniquement les deux consultations Outcome
+redondantes avec S8. Les confirmations, les reçus et tous les contrôles de
+fraîcheur restent exécutés. La limite de 128 et les délais restent inchangés.

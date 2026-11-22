@@ -107,9 +107,12 @@ def main():
                 return data
             def reactivated(_):
                 return ('request='+second['operation']+' generation=25 state=COMPLETE\n').encode()
+            # Les deux confirmations portent déjà leur reçu durable. Les
+            # consultations Outcome appartiennent à S8 ; ne pas les répéter
+            # dans S9 et saturer la borne inchangée de 128 connexions du banc.
+            cases=cases[:2]
             cases += [('usermod --enable bob --prepare',prepare_reactivation),
-                      (lambda:'usermod --enable bob --confirm '+second['confirmation']+' --request '+second['operation'],reactivated),
-                      (lambda:'usermod --outcome '+second['operation'],reactivated)]
+                      (lambda:'usermod --enable bob --confirm '+second['confirmation']+' --request '+second['operation'],reactivated)]
     elif a.lot == 'dernier-administrateur':
         cases = [('usermod --disable alice --prepare', b'')]
     if a.commande:
@@ -176,21 +179,21 @@ def main():
                     serial.expect('NovaAuth : nouvelle session authentifiée'.encode(), 40)
                     serial.expect(rb'nsh> ', 20)
                     report['nouvelle_authentification_explicite_avant_issue'] = True
-                if a.reactivation and i==4:
+                if a.reactivation and i==3:
                     observer.expect_successor(events.actor(b'NAR2 Bob attente declenchement authentification'))
                 if callable(command):
                     command = command()
                 # Identité d'étape distincte ; aucune réponse d'une commande
                 # précédente ne peut terminer la commande courante.
                 step = 'NXR2_' + str(i) + '_'
-                line=command + '; echo ' + step + '$?__FIN' + ('; exit' if i == len(cases)-1 else '')
+                line=command + '; echo ' + step + '$?__FIN' + ('; exit' if i == len(cases)-1 and not a.reactivation else '')
                 serial.offset = len(serial.data)
                 start = serial.offset
                 serial.submit(line)
                 pattern=observed_command_status_pattern(step) if a.ticket_vivant else command_status_pattern(step)
                 status = serial.expect(pattern, 80)
                 shell_status=int(status[2] if a.ticket_vivant else status[1])
-                if i != len(cases)-1:
+                if i != len(cases)-1 or a.reactivation:
                     serial.expect(rb'nsh> ', 20)
                 output = bytes(serial.data[start:serial.offset])
                 (out / f'commande-{i:02}.bin').write_bytes(output)
@@ -251,13 +254,14 @@ def main():
                         route=selected[record['pid']]
                         record.update(instance=route[1].hex(),session=route[2].hex())
 
-                if a.reactivation and i==4:
+                if a.reactivation and i==3:
                     bob_pid=events.actor(b'NAR2 Bob attente declenchement authentification')
                     for message in [b'NAR2 Bob nouvelle session explicite distincte',
                                     b'NAR2 Bob apres reactivation ancien ticket=10 ancienne session=5',
                                     b'NAR2 Bob nouveau lancement autorise droits ordinaires',
                                     b'NAR2 Bob fermeture acquittee']:
                         events.expect(bob_pid,message,40)
+            if a.reactivation:serial.submit('exit')
             serial.expect(rb'BLOC bilan mode=41 service=Exit\(0\) bloc=Exit\(0\) pilote=Exit\(0\) client=Exit\(0\) retrait=Ok\(\(\)\)', 40)
             rows = observer.outputs()
             by_shell = {}
