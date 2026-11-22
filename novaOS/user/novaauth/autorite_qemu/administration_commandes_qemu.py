@@ -26,6 +26,7 @@ def main():
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+    parser.add_argument('--bob-minimal',action='store_true',help='Bob authentifié puis fermé, contrôles négatifs séparés')
     parser.add_argument('--etat-ticket',choices=['expire','recu','concurrent'],help='état EXEC_TICKET S6 distinct du témoin révoqué')
     parser.add_argument('--separation',action='store_true',help='références réelles Alice/Bob, sans transfert de droits')
     parser.add_argument('--reactivation',action='store_true',help='recette S9 après retrait effectif')
@@ -41,7 +42,7 @@ def main():
     a = parser.parse_args()
     if a.separation and (a.ticket_vivant or a.reactivation or a.securite):parser.error('profils de recette distincts')
     a.ticket_vivant = a.ticket_vivant or a.reactivation
-    atomic_status = a.ticket_vivant or a.separation or bool(a.etat_ticket)
+    atomic_status = a.ticket_vivant or a.separation or bool(a.etat_ticket) or a.bob_minimal
     if a.etat_ticket and (a.separation or a.ticket_vivant or a.securite):parser.error("profils de recette distincts")
     if a.securite and a.ticket_vivant:parser.error('les deux profils sont distincts')
     if a.ticket_vivant and a.lot!='desactivation':
@@ -173,7 +174,7 @@ def main():
             # Les autres lots conservent leur ordonnancement historique.
             if a.separation:
                 serial.expect(rb'NAR2 Bob references pret',40)
-            elif a.etat_ticket:
+            elif a.etat_ticket or a.bob_minimal:
                 serial.expect(rb'NAR2 Bob fermeture acquittee',40)
             elif not a.ticket_vivant:
                 serial.expect(rb'NAR2 Bob fermeture acquittee', 100)
@@ -322,11 +323,11 @@ def main():
                         'ancien_ticket':10,'ancienne_session':5,'nouveau_lancement':0}
                 elif bob[0] in by_shell or len(by_shell)!=1:
                     raise Refus('sortie enfant Bob inattendue dans le témoin temporel')
-            elif a.etat_ticket:
+            elif a.etat_ticket or a.bob_minimal:
                 bob=[events.actor(b'NAR2 Bob authentifie route distincte')]
                 if len(by_shell)!=1 or bob[0] in by_shell:raise Refus('enfant Bob inattendu S6')
                 if a.etat_ticket in ('recu','concurrent') and not re.search(rb'NXEXEC pid=([0-9]+) statut=0 collecte unique',serial.data):raise Refus('collecte unique absente')
-                report['etat_ticket']={'mode':a.etat_ticket,'statut_natif':8 if a.etat_ticket=='expire' else 12,'controle_Alice':0}
+                if a.etat_ticket:report['etat_ticket']={'mode':a.etat_ticket,'statut_natif':8 if a.etat_ticket=='expire' else 12,'controle_Alice':0}
                 if a.etat_ticket=='concurrent':
                     rows=re.findall(rb'NXEXEC concurrence ticket=(\d+) thread=(\d+) statut=(\d+) droit_collecte=(\d+) anciens_spawns_refuses=3/3',serial.data)
                     if len(rows)!=2 or len({r[0] for r in rows})!=1 or len({r[1] for r in rows})!=2 or sorted(int(r[2]) for r in rows)!=[0,12]:
