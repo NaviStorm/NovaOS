@@ -345,7 +345,7 @@ def main():
                         'ancien_ticket':10,'ancienne_session':5,'nouveau_lancement':0}
                 elif a.course:
                     children=by_shell.get(bob[0],{})
-                    if len(children)>1 or any(streams not in ({1:bob_oracle,2:b''},{1:b'',2:b''}) for streams in children.values()):
+                    if len(children)>1 or any(streams not in ({1:b'A\tB\tC\nD\tE\tF\n',2:b''},{1:b'',2:b''}) for streams in children.values()):
                         raise Refus('sorties de la course Bob non conformes')
                 elif bob[0] in by_shell or len(by_shell)!=1:
                     raise Refus('sortie enfant Bob inattendue dans le témoin temporel')
