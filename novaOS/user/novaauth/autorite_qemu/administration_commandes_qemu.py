@@ -25,10 +25,14 @@ def main():
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+    parser.add_argument('--reauth-issue', action='store_true',
+                        help='authentification explicite neuve après publication, avant consultation de son issue')
     for name in ('iso', 'registre', 'genese', 'cles', 'decision', 'secrets',
                  'sortie', 'detenteur', 'capture', 'triplet', 'kernel'):
         parser.add_argument('--' + name, type=lambda v: Path(v).resolve(), required=True)
     a = parser.parse_args()
+    if a.reauth_issue and a.lot != 'groupe':
+        parser.error('--reauth-issue est réservé au lot groupe')
     a.mode = 'nominal'
     a.vue = a.activation = a.exec_admission = a.administration_r2 = True
     a.collecteur_r2 = True
@@ -117,6 +121,11 @@ def main():
             if b'NAR2 Bob refus serveur et substitutions verifies' not in serial.data:
                 raise Refus('témoin négatif Bob absent')
             for i, (command, expected) in enumerate(cases):
+                if a.reauth_issue and i == 2:
+                    serial.submit('session reauthentifier')
+                    serial.expect('NovaAuth : nouvelle session authentifiée'.encode(), 40)
+                    serial.expect(rb'nsh> ', 20)
+                    report['nouvelle_authentification_explicite_avant_issue'] = True
                 if callable(command):
                     command = command()
                 serial.offset = len(serial.data)

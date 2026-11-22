@@ -25,6 +25,29 @@ fn save(path: &Path, data: &[u8]) {
 }
 fn main() {
     let a: Vec<_> = std::env::args().collect();
+    if a.get(1).map(String::as_str)==Some("--capture-published") {
+        // Analyse hors ligne uniquement : la tête est relevée dans la preuve
+        // d'autorité indépendante. Ce témoin ne confère aucune fraîcheur invité.
+        struct Observed(Head);
+        impl Authority for Observed {
+            fn current(&self)->Result<Head> {Ok(self.0)}
+            fn outcome(&self,_:Id)->Result<Option<Head>> {Err(Fault::Denied)}
+            fn decide(&mut self,_:Head,_:Head)->Result<()> {Err(Fault::Denied)}
+        }
+        let sector=a[4].parse().unwrap();
+        let file=fs::File::open(&a[2]).unwrap();
+        let bytes=file.metadata().unwrap().len();assert_eq!(bytes%4096,0);
+        let device=FileImage::from_file(file,bytes/4096,sector).unwrap();
+        let head=recuperation::decode_head(&fs::read(&a[3]).unwrap()).unwrap();
+        let engine=novafs::Engine::mount_current(device,Ids {fs:head.volume[0],lv:head.volume[1]},novafs::Mode::ReadOnly).unwrap();
+        let actual=Triplet::capture(&engine,&Observed(head),head.domain).unwrap();
+        let work=engine.lookup_at(engine.root_id(),"travail").unwrap().id;
+        let object=engine.lookup_at(work,"donnees.tsv").unwrap().id;
+        assert_eq!(engine.read_id(object,0,64).unwrap(),b"A\tB\tC\nD\tE\tF\n");
+        save(Path::new(&a[5]),&actual.encode());
+        println!("{{\"empreinte_triplet_verifiee\":true,\"donnees_privees_inchangees\":true,\"generation\":{}}}",head.generation);
+        return;
+    }
     if a.get(1).map(String::as_str)==Some("--verify") {
         // Vérification hors ligne des effets persistants du banc, jamais une
         // décision de fraîcheur pour l'invité. Tous les descripteurs sont RO.
