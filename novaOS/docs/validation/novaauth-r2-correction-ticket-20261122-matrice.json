@@ -1,0 +1,35 @@
+[
+  {
+    "controle": "synchronisation hôte",
+    "execute": 5,
+    "reussi": 5,
+    "echoue": 0,
+    "portee": "tests hôtes uniquement"
+  },
+  {
+    "profil": "x86_64/P9-4096",
+    "execute": 1,
+    "reussi": 0,
+    "echoue": 1,
+    "ticket_valide": "NON EMIS",
+    "REVOKED_avant_expiration": "NON EXERCE",
+    "aucun_enfant_du_ticket": "NON EXERCE, ticket non émis",
+    "recu_RETIREE": "NON EXERCE",
+    "drainage_final_invite": "NON DEMONTRE"
+  },
+  {
+    "profil": "x86_64/P9-512",
+    "execute": 0,
+    "portee": "acquis antérieur non rejoué"
+  },
+  {
+    "profil": "AArch64/P9-512",
+    "execute": 0,
+    "portee": "hors mandat"
+  },
+  {
+    "profil": "AArch64/P9-4096",
+    "execute": 0,
+    "portee": "hors mandat"
+  }
+]
