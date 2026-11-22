@@ -23,7 +23,11 @@ def main():
     # Les consultations fraîches continuent pendant le témoin d'expiration
     # de 60 s. Ce budget hôte ne change ni les délais TLS invités, ni les quotas.
     # Garder la borne historique de 128 pour tous les autres bancs.
-    a.transport_connection_limit=256 if a.etendu else 128
+    # Quatre authentifications explicites supplémentaires entre groupes ont
+    # épuisé 256 échanges après la sortie du dernier enfant (trace conservée).
+    # Réserver 16 échanges hôtes séquentiels par nouveau groupe, sans changer
+    # le nombre de connexions simultanées ni aucun budget invité.
+    a.transport_connection_limit=(256+4*16) if a.etendu else 128
     a.legacy_disk=a.genese.with_name('autorite.raw')
     a.sortie.mkdir(parents=True,exist_ok=False);a.secrets.mkdir(parents=True,exist_ok=False,mode=0o700)
     root=a.sortie
