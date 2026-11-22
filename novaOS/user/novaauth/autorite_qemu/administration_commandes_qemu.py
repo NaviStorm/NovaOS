@@ -23,16 +23,20 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
-    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe'], required=True)
+    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
     parser.add_argument('--reauth-issue', action='store_true',
                         help='authentification explicite neuve après publication, avant consultation de son issue')
+    parser.add_argument('--recu-supprime', action='store_true',
+                        help='supprimer une fois le reçu après publication durable ; conserver UNCERTAIN')
     for name in ('iso', 'registre', 'genese', 'cles', 'decision', 'secrets',
                  'sortie', 'detenteur', 'capture', 'triplet', 'kernel'):
         parser.add_argument('--' + name, type=lambda v: Path(v).resolve(), required=True)
     a = parser.parse_args()
     if a.reauth_issue and a.lot != 'groupe':
         parser.error('--reauth-issue est réservé au lot groupe')
+    if a.recu_supprime and a.lot != 'groupe':
+        parser.error('--recu-supprime est réservé au lot groupe')
     a.mode = 'nominal'
     a.vue = a.activation = a.exec_admission = a.administration_r2 = True
     a.collecteur_r2 = True
@@ -83,6 +87,8 @@ def main():
                  (lambda: 'groupadd equipe-r2 --confirm ' + intention['confirmation'] +
                   ' --request ' + intention['operation'], complete),
                  (lambda: 'groupadd --outcome ' + intention['operation'], complete)]
+    elif a.lot == 'dernier-administrateur':
+        cases = [('usermod --disable alice --prepare', b'')]
     if a.commande:
         cases = [(cmd, expected) for cmd, expected in cases if isinstance(cmd, str) and cmd.split()[0] == a.commande]
         if not cases:
@@ -99,9 +105,16 @@ def main():
         api.begin_withdrawal(SERVER, DOMAIN, old, signature(admin, 'withdraw', old))
         api.drain(SERVER, DOMAIN, old)
         enrolled = False
+        discarded_receipt = False
 
         def rpc_hook(phase, operation, body, result, qmp, disk):
-            nonlocal enrolled
+            nonlocal enrolled, discarded_receipt
+            if phase == 'after' and operation == 50 and a.recu_supprime and not discarded_receipt:
+                discarded_receipt = True
+                # L'autorité a déjà décidé. Le banc supprime uniquement le reçu,
+                # jamais la mutation, et ne soumet aucune seconde demande.
+                report['recu_supprime_apres_publication'] = True
+                raise Refus('UNCERTAIN : reçu administratif supprimé par le banc')
             if phase == 'before' and operation == 40 and not enrolled:
                 with transaction(api.path) as db:
                     state = api.authority._current(db, SERVER, DOMAIN)
@@ -121,6 +134,15 @@ def main():
             if b'NAR2 Bob refus serveur et substitutions verifies' not in serial.data:
                 raise Refus('témoin négatif Bob absent')
             for i, (command, expected) in enumerate(cases):
+                expected_status = 3 if a.lot == 'dernier-administrateur' else 0
+                expected_stderr = b''
+                if a.lot == 'dernier-administrateur':
+                    expected_stderr = 'Échec administratif: native=5 status=3\n'.encode()
+                elif a.recu_supprime and i == 1:
+                    expected_status = 20
+                    expected = b''
+                    expected_stderr = ('Échec administratif: native=22 status=20\nrequest=' +
+                                       intention['operation'] + ' --outcome\n').encode()
                 if a.reauth_issue and i == 2:
                     observer.expect_successor(report['commandes'][0]['shell'])
                     serial.submit('session reauthentifier')
@@ -138,9 +160,10 @@ def main():
                 output = bytes(serial.data[start:serial.offset])
                 (out / f'commande-{i:02}.bin').write_bytes(output)
                 pids = set(int(p) for p in re.findall(rb'NXFLUX pid=(\d+) fd=', output))
-                item = {'commande': command, 'statut_shell': int(status[1]), 'pid': sorted(pids)}
+                item = {'commande': command, 'statut_shell': int(status[1]),
+                        'statut_attendu': expected_status, 'pid': sorted(pids)}
                 report['commandes'].append(item)
-                if int(status[1]) != 0 or len(pids) != 1:
+                if int(status[1]) != expected_status or len(pids) != 1:
                     raise Refus('statut ou PID non conforme : ' + command)
                 pid = next(iter(pids))
                 rows = [(binding, closed, data) for binding, closed, data in observer.outputs()
@@ -156,10 +179,10 @@ def main():
                     (out / f'commande-{i:02}-fd{fd}.bin').write_bytes(data)
                 if callable(expected):
                     expected = expected(streams.get(1, b''))
-                if streams != {1: expected, 2: b''}:
+                if streams != {1: expected, 2: expected_stderr}:
                     raise Refus('octets non conformes : ' + command)
                 item['stdout_octets'] = len(expected)
-                item['stderr_octets'] = 0
+                item['stderr_octets'] = len(expected_stderr)
                 item['octets_conformes'] = True
             serial.expect(rb'BLOC bilan mode=41 service=Exit\(0\) bloc=Exit\(0\) pilote=Exit\(0\) client=Exit\(0\) retrait=Ok\(\(\)\)', 40)
             rows = observer.outputs()
@@ -185,8 +208,8 @@ def main():
             codes = dict((int(p), int(c)) for p, c in re.findall(rb'PROC pid=(\d+) niveau=' + level + rb' pc=0x[0-9a-f]+ sortie=(\d+)', serial.data))
             for item in report['commandes']:
                 item['statut_natif'] = codes.get(item['pid'][0])
-                if item['statut_natif'] != 0:
-                    raise Refus('statut natif absent ou non nul')
+                if item['statut_natif'] != item['statut_attendu']:
+                    raise Refus('statut natif absent ou non conforme')
             if any(codes.get(pid) != 0 for pid in by_shell[bob[0]]):
                 raise Refus('statut natif Bob non conforme')
             observer.close()

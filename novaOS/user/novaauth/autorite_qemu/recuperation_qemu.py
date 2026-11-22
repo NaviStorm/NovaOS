@@ -270,7 +270,7 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
                                     administration=True)
                             elif args.vfs and operation in (32,33,34):
                                 result=capture_store.request(operation,body)
-                            elif args.vfs and operation in (30,31):
+                            elif (args.vfs and operation in (30,31)) or (getattr(args,"administration_r2",False) and operation==31):
                                 if operation==30 and before_mutation is not None:
                                     before_mutation(disk,out,Path(tmp)/"qmp.sock",body,"publication")
                                 result=mutation_request(dispatcher.authority.path,
