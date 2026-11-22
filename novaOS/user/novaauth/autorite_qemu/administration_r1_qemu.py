@@ -96,8 +96,8 @@ def main():
                 if rc:raise Refus('réauthentification explicite avant témoin expiration')
                 start=serial.offset
                 serial.submit('admin-sonde --expire')
-                child=serial.expect(rb'NAEXEC enfant owner=([0-9]+) child=([0-9]+)',30)
-                pid=int(child[2]);exit=serial.expect(fr'PROC pid={pid} niveau=[^ ]+ pc=0x[0-9a-f]+ sortie=([0-9]+)'.encode(),100)
+                child=serial.expect(rb'NAEXEC enfant owner=([0-9]+) child=([0-9]+)\r?\n',30)
+                pid=int(child[2]);exit=serial.expect(fr'PROC pid={pid} niveau=[^ ]+ pc=0x[0-9a-f]+ sortie=([0-9]+)\r?\n'.encode(),100)
                 if int(exit[1])!=10:raise Refus('ancien handle non révoqué : '+exit[0].decode())
                 serial.expect(rb'nsh> ',20)
                 report['expiration']={'pid':pid,'statut_natif':10,'seconde_utilisation_refusee':True}
