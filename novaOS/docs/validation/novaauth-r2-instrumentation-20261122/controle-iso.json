@@ -1,0 +1,7 @@
+{
+  "profil": "novaauth-sessions",
+  "iso_sha256": "4b736b1e411b6913b03b75eaf146f09504dd8d9ca42a42c3f2bbcfd961bc945f",
+  "kernel_sha256": "738f67c54b1a53bb9a563a0972739b84c97203a9b8b047a7fa831b63aa1edcaa",
+  "limine_conf": "timeout: 0\n\n/NovaOS\n    protocol: limine\n    path: boot():/boot/novaos.elf\n    resolution: 800x600x32\n    cmdline: novaauth-sessions\n",
+  "valide": true
+}

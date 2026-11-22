@@ -1,0 +1,16 @@
+{
+  "candidat": "53ed5427045fdc5e2e4dbdc762f2c891837ca5a2",
+  "premier_statut_natif": 12,
+  "pid": 8,
+  "composant": "signataire invité de récupération",
+  "etape": "dialogue TLS récupération 2-sur-2, avant sessions R2",
+  "debut_ms": 852,
+  "echeance_ms": 10852,
+  "fin_ms": 11040,
+  "depassement_ms": 188,
+  "limite": "Erreur TLS interne convertie en REFUSED par recovery_bridge ; sous-statut non disponible. Le dépassement constaté ne suffit pas à identifier le premier appel TLS fautif.",
+  "scenarios_r2": "NON EXÉCUTÉS",
+  "mesures_chargement_admission_confirmation": "NON ATTEINTES",
+  "tests_hotes": 47,
+  "essais_qemu": 1
+}
