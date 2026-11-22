@@ -138,13 +138,13 @@ pub fn parse(program: Program, args: &[&str]) -> Result<Action, Syntax> {
             {
                 subject = Some(value()?)
             }
-            "--group" if program == Program::Useradd => {
+            "--group" if matches!(program, Program::Useradd | Program::Groups) => {
                 if group.is_some() {
                     return Err(Syntax);
                 }
                 group = Some((value()?, false));
             }
-            "--group-id" if program == Program::Useradd => {
+            "--group-id" if matches!(program, Program::Useradd | Program::Groups) => {
                 if group.is_some() {
                     return Err(Syntax);
                 }
@@ -180,6 +180,13 @@ pub fn parse(program: Program, args: &[&str]) -> Result<Action, Syntax> {
         };
     }
     if !program.mutable() {
+        if let Some((name, by_id)) = group {
+            if subject.is_some() || !positional.is_empty() { return Err(Syntax); }
+            let mut q = packet(3);
+            selector(&mut q[32..72], name, by_id)?;
+            wire::decode(&q).map_err(|_| Syntax)?;
+            return Ok(Action::Read { packet: q, id_only: false });
+        }
         if subject.is_some() && !positional.is_empty()
             || positional.len() > 1
             || program == Program::Whoami && !positional.is_empty()
@@ -373,6 +380,25 @@ pub fn execute(
                     operation: None,
                 });
             }
+            if q[8] == 3 {
+                let mut members = String::new();
+                for i in 0..count {
+                    let mut request = packet(5);
+                    request[16..24].copy_from_slice(&i.to_le_bytes());
+                    request[32] = 1; request[33] = 16;
+                    request[40..56].copy_from_slice(id);
+                    let member = exchange(&request, None, &mut call)?;
+                    if member[80..112] != a[80..112] {
+                        return Err(Failure { native: 24, operation: None });
+                    }
+                    if member[8..24] == [0;16] {
+                        return Err(Failure { native: 12, operation: None });
+                    }
+                    if i > 0 { members.push(' '); }
+                    members.push_str(&hex_text(&member[8..24]));
+                }
+                return Ok(format!("group={} name={n} members={members}\n", hex_text(id)));
+            }
             let mut memberships = String::new();
             for i in 0..count {
                 let mut q = packet(4);
@@ -476,7 +502,7 @@ pub fn help(program: Program, fr: bool) -> String {
     let syntax = match program {
         Program::Whoami => "whoami [--id]",
         Program::Id => "id [--subject-id ID | NAME]",
-        Program::Groups => "groups [--subject-id ID | NAME]",
+        Program::Groups => "groups [--subject-id ID | NAME] | groups (--group NAME | --group-id ID)",
         Program::Useradd => "useradd --factor-reference REF (--group NAME | --group-id ID) NAME",
         Program::Usermod => {
             "usermod (--rename NAME | --disable | --enable | --add-group GROUP | --remove-group GROUP) (NAME | --subject-id ID)"
@@ -568,6 +594,37 @@ mod tests {
         a[8..24].fill(1);
         a[24..56].fill(2);
         a
+    }
+    #[test]
+    fn group_view_uses_existing_filtered_protocol_and_rejects_mixed_heads() {
+        let action = parse(Program::Groups, &["--group", "base"]).unwrap();
+        let mut calls = 0;
+        let mut read = |q: &[u8;128]| {
+            calls += 1;
+            let mut a = [0;128]; a[80..112].fill(9);
+            match q[8] {
+                3 => { a[8..24].fill(1); a[24]=4; a[25..29].copy_from_slice(b"base"); a[72]=2; }
+                5 => { assert_eq!(&q[40..56], &[1;16]); a[8..24].fill(2+q[16]); }
+                _ => panic!("unexpected opcode"),
+            }
+            Ok(a)
+        };
+        let out = execute(Program::Groups, &action, false, &mut read).unwrap();
+        assert_eq!(out, format!("group={} name=base members={} {}\n",hex_text(&[1;16]),hex_text(&[2;16]),hex_text(&[3;16])));
+        assert_eq!(calls,3);
+        let error = execute(Program::Groups,&action,false,|q| {
+            let mut a=[0;128];a[8..24].fill(1);a[24]=4;a[25..29].copy_from_slice(b"base");a[72]=1;
+            a[80]=q[8]; Ok(a)
+        }).unwrap_err();
+        assert_eq!(error.native,24);
+        for args in [alloc::vec!["--group","base","alice"],alloc::vec!["--group","base","--subject-id",ID],alloc::vec!["--group","base","--group-id",ID]] {
+            assert_eq!(parse(Program::Groups,&args),Err(Syntax));
+        }
+    }
+    #[test]
+    fn group_view_never_masks_server_denial() {
+        let action = parse(Program::Groups, &["--group-id", ID]).unwrap();
+        assert_eq!(execute(Program::Groups,&action,false,|_|Err(5)).unwrap_err().native,5);
     }
     #[test]
     fn metadata_never_contacts_administration() {
