@@ -26,6 +26,7 @@ def main():
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+    parser.add_argument('--course',action='store_true',help='ticket Bob présenté pendant la confirmation Alice')
     parser.add_argument('--dernier-concurrent',action='store_true',help='deux requêtes partielles simultanées contre le dernier administrateur')
     parser.add_argument('--bob-minimal',action='store_true',help='Bob authentifié puis fermé, contrôles négatifs séparés')
     parser.add_argument('--etat-ticket',choices=['expire','recu','concurrent'],help='état EXEC_TICKET S6 distinct du témoin révoqué')
@@ -43,7 +44,7 @@ def main():
     a = parser.parse_args()
     if a.separation and (a.ticket_vivant or a.reactivation or a.securite):parser.error('profils de recette distincts')
     a.bob_minimal=a.bob_minimal or a.dernier_concurrent
-    a.ticket_vivant = a.ticket_vivant or a.reactivation
+    a.ticket_vivant = a.ticket_vivant or a.reactivation or a.course
     atomic_status = a.ticket_vivant or a.separation or bool(a.etat_ticket) or a.bob_minimal
     if a.etat_ticket and (a.separation or a.ticket_vivant or a.securite):parser.error("profils de recette distincts")
     if a.securite and a.ticket_vivant:parser.error('les deux profils sont distincts')
@@ -339,6 +340,10 @@ def main():
                         raise Refus('session Bob réactivée ou instance remplacée')
                     report['nouvelle_session_bob']={'instance':current[0][1].hex(),'session':current[0][2].hex(),
                         'ancien_ticket':10,'ancienne_session':5,'nouveau_lancement':0}
+                elif a.course:
+                    children=by_shell.get(bob[0],{})
+                    if len(children)>1 or any(streams not in ({1:bob_oracle,2:b''},{1:b'',2:b''}) for streams in children.values()):
+                        raise Refus('sorties de la course Bob non conformes')
                 elif bob[0] in by_shell or len(by_shell)!=1:
                     raise Refus('sortie enfant Bob inattendue dans le témoin temporel')
             elif a.etat_ticket or a.bob_minimal:
@@ -364,7 +369,7 @@ def main():
             elif len(by_shell) != 2 or len(bob) != 1:
                 raise Refus('sorties Bob confondues ou absentes')
             if a.ticket_vivant:
-                if b'NAR2 Bob ancien ticket statut=10 aucun enfant' not in serial.data:
+                if not a.course and b'NAR2 Bob ancien ticket statut=10 aucun enfant' not in serial.data:
                     raise Refus('ancien ticket Bob sans refus REVOKED')
                 attempts=re.findall(rb'NAEXEC attente owner='+str(bob[0]).encode()+rb' ticket=(\d+) maintenant=(\d+) echeance=(\d+)',serial.data)
                 if not attempts or (not a.reactivation and len(attempts)!=1) or int(attempts[0][1])>=int(attempts[0][2]):
@@ -374,9 +379,20 @@ def main():
                     cut=serial.data.index(b'NAR2 Bob nouvelle session explicite distincte')
                     if len(children)!=1 or re.search(rb'NAEXEC enfant owner='+str(bob[0]).encode()+rb' child=',serial.data[:cut]):
                         raise Refus('création Bob avant nouvelle authentification ou doublon')
+                elif a.course:
+                    beg=re.findall(rb'R2TIME pid='+str(bob[0]).encode()+rb' ticks=(\d+) R2PROBE s=31 i=0 k=0 n=0',serial.data)
+                    end=re.findall(rb'R2TIME pid='+str(bob[0]).encode()+rb' ticks=(\d+) R2PROBE s=32 i=0 k=1 n=(\d+)',serial.data)
+                    confirm=re.findall(rb'R2TIME pid=\d+ ticks=(\d+) R2PROBE s=20 n=0',serial.data)
+                    complete=re.findall(rb'R2TIME pid=\d+ ticks=(\d+) R2PROBE s=22 n=0',serial.data)
+                    if len(beg)!=1 or len(end)!=1 or len(confirm)!=1 or len(complete)!=1 or int(end[0][1]) not in (0,10):raise Refus('chronologie course absente')
+                    if not (int(beg[0])<=int(complete[0]) and int(end[0][0])>=int(confirm[0])):raise Refus('pas de recouvrement admission/confirmation')
+                    terminal=serial.data.index(b'NAR2 epoque RETIREE recu terminal authentifie')
+                    if re.search(rb'NAEXEC enfant owner='+str(bob[0]).encode()+rb' child=',serial.data[terminal:]):raise Refus('enfant après RETIREE')
+                    if len(children)!=(1 if int(end[0][1])==0 else 0):raise Refus('PID de course absent ou interdit')
+                    report['course']={'debut_bob_ticks':int(beg[0]),'fin_bob_ticks':int(end[0][0]),'statut_spawn':int(end[0][1]),'debut_confirmation_ticks':int(confirm[0]),'fin_confirmation_ticks':int(complete[0]),'enfants':[int(v) for v in children],'aucune_creation_apres_RETIREE':True}
                 elif children:
                     raise Refus('création Bob supplémentaire ou non identifiée')
-                report['ticket_bob']={'reference':int(attempts[0][0]),'presentation_ticks':int(attempts[0][1]),'expiration_ticks':int(attempts[0][2]),'frequence_hz':250,'statut_natif':10,'enfants_supplementaires':0}
+                report['ticket_bob']={'reference':int(attempts[0][0]),'presentation_ticks':int(attempts[0][1]),'expiration_ticks':int(attempts[0][2]),'frequence_hz':250,'statut_natif':report['course']['statut_spawn'] if a.course else 10,'enfants_supplementaires':0}
             for pid in set(by_shell) | set(bob):
                 if not re.search(rb'NAEXEC restitue pid=' + str(pid).encode() + rb' roots=0 handles=0 waits=0 pages=0 pile=0 threads=0', serial.data):
                     raise Refus('ressources de session non restituées')
@@ -392,7 +408,7 @@ def main():
                 item['statut_natif'] = codes.get(item['pid'][0])
                 if item['statut_natif'] != item['statut_attendu']:
                     raise Refus('statut natif absent ou non conforme')
-            if any(codes.get(pid) != 0 for pid in by_shell.get(bob[0], {})):
+            if any(codes.get(pid) not in ((0,5,10) if a.course else (0,)) for pid in by_shell.get(bob[0], {})):
                 raise Refus('statut natif Bob non conforme')
             observer.close()
             report.update(succes=True, enrolement_epoques=enrolled,

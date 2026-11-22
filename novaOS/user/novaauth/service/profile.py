@@ -7,8 +7,8 @@ import runpy
 import subprocess
 import tarfile
 
-def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False, incarnation=False, horloge=False, tete=False, lecture=False, recovery=False, source_ref=None, triplet=False, activation=False, vue=False, vfs=False, exec_admission=False, administration=False, administration_r2=False, administration_ticket_vivant=False, administration_securite=False, administration_reactivation=False, administration_separation=False, administration_tickets=False):
-    administration_ticket_vivant = administration_ticket_vivant or administration_reactivation
+def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False, incarnation=False, horloge=False, tete=False, lecture=False, recovery=False, source_ref=None, triplet=False, activation=False, vue=False, vfs=False, exec_admission=False, administration=False, administration_r2=False, administration_ticket_vivant=False, administration_securite=False, administration_reactivation=False, administration_separation=False, administration_tickets=False, administration_race=False):
+    administration_ticket_vivant = administration_ticket_vivant or administration_reactivation or administration_race
     administration_r2 = administration_r2 or administration_ticket_vivant or administration_securite or administration_separation or administration_tickets
     administration = administration or administration_r2
     exec_admission = exec_admission or administration
@@ -80,6 +80,8 @@ def prepare(destination, policies=False, retired_reply=False, shell=False, selec
             runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_separation_profile.py"))["install"](destination)
         if administration_tickets:
             runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_tickets_profile.py"))["install"](destination)
+        if administration_race:
+            runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_race_profile.py"))["install"](destination)
         if transport:
             apply(destination, "sonde-transport.patch")
         refresh_documentation_links(destination)
@@ -119,6 +121,7 @@ if __name__=="__main__":
     parser.add_argument("destination",type=Path)
     parser.add_argument("--source-ref", help="objet Git immuable de qualification, HEAD par défaut")
     mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--administration-race",action="store_true",help="Admission Bob concurrente à la révocation Alice, QEMU uniquement")
     mode.add_argument("--administration-tickets",action="store_true",help="Expiration et consommation EXEC_TICKET R2, QEMU uniquement")
     mode.add_argument("--administration-separation",action="store_true",help="Références réelles Alice/Bob, sans délégation, QEMU uniquement")
     mode.add_argument("--administration-reactivation",action="store_true",help="Recette S9 QEMU après retrait durable")
@@ -146,4 +149,4 @@ if __name__=="__main__":
     args=parser.parse_args()
     prepare(args.destination.resolve(), args.politiques, args.reponse_retiree, args.lancement or args.selection_smp or args.bail,
             args.selection_smp, args.bail,
-            args.budget_autorite, args.transport_autorite, args.incarnation_registre, args.horloge_signataire, args.tete_independante, args.lecture_dossier, args.recuperation_2sur2, args.source_ref, args.recuperation_triplet, args.recuperation_activation, args.recuperation_vue, args.recuperation_vfs, args.admission_exec, args.administration, args.administration_r2, args.administration_ticket_vivant, args.administration_securite, args.administration_reactivation, args.administration_separation, args.administration_tickets)
+            args.budget_autorite, args.transport_autorite, args.incarnation_registre, args.horloge_signataire, args.tete_independante, args.lecture_dossier, args.recuperation_2sur2, args.source_ref, args.recuperation_triplet, args.recuperation_activation, args.recuperation_vue, args.recuperation_vfs, args.admission_exec, args.administration, args.administration_r2, args.administration_ticket_vivant, args.administration_securite, args.administration_reactivation, args.administration_separation, args.administration_tickets, args.administration_race)
