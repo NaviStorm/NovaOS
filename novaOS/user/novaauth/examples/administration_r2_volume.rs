@@ -83,7 +83,12 @@ fn main() {
         f.set_len(blocks * 4096).unwrap();
         FileImage::from_file(f, blocks, sector).unwrap()
     };
-    let mut ledger = Ledger::new(image("autorite.raw", 12));
+    // Le journal hors ligne contient une décision par bloc. Les six commandes
+    // pour deux titulaires ajoutent exactement 2 * (1 paquet + 6 portées)
+    // décisions aux dix états (genèse incluse) de la fixture avec alias.
+    // Ce disque sert à fabriquer/vérifier la fixture ; l'invité consulte
+    // exclusivement l'autorité indépendante, pas ce journal local.
+    let mut ledger = Ledger::new(image("autorite.raw", if a.get(9).is_some() {24} else {12}));
     let domain = [7; 16];
     let mut fs = provision(
         image("identites.p9", 512),
