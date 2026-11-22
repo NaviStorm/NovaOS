@@ -97,7 +97,10 @@ VERIFIER=r'''
                 b"NXR2REFQ" if login.slot==0 && !references_sent
                     && m.payload[56..].iter().all(|b|*b==0)=> {
                     let sid=m.payload[8..40].try_into().unwrap();login.inspect(sid)?;
-                    let peer_sid=peer.live.ok_or(rt::DENIED)?.0;peer.inspect(peer_sid)?;
+                    let peer_sid=peer.live.ok_or(rt::DENIED)?.0;peer.store_seq=login.store_seq;peer.relay_seq=login.relay_seq;
+                    let inspected=peer.inspect(peer_sid);
+                    login.store_seq=peer.store_seq;login.relay_seq=peer.relay_seq;
+                    inspected?;
                     let nonce:[u8;16]=random()?[..16].try_into().unwrap();
                     let mut event=[0;128];event[..8].copy_from_slice(b"NXR2REF1");
                     event[8..40].copy_from_slice(&login.route.client);
@@ -112,7 +115,10 @@ VERIFIER=r'''
                     let nonce:[u8;16]=m.payload[8..24].try_into().unwrap();
                     if reference_nonce!=Some(nonce) {return Err(rt::DENIED);}
                     let sid=login.live.ok_or(rt::DENIED)?.0;login.inspect(sid)?;
-                    let peer_sid=peer.live.ok_or(rt::DENIED)?.0;peer.inspect(peer_sid)?;
+                    let peer_sid=peer.live.ok_or(rt::DENIED)?.0;peer.store_seq=login.store_seq;peer.relay_seq=login.relay_seq;
+                    let inspected=peer.inspect(peer_sid);
+                    login.store_seq=peer.store_seq;login.relay_seq=peer.relay_seq;
+                    inspected?;
                     let mut done=[0;128];done[..8].copy_from_slice(b"NXR2REFD");
                     done[8..24].copy_from_slice(&nonce);
                     rt::send_for(peer.port(16),0x4e58523252454644,&done,25)?;
