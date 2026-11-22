@@ -105,7 +105,7 @@ Le retrait Bob invalide ses offres, tickets, handles et sous-délégations ; auc
 
 Ce budget est un **calcul statique de la proposition complémentaire**, pas une validation du raccord. Il ne couvre pas à lui seul les contrôles de capacités décrits ci-dessous. Les quatre profils doivent relever racines, endpoints, handles, processus et cadres avant/pendant/après, injecter les échecs d'allocation, vérifier `LIMIT` sans variation résiduelle, et couvrir les permutations de fermeture et de révocation. Une divergence avec ce budget ou une nécessité de modifier une garantie impose l'arrêt du raccord et un arbitrage.
 
-## Point de suspension : deux adaptations non couvertes par le câblage actuel
+## Arbitrages complémentaires — historique avant la décision duplex
 
 L'autorisation de deux routes est conservée. L'audit montre toutefois que leur
 simple duplication ne respecte pas les limites. La réalisation proposée demande
@@ -147,7 +147,7 @@ du chemin actif après copie intégrale et comparaison SHA-256. L'export R2 de l
 branche conserve donc son câblage publié précédent. Aucun contrôle historique
 n'a été désactivé ou réécrit dans les sources ordinaires.
 
-**Arbitrage ciblé demandé :** autoriser ces deux adaptations exclusivement QEMU,
+**Arbitrage alors demandé, désormais reçu :** autoriser ces deux adaptations exclusivement QEMU,
 avec la topologie chiffrée, ou conserver le raccord à deux sessions suspendu.
 Pas d'augmentation de quotas, nouveau sélecteur, droit de console partagé,
 activation ordinaire ou fusion. Les mesures et recettes des quatre profils
@@ -170,3 +170,17 @@ par `artefacts-prives.json`, avec leurs octets présents et relus. Ils ne sont
 ni publiés dans Git ni présentés comme qualifiés. Aucune campagne QEMU n’a été
 lancée ; attente de verrou et exécution QEMU nulles. Les deux réserves historiques
 restent ouvertes.
+
+## Décision reçue : isolation réciproque et collecteur externe
+
+La MOA/MOE a autorisé l'authentification duplex et la collecte distincte en QEMU.
+Sa précision suivante impose que Bob n'accède ni à la console, ni aux sorties,
+ni aux données privées d'Alice, réciproquement aux refus imposés à Alice.
+Le collecteur appartient exclusivement au banc et ne délègue aucun droit aux
+deux sessions. La proposition antérieure de collecteur dans le mode Bob est
+donc remplacée par l'[observation hôte des flux effectivement livrés](novaauth-administration-r2-collecte-isolee-v0.24.0.md).
+
+Cette observation n'ajoute aucun acteur invité ni ressource IPC à la table
+ci-dessus. Les deux conversations et le routage réel restent à qualifier ;
+les mesures R1 ne sont pas réétiquetées en preuves R2. Aucun droit de console
+n'est ajouté pour faire fonctionner un test.

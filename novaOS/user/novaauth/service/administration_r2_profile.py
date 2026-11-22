@@ -76,3 +76,8 @@ def install(root):
     if scope == 0 {''')
     edit('novaOS/kernel/build.rs', '"--features","administration-guest","--bins"',
          '"--features","administration-r2-guest","--bins"')
+
+    # Autorisation MOA/MOE : conversations duplex privées, export R2 seulement.
+    import runpy
+    runpy.run_path(str(root / "novaOS/user/novaauth/service/administration_sessions_profile.py"))["duplex"](root)
+    runpy.run_path(str(root / "novaOS/user/novaauth/service/administration_sessions_profile.py"))["output_observer"](root)
