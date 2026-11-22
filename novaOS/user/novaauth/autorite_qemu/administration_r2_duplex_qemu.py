@@ -69,12 +69,14 @@ def main():
                 if int(m[2])!=expected:raise Refus('statut natif Bob inattendu')
             serial.expect(re.escape(b'NAR2 Bob refus serveur et substitutions verifies'),40)
             serial.expect(re.escape(b'NAR2 Bob fermeture acquittee'),40)
-            rc,raw=serial.command('admin-sonde --self')
+            if b'NAR2 Bob paquets Alice et non autorise refuses statut=5 aucun enfant' not in serial.data:
+                raise Refus('refus des installations non attesté dans l’invité')
+            rc,raw=serial.command('alice-seulement --self')
             (out/'alice-consultation.bin').write_bytes(raw)
             oracle=a.genese.with_name('oracle-self.bin').read_bytes()
             streams=re.findall(rb'NXFLUX pid=([0-9]+) fd=([12]) octets=([0-9]+) prefixe=([0-9a-f]*)',raw)
             actual={int(fd):(int(n),bytes.fromhex(h.decode())) for _,fd,n,h in streams}
-            report['commandes'].append({'commande':'admin-sonde --self','statut':rc,'flux':[(int(pid),int(fd),int(n),h.decode()) for pid,fd,n,h in streams]})
+            report['commandes'].append({'commande':'alice-seulement --self','statut':rc,'flux':[(int(pid),int(fd),int(n),h.decode()) for pid,fd,n,h in streams]})
             if rc or actual!={1:(len(oracle),oracle),2:(0,b'')}:raise Refus('consultation Alice non conforme')
             rows=observer.outputs()
             streams=[]
@@ -98,6 +100,7 @@ def main():
                 else:raise Refus('sorties ou statuts natifs non conformes : '+str(shell))
             if sorted(witnessed)!=['Alice','Bob']:raise Refus('sessions manquantes ou confondues')
             report['refus_bob']=['annuaire Alice','requête ajout administratif directe','contexte forgé','métadonnées forgées','rejeu de trame']
+            report['installations_refusees_bob']=['alice-seulement','paquet-non-autorise']
             report['statuts_requetes_bob']=[0,5,5,0,5,3,3,0]
             report['sorties_exclusivement_hote']=streams
             report['enrolement_époques']=enrolled

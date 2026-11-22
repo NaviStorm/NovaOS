@@ -169,6 +169,19 @@ fn main() {
     let admitted=reg.load_package(grant,&key,machine,"admin-sonde").unwrap();
     let image=Image {installation:admitted.principal.unwrap(),digest:admitted.digest};
     reg.provision_administrative_image(head,[154;16],bob,image,Some(administration::Scope::parse(1).unwrap())).unwrap();
+    // Témoin distinct : ce paquet signé n'est jamais publié pour Bob.
+    // Argument facultatif pour conserver les fixtures historiques inchangées.
+    if let Some(path)=a.get(8) {
+        let alice_package=fs::read(path).unwrap();
+        let alice=reg.grant_attested(owner).unwrap();
+        let head=reg.publish_package(alice,[155;16],Action::Install,&key,machine,&alice_package).unwrap();
+        let alice=reg.grant_attested(owner).unwrap();
+        let loaded=reg.load_package(alice,&key,machine,"alice-seulement").unwrap();
+        let image=Image {installation:loaded.principal.unwrap(),digest:loaded.digest};
+        reg.provision_administrative_image(head,[156;16],owner,image,Some(administration::Scope::parse(1).unwrap())).unwrap();
+        let bob_grant=reg.grant_attested(bob).unwrap();
+        assert!(matches!(reg.load_package(bob_grant,&key,machine,"alice-seulement"),Err(Fault::Denied)));
+    }
     drop(reg);
     let mut identities=Vec::new();identities.extend_from_slice(&owner);identities.extend_from_slice(&bob);identities.extend_from_slice(&group);
     save(&root.join("identites-temoins.bin"),&identities);

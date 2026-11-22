@@ -14,6 +14,15 @@ pub(super) fn session()->rt::Result<()> {
     let mut login=session_auth_lab::Login::default();
     login.authenticate()?;
     mark(b"NAR2 Bob authentifie route distincte")?;
+    // Même chemin de résolution/admission que les lancements autorisés. Le
+    // premier paquet existe exclusivement dans le catalogue d'Alice ; le
+    // second n'est autorisé à aucun des deux titulaires.
+    for name in ["alice-seulement", "paquet-non-autorise"] {
+        if !matches!(login.execute(name, &[]), Err(rt::DENIED)) {
+            return Err(rt::REFUSED);
+        }
+    }
+    mark(b"NAR2 Bob paquets Alice et non autorise refuses statut=5 aucun enfant")?;
     let status=login.execute("admin-sonde", &["--r2-refus"])?;
     if status!=0 {return Err(status);}
     mark(b"NAR2 Bob consultation propre terminee")?;
