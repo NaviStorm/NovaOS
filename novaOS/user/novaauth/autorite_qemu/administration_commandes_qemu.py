@@ -23,8 +23,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
-    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur'], required=True)
+    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+    parser.add_argument('--ticket-vivant',action='store_true',help='désactivation pendant que Bob conserve un ticket non consommé')
     parser.add_argument('--reauth-issue', action='store_true',
                         help='authentification explicite neuve après publication, avant consultation de son issue')
     parser.add_argument('--recu-supprime', action='store_true',
@@ -33,10 +34,10 @@ def main():
                  'sortie', 'detenteur', 'capture', 'triplet', 'kernel'):
         parser.add_argument('--' + name, type=lambda v: Path(v).resolve(), required=True)
     a = parser.parse_args()
-    if a.reauth_issue and a.lot != 'groupe':
-        parser.error('--reauth-issue est réservé au lot groupe')
-    if a.recu_supprime and a.lot != 'groupe':
-        parser.error('--recu-supprime est réservé au lot groupe')
+    if a.ticket_vivant and a.lot!='desactivation':
+        parser.error('le témoin de ticket vivant exige le lot désactivation')
+    if (a.reauth_issue or a.recu_supprime) and a.lot not in ('groupe','desactivation'):
+        parser.error('options de publication réservées aux lots de mutation')
     a.mode = 'nominal'
     a.vue = a.activation = a.exec_admission = a.administration_r2 = True
     a.collecteur_r2 = True
@@ -69,7 +70,7 @@ def main():
     # borné à 128 et chaque parcours commence avec une nouvelle session.
     # L'essai initial de six commandes ayant saturé ce relais est conservé.
     cases = cases[:3] if a.lot == 'lectures' else cases[3:]
-    if a.lot == 'groupe':
+    if a.lot in ('groupe','desactivation'):
         intention = {}
 
         def preparation(data):
@@ -83,10 +84,14 @@ def main():
         def complete(_):
             return ('request=' + intention['operation'] + ' generation=24 state=COMPLETE\n').encode()
 
-        cases = [('groupadd equipe-r2 --prepare', preparation),
-                 (lambda: 'groupadd equipe-r2 --confirm ' + intention['confirmation'] +
+        command='groupadd equipe-r2' if a.lot=='groupe' else 'usermod --disable bob'
+        binary=command.split()[0]
+        report['portee']='création de groupe' if a.lot=='groupe' else 'désactivation de Bob après fermeture de sa session ; aucun témoin de ticket vivant'
+        if a.ticket_vivant:report['portee']='désactivation de Bob avec ticket vivant ; refus avant expiration exigé'
+        cases = [(command+' --prepare', preparation),
+                 (lambda: command+' --confirm ' + intention['confirmation'] +
                   ' --request ' + intention['operation'], complete),
-                 (lambda: 'groupadd --outcome ' + intention['operation'], complete)]
+                 (lambda: binary+' --outcome ' + intention['operation'], complete)]
     elif a.lot == 'dernier-administrateur':
         cases = [('usermod --disable alice --prepare', b'')]
     if a.commande:
@@ -130,7 +135,7 @@ def main():
             serial.expect(rb'NAEXEC registre pret puis connexion du vrai nsh', 100)
             # Ce parcours indépendant des mutations commence le bail d'Alice
             # après Bob, au lieu de consommer ses 60 secondes pendant l'attente.
-            serial.expect(rb'NAR2 Bob fermeture acquittee', 100)
+            serial.expect(rb'NAR2 Bob attente preparation Alice ticket non emis' if a.ticket_vivant else rb'NAR2 Bob fermeture acquittee', 100)
             if b'NAR2 Bob refus serveur et substitutions verifies' not in serial.data:
                 raise Refus('témoin négatif Bob absent')
             for i, (command, expected) in enumerate(cases):
@@ -151,9 +156,19 @@ def main():
                     report['nouvelle_authentification_explicite_avant_issue'] = True
                 if callable(command):
                     command = command()
+                line=command + '; echo NXR_$?__FIN' + ('; exit' if i == len(cases)-1 else '')
+                prefilled=a.ticket_vivant and i==1
+                if prefilled:
+                    # Préparer la ligne au terminal avant émission du ticket.
+                    # Aucune commande exécutée sans LF ; aucune mutation ni
+                    # prolongation de droit. Au début de l'émission du ticket, seul LF
+                    # déclenche le véritable ELF usermod de confirmation.
+                    serial.send(line.encode())
+                    serial.expect(rb'NAR2 Bob preparation terminee emission ticket',40)
                 serial.offset = len(serial.data)
                 start = serial.offset
-                serial.submit(command + '; echo NXR_$?__FIN' + ('; exit' if i == len(cases)-1 else ''))
+                if prefilled:serial.send(b'\n')
+                else:serial.submit(line)
                 status = serial.expect(rb'NXR_(\d+)__FIN\r?\n', 80)
                 if i != len(cases)-1:
                     serial.expect(rb'nsh> ', 20)
@@ -199,6 +214,16 @@ def main():
             bob = [s for s, children in by_shell.items() if list(children.values()) == [{1: bob_expected, 2: b''}]]
             if len(by_shell) != 2 or len(bob) != 1:
                 raise Refus('sorties Bob confondues ou absentes')
+            if a.ticket_vivant:
+                if b'NAR2 Bob ancien ticket statut=10 aucun enfant' not in serial.data:
+                    raise Refus('ancien ticket Bob sans refus REVOKED')
+                attempts=re.findall(rb'NAEXEC attente owner='+str(bob[0]).encode()+rb' ticket=(\d+) maintenant=(\d+) echeance=(\d+)',serial.data)
+                if len(attempts)!=2 or int(attempts[-1][1])>=int(attempts[-1][2]):
+                    raise Refus('refus Bob non démontré avant expiration')
+                children=re.findall(rb'NAEXEC enfant owner='+str(bob[0]).encode()+rb' child=(\d+)',serial.data)
+                if len(children)!=1 or int(children[0]) not in by_shell[bob[0]]:
+                    raise Refus('création Bob supplémentaire ou non identifiée')
+                report['ticket_bob']={'reference':int(attempts[-1][0]),'presentation_ticks':int(attempts[-1][1]),'expiration_ticks':int(attempts[-1][2]),'frequence_hz':250,'statut_natif':10,'enfants_supplementaires':0}
             for pid in by_shell:
                 if not re.search(rb'NAEXEC restitue pid=' + str(pid).encode() + rb' roots=0 handles=0 waits=0 pages=0 pile=0 threads=0', serial.data):
                     raise Refus('ressources de session non restituées')

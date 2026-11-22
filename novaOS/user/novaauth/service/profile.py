@@ -7,7 +7,8 @@ import runpy
 import subprocess
 import tarfile
 
-def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False, incarnation=False, horloge=False, tete=False, lecture=False, recovery=False, source_ref=None, triplet=False, activation=False, vue=False, vfs=False, exec_admission=False, administration=False, administration_r2=False):
+def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False, incarnation=False, horloge=False, tete=False, lecture=False, recovery=False, source_ref=None, triplet=False, activation=False, vue=False, vfs=False, exec_admission=False, administration=False, administration_r2=False, administration_ticket_vivant=False):
+    administration_r2 = administration_r2 or administration_ticket_vivant
     administration = administration or administration_r2
     exec_admission = exec_admission or administration
     vfs = vfs or exec_admission
@@ -68,6 +69,8 @@ def prepare(destination, policies=False, retired_reply=False, shell=False, selec
             runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_profile.py"))["install"](destination)
         if administration_r2:
             runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_r2_profile.py"))["install"](destination)
+        if administration_ticket_vivant:
+            runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_live_ticket_profile.py"))["install"](destination)
         if transport:
             apply(destination, "sonde-transport.patch")
         refresh_documentation_links(destination)
@@ -107,6 +110,7 @@ if __name__=="__main__":
     parser.add_argument("destination",type=Path)
     parser.add_argument("--source-ref", help="objet Git immuable de qualification, HEAD par défaut")
     mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--administration-ticket-vivant",action="store_true",help="Témoin R2 Bob révoqué avant expiration, QEMU uniquement")
     mode.add_argument("--administration-r2",action="store_true",help="Admissions R2 par époque, qualification uniquement")
     mode.add_argument("--administration",action="store_true",help="R1/R2 privés, qualification QEMU uniquement")
     mode.add_argument("--admission-exec",action="store_true",help="barrière privée des tickets, qualification QEMU uniquement")
@@ -129,4 +133,4 @@ if __name__=="__main__":
     args=parser.parse_args()
     prepare(args.destination.resolve(), args.politiques, args.reponse_retiree, args.lancement or args.selection_smp or args.bail,
             args.selection_smp, args.bail,
-            args.budget_autorite, args.transport_autorite, args.incarnation_registre, args.horloge_signataire, args.tete_independante, args.lecture_dossier, args.recuperation_2sur2, args.source_ref, args.recuperation_triplet, args.recuperation_activation, args.recuperation_vue, args.recuperation_vfs, args.admission_exec, args.administration, args.administration_r2)
+            args.budget_autorite, args.transport_autorite, args.incarnation_registre, args.horloge_signataire, args.tete_independante, args.lecture_dossier, args.recuperation_2sur2, args.source_ref, args.recuperation_triplet, args.recuperation_activation, args.recuperation_vue, args.recuperation_vfs, args.admission_exec, args.administration, args.administration_r2, args.administration_ticket_vivant)

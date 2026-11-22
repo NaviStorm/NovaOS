@@ -40,7 +40,7 @@ impl Port {
     }
     pub fn accepts(q: &[u8; 128]) -> bool {
         #[cfg(feature="administration-r2-guest")]
-        if &q[..8]==b"NXABND02" {return true;}
+        if matches!(&q[..8],b"NXABND02"|b"NXRTPRE2"|b"NXRTACK2") {return true;}
         matches!(&q[..8], b"NXASCP01" | b"NXACTX01" | b"NXACMD01")
     }
     #[cfg(feature="administration-r2-guest")]
@@ -50,6 +50,9 @@ impl Port {
     #[cfg(feature="administration-r2-guest")]
     pub fn request_r2(&mut self,state:&mut View,storage:&mut crate::recovery_store::Storage,
                       q:&[u8;128],answer:&mut [u8;128])->rt::Result<()> {
+        if matches!(&q[..8],b"NXRTPRE2"|b"NXRTACK2") {
+            return self.transactions.effectors(state,self.context.ok_or(rt::DENIED)?,q,answer);
+        }
         if &q[..8]==b"NXABND02" {
             let c=self.context.as_mut().ok_or(rt::DENIED)?;
             if c.binding.is_some() || q[8..40]==[0;32] || q[40..72]==[0;32] || q[72..]!=[0;56] {

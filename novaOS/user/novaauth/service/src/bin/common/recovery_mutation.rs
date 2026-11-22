@@ -62,6 +62,25 @@ impl Pending {
         result
     }
     pub fn reference(&self)->[u8;16] {self.reference}
+    #[cfg(feature="administration-r2-guest")]
+    pub fn retirement(&self)->Option<([u8;16],u64)> {
+        let m=self.administration?;
+        (m[48]==novaos_recovery::administration::DISABLE).then(||
+            (m[24..40].try_into().unwrap(),u64::from_be_bytes(m[40..48].try_into().unwrap())))
+    }
+    #[cfg(feature="administration-r2-guest")]
+    pub fn verify_retirement(&self,receipt:&[u8])->rt::Result<()> {
+        let (subject,epoch)=self.retirement().ok_or(rt::DENIED)?;
+        let h=self.plan.head();
+        if receipt.len()!=192 || receipt[16..32]!=h.domain || receipt[32..48]!=subject
+            || receipt[48..56]!=epoch.to_be_bytes() || receipt[56..72]!=h.request
+            || receipt[72..80]!=h.generation.to_be_bytes() || receipt[96..128]!=self.previous[80..112] {
+            return Err(rt::DENIED);
+        }
+        let key=VerifyingKey::from_bytes(include_bytes!(env!("NOVA_DECISION_PUB"))).map_err(|_|rt::REFUSED)?;
+        novaos_identity::administration::Retired::verify(incarnation::SERVER,&key,&receipt[..128],&receipt[128..])
+            .map_err(|_|rt::DENIED)?;Ok(())
+    }
     fn proposal(&self)->[u8;160] {
         let mut out=[0;160];out[..112].copy_from_slice(&self.previous);
         out[112..128].copy_from_slice(&self.plan.head().request);

@@ -102,7 +102,8 @@ impl Channels {
             }),
         }
     }
-    pub(super) fn poll(&mut self, login: &mut Login) {
+    pub(super) fn poll(&mut self, login: &mut Login,
+                     #[cfg(feature="administration-r2-guest")] peer:&mut Login) {
         for i in 0..2 {
             let r = rt::call(rt::IPC_NOTIFY, rt::config(5), i as u64, LIST);
             let key = if r.status == 0 { r.value } else { 0 };
@@ -180,6 +181,22 @@ impl Channels {
                     binding[40..72].copy_from_slice(&login.route.client);
                     exchange(login,&binding)?;
                 }
+                #[cfg(feature="administration-r2-guest")]
+                if matches!(admin_command::decode(request),Ok(admin_command::Command::Confirm{..})) {
+                    let mut pre:[u8;128]=request.try_into().unwrap();
+                    pre[..8].copy_from_slice(b"NXRTPRE2");
+                    let selected=exchange(login,&pre)?;
+                    if selected[8..24]!=[0;16] {
+                        if selected[48..]!=[0;80] || selected[32..48]!=request[16..32] {
+                            return Err(rt::DENIED);
+                        }
+                        let subject=selected[8..24].try_into().unwrap();
+                        let epoch=number(&selected[24..]);
+                        retire_subject(login,peer,subject,epoch)?;
+                        pre[..8].copy_from_slice(b"NXRTACK2");
+                        if exchange(login,&pre)?!=selected {return Err(rt::DENIED);}
+                    }
+                }
                 answer = exchange(login, request.try_into().unwrap())?;
                 Ok(())
             })();
@@ -199,6 +216,39 @@ impl Channels {
             }
         }
     }
+}
+
+#[cfg(feature="administration-r2-guest")]
+fn retire_subject(login:&mut Login,peer:&mut Login,subject:[u8;16],epoch:u64)->rt::Result<()> {
+    if subject==[0;16] || epoch==0 {return Err(rt::DENIED);}
+    // Le registre désigne le sujet ; le client ne choisit aucune route. La table
+    // commune empêche aussi l'ouverture d'une preuve vérifiée avant la clôture.
+    login.sessions.borrow_mut().retire(DOMAIN,subject,epoch).map_err(|_|rt::REFUSED)?;
+    let mut store_seq=login.store_seq;
+    let mut relay_seq=login.relay_seq;
+    fn retire_route(actor:&mut Login,subject:[u8;16],epoch:u64,
+                    store_seq:&mut u64,relay_seq:&mut u64)->rt::Result<()> {
+        if let Some((holder,old_epoch,sid))=actor.retirement_binding {
+            if holder==subject && old_epoch<=epoch {
+                actor.store_seq=*store_seq;actor.relay_seq=*relay_seq;
+                let closed=actor.close(sid);
+                *store_seq=actor.store_seq;*relay_seq=actor.relay_seq;
+                closed?;
+                // CLOSED/REVOKED d'un transport n'est pas un acquittement de
+                // l'effecteur. Seul NXRSTOP1 effectivement accepté fait foi.
+                if actor.kernel_retired!=Some(sid) || actor.last_closed!=Some(sid) {
+                    return Err(22);
+                }
+            }
+        }
+        Ok(())
+    }
+    let result=retire_route(login,subject,epoch,&mut store_seq,&mut relay_seq)
+        .and_then(|()|retire_route(peer,subject,epoch,&mut store_seq,&mut relay_seq));
+    login.store_seq=store_seq;login.relay_seq=relay_seq;
+    peer.store_seq=store_seq;peer.relay_seq=relay_seq;
+    result?;
+    marker(b"NAR2 retrait local sujet verificateur lanceur VFS acquittes");Ok(())
 }
 
 /// Diagnostic borné, une ligne sur la seule tentative explicite de reconnexion.
