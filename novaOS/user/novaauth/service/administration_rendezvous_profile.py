@@ -1,4 +1,4 @@
-"""Rendez-vous borné : la confirmation résidente précède l'émission du ticket Bob.
+"""Rendez-vous borné : la confirmation résidente précède l'authentification Bob.
 Aucune confirmation, capacité ou mutation n'est fabriquée par ce rendez-vous.
 """
 from pathlib import Path
@@ -30,16 +30,6 @@ def install(root):
     bob='novaOS/user/novaauth/service/administration_bob_shell.rs'
     edit(bob,'    mark(b"NAR2 Bob ticket vivant non consomme")?;',
          '    mark(b"NAR2 Bob ticket vivant non consomme")?;\n    login.authenticate()?; // session existante : NSHLIVE seulement, aucun nouveau bail')
-    edit(bob,'    let key=login.ticket(', '    probe(30,0,0,0);\n    let key=login.ticket(')
-    edit(bob,'    login.authenticate()?; // session existante', '    probe(31,0,0,0);\n    login.authenticate()?; // session existante')
-    edit(bob,'    let mut retired=false;', '    probe(32,0,0,0);\n    let mut retired=false;')
-    edit(channel,'                let current = login.inspected_binding(sid)?;',
-        '                let confirming=matches!(admin_command::decode(request),Ok(admin_command::Command::Confirm{..}));\n                if confirming {r2_probe(35); }\n                let current = login.inspected_binding(sid)?;\n                if confirming {r2_probe(36); }')
-    p=root/channel;s=p.read_text()
-    s=s.replace('else {login.inspected_binding(sid).map(|_|())};', 'else {r2_probe(33);let r=login.inspected_binding(sid).map(|_|());r2_probe(34);r};')
-    for n in range(30,37):
-        s=s.replace('_=>b"R2PROBE s=22 n=0"',str(n)+'=>b"R2PROBE s='+str(n)+' n=0",_=>b"R2PROBE s=22 n=0"')
-    p.write_text(s)
     import runpy
     runpy.run_path(str(root/'novaOS/user/novaauth/service/administration_tls_trace.py'))['install'](root)
 

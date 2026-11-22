@@ -174,6 +174,11 @@ impl Reopener {
         Ok(())
     }
 }
+// Option explicite du banc R2 ; les deux adresses volatiles et les bornes
+// restent celles du contrat. La cellule reste limitée à 448 octets utiles.
+fn transport_size(n:usize,sector:usize)->bool {
+    n==sector || (cfg!(r2_page_512) && sector==512 && n==PAGE)
+}
 fn serve(disk: File, mut peer: UnixStream, relay: UnixStream, sector: usize,
          mut reopen:Option<Reopener>) -> io::Result<()> {
     let info = disk.metadata()?;
@@ -232,12 +237,12 @@ fn serve(disk: File, mut peer: UnixStream, relay: UnixStream, sector: usize,
                 };
                 0
             }
-        } else if cmd == 1 && offset == VOLUME && n == sector {
+        } else if cmd == 1 && offset == VOLUME && transport_size(n,sector) {
             if let Some(r)=reopen.as_mut() {r.open(&mut link,&scratch[..n])?;}
             link.emit(&scratch[..n]);
             0
-        } else if cmd == 0 && offset == VOLUME + PAGE as u64 && n == sector {
-            data = link.receive(sector);
+        } else if cmd == 0 && offset == VOLUME + PAGE as u64 && transport_size(n,sector) {
+            data = link.receive(n);
             0
         } else {
             22

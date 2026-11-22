@@ -58,6 +58,7 @@ def install(root):
     runpy.run_path(str(Path(root) / 'novaOS/user/novaauth/service/administration_refusal_trace.py'))['install'](root)
     runpy.run_path(str(Path(root) / 'novaOS/user/novaauth/service/administration_rendezvous_profile.py'))['install'](root)
     runpy.run_path(str(Path(root) / 'novaOS/user/novaauth/service/administration_status_profile.py'))['install'](root)
+    runpy.run_path(str(Path(root) / 'novaOS/user/novaauth/service/administration_transport_512_profile.py'))['install'](root)
 
 INITIAL = r'''
     mark(b"NAR2 Bob attente declenchement authentification")?;

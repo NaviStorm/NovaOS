@@ -216,3 +216,43 @@ fn reouverture_explicite_vide_sans_reprise_ancienne_route() {
     assert_eq!(META,56);
     assert!(EXTRA+size_of::<Reopener>()<=256);
 }
+
+
+#[test]
+fn page512_nbd_bornes_et_volume_inchange() {
+    let path=std::path::PathBuf::from(std::env::var_os("NOVAOS_TMPDIR").unwrap())
+        .join(format!("r2-page512-nbd-{}",std::process::id()));
+    let file=std::fs::OpenOptions::new().create_new(true).read(true).write(true).open(&path).unwrap();
+    file.set_len(VOLUME).unwrap();file.write_all_at(b"temoin P9 intact",0).unwrap();
+    let verifier=file.try_clone().unwrap();
+    let (server,mut client)=UnixStream::pair().unwrap();
+    let (relay,mut authority)=UnixStream::pair().unwrap();
+    authority.set_read_timeout(Some(std::time::Duration::from_secs(1))).unwrap();
+    let join=std::thread::spawn(move||serve(file,server,relay,512,None).unwrap());
+    let mut greeting=[0;152];client.read_exact(&mut greeting).unwrap();
+    fn request(c:&mut UnixStream,op:u16,at:u64,n:usize,body:&[u8])->(u32,Vec<u8>) {
+        let mut h=[0;28];h[..4].copy_from_slice(&0x25609513u32.to_be_bytes());
+        h[6..8].copy_from_slice(&op.to_be_bytes());h[16..24].copy_from_slice(&at.to_be_bytes());h[24..].copy_from_slice(&(n as u32).to_be_bytes());
+        c.write_all(&h).unwrap();if op==1 {assert_eq!(body.len(),n);c.write_all(body).unwrap();}
+        let mut r=[0;16];c.read_exact(&mut r).unwrap();let status=u32::from_be_bytes(r[4..8].try_into().unwrap());
+        let mut out=vec![0;if op==0 && status==0 {n} else {0}];c.read_exact(&mut out).unwrap();(status,out)
+    }
+    let expected=if cfg!(r2_page_512) {0} else {22};
+    assert_eq!(request(&mut client,1,VOLUME,PAGE,&sector(PAGE,1,0,OPEN,&[])).0,expected);
+    if cfg!(r2_page_512) {
+        assert_eq!(request(&mut client,1,VOLUME,PAGE,&sector(PAGE,2,0,DATA,b"opaque")).0,0);
+        let mut seen=[0;6];authority.read_exact(&mut seen).unwrap();assert_eq!(&seen,b"opaque");
+        authority.write_all(b"reponse").unwrap();
+        let (status,out)=request(&mut client,0,VOLUME+PAGE as u64,PAGE,&[]);assert_eq!(status,0);
+        assert_eq!(&out[64..71],b"reponse");assert!(out[512..].iter().all(|&x|x==0));
+        let mut bad=sector(PAGE,3,1,ACK,&[]);bad[4095]=1;
+        assert_eq!(request(&mut client,1,VOLUME,PAGE,&bad).0,0);
+        let (_,out)=request(&mut client,0,VOLUME+PAGE as u64,PAGE,&[]);assert_eq!(decode_sector(&out).unwrap().kind,BROKEN);
+    }
+    for (op,at,n) in [(0,VOLUME,PAGE),(1,VOLUME+PAGE as u64,PAGE),(0,VOLUME+PAGE as u64,1024),(1,VOLUME,1024),(1,VOLUME+512,PAGE),(0,VOLUME+8192,PAGE)] {
+        assert_eq!(request(&mut client,op,at,n,&vec![0;n]).0,22);
+    }
+    drop(client);join.join().unwrap();
+    let mut bytes=[0;16];verifier.read_exact_at(&mut bytes,0).unwrap();assert_eq!(&bytes,b"temoin P9 intact");
+    assert_eq!(verifier.metadata().unwrap().len(),VOLUME);drop(verifier);std::fs::remove_file(path).unwrap();
+}
