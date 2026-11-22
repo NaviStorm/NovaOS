@@ -160,3 +160,23 @@ reproductibilité entre environnements restent ouvertes. Le raccord à deux rout
 le mode Bob sans console, les mutations R2 et leurs effecteurs restent à terminer
 avant la campagne obligatoire. Aucun besoin d'élargir les droits de collecte n'a
 été établi. Aucune fusion, aucun tag et aucune activation ordinaire.
+
+## Références et conservation des preuves
+
+Code : `36f013703059905442fd5a67baaa2c261ff8f3fb`.
+Les 527 fichiers Rust comparés dans les composants compilés sont identiques
+entre l'export préparatoire utilisé pour les deux constructions et l'export
+recréé depuis ce commit. Cela établit l'identité des sources exportées comparées,
+pas la reproductibilité de compilations entre environnements.
+
+Archive durable : `/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/collecte-exclusive-01`.
+
+Manifeste : `SHA256-collecte-exclusive-01.txt`, **36 fichiers relus** ; SHA-256 :
+`fc1bea6681582589b41d60891186c91a1b906a96d4a043624be7903682c011ca`.
+Les deux binaires exacts restent dans l'archive privée durable indiquée par
+`artefacts-prives.json`, avec correspondance SHA-256 vérifiée ; ils ne sont pas
+publiés dans Git. Les traces de l'échec de préparation ABI sont conservées.
+
+Aucun verrou QEMU acquis, aucune attente de verrou ni exécution QEMU à compter
+pour cette étape. La matrice des quatre profils reste non exécutée pour la
+nouvelle collecte. Les preuves et qualifications antérieures sont conservées.
