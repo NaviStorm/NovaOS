@@ -13,10 +13,8 @@ def install(root):
     p=root/'components/shell/session_auth_lab.rs';s=p.read_text()
     start=s.index('    pub(super) fn ticket_probe(');end=s.index('    pub(super) fn exercise_relay',start)
     part=s[start:end]
-    old='let key = self.ticket(name, rest, 5000, 0, 0)?;'
+    old='let key = self.ticket(name, rest, 5000, if matches!(*mode,"recu"|"concurrent") {1}else{0}, 0)?;'
     if part.count(old)!=1:raise ValueError('ancrage rôle S6')
     part=part.replace(old,'let key = self.ticket(name, rest, 5000, 1, 0)?;')
-    old='            let (fault, code) = nova_cli::process::wait(right)?;'
-    if part.count(old)!=1:raise ValueError('ancrage drainage S6')
-    part=part.replace(old,'            let rendered=self.drain(&[pid],None);\n'+old+'\n            rendered?;')
+    if part.count('self.drain(&[pid],None)?;')!=1:raise ValueError('drainage existant S6 absent')
     p.write_text(s[:start]+part+s[end:])
