@@ -1,8 +1,9 @@
-"""Six ELF administratifs réels depuis nsh ; consultations et versions seulement.
+"""ELF administratifs réels depuis nsh ; parcours indépendants et bornés.
 
 Le lanceur externe détient le verrou commun QEMU. Bob conserve son parcours de
 refus historique. Alice commence ensuite une nouvelle authentification initiale,
-sans renouvellement implicite. Ce banc ne qualifie aucune mutation administrative.
+sans renouvellement implicite. Le lot groupe exerce préparation, confirmation
+explicite et consultation du même reçu, sans répétition de mutation.
 """
 import argparse
 import copy
@@ -22,7 +23,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
-    parser.add_argument('--lot', choices=['lectures', 'versions'], required=True)
+    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
     for name in ('iso', 'registre', 'genese', 'cles', 'decision', 'secrets',
                  'sortie', 'detenteur', 'capture', 'triplet', 'kernel'):
@@ -39,7 +40,8 @@ def main():
     a.secrets.mkdir(parents=True, exist_ok=False, mode=0o700)
     root = a.sortie
     report = {'succes': False, 'architecture': a.arch, 'secteur': a.sector,
-              'portee': 'consultations ou versions des ELF de mutation ; aucune mutation', 'lot': a.lot,
+              'portee': 'création de groupe' if a.lot == 'groupe' else
+                        'consultations ou versions des ELF de mutation ; aucune mutation', 'lot': a.lot,
               'commandes': []}
     raw = a.triplet.read_bytes()
     size = int.from_bytes(raw[152:156], 'big')
@@ -59,8 +61,26 @@ def main():
     # borné à 128 et chaque parcours commence avec une nouvelle session.
     # L'essai initial de six commandes ayant saturé ce relais est conservé.
     cases = cases[:3] if a.lot == 'lectures' else cases[3:]
+    if a.lot == 'groupe':
+        intention = {}
+
+        def preparation(data):
+            match = re.fullmatch(rb'request=([0-9a-f]{32}) confirmation=([0-9a-f]{64}) state=PREPARED\n', data)
+            if not match:
+                raise Refus('préparation non canonique')
+            intention.update(operation=match[1].decode(), confirmation=match[2].decode())
+            report['intention'] = dict(intention)
+            return data
+
+        def complete(_):
+            return ('request=' + intention['operation'] + ' generation=24 state=COMPLETE\n').encode()
+
+        cases = [('groupadd equipe-r2 --prepare', preparation),
+                 (lambda: 'groupadd equipe-r2 --confirm ' + intention['confirmation'] +
+                  ' --request ' + intention['operation'], complete),
+                 (lambda: 'groupadd --outcome ' + intention['operation'], complete)]
     if a.commande:
-        cases = [(cmd, expected) for cmd, expected in cases if cmd.split()[0] == a.commande]
+        cases = [(cmd, expected) for cmd, expected in cases if isinstance(cmd, str) and cmd.split()[0] == a.commande]
         if not cases:
             parser.error('commande absente du lot demandé')
     with ExitStack() as stack:
@@ -97,6 +117,8 @@ def main():
             if b'NAR2 Bob refus serveur et substitutions verifies' not in serial.data:
                 raise Refus('témoin négatif Bob absent')
             for i, (command, expected) in enumerate(cases):
+                if callable(command):
+                    command = command()
                 serial.offset = len(serial.data)
                 start = serial.offset
                 serial.submit(command + '; echo NXR_$?__FIN' + ('; exit' if i == len(cases)-1 else ''))
@@ -118,6 +140,8 @@ def main():
                 streams = {b.fd: data for b, _, data in rows}
                 for fd, data in streams.items():
                     (out / f'commande-{i:02}-fd{fd}.bin').write_bytes(data)
+                if callable(expected):
+                    expected = expected(streams.get(1, b''))
                 if streams != {1: expected, 2: b''}:
                     raise Refus('octets non conformes : ' + command)
                 item['stdout_octets'] = len(expected)
