@@ -202,6 +202,21 @@ fn main() {
         let bob_grant=reg.grant_attested(bob).unwrap();
         assert!(matches!(reg.load_package(bob_grant,&key,machine,"alice-seulement"),Err(Fault::Denied)));
     }
+    // Paquet facultatif des six commandes : la fixture historique sans cet
+    // argument reste identique. Seul le provisionneur accorde les portées.
+    if let Some(path)=a.get(9) {
+        let package=fs::read(path).unwrap();
+        for (slot,recipient,bits) in [(0,owner,15),(1,bob,1)] {
+            let administrator=reg.grant_attested(owner).unwrap();
+            let mut head=reg.provision_package_for_user(administrator,recipient,[160+slot*8;16],&key,machine,&package).unwrap();
+            for (i,name) in ["whoami","id","groups","useradd","usermod","groupadd"].iter().enumerate() {
+                let grant=reg.grant_attested(recipient).unwrap();
+                let loaded=reg.load_package(grant,&key,machine,name).unwrap();
+                let image=Image {installation:loaded.principal.unwrap(),digest:loaded.digest};
+                head=reg.provision_administrative_image(head,[161+slot*8+i as u8;16],recipient,image,Some(administration::Scope::parse(bits).unwrap())).unwrap();
+            }
+        }
+    }
     drop(reg);
     let mut identities=Vec::new();identities.extend_from_slice(&owner);identities.extend_from_slice(&bob);identities.extend_from_slice(&group);
     save(&root.join("identites-temoins.bin"),&identities);

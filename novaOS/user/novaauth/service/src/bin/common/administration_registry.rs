@@ -209,6 +209,11 @@ impl Port {
                         answer[8..24].copy_from_slice(id);
                     }
                 };
+                // Les consultations successives d'id/groups doivent désigner
+                // la même tête vérifiée. Une valeur réservée nulle ne détecte
+                // pas un changement entre identité et appartenances.
+                #[cfg(feature="administration-r2-guest")]
+                answer[80..112].copy_from_slice(&state.head().digest);
                 Ok(())
             }
             _ => {
