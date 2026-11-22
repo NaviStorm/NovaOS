@@ -17,6 +17,7 @@ from exec_deux_vm import route, signature
 from reprise import Refus, transaction
 import admission_exec as execs
 from administration_epochs import Epochs, initialize
+from administration_events import Events
 
 
 def main():
@@ -133,11 +134,16 @@ def main():
             observer = Observer(control, a.arch, a.kernel, out)
             stack.callback(observer.close)
             serial.expect(rb'NAEXEC registre pret puis connexion du vrai nsh', 100)
-            # Ce parcours indépendant des mutations commence le bail d'Alice
-            # après Bob, au lieu de consommer ses 60 secondes pendant l'attente.
-            serial.expect(rb'NAR2 Bob attente preparation Alice ticket non emis' if a.ticket_vivant else rb'NAR2 Bob fermeture acquittee', 100)
-            if b'NAR2 Bob refus serveur et substitutions verifies' not in serial.data:
-                raise Refus('témoin négatif Bob absent')
+            events = Events(serial, serial.offset)
+            report['evenements'] = events.records
+            # Ticket vivant : préparer Alice dès que le lanceur est prêt,
+            # pendant les vérifications préalables de Bob. Attendre leur fin
+            # ici consommait son bail avant même la préparation d'Alice.
+            # Les autres lots conservent leur ordonnancement historique.
+            if not a.ticket_vivant:
+                serial.expect(rb'NAR2 Bob fermeture acquittee', 100)
+                if b'NAR2 Bob refus serveur et substitutions verifies' not in serial.data:
+                    raise Refus('témoin négatif Bob absent')
             for i, (command, expected) in enumerate(cases):
                 expected_status = 3 if a.lot == 'dernier-administrateur' else 0
                 expected_stderr = b''
@@ -156,25 +162,52 @@ def main():
                     report['nouvelle_authentification_explicite_avant_issue'] = True
                 if callable(command):
                     command = command()
-                line=command + '; echo NXR_$?__FIN' + ('; exit' if i == len(cases)-1 else '')
+                # Identité d'étape distincte ; aucune réponse d'une commande
+                # précédente ne peut terminer la commande courante.
+                step = 'NXR2_' + str(i) + '_'
+                line=command + '; echo ' + step + '$?__FIN' + ('; exit' if i == len(cases)-1 else '')
                 prefilled=a.ticket_vivant and i==1
                 if prefilled:
                     # Préparer la ligne au terminal avant émission du ticket.
                     # Aucune commande exécutée sans LF ; aucune mutation ni
                     # prolongation de droit. Au début de l'émission du ticket, seul LF
                     # déclenche le véritable ELF usermod de confirmation.
+                    bob_pid = events.actor(b'NAR2 Bob authentifie route distincte')
+                    alice_pid = report['commandes'][0]['shell']
+                    with observer.guard:
+                        routes = list(observer.routes)
+                    selected = {r[0]: r for r in routes}
+                    if len(routes) != 2 or set(selected) != {alice_pid, bob_pid}:
+                        raise Refus('deux routes authentifiées distinctes absentes')
+                    report['sessions_temoin'] = {
+                        name: {'pid': pid, 'instance': selected[pid][1].hex(),
+                               'session': selected[pid][2].hex()}
+                        for name, pid in [('Alice', alice_pid), ('Bob', bob_pid)]}
+                    events.expect(bob_pid, b'NAR2 Bob refus serveur et substitutions verifies', 40)
+                    events.expect(bob_pid, b'NAR2 Bob attente preparation Alice ticket non emis', 40)
                     serial.send(line.encode())
-                    serial.expect(rb'NAR2 Bob preparation terminee emission ticket',40)
+                    events.expect(bob_pid, b'NAR2 Bob preparation terminee emission ticket', 40)
                 serial.offset = len(serial.data)
                 start = serial.offset
                 if prefilled:serial.send(b'\n')
                 else:serial.submit(line)
-                status = serial.expect(rb'NXR_(\d+)__FIN\r?\n', 80)
+                status = serial.expect(re.escape(step.encode()) + rb'(\d+)__FIN\r?\n', 80)
                 if i != len(cases)-1:
                     serial.expect(rb'nsh> ', 20)
                 output = bytes(serial.data[start:serial.offset])
                 (out / f'commande-{i:02}.bin').write_bytes(output)
                 pids = set(int(p) for p in re.findall(rb'NXFLUX pid=(\d+) fd=', output))
+                if a.ticket_vivant:
+                    # Identifier les enfants par les liaisons noyau collectées,
+                    # indépendamment des sorties Bob reçues en parallèle.
+                    bob_pid = events.actor(b'NAR2 Bob authentifie route distincte')
+                    with observer.guard:
+                        alice_routes = [r for r in observer.routes if r[0] != bob_pid]
+                    if len(alice_routes) != 1:
+                        raise Refus('route Alice absente ou ambiguë')
+                    alice_pid = alice_routes[0][0]
+                    pids &= {binding.child for binding, _, _ in observer.outputs()
+                             if binding.shell == alice_pid}
                 item = {'commande': command, 'statut_shell': int(status[1]),
                         'statut_attendu': expected_status, 'pid': sorted(pids)}
                 report['commandes'].append(item)
