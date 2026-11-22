@@ -61,7 +61,10 @@ def main():
             if known:serial.offset=known.end()
             else:serial.expect(marker,40)
             level=b'EL0' if a.arch=='aarch64' else b'Ring3'
-            serial.expect(re.escape(b'NAR2 Bob refus serveur et substitutions verifies'),40)
+            # Observation hôte bornée : huit échanges du même ELF. Ne pas
+            # interrompre l'invité avant son résultat natif, notamment en P9/4096.
+            # Aucune échéance TLS, IPC ou de session invitée n'est modifiée.
+            serial.expect(re.escape(b'NAR2 Bob refus serveur et substitutions verifies'),80)
             serial.expect(re.escape(b'NAR2 Bob fermeture acquittee'),40)
             if b'NAR2 Bob paquets Alice et non autorise refuses statut=5 aucun enfant' not in serial.data:
                 raise Refus('refus des installations non attesté dans l’invité')
