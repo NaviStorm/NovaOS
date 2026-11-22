@@ -396,3 +396,71 @@ fn resolution_isolee_lie_titulaire_installation_tete_et_architecture() {
         assert_ne!(v.head(),revoked.head());
     }}
 }
+
+#[cfg(feature = "administration-lab")]
+#[test]
+fn provisionnement_explicite_bob_sans_promotion_ni_heritage() {
+    use novaos_identity::{recuperation::Triplet, recuperation_view::View};
+    let signer = SigningKey::from_bytes(&[3; 32]);
+    let key = signer.verifying_key();
+    for sector in [512, 4096] { for machine in [Machine::Aarch64, Machine::X86_64] {
+        let mut authority = Ledger::new(SimDevice::new(32, sector).unwrap());
+        let domain = [7; 16];
+        let mut disk = provision(SimDevice::new(512, sector).unwrap(), Ids { fs:[8;16], lv:[9;16] }, domain, [4;16], &mut authority).unwrap();
+        let permit = Enrollment::from_provisioner(&mut authority).unwrap();
+        let mut r = Registry::open(&mut disk, &mut authority, domain).unwrap();
+        let enrolled = r.enroll(&permit,[1;16],"alice",[2;16],"users").unwrap();
+        let alice = created_user(&enrolled);
+        let grant = r.grant_attested(alice).unwrap();
+        let bob = created_user(&r.mutate(grant,[3;16],Change::Create{name:"bob",credential:[4;16],group:created_group(&enrolled)}).unwrap());
+        let bytes = elf(machine,17);
+        let only_alice = fixture(&signer,machine,1,&[("alice-seule",&bytes)]);
+        let for_bob = fixture(&signer,machine,1,&[("bob-seul",&bytes)]);
+        let grant = r.grant_attested(alice).unwrap();
+        r.publish_package(grant,[5;16],Action::Install,&key,machine,&only_alice).unwrap();
+        let ga = r.grant_attested(alice).unwrap();
+        let gb = r.grant_attested(bob).unwrap();
+        let before = ga.generation_digest();
+        // Un nom ou les octets d'Alice ne suffisent pas ; Bob n'est pas provisionneur.
+        assert!(matches!(r.load_package(gb,&key,machine,"alice-seule"),Err(Fault::Denied)));
+        assert!(matches!(r.publish_package(gb,[6;16],Action::Install,&key,machine,&for_bob),Err(Fault::Denied)));
+        for target in [alice,bob] {
+            assert!(matches!(r.provision_package_for_user(gb,target,[6;16],&key,machine,&for_bob),Err(Fault::Denied)));
+        }
+        assert!(matches!(r.provision_package_for_user(ga,[99;16],[6;16],&key,machine,&for_bob),Err(Fault::Denied)));
+        let foreign = SigningKey::from_bytes(&[8;32]);
+        let unauthorized = fixture(&foreign,machine,1,&[("bob-seul",&bytes)]);
+        assert!(r.provision_package_for_user(ga,bob,[6;16],&key,machine,&unauthorized).is_err());
+        let mut altered = for_bob.clone();
+        let sig = 4 + u32::from_le_bytes(altered[..4].try_into().unwrap()) as usize;
+        altered[sig] ^= 1;
+        assert!(r.provision_package_for_user(ga,bob,[6;16],&key,machine,&altered).is_err());
+        assert_eq!(r.grant_attested(alice).unwrap().generation_digest(),before);
+        assert!(r.outcome([6;16]).unwrap().is_none());
+        r.provision_package_for_user(ga,bob,[6;16],&key,machine,&for_bob).unwrap();
+        // Une répétition avec un destinataire différent ne remplace pas la décision.
+        let ga = r.grant_attested(alice).unwrap();
+        let gb = r.grant_attested(bob).unwrap();
+        assert!(matches!(r.provision_package_for_user(ga,alice,[6;16],&key,machine,&for_bob),Err(Fault::Conflict)));
+        assert_eq!(r.load_package(gb,&key,machine,"bob-seul").unwrap().bytes,bytes);
+        assert!(matches!(r.load_package(ga,&key,machine,"bob-seul"),Err(Fault::Denied)));
+        assert!(matches!(r.load_package(gb,&key,machine,"alice-seule"),Err(Fault::Denied)));
+        assert!(matches!(r.publish_package(gb,[7;16],Action::Install,&key,machine,&for_bob),Err(Fault::Denied)));
+        drop(r);
+        let triplet = Triplet::capture(&disk,&authority,domain).unwrap();
+        let view = View::read(*triplet.head(),triplet.parts().each_ref().map(|p|p.len() as u32),|i,o,b| {
+            let p=triplet.parts()[i];let o=o as usize;let n=b.len().min(p.len()-o);b[..n].copy_from_slice(&p[o..o+n]);Ok(n)
+        }).unwrap();
+        let a = view.resolve_verified_factor([2;16]).unwrap();
+        let b = view.resolve_verified_factor([4;16]).unwrap();
+        let ai=view.user_info(a,None).unwrap(); let bi=view.user_info(b,None).unwrap();
+        assert!(ai.administrator); assert!(!bi.administrator);
+        assert_eq!(ai.groups,bi.groups); // aucun nouveau groupe attribué au destinataire
+        let ar=view.executable(a,&key,machine,"alice-seule").unwrap();
+        let br=view.executable(b,&key,machine,"bob-seul").unwrap();
+        assert_eq!(&ar[40..56],&alice);assert_eq!(&br[40..56],&bob);
+        assert_ne!(&ar[56..72],&br[56..72]);
+        assert!(matches!(view.executable(b,&key,machine,"alice-seule"),Err(Fault::Denied)));
+        assert!(matches!(view.executable(a,&key,machine,"bob-seul"),Err(Fault::Denied)));
+    }}
+}

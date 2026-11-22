@@ -310,6 +310,7 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
         vm_args[vm_args.index("-drive")+1]="if=none,id=d,format=raw,file.driver=nbd,file.server.type=unix,file.server.path=port.sock,cache=none,werror=report,rerror=report"
         if getattr(args,"exec_admission",False):
             vm_args += ["-gdb","unix:gdb.sock,server=on,wait=off"]
+            if getattr(args,"collecteur_r2",False):vm_args += ["-S"]
         if legacy is not None:
             # Ancien support local restaurable ; jamais utilisé comme décideur.
             vm_args += ["-drive",f"if=none,id=legacy,format=raw,file={legacy},cache=none",

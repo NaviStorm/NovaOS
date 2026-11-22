@@ -225,3 +225,23 @@ fn saturated_retirement_history_fails_closed_without_eviction() {
         .unwrap();
     assert!(s.open(proof, b, 12, 100).is_err());
 }
+
+#[test]
+fn deux_verificateurs_partagent_des_sessions_uniques_et_des_routes_isolees() {
+    let (ka,a,ra)=setup();
+    let kb=SigningKey::from_bytes(&[12;32]);
+    let b=EpochBinding{binding:Binding{subject:[10;16],reference:Possession(kb.verifying_key()).reference(a.domain),..a.binding},..a};
+    let rb=Route{client:[5;32],..ra};
+    let mut va=EpochVerifier::new();let mut vb=EpochVerifier::new();let mut sessions=EpochSessions::new();
+    // Même issuer, request, horloge et premier compteur de défi de chaque route.
+    let sa=open(&mut va,&mut sessions,&ka,a,ra,10);
+    let sb=open(&mut vb,&mut sessions,&kb,b,rb,10);
+    assert_ne!(sa,sb);
+    assert!(sessions.inspect(sa,rb,Some(a),11).is_err());
+    assert!(sessions.inspect(sb,ra,Some(b),11).is_err());
+    assert_eq!(sessions.inspect(sa,ra,Some(a),11),Ok(a.subject));
+    assert_eq!(sessions.inspect(sb,rb,Some(b),11),Ok(b.subject));
+    sessions.disconnect(rb);
+    assert!(sessions.inspect(sb,rb,Some(b),12).is_err());
+    assert_eq!(sessions.inspect(sa,ra,Some(a),12),Ok(a.subject));
+}

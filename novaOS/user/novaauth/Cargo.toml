@@ -50,3 +50,7 @@ required-features = ["recuperation-lab"]
 [[example]]
 name = "administration_volume"
 required-features = ["administration-lab"]
+
+[[example]]
+name = "administration_r2_volume"
+required-features = ["administration-lab"]

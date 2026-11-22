@@ -92,6 +92,9 @@ def administrator_worker(port,root):
     port.send(("public",public(key)))
     bounds=None
     approved=None
+    approved_context=None
+    initial_subjects=None
+    enrollment_packet=None
     while True:
         command,args=port.recv()
         if command=="stop":
@@ -110,6 +113,31 @@ def administrator_worker(port,root):
                 if len(packet)!=272 or packet[8:40]!=server+domain or packet[48:240]!=b"".join(keys):
                     raise Refus("clés d'enrôlement non approuvées")
                 result=key.sign(ENROLL+packet)
+            elif command=="r2-subjects" and bounds is not None:
+                # Provisionnement explicite du banc, jamais exposé au RPC invité.
+                subjects,=args
+                if approved is not None or initial_subjects is not None:
+                    raise Refus("table initiale R2 déjà fixée")
+                if not 1<=len(subjects)<=64 or len({s for s,_ in subjects})!=len(subjects):
+                    raise Refus("table R2 hors borne")
+                if any(len(s)!=16 or not any(s) or not 0<e<=bounds[5] for s,e in subjects):
+                    raise Refus("sujet ou époque R2 invalide")
+                initial_subjects=tuple(subjects);result=None
+            elif command=="r2-enroll" and approved_context is not None and initial_subjects is not None:
+                from administration_epochs import Epochs, ENROLL as R2_ENROLL
+                state,=args
+                c=approved_context
+                if (state.server,state.domain,state.instance,state.epoch,state.generation,state.head)!=(c.server,c.domain,c.new,c.route_epoch+1,c.generation,c.head):
+                    raise Refus("enrôlement R2 hors incarnation approuvée")
+                packet=Epochs.enrollment(state,initial_subjects)
+                if enrollment_packet is not None and enrollment_packet!=packet:
+                    raise Refus("substitution de table R2")
+                if enrollment_packet is None:
+                    proof=key.sign(R2_ENROLL+packet)
+                    with (root/"enrolement-r2.bin").open("xb") as f:
+                        f.write(packet+proof);f.flush();os.fsync(f.fileno())
+                    enrollment_packet=packet
+                result=key.sign(R2_ENROLL+packet)  # même résultat, aucune nouvelle autorisation
             elif command=="exec-route" and bounds is not None:
                 # Contrôle administratif hors invité, jamais accessible par TLS.
                 from admission_exec import ENROLL as EXEC_ENROLL, WITHDRAW, QUERY
@@ -140,6 +168,7 @@ def administrator_worker(port,root):
                 try:os.fsync(fd)
                 finally:os.close(fd)
                 approved=c.hash()
+                approved_context=c
                 result=signature
             else:
                 raise Refus("opération administrative inconnue")

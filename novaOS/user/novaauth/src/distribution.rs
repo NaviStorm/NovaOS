@@ -316,15 +316,44 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         target: Machine,
         bytes: &[u8],
     ) -> super::Result<Head> {
+        self.publish_package_for(holder, holder.owner, request, action, key, target, bytes)
+    }
+
+    /// Provisionnement R2 privé, absent du protocole public et des commandes.
+    /// L'autorité est vérifiée indépendamment du destinataire stable explicite.
+    #[cfg(feature = "administration-lab")]
+    pub fn provision_package_for_user(
+        &mut self,
+        administrator: Grant,
+        recipient: Id,
+        request: Id,
+        key: &VerifyingKey,
+        target: Machine,
+        bytes: &[u8],
+    ) -> super::Result<Head> {
+        self.publish_package_for(administrator, recipient, request, Action::Install, key, target, bytes)
+    }
+
+    fn publish_package_for(
+        &mut self,
+        holder: Grant,
+        recipient: Id,
+        request: Id,
+        action: Action,
+        key: &VerifyingKey,
+        target: Machine,
+        bytes: &[u8],
+    ) -> super::Result<Head> {
         let verified = verify(key, target, bytes).map_err(map_verify)?;
         let (head, mut state) = self.view()?;
         if holder.head != head || request == [0; 16] || self.authority.outcome(request)?.is_some() {
             return Err(Fault::Conflict);
         }
-        let user = state
-            .users
-            .iter()
-            .position(|u| u.id == holder.owner && u.status == Status::Active && u.admin)
+        state.users.iter()
+            .find(|u| u.id == holder.owner && u.status == Status::Active && u.admin)
+            .ok_or(Fault::Denied)?;
+        let user = state.users.iter()
+            .position(|u| u.id == recipient && u.status == Status::Active)
             .ok_or(Fault::Denied)?;
         let owner = &mut state.users[user];
         let next = head.generation.checked_add(1).ok_or(Fault::Limit)?;
@@ -391,7 +420,7 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         member_policy(
             &mut state,
             &head,
-            holder.owner,
+            recipient,
             request,
             &prior,
             &mut entries,
