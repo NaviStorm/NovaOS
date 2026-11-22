@@ -17,6 +17,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch',choices=['aarch64','x86_64'])
     parser.add_argument('sector',type=int,choices=[512,4096])
+    parser.add_argument('--fermer',action='store_true',help='Vérifier aussi la fermeture supervisée des deux sessions')
     for name in ('iso','registre','genese','cles','decision','secrets','sortie','detenteur','capture','triplet','kernel'):
         parser.add_argument('--'+name,type=lambda v:Path(v).resolve(),required=True)
     a=parser.parse_args();a.mode='nominal';a.vue=a.activation=a.exec_admission=a.administration_r2=True
@@ -67,6 +68,7 @@ def main():
                 report['terminaisons_bob'].append({'pid':int(m[1]),'attendu':expected,'observe':int(m[2]),'attente_ns':time.monotonic_ns()-start})
                 if int(m[2])!=expected:raise Refus('statut natif Bob inattendu')
             serial.expect(re.escape(b'NAR2 Bob refus serveur et substitutions verifies'),40)
+            serial.expect(re.escape(b'NAR2 Bob fermeture acquittee'),40)
             rc,raw=serial.command('admin-sonde --self')
             (out/'alice-consultation.bin').write_bytes(raw)
             oracle=a.genese.with_name('oracle-self.bin').read_bytes()
@@ -100,7 +102,17 @@ def main():
             report['sorties_exclusivement_hote']=streams
             report['enrolement_époques']=enrolled
             report['bob_consultation_statut_zero']=True
+            report['fermeture_bob_avant_operation_alice']=True
             observer.close()
+            if a.fermer:
+                serial.send(b'exit\n')
+                serial.expect(rb'BLOC bilan mode=41 service=Exit\(0\) bloc=Exit\(0\) pilote=Exit\(0\) client=Exit\(0\) retrait=Ok\(\(\)\)',40)
+                for pid in by_shell:
+                    if not re.search(rb'NAEXEC restitue pid='+str(pid).encode()+rb' roots=0 handles=0 waits=0 pages=0 pile=0 threads=0',serial.data):
+                        raise Refus('ressources de session non restituées')
+                if not re.search(rb'endpoints=0 nodes=0 espaces=0 cadres_ipc=0',serial.data):
+                    raise Refus('arrêt sans drainage global complet')
+                report['fermeture_deux_sessions_et_arret_invite']=True
             report['succes']=True
             return report
         try:

@@ -18,6 +18,8 @@ pub(super) fn session()->rt::Result<()> {
     if status!=0 {return Err(status);}
     mark(b"NAR2 Bob consultation propre terminee")?;
     mark(b"NAR2 Bob refus serveur et substitutions verifies")?;
+    login.close()?;
+    mark(b"NAR2 Bob fermeture acquittee")?;
     loop {
         match rt::receive_for(rt::config(1),25) {
             Err(rt::TIMED_OUT|rt::WOULD_BLOCK)=>(),
@@ -25,6 +27,5 @@ pub(super) fn session()->rt::Result<()> {
             _=>return Err(rt::DENIED),
         }
     }
-    login.close()?;
-    mark(b"NAR2 Bob fermeture acquittee")
+    Ok(())
 }
