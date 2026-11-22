@@ -1,6 +1,6 @@
 # NovaAuth v0.24.0 — Installation du témoin non administrateur R2
 
-État : raccord ciblé autorisé par la MOA/MOE, implémentation privée R2 ; qualification invitée en cours. Base de travail `33d87d8470b533eecf117054a6095bab2a8fd1a2`, branche `codex/novaauth-administration-0240-phase1`.
+État : raccord ciblé autorisé par la MOA/MOE, implémentation privée R2 ; lancement et refus de paquets étrangers exercés sur les quatre profils. Voir le [bilan de couverture et ses réserves](novaauth-administration-r2-provisionnement-duplex-v0.24.0.md) : signature invalide et substitution à la publication restent des tests moteur hôtes ; R2 global n'est pas qualifié. Base de travail `33d87d8470b533eecf117054a6095bab2a8fd1a2`, branche `codex/novaauth-administration-0240-phase1`.
 
 ## Constat dans les interfaces
 
