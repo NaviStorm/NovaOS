@@ -1,0 +1,92 @@
+{
+  "reference": "0e5004d1d78bcc5d61211b48c69ca44135fb7d09",
+  "essai_analyse": "63f6e19d9161833e0763e07e9940243f7474114d",
+  "horloge_invitee": "SERVICE_PROCESS NOW = ticks*1000/HZ ; HZ=250, même démarrage",
+  "horloge_hote": "time.monotonic_ns, jamais soustraite à NOW",
+  "mesures_invitees_ms": {
+    "Alice": {
+      "defi": 12520,
+      "verifie": 13592,
+      "session": 14668,
+      "retour_open": 15748,
+      "expiration": 74668,
+      "appel_SPAWN_preparation": 35044,
+      "deadline_ticket_preparation": 38972,
+      "refus_session": 88288
+    },
+    "Bob": {
+      "defi": 16820,
+      "verifie": 17888,
+      "session": 18956,
+      "retour_open": 20016,
+      "expiration": 78956,
+      "refus_paquet_Alice_debut": 28624,
+      "refus_paquet_Alice_fin": 29704,
+      "refus_paquet_inconnu_debut": 31828,
+      "refus_paquet_inconnu_fin": 32892,
+      "appel_SPAWN_sonde_negative": 50880,
+      "deadline_ticket_sonde": 54800,
+      "refus_debut_ticket_temoin": 88284
+    }
+  },
+  "durees_invitees_ms": {
+    "Bob_session_a_SPAWN_sonde": 31924,
+    "Bob_SPAWN_sonde_a_refus_ticket": 37404,
+    "Bob_session_a_refus_ticket": 69328,
+    "Bob_retard": 9328,
+    "Alice_retard": 13620,
+    "attente_programmee_ticks": 3750,
+    "attente_programmee_ms": 15000
+  },
+  "non_horodates": [
+    "fin préparation ELF Alice",
+    "début/fin admission durable des ELF préalables",
+    "création et sortie PID 21/22",
+    "début/fin exacts du délai préparatoire Bob"
+  ],
+  "non_executes": [
+    "émission ticket vivant",
+    "révocation administrative",
+    "consommation ticket vivant",
+    "reçu RETIREE",
+    "drainage global final invité"
+  ],
+  "durations_hote_s": {
+    "banc": 171.366921375,
+    "bloc_VM": 170.365153375,
+    "RPC_traitement_somme": 0.260688626,
+    "attente_ClientHello_somme": 111.88822792,
+    "attente_ClientHello_max": 95.192260041
+  },
+  "nouveaux_essais_QEMU": 0,
+  "preuves_relues": [
+    {
+      "fichier": "diagnostic.json",
+      "sha256": "1e8300396a0047341bfc36a7e2a9b498fbab9f5fa452c09f40259c0c7f3c3fd3"
+    },
+    {
+      "fichier": "r2-commandes-x86_64-4096-desactivation-essai-unique/commandes-resultats.json",
+      "sha256": "ed765f8c4fd978daeb2353c3d0ebf1589993f44ae7be964f10eac366600289d0"
+    },
+    {
+      "fichier": "r2-commandes-x86_64-4096-desactivation-essai-unique/invite/collecteur-diagnostic.json",
+      "sha256": "b34c8ab7ff030ab9d88493a120973f4dc6e8a7d20e1b20c37a064492a9992074"
+    },
+    {
+      "fichier": "r2-commandes-x86_64-4096-desactivation-essai-unique/invite/invite.serial",
+      "sha256": "db2583afe53690aac8b01ccaa0a23cd5f3877cc7ef220f0f7c0fcca9cd6bff06"
+    },
+    {
+      "fichier": "r2-commandes-x86_64-4096-desactivation-essai-unique/invite/resultat.json",
+      "sha256": "f3cb4d899169f3cf5b513aab62c49d70349dbad8b382a1499251ff6e15fa0490"
+    },
+    {
+      "fichier": "r2-commandes-x86_64-4096-desactivation-essai-unique/invite/rpc-public.log",
+      "sha256": "5eeccddc1fb1bf407e2ce7a5ca361f60b9d4dba1846104cd4d94f4d560fccfc9"
+    },
+    {
+      "fichier": "r2-commandes-x86_64-4096-desactivation-essai-unique/invite/tls-attentes.log",
+      "sha256": "e5ae87ca77ae1f53c82dce44310ec0f794bf6a94002b67cb1d70e975973fb01a"
+    }
+  ]
+}
