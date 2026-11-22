@@ -17,7 +17,7 @@ from exec_deux_vm import route, signature
 from reprise import Refus, transaction
 import admission_exec as execs
 from administration_epochs import Epochs, initialize
-from administration_events import Events, command_status_pattern
+from administration_events import Events, command_status_pattern, observed_command_status_pattern
 
 
 def main():
@@ -168,7 +168,9 @@ def main():
                 serial.offset = len(serial.data)
                 start = serial.offset
                 serial.submit(line)
-                status = serial.expect(command_status_pattern(step), 80)
+                pattern=observed_command_status_pattern(step) if a.ticket_vivant else command_status_pattern(step)
+                status = serial.expect(pattern, 80)
+                shell_status=int(status[2] if a.ticket_vivant else status[1])
                 if i != len(cases)-1:
                     serial.expect(rb'nsh> ', 20)
                 output = bytes(serial.data[start:serial.offset])
@@ -185,10 +187,10 @@ def main():
                     alice_pid = alice_routes[0][0]
                     pids &= {binding.child for binding, _, _ in observer.outputs()
                              if binding.shell == alice_pid}
-                item = {'commande': command, 'statut_shell': int(status[1]),
+                item = {'commande': command, 'statut_shell': shell_status,
                         'statut_attendu': expected_status, 'pid': sorted(pids)}
                 report['commandes'].append(item)
-                if int(status[1]) != expected_status or len(pids) != 1:
+                if shell_status != expected_status or len(pids) != 1:
                     raise Refus('statut ou PID non conforme : ' + command)
                 pid = next(iter(pids))
                 rows = [(binding, closed, data) for binding, closed, data in observer.outputs()
@@ -200,6 +202,8 @@ def main():
                 if len(shells) != 1:
                     raise Refus('sorties rattachées à plusieurs shells')
                 item['shell'] = next(iter(shells))
+                if a.ticket_vivant and int(status[1]) != item['shell']:
+                    raise Refus('statut provenant d’une autre instance')
                 for fd, data in streams.items():
                     (out / f'commande-{i:02}-fd{fd}.bin').write_bytes(data)
                 if callable(expected):
