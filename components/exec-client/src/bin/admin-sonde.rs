@@ -5,6 +5,13 @@ use nova_cli::runtime as rt;
 use nova_exec_client::admin::{AdministrativeLaunch, Conversation};
 fn perform() -> rt::Result<()> {
     let launch = AdministrativeLaunch::current()?;
+    if launch.streams.argv.as_slice()==["--prepare-group"] {
+        use nova_exec_client::admin_cli::{self,Program};
+        let action=admin_cli::parse(Program::Groupadd,&["equipe-r2","--prepare"]).map_err(|_|rt::BAD_ARGUMENT)?;
+        let mut conversation=Conversation::new(&launch);
+        let output=admin_cli::execute(Program::Groupadd,&action,launch.streams.french,|q|conversation.exchange(q)).map_err(|e|e.native)?;
+        return launch.streams.write_stdout(output.as_bytes());
+    }
     if launch.streams.argv.as_slice()==["--r2-refus"] {return r2_refus(&launch,false);}
     if launch.streams.argv.as_slice()==["--r2-securite"] {return r2_refus(&launch,true);}
     let mut request = [0; 128];

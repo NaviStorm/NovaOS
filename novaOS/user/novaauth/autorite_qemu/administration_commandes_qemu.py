@@ -140,7 +140,7 @@ def main():
         if a.mutation_concurrente:
             def joined_receipt():
                 return bytes(8)+bytes.fromhex(intention['operation'])+(24).to_bytes(8,'little')+bytes([1])+bytes(31)+(5).to_bytes(8,'little')+bytes(56)
-            cases=[('groupadd equipe-r2 --prepare',preparation),
+            cases=[('admin-sonde --prepare-group',preparation),
                    (lambda:'admin-sonde --confirm-writer '+intention['operation']+' '+intention['confirmation']+' | admin-sonde --last-admin-reader-with-mutation',joined_receipt),
                    ('whoami',b'alice\n')]
             report['portee']='S7 publication explicite de groupe concurrente au refus du retrait du dernier administrateur'
