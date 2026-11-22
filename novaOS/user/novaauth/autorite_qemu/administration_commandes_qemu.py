@@ -50,7 +50,7 @@ def main():
     report = {'succes': False, 'architecture': a.arch, 'secteur': a.sector,
               'portee': 'création de groupe' if a.lot == 'groupe' else
                         'consultations ou versions des ELF de mutation ; aucune mutation', 'lot': a.lot,
-              'commandes': []}
+              'commandes': [], 'drapeaux_locale': 0, 'langue_ELF': 'en'}
     raw = a.triplet.read_bytes()
     size = int.from_bytes(raw[152:156], 'big')
     users = json.loads(raw[156:156 + size])
@@ -137,11 +137,11 @@ def main():
                 expected_status = 3 if a.lot == 'dernier-administrateur' else 0
                 expected_stderr = b''
                 if a.lot == 'dernier-administrateur':
-                    expected_stderr = 'Échec administratif: native=5 status=3\n'.encode()
+                    expected_stderr = b'Administrative failure: native=5 status=3\n'
                 elif a.recu_supprime and i == 1:
                     expected_status = 20
                     expected = b''
-                    expected_stderr = ('Échec administratif: native=22 status=20\nrequest=' +
+                    expected_stderr = ('Administrative failure: native=22 status=20\nrequest=' +
                                        intention['operation'] + ' --outcome\n').encode()
                 if a.reauth_issue and i == 2:
                     observer.expect_successor(report['commandes'][0]['shell'])
