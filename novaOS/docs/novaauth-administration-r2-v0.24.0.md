@@ -67,6 +67,8 @@ Archive : `SHA256-mutations-03.txt`, 33 fichiers, SHA-256 `419199ef7bf636f44b85a
 
 Aucun essai QEMU R2 ni nouvelle qualification des quatre ELF historiques exécuté à cette étape. Leur compatibilité R2, les ressources en exécution et les quatre profils restent à vérifier. Les délais et budgets sont inchangés.
 
+Toolchains relevées : le premier passage des codecs ARM64 a utilisé `rustc` Homebrew 1.100.0 (LLVM 23.1.6) via le PATH ; les codecs x86_64, les registres, les sessions et les constructions QEMU utilisent explicitement Rust 1.99.1 (LLVM 23.1.1). Ces réussites sont des constats fonctionnels dans les environnements consignés, pas une preuve d’identité binaire ni de reproductibilité entre environnements. Les exécutables correspondants sont archivés séparément et la réserve historique reste ouverte.
+
 ## Raccords restant à réaliser
 
 1. Terminer le raccord du banc à la variante d'admission R2 et à l'enrôlement des époques dans l'autorité ; exercer les refus dans l'invité.
