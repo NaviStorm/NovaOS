@@ -39,3 +39,25 @@ pub(super) fn terminal(p:&Pending)->rt::Result<()> {
     p.verify_retirement(terminal.ok_or(UNCERTAIN)?)?;
     common::marker(b"NAR2 epoque RETIREE recu terminal authentifie");Ok(())
 }
+
+/// Consultation pure et fraîche du retrait enregistré. Jamais ACKNOWLEDGE,
+/// jamais publication répétée. Le moteur compare ensuite le reçu signé à
+/// l'époque, l'empreinte et l'identifiant persistants du sujet désactivé.
+pub(super) fn recovered(state:&novaos_identity::recuperation_view::View,
+    grant:novaos_identity::Grant,subject:[u8;16],current:[u8;112])
+    ->rt::Result<novaos_identity::administration::Retired> {
+    let operation=state.retirement_request(grant,subject).map_err(|_|rt::DENIED)?;
+    let mut q=[0;160];q[..112].copy_from_slice(&current);
+    q[112..128].copy_from_slice(&operation);q[128..].copy_from_slice(&common::random()?[..]);
+    let m=Message::parse(OUTCOME,&q).map_err(|_|rt::BAD_ARGUMENT)?;
+    let mut response=[0;MAX];
+    let n=recovery_rpc::Client::new(rt::config(8),incarnation::identity())
+        .exchange(OUTCOME,&q,&mut response).map_err(|_|UNCERTAIN)?;
+    if n<8 || common::number(&response[HEADER..])!=0 {return Err(UNCERTAIN);}
+    let key=key()?;
+    let (effects,terminal)=m.outcome(&key,&response[HEADER+8..HEADER+n]).map_err(|_|rt::DENIED)?;
+    if effects!=7 {return Err(UNCERTAIN);}
+    let receipt=terminal.ok_or(UNCERTAIN)?;
+    novaos_identity::administration::Retired::verify(incarnation::SERVER,&key,&receipt[..128],&receipt[128..])
+        .map_err(|_|rt::DENIED)
+}

@@ -128,12 +128,17 @@ fn persistence_reactivation_requires_exact_authenticated_terminal_receipt() {
         let disabled = before
             .administration_plan(ag, [3; 16], Operation::Disable { subject: f.alice }, None)
             .unwrap();
+        assert!(before.retirement_request(ag,f.alice).is_err());
+        let unprivileged=before.resolve_verified_factor([2;16]).unwrap();
+        assert!(before.retirement_request(unprivileged,f.admin).is_err());
         // Plan seul : le compte reste actif dans la tête publiée.
         assert!(f.view().resolve_verified_factor([2; 16]).is_ok());
         f.publish(&disabled);
         let state = f.view();
         assert!(state.resolve_verified_factor([2; 16]).is_err());
+        assert!(state.retirement_request(ag,f.alice).is_err()); // ancien grant
         let ag = state.resolve_verified_factor([1; 16]).unwrap();
+        assert_eq!(state.retirement_request(ag,f.alice).unwrap(),[3;16]);
         assert!(
             state
                 .administration_plan(

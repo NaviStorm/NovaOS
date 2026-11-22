@@ -117,12 +117,13 @@ impl Transactions {
                 // Préflight par le même moteur de transaction. Désactiver un
                 // administrateur est refusé ici par State/apply, pas par la CLI.
                 let operation_kind = operation_for(state, grant, change)?;
+                let retired=retired_for(state,grant,&operation_kind,current)?;
                 let plan = Pending::from_administration(state, grant, operation, current,
-                                                        c.reference, operation_kind, None)?;
+                                                        c.reference, operation_kind, retired.as_ref())?;
                 drop(plan);
                 // La clôture et les facteurs nouveaux ne sont pas annoncés
                 // opérationnels avant raccord de leurs effecteurs/provisionneur.
-                if !matches!(change, Mutation::CreateGroup(_) | Mutation::Rename {..} | Mutation::Disable(_)) {
+                if !matches!(change, Mutation::CreateGroup(_) | Mutation::Rename {..} | Mutation::Disable(_) | Mutation::Reactivate(_)) {
                     return Err(rt::REFUSED);
                 }
                 let slot = self.prepared.iter().position(|p| p.is_some_and(|p| p.binding == binding))
@@ -151,8 +152,10 @@ impl Transactions {
                 let Command::Prepare(change) = wire::decode(&p.request).map_err(|_| rt::BAD_ARGUMENT)?
                     else { return Err(rt::BAD_ARGUMENT); };
                 authorize(state, grant, c, change)?;
+                let operation_kind=operation_for(state,grant,change)?;
+                let retired=retired_for(state,grant,&operation_kind,current)?;
                 let plan = Pending::from_administration(state, grant, operation, current,
-                    c.reference, operation_for(state, grant, change)?, None)?;
+                    c.reference, operation_kind, retired.as_ref())?;
                 if plan.retirement().is_some() && plan.retirement()!=p.closed {return Err(UNCERTAIN);}
                 self.prepared[slot] = None; // consommation avant toute écriture
                 self.pending = Some(plan);
@@ -193,7 +196,7 @@ impl Transactions {
                 let (original, _, terminal) = message.history(&key, &reply[HEADER+8..HEADER+n])
                     .map_err(|_| rt::DENIED)?;
                 if original[160..176] != grant.subject()
-                    || !matches!((original[208],terminal.is_some()),(4,false)|(2,true)) {
+                    || !matches!((original[208],terminal.is_some()),(4,false)|(2,true)|(3,false)) {
                     return Err(rt::DENIED);
                 }
                 let generation = u64::from_be_bytes(original[72..80].try_into().unwrap())
@@ -225,10 +228,17 @@ fn operation_for<'a>(state: &View, grant: Grant, change: Mutation<'a>) -> rt::Re
         Mutation::CreateGroup(name) => Operation::CreateGroup { name },
         Mutation::Rename {user: s, name} => Operation::Rename {subject: user(s)?, name},
         Mutation::Disable(s) => Operation::Disable {subject: user(s)?},
+        Mutation::Reactivate(s) => Operation::Reactivate {subject: user(s)?},
         // Aucun facteur n'est approuvé sur la seule base d'un argument ; aucune
         // réactivation sans reçu de clôture, ni retrait de groupe sans effecteurs.
         _ => return Err(rt::REFUSED),
     })
+}
+fn retired_for(state:&View,grant:Grant,change:&Operation<'_>,current:[u8;112])
+    ->rt::Result<Option<novaos_identity::administration::Retired>> {
+    if let Operation::Reactivate{subject}=change {
+        retirement::recovered(state,grant,*subject,current).map(Some)
+    } else {Ok(None)}
 }
 fn completed(answer: &mut [u8; 128], operation: [u8; 16], generation: u64) {
     answer[8..24].copy_from_slice(&operation);

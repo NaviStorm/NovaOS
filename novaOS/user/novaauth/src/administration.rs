@@ -156,6 +156,15 @@ impl RegistryView {
         }
         Ok(a.epoch)
     }
+    /// Identifiant public du retrait à consulter auprès de l'autorité. Ce
+    /// getter ne constitue ni un reçu ni une autorisation de réactivation.
+    pub fn retirement_request(&self, grant: Grant, subject: Id) -> Result<Id> {
+        if !self.admin_reader(grant)?.admin { return Err(Fault::Denied); }
+        let user = self.state.user(subject)?;
+        if user.status != Status::Disabled { return Err(Fault::Denied); }
+        user.authentication.as_ref().and_then(|a| a.retirement.as_ref())
+            .map(|r| r.request).ok_or(Fault::Denied)
+    }
     pub fn user_info(&self, grant: Grant, selector: Option<Selector<'_>>) -> Result<UserInfo> {
         let caller = self.admin_reader(grant)?;
         let found = self

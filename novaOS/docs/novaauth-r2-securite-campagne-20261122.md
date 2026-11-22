@@ -39,3 +39,27 @@ ni les capacités de Bob. Un refus d'APPEND avant stockage n'est pas présenté
 comme une ouverture VFS réussie suivie d'un refus d'écriture.
 
 Les échecs, essais non exécutés et réserves seront conservés dans le bilan.
+
+## Raccord ciblé de réactivation
+
+Le service refusait `Reactivate` (12) malgré la présence du moteur transactionnel
+et du protocole d'autorité R2. Il consulte maintenant, par `OUTCOME` existant avec
+défi frais, le retrait enregistré dans le compte désactivé. La signature de
+l'autorité et l'état terminal avec les sept acquittements sont vérifiés. Le
+moteur compare le reçu à la génération, l'époque, la requête et l'empreinte
+précédente du retrait persistant. Ce contrôle est refait à la confirmation.
+Un reçu manquant ou non terminal laisse une issue indéterminée et interdit
+la mutation ; aucune demande d'acquittement n'est répétée automatiquement.
+
+Le getter interne donnant l'identifiant du retrait exige un administrateur
+actif, un grant de la tête courante et un sujet désactivé. Il ne confère aucun
+droit et ne remplace pas le reçu. Aucun opcode ni sélecteur supplémentaire.
+La publication utilise toujours le même triplet et le même écrivain NovaFS.
+
+La recette `--administration-reactivation` prolonge le témoin temporel : Bob
+conserve son ancienne référence, attend la confirmation de la réactivation,
+s'authentifie explicitement dans la même instance puis vérifie le refus de
+l'ancien ticket et de l'ancienne session. Un nouveau lancement doit réussir.
+Ce déclenchement utilise la conversation privée de qualification déjà approuvée,
+lie les deux instances et l'opération, et ne constitue pas une authentification.
+Les résultats invités restent à établir ; les huit tests du moteur sont hôtes.

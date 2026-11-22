@@ -26,6 +26,7 @@ def main():
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+    parser.add_argument('--reactivation',action='store_true',help='recette S9 après retrait effectif')
     parser.add_argument('--securite',action='store_true',help='sonde directe étendue, distincte du témoin temporel')
     parser.add_argument('--ticket-vivant',action='store_true',help='désactivation pendant que Bob conserve un ticket non consommé')
     parser.add_argument('--reauth-issue', action='store_true',
@@ -36,6 +37,7 @@ def main():
                  'sortie', 'detenteur', 'capture', 'triplet', 'kernel'):
         parser.add_argument('--' + name, type=lambda v: Path(v).resolve(), required=True)
     a = parser.parse_args()
+    a.ticket_vivant = a.ticket_vivant or a.reactivation
     if a.securite and a.ticket_vivant:parser.error('les deux profils sont distincts')
     if a.ticket_vivant and a.lot!='desactivation':
         parser.error('le témoin de ticket vivant exige le lot désactivation')
@@ -95,6 +97,19 @@ def main():
                  (lambda: command+' --confirm ' + intention['confirmation'] +
                   ' --request ' + intention['operation'], complete),
                  (lambda: binary+' --outcome ' + intention['operation'], complete)]
+        if a.reactivation:
+            second={}
+            def prepare_reactivation(data):
+                match=re.fullmatch(rb'request=([0-9a-f]{32}) confirmation=([0-9a-f]{64}) state=PREPARED\n',data)
+                if not match:raise Refus('préparation de réactivation non canonique')
+                second.update(operation=match[1].decode(),confirmation=match[2].decode())
+                report['reactivation']=dict(second)
+                return data
+            def reactivated(_):
+                return ('request='+second['operation']+' generation=25 state=COMPLETE\n').encode()
+            cases += [('usermod --enable bob --prepare',prepare_reactivation),
+                      (lambda:'usermod --enable bob --confirm '+second['confirmation']+' --request '+second['operation'],reactivated),
+                      (lambda:'usermod --outcome '+second['operation'],reactivated)]
     elif a.lot == 'dernier-administrateur':
         cases = [('usermod --disable alice --prepare', b'')]
     if a.commande:
@@ -161,6 +176,8 @@ def main():
                     serial.expect('NovaAuth : nouvelle session authentifiée'.encode(), 40)
                     serial.expect(rb'nsh> ', 20)
                     report['nouvelle_authentification_explicite_avant_issue'] = True
+                if a.reactivation and i==4:
+                    observer.expect_successor(events.actor(b'NAR2 Bob attente declenchement authentification'))
                 if callable(command):
                     command = command()
                 # Identité d'étape distincte ; aucune réponse d'une commande
@@ -234,6 +251,13 @@ def main():
                         route=selected[record['pid']]
                         record.update(instance=route[1].hex(),session=route[2].hex())
 
+                if a.reactivation and i==4:
+                    bob_pid=events.actor(b'NAR2 Bob attente declenchement authentification')
+                    for message in [b'NAR2 Bob nouvelle session explicite distincte',
+                                    b'NAR2 Bob apres reactivation ancien ticket=10 ancienne session=5',
+                                    b'NAR2 Bob nouveau lancement autorise droits ordinaires',
+                                    b'NAR2 Bob fermeture acquittee']:
+                        events.expect(bob_pid,message,40)
             serial.expect(rb'BLOC bilan mode=41 service=Exit\(0\) bloc=Exit\(0\) pilote=Exit\(0\) client=Exit\(0\) retrait=Ok\(\(\)\)', 40)
             rows = observer.outputs()
             by_shell = {}
@@ -254,7 +278,16 @@ def main():
             bob = [s for s, children in by_shell.items() if list(children.values()) == [{1: bob_expected, 2: b''}]]
             if a.ticket_vivant:
                 bob = [events.actor(b'NAR2 Bob attente declenchement authentification')]
-                if bob[0] in by_shell or len(by_shell)!=1:
+                if a.reactivation:
+                    if len(by_shell)!=2 or list(by_shell.get(bob[0],{}).values())!=[{1:bob_oracle,2:b''}]:
+                        raise Refus('lecture Bob après réactivation absente ou privilège modifié')
+                    previous=report['sessions_temoin']['Bob']
+                    with observer.guard:current=[r for r in observer.routes if r[0]==bob[0]]
+                    if len(current)!=1 or current[0][1].hex()!=previous['instance'] or current[0][2].hex()==previous['session']:
+                        raise Refus('session Bob réactivée ou instance remplacée')
+                    report['nouvelle_session_bob']={'instance':current[0][1].hex(),'session':current[0][2].hex(),
+                        'ancien_ticket':10,'ancienne_session':5,'nouveau_lancement':0}
+                elif bob[0] in by_shell or len(by_shell)!=1:
                     raise Refus('sortie enfant Bob inattendue dans le témoin temporel')
             elif len(by_shell) != 2 or len(bob) != 1:
                 raise Refus('sorties Bob confondues ou absentes')
@@ -262,12 +295,16 @@ def main():
                 if b'NAR2 Bob ancien ticket statut=10 aucun enfant' not in serial.data:
                     raise Refus('ancien ticket Bob sans refus REVOKED')
                 attempts=re.findall(rb'NAEXEC attente owner='+str(bob[0]).encode()+rb' ticket=(\d+) maintenant=(\d+) echeance=(\d+)',serial.data)
-                if len(attempts)!=1 or int(attempts[-1][1])>=int(attempts[-1][2]):
+                if not attempts or (not a.reactivation and len(attempts)!=1) or int(attempts[0][1])>=int(attempts[0][2]):
                     raise Refus('refus Bob non démontré avant expiration')
                 children=re.findall(rb'NAEXEC enfant owner='+str(bob[0]).encode()+rb' child=(\d+)',serial.data)
-                if children:
+                if a.reactivation:
+                    cut=serial.data.index(b'NAR2 Bob nouvelle session explicite distincte')
+                    if len(children)!=1 or re.search(rb'NAEXEC enfant owner='+str(bob[0]).encode()+rb' child=',serial.data[:cut]):
+                        raise Refus('création Bob avant nouvelle authentification ou doublon')
+                elif children:
                     raise Refus('création Bob supplémentaire ou non identifiée')
-                report['ticket_bob']={'reference':int(attempts[-1][0]),'presentation_ticks':int(attempts[-1][1]),'expiration_ticks':int(attempts[-1][2]),'frequence_hz':250,'statut_natif':10,'enfants_supplementaires':0}
+                report['ticket_bob']={'reference':int(attempts[0][0]),'presentation_ticks':int(attempts[0][1]),'expiration_ticks':int(attempts[0][2]),'frequence_hz':250,'statut_natif':10,'enfants_supplementaires':0}
             for pid in set(by_shell) | set(bob):
                 if not re.search(rb'NAEXEC restitue pid=' + str(pid).encode() + rb' roots=0 handles=0 waits=0 pages=0 pile=0 threads=0', serial.data):
                     raise Refus('ressources de session non restituées')
