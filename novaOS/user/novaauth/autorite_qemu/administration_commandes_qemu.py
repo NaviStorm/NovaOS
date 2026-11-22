@@ -137,8 +137,8 @@ def main():
             events = Events(serial, serial.offset)
             report['evenements'] = events.records
             # Ticket vivant : préparer Alice dès que le lanceur est prêt,
-            # pendant les vérifications préalables de Bob. Attendre leur fin
-            # ici consommait son bail avant même la préparation d'Alice.
+            # avant le déclenchement explicite de l'authentification de Bob.
+            # Les contrôles négatifs sont un parcours distinct.
             # Les autres lots conservent leur ordonnancement historique.
             if not a.ticket_vivant:
                 serial.expect(rb'NAR2 Bob fermeture acquittee', 100)
@@ -172,7 +172,9 @@ def main():
                     # Aucune commande exécutée sans LF ; aucune mutation ni
                     # prolongation de droit. Au début de l'émission du ticket, seul LF
                     # déclenche le véritable ELF usermod de confirmation.
-                    bob_pid = events.actor(b'NAR2 Bob authentifie route distincte')
+                    bob_pid = events.actor(b'NAR2 Bob attente declenchement authentification')
+                    events.expect(bob_pid, b'NAR2 Bob authentifie route distincte', 40)
+                    events.expect(bob_pid, ('NAR2 Bob declenchement operation=' + intention['operation']).encode(), 40)
                     alice_pid = report['commandes'][0]['shell']
                     with observer.guard:
                         routes = list(observer.routes)
@@ -183,8 +185,6 @@ def main():
                         name: {'pid': pid, 'instance': selected[pid][1].hex(),
                                'session': selected[pid][2].hex()}
                         for name, pid in [('Alice', alice_pid), ('Bob', bob_pid)]}
-                    events.expect(bob_pid, b'NAR2 Bob refus serveur et substitutions verifies', 40)
-                    events.expect(bob_pid, b'NAR2 Bob attente preparation Alice ticket non emis', 40)
                     serial.send(line.encode())
                     events.expect(bob_pid, b'NAR2 Bob preparation terminee emission ticket', 40)
                 serial.offset = len(serial.data)
@@ -200,7 +200,7 @@ def main():
                 if a.ticket_vivant:
                     # Identifier les enfants par les liaisons noyau collectées,
                     # indépendamment des sorties Bob reçues en parallèle.
-                    bob_pid = events.actor(b'NAR2 Bob authentifie route distincte')
+                    bob_pid = events.actor(b'NAR2 Bob attente declenchement authentification')
                     with observer.guard:
                         alice_routes = [r for r in observer.routes if r[0] != bob_pid]
                     if len(alice_routes) != 1:
@@ -245,19 +245,23 @@ def main():
             malformed = (3).to_bytes(8, 'little') + bytes(56)
             bob_expected = b''.join([bob_oracle, denied, denied, bob_oracle, denied, malformed, malformed, bob_oracle])
             bob = [s for s, children in by_shell.items() if list(children.values()) == [{1: bob_expected, 2: b''}]]
-            if len(by_shell) != 2 or len(bob) != 1:
+            if a.ticket_vivant:
+                bob = [events.actor(b'NAR2 Bob attente declenchement authentification')]
+                if bob[0] in by_shell or len(by_shell)!=1:
+                    raise Refus('sortie enfant Bob inattendue dans le témoin temporel')
+            elif len(by_shell) != 2 or len(bob) != 1:
                 raise Refus('sorties Bob confondues ou absentes')
             if a.ticket_vivant:
                 if b'NAR2 Bob ancien ticket statut=10 aucun enfant' not in serial.data:
                     raise Refus('ancien ticket Bob sans refus REVOKED')
                 attempts=re.findall(rb'NAEXEC attente owner='+str(bob[0]).encode()+rb' ticket=(\d+) maintenant=(\d+) echeance=(\d+)',serial.data)
-                if len(attempts)!=2 or int(attempts[-1][1])>=int(attempts[-1][2]):
+                if len(attempts)!=1 or int(attempts[-1][1])>=int(attempts[-1][2]):
                     raise Refus('refus Bob non démontré avant expiration')
                 children=re.findall(rb'NAEXEC enfant owner='+str(bob[0]).encode()+rb' child=(\d+)',serial.data)
-                if len(children)!=1 or int(children[0]) not in by_shell[bob[0]]:
+                if children:
                     raise Refus('création Bob supplémentaire ou non identifiée')
                 report['ticket_bob']={'reference':int(attempts[-1][0]),'presentation_ticks':int(attempts[-1][1]),'expiration_ticks':int(attempts[-1][2]),'frequence_hz':250,'statut_natif':10,'enfants_supplementaires':0}
-            for pid in by_shell:
+            for pid in set(by_shell) | set(bob):
                 if not re.search(rb'NAEXEC restitue pid=' + str(pid).encode() + rb' roots=0 handles=0 waits=0 pages=0 pile=0 threads=0', serial.data):
                     raise Refus('ressources de session non restituées')
             if not re.search(rb'endpoints=0 nodes=0 espaces=0 cadres_ipc=0', serial.data):
@@ -268,7 +272,7 @@ def main():
                 item['statut_natif'] = codes.get(item['pid'][0])
                 if item['statut_natif'] != item['statut_attendu']:
                     raise Refus('statut natif absent ou non conforme')
-            if any(codes.get(pid) != 0 for pid in by_shell[bob[0]]):
+            if any(codes.get(pid) != 0 for pid in by_shell.get(bob[0], {})):
                 raise Refus('statut natif Bob non conforme')
             observer.close()
             report.update(succes=True, enrolement_epoques=enrolled,
