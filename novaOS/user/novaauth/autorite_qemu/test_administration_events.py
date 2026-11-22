@@ -13,6 +13,26 @@ class Serial:
         self.offset+=m.end();return m
 
 class EventTests(unittest.TestCase):
+    def test_bob_announcement_before_registry_ready(self):
+        message=b'NAR2 Bob attente declenchement authentification'
+        old=b'DEBUG pid=11 '+message+b'\r\n'
+        s=Serial(old)
+        boundary=s.offset
+        s.pending=b'DEBUG pid=11 '+message+b'\r\nDEBUG pid=1 NAEXEC registre pret puis connexion du vrai nsh\r\n'
+        e=Events.before_ready(s, rb'NAEXEC registre pret puis connexion du vrai nsh', 1)
+        saved=s.offset
+        self.assertEqual(e.start,boundary)
+        self.assertEqual(e.actor(message),11)
+        e.expect(11,message,1)
+        self.assertEqual(s.offset,saved)
+        self.assertTrue(e.records[0]['deja_recu'])
+        with self.assertRaises(Refus):e.expect(11,message,1)
+
+    def test_absent_announcement_is_not_success(self):
+        s=Serial(b'');s.pending=b'NAEXEC registre pret puis connexion du vrai nsh\n'
+        e=Events.before_ready(s, rb'NAEXEC registre pret puis connexion du vrai nsh', 1)
+        with self.assertRaises(Refus):e.actor(b'NAR2 Bob attente declenchement authentification')
+
     def test_event_already_consumed_by_command_is_observed_once(self):
         s=Serial(b'DEBUG pid=11 ready\r\ncommand done\n'); pos=s.offset
         e=Events(s,0);e.expect(11,b'ready',1)

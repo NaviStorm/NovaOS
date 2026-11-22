@@ -11,6 +11,14 @@ class Events:
         self.serial, self.start = serial, start
         self.records, self.used = [], set()
 
+    @classmethod
+    def before_ready(cls, serial, pattern, seconds):
+        # Le Serial appartient à un seul démarrage. Conserver sa frontière
+        # avant de consommer le marqueur prêt, jamais celle d'une ancienne VM.
+        events = cls(serial, serial.offset)
+        serial.expect(pattern, seconds)
+        return events
+
     def pattern(self, message, pid=None):
         actor = rb'(\d+)' if pid is None else str(pid).encode()
         return rb'DEBUG pid=' + actor + b' ' + re.escape(message) + rb'\r?\n'

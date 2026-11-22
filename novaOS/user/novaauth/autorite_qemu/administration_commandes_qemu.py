@@ -133,8 +133,7 @@ def main():
             from administration_collector_qemu import Observer
             observer = Observer(control, a.arch, a.kernel, out)
             stack.callback(observer.close)
-            serial.expect(rb'NAEXEC registre pret puis connexion du vrai nsh', 100)
-            events = Events(serial, serial.offset)
+            events = Events.before_ready(serial, rb'NAEXEC registre pret puis connexion du vrai nsh', 100)
             report['evenements'] = events.records
             # Ticket vivant : préparer Alice dès que le lanceur est prêt,
             # avant le déclenchement explicite de l'authentification de Bob.
@@ -185,6 +184,9 @@ def main():
                         name: {'pid': pid, 'instance': selected[pid][1].hex(),
                                'session': selected[pid][2].hex()}
                         for name, pid in [('Alice', alice_pid), ('Bob', bob_pid)]}
+                    for record in events.records:
+                        route = selected[record['pid']]
+                        record.update(instance=route[1].hex(), session=route[2].hex())
                     serial.send(line.encode())
                     events.expect(bob_pid, b'NAR2 Bob preparation terminee emission ticket', 40)
                 serial.offset = len(serial.data)
