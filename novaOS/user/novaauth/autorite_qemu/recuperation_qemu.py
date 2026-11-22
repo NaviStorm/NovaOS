@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import re
+import select
 import shutil
 import socket
 import ssl
@@ -212,6 +213,16 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
                 if not stop_host.is_set():observed["erreur_tls"]=type(error).__name__+": "+str(error)
         def process_connection(conn):
                     active_connections.append(conn)
+                    # Le relais préconnecte le prochain socket. L'attente de
+                    # ClientHello n'est pas une négociation TLS commencée : le
+                    # témoin peut attendre l'expiration d'un bail de 60 secondes.
+                    # Le banc global reste borné ; l'arrêt interrompt cette attente.
+                    waiting=time.monotonic_ns()
+                    while not select.select([conn],[],[],0.1)[0]:
+                        if stop_host.is_set():return
+                    ready=time.monotonic_ns()
+                    with (out/"tls-attentes.log").open("a") as f:
+                        print(waiting,ready,ready-waiting,file=f)
                     clock=getattr(args,"pause_transport",None)
                     if clock is not None:
                         from horloge_pause_qemu import Stream
