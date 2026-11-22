@@ -119,3 +119,8 @@ def install(root):
          '        administrative.poll(&mut login);\n        let m = match rt::receive_for(rt::config(15), 2) {')
     edit(path, '                }\n                #[cfg(not(feature="exec-admission-guest"))]\n                for request in [&f, &name] {',
          '                    administrative::authorize_installation(self,nonce,id,&descriptor)?;\n                }\n                #[cfg(not(feature="exec-admission-guest"))]\n                for request in [&f, &name] {')
+
+    # Sonde d'échec seule, sans clé ni octet TLS ; aucun changement de décision.
+    edit('novaOS/user/novaauth/service/src/bin/common/canal.rs',
+         '_ => return Err(ErrorKind::BrokenPipe),',
+         'status => {\n                    let mut message=*b"NXADMIN transport op=00 statut=0000000000000000";\n                    message[21]=b"0123456789abcdef"[(op>>4) as usize];\n                    message[22]=b"0123456789abcdef"[(op&15) as usize];\n                    for i in 0..16 {message[31+i]=b"0123456789abcdef"[((status>>(60-4*i))&15) as usize];}\n                    common::marker(&message);\n                    return Err(ErrorKind::BrokenPipe);\n                },')
