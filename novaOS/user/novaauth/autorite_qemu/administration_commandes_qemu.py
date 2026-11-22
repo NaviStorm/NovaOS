@@ -22,6 +22,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
+    parser.add_argument('--lot', choices=['lectures', 'versions'], required=True)
     for name in ('iso', 'registre', 'genese', 'cles', 'decision', 'secrets',
                  'sortie', 'detenteur', 'capture', 'triplet', 'kernel'):
         parser.add_argument('--' + name, type=lambda v: Path(v).resolve(), required=True)
@@ -37,7 +38,7 @@ def main():
     a.secrets.mkdir(parents=True, exist_ok=False, mode=0o700)
     root = a.sortie
     report = {'succes': False, 'architecture': a.arch, 'secteur': a.sector,
-              'portee': 'trois consultations et versions des trois ELF de mutation ; aucune mutation',
+              'portee': 'consultations ou versions des ELF de mutation ; aucune mutation', 'lot': a.lot,
               'commandes': []}
     raw = a.triplet.read_bytes()
     size = int.from_bytes(raw[152:156], 'big')
@@ -53,6 +54,10 @@ def main():
              ('groups', b'base\n')]
     cases += [(n + ' --version', (n + ' 0.24.0 NovaOS NXADMIN1 experimental\n').encode())
               for n in ('useradd', 'usermod', 'groupadd')]
+    # Deux parcours indépendants : le total de connexions du relais hôte reste
+    # borné à 128 et chaque parcours commence avec une nouvelle session.
+    # L'essai initial de six commandes ayant saturé ce relais est conservé.
+    cases = cases[:3] if a.lot == 'lectures' else cases[3:]
     with ExitStack() as stack:
         env = fixture(a, stack)
         dispatcher, holders, admin = env
