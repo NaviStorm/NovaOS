@@ -7,6 +7,9 @@ publish = false
 
 [workspace]
 
+[features]
+administration-lab = []
+
 [dependencies]
 # Activer explicitement l'effacement du StaticSecret utilisé par HPKE.
 x25519-dalek = { version = "=2.0.1", default-features = false, features = ["zeroize"] }

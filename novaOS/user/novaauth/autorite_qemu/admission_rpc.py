@@ -5,7 +5,7 @@ from reprise import Recovery, Refus, fixed
 ADMIT, FINISH, QUERY = 40, 41, 42
 
 
-def request(database, key, peer, scope, operation, body):
+def request(database, key, peer, scope, operation, body, *, administration=False):
     server, domain = scope
     if len(body) < 64 or body[:32] != server+domain:
         raise Refus("portée substituée")
@@ -15,11 +15,17 @@ def request(database, key, peer, scope, operation, body):
     q = body[64:]
     if len(q) < FORMAT.size:
         raise Refus("requête tronquée")
-    admission = Admission.decode(q[:FORMAT.size])
+    size = FORMAT.size
+    if administration and q[:8] == b"NAEXAD01":
+        from administration_epochs import SubjectAdmission
+        size += 24
+        admission = SubjectAdmission.decode(q[:size])
+    else:
+        admission = Admission.decode(q[:size])
     if (admission.server,admission.domain,admission.incarnation) != (server,domain,incarnation):
         raise Refus("incarnation substituée")
     api = Admissions(authority)
-    q = q[FORMAT.size:]
+    q = q[size:]
     if operation == ADMIT and len(q) == 64:
         data,sig = api.admit(admission,q)
     elif operation == FINISH and len(q) == 97:

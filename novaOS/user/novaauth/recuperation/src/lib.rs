@@ -563,3 +563,6 @@ fn refuse_implicit_random(_: &mut [u8]) -> core::result::Result<(), getrandom::E
 getrandom::register_custom_getrandom!(refuse_implicit_random);
 
 pub mod exec_admission;
+
+#[cfg(feature = "administration-lab")]
+pub mod subject_admission;
