@@ -12,7 +12,7 @@ def install(root):
     s=s[:begin]+RACE+s[end:];p.write_text(s)
     p=root/'components/shell/session_auth_lab.rs';s=p.read_text();old='    fn drain(&mut self,'
     if s.count(old)!=1:raise ValueError('ancrage drainage course R2')
-    p.write_text(s.replace(old,'    pub(super) fn drain(&mut self,'))
+    p.write_text(s.replace(old,'    pub(super) fn drain_owned(&mut self,pid:u64)->rt::Result<()> {self.drain(&[pid],None)}\n'+old))
 
 RACE=r'''
     probe(31,0,0,0);
@@ -21,7 +21,7 @@ RACE=r'''
     if launch.status==0 {
         let (pid,right)=session_auth_lab::Login::receipt(key)?;
         if right!=launch.value || pid==0 {return Err(rt::REFUSED);}
-        let rendered=login.drain(&[pid],None);
+        let rendered=login.drain_owned(pid);
         let (fault,status)=nova_cli::process::wait(right)?;
         if fault || !matches!(status,0|rt::DENIED|rt::REVOKED) {return Err(rt::REFUSED);}
         if let Err(code)=rendered {if !matches!(code,rt::DENIED|rt::REVOKED|rt::CLOSED) {return Err(code);}}
