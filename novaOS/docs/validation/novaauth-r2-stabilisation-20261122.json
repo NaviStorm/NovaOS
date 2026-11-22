@@ -1,0 +1,446 @@
+[
+  {
+    "essai": "02",
+    "source": "48fd525746e5b6dfceb3fbfe7cb8767d068e7614",
+    "succes": true,
+    "tls_ms": 2900,
+    "tls_debut_ms": 844,
+    "tls_echeance_ms": 10844,
+    "tls_fin_ms": 3744,
+    "authentifications": {
+      "Alice": {
+        "tag": 1,
+        "defi_ms": 5524,
+        "expiration_defi_ms": 7024,
+        "signature_ms": 5532,
+        "verification_ms": 5792,
+        "statut": 0,
+        "expiration_bail_ms": 66064,
+        "fin_ms": 6328
+      },
+      "Bob": {
+        "tag": 1,
+        "defi_ms": 15872,
+        "expiration_defi_ms": 17372,
+        "signature_ms": 15876,
+        "verification_ms": 16144,
+        "statut": 0,
+        "expiration_bail_ms": 76440,
+        "fin_ms": 16724
+      }
+    },
+    "chargements": [
+      {
+        "pid": 5,
+        "etape": "NXLDSIZE",
+        "ms": 7464
+      },
+      {
+        "pid": 5,
+        "etape": "NXLDSEAL",
+        "ms": 7464
+      },
+      {
+        "pid": 5,
+        "etape": "SEALED",
+        "ms": 7464
+      },
+      {
+        "pid": 5,
+        "etape": "NXLDSIZE",
+        "ms": 12128
+      },
+      {
+        "pid": 5,
+        "etape": "NXLDSEAL",
+        "ms": 12128
+      },
+      {
+        "pid": 5,
+        "etape": "SEALED",
+        "ms": 12128
+      },
+      {
+        "pid": 11,
+        "etape": "NXLDSIZE",
+        "ms": 17920
+      },
+      {
+        "pid": 11,
+        "etape": "NXLDSEAL",
+        "ms": 17920
+      },
+      {
+        "pid": 11,
+        "etape": "SEALED",
+        "ms": 17920
+      },
+      {
+        "pid": 5,
+        "etape": "NXLDSIZE",
+        "ms": 28756
+      },
+      {
+        "pid": 5,
+        "etape": "NXLDSEAL",
+        "ms": 28756
+      },
+      {
+        "pid": 5,
+        "etape": "SEALED",
+        "ms": 28756
+      }
+    ],
+    "confirmation": [
+      {
+        "etape": 20,
+        "ms": 20464
+      },
+      {
+        "etape": 21,
+        "ms": 21048
+      },
+      {
+        "etape": 22,
+        "ms": 27328
+      }
+    ],
+    "ticket_presentation_ms": 20772,
+    "ticket_expiration_ms": 24044,
+    "marge_avant_expiration_ms": 3272,
+    "ticket_statut": 10,
+    "enfant_bob": 0,
+    "mutations_administratives": 1,
+    "recu_RETIREE_signature_verifiee": true,
+    "recu_sha256": "45c7a71c474ddd4bacf2481ea6c5821b532a5f21da5080e5246209145547f9eb",
+    "effets_acquittes": 7,
+    "racines_pic": 4,
+    "racines_par_pid": {
+      "2": 4,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "1": 4,
+      "6": 4,
+      "7": 4,
+      "8": 4,
+      "9": 4,
+      "10": 4,
+      "11": 4,
+      "12": 4,
+      "13": 4,
+      "14": 2,
+      "15": 2,
+      "18": 2,
+      "19": 4,
+      "20": 2,
+      "21": 3,
+      "22": 3,
+      "23": 3
+    },
+    "signataire": {
+      "avant": [
+        4,
+        6,
+        0,
+        68,
+        64,
+        31
+      ],
+      "actif": [
+        4,
+        6,
+        0,
+        68,
+        64,
+        31
+      ],
+      "apres": [
+        4,
+        6,
+        0,
+        68,
+        64,
+        31
+      ]
+    },
+    "registre": {
+      "avant": [
+        4,
+        7,
+        0,
+        145,
+        64,
+        31
+      ],
+      "apres": [
+        4,
+        7,
+        0,
+        145,
+        64,
+        31
+      ]
+    },
+    "drainage_global": true,
+    "commandes": [
+      {
+        "pid": [
+          21
+        ],
+        "statut_natif": 0,
+        "statut_shell": 0,
+        "stdout_octets": 134,
+        "stderr_octets": 0,
+        "octets_conformes": true
+      },
+      {
+        "pid": [
+          22
+        ],
+        "statut_natif": 0,
+        "statut_shell": 0,
+        "stdout_octets": 70,
+        "stderr_octets": 0,
+        "octets_conformes": true
+      },
+      {
+        "pid": [
+          23
+        ],
+        "statut_natif": 0,
+        "statut_shell": 0,
+        "stdout_octets": 70,
+        "stderr_octets": 0,
+        "octets_conformes": true
+      }
+    ],
+    "attente_s": 0.000379875,
+    "execution_banc_s": 35.796453834,
+    "qemu_hote_s": 34.993720292,
+    "acquisition": "2026-11-22T15:47:46.239296+00:00",
+    "liberation": "2026-11-22T15:48:22.083056+00:00"
+  },
+  {
+    "essai": "03",
+    "source": "48fd525746e5b6dfceb3fbfe7cb8767d068e7614",
+    "succes": true,
+    "tls_ms": 2816,
+    "tls_debut_ms": 844,
+    "tls_echeance_ms": 10844,
+    "tls_fin_ms": 3660,
+    "authentifications": {
+      "Alice": {
+        "tag": 1,
+        "defi_ms": 5436,
+        "expiration_defi_ms": 6936,
+        "signature_ms": 5440,
+        "verification_ms": 5684,
+        "statut": 0,
+        "expiration_bail_ms": 65932,
+        "fin_ms": 6160
+      },
+      "Bob": {
+        "tag": 1,
+        "defi_ms": 15320,
+        "expiration_defi_ms": 16820,
+        "signature_ms": 15324,
+        "verification_ms": 15592,
+        "statut": 0,
+        "expiration_bail_ms": 75864,
+        "fin_ms": 16128
+      }
+    },
+    "chargements": [
+      {
+        "pid": 5,
+        "etape": "NXLDSIZE",
+        "ms": 7244
+      },
+      {
+        "pid": 5,
+        "etape": "NXLDSEAL",
+        "ms": 7248
+      },
+      {
+        "pid": 5,
+        "etape": "SEALED",
+        "ms": 7248
+      },
+      {
+        "pid": 5,
+        "etape": "NXLDSIZE",
+        "ms": 11756
+      },
+      {
+        "pid": 5,
+        "etape": "NXLDSEAL",
+        "ms": 11756
+      },
+      {
+        "pid": 5,
+        "etape": "SEALED",
+        "ms": 11756
+      },
+      {
+        "pid": 11,
+        "etape": "NXLDSIZE",
+        "ms": 17296
+      },
+      {
+        "pid": 11,
+        "etape": "NXLDSEAL",
+        "ms": 17296
+      },
+      {
+        "pid": 11,
+        "etape": "SEALED",
+        "ms": 17296
+      },
+      {
+        "pid": 5,
+        "etape": "NXLDSIZE",
+        "ms": 28064
+      },
+      {
+        "pid": 5,
+        "etape": "NXLDSEAL",
+        "ms": 28064
+      },
+      {
+        "pid": 5,
+        "etape": "SEALED",
+        "ms": 28064
+      }
+    ],
+    "confirmation": [
+      {
+        "etape": 20,
+        "ms": 19864
+      },
+      {
+        "etape": 21,
+        "ms": 20416
+      },
+      {
+        "etape": 22,
+        "ms": 26652
+      }
+    ],
+    "ticket_presentation_ms": 20156,
+    "ticket_expiration_ms": 23420,
+    "marge_avant_expiration_ms": 3264,
+    "ticket_statut": 10,
+    "enfant_bob": 0,
+    "mutations_administratives": 1,
+    "recu_RETIREE_signature_verifiee": true,
+    "recu_sha256": "dbbee55c171f7b66bff1ed0f1cb3315ca2dcaebd76f450c338c6069a4c152100",
+    "effets_acquittes": 7,
+    "racines_pic": 4,
+    "racines_par_pid": {
+      "2": 4,
+      "3": 4,
+      "4": 3,
+      "5": 2,
+      "1": 4,
+      "6": 4,
+      "7": 4,
+      "8": 4,
+      "9": 4,
+      "10": 4,
+      "11": 4,
+      "12": 4,
+      "13": 4,
+      "14": 2,
+      "15": 2,
+      "18": 2,
+      "19": 4,
+      "20": 2,
+      "21": 3,
+      "22": 3,
+      "23": 3
+    },
+    "signataire": {
+      "avant": [
+        4,
+        6,
+        0,
+        68,
+        64,
+        31
+      ],
+      "actif": [
+        4,
+        6,
+        0,
+        68,
+        64,
+        31
+      ],
+      "apres": [
+        4,
+        6,
+        0,
+        68,
+        64,
+        31
+      ]
+    },
+    "registre": {
+      "avant": [
+        4,
+        7,
+        0,
+        145,
+        64,
+        31
+      ],
+      "apres": [
+        4,
+        7,
+        0,
+        145,
+        64,
+        31
+      ]
+    },
+    "drainage_global": true,
+    "commandes": [
+      {
+        "pid": [
+          21
+        ],
+        "statut_natif": 0,
+        "statut_shell": 0,
+        "stdout_octets": 134,
+        "stderr_octets": 0,
+        "octets_conformes": true
+      },
+      {
+        "pid": [
+          22
+        ],
+        "statut_natif": 0,
+        "statut_shell": 0,
+        "stdout_octets": 70,
+        "stderr_octets": 0,
+        "octets_conformes": true
+      },
+      {
+        "pid": [
+          23
+        ],
+        "statut_natif": 0,
+        "statut_shell": 0,
+        "stdout_octets": 70,
+        "stderr_octets": 0,
+        "octets_conformes": true
+      }
+    ],
+    "attente_s": 0.000336125,
+    "execution_banc_s": 35.218563667,
+    "qemu_hote_s": 34.435076416,
+    "acquisition": "2026-11-22T15:49:08.265414+00:00",
+    "liberation": "2026-11-22T15:49:43.527827+00:00"
+  }
+]
