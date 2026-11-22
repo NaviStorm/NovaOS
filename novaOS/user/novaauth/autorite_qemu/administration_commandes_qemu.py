@@ -182,6 +182,9 @@ def main():
                 serial.expect(rb'NAR2 Bob references pret',40)
             elif a.etat_ticket or a.bob_minimal:
                 serial.expect(rb'NAR2 Bob fermeture acquittee',40)
+                if a.dernier_concurrent:
+                    pid=events.actor(b'NAR2 Bob authentifie route distincte')
+                    serial.expect(rb'NAEXEC restitue pid='+str(pid).encode()+rb' roots=0 handles=0 waits=0 pages=0 pile=0 threads=0',20)
             elif not a.ticket_vivant:
                 serial.expect(rb'NAR2 Bob fermeture acquittee', 100)
                 if b'NAR2 Bob refus serveur et substitutions verifies' not in serial.data:
