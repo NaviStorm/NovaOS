@@ -53,15 +53,6 @@ def main():
             if b'nsh> ' not in serial.data:serial.expect(rb'nsh> ',20)
             rc,raw=serial.command('true')
             if rc:raise Refus('authentification Alice refusée')
-            # Deux opérations indépendantes, sous leurs baux initiaux : aucun
-            # renouvellement implicite pendant une transaction.
-            rc,raw=serial.command('alice-seulement --self')
-            (out/'alice-consultation.bin').write_bytes(raw)
-            oracle=a.genese.with_name('oracle-self.bin').read_bytes()
-            streams=re.findall(rb'NXFLUX pid=([0-9]+) fd=([12]) octets=([0-9]+) prefixe=([0-9a-f]*)',raw)
-            actual={int(fd):(int(n),bytes.fromhex(h.decode())) for _,fd,n,h in streams}
-            report['commandes'].append({'commande':'alice-seulement --self','statut':rc,'flux':[(int(pid),int(fd),int(n),h.decode()) for pid,fd,n,h in streams]})
-            if rc or actual!={1:(len(oracle),oracle),2:(0,b'')}:raise Refus('consultation Alice non conforme')
             marker=re.escape(b'NAR2 Bob authentifie route distincte')
             # La session de Bob est indépendante et peut avoir répondu pendant
             # la commande d'Alice. Reprendre cette trace unique, sans renvoyer
@@ -74,6 +65,21 @@ def main():
             serial.expect(re.escape(b'NAR2 Bob fermeture acquittee'),40)
             if b'NAR2 Bob paquets Alice et non autorise refuses statut=5 aucun enfant' not in serial.data:
                 raise Refus('refus des installations non attesté dans l’invité')
+            # La commande métier et la lecture de $? sont dans la même ligne.
+            # Le bail n'est ni étendu ni renouvelé ; les deux statuts natifs et
+            # les octets restent contrôlés indépendamment ci-dessous.
+            serial.offset=len(serial.data)
+            start=serial.offset
+            serial.submit('alice-seulement --self; echo NXR_$?__FIN')
+            status=serial.expect(rb'NXR_(\d+)__FIN\r?\n')
+            serial.expect(rb'nsh> ')
+            rc,raw=int(status[1]),bytes(serial.data[start:serial.offset])
+            (out/'alice-consultation.bin').write_bytes(raw)
+            oracle=a.genese.with_name('oracle-self.bin').read_bytes()
+            streams=re.findall(rb'NXFLUX pid=([0-9]+) fd=([12]) octets=([0-9]+) prefixe=([0-9a-f]*)',raw)
+            actual={int(fd):(int(n),bytes.fromhex(h.decode())) for _,fd,n,h in streams}
+            report['commandes'].append({'commande':'alice-seulement --self','statut':rc,'flux':[(int(pid),int(fd),int(n),h.decode()) for pid,fd,n,h in streams]})
+            if rc or actual!={1:(len(oracle),oracle),2:(0,b'')}:raise Refus('consultation Alice non conforme')
             rows=observer.outputs()
             streams=[]
             for binding,closed,data in rows:
@@ -103,7 +109,8 @@ def main():
             report['sorties_exclusivement_hote']=streams
             report['enrolement_époques']=enrolled
             report['bob_consultation_statut_zero']=True
-            report['consultations_alice_et_bob_sous_baux_initiaux']=True
+            report['fermeture_bob_avant_operation_alice']=True
+            report['statut_shell_dans_meme_ligne']=True
             observer.close()
             if a.fermer:
                 serial.send(b'exit\n')
