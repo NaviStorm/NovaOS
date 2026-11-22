@@ -18,6 +18,12 @@ class Status(unittest.TestCase):
                     b'DEBUG pid=5 NXR2_0_0__FIN\r\n'):
             self.assertIsNone(re.search(observed_command_status_pattern('NXR2_1_'),raw))
 
+    def test_text_cannot_substitute_kernel_pid(self):
+        raw=b'DEBUG pid=11 DEBUG pid=5 NXR2_1_0__FIN\r\n'
+        self.assertIsNone(re.search(observed_command_status_pattern('NXR2_1_'),raw))
+        raw=b'DEBUG pid=11 NXR2_1_0__FIN\r\n'
+        self.assertEqual(re.search(observed_command_status_pattern('NXR2_1_'),raw)[1],b'11')
+
     def test_generated_echo_uses_existing_debug_and_propagates_failure(self):
         profile=runpy.run_path(str(SERVICE/'administration_status_profile.py'))
         with tempfile.TemporaryDirectory(dir=os.environ['NOVAOS_TMPDIR'],prefix='r2-status-') as name:

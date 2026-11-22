@@ -16,7 +16,7 @@ def command_status_pattern(step):
 
 def observed_command_status_pattern(step):
     # Émission DEBUG atomique ; le PID est fourni par le noyau, pas par argv.
-    return rb'DEBUG pid=(\d+) ' + command_status_pattern(step) + rb'\r?\n'
+    return rb'(?m)^DEBUG pid=(\d+) ' + command_status_pattern(step) + rb'\r?\n'
 
 
 class Events:
