@@ -96,5 +96,7 @@
     "path": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase1-prealable-5c7f1bf/SHA256-r1-checkpoint.txt",
     "files": 35,
     "sha256": "bceed6bb00b5301168a2c6c3caab97082fa7f216c72019fc269a19a9627671e1"
-  }
+  },
+  "statut_document": "Point de passage historique antérieur aux premiers essais R1",
+  "suite": "../novaauth-administration-r1-qualification-v0.24.0.md"
 }

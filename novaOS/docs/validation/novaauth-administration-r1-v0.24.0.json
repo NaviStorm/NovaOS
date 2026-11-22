@@ -1,0 +1,2569 @@
+{
+  "date": "2026-11-22",
+  "branche": "codex/novaauth-administration-0240-phase1",
+  "base": "5c7f1bfa313a3859ccc0830660438e76d598acb1",
+  "sources_invitees": "45e7c0b5389492544dbc6a7e239cfa0755f7cd05",
+  "sources_bancs": "2ccb667750b03017179225528f420f46dbb8042d",
+  "perimetre": "R1 : conversations administratives privées et consultations QEMU ; aucune commande administrative distribuée ni mutation R2 qualifiée.",
+  "qemu": [
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "succes": true,
+      "preuve": "r1-x86_64-512-complet1",
+      "resultats": {
+        "succes": true,
+        "portee": "R1 consultations QEMU ; aucune mutation R2",
+        "architecture": "x86_64",
+        "secteur": 512,
+        "commandes": [
+          {
+            "commande": "admin-sonde --self",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                18,
+                1,
+                64,
+                "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+              ],
+              [
+                18,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "commande": "admin-sonde --user bob",
+            "statut": 5,
+            "attendu": 5,
+            "flux": [
+              [
+                19,
+                1,
+                64,
+                "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                19,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "commande": "admin-sonde --self",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                20,
+                1,
+                64,
+                "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+              ],
+              [
+                20,
+                2,
+                0,
+                ""
+              ]
+            ]
+          }
+        ],
+        "refus_cibles": [
+          {
+            "option": "--denied-same-channel",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                21,
+                1,
+                64,
+                "00000000000000000500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                21,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--replay",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                22,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                22,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--invalid-frame",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                23,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                23,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--forged-context",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                24,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                24,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--forged-meta",
+            "statut": 5,
+            "attendu": 5,
+            "flux": [
+              [
+                25,
+                1,
+                64,
+                "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                25,
+                2,
+                0,
+                ""
+              ]
+            ]
+          }
+        ],
+        "reponse_partielle_perdue": {
+          "statut": 22,
+          "flux": [
+            [
+              26,
+              1,
+              64,
+              "16000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            [
+              26,
+              2,
+              0,
+              ""
+            ]
+          ]
+        },
+        "concurrence": {
+          "producteur": 27,
+          "lecteur": 28,
+          "statut_producteur": 0,
+          "statut_lecteur": 0,
+          "statut_pipe": 0
+        },
+        "expiration": {
+          "pid": 29,
+          "statut_natif": 10,
+          "seconde_utilisation_refusee": true
+        },
+        "nouvelle_session": {
+          "statut": 0,
+          "pid": 30,
+          "octets": "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+        }
+      },
+      "ressources": {
+        "enfants": [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "tous_enfants_restitues": true,
+        "retour_compteurs_fermeture": true,
+        "plafond": true,
+        "residents": {
+          "1": {
+            "service": 0,
+            "pages": [
+              12
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "2": {
+            "service": 0,
+            "pages": [
+              2
+            ],
+            "pile": [
+              1
+            ]
+          },
+          "3": {
+            "service": 0,
+            "pages": [
+              170
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "4": {
+            "service": 0,
+            "pages": [
+              3
+            ],
+            "pile": [
+              1
+            ]
+          },
+          "5": {
+            "service": 0,
+            "pages": [
+              86
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "6": {
+            "service": 17,
+            "pages": [
+              34
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "7": {
+            "service": 22,
+            "pages": [
+              136
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "8": {
+            "service": 23,
+            "pages": [
+              65
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "9": {
+            "service": 18,
+            "pages": [
+              14
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "10": {
+            "service": 21,
+            "pages": [
+              3
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "11": {
+            "service": 1,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "12": {
+            "service": 2,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "15": {
+            "service": 9,
+            "pages": [
+              4
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "16": {
+            "service": 16,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "17": {
+            "service": 10,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "27": {
+            "service": 0,
+            "pages": [
+              26
+            ],
+            "pile": [
+              64
+            ]
+          }
+        },
+        "reference": {
+          "phase": "avant_ticket",
+          "position": 14304,
+          "roots": 2,
+          "handles": 8,
+          "endpoints": 49,
+          "nodes": 102,
+          "waits": 14,
+          "processus": 15,
+          "threads": 1,
+          "joins": 0,
+          "cadres_ipc": 58,
+          "cadres_libres": 59750
+        },
+        "pics_racines_handles": {
+          "2": [
+            4,
+            6
+          ],
+          "3": [
+            4,
+            13
+          ],
+          "4": [
+            3,
+            3
+          ],
+          "5": [
+            4,
+            13
+          ],
+          "1": [
+            4,
+            26
+          ],
+          "6": [
+            4,
+            13
+          ],
+          "7": [
+            4,
+            8
+          ],
+          "8": [
+            4,
+            6
+          ],
+          "9": [
+            4,
+            4
+          ],
+          "10": [
+            4,
+            4
+          ],
+          "11": [
+            2,
+            2
+          ],
+          "12": [
+            2,
+            2
+          ],
+          "13": [
+            4,
+            20
+          ],
+          "14": [
+            4,
+            20
+          ],
+          "15": [
+            2,
+            2
+          ],
+          "16": [
+            4,
+            6
+          ],
+          "17": [
+            2,
+            2
+          ],
+          "18": [
+            4,
+            26
+          ],
+          "19": [
+            4,
+            26
+          ],
+          "20": [
+            4,
+            26
+          ],
+          "21": [
+            4,
+            26
+          ],
+          "22": [
+            4,
+            26
+          ],
+          "23": [
+            4,
+            26
+          ],
+          "24": [
+            4,
+            26
+          ],
+          "25": [
+            4,
+            26
+          ],
+          "26": [
+            4,
+            26
+          ],
+          "27": [
+            4,
+            26
+          ],
+          "28": [
+            4,
+            26
+          ],
+          "29": [
+            4,
+            26
+          ],
+          "30": [
+            4,
+            26
+          ]
+        }
+      },
+      "coordination": {
+        "acquisition": "2026-11-22T00:05:55.131817+00:00",
+        "liberation": "2026-11-22T00:07:44.512986+00:00",
+        "attente_secondes": 0.000388792,
+        "execution_secondes": 109.351344,
+        "verrou_libere": true
+      },
+      "configuration": {
+        "version_qemu": "QEMU emulator version 11.1.3",
+        "vcpu": 2,
+        "ram_mio": 256,
+        "acceleration": "tcg",
+        "reseau": "none",
+        "iso_sha256": "0f90d09b181a527e4282008c21757c89818f6c54320194f7f6341f9773ce2ec1",
+        "registre_sha256": "a33df14abcbcdc49edd08a2c17a8de0a36b2eb1078dd98dbfb186d52ff17ae5a",
+        "p9_initial_sha256": "d44326d8bb921610b978460a2231ff31f56e6ac779e89a2d03b56679941d07f2",
+        "connexions_banc": 233,
+        "limite_connexions_banc": 256,
+        "cinquieme_racine_refusee": true
+      },
+      "fichiers": [
+        {
+          "fichier": "r1-x86_64-512-complet1/r1-resultats.json",
+          "sha256": "f40052dda01a3469c0670ecd26d74d2a830e1b87f13bd8fa3e6433f13d01020b"
+        },
+        {
+          "fichier": "r1-x86_64-512-complet1/invite/resultat.json",
+          "sha256": "4be8d790f5268c7e54608c580387ac3ae45357c7255b978b1bf6ec5a52a1dab4"
+        },
+        {
+          "fichier": "r1-x86_64-512-complet1/invite/invite.serial",
+          "sha256": "11e91e6833e8593ba08b515f314fd2efd1991573ffc57479adf92d342a1bf105"
+        },
+        {
+          "fichier": "r1-x86_64-512-complet1-ressources-v2.json",
+          "sha256": "b49e99b41f73f52f3fd1a7c718635c4caa1f19e46d162fe2634fa4ac5a05dac0"
+        }
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "succes": true,
+      "preuve": "r1-aarch64-512-complet1",
+      "resultats": {
+        "succes": true,
+        "portee": "R1 consultations QEMU ; aucune mutation R2",
+        "architecture": "aarch64",
+        "secteur": 512,
+        "commandes": [
+          {
+            "commande": "admin-sonde --self",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                18,
+                1,
+                64,
+                "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+              ],
+              [
+                18,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "commande": "admin-sonde --user bob",
+            "statut": 5,
+            "attendu": 5,
+            "flux": [
+              [
+                19,
+                1,
+                64,
+                "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                19,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "commande": "admin-sonde --self",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                20,
+                1,
+                64,
+                "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+              ],
+              [
+                20,
+                2,
+                0,
+                ""
+              ]
+            ]
+          }
+        ],
+        "refus_cibles": [
+          {
+            "option": "--denied-same-channel",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                21,
+                1,
+                64,
+                "00000000000000000500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                21,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--replay",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                22,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                22,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--invalid-frame",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                23,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                23,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--forged-context",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                24,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                24,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--forged-meta",
+            "statut": 5,
+            "attendu": 5,
+            "flux": [
+              [
+                25,
+                1,
+                64,
+                "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                25,
+                2,
+                0,
+                ""
+              ]
+            ]
+          }
+        ],
+        "reponse_partielle_perdue": {
+          "statut": 22,
+          "flux": [
+            [
+              26,
+              1,
+              64,
+              "16000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            [
+              26,
+              2,
+              0,
+              ""
+            ]
+          ]
+        },
+        "concurrence": {
+          "producteur": 27,
+          "lecteur": 28,
+          "statut_producteur": 0,
+          "statut_lecteur": 0,
+          "statut_pipe": 0
+        },
+        "expiration": {
+          "pid": 29,
+          "statut_natif": 10,
+          "seconde_utilisation_refusee": true
+        },
+        "nouvelle_session": {
+          "statut": 0,
+          "pid": 30,
+          "octets": "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+        }
+      },
+      "ressources": {
+        "enfants": [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "tous_enfants_restitues": true,
+        "retour_compteurs_fermeture": true,
+        "plafond": true,
+        "residents": {
+          "1": {
+            "service": 0,
+            "pages": [
+              12
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "2": {
+            "service": 0,
+            "pages": [
+              2
+            ],
+            "pile": [
+              1
+            ]
+          },
+          "3": {
+            "service": 0,
+            "pages": [
+              167
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "4": {
+            "service": 0,
+            "pages": [
+              3
+            ],
+            "pile": [
+              1
+            ]
+          },
+          "5": {
+            "service": 0,
+            "pages": [
+              82
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "6": {
+            "service": 17,
+            "pages": [
+              30
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "7": {
+            "service": 22,
+            "pages": [
+              129
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "8": {
+            "service": 23,
+            "pages": [
+              57
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "9": {
+            "service": 18,
+            "pages": [
+              11
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "10": {
+            "service": 21,
+            "pages": [
+              3
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "11": {
+            "service": 1,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "12": {
+            "service": 2,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "15": {
+            "service": 9,
+            "pages": [
+              4
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "16": {
+            "service": 16,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "17": {
+            "service": 10,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "27": {
+            "service": 0,
+            "pages": [
+              25
+            ],
+            "pile": [
+              64
+            ]
+          }
+        },
+        "reference": {
+          "phase": "avant_ticket",
+          "position": 14877,
+          "roots": 2,
+          "handles": 8,
+          "endpoints": 49,
+          "nodes": 102,
+          "waits": 14,
+          "processus": 15,
+          "threads": 1,
+          "joins": 0,
+          "cadres_ipc": 58,
+          "cadres_libres": 59254
+        },
+        "pics_racines_handles": {
+          "2": [
+            4,
+            6
+          ],
+          "3": [
+            4,
+            13
+          ],
+          "4": [
+            3,
+            3
+          ],
+          "5": [
+            4,
+            13
+          ],
+          "1": [
+            4,
+            26
+          ],
+          "6": [
+            4,
+            13
+          ],
+          "7": [
+            4,
+            8
+          ],
+          "8": [
+            4,
+            6
+          ],
+          "9": [
+            4,
+            4
+          ],
+          "10": [
+            4,
+            4
+          ],
+          "11": [
+            2,
+            2
+          ],
+          "12": [
+            2,
+            2
+          ],
+          "13": [
+            4,
+            20
+          ],
+          "14": [
+            4,
+            20
+          ],
+          "15": [
+            2,
+            2
+          ],
+          "16": [
+            4,
+            6
+          ],
+          "17": [
+            2,
+            2
+          ],
+          "18": [
+            4,
+            26
+          ],
+          "19": [
+            4,
+            26
+          ],
+          "20": [
+            4,
+            26
+          ],
+          "21": [
+            4,
+            26
+          ],
+          "22": [
+            4,
+            26
+          ],
+          "23": [
+            4,
+            26
+          ],
+          "24": [
+            4,
+            26
+          ],
+          "25": [
+            4,
+            26
+          ],
+          "26": [
+            4,
+            26
+          ],
+          "27": [
+            4,
+            26
+          ],
+          "28": [
+            4,
+            26
+          ],
+          "29": [
+            4,
+            26
+          ],
+          "30": [
+            4,
+            26
+          ]
+        }
+      },
+      "coordination": {
+        "acquisition": "2026-11-22T00:07:59.748094+00:00",
+        "liberation": "2026-11-22T00:10:32.239648+00:00",
+        "attente_secondes": 0.0003655,
+        "execution_secondes": 152.462711041,
+        "verrou_libere": true
+      },
+      "configuration": {
+        "version_qemu": "QEMU emulator version 11.1.3",
+        "vcpu": 2,
+        "ram_mio": 256,
+        "acceleration": "tcg",
+        "reseau": "none",
+        "iso_sha256": "3d72a75b7974574defa4827e408272310dec4a32b1cdce504f3d264e8d43cc1b",
+        "registre_sha256": "4ca09493572b2dbc0b0689f73a8c789ccecbb53efefbe607fa8aa5ae31f17784",
+        "p9_initial_sha256": "c019d2d3f3d5ab376360170ca3c4e669fba124e61654eee6e89b84a3899c7251",
+        "connexions_banc": 234,
+        "limite_connexions_banc": 256,
+        "cinquieme_racine_refusee": true
+      },
+      "fichiers": [
+        {
+          "fichier": "r1-aarch64-512-complet1/r1-resultats.json",
+          "sha256": "92495e619aa8eedfe938d11f61017f58bcb4a4e3549fa10714a5af630c7c0c62"
+        },
+        {
+          "fichier": "r1-aarch64-512-complet1/invite/resultat.json",
+          "sha256": "c6c21041282479880f01a72ab87ae9e5103ae117bd80b086a29271b1f61c077d"
+        },
+        {
+          "fichier": "r1-aarch64-512-complet1/invite/invite.serial",
+          "sha256": "5fb52a2d4171fb3f939168e7f21924bf7d43341d9f4f68d0c749303e235a5913"
+        },
+        {
+          "fichier": "r1-aarch64-512-complet1-ressources.json",
+          "sha256": "f5b6b3a518769fdb8b6f5c9ef6fef5843eac18fb6b9fccb7e448b006d0867d8b"
+        }
+      ]
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "succes": true,
+      "preuve": "r1-x86_64-4096-baux-valides3",
+      "resultats": {
+        "succes": true,
+        "portee": "R1 consultations QEMU ; aucune mutation R2",
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "commandes": [
+          {
+            "commande": "admin-sonde --self",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                18,
+                1,
+                64,
+                "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+              ],
+              [
+                18,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "commande": "admin-sonde --user bob",
+            "statut": 5,
+            "attendu": 5,
+            "flux": [
+              [
+                19,
+                1,
+                64,
+                "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                19,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "commande": "admin-sonde --self",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                20,
+                1,
+                64,
+                "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+              ],
+              [
+                20,
+                2,
+                0,
+                ""
+              ]
+            ]
+          }
+        ],
+        "refus_cibles": [
+          {
+            "option": "--denied-same-channel",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                21,
+                1,
+                64,
+                "00000000000000000500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                21,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--replay",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                22,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                22,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--invalid-frame",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                23,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                23,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--forged-context",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                24,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                24,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--forged-meta",
+            "statut": 5,
+            "attendu": 5,
+            "flux": [
+              [
+                25,
+                1,
+                64,
+                "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                25,
+                2,
+                0,
+                ""
+              ]
+            ]
+          }
+        ],
+        "authentifications_intermediaires": [
+          {
+            "avant": "denied-same-channel",
+            "statut": 0
+          },
+          {
+            "avant": "invalid-frame",
+            "statut": 0
+          },
+          {
+            "avant": "forged-meta",
+            "statut": 0
+          },
+          {
+            "avant": "perte-et-concurrence",
+            "statut": 0
+          }
+        ],
+        "reponse_partielle_perdue": {
+          "statut": 22,
+          "flux": [
+            [
+              26,
+              1,
+              64,
+              "16000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            [
+              26,
+              2,
+              0,
+              ""
+            ]
+          ]
+        },
+        "concurrence": {
+          "producteur": 27,
+          "lecteur": 28,
+          "statut_producteur": 0,
+          "statut_lecteur": 0,
+          "statut_pipe": 0
+        },
+        "expiration": {
+          "pid": 29,
+          "statut_natif": 10,
+          "seconde_utilisation_refusee": true
+        },
+        "nouvelle_session": {
+          "statut": 0,
+          "pid": 30,
+          "octets": "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+        }
+      },
+      "ressources": {
+        "enfants": [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "tous_enfants_restitues": true,
+        "retour_compteurs_fermeture": true,
+        "plafond": true,
+        "residents": {
+          "1": {
+            "service": 0,
+            "pages": [
+              12
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "2": {
+            "service": 0,
+            "pages": [
+              2
+            ],
+            "pile": [
+              1
+            ]
+          },
+          "3": {
+            "service": 0,
+            "pages": [
+              170
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "4": {
+            "service": 0,
+            "pages": [
+              3
+            ],
+            "pile": [
+              1
+            ]
+          },
+          "5": {
+            "service": 0,
+            "pages": [
+              86
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "6": {
+            "service": 17,
+            "pages": [
+              34
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "7": {
+            "service": 22,
+            "pages": [
+              136
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "8": {
+            "service": 23,
+            "pages": [
+              65
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "9": {
+            "service": 18,
+            "pages": [
+              14
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "10": {
+            "service": 21,
+            "pages": [
+              3
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "11": {
+            "service": 1,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "12": {
+            "service": 2,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "15": {
+            "service": 9,
+            "pages": [
+              4
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "16": {
+            "service": 16,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "17": {
+            "service": 10,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "27": {
+            "service": 0,
+            "pages": [
+              26
+            ],
+            "pile": [
+              64
+            ]
+          }
+        },
+        "reference": {
+          "phase": "avant_ticket",
+          "position": 14318,
+          "roots": 2,
+          "handles": 8,
+          "endpoints": 49,
+          "nodes": 102,
+          "waits": 14,
+          "processus": 15,
+          "threads": 1,
+          "joins": 0,
+          "cadres_ipc": 58,
+          "cadres_libres": 59750
+        },
+        "pics_racines_handles": {
+          "2": [
+            4,
+            6
+          ],
+          "3": [
+            4,
+            13
+          ],
+          "4": [
+            3,
+            3
+          ],
+          "5": [
+            4,
+            13
+          ],
+          "1": [
+            4,
+            26
+          ],
+          "6": [
+            4,
+            13
+          ],
+          "7": [
+            4,
+            8
+          ],
+          "8": [
+            4,
+            6
+          ],
+          "9": [
+            4,
+            4
+          ],
+          "10": [
+            4,
+            4
+          ],
+          "11": [
+            2,
+            2
+          ],
+          "12": [
+            2,
+            2
+          ],
+          "13": [
+            4,
+            20
+          ],
+          "14": [
+            4,
+            20
+          ],
+          "15": [
+            2,
+            2
+          ],
+          "16": [
+            4,
+            6
+          ],
+          "17": [
+            2,
+            2
+          ],
+          "18": [
+            4,
+            26
+          ],
+          "19": [
+            4,
+            26
+          ],
+          "20": [
+            4,
+            26
+          ],
+          "21": [
+            4,
+            26
+          ],
+          "22": [
+            4,
+            26
+          ],
+          "23": [
+            4,
+            26
+          ],
+          "24": [
+            4,
+            26
+          ],
+          "25": [
+            4,
+            26
+          ],
+          "26": [
+            4,
+            26
+          ],
+          "27": [
+            4,
+            26
+          ],
+          "28": [
+            4,
+            26
+          ],
+          "29": [
+            4,
+            26
+          ],
+          "30": [
+            4,
+            26
+          ]
+        }
+      },
+      "coordination": {
+        "acquisition": "2026-11-22T00:26:50.954365+00:00",
+        "liberation": "2026-11-22T00:31:08.900496+00:00",
+        "attente_secondes": 0.000332958,
+        "execution_secondes": 257.917217042,
+        "verrou_libere": true
+      },
+      "configuration": {
+        "version_qemu": "QEMU emulator version 11.1.3",
+        "vcpu": 2,
+        "ram_mio": 256,
+        "acceleration": "tcg",
+        "reseau": "none",
+        "iso_sha256": "0f90d09b181a527e4282008c21757c89818f6c54320194f7f6341f9773ce2ec1",
+        "registre_sha256": "a33df14abcbcdc49edd08a2c17a8de0a36b2eb1078dd98dbfb186d52ff17ae5a",
+        "p9_initial_sha256": "5b5926e92d1b4b62ae8963a4bc3cef8da1533ae4e0570c86b234e17ec64ac68b",
+        "connexions_banc": 257,
+        "limite_connexions_banc": 320,
+        "cinquieme_racine_refusee": true
+      },
+      "fichiers": [
+        {
+          "fichier": "r1-x86_64-4096-baux-valides3/r1-resultats.json",
+          "sha256": "67a2897d04ab0e86fbdbf3e7b4ddd2b9a7cba48034fc625a07e663387c7d8305"
+        },
+        {
+          "fichier": "r1-x86_64-4096-baux-valides3/invite/resultat.json",
+          "sha256": "95460f2d1b6c50a0d3f9de3e485412a1d3405a4de4531c0406c0b01ea9b0f5aa"
+        },
+        {
+          "fichier": "r1-x86_64-4096-baux-valides3/invite/invite.serial",
+          "sha256": "7630052ddd3e6d4558bd968e7a66c4e0fc569feeea29e25fd949c9d83ee6fe4e"
+        },
+        {
+          "fichier": "r1-x86_64-4096-baux-valides3-ressources.json",
+          "sha256": "8b9dafe267de87e657bc28d5c6565ceb0244dc318e84368a6aa36b86203de1e4"
+        }
+      ]
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "succes": true,
+      "preuve": "r1-aarch64-4096-baux-valides1",
+      "resultats": {
+        "succes": true,
+        "portee": "R1 consultations QEMU ; aucune mutation R2",
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "commandes": [
+          {
+            "commande": "admin-sonde --self",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                18,
+                1,
+                64,
+                "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+              ],
+              [
+                18,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "commande": "admin-sonde --user bob",
+            "statut": 5,
+            "attendu": 5,
+            "flux": [
+              [
+                19,
+                1,
+                64,
+                "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                19,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "commande": "admin-sonde --self",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                20,
+                1,
+                64,
+                "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+              ],
+              [
+                20,
+                2,
+                0,
+                ""
+              ]
+            ]
+          }
+        ],
+        "refus_cibles": [
+          {
+            "option": "--denied-same-channel",
+            "statut": 0,
+            "attendu": 0,
+            "flux": [
+              [
+                21,
+                1,
+                64,
+                "00000000000000000500000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                21,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--replay",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                22,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                22,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--invalid-frame",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                23,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                23,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--forged-context",
+            "statut": 3,
+            "attendu": 3,
+            "flux": [
+              [
+                24,
+                1,
+                64,
+                "03000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                24,
+                2,
+                0,
+                ""
+              ]
+            ]
+          },
+          {
+            "option": "--forged-meta",
+            "statut": 5,
+            "attendu": 5,
+            "flux": [
+              [
+                25,
+                1,
+                64,
+                "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+              ],
+              [
+                25,
+                2,
+                0,
+                ""
+              ]
+            ]
+          }
+        ],
+        "authentifications_intermediaires": [
+          {
+            "avant": "denied-same-channel",
+            "statut": 0
+          },
+          {
+            "avant": "invalid-frame",
+            "statut": 0
+          },
+          {
+            "avant": "forged-meta",
+            "statut": 0
+          },
+          {
+            "avant": "perte-et-concurrence",
+            "statut": 0
+          }
+        ],
+        "reponse_partielle_perdue": {
+          "statut": 22,
+          "flux": [
+            [
+              26,
+              1,
+              64,
+              "16000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            ],
+            [
+              26,
+              2,
+              0,
+              ""
+            ]
+          ]
+        },
+        "concurrence": {
+          "producteur": 27,
+          "lecteur": 28,
+          "statut_producteur": 0,
+          "statut_lecteur": 0,
+          "statut_pipe": 0
+        },
+        "expiration": {
+          "pid": 29,
+          "statut_natif": 10,
+          "seconde_utilisation_refusee": true
+        },
+        "nouvelle_session": {
+          "statut": 0,
+          "pid": 30,
+          "octets": "0000000000000000e7dcfc8994f427b1ebc8302659e784ef05616c69636500000000000000000000000000000000000000000000000000000001010000000000"
+        }
+      },
+      "ressources": {
+        "enfants": [
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "tous_enfants_restitues": true,
+        "retour_compteurs_fermeture": true,
+        "plafond": true,
+        "residents": {
+          "1": {
+            "service": 0,
+            "pages": [
+              12
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "2": {
+            "service": 0,
+            "pages": [
+              2
+            ],
+            "pile": [
+              1
+            ]
+          },
+          "3": {
+            "service": 0,
+            "pages": [
+              167
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "4": {
+            "service": 0,
+            "pages": [
+              3
+            ],
+            "pile": [
+              1
+            ]
+          },
+          "5": {
+            "service": 0,
+            "pages": [
+              82
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "6": {
+            "service": 17,
+            "pages": [
+              30
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "7": {
+            "service": 22,
+            "pages": [
+              129
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "8": {
+            "service": 23,
+            "pages": [
+              57
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "9": {
+            "service": 18,
+            "pages": [
+              11
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "10": {
+            "service": 21,
+            "pages": [
+              3
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "11": {
+            "service": 1,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "12": {
+            "service": 2,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "15": {
+            "service": 9,
+            "pages": [
+              4
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "16": {
+            "service": 16,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "17": {
+            "service": 10,
+            "pages": [
+              5
+            ],
+            "pile": [
+              64
+            ]
+          },
+          "27": {
+            "service": 0,
+            "pages": [
+              25
+            ],
+            "pile": [
+              64
+            ]
+          }
+        },
+        "reference": {
+          "phase": "avant_ticket",
+          "position": 14877,
+          "roots": 2,
+          "handles": 8,
+          "endpoints": 49,
+          "nodes": 102,
+          "waits": 14,
+          "processus": 15,
+          "threads": 1,
+          "joins": 0,
+          "cadres_ipc": 58,
+          "cadres_libres": 59254
+        },
+        "pics_racines_handles": {
+          "2": [
+            4,
+            6
+          ],
+          "3": [
+            4,
+            13
+          ],
+          "4": [
+            3,
+            3
+          ],
+          "5": [
+            4,
+            13
+          ],
+          "1": [
+            4,
+            26
+          ],
+          "6": [
+            4,
+            13
+          ],
+          "7": [
+            4,
+            8
+          ],
+          "8": [
+            4,
+            6
+          ],
+          "9": [
+            4,
+            4
+          ],
+          "10": [
+            4,
+            4
+          ],
+          "11": [
+            2,
+            2
+          ],
+          "12": [
+            2,
+            2
+          ],
+          "13": [
+            4,
+            20
+          ],
+          "14": [
+            4,
+            20
+          ],
+          "15": [
+            2,
+            2
+          ],
+          "16": [
+            4,
+            6
+          ],
+          "17": [
+            2,
+            2
+          ],
+          "18": [
+            4,
+            26
+          ],
+          "19": [
+            4,
+            26
+          ],
+          "20": [
+            4,
+            26
+          ],
+          "21": [
+            4,
+            26
+          ],
+          "22": [
+            4,
+            26
+          ],
+          "23": [
+            4,
+            26
+          ],
+          "24": [
+            4,
+            26
+          ],
+          "25": [
+            4,
+            26
+          ],
+          "26": [
+            4,
+            26
+          ],
+          "27": [
+            4,
+            26
+          ],
+          "28": [
+            4,
+            26
+          ],
+          "29": [
+            4,
+            26
+          ],
+          "30": [
+            4,
+            26
+          ]
+        }
+      },
+      "coordination": {
+        "acquisition": "2026-11-22T00:31:43.616384+00:00",
+        "liberation": "2026-11-22T00:36:32.171539+00:00",
+        "attente_secondes": 0.000346792,
+        "execution_secondes": 288.524041,
+        "verrou_libere": true
+      },
+      "configuration": {
+        "version_qemu": "QEMU emulator version 11.1.3",
+        "vcpu": 2,
+        "ram_mio": 256,
+        "acceleration": "tcg",
+        "reseau": "none",
+        "iso_sha256": "3d72a75b7974574defa4827e408272310dec4a32b1cdce504f3d264e8d43cc1b",
+        "registre_sha256": "4ca09493572b2dbc0b0689f73a8c789ccecbb53efefbe607fa8aa5ae31f17784",
+        "p9_initial_sha256": "0f5d7cea8684a72768689d689f64fd92b4423a2b2838254c4a48f0e48593be67",
+        "connexions_banc": 257,
+        "limite_connexions_banc": 320,
+        "cinquieme_racine_refusee": true
+      },
+      "fichiers": [
+        {
+          "fichier": "r1-aarch64-4096-baux-valides1/r1-resultats.json",
+          "sha256": "dd635f297e9a49fb67eb8ddab24a8a73e775dfe1d74d144d22cb3877f78d6d02"
+        },
+        {
+          "fichier": "r1-aarch64-4096-baux-valides1/invite/resultat.json",
+          "sha256": "2e69a873c0fa4b6675c0b3ebba6d17b74660b65ac18e584e85b5c4365f7a6452"
+        },
+        {
+          "fichier": "r1-aarch64-4096-baux-valides1/invite/invite.serial",
+          "sha256": "5e36b180f519ca80799a5627fd1f9f7fb46f273e2b37246f2fd1dbb12d2f5956"
+        },
+        {
+          "fichier": "r1-aarch64-4096-baux-valides1-ressources.json",
+          "sha256": "7be1c50182ea1b2eb3250bcd7404e77a790dc5e26740c3976874629ff3784079"
+        }
+      ]
+    }
+  ],
+  "abi": {
+    "selecteurs": 48,
+    "controles": 9,
+    "reussis": 9,
+    "export_r1": {
+      "fichier": "r1-45e7c0b-abi.log",
+      "sha256": "a649b66cab5a2ed0f6fb086d2d46a3d53188aec95f04730235023f308691def6"
+    },
+    "sources_finales": {
+      "fichier": "r1-abi-final.log",
+      "sha256": "ccea17206411a7ebe36a01b7f98da865774039d6528a041196a00ac07bad6870"
+    },
+    "registre_public_inchange": true
+  },
+  "elf_historiques": [
+    {
+      "architecture": "x86_64",
+      "profil": "sdk-example",
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-recuperation-v2/artefacts-exacts/historique-x86_64-sdk-example.elf",
+      "sha256": "1ad5ebf8b6a0d80b10d2df826500f39052fdc222fac418640b408b9657d78c6e",
+      "debut_ns": 311912209386416,
+      "code": 0,
+      "fin_ns": 311936884457125,
+      "rapport": {
+        "architecture": "x86_64",
+        "profil": "sdk-example",
+        "elf_sha256": "1ad5ebf8b6a0d80b10d2df826500f39052fdc222fac418640b408b9657d78c6e",
+        "noyau_sha256": "2a1542d4094285af2eb110b7c4ac4da6cae6fe10a2412cfd68883e6119a7b4c5",
+        "journal": "serie-x86_64-sdk-example-2cpu.log",
+        "journal_sha256": "701c220e0fdb6179892e68463bc7b48d23d0861fd0d3b81641a7aed5ffb7e5a8",
+        "profil_novaauth_qemu": true,
+        "qemu": "QEMU emulator version 11.1.3",
+        "resultat": {
+          "vcpus": 2,
+          "niveau": "Ring3",
+          "sortie": 0,
+          "restitution": true
+        }
+      }
+    },
+    {
+      "architecture": "x86_64",
+      "profil": "threads-test",
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-recuperation-v2/artefacts-exacts/historique-x86_64-threads-test.elf",
+      "sha256": "6073a78fb2ffa5c716e75ac942932728faa218d614c3dedf6f30c9f067f6b30c",
+      "debut_ns": 311936888768083,
+      "code": 0,
+      "fin_ns": 311961652868083,
+      "rapport": {
+        "architecture": "x86_64",
+        "profil": "threads-test",
+        "elf_sha256": "6073a78fb2ffa5c716e75ac942932728faa218d614c3dedf6f30c9f067f6b30c",
+        "noyau_sha256": "103016637498e05f221a138a716819e1890c57e12e29538a099445bc4e19c921",
+        "journal": "serie-x86_64-threads-test-2cpu-archive.log",
+        "journal_sha256": "59b1e362b024c8cb853a036261008bcbfd510f7a4bb79fc14a09d3cbda42230e",
+        "profil_novaauth_qemu": true,
+        "qemu": "QEMU emulator version 11.1.3",
+        "resultat": {
+          "vcpus": 2,
+          "niveau": "Ring3",
+          "cpu_final": 1,
+          "preemptions": [
+            5,
+            5
+          ],
+          "migrations": 2,
+          "cadres_avant": 61552,
+          "cadres_apres": 61552,
+          "blocs": 4,
+          "tcb_apres": 3
+        }
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "profil": "sdk-example",
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-recuperation-v2/artefacts-exacts/historique-aarch64-sdk-example.elf",
+      "sha256": "db2d14ec8a1f8d1ac22acc331ee4d3d90336a90adc8d50ca057c3129e129c3a8",
+      "debut_ns": 311961657001625,
+      "code": 0,
+      "fin_ns": 311990189402833,
+      "rapport": {
+        "architecture": "aarch64",
+        "profil": "sdk-example",
+        "elf_sha256": "db2d14ec8a1f8d1ac22acc331ee4d3d90336a90adc8d50ca057c3129e129c3a8",
+        "noyau_sha256": "10740de81639856cf07c1b82f3b8a0cd6127a05ab7c01899f1595030fdf269f6",
+        "journal": "serie-aarch64-sdk-example-2cpu.log",
+        "journal_sha256": "988a86cca8287157bed5b78729d04a827c399a1dff894975959f89ef4cb55cba",
+        "profil_novaauth_qemu": true,
+        "qemu": "QEMU emulator version 11.1.3",
+        "resultat": {
+          "vcpus": 2,
+          "niveau": "EL0",
+          "sortie": 0,
+          "restitution": true
+        }
+      }
+    },
+    {
+      "architecture": "aarch64",
+      "profil": "threads-test",
+      "source": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-recuperation-v2/artefacts-exacts/historique-aarch64-threads-test.elf",
+      "sha256": "fa1640df7589a2700f172acc43197c2904e6e2f833fb748048bc15984575cbd9",
+      "debut_ns": 311990191163083,
+      "code": 0,
+      "fin_ns": 312019217995708,
+      "rapport": {
+        "architecture": "aarch64",
+        "profil": "threads-test",
+        "elf_sha256": "fa1640df7589a2700f172acc43197c2904e6e2f833fb748048bc15984575cbd9",
+        "noyau_sha256": "4b2b2fbd341b0b7a45c716854bc4178b7e0bdc1069803f06eb2a5027ec70a67b",
+        "journal": "serie-aarch64-threads-test-2cpu-archive.log",
+        "journal_sha256": "4bcbe2caffbb313e33c858c9a249d6580529e8315b265973340a219671090456",
+        "profil_novaauth_qemu": true,
+        "qemu": "QEMU emulator version 11.1.3",
+        "resultat": {
+          "vcpus": 2,
+          "niveau": "EL0",
+          "cpu_final": 1,
+          "preemptions": [
+            6,
+            5
+          ],
+          "migrations": 2,
+          "cadres_avant": 61008,
+          "cadres_apres": 61008,
+          "blocs": 4,
+          "tcb_apres": 3
+        }
+      }
+    }
+  ],
+  "ordinaires": {
+    "base": "5c7f1bfa313a3859ccc0830660438e76d598acb1",
+    "candidat": "45e7c0b5389492544dbc6a7e239cfa0755f7cd05",
+    "chemins_identiques": true,
+    "compilations_independantes": true,
+    "commandes": [
+      {
+        "label": "base",
+        "architecture": "x86_64",
+        "commande": [
+          "cargo",
+          "build",
+          "--release",
+          "--locked",
+          "--offline",
+          "--target",
+          "x86_64-unknown-none"
+        ],
+        "debut": 311847164066708,
+        "code": 0,
+        "fin": 311861192094333,
+        "sha256": "ce9233480afb4de06033f9233be65b9fbc51070ed779e521ac845afc39d15117",
+        "NXADMIN1_absent": true
+      },
+      {
+        "label": "base",
+        "architecture": "aarch64",
+        "commande": [
+          "cargo",
+          "build",
+          "--release",
+          "--locked",
+          "--offline",
+          "--target",
+          "aarch64-unknown-none-softfloat"
+        ],
+        "debut": 311861197543541,
+        "code": 0,
+        "fin": 311874781393541,
+        "sha256": "dc7ad2524e704eeee52bf22f7136a2ec4c5c61cbd76ed81f2c84e9f6f364a7d3",
+        "NXADMIN1_absent": true
+      },
+      {
+        "label": "candidat",
+        "architecture": "x86_64",
+        "commande": [
+          "cargo",
+          "build",
+          "--release",
+          "--locked",
+          "--offline",
+          "--target",
+          "x86_64-unknown-none"
+        ],
+        "debut": 311875245065916,
+        "code": 0,
+        "fin": 311889054610791,
+        "sha256": "ce9233480afb4de06033f9233be65b9fbc51070ed779e521ac845afc39d15117",
+        "NXADMIN1_absent": true
+      },
+      {
+        "label": "candidat",
+        "architecture": "aarch64",
+        "commande": [
+          "cargo",
+          "build",
+          "--release",
+          "--locked",
+          "--offline",
+          "--target",
+          "aarch64-unknown-none-softfloat"
+        ],
+        "debut": 311889060971250,
+        "code": 0,
+        "fin": 311902464415333,
+        "sha256": "dc7ad2524e704eeee52bf22f7136a2ec4c5c61cbd76ed81f2c84e9f6f364a7d3",
+        "NXADMIN1_absent": true
+      }
+    ],
+    "toolchain": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1\n",
+    "base-x86_64": {
+      "label": "base",
+      "architecture": "x86_64",
+      "commande": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none"
+      ],
+      "debut": 311847164066708,
+      "code": 0,
+      "fin": 311861192094333,
+      "sha256": "ce9233480afb4de06033f9233be65b9fbc51070ed779e521ac845afc39d15117",
+      "NXADMIN1_absent": true
+    },
+    "base-aarch64": {
+      "label": "base",
+      "architecture": "aarch64",
+      "commande": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat"
+      ],
+      "debut": 311861197543541,
+      "code": 0,
+      "fin": 311874781393541,
+      "sha256": "dc7ad2524e704eeee52bf22f7136a2ec4c5c61cbd76ed81f2c84e9f6f364a7d3",
+      "NXADMIN1_absent": true
+    },
+    "candidat-x86_64": {
+      "label": "candidat",
+      "architecture": "x86_64",
+      "commande": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "x86_64-unknown-none"
+      ],
+      "debut": 311875245065916,
+      "code": 0,
+      "fin": 311889054610791,
+      "sha256": "ce9233480afb4de06033f9233be65b9fbc51070ed779e521ac845afc39d15117",
+      "NXADMIN1_absent": true
+    },
+    "candidat-aarch64": {
+      "label": "candidat",
+      "architecture": "aarch64",
+      "commande": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "--target",
+        "aarch64-unknown-none-softfloat"
+      ],
+      "debut": 311889060971250,
+      "code": 0,
+      "fin": 311902464415333,
+      "sha256": "dc7ad2524e704eeee52bf22f7136a2ec4c5c61cbd76ed81f2c84e9f6f364a7d3",
+      "NXADMIN1_absent": true
+    },
+    "identiques": {
+      "x86_64": true,
+      "aarch64": true
+    }
+  },
+  "coordination": {
+    "preuve": {
+      "fichier": "r1-coordination-campagnes.json",
+      "sha256": "0894804236e0ffae387c731c249b546cf5a98255492ec1a8dc3cee3dc672d646"
+    },
+    "attente_secondes": 0.005548502,
+    "execution_secondes": 2380.308512793,
+    "diagnostic_hors_banc": "Non chronométré intégralement ; aucune durée reconstruite artificiellement.",
+    "compilation_ordinaires_secondes": 54.824866583,
+    "note": "La campagne historiques comprend ses quatre constructions de profils et démarrages. Les JSON métier prévalent sur les codes erronés des premières versions du banc."
+  },
+  "archives": {
+    "racine": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase1-prealable-5c7f1bf",
+    "manifeste": {
+      "fichier": "SHA256-r1-final.txt",
+      "sha256": "15aaac3e6c4dc653e55eb7dbbb284be8c5aade3eaa83a5bb5103c00c3b2893b8",
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase1-prealable-5c7f1bf/SHA256-r1-final.txt",
+      "fichiers": 558,
+      "relecture_integrale": true
+    },
+    "checkpoint_35_conserve": true,
+    "privees": {
+      "manifeste": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/SHA256-archives-privees-r1.txt",
+      "fichiers": 242,
+      "sha256": "325ee13963932d5974be3624381ca13f7f1660059173345b17a5b11c02305275",
+      "relecture_integrale": true,
+      "publication": false
+    },
+    "secrets_connus": {
+      "cles_connues": 6,
+      "encodages": [
+        "brut",
+        "hexadecimal",
+        "base64"
+      ],
+      "objets_git_blob": 60,
+      "occurrences": 0,
+      "portee": "Archives publiques et objets Git nouveaux ; artefacts et secrets privés exclus de la publication. Ce contrôle ciblé ne constitue pas une preuve générale d’absence de tout secret."
+    },
+    "sources_et_bancs": {
+      "sources_invitees": "45e7c0b5389492544dbc6a7e239cfa0755f7cd05",
+      "sources_banc": "2ccb667750b03017179225528f420f46dbb8042d",
+      "differences": [
+        "novaOS/user/novaauth/autorite_qemu/administration_r1_qemu.py",
+        "novaOS/user/novaauth/autorite_qemu/administration_r1_resources.py",
+        "novaOS/user/novaauth/autorite_qemu/recuperation_qemu.py"
+      ],
+      "invites_inchanges": true,
+      "sha256_bancs": {
+        "novaOS/user/novaauth/autorite_qemu/administration_r1_qemu.py": "b2c62a83f2484134263689601e1d8f1a697070de56675b639e9e47d99f10a0af",
+        "novaOS/user/novaauth/autorite_qemu/administration_r1_resources.py": "772065b4bb00e806b83d7ac933b9395ae7469fd7d279a9ae7180c229410f6e9e",
+        "novaOS/user/novaauth/autorite_qemu/recuperation_qemu.py": "ffdaabbdbe5a0fe22279d30fc09b1918355952535ab747ecb8f22bec3065cc58"
+      }
+    }
+  },
+  "tests_hotes_precedents": "Voir novaauth-administration-phase1-fondations.json ; ne pas assimiler les fondations R2 aux effecteurs invités.",
+  "limites": [
+    "R2 : mutations persistantes, notifications et acquittements des effecteurs non raccordés.",
+    "Façades administratives et recettes complètes de désactivation/réactivation non disponibles.",
+    "Saturation de la table par une troisième route et injection d’échec d’allocation non qualifiées.",
+    "Pas de nouvelle campagne exhaustive des pipes historiques, du VFS ou de l’autorité : sources historiques préservées ; le pipe de deux ELF NXADMIN1 est exercé.",
+    "Réserve mémoire instrumentée AArch64 de 301 cadres conservée.",
+    "Identité des noyaux démontrée dans un environnement fixé ; reproductibilité entre environnements toujours réservée.",
+    "Le dernier échantillon IPC conserve la page de collecte ; restitution ultérieure observée aux lancements suivants, pas garantie physique instantanée.",
+    "QEMU uniquement ; aucune activation ordinaire ni qualification UTM/matériel."
+  ]
+}

@@ -26,3 +26,18 @@ Le témoin émet `T:` suivi des octets reçus. Il est construit hors de l’imag
 ## Témoin de l’installation en cours de session
 
 Sans argument, `temoin` écrit les douze octets `41 09 42 09 43 0a 44 09 45 09 46 0a` sur stdout. Avec des arguments, il restitue chacun sous forme de longueur u16 little-endian suivie des octets UTF-8. Pour `temoin '' 'a b' -x`, l’oracle est `00 00 03 00 61 20 62 02 00 2d 78`. Dans les deux modes il utilise uniquement stdout. La construction de cet ELF est indépendante de l’image de démarrage.
+
+## Conversation administrative expérimentale NXADMIN1
+
+La feature explicite `administration-qemu` ajoute un contrat distinct, réservé
+au profil de qualification : en-tête de 80 octets, arguments à l'offset 80,
+canal administratif à l'offset 64, mot réservé nul à l'offset 72. Les deux
+champs de canaux fichiers restent nuls. Le décodeur NXEXEC01 refuse ce bloc ;
+les anciens en-têtes de 64 octets et leur sémantique sont conservés.
+
+`admin-sonde` exerce des consultations avec une feuille privée liée à
+l'installation attestée, l'instance et la session. NovaAuth contrôle à chaque
+requête les capacités effectives ; la présence de cette feuille ne suffit pas.
+Les mutations administratives ne sont pas disponibles dans ce raccord R1.
+Un échange interrompu ferme la conversation et rend `UNCERTAIN`, sans répétition
+automatique. Voir le [contrat et les limites de qualification R1](../../novaOS/docs/novaauth-administration-r1-qualification-v0.24.0.md).

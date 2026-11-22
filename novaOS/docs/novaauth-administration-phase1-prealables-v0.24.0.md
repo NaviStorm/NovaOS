@@ -1,6 +1,6 @@
 # NovaAuth v0.24.0 — Administration, prérequis de la phase 1
 
-État au 21 novembre 2026. Branche `codex/novaauth-administration-0240-phase1`, créée depuis `5c7f1bfa313a3859ccc0830660438e76d598acb1`. La [conception approuvée](https://github.com/NaviStorm/NovaOS/blob/2a406d0e7b41ff67ee6f50b84b4e8d9515b321b3/novaOS/docs/novaauth-administration-contrat-v0.24.0.md) reste conservée sur sa branche. Le mandat suivant autorise une première implémentation, sous réserve d’arbitrage des ambiguïtés de sécurité constatées avant codage. Ce document ne qualifie aucune nouvelle commande. Les [résultats hôtes intermédiaires](validation/novaauth-administration-phase1-fondations.json) distinguent les fondations testées des raccords restant à réaliser.
+État préalable au 21 novembre 2026. La suite est suivie dans le [bilan R1](novaauth-administration-r1-qualification-v0.24.0.md). Branche `codex/novaauth-administration-0240-phase1`, créée depuis `5c7f1bfa313a3859ccc0830660438e76d598acb1`. La [conception approuvée](https://github.com/NaviStorm/NovaOS/blob/2a406d0e7b41ff67ee6f50b84b4e8d9515b321b3/novaOS/docs/novaauth-administration-contrat-v0.24.0.md) reste conservée sur sa branche. Le mandat suivant autorise une première implémentation, sous réserve d’arbitrage des ambiguïtés de sécurité constatées avant codage. Ce document ne qualifie aucune nouvelle commande. Les [résultats hôtes intermédiaires](validation/novaauth-administration-phase1-fondations.json) distinguent les fondations testées des raccords restant à réaliser.
 
 ## Décisions applicables et périmètre
 
@@ -115,7 +115,7 @@ La sélection linguistique nécessite de conserver la distinction signalée par 
 
 Ces scénarios complètent les trente recettes de conception. Les recettes de suppression réelle et multi-admin avec promotion restent exclues ; les témoins négatifs ne sont pas une couverture fonctionnelle de ces opérations. Aucune cellule QEMU n’est déclarée exécutée dans cette préparation.
 
-## État de livraison préalable
+## État de livraison préalable — historique avant les essais R1
 
 - Branche/worktree dédiés créés ; origin/main et conception vérifiés directement. Premières fondations R2 ajoutées derrière administration-lab, sans raccord invité ou activation ordinaire.
 - Diagnostic de Sessions exécuté sur hôte Darwin ARM64 seulement ; ce n’est pas une qualification multiarchitecture.
@@ -142,7 +142,7 @@ Le reçu terminal par sujet exige les trois acquittements (vérificateurs, lance
 Le codec NXADMIN1 est disponible sous la seule feature administration-qemu de nova-exec-client. Les arguments réutilisent le décodeur commun ; le magic, l’en-tête, le canal et l’interdiction de fichiers sont distincts. Le premier codec a passé cinq tests hôtes (dont deux historiques NXEXEC01). Le raccord noyau décrit ci-dessous est désormais compilé ; aucune nouvelle commande n’est encore annoncée disponible. Une feuille valide ne sera jamais assimilée à une autorisation métier.
 
 
-## Point de passage R1 — 22 novembre 2026
+## Point de passage R1 — 22 novembre 2026, avant les premiers invités
 
 Le raccord R1 est compilé dans une extraction explicite `profile.py --administration` : noyau, vérificateur et registre sur x86_64 et AArch64. Il n'est pas activé par les constructions ordinaires. Ces compilations emploient des données invalides de compilation pour les clés/certificats : elles ne démontrent aucune authentification QEMU. Aucun invité n'a encore été lancé dans cette phase ; les quatre recettes restent ouvertes.
 
