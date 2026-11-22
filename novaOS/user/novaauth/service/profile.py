@@ -7,9 +7,9 @@ import runpy
 import subprocess
 import tarfile
 
-def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False, incarnation=False, horloge=False, tete=False, lecture=False, recovery=False, source_ref=None, triplet=False, activation=False, vue=False, vfs=False, exec_admission=False, administration=False, administration_r2=False, administration_ticket_vivant=False, administration_securite=False, administration_reactivation=False):
+def prepare(destination, policies=False, retired_reply=False, shell=False, selection_smp=False, bail=False, budget=False, transport=False, incarnation=False, horloge=False, tete=False, lecture=False, recovery=False, source_ref=None, triplet=False, activation=False, vue=False, vfs=False, exec_admission=False, administration=False, administration_r2=False, administration_ticket_vivant=False, administration_securite=False, administration_reactivation=False, administration_separation=False):
     administration_ticket_vivant = administration_ticket_vivant or administration_reactivation
-    administration_r2 = administration_r2 or administration_ticket_vivant or administration_securite
+    administration_r2 = administration_r2 or administration_ticket_vivant or administration_securite or administration_separation
     administration = administration or administration_r2
     exec_admission = exec_admission or administration
     vfs = vfs or exec_admission
@@ -76,6 +76,8 @@ def prepare(destination, policies=False, retired_reply=False, shell=False, selec
             runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_reactivation_profile.py"))["install"](destination)
         if administration_securite:
             runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_security_profile.py"))["install"](destination)
+        if administration_separation:
+            runpy.run_path(str(destination / "novaOS/user/novaauth/service/administration_separation_profile.py"))["install"](destination)
         if transport:
             apply(destination, "sonde-transport.patch")
         refresh_documentation_links(destination)
@@ -115,6 +117,7 @@ if __name__=="__main__":
     parser.add_argument("destination",type=Path)
     parser.add_argument("--source-ref", help="objet Git immuable de qualification, HEAD par défaut")
     mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--administration-separation",action="store_true",help="Références réelles Alice/Bob, sans délégation, QEMU uniquement")
     mode.add_argument("--administration-reactivation",action="store_true",help="Recette S9 QEMU après retrait durable")
     mode.add_argument("--administration-securite",action="store_true",help="Refus R2 directs dans le seul profil QEMU")
     mode.add_argument("--administration-ticket-vivant",action="store_true",help="Témoin R2 Bob révoqué avant expiration, QEMU uniquement")
@@ -140,4 +143,4 @@ if __name__=="__main__":
     args=parser.parse_args()
     prepare(args.destination.resolve(), args.politiques, args.reponse_retiree, args.lancement or args.selection_smp or args.bail,
             args.selection_smp, args.bail,
-            args.budget_autorite, args.transport_autorite, args.incarnation_registre, args.horloge_signataire, args.tete_independante, args.lecture_dossier, args.recuperation_2sur2, args.source_ref, args.recuperation_triplet, args.recuperation_activation, args.recuperation_vue, args.recuperation_vfs, args.admission_exec, args.administration, args.administration_r2, args.administration_ticket_vivant, args.administration_securite, args.administration_reactivation)
+            args.budget_autorite, args.transport_autorite, args.incarnation_registre, args.horloge_signataire, args.tete_independante, args.lecture_dossier, args.recuperation_2sur2, args.source_ref, args.recuperation_triplet, args.recuperation_activation, args.recuperation_vue, args.recuperation_vfs, args.admission_exec, args.administration, args.administration_r2, args.administration_ticket_vivant, args.administration_securite, args.administration_reactivation, args.administration_separation)

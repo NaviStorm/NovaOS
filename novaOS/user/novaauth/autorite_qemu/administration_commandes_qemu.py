@@ -26,6 +26,7 @@ def main():
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+    parser.add_argument('--separation',action='store_true',help='références réelles Alice/Bob, sans transfert de droits')
     parser.add_argument('--reactivation',action='store_true',help='recette S9 après retrait effectif')
     parser.add_argument('--securite',action='store_true',help='sonde directe étendue, distincte du témoin temporel')
     parser.add_argument('--ticket-vivant',action='store_true',help='désactivation pendant que Bob conserve un ticket non consommé')
@@ -37,7 +38,9 @@ def main():
                  'sortie', 'detenteur', 'capture', 'triplet', 'kernel'):
         parser.add_argument('--' + name, type=lambda v: Path(v).resolve(), required=True)
     a = parser.parse_args()
+    if a.separation and (a.ticket_vivant or a.reactivation or a.securite):parser.error('profils de recette distincts')
     a.ticket_vivant = a.ticket_vivant or a.reactivation
+    atomic_status = a.ticket_vivant or a.separation
     if a.securite and a.ticket_vivant:parser.error('les deux profils sont distincts')
     if a.ticket_vivant and a.lot!='desactivation':
         parser.error('le témoin de ticket vivant exige le lot désactivation')
@@ -115,6 +118,9 @@ def main():
                       (lambda:'usermod --enable bob --confirm '+second['confirmation']+' --request '+second['operation'],reactivated)]
     elif a.lot == 'dernier-administrateur':
         cases = [('usermod --disable alice --prepare', b'')]
+    if a.separation:
+        cases=[('ticket-test separation whoami',b'alice\n')]
+        report['portee']='S3/S5 références réelles sans délégation, session propre Bob et lancement Alice'
     if a.commande:
         cases = [(cmd, expected) for cmd, expected in cases if isinstance(cmd, str) and cmd.split()[0] == a.commande]
         if not cases:
@@ -159,7 +165,9 @@ def main():
             # avant le déclenchement explicite de l'authentification de Bob.
             # Les contrôles négatifs sont un parcours distinct.
             # Les autres lots conservent leur ordonnancement historique.
-            if not a.ticket_vivant:
+            if a.separation:
+                serial.expect(rb'NAR2 Bob references pret',40)
+            elif not a.ticket_vivant:
                 serial.expect(rb'NAR2 Bob fermeture acquittee', 100)
                 if b'NAR2 Bob refus serveur et substitutions verifies' not in serial.data:
                     raise Refus('témoin négatif Bob absent')
@@ -186,16 +194,16 @@ def main():
                 # Identité d'étape distincte ; aucune réponse d'une commande
                 # précédente ne peut terminer la commande courante.
                 step = 'NXR2_' + str(i) + '_'
-                line=command + '; echo ' + step + '$?__FIN' + ('; exit' if i == len(cases)-1 and not a.reactivation else '')
+                line=command + '; echo ' + step + '$?__FIN' + ('; exit' if i == len(cases)-1 and not (a.reactivation or a.separation) else '')
                 serial.offset = len(serial.data)
                 start = serial.offset
                 serial.submit(line)
-                pattern=observed_command_status_pattern(step) if a.ticket_vivant else command_status_pattern(step)
+                pattern=observed_command_status_pattern(step) if atomic_status else command_status_pattern(step)
                 status = serial.expect(pattern, 80)
-                shell_status=int(status[2] if a.ticket_vivant else status[1])
+                shell_status=int(status[2] if atomic_status else status[1])
                 # Le marqueur DEBUG atomique identifie la fin et le statut.
                 # Le prompt CONSOLE peut être entrelacé avec Bob sur le port série.
-                if not a.ticket_vivant and i != len(cases)-1:
+                if not atomic_status and i != len(cases)-1:
                     serial.expect(rb'nsh> ', 20)
                 output = bytes(serial.data[start:serial.offset])
                 (out / f'commande-{i:02}.bin').write_bytes(output)
@@ -226,7 +234,7 @@ def main():
                 if len(shells) != 1:
                     raise Refus('sorties rattachées à plusieurs shells')
                 item['shell'] = next(iter(shells))
-                if a.ticket_vivant and int(status[1]) != item['shell']:
+                if atomic_status and int(status[1]) != item['shell']:
                     raise Refus('statut provenant d’une autre instance')
                 for fd, data in streams.items():
                     (out / f'commande-{i:02}-fd{fd}.bin').write_bytes(data)
@@ -263,7 +271,13 @@ def main():
                                     b'NAR2 Bob nouveau lancement autorise droits ordinaires',
                                     b'NAR2 Bob fermeture acquittee']:
                         events.expect(bob_pid,message,40)
-            if a.reactivation:serial.submit('exit')
+            if a.separation:
+                bob_pid=events.actor(b'NAR2 Bob references pret')
+                for message in (b'NAR2 S3 ticket Alice statut=5 aucun enfant',b'NAR2 S3 canal Alice statut=5',
+                                b'NAR2 S3 session Alice statut=5',b'NAR2 S5 admission session Alice statut=5',
+                                b'NAR2 Bob session propre preservee',b'NAR2 Bob fermeture acquittee'):
+                    events.expect(bob_pid,message,20)
+            if a.reactivation or a.separation:serial.submit('exit')
             serial.expect(rb'BLOC bilan mode=41 service=Exit\(0\) bloc=Exit\(0\) pilote=Exit\(0\) client=Exit\(0\) retrait=Ok\(\(\)\)', 40)
             rows = observer.outputs()
             by_shell = {}
@@ -295,6 +309,16 @@ def main():
                         'ancien_ticket':10,'ancienne_session':5,'nouveau_lancement':0}
                 elif bob[0] in by_shell or len(by_shell)!=1:
                     raise Refus('sortie enfant Bob inattendue dans le témoin temporel')
+            elif a.separation:
+                bob=[events.actor(b'NAR2 Bob references pret')]
+                if len(by_shell)!=1 or bob[0] in by_shell or re.search(rb'NAEXEC enfant owner='+str(bob[0]).encode()+rb' child=',serial.data):
+                    raise Refus('enfant Bob interdit après références Alice')
+                with observer.guard:routes=list(observer.routes)
+                if len(routes)!=2 or len({r[1] for r in routes})!=2 or len({r[2] for r in routes})!=2:
+                    raise Refus('routes/session non distinctes')
+                report['separation']={'ticket_Alice':5,'canal_Alice':5,'session_Alice':5,'admission_session_Alice':5,
+                    'enfants_Bob':0,'lancement_Alice':0,'session_Bob_preservee':True,
+                    'routes':[{'pid':r[0],'instance':r[1].hex(),'session':r[2].hex()} for r in routes]}
             elif len(by_shell) != 2 or len(bob) != 1:
                 raise Refus('sorties Bob confondues ou absentes')
             if a.ticket_vivant:
