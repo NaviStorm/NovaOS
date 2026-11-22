@@ -1,0 +1,609 @@
+{
+  "preuves": {
+    "repertoire": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122",
+    "fichiers": 310,
+    "manifeste_sha256": "638396286251ae1c210cecc0f0fa1f8c21b7b85e83d46a03aa438d4207e0f349",
+    "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/phase-r2-bc6ec3e/securite-fc1ed9b-20261122.tar.gz",
+    "archive_sha256": "a61acbbde07257befc4199154587648bd4aa04642e4ce1d421df04d16f4afa15",
+    "sources": "19e5a055fd4dd90e4b6c30bfe236f5dd6b896b56",
+    "qualification_globale": false
+  },
+  "reference_initiale": "fc1ed9b4692dfe9d47099f5aa27bb129d616e7bf",
+  "candidat": "19e5a055fd4dd90e4b6c30bfe236f5dd6b896b56",
+  "qualification_globale": false,
+  "reprise_controlee": true,
+  "restriction_daybreak_observee": false,
+  "essais": [
+    {
+      "profil": "aarch64/4096",
+      "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+      "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+      "preuve": "r2-commandes-aarch64-4096-lectures-01",
+      "succes": true,
+      "attente_s": 0.000377834,
+      "execution_s": 23.418532542,
+      "acquisition": "2026-11-22T18:51:58.611072+00:00",
+      "liberation": "2026-11-22T18:52:22.074480+00:00",
+      "verrou_libere": true,
+      "statuts": {
+        "confirm": 5,
+        "outcome": 5,
+        "append_canal_administratif": [
+          3,
+          3,
+          3
+        ],
+        "append_sans_capacite": [
+          5,
+          5,
+          5
+        ],
+        "cibles_substituees": [
+          5,
+          5,
+          5
+        ],
+        "vue_Bob_inchangee": true,
+        "octets_stdout": 1280
+      },
+      "racines_max": 4,
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ]
+      },
+      "connexions": 74,
+      "tls_ms": 2692,
+      "drainage": true,
+      "marge_ticket_ms": null
+    },
+    {
+      "profil": "aarch64/512",
+      "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+      "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+      "preuve": "r2-commandes-aarch64-512-lectures-01",
+      "succes": true,
+      "attente_s": 0.000395709,
+      "execution_s": 30.556148292,
+      "acquisition": "2026-11-22T18:49:40.019820+00:00",
+      "liberation": "2026-11-22T18:50:10.622465+00:00",
+      "verrou_libere": true,
+      "statuts": {
+        "confirm": 5,
+        "outcome": 5,
+        "append_canal_administratif": [
+          3,
+          3,
+          3
+        ],
+        "append_sans_capacite": [
+          5,
+          5,
+          5
+        ],
+        "cibles_substituees": [
+          5,
+          5,
+          5
+        ],
+        "vue_Bob_inchangee": true,
+        "octets_stdout": 1280
+      },
+      "racines_max": 4,
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          59,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          139,
+          64,
+          31
+        ]
+      },
+      "connexions": 74,
+      "tls_ms": 3352,
+      "drainage": true,
+      "marge_ticket_ms": null
+    },
+    {
+      "profil": "x86_64/4096",
+      "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+      "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+      "preuve": "r2-commandes-x86_64-4096-lectures-01",
+      "succes": true,
+      "attente_s": 0.000367583,
+      "execution_s": 16.538436417,
+      "acquisition": "2026-11-22T18:47:07.193706+00:00",
+      "liberation": "2026-11-22T18:47:23.777204+00:00",
+      "verrou_libere": true,
+      "statuts": {
+        "confirm": 5,
+        "outcome": 5,
+        "append_canal_administratif": [
+          3,
+          3,
+          3
+        ],
+        "append_sans_capacite": [
+          5,
+          5,
+          5
+        ],
+        "cibles_substituees": [
+          5,
+          5,
+          5
+        ],
+        "vue_Bob_inchangee": true,
+        "octets_stdout": 1280
+      },
+      "racines_max": 4,
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ]
+      },
+      "connexions": 74,
+      "tls_ms": 2852,
+      "drainage": true,
+      "marge_ticket_ms": null
+    },
+    {
+      "profil": "x86_64/512",
+      "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+      "banc": "71bba986ac39258de35eb3b91db79f35420ed50d",
+      "preuve": "r2-commandes-x86_64-512-desactivation-01",
+      "succes": false,
+      "attente_s": 0.000383625,
+      "execution_s": 90.874895375,
+      "acquisition": "2026-11-22T18:55:30.038556+00:00",
+      "liberation": "2026-11-22T18:57:00.958763+00:00",
+      "verrou_libere": true,
+      "statuts": {},
+      "racines_max": 4,
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ]
+      },
+      "connexions": 128,
+      "tls_ms": 2820,
+      "drainage": false,
+      "marge_ticket_ms": null
+    },
+    {
+      "profil": "x86_64/512",
+      "source": "71bba986ac39258de35eb3b91db79f35420ed50d",
+      "banc": "19e5a055fd4dd90e4b6c30bfe236f5dd6b896b56",
+      "preuve": "r2-commandes-x86_64-512-desactivation-02",
+      "succes": true,
+      "attente_s": 0.000399334,
+      "execution_s": 50.87134275,
+      "acquisition": "2026-11-22T18:58:10.281980+00:00",
+      "liberation": "2026-11-22T18:59:01.199990+00:00",
+      "verrou_libere": true,
+      "statuts": {
+        "instance": "33c470b7de283b94996fe3bd76d9dc2a0b000000000000800100000000000000",
+        "session": "1a7c275861c2609a43cee123a7294bb26069310a7848dd023b7b1c8fd7a7b65c",
+        "ancien_ticket": 10,
+        "ancienne_session": 5,
+        "nouveau_lancement": 0
+      },
+      "racines_max": 4,
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ]
+      },
+      "connexions": 127,
+      "tls_ms": 3104,
+      "drainage": true,
+      "marge_ticket_ms": 3372
+    },
+    {
+      "profil": "x86_64/512",
+      "source": "f6399d1930c29ba011a60597d06e181281df8afe",
+      "banc": "f6399d1930c29ba011a60597d06e181281df8afe",
+      "preuve": "r2-commandes-x86_64-512-lectures-01",
+      "succes": true,
+      "attente_s": 0.000508125,
+      "execution_s": 16.430653459,
+      "acquisition": "2026-11-22T18:45:53.196274+00:00",
+      "liberation": "2026-11-22T18:46:09.675119+00:00",
+      "verrou_libere": true,
+      "statuts": {
+        "confirm": 5,
+        "outcome": 5,
+        "append_canal_administratif": [
+          3,
+          3,
+          3
+        ],
+        "append_sans_capacite": [
+          5,
+          5,
+          5
+        ],
+        "cibles_substituees": [
+          5,
+          5,
+          5
+        ],
+        "vue_Bob_inchangee": true,
+        "octets_stdout": 1280
+      },
+      "racines_max": 4,
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          68,
+          64,
+          31
+        ]
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          145,
+          64,
+          31
+        ]
+      },
+      "connexions": 74,
+      "tls_ms": 2732,
+      "drainage": true,
+      "marge_ticket_ms": null
+    }
+  ],
+  "matrice": [
+    {
+      "cas": "S1",
+      "objet": "Auto-attribution",
+      "statut": "qualifié",
+      "details": "Ajout au groupe administratif refusé 5 ; Confirm et Outcome directs refusés ; Bob non administrateur ; triplet identique.",
+      "profils": {
+        "x86_64/512": "qualifié",
+        "x86_64/4096": "qualifié",
+        "aarch64/512": "qualifié",
+        "aarch64/4096": "qualifié"
+      }
+    },
+    {
+      "cas": "S2",
+      "objet": "Registre persistant",
+      "statut": "qualifié",
+      "details": "APPEND tables 0/1/2 : refus 3 sur canal administratif et 5 sans handle ; aucun port de stockage attribué ; triplet relu identique.",
+      "profils": {
+        "x86_64/512": "qualifié",
+        "x86_64/4096": "qualifié",
+        "aarch64/512": "qualifié",
+        "aarch64/4096": "qualifié"
+      }
+    },
+    {
+      "cas": "S3",
+      "objet": "Références exactes d’Alice",
+      "statut": "partiellement qualifié",
+      "details": "Contexte forgé/META refusés ; rejeu de références exactes d’une session Alice vivante restant à exécuter.",
+      "profils": {
+        "x86_64/512": "partiellement qualifié",
+        "x86_64/4096": "partiellement qualifié",
+        "aarch64/512": "partiellement qualifié",
+        "aarch64/4096": "partiellement qualifié"
+      }
+    },
+    {
+      "cas": "S4",
+      "objet": "Requête administrative directe",
+      "statut": "qualifié",
+      "details": "Prepare/Confirm/Outcome envoyés directement au serveur ; refus 5. Contrôle positif Alice réussi.",
+      "profils": {
+        "x86_64/512": "qualifié",
+        "x86_64/4096": "qualifié",
+        "aarch64/512": "qualifié",
+        "aarch64/4096": "qualifié"
+      }
+    },
+    {
+      "cas": "S5",
+      "objet": "Substitutions",
+      "statut": "partiellement qualifié",
+      "details": "Cibles Alice/Bob et NXACTX01/rejeu refusés ; substitution de la session réelle d’Alice restant à exercer.",
+      "profils": {
+        "x86_64/512": "partiellement qualifié",
+        "x86_64/4096": "partiellement qualifié",
+        "aarch64/512": "partiellement qualifié",
+        "aarch64/4096": "partiellement qualifié"
+      }
+    },
+    {
+      "cas": "S6",
+      "objet": "Tickets expirés/révoqués/consommés",
+      "statut": "partiellement qualifié",
+      "details": "Révocation avant expiration : témoin accepté fc1ed9b. Expiration et consommation à rattacher par preuve applicable ou exécution R2.",
+      "profils": {
+        "x86_64/512": "partiellement qualifié",
+        "x86_64/4096": "partiellement qualifié",
+        "aarch64/512": "partiellement qualifié",
+        "aarch64/4096": "partiellement qualifié"
+      }
+    },
+    {
+      "cas": "S7",
+      "objet": "Concurrence/dernier administrateur",
+      "statut": "partiellement qualifié",
+      "details": "Tests hôtes et refus séquentiel invité historiques ; concurrence administrative effective invitée non exécutée dans cette reprise.",
+      "profils": {
+        "x86_64/512": "partiellement qualifié",
+        "x86_64/4096": "partiellement qualifié",
+        "aarch64/512": "partiellement qualifié",
+        "aarch64/4096": "partiellement qualifié"
+      }
+    },
+    {
+      "cas": "S8",
+      "objet": "UNCERTAIN",
+      "statut": "partiellement qualifié",
+      "details": "Quatre preuves historiques de reçu perdu vérifiées par manifeste ; revue complète d’applicabilité à la réactivation nouvelle encore à terminer.",
+      "profils": {
+        "x86_64/512": "partiellement qualifié",
+        "x86_64/4096": "partiellement qualifié",
+        "aarch64/512": "partiellement qualifié",
+        "aarch64/4096": "partiellement qualifié"
+      }
+    },
+    {
+      "cas": "S9",
+      "objet": "Désactivation/réactivation",
+      "statut": "partiellement qualifié",
+      "details": "x86_64/512 réussi : nouvelle session, anciens ticket/session refusés, nouveau lancement ; autres profils non exécutés.",
+      "profils": {
+        "x86_64/512": "qualifié",
+        "x86_64/4096": "non exécuté",
+        "aarch64/512": "non exécuté",
+        "aarch64/4096": "non exécuté"
+      }
+    }
+  ],
+  "tests_hotes": {
+    "client_NXADMIN1": 18,
+    "moteur_administration": 8,
+    "autorite": 20,
+    "ABI": 9,
+    "index_ABI": "coherent"
+  },
+  "attente_verrou_s": 0.00243221,
+  "execution_QEMU_s": 228.690008835,
+  "reserves": [
+    "301 cadres instrumentés AArch64",
+    "reproductibilité entre environnements",
+    "S9 : 127 connexions sur 128",
+    "qualification de production non réalisée"
+  ],
+  "temps": {
+    "debut_utc": "2026-11-22T18:32:40+00:00",
+    "fin_consolidation_utc": "2026-11-22T19:05:25.162592+00:00",
+    "attente_verrou_s": 0.00243221,
+    "execution_QEMU_s": 228.690008835,
+    "developpement_diagnostic_controles_et_archivage_s": 1736.4701509549998,
+    "nature": "horloge hôte ; durées invitées séparées dans chaque résultat"
+  }
+}
