@@ -75,6 +75,8 @@ fn probe(stage:u64, iteration:u64, kind:u64, native:u64) {
     edit(authority,'hal::log(format_args!("NAEXEC transition registry={} owner={} kind={} value={value}",p.number,owner.number,data[8]));',
          'hal::log(format_args!("NAEXEC transition registry={} owner={} kind={} value={value} ticks={}",p.number,owner.number,data[8],ticks()));')
     channel='novaOS/user/novaauth/service/src/bin/common/administration_channel.rs'
+    start='                if matches!(admin_command::decode(request),Ok(admin_command::Command::Confirm{..})) {'
+    edit(channel,start,start+'\n                    r2_probe(20);')
     anchor='                answer = exchange(login, request.try_into().unwrap())?;'
     edit(channel,anchor,'''                let trace_confirm=matches!(admin_command::decode(request),Ok(admin_command::Command::Confirm{..}));
                 if trace_confirm {r2_probe(21);}
@@ -84,7 +86,7 @@ fn probe(stage:u64, iteration:u64, kind:u64, native:u64) {
     p=root/channel
     p.write_text(p.read_text()+'''
 fn r2_probe(stage:u64) {
-    let text=alloc::format!("R2PROBE s={} n=0",stage);
+    let text:&[u8]=match stage {20=>b"R2PROBE s=20 n=0",21=>b"R2PROBE s=21 n=0",_=>b"R2PROBE s=22 n=0"};
     let _=rt::call(rt::DEBUG_WRITE,text.as_ptr() as u64,text.len() as u64,0);
 }
 ''')
