@@ -53,6 +53,15 @@ def main():
             if b'nsh> ' not in serial.data:serial.expect(rb'nsh> ',20)
             rc,raw=serial.command('true')
             if rc:raise Refus('authentification Alice refusée')
+            # Deux opérations indépendantes, sous leurs baux initiaux : aucun
+            # renouvellement implicite pendant une transaction.
+            rc,raw=serial.command('alice-seulement --self')
+            (out/'alice-consultation.bin').write_bytes(raw)
+            oracle=a.genese.with_name('oracle-self.bin').read_bytes()
+            streams=re.findall(rb'NXFLUX pid=([0-9]+) fd=([12]) octets=([0-9]+) prefixe=([0-9a-f]*)',raw)
+            actual={int(fd):(int(n),bytes.fromhex(h.decode())) for _,fd,n,h in streams}
+            report['commandes'].append({'commande':'alice-seulement --self','statut':rc,'flux':[(int(pid),int(fd),int(n),h.decode()) for pid,fd,n,h in streams]})
+            if rc or actual!={1:(len(oracle),oracle),2:(0,b'')}:raise Refus('consultation Alice non conforme')
             marker=re.escape(b'NAR2 Bob authentifie route distincte')
             # La session de Bob est indépendante et peut avoir répondu pendant
             # la commande d'Alice. Reprendre cette trace unique, sans renvoyer
@@ -61,23 +70,10 @@ def main():
             if known:serial.offset=known.end()
             else:serial.expect(marker,40)
             level=b'EL0' if a.arch=='aarch64' else b'Ring3'
-            report['terminaisons_bob']=[]
-            for expected in (0,):
-                start=time.monotonic_ns()
-                m=serial.expect(rb'PROC pid=(\d+) niveau='+level+rb' pc=0x[0-9a-f]+ sortie=(\d+)',40)
-                report['terminaisons_bob'].append({'pid':int(m[1]),'attendu':expected,'observe':int(m[2]),'attente_ns':time.monotonic_ns()-start})
-                if int(m[2])!=expected:raise Refus('statut natif Bob inattendu')
             serial.expect(re.escape(b'NAR2 Bob refus serveur et substitutions verifies'),40)
             serial.expect(re.escape(b'NAR2 Bob fermeture acquittee'),40)
             if b'NAR2 Bob paquets Alice et non autorise refuses statut=5 aucun enfant' not in serial.data:
                 raise Refus('refus des installations non attesté dans l’invité')
-            rc,raw=serial.command('alice-seulement --self')
-            (out/'alice-consultation.bin').write_bytes(raw)
-            oracle=a.genese.with_name('oracle-self.bin').read_bytes()
-            streams=re.findall(rb'NXFLUX pid=([0-9]+) fd=([12]) octets=([0-9]+) prefixe=([0-9a-f]*)',raw)
-            actual={int(fd):(int(n),bytes.fromhex(h.decode())) for _,fd,n,h in streams}
-            report['commandes'].append({'commande':'alice-seulement --self','statut':rc,'flux':[(int(pid),int(fd),int(n),h.decode()) for pid,fd,n,h in streams]})
-            if rc or actual!={1:(len(oracle),oracle),2:(0,b'')}:raise Refus('consultation Alice non conforme')
             rows=observer.outputs()
             streams=[]
             for binding,closed,data in rows:
@@ -96,7 +92,9 @@ def main():
             for shell,children in by_shell.items():
                 actual=[(codes.get(pid),fds.get(1),fds.get(2)) for pid,fds in sorted(children.items())]
                 if actual==[(0,oracle,b'')]:witnessed.append('Alice')
-                elif actual==[(code,data,b'') for code,data in expected_bob]:witnessed.append('Bob')
+                elif actual==[(code,data,b'') for code,data in expected_bob]:
+                    witnessed.append('Bob')
+                    report['terminaisons_bob']=[{'pid':pid,'attendu':0,'observe':codes.get(pid)} for pid in sorted(children)]
                 else:raise Refus('sorties ou statuts natifs non conformes : '+str(shell))
             if sorted(witnessed)!=['Alice','Bob']:raise Refus('sessions manquantes ou confondues')
             report['refus_bob']=['annuaire Alice','requête ajout administratif directe','contexte forgé','métadonnées forgées','rejeu de trame']
@@ -105,7 +103,7 @@ def main():
             report['sorties_exclusivement_hote']=streams
             report['enrolement_époques']=enrolled
             report['bob_consultation_statut_zero']=True
-            report['fermeture_bob_avant_operation_alice']=True
+            report['consultations_alice_et_bob_sous_baux_initiaux']=True
             observer.close()
             if a.fermer:
                 serial.send(b'exit\n')

@@ -25,6 +25,26 @@ fn save(path: &Path, data: &[u8]) {
 }
 fn main() {
     let a: Vec<_> = std::env::args().collect();
+    if a.get(1).map(String::as_str)==Some("--verify") {
+        // Vérification hors ligne des effets persistants du banc, jamais une
+        // décision de fraîcheur pour l'invité. Tous les descripteurs sont RO.
+        let sector=a[4].parse().unwrap();
+        let open=|name:&str| {
+            let f=fs::File::open(name).unwrap();
+            let bytes=f.metadata().unwrap().len();
+            assert_eq!(bytes%4096,0);
+            FileImage::from_file(f,bytes/4096,sector).unwrap()
+        };
+        let ledger=Ledger::new(open(&a[3]));
+        let fs=novafs::Engine::mount_current(open(&a[2]),Ids {fs:[8;16],lv:[9;16]},novafs::Mode::ReadOnly).unwrap();
+        let actual=Triplet::capture(&fs,&ledger,[7;16]).unwrap();
+        assert_eq!(actual.encode(),fs::read(&a[5]).unwrap());
+        let work=fs.lookup_at(fs.root_id(),"travail").unwrap().id;
+        let file=fs.lookup_at(work,"donnees.tsv").unwrap().id;
+        assert_eq!(fs.read_id(file,0,64).unwrap(),b"A\tB\tC\nD\tE\tF\n");
+        println!("{{\"triplet_identique\":true,\"donnees_privees_inchangees\":true,\"generation\":{}}}",actual.head().generation);
+        return;
+    }
     let root = Path::new(&a[1]);
     fs::create_dir(root).unwrap();
     let sector = a[2].parse().unwrap();
