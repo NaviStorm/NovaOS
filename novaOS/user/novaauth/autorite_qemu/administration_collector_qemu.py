@@ -1,8 +1,15 @@
 """Observation QEMU privée : lectures GDB seulement, aucun handle aux sessions."""
-import hashlib, json, os, socket, threading, time
+import hashlib, json, os, re, socket, threading, time
 from types import SimpleNamespace
 from exec_vm_debug import Debug,symbol
 from administration_outputs import Collector,read_stopped,Refus
+
+def stopped_thread(debug, stop):
+    match=re.fullmatch(r'T05thread:([0-9a-fA-F]+);',stop)
+    if match is None or int(match[1],16)==0:raise Refus('CPU arrêté non identifié')
+    thread=match[1]
+    if debug.command('Hg'+thread)!='OK':raise Refus('sélection du CPU arrêté refusée')
+    return thread
 
 class Observer:
     def __init__(self,control,arch,kernel,out):
@@ -44,6 +51,7 @@ class Observer:
                     time.sleep(.01)
                 d=self.debug=Debug(self.control/'gdb.sock',serial,self.arch)
                 d.command('?')
+                if ';s' not in d.command('vCont?'):raise Refus('pas ciblé GDB absent')
                 for at in self.addresses:d.breakpoint(at)
                 d.resume();self.ready.set()
                 while not self.done.is_set():
@@ -52,6 +60,7 @@ class Observer:
                     # n'altère ni les horloges ni les échéances NovaAuth.
                     try:stop=d.stopped()
                     except TimeoutError:continue
+                    thread=stopped_thread(d,stop)
                     pc=d.register(32 if self.arch=='aarch64' else 16)
                     self.last_pc=pc
                     kind=self.addresses.get(pc)
@@ -87,10 +96,15 @@ class Observer:
                             raw=read_stopped(d);self.collector.accept(raw);self.records.append(raw)
                             with (self.out/'sorties-noyau.bin').open('ab') as f:f.write(raw)
                     d.breakpoint(pc,False)
-                    answer=d.command('s')
-                    diagnostic(pas=answer,pc=d.register(32 if self.arch=='aarch64' else 16),cpu=d.command('qC'))
-                    if not answer.startswith(('T05','S05')):raise Refus('pas de sonde inattendu')
-                    d.breakpoint(pc);d.resume()
+                    # Le pas historique non ciblé pouvait reprendre un autre
+                    # vCPU. Ne jamais dédupliquer l'événement ni déplacer PC.
+                    answer=d.command('vCont;s:'+thread)
+                    after_thread=stopped_thread(d,answer)
+                    after_pc=d.register(32 if self.arch=='aarch64' else 16)
+                    diagnostic(pas=answer,pc=after_pc,cpu=d.command('qC'),cpu_cible=thread)
+                    if int(after_thread,16)!=int(thread,16) or after_pc==pc:
+                        raise Refus('pas ciblé sans progression du CPU observé')
+                    d.breakpoint(pc);d.send('vCont;c')
         except Exception as e:
             if not self.done.is_set():self.error=type(e).__name__+': '+str(e)
             self.ready.set()
