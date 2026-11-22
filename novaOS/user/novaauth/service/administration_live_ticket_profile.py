@@ -54,6 +54,8 @@ def install(root):
     if s.count(anchor) != 1:
         raise ValueError('ancrage réponse préparée absent ou ambigu')
     p.write_text(s.replace(anchor, anchor + TRIGGER))
+    import runpy
+    runpy.run_path(str(Path(root) / 'novaOS/user/novaauth/service/administration_refusal_trace.py'))['install'](root)
 
 INITIAL = r'''
     mark(b"NAR2 Bob attente declenchement authentification")?;
