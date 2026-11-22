@@ -26,6 +26,7 @@ def main():
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+    parser.add_argument('--etat-ticket',choices=['expire','recu'],help='état EXEC_TICKET S6 distinct du témoin révoqué')
     parser.add_argument('--separation',action='store_true',help='références réelles Alice/Bob, sans transfert de droits')
     parser.add_argument('--reactivation',action='store_true',help='recette S9 après retrait effectif')
     parser.add_argument('--securite',action='store_true',help='sonde directe étendue, distincte du témoin temporel')
@@ -40,7 +41,8 @@ def main():
     a = parser.parse_args()
     if a.separation and (a.ticket_vivant or a.reactivation or a.securite):parser.error('profils de recette distincts')
     a.ticket_vivant = a.ticket_vivant or a.reactivation
-    atomic_status = a.ticket_vivant or a.separation
+    atomic_status = a.ticket_vivant or a.separation or bool(a.etat_ticket)
+    if a.etat_ticket and (a.separation or a.ticket_vivant or a.securite):parser.error("profils de recette distincts")
     if a.securite and a.ticket_vivant:parser.error('les deux profils sont distincts')
     if a.ticket_vivant and a.lot!='desactivation':
         parser.error('le témoin de ticket vivant exige le lot désactivation')
@@ -121,6 +123,10 @@ def main():
     if a.separation:
         cases=[('ticket-test separation whoami',b'alice\n')]
         report['portee']='S3/S5 références réelles sans délégation, session propre Bob et lancement Alice'
+    if a.etat_ticket:
+        cases=[('ticket-test '+a.etat_ticket+' whoami',b'' if a.etat_ticket=='expire' else b'alice\n')]
+        if a.etat_ticket=='expire':cases.append(('whoami',b'alice\n'))
+        report['portee']='S6 ticket '+a.etat_ticket+' et contrôle positif Alice'
     if a.commande:
         cases = [(cmd, expected) for cmd, expected in cases if isinstance(cmd, str) and cmd.split()[0] == a.commande]
         if not cases:
@@ -167,6 +173,8 @@ def main():
             # Les autres lots conservent leur ordonnancement historique.
             if a.separation:
                 serial.expect(rb'NAR2 Bob references pret',40)
+            elif a.etat_ticket:
+                serial.expect(rb'NAR2 Bob fermeture acquittee',40)
             elif not a.ticket_vivant:
                 serial.expect(rb'NAR2 Bob fermeture acquittee', 100)
                 if b'NAR2 Bob refus serveur et substitutions verifies' not in serial.data:
@@ -222,8 +230,13 @@ def main():
                 item = {'commande': command, 'statut_shell': shell_status,
                         'statut_attendu': expected_status, 'pid': sorted(pids)}
                 report['commandes'].append(item)
-                if shell_status != expected_status or len(pids) != 1:
+                no_child=a.etat_ticket=='expire' and i==0
+                if shell_status != expected_status or len(pids) != (0 if no_child else 1):
                     raise Refus('statut ou PID non conforme : ' + command)
+                if no_child:
+                    if b'NXEXEC ticket expire, aucun enfant' not in output:raise Refus('refus natif expiration absent')
+                    item.update(statut_ticket=8,stdout_octets=0,stderr_octets=0,octets_conformes=True)
+                    continue
                 pid = next(iter(pids))
                 rows = [(binding, closed, data) for binding, closed, data in observer.outputs()
                         if binding.child == pid]
@@ -309,6 +322,11 @@ def main():
                         'ancien_ticket':10,'ancienne_session':5,'nouveau_lancement':0}
                 elif bob[0] in by_shell or len(by_shell)!=1:
                     raise Refus('sortie enfant Bob inattendue dans le témoin temporel')
+            elif a.etat_ticket:
+                bob=[events.actor(b'NAR2 Bob authentifie route distincte')]
+                if len(by_shell)!=1 or bob[0] in by_shell:raise Refus('enfant Bob inattendu S6')
+                if a.etat_ticket=='recu' and not re.search(rb'NXEXEC pid=([0-9]+) statut=0 collecte unique',serial.data):raise Refus('collecte unique absente')
+                report['etat_ticket']={'mode':a.etat_ticket,'statut_natif':8 if a.etat_ticket=='expire' else 12,'controle_Alice':0}
             elif a.separation:
                 bob=[events.actor(b'NAR2 Bob references pret')]
                 if len(by_shell)!=1 or bob[0] in by_shell or re.search(rb'NAEXEC enfant owner='+str(bob[0]).encode()+rb' child=',serial.data):
@@ -343,6 +361,7 @@ def main():
             level = b'EL0' if a.arch == 'aarch64' else b'Ring3'
             codes = dict((int(p), int(c)) for p, c in re.findall(rb'PROC pid=(\d+) niveau=' + level + rb' pc=0x[0-9a-f]+ sortie=(\d+)', serial.data))
             for item in report['commandes']:
+                if item.get('statut_ticket')==8:continue
                 item['statut_natif'] = codes.get(item['pid'][0])
                 if item['statut_natif'] != item['statut_attendu']:
                     raise Refus('statut natif absent ou non conforme')
