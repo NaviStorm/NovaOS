@@ -1,0 +1,20 @@
+[
+  {
+    "pid": 22,
+    "preparation": 0,
+    "confirmation": 0,
+    "recu_statut": 0,
+    "operation": "35dcdc5078ad6996885ea5f19a52eed8",
+    "generation": 31,
+    "etat": 1
+  },
+  {
+    "pid": 22,
+    "preparation": 0,
+    "confirmation": 5,
+    "recu_statut": 5,
+    "operation": "00000000000000000000000000000000",
+    "generation": 0,
+    "etat": 0
+  }
+]

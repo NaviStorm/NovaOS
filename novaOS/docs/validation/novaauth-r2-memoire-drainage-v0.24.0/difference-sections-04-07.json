@@ -1,0 +1,226 @@
+[
+  {
+    "fichier": "x86_64-registre.elf",
+    "differences": {
+      ".strtab": {
+        "avant": {
+          "taille": 119555,
+          "sha256": "7f458e6c02b2edba4dce107e79312ec9cfd7ff274b244b8ab877d13bf30ba96e",
+          "flags": 0
+        },
+        "apres": {
+          "taille": 119472,
+          "sha256": "4d86792cb5ec49aaa35d02b2a6ab0cd8d8c97ca13c1b663b29a695ece2686e30",
+          "flags": 0
+        }
+      },
+      ".symtab": {
+        "avant": {
+          "taille": 25464,
+          "sha256": "85b5e1f3f99fb33557ac5d547b98d922a10856602a9a6b57d9ea37e0603e9065",
+          "flags": 0
+        },
+        "apres": {
+          "taille": 25464,
+          "sha256": "14821eadfd835470f13a59c32aba8acd9c63456a5f527376e5121e34dabab311",
+          "flags": 0
+        }
+      },
+      ".text": {
+        "avant": {
+          "taille": 496932,
+          "sha256": "0798c92f6b2fd95943422da33157d98f1064f87c7358e93dc12ac6e47fa051a9",
+          "flags": 6
+        },
+        "apres": {
+          "taille": 496932,
+          "sha256": "5f2fd563ef1f40e36139087eb42dcdffc9a8857367516b4754e56217221ed658",
+          "flags": 6
+        }
+      },
+      ".rodata": {
+        "avant": {
+          "taille": 57632,
+          "sha256": "486c7bdb13a981e16a4849be8902aff645640e3181a8f6c68144c3a64d4b0e95",
+          "flags": 51
+        },
+        "apres": {
+          "taille": 57632,
+          "sha256": "d8edb242457ef9de9fc5a8ba1efefb7154a4e147c6ce6cf84593da8de8b4f64c",
+          "flags": 51
+        }
+      }
+    }
+  },
+  {
+    "fichier": "x86_64-kernel.elf",
+    "differences": {
+      ".data": {
+        "avant": {
+          "taille": 42056,
+          "sha256": "5fd981097aa4d956455c96f8ed93e568952c5ecdc3194dec2d5b749ad1b97cb3",
+          "flags": 3
+        },
+        "apres": {
+          "taille": 42056,
+          "sha256": "984d79076f74e68e28d559b51e51dcbf74035a3c8f32871cdb3c79e33d543fbc",
+          "flags": 3
+        }
+      },
+      ".strtab": {
+        "avant": {
+          "taille": 220097,
+          "sha256": "5bd9ea30e3f4c7307e1562fa44b452b82edeb2687917004bddb3901d5125f70b",
+          "flags": 0
+        },
+        "apres": {
+          "taille": 220222,
+          "sha256": "4aecf17fc63f5c9fbac0e52d1a97a14bbf98457419d2335decc24de6b3db9428",
+          "flags": 0
+        }
+      },
+      ".symtab": {
+        "avant": {
+          "taille": 57528,
+          "sha256": "e196f884adf58e0aa43d83c836da1b9e594f0e36ce209f463c617c8c37219470",
+          "flags": 0
+        },
+        "apres": {
+          "taille": 57528,
+          "sha256": "4af6f9d9b6eef9974e69cbbfcd6a80a4c0f514386aa481ea2f55df18cc84f4a6",
+          "flags": 0
+        }
+      },
+      ".rodata": {
+        "avant": {
+          "taille": 8016667,
+          "sha256": "d76576ff0b22a4e96d4b00874f0835c76550f291d70f4e97bcfe4ec44f017587",
+          "flags": 50
+        },
+        "apres": {
+          "taille": 8017907,
+          "sha256": "e738d8fd6d3de25129e6104c071baa24dbc54ddf70570997c270090f032f78f2",
+          "flags": 50
+        }
+      },
+      ".text": {
+        "avant": {
+          "taille": 984388,
+          "sha256": "950f254fcb08d191797860bf8fabf490767297da2597da2afb45429f905bf49b",
+          "flags": 6
+        },
+        "apres": {
+          "taille": 984388,
+          "sha256": "669f6f3ff66c063185f995cadb30334e4f9bd74ccfc74ffd8ae062810aab65df",
+          "flags": 6
+        }
+      }
+    }
+  },
+  {
+    "fichier": "aarch64-registre.elf",
+    "differences": {
+      ".strtab": {
+        "avant": {
+          "taille": 126785,
+          "sha256": "82963441fd03fe16dd48b814e3281efd2007ae21aeb38f218b17a3002b283375",
+          "flags": 0
+        },
+        "apres": {
+          "taille": 126643,
+          "sha256": "6c899249ff207a2745d919b83fe5dc5d704f1aec57b9b94a615527f39ef7a21b",
+          "flags": 0
+        }
+      },
+      ".symtab": {
+        "avant": {
+          "taille": 71112,
+          "sha256": "4913959a94250aaa2215942c6b364d90e211122e350591e27a4068dbcf174c5b",
+          "flags": 0
+        },
+        "apres": {
+          "taille": 71112,
+          "sha256": "33c69c9ccb45fbad224c4c82ea49b9cec71dc1cf3bb4f6eb5e2fd47687f3850f",
+          "flags": 0
+        }
+      },
+      ".text": {
+        "avant": {
+          "taille": 486972,
+          "sha256": "41ed1cfe79b33d24b6960b3d8ae88b9c81e0853d79a673caac79f20e772b350c",
+          "flags": 6
+        },
+        "apres": {
+          "taille": 486972,
+          "sha256": "8b1c97e6a24db7fb3f5cba23f9e415de5c70c718635e4da86c967b6ad85fee4b",
+          "flags": 6
+        }
+      },
+      ".rodata": {
+        "avant": {
+          "taille": 54835,
+          "sha256": "257ff557c373aca5cdf0e042ba5aaf61a8a407e8c62efbdc9093d750ce30e1a4",
+          "flags": 51
+        },
+        "apres": {
+          "taille": 54835,
+          "sha256": "8709590eb93c8fbbd946dcbdc20d2391aa343dc78b5fcee47a8fb5af674bfe0f",
+          "flags": 51
+        }
+      }
+    }
+  },
+  {
+    "fichier": "aarch64-kernel.elf",
+    "differences": {
+      ".strtab": {
+        "avant": {
+          "taille": 224485,
+          "sha256": "4647f21713c1b8f54c175c4d167ab3ce7b37966f1485caff8fe661962fc9a774",
+          "flags": 0
+        },
+        "apres": {
+          "taille": 224674,
+          "sha256": "ebe442b7c659ece84d94b6419ca6e14f34191140b791baaad232cb867820b965",
+          "flags": 0
+        }
+      },
+      ".symtab": {
+        "avant": {
+          "taille": 163152,
+          "sha256": "c2a421481d6c65aabd281a14f8d66ab8ea401874619fc238dab7c6ca48892568",
+          "flags": 0
+        },
+        "apres": {
+          "taille": 163152,
+          "sha256": "bd250139b1f7a4c3faed199c89e787731c479f79fc7b6b7e93e084d8ed935092",
+          "flags": 0
+        }
+      },
+      ".rodata": {
+        "avant": {
+          "taille": 7958547,
+          "sha256": "27c796295b31be6ae2ccc4e21cfe9bbe124d027dcd4331fab771fe1de901cc65",
+          "flags": 50
+        },
+        "apres": {
+          "taille": 7958379,
+          "sha256": "07394a910eb8dd125013eddd82875309e0f8df9099ca854b5871c4faa74824ea",
+          "flags": 50
+        }
+      },
+      ".text": {
+        "avant": {
+          "taille": 930548,
+          "sha256": "44178e61555a6767b536cb78d5d8d28b239f630fa2fa4ce04cf885983b90166d",
+          "flags": 6
+        },
+        "apres": {
+          "taille": 930548,
+          "sha256": "eac97d17f915c9d6d3ac824f5a47711f93b3527492f13f2bb34b010405f1da67",
+          "flags": 6
+        }
+      }
+    }
+  }
+]

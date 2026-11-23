@@ -1,0 +1,582 @@
+{
+  "artefacts": [
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-01/genese-x86_64-512/autorite.raw",
+      "attendu": "ae0f4b7bf278dd68a501a9ab71a7776f49e050ee4265c1ebffba77b1461bccde",
+      "lu": "ae0f4b7bf278dd68a501a9ab71a7776f49e050ee4265c1ebffba77b1461bccde",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-01/genese-x86_64-512/identites.p9",
+      "attendu": "35e022c44cb8a850aa497f1c4278898cd37bc4c48fddcd436514dce7c6a4df35",
+      "lu": "35e022c44cb8a850aa497f1c4278898cd37bc4c48fddcd436514dce7c6a4df35",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-01/x86_64-kernel.elf",
+      "attendu": "58a1f46b9255fd5b21e87954b00716ea1376669fa87b33781eb1a96189a5a3f0",
+      "lu": "58a1f46b9255fd5b21e87954b00716ea1376669fa87b33781eb1a96189a5a3f0",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 9331424
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-01/x86_64-registre.elf",
+      "attendu": "2845139afee1633decde1eff2e8152ed6d4a87b9373227c70882cf0253b92357",
+      "lu": "2845139afee1633decde1eff2e8152ed6d4a87b9373227c70882cf0253b92357",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 707632
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-01/x86_64-shell.elf",
+      "attendu": "8d4bccb384f48bbda8b110abc8216f8c853e8f131b6deafafff6d6c4dc75c0a6",
+      "lu": "8d4bccb384f48bbda8b110abc8216f8c853e8f131b6deafafff6d6c4dc75c0a6",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 292240
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-01/x86_64.iso",
+      "attendu": "5d51cf859ad32aaa5e2a41231fae8941d9c21aa72c3631bcb6da5fe659e05b59",
+      "lu": "5d51cf859ad32aaa5e2a41231fae8941d9c21aa72c3631bcb6da5fe659e05b59",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 13142016
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/aarch64-kernel.elf",
+      "attendu": "a35cc75688c82ea48c216e7f90aa68568f9d44f40420d0aee067032b22643f36",
+      "lu": "a35cc75688c82ea48c216e7f90aa68568f9d44f40420d0aee067032b22643f36",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 9314096
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/aarch64-registre.elf",
+      "attendu": "3744a3a5f0e713d4c819afceb998236fda31180f21988ac9616b2ed0729b087b",
+      "lu": "3744a3a5f0e713d4c819afceb998236fda31180f21988ac9616b2ed0729b087b",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 748248
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/aarch64-shell.elf",
+      "attendu": "e9f1712bb6d614db6d281a5fe6ff156b9d8da127c0f97da040a07128b2a54166",
+      "lu": "e9f1712bb6d614db6d281a5fe6ff156b9d8da127c0f97da040a07128b2a54166",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 271760
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/aarch64.iso",
+      "attendu": "9acdee2658bad6bf80b175f56969f99e7d4a28a1422ff40835e696cad82055c1",
+      "lu": "9acdee2658bad6bf80b175f56969f99e7d4a28a1422ff40835e696cad82055c1",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 13099008
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/genese-aarch64-4096/autorite.raw",
+      "attendu": "be6530f7248faf034de1480a2028a3a8d93eeab0733ded5a5d0e4070659e36d8",
+      "lu": "be6530f7248faf034de1480a2028a3a8d93eeab0733ded5a5d0e4070659e36d8",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/genese-aarch64-4096/identites.p9",
+      "attendu": "ec53de4e3d80fe3d062839ef3ba1f626ff51435721fd2926b3145b97c51acee6",
+      "lu": "ec53de4e3d80fe3d062839ef3ba1f626ff51435721fd2926b3145b97c51acee6",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/genese-aarch64-512/autorite.raw",
+      "attendu": "be6530f7248faf034de1480a2028a3a8d93eeab0733ded5a5d0e4070659e36d8",
+      "lu": "be6530f7248faf034de1480a2028a3a8d93eeab0733ded5a5d0e4070659e36d8",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/genese-aarch64-512/identites.p9",
+      "attendu": "2c291cf98b2c78c5d62c04aecdb450d181d056f14005dce6ca8c1fca65ab9cd0",
+      "lu": "2c291cf98b2c78c5d62c04aecdb450d181d056f14005dce6ca8c1fca65ab9cd0",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/genese-x86_64-4096/autorite.raw",
+      "attendu": "ae0f4b7bf278dd68a501a9ab71a7776f49e050ee4265c1ebffba77b1461bccde",
+      "lu": "ae0f4b7bf278dd68a501a9ab71a7776f49e050ee4265c1ebffba77b1461bccde",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/genese-x86_64-4096/identites.p9",
+      "attendu": "310dae3248307594e4532aaa898d92026dcf5ed394e16a4754cb8eb88ff20e4c",
+      "lu": "310dae3248307594e4532aaa898d92026dcf5ed394e16a4754cb8eb88ff20e4c",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/genese-x86_64-512/autorite.raw",
+      "attendu": "ae0f4b7bf278dd68a501a9ab71a7776f49e050ee4265c1ebffba77b1461bccde",
+      "lu": "ae0f4b7bf278dd68a501a9ab71a7776f49e050ee4265c1ebffba77b1461bccde",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/genese-x86_64-512/identites.p9",
+      "attendu": "597f34fe5570ce7442bd71053ce26fa346dc45c7a21d72f70e7037a47cb58bf6",
+      "lu": "597f34fe5570ce7442bd71053ce26fa346dc45c7a21d72f70e7037a47cb58bf6",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/x86_64-kernel.elf",
+      "attendu": "497f03874c88d475dec3bc13105309866b39ef56c9852697f1b31f4c42875a71",
+      "lu": "497f03874c88d475dec3bc13105309866b39ef56c9852697f1b31f4c42875a71",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 9335648
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/x86_64-registre.elf",
+      "attendu": "7679bb035ad455b534f6899f630679e22e5a42d960fb2a18b3466e4d3a879524",
+      "lu": "7679bb035ad455b534f6899f630679e22e5a42d960fb2a18b3466e4d3a879524",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 711720
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/x86_64-shell.elf",
+      "attendu": "8d4bccb384f48bbda8b110abc8216f8c853e8f131b6deafafff6d6c4dc75c0a6",
+      "lu": "8d4bccb384f48bbda8b110abc8216f8c853e8f131b6deafafff6d6c4dc75c0a6",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 292240
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-02/x86_64.iso",
+      "attendu": "1d1c1557a908d64300062b8034c94937f12430b08c42b1116003bcb571fd61af",
+      "lu": "1d1c1557a908d64300062b8034c94937f12430b08c42b1116003bcb571fd61af",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 13146112
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-03/genese-x86_64-512/autorite.raw",
+      "attendu": "3ba99d995cf408ef03f0ca523c0a38a5423f63624b504c076eadb05f8ca371db",
+      "lu": "3ba99d995cf408ef03f0ca523c0a38a5423f63624b504c076eadb05f8ca371db",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-03/genese-x86_64-512/identites.p9",
+      "attendu": "512ed507d9a67afb2bab5f4bb7f5ea9e800c4e6d54a3b744a26065269a779454",
+      "lu": "512ed507d9a67afb2bab5f4bb7f5ea9e800c4e6d54a3b744a26065269a779454",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-03/x86_64-kernel.elf",
+      "attendu": "acd648dd064dea64984af3d5bcf41561934422dc3e41e62d04ce2500d05cdd68",
+      "lu": "acd648dd064dea64984af3d5bcf41561934422dc3e41e62d04ce2500d05cdd68",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 9335648
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-03/x86_64-registre.elf",
+      "attendu": "f5c643a828283966997a09fe6625cd5a77e1eea916860822b04427a604367641",
+      "lu": "f5c643a828283966997a09fe6625cd5a77e1eea916860822b04427a604367641",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 711672
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-03/x86_64-shell.elf",
+      "attendu": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+      "lu": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 292240
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-03/x86_64.iso",
+      "attendu": "434284cd594b3b5acdefafd0aa36a8474b3c7b2be43b2062a398ac046ab0ae6a",
+      "lu": "434284cd594b3b5acdefafd0aa36a8474b3c7b2be43b2062a398ac046ab0ae6a",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 13146112
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/aarch64-kernel.elf",
+      "attendu": "c779419ee69186d7048fc83fc82f459e0a36a861450539c53bbbe11c0026681c",
+      "lu": "c779419ee69186d7048fc83fc82f459e0a36a861450539c53bbbe11c0026681c",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 9330320
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/aarch64-registre.elf",
+      "attendu": "d89aa04c49685cad149d4c447a8626547616c02f863017a4ad0ef6ba2f9a29d2",
+      "lu": "d89aa04c49685cad149d4c447a8626547616c02f863017a4ad0ef6ba2f9a29d2",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 748328
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/aarch64-shell.elf",
+      "attendu": "1fe4d082fe8407435186476a7828c6ff9f3ea46ac686d0e14edeb870c9778496",
+      "lu": "1fe4d082fe8407435186476a7828c6ff9f3ea46ac686d0e14edeb870c9778496",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 271760
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/aarch64.iso",
+      "attendu": "3eecdc198c7a7d8a6dd84fcd838be1b3179f2d6f30854fee5e46ecbeaae96076",
+      "lu": "3eecdc198c7a7d8a6dd84fcd838be1b3179f2d6f30854fee5e46ecbeaae96076",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 13115392
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/genese-aarch64-4096/autorite.raw",
+      "attendu": "6a8da5dbff1a8fdcb177981f5ce3ad1cf9e1e0458986621f4b6a8f3bc12ef399",
+      "lu": "6a8da5dbff1a8fdcb177981f5ce3ad1cf9e1e0458986621f4b6a8f3bc12ef399",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/genese-aarch64-4096/identites.p9",
+      "attendu": "790a994d146b93e5756ec6105d6ac43af161e9f16caf46b326485e5c45e2520d",
+      "lu": "790a994d146b93e5756ec6105d6ac43af161e9f16caf46b326485e5c45e2520d",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/genese-aarch64-512/autorite.raw",
+      "attendu": "6a8da5dbff1a8fdcb177981f5ce3ad1cf9e1e0458986621f4b6a8f3bc12ef399",
+      "lu": "6a8da5dbff1a8fdcb177981f5ce3ad1cf9e1e0458986621f4b6a8f3bc12ef399",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/genese-aarch64-512/identites.p9",
+      "attendu": "4df2148c2637c813693177fda72a956afc4241beb0bd5d76fe02399e3ad9e0c9",
+      "lu": "4df2148c2637c813693177fda72a956afc4241beb0bd5d76fe02399e3ad9e0c9",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/genese-x86_64-4096/autorite.raw",
+      "attendu": "3ba99d995cf408ef03f0ca523c0a38a5423f63624b504c076eadb05f8ca371db",
+      "lu": "3ba99d995cf408ef03f0ca523c0a38a5423f63624b504c076eadb05f8ca371db",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/genese-x86_64-4096/identites.p9",
+      "attendu": "210977f936932d74c0827ce504aadfe6ce506fce9c204aedaecf86916f0387a6",
+      "lu": "210977f936932d74c0827ce504aadfe6ce506fce9c204aedaecf86916f0387a6",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/genese-x86_64-512/autorite.raw",
+      "attendu": "3ba99d995cf408ef03f0ca523c0a38a5423f63624b504c076eadb05f8ca371db",
+      "lu": "3ba99d995cf408ef03f0ca523c0a38a5423f63624b504c076eadb05f8ca371db",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/genese-x86_64-512/identites.p9",
+      "attendu": "8f33f442a4cdc8875600160c9799074f464741218222b5cd8d3a4d13cc13dc12",
+      "lu": "8f33f442a4cdc8875600160c9799074f464741218222b5cd8d3a4d13cc13dc12",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/x86_64-kernel.elf",
+      "attendu": "0ef1ae56d35000d4f133ccc01ef6228aebd3b0fbf70cb6c7af87c93ab8afdada",
+      "lu": "0ef1ae56d35000d4f133ccc01ef6228aebd3b0fbf70cb6c7af87c93ab8afdada",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 9335624
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/x86_64-registre.elf",
+      "attendu": "e4da217838530749b33cb9ce6c5c5f0ff962f1a9ee104ebe56cd4bb72d4a26a9",
+      "lu": "e4da217838530749b33cb9ce6c5c5f0ff962f1a9ee104ebe56cd4bb72d4a26a9",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 711848
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/x86_64-shell.elf",
+      "attendu": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+      "lu": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 292240
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-04/x86_64.iso",
+      "attendu": "d04649ae80a9ecfa7f89010b3b5bd1c49ca786d6e73524e358f63bf4df09aa30",
+      "lu": "d04649ae80a9ecfa7f89010b3b5bd1c49ca786d6e73524e358f63bf4df09aa30",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 13146112
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-07/genese-x86_64-512/autorite.raw",
+      "attendu": "1558efcb9020799c68b2869c1cf995f1ab7bebb67884797285a8c9e3b17793f6",
+      "lu": "1558efcb9020799c68b2869c1cf995f1ab7bebb67884797285a8c9e3b17793f6",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-07/genese-x86_64-512/identites.p9",
+      "attendu": "d68ae6248c39a5c569f5ae420be25e56597760963d56f71b0402ff3bec821816",
+      "lu": "d68ae6248c39a5c569f5ae420be25e56597760963d56f71b0402ff3bec821816",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-07/x86_64-admin-sonde.elf",
+      "attendu": "02c4d4ae7e91662fdffd1e7d2191f711eef13653626cd4df782ca83c7268cf1f",
+      "lu": "02c4d4ae7e91662fdffd1e7d2191f711eef13653626cd4df782ca83c7268cf1f",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 82440
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-07/x86_64-kernel.elf",
+      "attendu": "7ff2a60d98944e3f01659ff88eeba89ede765a579c7cb8b7eabbad086e25577b",
+      "lu": "7ff2a60d98944e3f01659ff88eeba89ede765a579c7cb8b7eabbad086e25577b",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 9335752
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-07/x86_64-registre.elf",
+      "attendu": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+      "lu": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 711768
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-07/x86_64-shell.elf",
+      "attendu": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+      "lu": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 292240
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-07/x86_64-sonde.paquet",
+      "attendu": "af86edcbcb8461fa5c821c8066e0ee0d090e7a1389b6c7efb08e8702f8d844af",
+      "lu": "af86edcbcb8461fa5c821c8066e0ee0d090e7a1389b6c7efb08e8702f8d844af",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 82596
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-07/x86_64.iso",
+      "attendu": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+      "lu": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 13146112
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-admin-sonde.elf",
+      "attendu": "b4d886418efeecdf376eade829c7e3191a5212ea369d296fe614224cac76b8b0",
+      "lu": "b4d886418efeecdf376eade829c7e3191a5212ea369d296fe614224cac76b8b0",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 82680
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-kernel.elf",
+      "attendu": "a76734fd22d4fa4a4d541b6c3b423bc6857738c5c2cd2fa8140de6bac8107f9e",
+      "lu": "a76734fd22d4fa4a4d541b6c3b423bc6857738c5c2cd2fa8140de6bac8107f9e",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 9326408
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-registre.elf",
+      "attendu": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+      "lu": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 748184
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-shell.elf",
+      "attendu": "1fe4d082fe8407435186476a7828c6ff9f3ea46ac686d0e14edeb870c9778496",
+      "lu": "1fe4d082fe8407435186476a7828c6ff9f3ea46ac686d0e14edeb870c9778496",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 271760
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-sonde.paquet",
+      "attendu": "6dbe21aa9737e5bdda826a88e21165fc37d52c2e5d7afbaf95b6f4ed149fcaa6",
+      "lu": "6dbe21aa9737e5bdda826a88e21165fc37d52c2e5d7afbaf95b6f4ed149fcaa6",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 82836
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64.iso",
+      "attendu": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+      "lu": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 13111296
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-4096/autorite.raw",
+      "attendu": "cf7849aa0f970ec263e58c175520c1c119227a0660a614a12113588bdf9a9163",
+      "lu": "cf7849aa0f970ec263e58c175520c1c119227a0660a614a12113588bdf9a9163",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-4096/identites.p9",
+      "attendu": "f8cc554c6a99d4537424dffc4313a4c98146e3216507fb7c50ccc8a48b5a1158",
+      "lu": "f8cc554c6a99d4537424dffc4313a4c98146e3216507fb7c50ccc8a48b5a1158",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-512/autorite.raw",
+      "attendu": "cf7849aa0f970ec263e58c175520c1c119227a0660a614a12113588bdf9a9163",
+      "lu": "cf7849aa0f970ec263e58c175520c1c119227a0660a614a12113588bdf9a9163",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-512/identites.p9",
+      "attendu": "6be7fd49a56f0da9c32ff8748700e2e181d40559afb31fcb2308ae1cd1ca80d4",
+      "lu": "6be7fd49a56f0da9c32ff8748700e2e181d40559afb31fcb2308ae1cd1ca80d4",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-4096/autorite.raw",
+      "attendu": "95209f70be2e1e0f3f956ea395f6e54b0da6d1c958eb53d7dff2ecb4cfbba10c",
+      "lu": "95209f70be2e1e0f3f956ea395f6e54b0da6d1c958eb53d7dff2ecb4cfbba10c",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-4096/identites.p9",
+      "attendu": "bc6a76ed2614289790ec0c2b112d9e4be7dd3ef353a43f7b565265bf7c19f5a4",
+      "lu": "bc6a76ed2614289790ec0c2b112d9e4be7dd3ef353a43f7b565265bf7c19f5a4",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/autorite.raw",
+      "attendu": "95209f70be2e1e0f3f956ea395f6e54b0da6d1c958eb53d7dff2ecb4cfbba10c",
+      "lu": "95209f70be2e1e0f3f956ea395f6e54b0da6d1c958eb53d7dff2ecb4cfbba10c",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 163840
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/identites.p9",
+      "attendu": "ff6c43cb70d1765f8069e8290dc4cb08e4b68e4221b07276b0a7892052fde9d3",
+      "lu": "ff6c43cb70d1765f8069e8290dc4cb08e4b68e4221b07276b0a7892052fde9d3",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 2097152
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-admin-sonde.elf",
+      "attendu": "0d2f1a9dbd1dcf821e192ae8c101aad4f4f5455d200151a4a0fe815ca9745f1e",
+      "lu": "0d2f1a9dbd1dcf821e192ae8c101aad4f4f5455d200151a4a0fe815ca9745f1e",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 82440
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf",
+      "attendu": "7ff2a60d98944e3f01659ff88eeba89ede765a579c7cb8b7eabbad086e25577b",
+      "lu": "7ff2a60d98944e3f01659ff88eeba89ede765a579c7cb8b7eabbad086e25577b",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 9335752
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf",
+      "attendu": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+      "lu": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 711768
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-shell.elf",
+      "attendu": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+      "lu": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 292240
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-sonde.paquet",
+      "attendu": "3bc6de4802b239f48783b0f8a2a57e45b1234fcee9c449301f57170e9f2ae087",
+      "lu": "3bc6de4802b239f48783b0f8a2a57e45b1234fcee9c449301f57170e9f2ae087",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 82596
+    },
+    {
+      "chemin": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso",
+      "attendu": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+      "lu": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+      "identique": true,
+      "durable_hors_tmp": true,
+      "taille": 13146112
+    }
+  ],
+  "conflits_meme_chemin": [],
+  "tous_conserves_et_identiques": true
+}

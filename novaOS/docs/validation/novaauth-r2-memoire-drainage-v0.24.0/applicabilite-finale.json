@@ -1,0 +1,16 @@
+{
+  "candidat_publie": "6e589b45f920505d76c552a716e84409fe1d40a1",
+  "arbre": "5750e97997fd6fe40062a3394cda266201600dc8",
+  "instantane_identique": "e63d3f237ae932558f67adcee42a41b2144735e7",
+  "services_compiles": "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+  "differences_07_09_hors_sonde": [
+    "novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+    "novaOS/user/novaauth/autorite_qemu/administration_events.py",
+    "novaOS/user/novaauth/autorite_qemu/test_membership_guest_profile.py"
+  ],
+  "Q2_en_vol": "source04, changements04-07 limités aux tests et assertions de taille, diff archivé ; pas identité binaire revendiquée",
+  "Q2_reponse_perdue": "preuve02 précompaction conservée mais remplacée pour le candidat compact par essai10 sur binaires07",
+  "Q3": "sonde et banc09, noyau/services07 identiques au code09 sur ces chemins",
+  "Q1_Q4_historiques": "archives conservées ; Q1 réexercé par les essais actuels ; Q4 terminal historique non rejoué et non assimilé au froid incomplet",
+  "reproductibilite": "Nsh SHA identique04/07 ; noyau et registre différents malgré absence de changement de comportement04/07. Réserve de reproductibilité conservée."
+}

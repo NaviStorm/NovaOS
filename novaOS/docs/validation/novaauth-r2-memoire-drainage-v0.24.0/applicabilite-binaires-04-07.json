@@ -1,0 +1,38 @@
+[
+  {
+    "fichier": "x86_64-registre.elf",
+    "avant": "e4da217838530749b33cb9ce6c5c5f0ff962f1a9ee104ebe56cd4bb72d4a26a9",
+    "apres": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+    "identique": false
+  },
+  {
+    "fichier": "x86_64-shell.elf",
+    "avant": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+    "apres": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+    "identique": true
+  },
+  {
+    "fichier": "x86_64-kernel.elf",
+    "avant": "0ef1ae56d35000d4f133ccc01ef6228aebd3b0fbf70cb6c7af87c93ab8afdada",
+    "apres": "7ff2a60d98944e3f01659ff88eeba89ede765a579c7cb8b7eabbad086e25577b",
+    "identique": false
+  },
+  {
+    "fichier": "aarch64-registre.elf",
+    "avant": "d89aa04c49685cad149d4c447a8626547616c02f863017a4ad0ef6ba2f9a29d2",
+    "apres": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+    "identique": false
+  },
+  {
+    "fichier": "aarch64-shell.elf",
+    "avant": "1fe4d082fe8407435186476a7828c6ff9f3ea46ac686d0e14edeb870c9778496",
+    "apres": "1fe4d082fe8407435186476a7828c6ff9f3ea46ac686d0e14edeb870c9778496",
+    "identique": true
+  },
+  {
+    "fichier": "aarch64-kernel.elf",
+    "avant": "c779419ee69186d7048fc83fc82f459e0a36a861450539c53bbbe11c0026681c",
+    "apres": "a76734fd22d4fa4a4d541b6c3b423bc6857738c5c2cd2fa8140de6bac8107f9e",
+    "identique": false
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "type": "diagnostic statique, pas qualification QEMU",
+  "code": "6e589b45f920505d76c552a716e84409fe1d40a1",
+  "fichier": "novaOS/user/novaauth/service/src/bin/common/exec_admission_guest.rs",
+  "ligne": 60,
+  "source_sha256": "248171649fe983f32ba01e6311973f8b15e07dd4611676be5aed28fbda189d71",
+  "condition": "Ok(h) if h[80..112]==bytes::<32>(&m[18..22])=>h,",
+  "consequence": "La tete fraiche differente de celle du ticket emprunte le chemin annulation avant demande distante, meme pour un ticket personnel encore valide. La conservation du champ state lors de membership_independent ne prouve pas la reexecution du ticket apres mutation de groupe.",
+  "non_execute": "Consommation QEMU d un ticket personnel emis avant le retrait G puis presente apres RETIREE.",
+  "piste_non_activee": "Revalider les droits actuels et le meme sujet, session, epoque, installation et image, sans renouvellement ni mutation du ticket ; relier cette verification a l admission distante fraiche et conserver les barrieres. Le prototype doit etre relu et qualifie avant integration."
+}

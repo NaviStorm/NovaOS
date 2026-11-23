@@ -1,0 +1,11 @@
+{
+  "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/finalisation-selective-cddbaaf-20261123.tar.gz",
+  "sha256": "0cd8f95d16fce1039c713d171ca6d76dfca183d80f42094db10385d8b63a9964",
+  "taille": 9569475,
+  "fichiers_manifestes": 1111,
+  "fichiers_archive_avec_manifeste": 1112,
+  "manifeste_sha256": "bf7c49e3ded4160b08bacf809344698e3e87804d8a9a561575b516c53754800d",
+  "lecture_archive_complete": true,
+  "date_UTC": "2026-11-23T17:32:52.864217+00:00",
+  "secrets_de_laboratoire": "Exclus ; les 72 artefacts privés restent durables aux chemins vérifiés, sans publication de leurs octets."
+}

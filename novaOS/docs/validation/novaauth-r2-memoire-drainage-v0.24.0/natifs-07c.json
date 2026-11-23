@@ -1,0 +1,53 @@
+[
+  {
+    "suite": "effectors",
+    "target": "aarch64-apple-darwin",
+    "status": 0,
+    "seconds": 0.5684750830405392,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--target",
+      "aarch64-apple-darwin",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-finalisation-cddbaaf/effectors-07c/Cargo.toml",
+      "--",
+      "--nocapture"
+    ]
+  },
+  {
+    "suite": "effectors",
+    "target": "x86_64-apple-darwin",
+    "status": 0,
+    "seconds": 2.3527425409993157,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--target",
+      "x86_64-apple-darwin",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-finalisation-cddbaaf/effectors-07c/Cargo.toml",
+      "--",
+      "--nocapture"
+    ]
+  },
+  {
+    "suite": "layout",
+    "target": "aarch64-apple-darwin",
+    "status": 101,
+    "seconds": 0.4458490830147639,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--target",
+      "aarch64-apple-darwin",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-finalisation-cddbaaf/layout-07c/Cargo.toml",
+      "--",
+      "--nocapture"
+    ]
+  }
+]

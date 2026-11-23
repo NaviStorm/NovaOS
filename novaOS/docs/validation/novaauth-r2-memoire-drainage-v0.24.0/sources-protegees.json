@@ -1,0 +1,13 @@
+{
+  "base": "01a38bb66c4dcd62c961ecc9eebd5196463f5d70",
+  "candidat": "6e589b45f920505d76c552a716e84409fe1d40a1",
+  "chemins": [
+    "novaOS/kernel",
+    "novaOS/abi",
+    "novaFS",
+    "novaOS/user/novaauth/service/src/bin/common/runtime.rs",
+    "novaOS/user/novaauth/service/src/bin/common/tete.rs"
+  ],
+  "differences": [],
+  "limite": "Le profil QEMU transforme son export prive ; ce controle porte sur les sources ordinaires, pas sur leur reproductibilite binaire."
+}

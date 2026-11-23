@@ -1,0 +1,19 @@
+{
+  "base_requise": "01a38bb66c4dcd62c961ecc9eebd5196463f5d70",
+  "instantanes": [
+    "585f5d1b8695658e4751748551280322d5098662",
+    "60045b41f01e12ffbcf3823039e9d5be29404f05",
+    "7fcb65b5a9628294fbdf95d625d6ad64970398a7",
+    "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+    "9185f087959a677a49013cb60d72548f0ef2e3a0",
+    "b45978937a335026f16c1f6d87f10875f24c8a16",
+    "b52f2bfb2af2a38a13a348fd60a9a7537f3a5a61",
+    "c106dea5335bb500a3312473c77efced0d05b0e8",
+    "e63d3f237ae932558f67adcee42a41b2144735e7"
+  ],
+  "pack": "sources-intermediaires.pack",
+  "sha256": "16f64e678e5acfccd367a10a08f4c4155291cfc204d5c1e406118aa9367319cb",
+  "verification_index_pack": 0,
+  "verification_pack": 0,
+  "aucun_tag_ni_branche_cree": true
+}

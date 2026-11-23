@@ -1,0 +1,11 @@
+{
+  "statut": "non qualifie et non publie comme code actif",
+  "base": "6e589b45f920505d76c552a716e84409fe1d40a1",
+  "diff_sha256": "6c984f078e1eaeb4509ef7dc5ff2c19f31c0e82e4689b5cd7dc7a48a1ead5438",
+  "sources_non_suivies": [
+    "novaOS/user/novaauth/service/membership_exec_origin.rs",
+    "novaOS/user/novaauth/service/membership_exec_profile.py",
+    "novaOS/user/novaauth/service/src/bin/common/membership_exec_gate.rs"
+  ],
+  "cause": "La restriction de lecture du paquet personnel ne demontre pas une autorisation de lancement effectivement issue du groupe ; provenance a raccorder sans recycler Ticket.scope."
+}

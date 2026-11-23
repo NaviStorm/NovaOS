@@ -1,0 +1,10 @@
+{
+  "source": "e63d3f237ae932558f67adcee42a41b2144735e7",
+  "code_publie": "6e589b45f920505d76c552a716e84409fe1d40a1",
+  "arbre_identique": true,
+  "code": 0,
+  "seconds": 0.4914285830454901,
+  "index_isole": true,
+  "assertions_historiques_modifiees": false,
+  "incident_preparation": "premier appel interrompu avant tests : export sources-09 absent, extrait ensuite depuis le commit exact"
+}

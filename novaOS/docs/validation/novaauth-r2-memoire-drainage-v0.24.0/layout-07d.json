@@ -1,0 +1,36 @@
+[
+  {
+    "target": "aarch64-apple-darwin",
+    "status": 0,
+    "seconds": 0.5048102920409292,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--target",
+      "aarch64-apple-darwin",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-finalisation-cddbaaf/layout-07c/Cargo.toml",
+      "--",
+      "--nocapture"
+    ],
+    "cle_publique": "correspond au signataire fictif du harnais, aucune modification de confiance QEMU"
+  },
+  {
+    "target": "x86_64-apple-darwin",
+    "status": 0,
+    "seconds": 0.6211140000377782,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--target",
+      "x86_64-apple-darwin",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-finalisation-cddbaaf/layout-07c/Cargo.toml",
+      "--",
+      "--nocapture"
+    ],
+    "cle_publique": "correspond au signataire fictif du harnais, aucune modification de confiance QEMU"
+  }
+]
