@@ -1,0 +1,108 @@
+[
+  {
+    "suite": "codec",
+    "target": "aarch64-apple-darwin",
+    "status": 0,
+    "seconds": 0.7742505830246955,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-revalidation-exec-b02a9eb/export-selectif-verifie/novaOS/user/novaauth/recuperation/Cargo.toml",
+      "--features",
+      "administration-lab",
+      "--target",
+      "aarch64-apple-darwin",
+      "--test",
+      "exec_descriptor"
+    ]
+  },
+  {
+    "suite": "politique",
+    "target": "aarch64-apple-darwin",
+    "status": 0,
+    "seconds": 2.9802768329973333,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-revalidation-exec-b02a9eb/export-selectif-verifie/novaOS/user/novaauth/Cargo.toml",
+      "--features",
+      "administration-lab",
+      "--target",
+      "aarch64-apple-darwin",
+      "--test",
+      "distribution",
+      "selective_exec"
+    ]
+  },
+  {
+    "suite": "gate",
+    "target": "aarch64-apple-darwin",
+    "status": 0,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc",
+      "--test",
+      "--target",
+      "aarch64-apple-darwin",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-revalidation-exec-b02a9eb/export-selectif-verifie/novaOS/kernel/src/sched/process/ipc/exec_gate_state.rs",
+      "-o",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-revalidation-exec-b02a9eb/gate-aarch64-apple-darwin"
+    ]
+  },
+  {
+    "suite": "codec",
+    "target": "x86_64-apple-darwin",
+    "status": 0,
+    "seconds": 1.9817059169872664,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-revalidation-exec-b02a9eb/export-selectif-verifie/novaOS/user/novaauth/recuperation/Cargo.toml",
+      "--features",
+      "administration-lab",
+      "--target",
+      "x86_64-apple-darwin",
+      "--test",
+      "exec_descriptor"
+    ]
+  },
+  {
+    "suite": "politique",
+    "target": "x86_64-apple-darwin",
+    "status": 0,
+    "seconds": 3.4478423339896835,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-revalidation-exec-b02a9eb/export-selectif-verifie/novaOS/user/novaauth/Cargo.toml",
+      "--features",
+      "administration-lab",
+      "--target",
+      "x86_64-apple-darwin",
+      "--test",
+      "distribution",
+      "selective_exec"
+    ]
+  },
+  {
+    "suite": "gate",
+    "target": "x86_64-apple-darwin",
+    "status": 0,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc",
+      "--test",
+      "--target",
+      "x86_64-apple-darwin",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-revalidation-exec-b02a9eb/export-selectif-verifie/novaOS/kernel/src/sched/process/ipc/exec_gate_state.rs",
+      "-o",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-revalidation-exec-b02a9eb/gate-x86_64-apple-darwin"
+    ]
+  }
+]

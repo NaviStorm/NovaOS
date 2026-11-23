@@ -1,0 +1,30 @@
+[
+  {
+    "target": "aarch64-apple-darwin",
+    "status": 0,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-revalidation-exec-b02a9eb/effecteurs-propres-02/Cargo.toml",
+      "--target",
+      "aarch64-apple-darwin",
+      "--lib"
+    ]
+  },
+  {
+    "target": "x86_64-apple-darwin",
+    "status": 0,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--manifest-path",
+      "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-revalidation-exec-b02a9eb/effecteurs-propres-02/Cargo.toml",
+      "--target",
+      "x86_64-apple-darwin",
+      "--lib"
+    ]
+  }
+]

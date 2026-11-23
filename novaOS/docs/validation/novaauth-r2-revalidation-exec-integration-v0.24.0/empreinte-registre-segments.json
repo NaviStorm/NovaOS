@@ -1,0 +1,102 @@
+[
+  {
+    "arch": "aarch64",
+    "profil": "q2b",
+    "pages_LOAD": 152,
+    "segments": [
+      {
+        "flags": 5,
+        "file_size": 487608,
+        "mem_size": 487608,
+        "va": 16777216
+      },
+      {
+        "flags": 4,
+        "file_size": 54899,
+        "mem_size": 54899,
+        "va": 17268736
+      },
+      {
+        "flags": 6,
+        "file_size": 920,
+        "mem_size": 69648,
+        "va": 17326080
+      }
+    ]
+  },
+  {
+    "arch": "aarch64",
+    "profil": "selectif",
+    "pages_LOAD": 159,
+    "segments": [
+      {
+        "flags": 5,
+        "file_size": 514648,
+        "mem_size": 514648,
+        "va": 16777216
+      },
+      {
+        "flags": 4,
+        "file_size": 56243,
+        "mem_size": 56243,
+        "va": 17293312
+      },
+      {
+        "flags": 6,
+        "file_size": 920,
+        "mem_size": 73733,
+        "va": 17350656
+      }
+    ]
+  },
+  {
+    "arch": "x86_64",
+    "profil": "q2b",
+    "pages_LOAD": 155,
+    "segments": [
+      {
+        "flags": 5,
+        "file_size": 498260,
+        "mem_size": 498260,
+        "va": 16777216
+      },
+      {
+        "flags": 4,
+        "file_size": 57632,
+        "mem_size": 57632,
+        "va": 17276928
+      },
+      {
+        "flags": 6,
+        "file_size": 936,
+        "mem_size": 69648,
+        "va": 17338368
+      }
+    ]
+  },
+  {
+    "arch": "x86_64",
+    "profil": "selectif",
+    "pages_LOAD": 162,
+    "segments": [
+      {
+        "flags": 5,
+        "file_size": 522964,
+        "mem_size": 522964,
+        "va": 16777216
+      },
+      {
+        "flags": 4,
+        "file_size": 58976,
+        "mem_size": 58976,
+        "va": 17301504
+      },
+      {
+        "flags": 6,
+        "file_size": 936,
+        "mem_size": 73730,
+        "va": 17362944
+      }
+    ]
+  }
+]

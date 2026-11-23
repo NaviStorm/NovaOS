@@ -1,0 +1,11 @@
+{
+  "commit": "515626408b382ad212a53de8fdee17670e0b4bf4",
+  "fichiers_compares": 713,
+  "prototype_initial_active": false,
+  "differences_avant": [
+    "novaOS/user/novaauth/service/src/bin/common/selective_exec_pump.rs",
+    "novaOS/user/novaauth/recuperation/tests/exec_descriptor.rs"
+  ],
+  "explication": "Le fichier mod\u00e8le selective_exec_pump.rs est copi\u00e9 vers exec_admission_guest.rs dans export : ce dernier \u00e9tait d\u00e9j\u00e0 identique. Le second \u00e9cart est un fichier de test natif, non compil\u00e9 dans le noyau.",
+  "differences_apres": []
+}
