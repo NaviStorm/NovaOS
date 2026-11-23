@@ -14,5 +14,7 @@ pub(super) fn independent(login:&mut Login, subject:[u8;16], group:[u8;16], revi
     q[104..112].copy_from_slice(&revision.to_le_bytes());q[112..].copy_from_slice(&operation);
     // Ce SEND est intercepté par le noyau sur la route privée du vérificateur,
     // après contrôle du propriétaire, de l'instance, de la session et du tag.
-    rt::send_for(login.port(19),login.relay_seq,&q,250)
+    rt::send_for(login.port(19),login.relay_seq,&q,250)?;
+    marker(b"NARM EXEC inspection instance et provenance personnelle acquittee");
+    Ok(())
 }

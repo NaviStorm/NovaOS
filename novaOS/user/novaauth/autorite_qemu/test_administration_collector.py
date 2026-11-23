@@ -1,6 +1,6 @@
 """Sélection du vCPU observé ; oracles hôtes, pas preuves invitées."""
 import unittest
-from administration_collector_qemu import stopped_thread, advance_probe
+from administration_collector_qemu import stopped_thread, advance_probe, probe_kind
 from administration_outputs import Refus
 
 
@@ -50,6 +50,20 @@ class BoundedStep(unittest.TestCase):
         self.assertEqual(self.steps,1)
         with self.assertRaises(Refus):self.run_step([100],stacks=[64])
         self.assertEqual(self.steps,1)
+
+
+class ProbeAliasing(unittest.TestCase):
+    def test_exact_aarch64_alias_preserves_session_then_output(self):
+        same=0xffffffff8009e990
+        probes={'session':same,'output':same}
+        self.assertEqual([probe_kind(probes,same,n) for n in (80,272)],['session','output'])
+
+    def test_distinct_symbols_keep_their_formats(self):
+        probes={'session':100,'output':200}
+        self.assertEqual(probe_kind(probes,100,80),'session')
+        self.assertEqual(probe_kind(probes,200,272),'output')
+        for pc,n in ((100,272),(200,80),(300,80),(100,79),(200,273)):
+            with self.assertRaises(Refus):probe_kind(probes,pc,n)
 
 
 if __name__=='__main__': unittest.main()

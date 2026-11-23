@@ -10,6 +10,9 @@ mod recovery_capture;
 #[cfg(feature="vfs-guest")]
 #[path="common/recovery_mutation.rs"]
 mod recovery_mutation;
+#[cfg(feature="membership-r2-guest")]
+#[path="common/membership_transaction.rs"]
+mod membership_transaction;
 #[cfg(all(feature="recuperation-guest",not(feature="vue-guest")))]
 #[path="common/no_heap.rs"]
 mod no_heap;

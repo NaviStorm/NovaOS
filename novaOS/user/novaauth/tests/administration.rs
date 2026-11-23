@@ -711,6 +711,10 @@ fn selective_removal_preserves_direct_other_group_and_authentication_epoch() {
         assert!(before.membership_removal(admin,[99;16],f.alice,g,old_g.membership_revision+1).is_err());
         assert!(before.administration_publication(admin,[99;16],Operation::RemoveMember{subject:f.alice,group:g},None).is_err());
         let removal=before.membership_removal(admin,[99;16],f.alice,g,old_g.membership_revision).unwrap();
+        let fresh_removal=before.prepare_membership_removal(admin,[99;16],f.alice,g).unwrap();
+        assert_eq!(fresh_removal.source,removal.source);
+        assert_eq!(fresh_removal.triplet.head(),removal.triplet.head());
+        assert!(before.prepare_membership_removal(alice,[99;16],f.alice,g).is_err());
         assert_eq!(removal.source.subject(),f.alice);assert_eq!(removal.source.group(),g);
         // Publication P9 simulée isolée : ce test ne tient pas lieu d'acquittement
         // des effecteurs ni de qualification du raccord QEMU de la commande.

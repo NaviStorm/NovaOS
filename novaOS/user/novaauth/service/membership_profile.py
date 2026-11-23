@@ -20,6 +20,7 @@ def install(root):
         // Identité attribuée par le noyau aux deux extrémités de CETTE route.
         // Un redémarrage de NovaFS ne peut répondre pour l'ancienne instance.
         config(s, owner, 23, &identity(s, fs)?);
+        config(s, owner, 27, &identity(s, peer)?);
         config(s, fs, 468, &identity(s, fs)?);
     }''')
     path = 'novaOS/user/novafs/files/auth_directory.rs'
@@ -71,3 +72,7 @@ def install(root):
          'b"NXRBIND1" | b"NXRSTOP1" | b"NXROFFR1" | b"NXMGEXE1"')
     edit('novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs',
          'mod administrative;', 'mod administrative;\n#[path="membership_exec.rs"]\nmod membership_exec;')
+
+    edit('novaOS/user/novaauth/service/src/bin/common/recovery_view.rs',
+         '            administration.reconcile(&mut state,&mut recovered.storage)?;',
+         '            if let Err(code)=administration.reconcile_request(&mut state,&mut recovered.storage,&m.payload) {\n                // Le retrait G ne ferme pas les consultations Direct/H.\n                // Chaque demande recontrôle ensuite la tête et ses propres droits.\n                // CONFIRM/OUTCOME conservent UNCERTAIN tant que les faits manquent.\n                if !administration.selective_in_progress(){return Err(code);}\n            }')

@@ -17,6 +17,8 @@ pub struct Pending {
     captured:bool,
     #[cfg(feature="administration-r2-guest")]
     administration:Option<[u8;49]>,
+    #[cfg(feature="membership-r2-guest")]
+    pub selective:Option<crate::membership_transaction::Selective>,
 }
 fn verify(prefix:&[u8],data:&[u8],sig:&[u8])->rt::Result<()> {
     let mut signed=[0;512];let n=prefix.len()+data.len();
@@ -33,7 +35,8 @@ impl Pending {
         }
         let plan=state.revoke_plan(grant,object,operation).map_err(|_|rt::DENIED)?;
         Ok(Self {plan,previous:current,submitted:false,started:false,confirmed:false,reference,captured:false,
-            #[cfg(feature="administration-r2-guest")] administration:None})
+            #[cfg(feature="administration-r2-guest")] administration:None,
+            #[cfg(feature="membership-r2-guest")] selective:None})
     }
     #[cfg(feature="administration-r2-guest")]
     pub fn from_administration(state:&View,grant:Grant,operation:[u8;16],current:[u8;112],reference:[u8;16],
@@ -51,7 +54,29 @@ impl Pending {
             novaos_identity::Fault::Corrupt|novaos_identity::Fault::StateMismatch=>rt::REFUSED,
             _=>rt::DENIED,
         })?;
-        Ok(Self{plan:p.triplet,previous:current,submitted:false,started:false,confirmed:false,reference,captured:false,administration:Some(p.metadata)})
+        Ok(Self{plan:p.triplet,previous:current,submitted:false,started:false,confirmed:false,reference,captured:false,administration:Some(p.metadata),
+            #[cfg(feature="membership-r2-guest")] selective:None})
+    }
+    #[cfg(feature="membership-r2-guest")]
+    pub fn from_membership(state:&View,grant:Grant,operation:[u8;16],current:[u8;112],reference:[u8;16],subject:[u8;16],group:[u8;16])->rt::Result<Self> {
+        if current[..16]!=incarnation::SERVER || current[16..32]!=state.head().domain
+            || current[32..64]!=incarnation::identity() || current[72..80]!=state.head().generation.to_be_bytes()
+            || current[80..]!=state.head().digest {return Err(rt::REVOKED);}
+        let removal=state.prepare_membership_removal(grant,operation,subject,group).map_err(|e|match e {
+            novaos_identity::Fault::Conflict=>24,novaos_identity::Fault::Limit=>rt::LIMIT,
+            novaos_identity::Fault::Uncertain=>UNCERTAIN,_=>rt::DENIED})?;
+        let selective=crate::membership_transaction::Selective::new(&removal,&current)?;
+        Ok(Self{plan:removal.triplet,previous:current,submitted:false,started:false,confirmed:false,
+            reference,captured:false,administration:None,selective:Some(selective)})
+    }
+    pub fn started(&self)->bool {self.started}
+    #[cfg(feature="membership-r2-guest")]
+    pub fn reserve_membership(&mut self)->rt::Result<()> {
+        self.selective.as_mut().ok_or(rt::DENIED)?.reserve(&self.previous)
+    }
+    #[cfg(feature="membership-r2-guest")]
+    pub fn finish_membership(&mut self,state:&View)->rt::Result<()> {
+        if let Some(s)=self.selective.as_mut(){s.finish(state)?;}Ok(())
     }
     pub fn backup(&mut self,epoch:u64,recipients:[[u8;32];2])->rt::Result<()> {
         if !self.confirmed || self.captured {return Err(rt::DENIED);}
@@ -92,6 +117,8 @@ impl Pending {
     }
     pub fn submit(&mut self,storage:&mut Storage)->rt::Result<()> {
         if self.started {return Err(rt::DENIED);}
+        #[cfg(feature="membership-r2-guest")]
+        if let Some(s)=self.selective.as_mut(){s.close(storage)?;}
         self.started=true;
         let h=*self.plan.head();let lengths=self.plan.parts().map(|p|p.len() as u32);
         storage.begin_next(self.previous[80..112].try_into().unwrap(),h.request,
@@ -103,7 +130,13 @@ impl Pending {
         let mut client=rpc::Client::new(rt::config(8),incarnation::identity());
         let mut answer=[0;MAX];
         #[cfg(feature="administration-r2-guest")]
-        let n=if let Some(metadata)=self.administration {
+        let n=if {
+            #[cfg(feature="membership-r2-guest")] {self.selective.is_some()}
+            #[cfg(not(feature="membership-r2-guest"))] {false}
+        } {
+            let mut q=[0;128];q[..112].copy_from_slice(&self.previous);q[112..].copy_from_slice(&h.request);
+            client.exchange(novaos_recovery::membership::PUBLISH,&q,&mut answer).map_err(|_|UNCERTAIN)?
+        }else if let Some(metadata)=self.administration {
             let mut packet=[0;209];packet[..160].copy_from_slice(&self.proposal());packet[160..].copy_from_slice(&metadata);
             novaos_recovery::administration::Message::parse(novaos_recovery::administration::PUBLISH,&packet).map_err(|_|UNCERTAIN)?;
             client.exchange(novaos_recovery::administration::PUBLISH,&packet,&mut answer).map_err(|_|UNCERTAIN)?

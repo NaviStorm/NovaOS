@@ -30,6 +30,11 @@ impl View {
         if source.revision!=expected_revision {return Err(Fault::Conflict);}
         Ok(Removal{source,triplet,principal:admin.subject(),principal_epoch})
     }
+    /// Préparation sur la révision effectivement lue dans CETTE vue immuable.
+    pub fn prepare_membership_removal(&self,admin:Grant,op:Id,subject:Id,group:Id)->Result<Removal> {
+        let source=self.source(subject,group)?;
+        self.membership_removal(admin,op,subject,group,source.revision)
+    }
     /// Décision pour une image attestée par le lanceur et une session vérifiée.
     /// Le raccord applique aussi la barrière durable de cette origine, même si
     /// P9 correspond encore à la tête d'avant publication.

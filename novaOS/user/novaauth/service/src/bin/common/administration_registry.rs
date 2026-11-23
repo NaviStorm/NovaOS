@@ -35,6 +35,12 @@ impl Port {
             #[cfg(feature="administration-r2-guest")]
             transactions: mutations::Transactions::new() }
     }
+    #[cfg(feature="membership-r2-guest")]
+    pub fn selective_in_progress(&self)->bool{self.transactions.selective_in_progress()}
+    #[cfg(feature="membership-r2-guest")]
+    pub fn reconcile_request(&mut self,state:&mut View,storage:&mut crate::recovery_store::Storage,q:&[u8;128])->rt::Result<()> {
+        self.transactions.reconcile_request(state,storage,q)
+    }
     pub fn clear(&mut self) {
         self.context = None;
     }

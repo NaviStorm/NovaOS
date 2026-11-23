@@ -187,12 +187,21 @@ impl Channels {
                     pre[..8].copy_from_slice(b"NXRTPRE2");
                     let selected=exchange(login,&pre)?;
                     if selected[8..24]!=[0;16] {
+                        #[cfg(feature="membership-r2-guest")]
+                        let selective=&selected[48..56]==b"NXMGSEL1";
+                        #[cfg(not(feature="membership-r2-guest"))]
+                        let selective=false;
+                        if selective {
+                            #[cfg(feature="membership-r2-guest")]
+                            inspect_membership(login,peer,&selected,request)?;
+                        }else{
                         if selected[48..]!=[0;80] || selected[32..48]!=request[16..32] {
                             return Err(rt::DENIED);
                         }
                         let subject=selected[8..24].try_into().unwrap();
                         let epoch=number(&selected[24..]);
                         retire_subject(login,peer,subject,epoch)?;
+                        }
                         pre[..8].copy_from_slice(b"NXRTACK2");
                         if exchange(login,&pre)?!=selected {return Err(rt::DENIED);}
                     }
@@ -261,4 +270,22 @@ pub(super) fn trace(stage:u64, code:u64) {
         for i in 0..16 {out[start+i]=hex[((value>>((15-i)*4))&15) as usize];}
     }
     let _=rt::call(rt::DEBUG_WRITE,out.as_ptr() as u64,out.len() as u64,0);
+}
+
+#[cfg(feature="membership-r2-guest")]
+fn inspect_membership(login:&mut Login,peer:&mut Login,q:&[u8;128],request:&[u8])->rt::Result<()> {
+    if q[56..72]!=request[16..32] || q[72..104]!=login.route.issuer || q[104..]!=[0;24]{return Err(rt::DENIED);}
+    let subject=q[8..24].try_into().unwrap();let group=q[24..40].try_into().unwrap();
+    let revision=number(&q[40..]);let operation=q[56..72].try_into().unwrap();
+    let mut seen=false;let mut sequence=login.relay_seq.max(peer.relay_seq);
+    let mut inspect=|actor:&mut Login|->rt::Result<()> {
+        if actor.retirement_binding.is_some_and(|(u,_,_)|u==subject){
+            actor.relay_seq=sequence;
+            let result=membership_exec::independent(actor,subject,group,revision,operation);
+            sequence=actor.relay_seq;seen=true;result?;
+        }Ok(())
+    };
+    let result=inspect(login).and_then(|_|inspect(peer));
+    login.relay_seq=sequence;peer.relay_seq=sequence;
+    result?;if seen{Ok(())}else{Err(22)}
 }

@@ -30,10 +30,27 @@ pub struct Transactions {
     completed: [Option<([u8; 16], [u8; 16], u64)>; 2],
     next_completed: usize,
     effects_submitted: bool,
+    #[cfg(feature="membership-r2-guest")]
+    selective_complete:Option<([u8;16],crate::membership_transaction::Selective)>,
 }
 impl Transactions {
     pub fn new() -> Self { Self { prepared: [None; 2], pending: None, pending_owner: None,
-                                completed: [None; 2], next_completed: 0, effects_submitted:false } }
+                                completed: [None; 2], next_completed: 0, effects_submitted:false,
+        #[cfg(feature="membership-r2-guest")] selective_complete:None } }
+    #[cfg(feature="membership-r2-guest")]
+    pub fn selective_in_progress(&self)->bool{self.pending.as_ref().is_some_and(|p|p.selective.is_some())}
+    #[cfg(feature="membership-r2-guest")]
+    pub fn reconcile_request(&mut self,state:&mut View,storage:&mut Storage,q:&[u8;128])->rt::Result<()> {
+        if let Some(p)=self.pending.as_ref().filter(|p|p.selective.is_some()) {
+            // Après activation P9 vérifiée, la résolution de chaque fragment
+            // ne relance pas le drainage. Seul OUTCOME de CETTE opération le
+            // consulte. Les demandes indépendantes vérifient toujours leur tête
+            // et leurs capacités ; aucun ancien état n'est accepté par ce cache.
+            let matching_outcome=matches!(wire::decode(q),Ok(Command::Outcome(op)) if op==p.plan.head().request);
+            if p.plan.head()==&state.head() && !matching_outcome{return Ok(());}
+        }
+        self.reconcile(state,storage)
+    }
     fn remember(&mut self, operation: [u8; 16], owner: [u8; 16], generation: u64) {
         self.completed[self.next_completed] = Some((operation, owner, generation));
         self.next_completed = (self.next_completed + 1) % self.completed.len();
@@ -43,6 +60,9 @@ impl Transactions {
     /// consulte seulement le reçu du même identifiant ; jamais submit à nouveau.
     pub fn reconcile(&mut self, state: &mut View, storage: &mut Storage) -> rt::Result<()> {
         if let Some(p) = self.pending.as_mut() {
+            // Une réservation n'est pas une mutation publiée. Sa confirmation
+            // reste explicite, liée à la préparation et à la session d'origine.
+            if !p.started(){return Ok(());}
             p.reconcile().map_err(|_| UNCERTAIN)?;
             *state = p.activate(storage).map_err(|_| UNCERTAIN)?;
             let operation = p.plan.head().request;
@@ -55,7 +75,11 @@ impl Transactions {
                 // effecteurs n'est jamais envoyé automatiquement une seconde fois.
                 retirement::terminal(p)?;
             }
+            #[cfg(feature="membership-r2-guest")]
+            p.finish_membership(state)?;
             let owner = self.pending_owner.ok_or(UNCERTAIN)?;
+            #[cfg(feature="membership-r2-guest")]
+            if let Some(s)=p.selective.take(){self.selective_complete=Some((owner,s));}
             self.pending = None;
             self.pending_owner = None;
             self.remember(operation, owner, state.head().generation);
@@ -79,6 +103,26 @@ impl Transactions {
         let Command::Prepare(change)=wire::decode(&p.request).map_err(|_|rt::BAD_ARGUMENT)?
             else{return Err(rt::BAD_ARGUMENT)};
         authorize(state,grant,c,change)?;
+        #[cfg(feature="membership-r2-guest")]
+        if let Mutation::RemoveMember{..}=change {
+            let Operation::RemoveMember{subject,group}=operation_for(state,grant,change)? else{return Err(rt::REFUSED)};
+            if self.pending.is_none() {
+                if &q[..8]==b"NXRTACK2" {return Err(rt::DENIED);}
+                let current=tete::query(rt::config(8),&incarnation::identity())?;
+                self.pending=Some(Pending::from_membership(state,grant,operation,current,c.reference,subject,group)?);
+                self.pending_owner=Some(grant.subject());
+            }
+            let pending=self.pending.as_mut().ok_or(UNCERTAIN)?;
+            if pending.plan.head().request!=operation || pending.started(){return Err(UNCERTAIN);}
+            pending.reserve_membership()?;
+            let selective=pending.selective.as_mut().ok_or(rt::DENIED)?;
+            selective.selection(a)?;
+            if &q[..8]==b"NXRTACK2" {
+                if !p.requested{return Err(rt::DENIED);}
+                selective.exec_verified();
+            }else{p.requested=true;}
+            return Ok(());
+        }
         if !matches!(change,Mutation::Disable(_)) {return Ok(());}
         // Le même plan vérifie le dernier administrateur et fournit l'époque.
         let current=crate::tete::query(rt::config(8),&incarnation::identity())?;
@@ -106,6 +150,7 @@ impl Transactions {
         }
         match wire::decode(q).map_err(|_| rt::BAD_ARGUMENT)? {
             Command::Prepare(change) => {
+                if self.pending.is_some(){return Err(UNCERTAIN);}
                 authorize(state, grant, c, change)?;
                 let mut hash = Sha256::new();
                 hash.update(b"NovaAuth/QEMU/admin-intention/v1\0");
@@ -120,12 +165,12 @@ impl Transactions {
                 // administrateur est refusé ici par State/apply, pas par la CLI.
                 let operation_kind = operation_for(state, grant, change)?;
                 let retired=retired_for(state,grant,&operation_kind,current)?;
-                let plan = Pending::from_administration(state, grant, operation, current,
-                                                        c.reference, operation_kind, retired.as_ref())?;
+                let plan = make_plan(state,grant,operation,current,c.reference,operation_kind,retired.as_ref())?;
                 drop(plan);
-                // Le retrait de groupe reste refusé avant raccord de ses effecteurs.
-                // Create utilise exclusivement le catalogue public approuvé.
-                if !matches!(change, Mutation::Create {..} | Mutation::CreateGroup(_) | Mutation::Rename {..} | Mutation::Disable(_) | Mutation::Reactivate(_) | Mutation::AddMember {..}) {
+                // RemoveMember reste absent du profil R2 historique : le profil
+                // sélectif exige sa réservation et les faits des effecteurs.
+                let selective=cfg!(feature="membership-r2-guest") && matches!(change,Mutation::RemoveMember{..});
+                if !selective && !matches!(change, Mutation::Create {..} | Mutation::CreateGroup(_) | Mutation::Rename {..} | Mutation::Disable(_) | Mutation::Reactivate(_) | Mutation::AddMember {..}) {
                     return Err(rt::REFUSED);
                 }
                 let slot = self.prepared.iter().position(|p| p.is_some_and(|p| p.binding == binding))
@@ -142,7 +187,7 @@ impl Transactions {
                 Ok(())
             }
             Command::Confirm { operation, digest } => {
-                if self.pending.is_some() { return Err(UNCERTAIN); }
+                if self.pending.as_ref().is_some_and(|p|p.started() || p.plan.head().request!=operation) { return Err(UNCERTAIN); }
                 let slot = self.prepared.iter().position(|p| p.is_some_and(|p|
                     p.operation == operation && p.confirmation == digest)).ok_or(rt::DENIED)?;
                 let p = self.prepared[slot].as_ref().unwrap();
@@ -156,21 +201,29 @@ impl Transactions {
                 authorize(state, grant, c, change)?;
                 let operation_kind=operation_for(state,grant,change)?;
                 let retired=retired_for(state,grant,&operation_kind,current)?;
-                let plan = Pending::from_administration(state, grant, operation, current,
-                    c.reference, operation_kind, retired.as_ref())?;
-                if plan.retirement().is_some() && plan.retirement()!=p.closed {return Err(UNCERTAIN);}
-                self.prepared[slot] = None; // consommation avant toute écriture
-                self.pending = Some(plan);
+                if self.pending.is_none() {
+                    let plan=make_plan(state,grant,operation,current,c.reference,operation_kind,retired.as_ref())?;
+                    if plan.retirement().is_some() && plan.retirement()!=p.closed {return Err(UNCERTAIN);}
+                    self.pending=Some(plan);
+                }
                 self.pending_owner = Some(grant.subject());
                 self.effects_submitted=false;
                 let p = self.pending.as_mut().unwrap();
-                p.submit(storage).map_err(|_| UNCERTAIN)?;
+                let submitted=p.submit(storage);
+                // Si une fermeture privée reste à réconcilier, la confirmation
+                // garde son identité. Dès la première écriture, aucun rejeu.
+                if p.started(){self.prepared[slot]=None;}
+                submitted.map_err(|_| UNCERTAIN)?;
                 *state = p.activate(storage).map_err(|_| UNCERTAIN)?;
                 if p.retirement().is_some() {
                     self.effects_submitted=true; // avant l'envoi ; jamais de répétition
                     retirement::acknowledge(p)?;
                     retirement::terminal(p)?;
                 }
+                #[cfg(feature="membership-r2-guest")]
+                p.finish_membership(state)?;
+                #[cfg(feature="membership-r2-guest")]
+                if let Some(s)=p.selective.take(){self.selective_complete=Some((grant.subject(),s));}
                 self.pending = None;
                 self.pending_owner = None;
                 self.remember(operation, grant.subject(), state.head().generation);
@@ -183,6 +236,17 @@ impl Transactions {
                 // conservatrice, et le même principal authentifié d'origine.
                 for action in [Action::Users, Action::Groups] {
                     state.authorize_administrative(grant, c.image, c.scope, action).map_err(|_| rt::DENIED)?;
+                }
+                #[cfg(feature="membership-r2-guest")]
+                {
+                    if self.pending.as_ref().is_some_and(|p|p.plan.head().request==operation){return Err(UNCERTAIN);}
+                    if let Some((owner,s))=&self.selective_complete {
+                        if s.binding.operation==operation {
+                            if *owner!=grant.subject(){return Err(rt::DENIED);}
+                            let generation=s.terminal_for_state(state)?;
+                            completed(answer,operation,generation);return Ok(());
+                        }
+                    }
                 }
                 let mut packet = [0; 160]; packet[..112].copy_from_slice(&current);
                 packet[112..128].copy_from_slice(&operation);
@@ -240,6 +304,9 @@ fn operation_for<'a>(state: &View, grant: Grant, change: Mutation<'a>) -> rt::Re
             subject: user(s)?,
             group: state.group_info(grant,selected(g)).map_err(|_|rt::DENIED)?.id,
         },
+        #[cfg(feature="membership-r2-guest")]
+        Mutation::RemoveMember {user:s,group:g}=>Operation::RemoveMember{
+            subject:user(s)?,group:state.group_info(grant,selected(g)).map_err(|_|rt::DENIED)?.id},
         Mutation::Rename {user: s, name} => Operation::Rename {subject: user(s)?, name},
         Mutation::Disable(s) => Operation::Disable {subject: user(s)?},
         Mutation::Reactivate(s) => Operation::Reactivate {subject: user(s)?},
@@ -247,6 +314,13 @@ fn operation_for<'a>(state: &View, grant: Grant, change: Mutation<'a>) -> rt::Re
         // réactivation sans reçu de clôture, ni retrait de groupe sans effecteurs.
         _ => return Err(rt::REFUSED),
     })
+}
+fn make_plan(state:&View,grant:Grant,operation:[u8;16],current:[u8;112],reference:[u8;16],change:Operation<'_>,retired:Option<&novaos_identity::administration::Retired>)->rt::Result<Pending>{
+    #[cfg(feature="membership-r2-guest")]
+    if let Operation::RemoveMember{subject,group}=change {
+        return Pending::from_membership(state,grant,operation,current,reference,subject,group);
+    }
+    Pending::from_administration(state,grant,operation,current,reference,change,retired)
 }
 fn retired_for(state:&View,grant:Grant,change:&Operation<'_>,current:[u8;112])
     ->rt::Result<Option<novaos_identity::administration::Retired>> {

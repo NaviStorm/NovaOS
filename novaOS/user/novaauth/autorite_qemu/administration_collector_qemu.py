@@ -2,7 +2,7 @@
 import hashlib, json, os, re, socket, threading, time
 from types import SimpleNamespace
 from exec_vm_debug import Debug,symbol
-from administration_outputs import Collector,read_stopped,Refus
+from administration_outputs import Collector,read_stopped,Refus,WIRE
 
 def stopped_thread(debug, stop):
     match=re.fullmatch(r'T05thread:([0-9a-fA-F]+);',stop)
@@ -32,11 +32,21 @@ def advance_probe(debug, arch, pc, thread, diagnostic):
     raise Refus('pas ciblé sans progression après trois demandes')
 
 
+def probe_kind(addresses, pc, size):
+    # LLVM peut fusionner les deux fonctions d'observation identiques. Le PC
+    # doit toujours appartenir aux sondes ; la taille ne suffit pas à elle seule.
+    expected={'session':80,'output':WIRE}
+    matches=[kind for kind, address in addresses.items()
+             if address==pc and expected[kind]==size]
+    if len(matches)!=1:raise Refus('adresse ou format de sonde R2 invalide')
+    return matches[0]
+
+
 class Observer:
     def __init__(self,control,arch,kernel,out):
         self.routes=[];self.records=[];self.error=None;self.collector=None;self.last_pc=None
         self.done=threading.Event();self.ready=threading.Event();self.guard=threading.Lock()
-        self.addresses={symbol(kernel,'nova_r2_session_observe'):'session',symbol(kernel,'nova_r2_output_observe'):'output'}
+        self.addresses={kind:symbol(kernel,'nova_r2_'+kind+'_observe') for kind in ('session','output')}
         self.control,self.arch,self.out=control,arch,out
         self.debug=None;self.thread=threading.Thread(target=self.worker,name='collecteur-sorties-R2')
         self.expected_successor=None;self.successor_used=False
@@ -73,7 +83,7 @@ class Observer:
                 d=self.debug=Debug(self.control/'gdb.sock',serial,self.arch)
                 d.command('?')
                 if ';s' not in d.command('vCont?'):raise Refus('pas ciblé GDB absent')
-                for at in self.addresses:d.breakpoint(at)
+                for at in set(self.addresses.values()):d.breakpoint(at)
                 d.resume();self.ready.set()
                 while not self.done.is_set():
                     # Une période sans sortie n'est pas une panne de l'invité.
@@ -84,7 +94,8 @@ class Observer:
                     thread=stopped_thread(d,stop)
                     pc=d.register(32 if self.arch=='aarch64' else 16)
                     self.last_pc=pc
-                    kind=self.addresses.get(pc)
+                    size=d.register(1 if self.arch=='aarch64' else 4)
+                    kind=probe_kind(self.addresses,pc,size)
                     def diagnostic(**fields):
                         # CPU/PC et empreinte seulement : aucun contenu de
                         # session, pointeur de données ou mémoire arbitraire.
