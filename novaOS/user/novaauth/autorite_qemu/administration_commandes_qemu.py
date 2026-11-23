@@ -108,7 +108,10 @@ def main():
     a.dernier_concurrent=a.dernier_concurrent or a.mutation_concurrente
     a.bob_minimal=a.bob_minimal or a.dernier_concurrent
     a.ticket_vivant = a.ticket_vivant or a.reactivation or a.course or a.ancien_direct
-    if a.ancien_direct and (not a.selective_exec or a.lot!='retrait-selectif-vide' or a.bob_minimal or a.membership_io):parser.error('ancien Direct : profil sélectif dédié sans autre injection')
+    if a.ancien_direct and (not a.selective_exec or a.lot!='retrait-selectif-vide' or a.bob_minimal or a.membership_io
+                            or a.acquittement_selectif_absent or a.acquittement_selectif_perdu
+                            or a.publication_selective_perdue or a.redemarrage_issue):
+        parser.error('ancien Direct : profil sélectif dédié sans autre injection')
     atomic_status = a.ticket_vivant or a.separation or bool(a.etat_ticket) or a.bob_minimal
     if a.etat_ticket and (a.separation or a.ticket_vivant or a.securite):parser.error("profils de recette distincts")
     if a.securite and a.ticket_vivant:parser.error('les deux profils sont distincts')
@@ -199,7 +202,9 @@ def main():
             generation=int.from_bytes(raw[96:104],'big')+1
             identity=hashlib.sha256(b'NovaAuth/subject/1'+raw[8:24]+generation.to_bytes(8,'little')+bytes.fromhex(intention['operation'])+b'\x02').digest()[:16].hex()
             return f'group={identity} name=equipe-r2 members=\n'.encode()
-        if a.membership_r2:
+        if a.ancien_direct:
+            report['portee']='ancien ticket Direct du titulaire retiré de G, effectivement consommé après RETIREE'
+        elif a.membership_r2:
             report['portee']='Droits VFS Direct/G/H réels et injection déclarée ; EXEC G, Q2/Q3 et reprise froide non qualifiés' if a.membership_io else 'raccord administratif sans delegation G ouverte ; ne qualifie pas Q1-Q4'
         if a.lot == 'renommage':
             report['portee']='renommage natif, identité stable, aucun changement des droits'
@@ -473,7 +478,7 @@ def main():
                 # Identité d'étape distincte ; aucune réponse d'une commande
                 # précédente ne peut terminer la commande courante.
                 step = 'NXR2_' + str(i) + '_'
-                line=command + '; echo ' + step + '$?__FIN' + ('; exit' if i == len(cases)-1 and not (a.reactivation or a.separation or a.membership_io or (a.membership_r2 and restarted)) else '')
+                line=command + '; echo ' + step + '$?__FIN' + ('; exit' if i == len(cases)-1 and not (a.reactivation or a.separation or a.membership_io or a.ancien_direct or (a.membership_r2 and restarted)) else '')
                 serial.offset = len(serial.data)
                 start = serial.offset
                 serial.submit(line)
@@ -596,7 +601,7 @@ def main():
                 with transaction(api.path) as db:
                     row=db.execute('SELECT state,generation,subject,grp FROM membership_changes WHERE op=?',(bytes.fromhex(intention['operation']),)).fetchone()
                     effects=db.execute('SELECT kind,instance,acknowledged FROM membership_effectors WHERE op=? ORDER BY kind',(bytes.fromhex(intention['operation']),)).fetchall()
-                if row is None or row[0]!=(1 if a.acquittement_selectif_absent else 2) or row[2].hex()!=(bob if a.ancien_direct else alice) or row[3].hex()!=group or len(effects)!=3 or [k for k,_,v in effects if v==1]!=([] if a.acquittement_selectif_absent else [1,2,4]):raise Refus('retrait durable ou effecteurs incomplets')
+                if row is None or row[0]!=(1 if a.acquittement_selectif_absent else 2) or row[2]!=(ids[16:32] if a.ancien_direct else ids[:16]) or row[3].hex()!=group or len(effects)!=3 or [k for k,_,v in effects if v==1]!=([] if a.acquittement_selectif_absent else [1,2,4]):raise Refus('retrait durable ou effecteurs incomplets')
                 expected_calls=[(54,1),(55,1),(56,1)] if a.acquittement_selectif_absent else [(54,1),(55,1),(56,3)]
                 if any(selective_calls.get(k,0)!=v for k,v in expected_calls):raise Refus('mutation ou acquittement sélectif répété')
                 if (a.acquittement_selectif_perdu or a.publication_selective_perdue or a.acquittement_selectif_absent) and not discarded_receipt:raise Refus('perte non exercée')
