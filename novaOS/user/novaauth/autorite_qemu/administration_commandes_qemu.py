@@ -28,9 +28,23 @@ def command_mode(command, mode):
         import shlex
         return 'nsh -c ' + shlex.quote(command)
     if mode == 'script':
-        names={'whoami':'whoami','id':'id','groups':'groups','useradd --version':'useradd','usermod --version':'usermod','groupadd --version':'groupadd','usermod --disable alice --prepare':'refus'}
-        if command not in names:raise ValueError('script non préprovisionné')
-        return 'nsh /travail/r2-' + names[command] + '.nsh'
+        import shlex
+        args=shlex.split(command)
+        direct={'whoami':'whoami','id':'id','groups':'groups','id carol':'carol',
+                'usermod --disable alice --prepare':'refus'}
+        if command in direct:return 'nsh /travail/r2-' + direct[command] + '.nsh'
+        if len(args)==3 and args[:2]==['id','--subject-id']:
+            return 'export R2_SUBJECT='+shlex.quote(args[2])+'; nsh /travail/r2-renomme.nsh'
+        if len(args)==3 and args[0] in ('useradd','usermod','groupadd') and args[1]=='--outcome':
+            return 'export R2_REQUEST='+shlex.quote(args[2])+'; nsh /travail/r2-issue-'+args[0]+'.nsh'
+        expected={('useradd','--factor-reference','d3e1962bb9c6e8962e338b1972b5359f','--group','base','carol'):'creation',
+                  ('groupadd','equipe-r2'):'groupe',('usermod','--rename','robert','bob'):'renommage'}
+        suffix=next((i for i,v in enumerate(args) if v in ('--prepare','--confirm')),len(args))
+        kind=expected.get(tuple(args[:suffix]))
+        if kind and args[-1]=='--prepare':return 'nsh /travail/r2-'+kind+'-preparer.nsh'
+        if kind and '--confirm' in args and '--request' in args:
+            return 'export R2_CONFIRM='+shlex.quote(args[args.index('--confirm')+1])+' R2_REQUEST='+shlex.quote(args[args.index('--request')+1])+'; nsh /travail/r2-'+kind+'-confirmer.nsh'
+        raise ValueError('script non préprovisionné')
     raise ValueError('mode inconnu')
 
 

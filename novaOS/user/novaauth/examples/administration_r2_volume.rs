@@ -161,10 +161,17 @@ fn main() {
     // Fichiers synthétiques du banc, créés avant montage invité. Aucun droit
     // nouveau : ils restent dans le dossier déjà autorisé à Alice.
     if std::env::var_os("NOVA_R2_SCRIPTS").is_some() {
-        for (name,command) in [("r2-whoami.nsh","whoami"),("r2-id.nsh","id"),("r2-groups.nsh","groups"),
-            ("r2-useradd.nsh","useradd --version"),("r2-usermod.nsh","usermod --version"),("r2-groupadd.nsh","groupadd --version"),
-            ("r2-refus.nsh","usermod --disable alice --prepare")] {
-            let object=fs.create_at(work,name,Kind::File).unwrap().id;
+        let mut scripts=vec![("r2-whoami.nsh".to_string(),"whoami".to_string()),("r2-id.nsh".into(),"id".into()),("r2-groups.nsh".into(),"groups".into()),
+            ("r2-carol.nsh".into(),"id carol".into()),("r2-renomme.nsh".into(),"id --subject-id \"$R2_SUBJECT\"".into()),
+            ("r2-refus.nsh".into(),"usermod --disable alice --prepare".into())];
+        for (kind,command) in [("creation","useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol"),
+                ("groupe","groupadd equipe-r2"),("renommage","usermod --rename robert bob")] {
+            scripts.push((format!("r2-{kind}-preparer.nsh"),format!("{command} --prepare")));
+            scripts.push((format!("r2-{kind}-confirmer.nsh"),format!("{command} --confirm \"$R2_CONFIRM\" --request \"$R2_REQUEST\"")));
+        }
+        for name in ["useradd","usermod","groupadd"] {scripts.push((format!("r2-issue-{name}.nsh"),format!("{name} --outcome \"$R2_REQUEST\"")));}
+        for (name,command) in scripts {
+            let object=fs.create_at(work,&name,Kind::File).unwrap().id;
             fs.prepare_write_id(object,0,format!("#!/bin/nsh\n{command}\n").as_bytes()).unwrap().commit().unwrap();
         }
     }
