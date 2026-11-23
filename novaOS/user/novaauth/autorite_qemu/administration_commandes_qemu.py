@@ -599,9 +599,15 @@ def main():
                     ordered=db.execute("SELECT sequence,kind FROM exec_events WHERE kind LIKE 'membership-%' ORDER BY sequence").fetchall()
                 expected_order=['membership-reserved','membership-withdrawing']+([] if a.acquittement_selectif_absent else ['membership-effector-ack']*3+['membership-retired'])
                 if [k for _,k in ordered if k not in ('membership-admitted','membership-operation-finished')]!=expected_order:raise Refus('ordre durable sélectif non conforme')
+                if a.selective_exec:
+                    with transaction(api.path) as db:
+                        descriptors=db.execute('SELECT d.op,d.packet,d.sequence,a.sequence,a.state,a.child,a.terminal_sequence FROM exec_descriptors d LEFT JOIN exec_admissions a ON a.op=d.op ORDER BY d.sequence').fetchall()
+                    if len(descriptors)!=len(cases) or any(len(p)!=584 or not r<a<t or state!=1 or child is None or child==bytes(32) for op,p,r,a,state,child,t in descriptors):raise Refus('admission EXEC Direct ou issue individuelle non démontrée')
+                    if len({child for _,_,_,_,_,child,_ in descriptors})!=len(cases):raise Refus('enfants EXEC confondus')
+                    report['exec_direct_selectif']={'portee':'tickets neufs sans délégation VFS ; pas encore un ancien ticket après mutation','operations':[{'operation':op.hex(),'descripteur_sha256':__import__('hashlib').sha256(p).hexdigest(),'inscription':r,'admission':a,'terminal':t,'etat':state,'enfant':child.hex()} for op,p,r,a,state,child,t in descriptors]}
                 report['rpc_selectifs']=selective_calls
                 report['ordre_durable']=[{'position':n,'transition':k} for n,k in ordered]
-                report['retrait_selectif']={'etat':'RETRAIT_EN_COURS' if a.acquittement_selectif_absent else 'RETIREE','generation':row[1],'effecteurs':[{'classe':k,'instance':i.hex(),'acquitte':bool(v)} for k,i,v in effects],'delegations_G_ouvertes':a.membership_io}
+                report['retrait_selectif']={'etat':'RETRAIT_EN_COURS' if a.acquittement_selectif_absent else 'RETIREE','generation':row[1],'effecteurs':[{'classe':k,'instance':i.hex(),'acquitte':bool(v)} for k,i,v in effects],'delegations_G_ouvertes':a.membership_io and not a.admission_vfs_perdue}
                 report['injection_vfs_reelle']=('ack-absent' if a.acquittement_selectif_absent else 'ack-perdu' if a.acquittement_selectif_perdu else 'publication-perdue' if a.publication_selective_perdue else 'aucune') if a.membership_io else None
                 if a.membership_io:
                     with transaction(api.path) as db:
