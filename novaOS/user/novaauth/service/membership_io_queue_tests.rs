@@ -54,4 +54,31 @@
             }
         }
     }
+
+    fn cancellation(q:&Frame,tag:u64)->Frame {
+        let mut c=[0;128];c[..8].copy_from_slice(b"NXMGCAN1");c[8..16].copy_from_slice(&tag.to_le_bytes());
+        c[16..48].copy_from_slice(&q[8..40]);c[48..80].copy_from_slice(&novaos_identity::recuperation_view::seal_digest(q));c
+    }
+    #[test] fn queued_cancellation_has_exact_binding_and_no_data_or_new_allocation() {
+        let mut x=Exchange::default();let q=request();x.enqueue(0,&mut 0,11,q).unwrap();
+        let c=cancellation(&q,11);let original=x.pending;
+        for i in [8,16,48,79,127] {
+            let mut wrong=c;wrong[i]^=1;assert!(x.cancel_queued(&wrong,[4;32]).is_err());
+            assert_eq!(x.pending,original);assert!(x.context.is_none());
+        }
+        let f=x.cancel_queued(&c,[4;32]).unwrap();
+        assert_eq!(f[48..80],[4;32]);assert_eq!(f[112..120],rt::CANCELLED.to_le_bytes());
+        let output=x.pending.unwrap().1;assert_eq!(output[8..16],rt::CANCELLED.to_le_bytes());assert_eq!(output[16..],[0;64]);
+        assert_eq!(x.cancel_queued(&c,[4;32]),Err(rt::WOULD_BLOCK));
+        rt::STATUS.with(|v|v.set(rt::WOULD_BLOCK));assert_eq!(x.deliver(),Err(22));
+        assert_eq!(x.remembered(&novaos_identity::recuperation_view::seal_digest(&c)),Ok(f));
+        rt::STATUS.with(|v|v.set(0));x.deliver().unwrap();assert!(x.pending.is_none());
+        assert_eq!(x.remembered(&novaos_identity::recuperation_view::seal_digest(&c)),Ok(f));
+        assert_eq!(core::mem::size_of::<Exchange>(),224);
+    }
+    #[test] fn a_go_context_prevents_queued_cancellation() {
+        let mut x=Exchange::default();let q=request();x.enqueue(0,&mut 0,11,q).unwrap();
+        x.context=Some([9;120]);let saved=x.pending;
+        assert_eq!(x.cancel_queued(&cancellation(&q,11),[4;32]),Err(rt::WOULD_BLOCK));assert_eq!(x.pending,saved);
+    }
 }

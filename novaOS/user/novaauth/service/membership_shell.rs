@@ -2,13 +2,13 @@
 impl Login {
  pub(super) fn membership_probe(&mut self,fs:&mut nova_cli::fileapi::Client,args:&[&str])->rt::Result<u64> {
   let [phase,object,g,h]=args else{return Err(rt::BAD_ARGUMENT)};
-  if !matches!(*phase,"avant"|"apres"|"reprise"|"en-vol"|"apres-en-vol"){return Err(rt::BAD_ARGUMENT);}
+  if !matches!(*phase,"avant"|"apres"|"reprise"|"en-vol"|"apres-en-vol"|"annule"){return Err(rt::BAD_ARGUMENT);}
   let object:u64=object.parse().map_err(|_|rt::BAD_ARGUMENT)?;
   let hex=|s:&str|->rt::Result<[u8;16]>{if s.len()!=32{return Err(rt::BAD_ARGUMENT);}let mut a=[0;16];for i in 0..16{a[i]=u8::from_str_radix(&s[2*i..2*i+2],16).map_err(|_|rt::BAD_ARGUMENT)?;}Ok(a)};
   let groups=[[0;16],hex(g)?,hex(h)?];
   let before=matches!(*phase,"avant"|"en-vol");
   let order=if *phase=="en-vol"{[0,2,1]}else{[0,1,2]};
-  for i in order {let group=&groups[i];
+  for i in order {if *phase=="annule" && i!=1{continue;}let group=&groups[i];
    let mut q=[0;128];q[..8].copy_from_slice(b"NXMGDAT1");q[8..40].copy_from_slice(&self.session.ok_or(rt::DENIED)?);q[40..48].copy_from_slice(&object.to_le_bytes());q[48..64].copy_from_slice(group);
    q[64..72].copy_from_slice(&self.membership_keys[i].to_le_bytes());q[72]=if phase.starts_with("apres"){2}else{1};q[73]=if i==0{1}else{3};
    let tag=fs.membership_begin(&q)?;
@@ -22,7 +22,7 @@ impl Login {
     Err(e)=>return Err(e),
    };
    let data=fs.membership_end(tag)?;let status=u64::from_le_bytes(data[8..16].try_into().unwrap());
-   let expected=if !before && i==1{rt::REVOKED}else{0};
+   let expected=if *phase=="annule"{rt::CANCELLED}else if !before && i==1{rt::REVOKED}else{0};
    if status!=expected || data[8..16]!=a[8..16]{return Err(rt::REFUSED);}
    if status==0 {
     let mut expected_bytes=*b"A\tB\tC\nD\tE\tF\n";

@@ -67,6 +67,7 @@ def main():
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--retrait-reserve-reprise-froide',action='store_true',help='Q4 coupure après RESERVE puis refus de nouvelle incarnation tant que le retrait reste incomplet')
+    parser.add_argument('--admission-vfs-perdue',action='store_true',help='Q2 admission durable perdue avant GO : annulation réelle de la file VFS')
     parser.add_argument('--issue-vfs-perdue',action='store_true',help='Q2 perte de reponse FINISH durable, consultation sans seconde E/S')
     parser.add_argument('--vfs-en-vol',action='store_true',help='E/S VFS réelle avant retrait, FINISH individuel après réservation')
     parser.add_argument('--membership-io',action='store_true',help='Q1 droits VFS Direct/G/H réels')
@@ -117,6 +118,7 @@ def main():
     if a.coupure_avant_publication and (a.lot!='creation' or not a.redemarrage_issue or a.recu_supprime or a.carol_reprise):parser.error('coupure isolée avant création')
     a.membership_r2=a.lot=='retrait-selectif-vide'
     if a.vfs_en_vol and (not a.membership_io or a.issue_vfs_perdue):parser.error('admission en vol distincte de perte de FINISH, VFS réel requis')
+    if a.admission_vfs_perdue and (not a.membership_io or a.issue_vfs_perdue or a.vfs_en_vol or a.redemarrage_issue or a.retrait_reserve_reprise_froide):parser.error('annulation avant GO : recette indépendante avec VFS réel')
     if a.issue_vfs_perdue and not a.membership_io:parser.error('perte issue exige VFS réel')
     if a.membership_io and not a.membership_r2:parser.error('droits réels réservés au retrait sélectif')
     if a.publication_selective_perdue and (not a.membership_r2 or a.acquittement_selectif_perdu):parser.error('perte de publication sélective isolée requise')
@@ -320,6 +322,13 @@ def main():
                 reserved_cut=True
                 control_vm(qmp,'quit')
                 raise Refus('coupure Q4 après réservation durable, avant publication et acquittements')
+            if phase=='after' and operation==57 and a.admission_vfs_perdue and not discarded_receipt:
+                with transaction(api.path) as db:
+                    rows=db.execute('SELECT op,state,sequence FROM membership_operations ORDER BY sequence').fetchall()
+                if len(rows)!=1 or rows[0][1]!=0:raise Refus('admission non durable avant perte')
+                report['admission_vfs_perdue']={'operation':rows[0][0].hex(),'position':rows[0][2],'durable_avant_perte':True}
+                discarded_receipt=True
+                raise Refus('UNCERTAIN : réponse ADMIT perdue avant GO')
             if phase=='after' and operation==58 and a.issue_vfs_perdue and not discarded_receipt:
                 with transaction(api.path) as db:
                     rows=db.execute('SELECT op,state,evidence FROM membership_operations ORDER BY sequence').fetchall()
@@ -424,6 +433,13 @@ def main():
                 if int(status[1])!=0:raise Refus('lecture VFS Q1 échouée')
                 (out/('q1-'+phase+'.bin')).write_bytes(bytes(serial.data[start:serial.offset]))
                 report.setdefault('droits_vfs_reels',[]).append({'phase':phase,'Direct':0,'G':0 if phase in ('avant','en-vol') else 10,'H':0,'reference_hex_par_origine':{origin:((bytes([first])+b'\tB\tC\nD\tE\tF\n').hex() if first is not None else '') for origin,first in [('Direct',65 if phase in ('avant','en-vol') else f[8 if phase=='apres-en-vol' else 24]^(0x80 if phase=='reprise' else 0)),('G',f[8] if phase in ('avant','en-vol') else None),('H',f[24]^(0x80 if phase.startswith('apres') else 0))]},'comparaison_invitee':True,'revisions_P9':revisions,'droits_demandes':{'Direct':1,'G':3,'H':3}})
+            if a.admission_vfs_perdue:
+                f=membership_fixture;start=len(serial.data);serial.offset=start
+                serial.submit('membership-test annule '+str(int.from_bytes(f[:8],'little'))+' '+f[8:24].hex()+' '+f[24:40].hex()+'; echo NXQ2_ANNULATION_$?__FIN')
+                serial.expect(rb'NARM Q1 phase=annule origine=G native=9 octets=0 revision=0',60)
+                status=serial.expect(rb'NXQ2_ANNULATION_(\d+)__FIN',20)
+                if int(status[1])!=0:raise Refus('annulation invitée non démontrée')
+                (out/'q2-annulation-avant-go.bin').write_bytes(bytes(serial.data[start:serial.offset]))
             if a.membership_io:membership_probe('en-vol' if a.vfs_en_vol else 'avant')
             if a.vfs_en_vol:
                 with transaction(api.path) as db:
@@ -584,6 +600,13 @@ def main():
                 if a.membership_io:
                     with transaction(api.path) as db:
                         admissions=db.execute('SELECT op,subject,grp,kind,instance,packet,sequence,state,evidence,terminal_sequence FROM membership_operations ORDER BY sequence').fetchall()
+                    if a.admission_vfs_perdue:
+                        if len(admissions)!=4:raise Refus('nombre d’admissions après annulation divergent')
+                        cancelled=admissions[0]
+                        if not discarded_receipt or cancelled[7]!=2 or cancelled[8]!=bytes(32) or cancelled[9]<=cancelled[6]:raise Refus('annulation individuelle non durable')
+                        if selective_calls.get(57)!=4 or selective_calls.get(58)!=4:raise Refus('admission ou issue répétée après réponse perdue')
+                        report['annulation_avant_go']={'operation':cancelled[0].hex(),'admission':cancelled[6],'terminal':cancelled[9],'etat':2,'native':9,'octets':0,'repetition_mutation':False}
+                        admissions=admissions[1:]
                     if len(admissions)!=3 or any(r[7]!=1 or r[8] is None or r[9]<=r[6] for r in admissions):raise Refus('issues individuelles Q1 incomplètes')
                     if [r[2] for r in admissions]!=([membership_fixture[24:40],membership_fixture[8:24],membership_fixture[24:40]] if a.vfs_en_vol else [membership_fixture[8:24],membership_fixture[24:40],membership_fixture[24:40]]):raise Refus('origines Q1 différentes')
                     if a.vfs_en_vol:

@@ -51,7 +51,7 @@ def install(root):
         }
         let mut grant = None;''')
  path='novaOS/user/novaauth/service/triplet_effecteur.rs'
- edit(path,'        if matches!(&msg.payload[..8],b"NXMGVFS1"|b"NXMGEND1") {','''        if matches!(&msg.payload[..8],b"NXMGCTX2"|b"NXMGGO01"|b"NXMGDEN1"|b"NXMGRES1"|b"NXMGREL1") {
+ edit(path,'        if matches!(&msg.payload[..8],b"NXMGVFS1"|b"NXMGEND1") {','''        if matches!(&msg.payload[..8],b"NXMGCTX2"|b"NXMGGO01"|b"NXMGDEN1"|b"NXMGCAN1"|b"NXMGRES1"|b"NXMGREL1") {
             response=membership_io::control(session,&msg.payload)?;return Ok(());
         }
         if matches!(&msg.payload[..8],b"NXMGVFS1"|b"NXMGEND1") {''')

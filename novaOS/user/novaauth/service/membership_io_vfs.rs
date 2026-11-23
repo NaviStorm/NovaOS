@@ -22,6 +22,26 @@ impl Exchange {
 impl Exchange {
     /// Le fait et la réponse remplacent les buffers de requête : aucun octet
     /// statique supplémentaire. Une consultation ne rejoue jamais les E/S.
+    /// Annulation avant GO : atteste le retrait réel de la requête en file.
+    /// Aucun objet VFS, aucune délégation et aucune écriture n'ont été créés.
+    fn cancel_queued(&mut self,q:&Frame,instance:[u8;32])->rt::Result<Frame> {
+        if &q[..8]!=b"NXMGCAN1" || q[80..]!=[0;48] || q[16..48]==[0;32]
+            || q[48..80]==[0;32] || instance==[0;32] {return Err(rt::BAD_ARGUMENT);}
+        if self.context.is_some(){return Err(rt::WOULD_BLOCK);}
+        let (tag,stored)=self.pending.ok_or(rt::WOULD_BLOCK)?;
+        let mut data=[0;128];data[..80].copy_from_slice(&stored);
+        if &data[..8]!=b"NXMGDAT1" || u64::from_le_bytes(q[8..16].try_into().unwrap())!=tag || data[8..40]!=q[16..48]
+            || novaos_identity::recuperation_view::seal_digest(&data)!=q[48..80] {return Err(rt::DENIED);}
+        let mut output=[0;128];output[..8].copy_from_slice(b"NXMGOUT1");
+        output[8..16].copy_from_slice(&rt::CANCELLED.to_le_bytes());
+        let mut fact=[0;128];fact[8..16].copy_from_slice(b"NXMGIOA1");
+        fact[16..48].copy_from_slice(&novaos_identity::recuperation_view::seal_digest(q));
+        fact[48..80].copy_from_slice(&instance);
+        fact[80..112].copy_from_slice(&novaos_identity::recuperation_view::seal_digest(&output));
+        fact[112..120].copy_from_slice(&rt::CANCELLED.to_le_bytes());
+        self.context=Some(compact(&fact)?);self.pending=Some((tag,compact(&output)?));
+        Ok(fact)
+    }
     fn remembered(&self,digest:&[u8])->rt::Result<Frame> {
         let mut fact=[0;128];fact[..120].copy_from_slice(&self.context.ok_or(rt::WOULD_BLOCK)?);
         if &fact[8..16]!=b"NXMGIOA1" || &fact[16..48]!=digest {return Err(rt::DENIED);}
@@ -41,6 +61,10 @@ impl Exchange {
 fn n(b:&[u8],i:usize)->u64{u64::from_le_bytes(b[i..i+8].try_into().unwrap())}
 fn identity(at:usize)->[u8;32]{let mut b=[0;32];for(i,c)in b.chunks_exact_mut(8).enumerate(){c.copy_from_slice(&exec_files_lab::config(at+i).to_le_bytes());}b}
 pub(super) fn control(s:&mut Session<'_,'_>,q:&Frame)->rt::Result<Frame>{
+    if &q[..8]==b"NXMGCAN1" {
+        let fact=s.membership_io.cancel_queued(q,identity(468))?;
+        s.membership_io.deliver()?;return Ok(fact);
+    }
     if matches!(&q[..8],b"NXMGRES1"|b"NXMGREL1") {
         if q[8..40]==[0;32] || q[40..]!=[0;88]{return Err(rt::BAD_ARGUMENT);}
         // REL est un nettoyage idempotent, jamais une preuve de réussite.

@@ -45,7 +45,10 @@ impl Io {
     let mut hasher=Sha256::new();hasher.update(b"NovaAuth/QEMU/vfs-operation/v1");hasher.update(c);hasher.update(q);let hash:[u8;32]=hasher.finalize().into();
     let mut a=[0;241];a[..112].copy_from_slice(&current);a[112..128].copy_from_slice(&grant.subject());a[128..144].copy_from_slice(&group);a[144..152].copy_from_slice(&p.membership_revision.to_be_bytes());a[152]=1;a[153..185].copy_from_slice(&storage.membership_instance()?);a[185..201].copy_from_slice(&hash[..16]);a[201..209].copy_from_slice(&state.authentication_epoch(grant).map_err(|_|rt::REVOKED)?.to_be_bytes());a[209..].copy_from_slice(&c[24..56]);
     retained[..32].copy_from_slice(&novaos_identity::recuperation_view::seal_digest(&a));
-    retained[64..80].copy_from_slice(&a[185..201]);self.context=Some(retained);self.phase=2;
+    retained[64..80].copy_from_slice(&a[185..201]);
+    let mut queued=[0;128];queued[..8].copy_from_slice(b"NXMGDAT1");queued[8..80].copy_from_slice(&q[8..80]);
+    retained[32..64].copy_from_slice(&novaos_identity::recuperation_view::seal_digest(&queued));
+    retained[80..88].copy_from_slice(&q[88..96]);self.context=Some(retained);self.phase=2;
     let mut response=[0;MAX];tx::exchange(m::ADMIT,&a,&mut response)?;
     let (state,position)=outcome(&a)?;if state!=m::OperationOutcome::Pending{return Err(22);}
     go[80..96].copy_from_slice(&a[185..201]);go[96..104].copy_from_slice(&position.to_le_bytes());admitted=Some(a);
@@ -83,7 +86,7 @@ impl Io {
  /// Les phases 2/3 autorisent le PREMIER FINISH seulement, sur un fait etabli.
  pub fn reconcile(&mut self,storage:&mut Storage)->rt::Result<u64> {
   if self.phase<2{return Err(rt::DENIED);}
-  let saved=self.context.ok_or(rt::REFUSED)?;
+  let mut saved=self.context.ok_or(rt::REFUSED)?;
   let mut original=[0;241];let mut state=m::OperationOutcome::Pending;
   if saved[64..80]!=[0;16] {
    let mut q=[0;160];q[..112].copy_from_slice(&tete::query(rt::config(8),&incarnation::identity())?);
@@ -92,6 +95,16 @@ impl Io {
    let (found,bytes)=m::recovered_operation(&key()?,&q,saved[..32].try_into().unwrap(),&r[HEADER+8..HEADER+8+n]).map_err(|_|rt::REFUSED)?;
    original.copy_from_slice(bytes);state=found;
   }
+  if self.phase==2 {
+   if original==[0;241] || state!=m::OperationOutcome::Pending || saved[80..88]==[0;8]{return Err(22);}
+   let mut cancel=[0;128];cancel[..8].copy_from_slice(b"NXMGCAN1");
+   cancel[8..16].copy_from_slice(&saved[80..88]);cancel[16..48].copy_from_slice(&original[209..]);
+   cancel[48..80].copy_from_slice(&saved[32..64]);
+   saved[32..64].copy_from_slice(&novaos_identity::recuperation_view::seal_digest(&cancel));
+   saved[80..112].fill(0);self.context=Some(saved);self.phase=3;
+   // Émis une fois seulement. Une réponse perdue est recherchée par son empreinte.
+   storage.membership_io(&cancel)?;
+  }
   let mut native=rt::CANCELLED;let mut evidence=[0;32];
   if self.phase!=2 && saved[32..64]!=[0;32] {
    let mut q=[0;128];q[..8].copy_from_slice(b"NXMGRES1");q[8..40].copy_from_slice(&saved[32..64]);
@@ -99,13 +112,18 @@ impl Io {
    if &fact[8..16]!=b"NXMGIOA1" || fact[16..48]!=saved[32..64] || fact[48..80]!=storage.membership_instance()? || fact[80..112]==[0;32] || fact[120..]!=[0;8]{return Err(rt::REFUSED);}
    evidence.copy_from_slice(&fact[80..112]);native=common::number(&fact[112..]);
    if native==22{return Err(22);}
+   if native==rt::CANCELLED {
+    let mut cancelled=[0;128];cancelled[..8].copy_from_slice(b"NXMGOUT1");cancelled[8..16].copy_from_slice(&rt::CANCELLED.to_le_bytes());
+    if evidence!=novaos_identity::recuperation_view::seal_digest(&cancelled){return Err(rt::REFUSED);}
+    evidence.fill(0); // Le terminal distant Cancelled est canonique, sans enfant ni E/S.
+   }
    if self.phase==4 && evidence!=saved[80..112]{return Err(rt::REFUSED);}
   }
   if original!=[0;241] {
    let expected=if evidence==[0;32]{m::OperationOutcome::Cancelled}else{m::OperationOutcome::Completed(evidence)};
    if state==m::OperationOutcome::Pending {
     if self.phase==4{return Err(22);}
-    // Phase 2 : aucun GO n'a ete emis. Phase 3 : le fait VFS est authentifie.
+    // Phase 3 : E/S ou annulation réellement attestée par NovaFS, jamais timeout.
     self.context.as_mut().unwrap()[80..112].copy_from_slice(&evidence);self.phase=4;
     let mut f=[0;194];f[..112].copy_from_slice(&tete::query(rt::config(8),&incarnation::identity())?);
     f[112..128].copy_from_slice(&saved[64..80]);f[128]=1;f[129..161].copy_from_slice(&original[153..185]);f[161]=if evidence==[0;32]{2}else{1};f[162..].copy_from_slice(&evidence);
