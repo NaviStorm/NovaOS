@@ -75,9 +75,29 @@ fn closed()->Selective {
  assert_eq!(closure_marker(100,0),Err(rt::REFUSED));
 }
 
-#[test] fn terminal_release_requires_verified_durable_receipt() {
- let mut s=closed();let mut storage=Storage::new();
- assert_eq!(s.release_terminal(&mut storage),Err(22));assert_eq!(storage.calls,0);
- s.finish_head(&crate::sim::p9()).unwrap();s.release_terminal(&mut storage).unwrap();
- assert_eq!(storage.calls,1);crate::sim::substitute();assert_eq!(s.release_terminal(&mut storage),Err(rt::REFUSED));assert_eq!(storage.calls,1);
+#[test]
+fn terminal_release_requires_verified_durable_receipt() {
+    let mut selective = closed();
+    let mut storage = Storage::new();
+    let head = crate::sim::p9();
+    crate::sim::lose(56, true);
+    assert_eq!(selective.finish_and_release(&head, &mut storage), Err(22));
+    assert_eq!(storage.calls, 0);
+    selective.finish_and_release(&head, &mut storage).unwrap();
+    assert_eq!(crate::sim::calls(56), 3);
+    assert_eq!(storage.calls, 1);
+    crate::sim::substitute();
+    assert_eq!(selective.finish_and_release(&head, &mut storage), Err(rt::REFUSED));
+    assert_eq!(storage.calls, 1);
+}
+
+#[test]
+fn nominal_path_uses_two_signed_queries_for_three_distinct_effectors() {
+    let mut selective = closed();
+    let queries = crate::sim::calls(59);
+    let mut storage = Storage::new();
+    selective.finish_and_release(&crate::sim::p9(), &mut storage).unwrap();
+    assert_eq!(crate::sim::calls(56), 3);
+    assert_eq!(crate::sim::calls(59) - queries, 2);
+    assert_eq!(storage.calls, 1);
 }

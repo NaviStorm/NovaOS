@@ -44,10 +44,19 @@ impl Selective {
     }
     pub fn query(&self)->rt::Result<Receipt>{Self::query_binding(&self.binding)}
     pub fn query_binding(binding:&Binding)->rt::Result<Receipt>{
-        let mut q=[0;160];q[..112].copy_from_slice(&tete::query(rt::config(8),&incarnation::identity())?);
-        q[112..128].copy_from_slice(&binding.operation);let nonce=*common::random()?;q[128..].copy_from_slice(&nonce);
-        let mut reply=[0;MAX];let n=exchange(m::QUERY,&q,&mut reply)?;
-        Receipt::verify(&key()?,&reply[HEADER+8..HEADER+8+n],binding,&nonce).map_err(|_|rt::REFUSED)
+        let current = tete::query(rt::config(8), &incarnation::identity())?;
+        Self::query_at(binding, &current)
+    }
+    fn query_at(binding: &Binding, current: &[u8; 112]) -> rt::Result<Receipt> {
+        let mut q = [0; 160];
+        q[..112].copy_from_slice(current);
+        q[112..128].copy_from_slice(&binding.operation);
+        let nonce = *common::random()?;
+        q[128..].copy_from_slice(&nonce);
+        let mut reply = [0; MAX];
+        let n = exchange(m::QUERY, &q, &mut reply)?;
+        Receipt::verify(&key()?, &reply[HEADER+8..HEADER+8+n], binding, &nonce)
+            .map_err(|_| rt::REFUSED)
     }
     /// Consultation après perte du cache. Aucun ACK ni nouvelle mutation.
     pub fn historical_terminal(current:&[u8;112],operation:[u8;16],principal:[u8;16],state:&View)->rt::Result<Option<u64>> {
@@ -98,30 +107,62 @@ impl Selective {
         if !receipt.completed(h.generation,&h.digest,u64::from_be_bytes(current[72..80].try_into().unwrap()),current[80..].try_into().unwrap()).map_err(|_|rt::REFUSED)? {return Err(UNCERTAIN);}
         Ok(binding.generation)
     }
-    pub fn release_terminal(&self,storage:&mut Storage)->rt::Result<()> {
-        let r=self.query()?;if r.state()!=State::Retired{return Err(UNCERTAIN);}
-        let q=VfsClosure::new(self.binding.operation,self.binding.subject,self.binding.group,self.binding.revision,
-            self.position,self.instances[0]).map_err(|_|rt::REFUSED)?;
-        storage.membership_terminal(&q)
+    pub fn finish(&mut self, state: &View, storage: &mut Storage) -> rt::Result<()> {
+        self.finish_and_release(&state.head(), storage)
     }
-    pub fn finish(&mut self,state:&View)->rt::Result<()> {
-        self.finish_head(&state.head())
+    fn finish_and_release(&mut self, head: &novaos_identity::Head, storage: &mut Storage) -> rt::Result<()> {
+        self.finish_head(head)?;
+        let closure = VfsClosure::new(
+            self.binding.operation, self.binding.subject, self.binding.group,
+            self.binding.revision, self.position, self.instances[0],
+        ).map_err(|_| rt::REFUSED)?;
+        storage.membership_terminal(&closure)?;
+        common::marker(b"NARM RETIREE recu durable tete P9 relue effecteurs acquittes");
+        Ok(())
     }
-    fn finish_head(&mut self,head:&novaos_identity::Head)->rt::Result<()> {
-        if !self.closed || !self.exec{return Err(UNCERTAIN)}
-        let current=tete::query(rt::config(8),&incarnation::identity())?;
-        if current[72..80]!=head.generation.to_be_bytes() || current[80..]!=head.digest{return Err(UNCERTAIN)}
-        for (i,kind) in [1u8,2,4].iter().enumerate(){
-            let receipt=self.query()?;
-            if receipt.acknowledged()&kind!=0{continue;}
-            if self.ack_sent&kind!=0{return Err(UNCERTAIN)}
-            let mut q=[0;161];q[..112].copy_from_slice(&current);q[112..128].copy_from_slice(&self.binding.operation);
-            q[128]=*kind;q[129..].copy_from_slice(&self.instances[i.min(1)]);self.ack_sent|=kind;
-            let mut reply=[0;MAX];exchange(m::EFFECT,&q,&mut reply)?;
+    fn finish_head(&mut self, head: &novaos_identity::Head) -> rt::Result<()> {
+        if !self.closed || !self.exec {
+            return Err(UNCERTAIN);
         }
-        let r=self.query()?;
-        if !r.completed(head.generation,&head.digest,u64::from_be_bytes(current[72..80].try_into().unwrap()),current[80..].try_into().unwrap()).map_err(|_|rt::REFUSED)?{return Err(UNCERTAIN)}
-        common::marker(b"NARM RETIREE recu durable tete P9 relue effecteurs acquittes");Ok(())
+        let current = tete::query(rt::config(8), &incarnation::identity())?;
+        if current[72..80] != head.generation.to_be_bytes() || current[80..] != head.digest {
+            return Err(UNCERTAIN);
+        }
+        // Photographier les trois classes avant tout envoi. Une réponse perdue
+        // fait sortir d'ici et le prochain appel consulte ce même identifiant.
+        let observed = Self::query_at(&self.binding, &current)?;
+        if observed.state() == State::Reserved {
+            return Err(UNCERTAIN);
+        }
+        let acknowledged = observed.acknowledged();
+        if self.ack_sent & !acknowledged != 0 {
+            return Err(UNCERTAIN);
+        }
+        for (i, kind) in [1u8, 2, 4].iter().copied().enumerate() {
+            if acknowledged & kind != 0 {
+                continue;
+            }
+            let mut q = [0; 161];
+            q[..112].copy_from_slice(&current);
+            q[112..128].copy_from_slice(&self.binding.operation);
+            q[128] = kind;
+            q[129..].copy_from_slice(&self.instances[i.min(1)]);
+            self.ack_sent |= kind;
+            let mut reply = [0; MAX];
+            exchange(m::EFFECT, &q, &mut reply)?;
+        }
+        // Les réponses d'EFFECT seules ne prouvent pas le terminal. Consulter
+        // un nouveau reçu authentifié contre une nouvelle tête indépendante.
+        let final_head = tete::query(rt::config(8), &incarnation::identity())?;
+        let receipt = Self::query_at(&self.binding, &final_head)?;
+        if !receipt.completed(
+            head.generation, &head.digest,
+            u64::from_be_bytes(final_head[72..80].try_into().unwrap()),
+            final_head[80..].try_into().unwrap(),
+        ).map_err(|_| rt::REFUSED)? {
+            return Err(UNCERTAIN);
+        }
+        Ok(())
     }
 }
 const _:()=assert!(core::mem::size_of::<Selective>()<=512);

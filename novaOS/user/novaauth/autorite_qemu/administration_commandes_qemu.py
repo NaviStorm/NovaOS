@@ -186,6 +186,8 @@ def main():
             return ('request=' + intention['operation'] + ' generation='+str(int.from_bytes(raw[96:104],'big')+1)+' state=COMPLETE\n').encode()
 
         command={'retrait-selectif-vide':'usermod --remove-group base alice','groupe':'groupadd equipe-r2','desactivation':'usermod --disable bob','renommage':'usermod --rename robert bob','appartenance':'usermod --add-group equipe-r2 bob','creation':'useradd --factor-reference '+catalog['references']['carol']+' --group base carol'}[a.lot]
+        if a.ancien_direct:
+            command = 'usermod --remove-group base bob'
         binary=command.split()[0]
         report['portee']='création de groupe' if a.lot=='groupe' else 'désactivation de Bob après fermeture de sa session ; aucun témoin de ticket vivant'
         if a.ticket_vivant:report['portee']='désactivation de Bob avec ticket vivant ; refus avant expiration exigé'
@@ -594,7 +596,7 @@ def main():
                 with transaction(api.path) as db:
                     row=db.execute('SELECT state,generation,subject,grp FROM membership_changes WHERE op=?',(bytes.fromhex(intention['operation']),)).fetchone()
                     effects=db.execute('SELECT kind,instance,acknowledged FROM membership_effectors WHERE op=? ORDER BY kind',(bytes.fromhex(intention['operation']),)).fetchall()
-                if row is None or row[0]!=(1 if a.acquittement_selectif_absent else 2) or row[2].hex()!=alice or row[3].hex()!=group or len(effects)!=3 or [k for k,_,v in effects if v==1]!=([] if a.acquittement_selectif_absent else [1,2,4]):raise Refus('retrait durable ou effecteurs incomplets')
+                if row is None or row[0]!=(1 if a.acquittement_selectif_absent else 2) or row[2].hex()!=(bob if a.ancien_direct else alice) or row[3].hex()!=group or len(effects)!=3 or [k for k,_,v in effects if v==1]!=([] if a.acquittement_selectif_absent else [1,2,4]):raise Refus('retrait durable ou effecteurs incomplets')
                 expected_calls=[(54,1),(55,1),(56,1)] if a.acquittement_selectif_absent else [(54,1),(55,1),(56,3)]
                 if any(selective_calls.get(k,0)!=v for k,v in expected_calls):raise Refus('mutation ou acquittement sélectif répété')
                 if (a.acquittement_selectif_perdu or a.publication_selective_perdue or a.acquittement_selectif_absent) and not discarded_receipt:raise Refus('perte non exercée')
@@ -738,11 +740,24 @@ def main():
                     if len(children)!=1:raise Refus('ancien Direct : enfant absent ou double')
                     with transaction(api.path) as db:
                         ds=db.execute('SELECT d.packet,d.sequence,a.sequence,a.state,a.child,a.terminal_sequence FROM exec_descriptors d JOIN exec_admissions a ON a.op=d.op WHERE d.subject=?',(ids[16:32],)).fetchall()
-                        mutation=db.execute("SELECT sequence FROM exec_events WHERE kind='membership-retired'").fetchone()
-                    if len(ds)!=1 or mutation is None:raise Refus('ancien Direct : descripteur/mutation absent')
-                    packet,registration,admission,state,child,terminal=ds[0]
-                    if not registration<mutation[0]<admission<terminal or state!=1 or child==bytes(32):raise Refus('ancien Direct : ordre durable incohérent')
-                    report['ancien_direct']={'inscription':registration,'mutation':mutation[0],'admission':admission,'terminal':terminal,'enfant':child.hex(),'pid':int(children[0]),'ancien_descripteur_sha256':hashlib.sha256(packet).hexdigest(),'utilisation_effective':True}
+                        withdrawal = db.execute(
+                            "SELECT sequence,kind FROM exec_events WHERE kind IN ('membership-withdrawing','membership-retired') ORDER BY sequence"
+                        ).fetchall()
+                    if len(ds) != 1 or [k for _, k in withdrawal] != ['membership-withdrawing', 'membership-retired']:
+                        raise Refus('ancien Direct : descripteur ou retrait durable absent')
+                    packet, registration, admission, state, child, terminal = ds[0]
+                    publication, retirement = (seq for seq, _ in withdrawal)
+                    if not registration < publication < retirement < admission < terminal or state != 1 or child == bytes(32):
+                        raise Refus('ancien Direct : ordre durable incohérent')
+                    pid = int(children[0])
+                    if list(by_shell[bob[0]]) != [pid]:
+                        raise Refus('ancien Direct : PID du flux différent du PID créé')
+                    report['ancien_direct'] = {
+                        'inscription': registration, 'publication': publication, 'retrait_terminal': retirement,
+                        'admission': admission, 'terminal': terminal, 'enfant': child.hex(), 'pid': pid,
+                        'ancien_descripteur_sha256': hashlib.sha256(packet).hexdigest(),
+                        'titulaire_du_retrait': ids[16:32].hex(), 'utilisation_effective': True,
+                    }
                 elif children:
                     raise Refus('création Bob supplémentaire ou non identifiée')
                 report['ticket_bob']={'reference':int(attempts[0][0]),'presentation_ticks':int(attempts[0][1]),'expiration_ticks':int(attempts[0][2]),'frequence_hz':250,'statut_natif':report['course']['statut_spawn'] if a.course else (0 if a.ancien_direct else 10),'enfants_supplementaires':0}

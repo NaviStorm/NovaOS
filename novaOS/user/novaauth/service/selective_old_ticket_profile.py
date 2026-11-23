@@ -12,7 +12,7 @@ def install(root):
         p.write_text(s.replace(old,new))
     channel='novaOS/user/novaauth/service/src/bin/common/administration_channel.rs'
     edit(channel,'admin_command::Mutation::Disable(admin_command::Selector::Name("bob"))',
-         'admin_command::Mutation::RemoveMember { user:admin_command::Selector::Name("alice"), group:admin_command::Selector::Name("base") }')
+         'admin_command::Mutation::RemoveMember { user:admin_command::Selector::Name("bob"), group:admin_command::Selector::Name("base") }')
     edit(channel,'                answer = exchange(login, request.try_into().unwrap())?;',
          '                answer = exchange(login, request.try_into().unwrap())?;'+DONE)
     bob='novaOS/user/novaauth/service/administration_bob_shell.rs'
