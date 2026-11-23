@@ -1,7 +1,7 @@
 """Préconditions du raccord et préimages historiques, sans exécution QEMU."""
 import ast
 import re
-from administration_events import membership_revision_pattern
+from administration_events import membership_revision_pattern, removal_race_results
 from pathlib import Path
 import unittest
 from types import SimpleNamespace
@@ -46,6 +46,18 @@ class GuestProfile(unittest.TestCase):
    self.assertIsNone(re.search(pattern,line[:-2]))
    self.assertEqual(int(re.search(pattern,line)[1]),193)
    self.assertIsNone(re.search(pattern,line.replace(phase.encode(),b'avant')))
+ def test_removal_race_requires_one_canonical_terminal_receipt(self):
+  receipt=bytes(8)+b'O'*16+(31).to_bytes(8,'little')+bytes([1])+bytes(31)
+  win=bytes(16)+receipt+b'O'*16;lose=bytes(8)+(5).to_bytes(8,'little')+(5).to_bytes(8,'little')+bytes(56)+b'O'*16
+  for data in (win+lose,lose+win):self.assertEqual(sum(x['confirmation']==0 for x in removal_race_results(data,31)),1)
+  for data in (win+win,lose+lose,(win+lose)[:-1],win+lose+bytes(1)):
+   with self.assertRaises(ValueError):removal_race_results(data,31)
+  for at in (16,24,40,48,49,79,80,176):
+   bad=bytearray(win+lose);bad[at]^=1
+   with self.assertRaises(ValueError):removal_race_results(bytes(bad),31)
+  for native in (3,7,10,12,22,24):
+   bad=bytearray(win+lose);bad[104:112]=native.to_bytes(8,'little')
+   with self.assertRaises(ValueError):removal_race_results(bytes(bad),31)
  def test_restarted_vfs_probe_precedes_shell_exit(self):
   source=Path(__file__).with_name('administration_commandes_qemu.py').read_text()
   node=next(n.value for n in ast.walk(ast.parse(source)) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='line' for t in n.targets))

@@ -77,6 +77,7 @@ def main():
     parser.add_argument('--carol-reprise',type=lambda v:Path(v).resolve(),help='artefacts privés du signataire Carol, utilisés seulement après création native')
     parser.add_argument('--course',action='store_true',help='ticket Bob présenté pendant la confirmation Alice')
     parser.add_argument('--mutation-concurrente',action='store_true',help='confirmation de groupe concurrente au refus du dernier administrateur')
+    parser.add_argument('--retraits-concurrents',action='store_true',help='Q3 meme retrait G prepare et confirme concurremment ; publication unique')
     parser.add_argument('--dernier-concurrent',action='store_true',help='deux requêtes partielles simultanées contre le dernier administrateur')
     parser.add_argument('--bob-minimal',action='store_true',help='Bob authentifié puis fermé, contrôles négatifs séparés')
     parser.add_argument('--etat-ticket',choices=['expire','recu','concurrent'],help='état EXEC_TICKET S6 distinct du témoin révoqué')
@@ -98,6 +99,7 @@ def main():
     from certificats import validity
     certificate_dates = validity(a.cles)
     if a.separation and (a.ticket_vivant or a.reactivation or a.securite):parser.error('profils de recette distincts')
+    if a.retraits_concurrents and (a.lot!='retrait-selectif-vide' or not a.membership_io):parser.error('retraits concurrents : droits VFS reels requis')
     if a.mutation_concurrente and a.lot!='groupe':parser.error("mutation concurrente : lot groupe requis")
     a.dernier_concurrent=a.dernier_concurrent or a.mutation_concurrente
     a.bob_minimal=a.bob_minimal or a.dernier_concurrent
@@ -268,6 +270,18 @@ def main():
             return data
         cases=[('admin-sonde --factor-writer '+factor+' | admin-sonde --factor-reader '+factor,factor_results),('whoami',b'alice\n')]
         report['portee']='deux demandes PREPARE simultanément en vol, facteur commun, utilisateurs distincts'
+
+    if a.retraits_concurrents:
+        a.dernier_concurrent=True
+        def removal_results(data):
+            from administration_events import removal_race_results
+            rows=removal_race_results(data,int.from_bytes(raw[96:104],'big')+1)
+            winner=next(r for r in rows if r['preparation']==0 and r['confirmation']==0)
+            intention.update(operation=winner['operation'])
+            report['intention']=dict(intention);report['retraits_concurrents']=rows
+            return data
+        cases=[('admin-sonde --membership-writer | admin-sonde --membership-reader',removal_results),('whoami',b'alice\n')]
+        report['portee']='Q3 confirmations concurrentes du meme retrait G ; une publication et trois ACK, VFS Direct/H conserves'
 
     if a.redemarrage_issue and a.membership_r2:
         cases=cases[:2] # la consultation est exercée après arrêt complet
@@ -467,12 +481,12 @@ def main():
                     writer,reader=map(int,match.groups());item['pid']=[writer,reader]
                     rows=[(binding,closed,data) for binding,closed,data in observer.outputs() if binding.child in (writer,reader)]
                     actual={(b.child,b.fd):data for b,_,data in rows}
-                    if a.lot=='facteurs-concurrents':expected=expected(actual.get((reader,1),b''))
+                    if a.lot=='facteurs-concurrents' or a.retraits_concurrents:expected=expected(actual.get((reader,1),b''))
                     if len(rows)!=3 or any(not closed for _,closed,_ in rows) or actual!={(writer,2):b'',(reader,1):expected,(reader,2):b''}:
                         raise Refus('refus natifs concurrent dernier administrateur non conformes')
                     shells={b.shell for b,_,_ in rows}
                     if len(shells)!=1 or int(status[1]) not in shells:raise Refus('pipe hors session Alice')
-                    item.update(shell=next(iter(shells)),stdout_octets=len(expected),stderr_octets=0,octets_conformes=True,statuts_requetes=report.get('attribution_concurrente',[0,5] if a.mutation_concurrente else [5,5]))
+                    item.update(shell=next(iter(shells)),stdout_octets=len(expected),stderr_octets=0,octets_conformes=True,statuts_requetes=report.get('retraits_concurrents',report.get('attribution_concurrente',[0,5] if a.mutation_concurrente else [5,5])))
                     (out/'concurrence-refus.bin').write_bytes(expected)
                     continue
                 no_child=a.etat_ticket=='expire' and i==0

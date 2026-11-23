@@ -72,3 +72,19 @@ def membership_revision_pattern(phase, origin, code):
     # Une lecture série peut s'arrêter après le premier chiffre d'une révision.
     # Attendre sa délimitation ; ne jamais accepter ce préfixe comme la valeur.
     return re.escape(prefix.encode()) + rb'(\d+)\r?\n'
+
+
+def removal_race_results(data, generation):
+    """Même intention confirmée concurremment : succès unique, préparation consommée."""
+    if len(data)!=192:raise ValueError('deux resultats de retrait absents')
+    rows=[];ids=[]
+    for offset in (0,96):
+        p=int.from_bytes(data[offset:offset+8],'little');c=int.from_bytes(data[offset+8:offset+16],'little')
+        receipt=data[offset+16:offset+80];operation=data[offset+80:offset+96]
+        if p!=0 or c not in (0,5) or operation==bytes(16):raise ValueError('statuts natifs de confirmation concurrente inattendus')
+        if c==0:
+            if receipt[:8]!=bytes(8) or receipt[8:24]!=operation or int.from_bytes(receipt[24:32],'little')!=generation or receipt[32]!=1 or receipt[33:]!=bytes(31):raise ValueError('recu terminal de retrait non canonique')
+        elif receipt!=(5).to_bytes(8,'little')+bytes(56):raise ValueError('refus apres consommation non canonique')
+        ids.append(operation);rows.append({'preparation':p,'confirmation':c,'operation':operation.hex(),'recu':receipt.hex()})
+    if ids[0]!=ids[1] or sorted(r['confirmation'] for r in rows)!=[0,5]:raise ValueError('meme intention et confirmation unique non demontrees')
+    return rows

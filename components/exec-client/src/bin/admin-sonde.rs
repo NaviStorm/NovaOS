@@ -6,7 +6,10 @@ use nova_exec_client::admin::{AdministrativeLaunch, Conversation};
 fn perform() -> rt::Result<()> {
     let launch = AdministrativeLaunch::current()?;
     if let [role @ ("--factor-writer" | "--factor-reader"), factor] = launch.streams.argv.as_slice() {
-        return factor_race(&launch, *role == "--factor-writer", factor);
+        return factor_race(&launch, *role == "--factor-writer", factor, false);
+    }
+    if let [role @ ("--membership-writer" | "--membership-reader")] = launch.streams.argv.as_slice() {
+        return factor_race(&launch, *role == "--membership-writer", "", true);
     }
     if launch.streams.argv.as_slice()==["--prepare-group"] {
         use nova_exec_client::admin_cli::{self,Program};
@@ -335,14 +338,14 @@ fn transport_probe(
 /// Deux créations distinctes du même facteur, avec requêtes PREPARE en vol
 /// simultanément. Le pipe synchronise les deux premiers acquittements IPC.
 /// Aucun changement de capacité, de table d'intentions ou d'oracle serveur.
-fn factor_race(launch:&AdministrativeLaunch<'_>, writer:bool, factor:&str)->rt::Result<()> {
+fn factor_race(launch:&AdministrativeLaunch<'_>, writer:bool, factor:&str, removal:bool)->rt::Result<()> {
     use nova_exec_client::{admin_wire::{self,Direction,Inbox},admin_command};
-    if factor.len()!=32 || !factor.is_ascii() {return Err(rt::BAD_ARGUMENT);}
-    let mut q=[0;128];q[..8].copy_from_slice(b"NXACMD01");q[8]=16;
-    for (offset,name) in [(32,if writer {b"carol".as_slice()}else{b"caroline".as_slice()}),(72,b"base")] {
+    if !removal && (factor.len()!=32 || !factor.is_ascii()) {return Err(rt::BAD_ARGUMENT);}
+    let mut q=[0;128];q[..8].copy_from_slice(b"NXACMD01");q[8]=if removal{22}else{16};
+    for (offset,name) in [(32,if removal {b"alice".as_slice()}else if writer {b"carol".as_slice()}else{b"caroline".as_slice()}),(72,b"base")] {
         q[offset]=2;q[offset+1]=name.len() as u8;q[offset+8..offset+8+name.len()].copy_from_slice(name);
     }
-    for i in 0..16 {q[112+i]=u8::from_str_radix(&factor[i*2..i*2+2],16).map_err(|_|rt::BAD_ARGUMENT)?;}
+    if !removal {for i in 0..16 {q[112+i]=u8::from_str_radix(&factor[i*2..i*2+2],16).map_err(|_|rt::BAD_ARGUMENT)?;}}
     admin_command::decode(&q).map_err(|_|rt::BAD_ARGUMENT)?;
     let exchange=|tag:u64,q:&[u8;128],barrier:bool|->rt::Result<[u8;128]> {
         let key=launch.endpoint();
@@ -365,18 +368,19 @@ fn factor_race(launch:&AdministrativeLaunch<'_>, writer:bool, factor:&str)->rt::
         result.ok_or(247)
     };
     let prepared=exchange(1,&q,true)?;
-    let mut result=[0;80];result[..8].copy_from_slice(&prepared[..8]);
+    let mut result=[0;96];result[80..96].copy_from_slice(&prepared[8..24]);result[..8].copy_from_slice(&prepared[..8]);
     if prepared[..8]==[0;8] {
         let mut confirm=[0;128];confirm[..8].copy_from_slice(b"NXACMD01");confirm[8]=32;
         confirm[16..32].copy_from_slice(&prepared[8..24]);confirm[32..64].copy_from_slice(&prepared[24..56]);
         let answer=exchange(2,&confirm,false)?;
-        result[8..16].copy_from_slice(&answer[..8]);result[16..].copy_from_slice(&answer[..64]);
+        result[8..16].copy_from_slice(&answer[..8]);result[16..80].copy_from_slice(&answer[..64]);
     }else {result[8..16].copy_from_slice(&u64::MAX.to_le_bytes());}
+    let length=if removal{96}else{80};
     if !writer {
-        let mut producer=[0;128];if launch.streams.read_stdin(&mut producer)?!=80 {return Err(248);}
-        launch.streams.write_stdout(&producer[..80])?;
+        let mut producer=[0;128];if launch.streams.read_stdin(&mut producer)?!=length {return Err(248);}
+        launch.streams.write_stdout(&producer[..length])?;
     }
-    launch.streams.write_stdout(&result)?;
+    launch.streams.write_stdout(&result[..length])?;
     rt::value(rt::call(rt::IPC_CLOSE,launch.endpoint(),0,0))?;
     Ok(())
 }
