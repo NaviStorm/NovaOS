@@ -21,11 +21,21 @@ from administration_epochs import Epochs, initialize
 from administration_events import Events, command_status_pattern, observed_command_status_pattern
 
 
+def command_mode(command, mode):
+    if mode == 'interactif':
+        return command
+    if mode == 'nsh-c':
+        import shlex
+        return 'nsh -c ' + shlex.quote(command)
+    raise ValueError('mode inconnu')
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation', 'creation', 'refus-facteurs'], required=True)
+    parser.add_argument('--mode-commande', choices=['interactif','nsh-c'], default='interactif')
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
     parser.add_argument('--redemarrage-issue', action='store_true', help='mutation sans retrait, capture native, arrêt complet et consultation après reprise approuvée')
     parser.add_argument('--course',action='store_true',help='ticket Bob présenté pendant la confirmation Alice')
@@ -57,9 +67,9 @@ def main():
     if a.securite and a.ticket_vivant:parser.error('les deux profils sont distincts')
     if a.ticket_vivant and a.lot!='desactivation':
         parser.error('le témoin de ticket vivant exige le lot désactivation')
-    if (a.reauth_issue or a.recu_supprime) and a.lot not in ('groupe','desactivation'):
+    if (a.reauth_issue or a.recu_supprime) and a.lot not in ('groupe','desactivation','creation','renommage','appartenance'):
         parser.error('options de publication réservées aux lots de mutation')
-    if a.redemarrage_issue and (a.lot not in ('creation','groupe','renommage','appartenance') or a.recu_supprime or a.reauth_issue):parser.error('reprise réservée aux mutations nominales sans retrait avec capture native')
+    if a.redemarrage_issue and (a.lot not in ('creation','groupe','renommage','appartenance') or a.reauth_issue):parser.error('reprise réservée aux mutations nominales sans retrait avec capture native')
     a.capture_administrative = a.redemarrage_issue
     a.mode = 'nominal'
     a.vue = a.activation = a.exec_admission = a.administration_r2 = True
@@ -74,7 +84,7 @@ def main():
     report = {'succes': False, 'architecture': a.arch, 'secteur': a.sector,
               'portee': 'création de groupe' if a.lot == 'groupe' else
                         'consultations ou versions des ELF de mutation ; aucune mutation', 'lot': a.lot,
-              'commandes': [], 'drapeaux_locale': 0, 'langue_ELF': 'en'}
+              'mode_commande':a.mode_commande, 'commandes': [], 'drapeaux_locale': 0, 'langue_ELF': 'en'}
     raw = a.triplet.read_bytes()
     size = int.from_bytes(raw[152:156], 'big')
     users = json.loads(raw[156:156 + size])
@@ -263,6 +273,7 @@ def main():
                     observer.expect_successor(events.actor(b'NAR2 Bob attente declenchement authentification'))
                 if callable(command):
                     command = command()
+                command = command_mode(command, a.mode_commande)
                 # Identité d'étape distincte ; aucune réponse d'une commande
                 # précédente ne peut terminer la commande courante.
                 step = 'NXR2_' + str(i) + '_'
@@ -510,6 +521,8 @@ def main():
             view=cases[-1]
             if a.lot=='groupe':view=('groups --group equipe-r2',group_created)
             cases=[(binary+' --outcome '+intention['operation'],complete),view,('whoami',b'alice\n')]
+            a.recu_supprime=False # injection consommée uniquement dans la première VM
+            case_status={}
             report['commandes']=[];report['evenements']=[];report['succes']=False
             result=run(after,(resumed,holders,admin),scenario=scenario,rpc_hook=rpc_hook)
             report['reprise']={'arret_complet':True,'capture_native':True,'ancienne_incarnation':old_route.hex(),
