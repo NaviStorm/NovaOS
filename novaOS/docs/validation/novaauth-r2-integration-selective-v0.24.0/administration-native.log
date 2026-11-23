@@ -1,0 +1,55 @@
+   Compiling typenum v1.20.1
+   Compiling zeroize v1.9.1
+   Compiling cmov v0.5.4
+   Compiling cfg-if v1.0.5
+   Compiling cpufeatures v0.3.1
+   Compiling cpufeatures v0.2.17
+   Compiling serde_core v1.0.229
+   Compiling base64ct v1.8.3
+   Compiling signature v2.2.0
+   Compiling zmij v1.0.23
+   Compiling subtle v2.6.1
+   Compiling serde_json v1.0.154
+   Compiling generic-array v0.14.7
+   Compiling curve25519-dalek v4.1.3
+   Compiling serde v1.0.229
+   Compiling syn v2.0.119
+   Compiling ed25519 v2.2.3
+   Compiling novafs v0.9.13 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaFS)
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.19
+   Compiling spin v0.9.9
+   Compiling ctutils v0.4.8
+   Compiling hybrid-array v0.4.15
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling inout v0.2.6
+   Compiling digest v0.10.7
+   Compiling sha2 v0.10.9
+   Compiling digest v0.11.3
+   Compiling universal-hash v0.6.1
+   Compiling cipher v0.5.2
+   Compiling aead v0.6.1
+   Compiling poly1305 v0.9.1
+   Compiling blake2 v0.11.0
+   Compiling hmac v0.13.0
+   Compiling sha2 v0.11.1
+   Compiling chacha20 v0.10.2
+   Compiling hkdf v0.13.0
+   Compiling argon2 v0.6.0
+   Compiling chacha20poly1305 v0.11.0
+rustc-LLVM ERROR: Do not know how to split the result of this operator!
+
+error: could not compile `poly1305` (lib)
+
+Caused by:
+  process didn't exit successfully: `/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc --crate-name poly1305 --edition=2024 /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/poly1305-0.9.1/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 --cfg 'feature="zeroize"' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values("zeroize"))' -C metadata=45a181b7faf83569 -C extra-filename=-3f04c4d821d68f15 --out-dir /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-unknown-none/debug/deps --target x86_64-unknown-none -L dependency=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-unknown-none/debug/deps -L dependency=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/debug/deps --extern cpufeatures=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-unknown-none/debug/deps/libcpufeatures-a83ddf3dc2d7ca58.rmeta --extern universal_hash=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-unknown-none/debug/deps/libuniversal_hash-bef246197f0c5ef9.rmeta --extern zeroize=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-unknown-none/debug/deps/libzeroize-958370ba30ad2f21.rmeta --cap-lints allow -C no-redzone=yes -C relocation-model=static` (exit status: 101)
+warning: build failed, waiting for other jobs to finish...
+rustc-LLVM ERROR: Do not know how to split the result of this operator!
+
+error: could not compile `sha2` (lib)
+
+Caused by:
+  process didn't exit successfully: `/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/rustc --crate-name sha2 --edition=2024 /Users/thierry/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/sha2-0.11.1/src/lib.rs --error-format=json --json=diagnostic-rendered-ansi,artifacts,future-incompat --crate-type lib --emit=dep-info,metadata,link -C embed-bitcode=no -C debuginfo=2 --cfg 'feature="zeroize"' --check-cfg 'cfg(docsrs,test)' --check-cfg 'cfg(feature, values("alloc", "default", "oid", "zeroize"))' -C metadata=6c85ce939c50674c -C extra-filename=-5ae218255110fdc4 --out-dir /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-unknown-none/debug/deps --target x86_64-unknown-none -L dependency=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-unknown-none/debug/deps -L dependency=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/debug/deps --extern cfg_if=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-unknown-none/debug/deps/libcfg_if-7d5440b039cd3cb2.rmeta --extern cpufeatures=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-unknown-none/debug/deps/libcpufeatures-a83ddf3dc2d7ca58.rmeta --extern digest=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-unknown-none/debug/deps/libdigest-ac74e62e003ca0a7.rmeta --cap-lints allow -C no-redzone=yes -C relocation-model=static` (exit status: 101)

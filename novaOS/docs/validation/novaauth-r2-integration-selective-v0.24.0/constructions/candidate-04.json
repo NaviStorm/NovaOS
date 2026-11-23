@@ -1,0 +1,20 @@
+{
+  "source": "8140dbc6dfedc4620205ba77ed584f12d224e787",
+  "tree": "8de7698f841cca565ece3a61a9b74f24395bb5bb",
+  "publication": false,
+  "paths": [
+    "novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+    "novaOS/user/novaauth/service/membership_profile.py",
+    "novaOS/user/novaauth/service/src/bin/common/administration_channel.rs",
+    "novaOS/user/novaauth/service/src/bin/common/administration_mutations.rs",
+    "novaOS/user/novaauth/service/src/bin/common/administration_registry.rs",
+    "novaOS/user/novaauth/service/src/bin/common/recovery_mutation.rs",
+    "novaOS/user/novaauth/service/src/bin/common/recovery_store.rs",
+    "novaOS/user/novaauth/service/src/bin/registre-incarnation.rs",
+    "novaOS/user/novaauth/src/membership.rs",
+    "novaOS/user/novaauth/service/membership_transaction_mock.rs",
+    "novaOS/user/novaauth/service/membership_transaction_tests.rs",
+    "novaOS/user/novaauth/service/qualify_membership_transaction.py",
+    "novaOS/user/novaauth/service/src/bin/common/membership_transaction.rs"
+  ]
+}

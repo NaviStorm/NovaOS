@@ -1,0 +1,33 @@
+{
+  "succes": false,
+  "architecture": "x86_64",
+  "secteur": 512,
+  "portee": "raccord administratif sans delegation G ouverte ; ne qualifie pas Q1-Q4",
+  "lot": "retrait-selectif-vide",
+  "mode_commande": "interactif",
+  "commandes": [
+    {
+      "commande": "usermod --remove-group base alice --prepare",
+      "statut_shell": 126,
+      "statut_attendu": 0,
+      "pid": []
+    }
+  ],
+  "drapeaux_locale": 0,
+  "langue_ELF": "en",
+  "validite_certificats_hote": {
+    "ca": {
+      "debut": "2026-11-22T23:29:47+00:00",
+      "fin": "2026-11-23T23:30:47+00:00"
+    },
+    "autorite": {
+      "debut": "2026-11-22T23:29:47+00:00",
+      "fin": "2026-11-23T23:30:47+00:00"
+    },
+    "serveur": {
+      "debut": "2026-11-22T23:29:47+00:00",
+      "fin": "2026-11-23T23:30:47+00:00"
+    }
+  },
+  "evenements": []
+}

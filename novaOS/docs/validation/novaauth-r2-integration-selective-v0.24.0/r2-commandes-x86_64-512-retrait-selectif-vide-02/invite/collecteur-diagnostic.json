@@ -1,0 +1,8 @@
+{
+  "erreur": "BrokenPipeError: [Errno 32] Broken pipe",
+  "dernier_pc": 18446744071562950752,
+  "sessions": 2,
+  "evenements": 5,
+  "succession_explicite": false,
+  "arret_demande": false
+}

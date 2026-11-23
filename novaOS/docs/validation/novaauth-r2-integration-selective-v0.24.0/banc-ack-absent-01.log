@@ -1,0 +1,8 @@
+test_bench_parses_and_retains_negative_oracles (test_membership_guest_profile.GuestProfile.test_bench_parses_and_retains_negative_oracles) ... ok
+test_historical_config_bound_unchanged (test_membership_guest_profile.GuestProfile.test_historical_config_bound_unchanged) ... ok
+test_profile_is_explicit_and_rejects_local_authority (test_membership_guest_profile.GuestProfile.test_profile_is_explicit_and_rejects_local_authority) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.006s
+
+OK

@@ -1,0 +1,7 @@
+error: no matching package named `pkcs8` found
+location searched: crates.io index
+required by package `ed25519 v2.2.3`
+    ... which satisfies dependency `ed25519 = ">=2.2, <2.3"` of package `ed25519-dalek v2.2.0`
+    ... which satisfies dependency `ed25519-dalek = "^2"` of package `membership-transaction-native v0.0.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/coordinateur-natif)`
+note: offline mode (via `--offline`) can sometimes cause surprising resolution failures
+help: if this error is too confusing you may wish to retry without `--offline`

@@ -1,0 +1,16 @@
+{
+  "label": "coordinateur-05-aarch64-apple-darwin",
+  "commande": [
+    "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+    "test",
+    "--offline",
+    "--target",
+    "aarch64-apple-darwin",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/coordinateur-natif-05",
+  "statut": 0,
+  "duree_hote_s": 0.5443255419959314,
+  "qemu": false
+}

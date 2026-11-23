@@ -1,0 +1,987 @@
+diff --git a/novaOS/user/novaauth/autorite_qemu/administration_collector_qemu.py b/novaOS/user/novaauth/autorite_qemu/administration_collector_qemu.py
+index 6cfc5d2..a667b26 100644
+--- a/novaOS/user/novaauth/autorite_qemu/administration_collector_qemu.py
++++ b/novaOS/user/novaauth/autorite_qemu/administration_collector_qemu.py
+@@ -2,7 +2,7 @@
+ import hashlib, json, os, re, socket, threading, time
+ from types import SimpleNamespace
+ from exec_vm_debug import Debug,symbol
+-from administration_outputs import Collector,read_stopped,Refus
++from administration_outputs import Collector,read_stopped,Refus,WIRE
+ 
+ def stopped_thread(debug, stop):
+     match=re.fullmatch(r'T05thread:([0-9a-fA-F]+);',stop)
+@@ -32,11 +32,21 @@ def advance_probe(debug, arch, pc, thread, diagnostic):
+     raise Refus('pas ciblé sans progression après trois demandes')
+ 
+ 
++def probe_kind(addresses, pc, size):
++    # LLVM peut fusionner les deux fonctions d'observation identiques. Le PC
++    # doit toujours appartenir aux sondes ; la taille ne suffit pas à elle seule.
++    expected={'session':80,'output':WIRE}
++    matches=[kind for kind, address in addresses.items()
++             if address==pc and expected[kind]==size]
++    if len(matches)!=1:raise Refus('adresse ou format de sonde R2 invalide')
++    return matches[0]
++
++
+ class Observer:
+     def __init__(self,control,arch,kernel,out):
+         self.routes=[];self.records=[];self.error=None;self.collector=None;self.last_pc=None
+         self.done=threading.Event();self.ready=threading.Event();self.guard=threading.Lock()
+-        self.addresses={symbol(kernel,'nova_r2_session_observe'):'session',symbol(kernel,'nova_r2_output_observe'):'output'}
++        self.addresses={kind:symbol(kernel,'nova_r2_'+kind+'_observe') for kind in ('session','output')}
+         self.control,self.arch,self.out=control,arch,out
+         self.debug=None;self.thread=threading.Thread(target=self.worker,name='collecteur-sorties-R2')
+         self.expected_successor=None;self.successor_used=False
+@@ -73,7 +83,7 @@ class Observer:
+                 d=self.debug=Debug(self.control/'gdb.sock',serial,self.arch)
+                 d.command('?')
+                 if ';s' not in d.command('vCont?'):raise Refus('pas ciblé GDB absent')
+-                for at in self.addresses:d.breakpoint(at)
++                for at in set(self.addresses.values()):d.breakpoint(at)
+                 d.resume();self.ready.set()
+                 while not self.done.is_set():
+                     # Une période sans sortie n'est pas une panne de l'invité.
+@@ -84,7 +94,8 @@ class Observer:
+                     thread=stopped_thread(d,stop)
+                     pc=d.register(32 if self.arch=='aarch64' else 16)
+                     self.last_pc=pc
+-                    kind=self.addresses.get(pc)
++                    size=d.register(1 if self.arch=='aarch64' else 4)
++                    kind=probe_kind(self.addresses,pc,size)
+                     def diagnostic(**fields):
+                         # CPU/PC et empreinte seulement : aucun contenu de
+                         # session, pointeur de données ou mémoire arbitraire.
+diff --git a/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py b/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py
+index acdc1a3..d128746 100644
+--- a/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py
++++ b/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py
+@@ -66,7 +66,7 @@ def main():
+     parser = argparse.ArgumentParser(description=__doc__)
+     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
+     parser.add_argument('sector', type=int, choices=[512, 4096])
+-    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation', 'creation', 'refus-facteurs', 'facteurs-concurrents'], required=True)
++    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation', 'creation', 'refus-facteurs', 'facteurs-concurrents','retrait-selectif-vide'], required=True)
+     parser.add_argument('--mode-commande', choices=['interactif','nsh-c','script'], default='interactif')
+     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
+     parser.add_argument('--redemarrage-issue', action='store_true', help='mutation sans retrait, capture native, arrêt complet et consultation après reprise approuvée')
+@@ -83,6 +83,9 @@ def main():
+     parser.add_argument('--ticket-vivant',action='store_true',help='désactivation pendant que Bob conserve un ticket non consommé')
+     parser.add_argument('--reauth-issue', action='store_true',
+                         help='authentification explicite neuve après publication, avant consultation de son issue')
++    parser.add_argument('--acquittement-selectif-absent',action='store_true',help='coupure avant admission du premier ACK, maintien UNCERTAIN sans ACK inventé')
++    parser.add_argument('--publication-selective-perdue',action='store_true',help='perte de réponse après publication durable, puis réconciliation sans seconde publication')
++    parser.add_argument('--acquittement-selectif-perdu',action='store_true',help='perte unique du premier ACK durable VFS, puis QUERY sans réémission')
+     parser.add_argument('--recu-supprime', action='store_true',
+                         help='supprimer une fois le reçu après publication durable ; conserver UNCERTAIN')
+     for name in ('iso', 'registre', 'genese', 'cles', 'decision', 'secrets',
+@@ -106,6 +109,10 @@ def main():
+     if a.redemarrage_issue and (a.lot not in ('creation','groupe','renommage','appartenance') or a.reauth_issue):parser.error('reprise réservée aux mutations nominales sans retrait avec capture native')
+     if a.carol_reprise and (a.lot!='creation' or not a.redemarrage_issue):parser.error('Carol exige création et reprise')
+     if a.coupure_avant_publication and (a.lot!='creation' or not a.redemarrage_issue or a.recu_supprime or a.carol_reprise):parser.error('coupure isolée avant création')
++    a.membership_r2=a.lot=='retrait-selectif-vide'
++    if a.publication_selective_perdue and (not a.membership_r2 or a.acquittement_selectif_perdu):parser.error('perte de publication sélective isolée requise')
++    if a.acquittement_selectif_perdu and not a.membership_r2:parser.error('perte ACK réservée au retrait sélectif')
++    if a.acquittement_selectif_absent and (not a.membership_r2 or a.acquittement_selectif_perdu or a.publication_selective_perdue):parser.error('absence ACK sélectif isolée requise')
+     a.capture_administrative = a.redemarrage_issue
+     carol_active=False
+     a.mode = 'nominal'
+@@ -143,7 +150,7 @@ def main():
+     # L'essai initial de six commandes ayant saturé ce relais est conservé.
+     report['validite_certificats_hote'] = certificate_dates
+     cases = cases[:3] if a.lot == 'lectures' else cases[3:]
+-    if a.lot in ('groupe','desactivation','renommage','appartenance','creation'):
++    if a.lot in ('groupe','desactivation','renommage','appartenance','creation','retrait-selectif-vide'):
+         intention = {}
+ 
+         def preparation(data):
+@@ -157,7 +164,7 @@ def main():
+         def complete(_):
+             return ('request=' + intention['operation'] + ' generation='+str(int.from_bytes(raw[96:104],'big')+1)+' state=COMPLETE\n').encode()
+ 
+-        command={'groupe':'groupadd equipe-r2','desactivation':'usermod --disable bob','renommage':'usermod --rename robert bob','appartenance':'usermod --add-group equipe-r2 bob','creation':'useradd --factor-reference '+catalog['references']['carol']+' --group base carol'}[a.lot]
++        command={'retrait-selectif-vide':'usermod --remove-group base alice','groupe':'groupadd equipe-r2','desactivation':'usermod --disable bob','renommage':'usermod --rename robert bob','appartenance':'usermod --add-group equipe-r2 bob','creation':'useradd --factor-reference '+catalog['references']['carol']+' --group base carol'}[a.lot]
+         binary=command.split()[0]
+         report['portee']='création de groupe' if a.lot=='groupe' else 'désactivation de Bob après fermeture de sa session ; aucun témoin de ticket vivant'
+         if a.ticket_vivant:report['portee']='désactivation de Bob avec ticket vivant ; refus avant expiration exigé'
+@@ -169,6 +176,8 @@ def main():
+             generation=int.from_bytes(raw[96:104],'big')+1
+             identity=hashlib.sha256(b'NovaAuth/subject/1'+raw[8:24]+generation.to_bytes(8,'little')+bytes.fromhex(intention['operation'])+b'\x02').digest()[:16].hex()
+             return f'group={identity} name=equipe-r2 members=\n'.encode()
++        if a.membership_r2:
++            report['portee']='raccord administratif sans delegation G ouverte ; ne qualifie pas Q1-Q4'
+         if a.lot == 'renommage':
+             report['portee']='renommage natif, identité stable, aucun changement des droits'
+             cases[-1]=('id --subject-id '+bob,f'subject={bob} name=robert state=ACTIVE groups=base({group})\n'.encode())
+@@ -267,9 +276,12 @@ def main():
+         enrolled = False
+         discarded_receipt = False
+         cut_before_publication=False
++        selective_calls={}
+ 
+         def rpc_hook(phase, operation, body, result, qmp, disk):
+             nonlocal enrolled, discarded_receipt, cut_before_publication
++            if a.membership_r2 and phase=='before' and 54<=operation<=60:
++                selective_calls[operation]=selective_calls.get(operation,0)+1
+             if phase=='before' and operation==50 and a.coupure_avant_publication and not cut_before_publication:
+                 from exec_vm_debug import qmp as control_vm
+                 with transaction(api.path) as db:
+@@ -280,6 +292,31 @@ def main():
+                 report['coupure_avant_publication']={'operation':intention['operation'],'generation':state.generation,'mutation_absente':True,'statut_confirmation':None,'arret_force_QEMU':True}
+                 control_vm(qmp,'quit')
+                 raise Refus('coupure injectée avant admission durable, aucune confirmation')
++            if phase=='before' and operation==56 and a.acquittement_selectif_absent and not discarded_receipt:
++                with transaction(api.path) as db:
++                    rows=db.execute('SELECT acknowledged FROM membership_effectors WHERE op=? ORDER BY kind',
++                        (bytes.fromhex(intention['operation']),)).fetchall()
++                if rows!=[(0,),(0,),(0,)]:raise Refus('acquittement déjà admis avant coupure')
++                discarded_receipt=True
++                report['acquittement_selectif_absent']={'classe':1,'durable':False,'admission_interrompue':True}
++                raise Refus('UNCERTAIN : émission ACK interrompue avant admission')
++            if phase=='after' and operation==55 and a.publication_selective_perdue and not discarded_receipt:
++                with transaction(api.path) as db:
++                    row=db.execute('SELECT state FROM membership_changes WHERE op=?',
++                        (bytes.fromhex(intention['operation']),)).fetchone()
++                    mutations=db.execute('SELECT count(*) FROM mutations').fetchone()[0]
++                if row!=(1,) or mutations!=1:raise Refus('publication durable non démontrée avant perte')
++                discarded_receipt=True
++                report['publication_selective_perdue']={'etat':1,'mutations':1,'durable_avant_perte':True}
++                raise Refus('UNCERTAIN : réponse de publication sélective perdue après persistance')
++            if phase=='after' and operation==56 and a.acquittement_selectif_perdu and not discarded_receipt:
++                with transaction(api.path) as db:
++                    rows=db.execute('SELECT kind,acknowledged FROM membership_effectors WHERE op=? ORDER BY kind',
++                        (bytes.fromhex(intention['operation']),)).fetchall()
++                if rows!=[(1,1),(2,0),(4,0)]:raise Refus('ACK VFS durable non démontré avant injection')
++                discarded_receipt=True
++                report['acquittement_selectif_perdu']={'classe':1,'durable_avant_perte':True}
++                raise Refus('UNCERTAIN : réponse ACK sélectif perdue après admission durable')
+             if phase == 'after' and operation == 50 and a.recu_supprime and not discarded_receipt:
+                 discarded_receipt = True
+                 # L'autorité a déjà décidé. Le banc supprime uniquement le reçu,
+@@ -326,7 +363,7 @@ def main():
+                 expected_stderr = b''
+                 if a.lot == 'dernier-administrateur':
+                     expected_stderr = b'Administrative failure: native=5 status=3\n'
+-                elif a.recu_supprime and i == 1:
++                elif ((a.recu_supprime or a.acquittement_selectif_perdu or a.publication_selective_perdue) and i == 1) or (a.acquittement_selectif_absent and i in (1,2)):
+                     expected_status = 20
+                     expected = b''
+                     expected_stderr = ('Administrative failure: native=22 status=20\nrequest=' +
+@@ -446,6 +483,28 @@ def main():
+                                     b'NAR2 Bob nouveau lancement autorise droits ordinaires',
+                                     b'NAR2 Bob fermeture acquittee']:
+                         events.expect(bob_pid,message,40)
++            if a.membership_r2:
++                terminal=b'NARM RETIREE recu durable tete P9 relue effecteurs acquittes'
++                if a.acquittement_selectif_absent and terminal in serial.data:raise Refus('RETIREE inventé sans ACK durable')
++                markers=(b'NARM EXEC inspection instance et provenance personnelle acquittee',b'NARM VFS fermeture selective acquittee')+(() if a.acquittement_selectif_absent else (terminal,))
++                for marker in markers:
++                    if marker not in serial.data:raise Refus('acquittement selectif invite absent')
++                with transaction(api.path) as db:
++                    row=db.execute('SELECT state,generation,subject,grp FROM membership_changes WHERE op=?',(bytes.fromhex(intention['operation']),)).fetchone()
++                    effects=db.execute('SELECT kind,instance,acknowledged FROM membership_effectors WHERE op=? ORDER BY kind',(bytes.fromhex(intention['operation']),)).fetchall()
++                if row is None or row[0]!=(1 if a.acquittement_selectif_absent else 2) or row[2].hex()!=alice or row[3].hex()!=group or len(effects)!=3 or [k for k,_,v in effects if v==1]!=([] if a.acquittement_selectif_absent else [1,2,4]):raise Refus('retrait durable ou effecteurs incomplets')
++                expected_calls=[(54,1),(55,1),(56,1)] if a.acquittement_selectif_absent else [(54,1),(55,1),(56,3)]
++                if any(selective_calls.get(k,0)!=v for k,v in expected_calls):raise Refus('mutation ou acquittement sélectif répété')
++                if (a.acquittement_selectif_perdu or a.publication_selective_perdue or a.acquittement_selectif_absent) and not discarded_receipt:raise Refus('perte non exercée')
++                with transaction(api.path) as db:
++                    op=bytes.fromhex(intention['operation'])
++                    if db.execute('SELECT count(*) FROM mutations WHERE op=?',(op,)).fetchone()!=(1,):raise Refus('publication non unique')
++                    ordered=db.execute("SELECT sequence,kind FROM exec_events WHERE kind LIKE 'membership-%' ORDER BY sequence").fetchall()
++                expected_order=['membership-reserved','membership-withdrawing']+([] if a.acquittement_selectif_absent else ['membership-effector-ack']*3+['membership-retired'])
++                if [k for _,k in ordered]!=expected_order:raise Refus('ordre durable sélectif non conforme')
++                report['rpc_selectifs']=selective_calls
++                report['ordre_durable']=[{'position':n,'transition':k} for n,k in ordered]
++                report['retrait_selectif']={'etat':'RETRAIT_EN_COURS' if a.acquittement_selectif_absent else 'RETIREE','generation':row[1],'effecteurs':[{'classe':k,'instance':i.hex(),'acquitte':bool(v)} for k,i,v in effects],'delegations_G_ouvertes':False}
+             if a.separation:
+                 bob_pid=events.actor(b'NAR2 Bob references pret')
+                 for message in (b'NAR2 S3 ticket Alice statut=5 aucun enfant',b'NAR2 S3 canal Alice statut=5',
+diff --git a/novaOS/user/novaauth/autorite_qemu/test_administration_collector.py b/novaOS/user/novaauth/autorite_qemu/test_administration_collector.py
+index fd97363..5e1e0e3 100644
+--- a/novaOS/user/novaauth/autorite_qemu/test_administration_collector.py
++++ b/novaOS/user/novaauth/autorite_qemu/test_administration_collector.py
+@@ -1,6 +1,6 @@
+ """Sélection du vCPU observé ; oracles hôtes, pas preuves invitées."""
+ import unittest
+-from administration_collector_qemu import stopped_thread, advance_probe
++from administration_collector_qemu import stopped_thread, advance_probe, probe_kind
+ from administration_outputs import Refus
+ 
+ 
+@@ -52,4 +52,18 @@ class BoundedStep(unittest.TestCase):
+         self.assertEqual(self.steps,1)
+ 
+ 
++class ProbeAliasing(unittest.TestCase):
++    def test_exact_aarch64_alias_preserves_session_then_output(self):
++        same=0xffffffff8009e990
++        probes={'session':same,'output':same}
++        self.assertEqual([probe_kind(probes,same,n) for n in (80,272)],['session','output'])
++
++    def test_distinct_symbols_keep_their_formats(self):
++        probes={'session':100,'output':200}
++        self.assertEqual(probe_kind(probes,100,80),'session')
++        self.assertEqual(probe_kind(probes,200,272),'output')
++        for pc,n in ((100,272),(200,80),(300,80),(100,79),(200,273)):
++            with self.assertRaises(Refus):probe_kind(probes,pc,n)
++
++
+ if __name__=='__main__': unittest.main()
+diff --git a/novaOS/user/novaauth/autorite_qemu/test_membership_guest_profile.py b/novaOS/user/novaauth/autorite_qemu/test_membership_guest_profile.py
+new file mode 100644
+index 0000000..dad6593
+--- /dev/null
++++ b/novaOS/user/novaauth/autorite_qemu/test_membership_guest_profile.py
+@@ -0,0 +1,22 @@
++"""Préconditions du raccord et préimages historiques, sans exécution QEMU."""
++import ast
++from pathlib import Path
++import unittest
++ROOT=Path(__file__).resolve().parents[4]
++class GuestProfile(unittest.TestCase):
++ def test_historical_config_bound_unchanged(self):
++  self.assertIn('assert!(word <= 19)',(ROOT/'novaOS/user/storage/runtime.rs').read_text())
++  s=(ROOT/'novaOS/user/novaauth/service/src/bin/common/recovery_store.rs').read_text()
++  self.assertIn('crate::membership_transaction::identity(23)',s)
++  self.assertNotIn('rt::config(23+i)',s)
++ def test_profile_is_explicit_and_rejects_local_authority(self):
++  s=(ROOT/'novaOS/user/novaauth/service/profile.py').read_text()
++  self.assertIn('if membership_r2 and (policies or lecture)',s)
++  self.assertIn('membership_r2=False',s)
++ def test_bench_parses_and_retains_negative_oracles(self):
++  p=Path(__file__).with_name('administration_commandes_qemu.py');s=p.read_text();ast.parse(s)
++  self.assertIn("a.membership_r2=a.lot=='retrait-selectif-vide'",s)
++  self.assertIn("[(54,1),(55,1),(56,3)]",s)
++  self.assertIn("ne qualifie pas Q1-Q4",s)
++  self.assertIn("a.acquittement_selectif_perdu and not discarded_receipt",s)
++if __name__=='__main__':unittest.main()
+diff --git a/novaOS/user/novaauth/service/membership_profile.py b/novaOS/user/novaauth/service/membership_profile.py
+index 637b548..24fcbd2 100644
+--- a/novaOS/user/novaauth/service/membership_profile.py
++++ b/novaOS/user/novaauth/service/membership_profile.py
+@@ -20,6 +20,7 @@ def install(root):
+         // Identité attribuée par le noyau aux deux extrémités de CETTE route.
+         // Un redémarrage de NovaFS ne peut répondre pour l'ancienne instance.
+         config(s, owner, 23, &identity(s, fs)?);
++        config(s, owner, 27, &identity(s, peer)?);
+         config(s, fs, 468, &identity(s, fs)?);
+     }''')
+     path = 'novaOS/user/novafs/files/auth_directory.rs'
+@@ -71,3 +72,7 @@ def install(root):
+          'b"NXRBIND1" | b"NXRSTOP1" | b"NXROFFR1" | b"NXMGEXE1"')
+     edit('novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs',
+          'mod administrative;', 'mod administrative;\n#[path="membership_exec.rs"]\nmod membership_exec;')
++
++    edit('novaOS/user/novaauth/service/src/bin/common/recovery_view.rs',
++         '            administration.reconcile(&mut state,&mut recovered.storage)?;',
++         '            if let Err(code)=administration.reconcile_request(&mut state,&mut recovered.storage,&m.payload) {\n                // Le retrait G ne ferme pas les consultations Direct/H.\n                // Chaque demande recontrôle ensuite la tête et ses propres droits.\n                // CONFIRM/OUTCOME conservent UNCERTAIN tant que les faits manquent.\n                if !administration.selective_in_progress(){return Err(code);}\n            }')
+diff --git a/novaOS/user/novaauth/service/membership_transaction_mock.rs b/novaOS/user/novaauth/service/membership_transaction_mock.rs
+new file mode 100644
+index 0000000..88d00f6
+--- /dev/null
++++ b/novaOS/user/novaauth/service/membership_transaction_mock.rs
+@@ -0,0 +1,72 @@
++#![allow(dead_code)]
++mod runtime {
++    pub type Result<T>=core::result::Result<T,u64>;
++    pub const DENIED:u64=5;pub const REFUSED:u64=12;pub const BAD_ARGUMENT:u64=3;
++    pub fn config(word:usize)->u64{assert!(word<=19);1}
++}
++mod common {
++    pub fn number(b:&[u8])->u64{u64::from_le_bytes(b[..8].try_into().unwrap())}
++    pub fn random()->crate::runtime::Result<&'static [u8;32]>{Ok(&[42;32])}
++    pub fn marker(_: &[u8]){}
++}
++mod incarnation {
++    pub const SERVER:[u8;16]=[1;16];pub const DOMAIN:[u8;16]=[2;16];pub fn identity()->[u8;32]{[3;32]}
++}
++mod tete {pub fn query(_:u64,_:&[u8;32])->crate::runtime::Result<[u8;112]>{Ok(crate::sim::current())}}
++mod recovery_store {
++    use novaos_recovery::{membership_effectors::{VfsClosure,VfsFacts},hash};
++    pub struct Storage{pub calls:usize,pub cancelled:u64,pub error:Option<u64>}
++    impl Storage {
++        pub fn new()->Self{Self{calls:0,cancelled:0,error:None}}
++        pub fn membership_close(&mut self,q:&VfsClosure)->crate::runtime::Result<VfsFacts>{
++            self.calls+=1;if let Some(e)=self.error{return Err(e)}
++            let mut a=[0;128];a[8..16].copy_from_slice(b"NXMGACK1");a[16..48].copy_from_slice(&hash(q.bytes()));
++            a[48..80].copy_from_slice(&q.bytes()[72..104]);a[80..88].copy_from_slice(&1u64.to_le_bytes());
++            a[88..96].copy_from_slice(&self.cancelled.to_le_bytes());a[104..112].copy_from_slice(&2u64.to_le_bytes());
++            q.verify(&a).map_err(|_|12)
++        }
++    }
++}
++mod recovery_rpc {
++    use novaos_recovery::framing::MAX;
++    pub struct Client;impl Client {
++        pub fn new(_:u64,_:[u8;32])->Self{Self}
++        pub fn exchange(&mut self,op:u16,q:&[u8],a:&mut[u8;MAX])->Result<usize,()>{crate::sim::exchange(op,q,a)}
++    }
++}
++mod sim {
++    use novaos_recovery::{membership::{Binding,BODY,PREFIX},framing::{HEADER,MAX}};
++    use ed25519_dalek::{Signer,SigningKey};
++    #[derive(Default)]struct Fake {reserved:bool,published:bool,ack:u8,calls:[usize;7],lost:Option<(u16,bool)>,substitute:bool}
++    std::thread_local!{static SIM:core::cell::RefCell<Fake>=core::cell::RefCell::new(Fake::default());}
++    pub fn reset(){SIM.with(|s|*s.borrow_mut()=Fake::default())}
++    pub fn publish(){SIM.with(|s|{let mut s=s.borrow_mut();assert!(s.reserved);s.published=true;})}
++    pub fn lose(op:u16,committed:bool){SIM.with(|s|s.borrow_mut().lost=Some((op,committed)))}
++    pub fn substitute(){SIM.with(|s|s.borrow_mut().substitute=true)}
++    pub fn calls(op:u16)->usize{SIM.with(|s|s.borrow().calls[(op-54) as usize])}
++    pub fn binding()->Binding{Binding{server:[1;16],domain:[2;16],incarnation:[3;32],operation:[6;16],subject:[8;16],group:[9;16],revision:0,generation:2,previous:[10;32],published:[11;32],expected:7}}
++    pub fn head(published:bool)->[u8;112]{let b=binding();let mut h=[0;112];h[..16].copy_from_slice(&b.server);h[16..32].copy_from_slice(&b.domain);h[32..64].copy_from_slice(&b.incarnation);h[64..72].copy_from_slice(&1u64.to_be_bytes());h[72..80].copy_from_slice(&(if published{2u64}else{1}).to_be_bytes());h[80..].copy_from_slice(if published{&b.published}else{&b.previous});h}
++    pub fn current()->[u8;112]{SIM.with(|s|head(s.borrow().published))}
++    pub fn p9()->novaos_identity::Head{novaos_identity::Head{domain:[2;16],volume:[[12;16],[13;16]],recovery:[14;16],objects:[1,2,3],generation:2,request:[6;16],digest:[11;32]}}
++    pub fn exchange(op:u16,q:&[u8],a:&mut[u8;MAX])->Result<usize,()> {
++        SIM.with(|cell|{
++            let mut s=cell.borrow_mut();s.calls[(op-54) as usize]+=1;a.fill(0);
++            let lost=s.lost.filter(|(k,_)|*k==op);if lost.is_some(){s.lost=None;}
++            if lost==Some((op,false)){return Err(())}
++            let n=match op {
++                54=>{assert!(!s.reserved);s.reserved=true;8},
++                56=>{assert!(s.reserved&&s.published);let kind=q[128];assert_eq!(s.ack&kind,0);s.ack|=kind;8},
++                59=>{
++                    if !s.reserved{return Err(())}let b=binding();let mut v=[0u8;312];v[..8].copy_from_slice(b"NAMBRE01");
++                    for (offset,data) in [(8,b.server.as_slice()),(24,&b.domain),(40,&b.incarnation),(72,&b.operation),(88,&b.subject),(104,&b.group),(136,&b.previous),(168,&b.published)]{v[offset..offset+data.len()].copy_from_slice(data);}
++                    v[128..136].copy_from_slice(&b.generation.to_be_bytes());v[200..208].copy_from_slice(&7u64.to_be_bytes());
++                    v[208]=if s.ack==7{2}else if s.published{1}else{0};v[209]=7;v[210]=s.ack;v[216..248].copy_from_slice(&q[128..]);
++                    if s.substitute{v[104]^=1;}
++                    let mut signed=PREFIX.to_vec();signed.extend_from_slice(&v[..BODY]);v[BODY..].copy_from_slice(&SigningKey::from_bytes(&[9;32]).sign(&signed).to_bytes());
++                    a[HEADER+8..HEADER+8+v.len()].copy_from_slice(&v);8+v.len()
++                },_=>panic!("unexpected RPC {op}")
++            };
++            if lost.is_some(){Err(())}else{Ok(n)}
++        })
++    }
++}
+diff --git a/novaOS/user/novaauth/service/membership_transaction_tests.rs b/novaOS/user/novaauth/service/membership_transaction_tests.rs
+new file mode 100644
+index 0000000..e5ad027
+--- /dev/null
++++ b/novaOS/user/novaauth/service/membership_transaction_tests.rs
+@@ -0,0 +1,70 @@
++// Harnais natif : coordinateur réel, RPC et stockage simulés explicitement.
++// Ne démontre ni l'authentification des canaux ni un acquittement invité.
++use super::*;
++fn setup()->Selective {
++    crate::sim::reset();
++    Selective{binding:crate::sim::binding(),principal:[8;16],epoch:1,
++        instances:[[4;32],[5;32],[5;32]],reserve_sent:false,position:0,closed:false,exec:false,ack_sent:0}
++}
++fn reserved()->Selective {
++    let mut s=setup();s.reserve(&crate::sim::head(false)).unwrap();s
++}
++fn closed()->Selective {
++    let mut s=reserved();s.exec_verified();s.close(&mut Storage::new()).unwrap();
++    crate::sim::publish();s
++}
++#[test] fn no_selection_before_authenticated_reservation() {
++    let s=setup();assert_eq!(s.selection(&mut[0;128]),Err(22));assert_eq!(crate::sim::calls(54),0);
++}
++#[test] fn reservation_response_lost_is_queried_without_resubmission() {
++    let mut s=setup();crate::sim::lose(54,true);assert_eq!(s.reserve(&crate::sim::head(false)),Err(22));
++    s.reserve(&crate::sim::head(false)).unwrap();assert_eq!(crate::sim::calls(54),1);assert!(s.position>0);
++}
++#[test] fn reservation_not_accepted_cannot_be_invented_or_replayed() {
++    let mut s=setup();crate::sim::lose(54,false);assert_eq!(s.reserve(&crate::sim::head(false)),Err(22));
++    assert!(s.reserve(&crate::sim::head(false)).is_err());assert_eq!(crate::sim::calls(54),1);
++}
++#[test] fn closure_requires_actual_exec_inspection() {
++    let mut s=reserved();let mut store=Storage::new();assert_eq!(s.close(&mut store),Err(22));assert_eq!(store.calls,0);
++}
++#[test] fn local_cancelled_write_without_individual_admission_is_uncertain() {
++    let mut s=reserved();s.exec_verified();let mut store=Storage::new();store.cancelled=37;
++    assert_eq!(s.close(&mut store),Err(22));crate::sim::publish();assert_eq!(s.finish_head(&crate::sim::p9()),Err(22));
++    assert_eq!(crate::sim::calls(56),0);
++}
++#[test] fn timeout_is_not_an_acknowledgement() {
++    let mut s=reserved();s.exec_verified();let mut store=Storage::new();store.error=Some(8);
++    assert_eq!(s.close(&mut store),Err(8));assert!(!s.closed);assert_eq!(crate::sim::calls(56),0);
++}
++#[test] fn effectors_are_acknowledged_only_after_matching_p9_and_authority_heads() {
++    let mut s=closed();let mut wrong=crate::sim::p9();wrong.digest[0]^=1;
++    assert_eq!(s.finish_head(&wrong),Err(22));assert_eq!(crate::sim::calls(56),0);
++    s.finish_head(&crate::sim::p9()).unwrap();assert_eq!(crate::sim::calls(56),3);
++}
++#[test] fn lost_durable_ack_is_reconciled_without_second_ack() {
++    let mut s=closed();crate::sim::lose(56,true);assert_eq!(s.finish_head(&crate::sim::p9()),Err(22));
++    s.finish_head(&crate::sim::p9()).unwrap();assert_eq!(crate::sim::calls(56),3);
++    s.finish_head(&crate::sim::p9()).unwrap();assert_eq!(crate::sim::calls(56),3);
++}
++#[test] fn absent_ack_keeps_withdrawal_uncertain() {
++    let mut s=closed();crate::sim::lose(56,false);assert_eq!(s.finish_head(&crate::sim::p9()),Err(22));
++    assert_eq!(s.finish_head(&crate::sim::p9()),Err(22));assert_eq!(crate::sim::calls(56),1);
++}
++#[test] fn substituted_signed_receipt_is_not_terminal() {
++    let mut s=closed();crate::sim::substitute();assert_eq!(s.finish_head(&crate::sim::p9()),Err(12));
++    assert_eq!(crate::sim::calls(56),0);
++}
++#[test] fn measured_selective_state_stays_bounded() {
++    println!("Selective={} bytes",core::mem::size_of::<Selective>());assert!(core::mem::size_of::<Selective>()<=512);
++}
++
++#[test] fn private_bootstrap_reads_only_designated_instance_ranges() {
++    for first in [23,27] {
++        let got=identity_from(first,|word| {assert!((first..first+4).contains(&word));word as u64}).unwrap();
++        for i in 0..4 {assert_eq!(&got[i*8..i*8+8],&((first+i) as u64).to_le_bytes());}
++    }
++    for first in [0,19,20,22,24,26,28,31,usize::MAX] {
++        assert_eq!(identity_from(first,|_|panic!("lecture interdite")),Err(5));
++    }
++    assert_eq!(identity_from(23,|_|0),Err(5));
++}
+diff --git a/novaOS/user/novaauth/service/qualify_membership_transaction.py b/novaOS/user/novaauth/service/qualify_membership_transaction.py
+new file mode 100644
+index 0000000..a15e963
+--- /dev/null
++++ b/novaOS/user/novaauth/service/qualify_membership_transaction.py
+@@ -0,0 +1,25 @@
++"""Compile le coordinateur réel avec doubles explicites des RPC et du stockage.
++Aucun résultat de ce harnais n'est une preuve QEMU ou de persistance réelle.
++"""
++from pathlib import Path
++import argparse,json,hashlib
++
++def prepare(source,destination):
++    source=Path(source).resolve();destination=Path(destination)
++    destination.mkdir(parents=True,exist_ok=False);(destination/'src').mkdir()
++    files=[source/'novaOS/user/novaauth/service/src/bin/common/membership_transaction.rs',source/'novaOS/user/novaauth/service/membership_transaction_tests.rs']
++    body=files[0].read_text().replace('//!','//')
++    mock=Path(__file__).with_name('membership_transaction_mock.rs').read_text()
++    (destination/'src/lib.rs').write_text(mock+'\nmod coordinator {\n'+body+'\n#[cfg(test)] mod tests {\n'+files[1].read_text()+'\n}\n}\n')
++    (destination/'Cargo.toml').write_text('''[package]
++name="membership-transaction-native"
++version="0.0.0"
++edition="2024"
++[workspace]
++[dependencies]
++ed25519-dalek={version="=2.2.0",default-features=false}
++'''+f'novaos-identity={{path={json.dumps(str(source/"novaOS/user/novaauth"))},features=["administration-lab"]}}\n'+f'novaos-recovery={{path={json.dumps(str(source/"novaOS/user/novaauth/recuperation"))},features=["administration-lab"]}}\n')
++    files+=[Path(__file__),Path(__file__).with_name('membership_transaction_mock.rs')]
++    (destination/'sources.json').write_text(json.dumps({str(p.relative_to(source)):hashlib.sha256(p.read_bytes()).hexdigest() for p in files},indent=2)+'\n')
++if __name__=='__main__':
++    p=argparse.ArgumentParser();p.add_argument('source',type=Path);p.add_argument('destination',type=Path);a=p.parse_args();prepare(a.source,a.destination)
+diff --git a/novaOS/user/novaauth/service/src/bin/common/administration_channel.rs b/novaOS/user/novaauth/service/src/bin/common/administration_channel.rs
+index fd7df4d..210caed 100644
+--- a/novaOS/user/novaauth/service/src/bin/common/administration_channel.rs
++++ b/novaOS/user/novaauth/service/src/bin/common/administration_channel.rs
+@@ -187,12 +187,21 @@ impl Channels {
+                     pre[..8].copy_from_slice(b"NXRTPRE2");
+                     let selected=exchange(login,&pre)?;
+                     if selected[8..24]!=[0;16] {
++                        #[cfg(feature="membership-r2-guest")]
++                        let selective=&selected[48..56]==b"NXMGSEL1";
++                        #[cfg(not(feature="membership-r2-guest"))]
++                        let selective=false;
++                        if selective {
++                            #[cfg(feature="membership-r2-guest")]
++                            inspect_membership(login,peer,&selected,request)?;
++                        }else{
+                         if selected[48..]!=[0;80] || selected[32..48]!=request[16..32] {
+                             return Err(rt::DENIED);
+                         }
+                         let subject=selected[8..24].try_into().unwrap();
+                         let epoch=number(&selected[24..]);
+                         retire_subject(login,peer,subject,epoch)?;
++                        }
+                         pre[..8].copy_from_slice(b"NXRTACK2");
+                         if exchange(login,&pre)?!=selected {return Err(rt::DENIED);}
+                     }
+@@ -262,3 +271,21 @@ pub(super) fn trace(stage:u64, code:u64) {
+     }
+     let _=rt::call(rt::DEBUG_WRITE,out.as_ptr() as u64,out.len() as u64,0);
+ }
++
++#[cfg(feature="membership-r2-guest")]
++fn inspect_membership(login:&mut Login,peer:&mut Login,q:&[u8;128],request:&[u8])->rt::Result<()> {
++    if q[56..72]!=request[16..32] || q[72..104]!=login.route.issuer || q[104..]!=[0;24]{return Err(rt::DENIED);}
++    let subject=q[8..24].try_into().unwrap();let group=q[24..40].try_into().unwrap();
++    let revision=number(&q[40..]);let operation=q[56..72].try_into().unwrap();
++    let mut seen=false;let mut sequence=login.relay_seq.max(peer.relay_seq);
++    let mut inspect=|actor:&mut Login|->rt::Result<()> {
++        if actor.retirement_binding.is_some_and(|(u,_,_)|u==subject){
++            actor.relay_seq=sequence;
++            let result=membership_exec::independent(actor,subject,group,revision,operation);
++            sequence=actor.relay_seq;seen=true;result?;
++        }Ok(())
++    };
++    let result=inspect(login).and_then(|_|inspect(peer));
++    login.relay_seq=sequence;peer.relay_seq=sequence;
++    result?;if seen{Ok(())}else{Err(22)}
++}
+diff --git a/novaOS/user/novaauth/service/src/bin/common/administration_mutations.rs b/novaOS/user/novaauth/service/src/bin/common/administration_mutations.rs
+index bed022e..8c3b777 100644
+--- a/novaOS/user/novaauth/service/src/bin/common/administration_mutations.rs
++++ b/novaOS/user/novaauth/service/src/bin/common/administration_mutations.rs
+@@ -30,10 +30,27 @@ pub struct Transactions {
+     completed: [Option<([u8; 16], [u8; 16], u64)>; 2],
+     next_completed: usize,
+     effects_submitted: bool,
++    #[cfg(feature="membership-r2-guest")]
++    selective_complete:Option<([u8;16],crate::membership_transaction::Selective)>,
+ }
+ impl Transactions {
+     pub fn new() -> Self { Self { prepared: [None; 2], pending: None, pending_owner: None,
+-                                completed: [None; 2], next_completed: 0, effects_submitted:false } }
++                                completed: [None; 2], next_completed: 0, effects_submitted:false,
++        #[cfg(feature="membership-r2-guest")] selective_complete:None } }
++    #[cfg(feature="membership-r2-guest")]
++    pub fn selective_in_progress(&self)->bool{self.pending.as_ref().is_some_and(|p|p.selective.is_some())}
++    #[cfg(feature="membership-r2-guest")]
++    pub fn reconcile_request(&mut self,state:&mut View,storage:&mut Storage,q:&[u8;128])->rt::Result<()> {
++        if let Some(p)=self.pending.as_ref().filter(|p|p.selective.is_some()) {
++            // Après activation P9 vérifiée, la résolution de chaque fragment
++            // ne relance pas le drainage. Seul OUTCOME de CETTE opération le
++            // consulte. Les demandes indépendantes vérifient toujours leur tête
++            // et leurs capacités ; aucun ancien état n'est accepté par ce cache.
++            let matching_outcome=matches!(wire::decode(q),Ok(Command::Outcome(op)) if op==p.plan.head().request);
++            if p.plan.head()==&state.head() && !matching_outcome{return Ok(());}
++        }
++        self.reconcile(state,storage)
++    }
+     fn remember(&mut self, operation: [u8; 16], owner: [u8; 16], generation: u64) {
+         self.completed[self.next_completed] = Some((operation, owner, generation));
+         self.next_completed = (self.next_completed + 1) % self.completed.len();
+@@ -43,6 +60,9 @@ impl Transactions {
+     /// consulte seulement le reçu du même identifiant ; jamais submit à nouveau.
+     pub fn reconcile(&mut self, state: &mut View, storage: &mut Storage) -> rt::Result<()> {
+         if let Some(p) = self.pending.as_mut() {
++            // Une réservation n'est pas une mutation publiée. Sa confirmation
++            // reste explicite, liée à la préparation et à la session d'origine.
++            if !p.started(){return Ok(());}
+             p.reconcile().map_err(|_| UNCERTAIN)?;
+             *state = p.activate(storage).map_err(|_| UNCERTAIN)?;
+             let operation = p.plan.head().request;
+@@ -55,7 +75,11 @@ impl Transactions {
+                 // effecteurs n'est jamais envoyé automatiquement une seconde fois.
+                 retirement::terminal(p)?;
+             }
++            #[cfg(feature="membership-r2-guest")]
++            p.finish_membership(state)?;
+             let owner = self.pending_owner.ok_or(UNCERTAIN)?;
++            #[cfg(feature="membership-r2-guest")]
++            if let Some(s)=p.selective.take(){self.selective_complete=Some((owner,s));}
+             self.pending = None;
+             self.pending_owner = None;
+             self.remember(operation, owner, state.head().generation);
+@@ -79,6 +103,26 @@ impl Transactions {
+         let Command::Prepare(change)=wire::decode(&p.request).map_err(|_|rt::BAD_ARGUMENT)?
+             else{return Err(rt::BAD_ARGUMENT)};
+         authorize(state,grant,c,change)?;
++        #[cfg(feature="membership-r2-guest")]
++        if let Mutation::RemoveMember{..}=change {
++            let Operation::RemoveMember{subject,group}=operation_for(state,grant,change)? else{return Err(rt::REFUSED)};
++            if self.pending.is_none() {
++                if &q[..8]==b"NXRTACK2" {return Err(rt::DENIED);}
++                let current=tete::query(rt::config(8),&incarnation::identity())?;
++                self.pending=Some(Pending::from_membership(state,grant,operation,current,c.reference,subject,group)?);
++                self.pending_owner=Some(grant.subject());
++            }
++            let pending=self.pending.as_mut().ok_or(UNCERTAIN)?;
++            if pending.plan.head().request!=operation || pending.started(){return Err(UNCERTAIN);}
++            pending.reserve_membership()?;
++            let selective=pending.selective.as_mut().ok_or(rt::DENIED)?;
++            selective.selection(a)?;
++            if &q[..8]==b"NXRTACK2" {
++                if !p.requested{return Err(rt::DENIED);}
++                selective.exec_verified();
++            }else{p.requested=true;}
++            return Ok(());
++        }
+         if !matches!(change,Mutation::Disable(_)) {return Ok(());}
+         // Le même plan vérifie le dernier administrateur et fournit l'époque.
+         let current=crate::tete::query(rt::config(8),&incarnation::identity())?;
+@@ -106,6 +150,7 @@ impl Transactions {
+         }
+         match wire::decode(q).map_err(|_| rt::BAD_ARGUMENT)? {
+             Command::Prepare(change) => {
++                if self.pending.is_some(){return Err(UNCERTAIN);}
+                 authorize(state, grant, c, change)?;
+                 let mut hash = Sha256::new();
+                 hash.update(b"NovaAuth/QEMU/admin-intention/v1\0");
+@@ -120,12 +165,12 @@ impl Transactions {
+                 // administrateur est refusé ici par State/apply, pas par la CLI.
+                 let operation_kind = operation_for(state, grant, change)?;
+                 let retired=retired_for(state,grant,&operation_kind,current)?;
+-                let plan = Pending::from_administration(state, grant, operation, current,
+-                                                        c.reference, operation_kind, retired.as_ref())?;
++                let plan = make_plan(state,grant,operation,current,c.reference,operation_kind,retired.as_ref())?;
+                 drop(plan);
+-                // Le retrait de groupe reste refusé avant raccord de ses effecteurs.
+-                // Create utilise exclusivement le catalogue public approuvé.
+-                if !matches!(change, Mutation::Create {..} | Mutation::CreateGroup(_) | Mutation::Rename {..} | Mutation::Disable(_) | Mutation::Reactivate(_) | Mutation::AddMember {..}) {
++                // RemoveMember reste absent du profil R2 historique : le profil
++                // sélectif exige sa réservation et les faits des effecteurs.
++                let selective=cfg!(feature="membership-r2-guest") && matches!(change,Mutation::RemoveMember{..});
++                if !selective && !matches!(change, Mutation::Create {..} | Mutation::CreateGroup(_) | Mutation::Rename {..} | Mutation::Disable(_) | Mutation::Reactivate(_) | Mutation::AddMember {..}) {
+                     return Err(rt::REFUSED);
+                 }
+                 let slot = self.prepared.iter().position(|p| p.is_some_and(|p| p.binding == binding))
+@@ -142,7 +187,7 @@ impl Transactions {
+                 Ok(())
+             }
+             Command::Confirm { operation, digest } => {
+-                if self.pending.is_some() { return Err(UNCERTAIN); }
++                if self.pending.as_ref().is_some_and(|p|p.started() || p.plan.head().request!=operation) { return Err(UNCERTAIN); }
+                 let slot = self.prepared.iter().position(|p| p.is_some_and(|p|
+                     p.operation == operation && p.confirmation == digest)).ok_or(rt::DENIED)?;
+                 let p = self.prepared[slot].as_ref().unwrap();
+@@ -156,21 +201,29 @@ impl Transactions {
+                 authorize(state, grant, c, change)?;
+                 let operation_kind=operation_for(state,grant,change)?;
+                 let retired=retired_for(state,grant,&operation_kind,current)?;
+-                let plan = Pending::from_administration(state, grant, operation, current,
+-                    c.reference, operation_kind, retired.as_ref())?;
+-                if plan.retirement().is_some() && plan.retirement()!=p.closed {return Err(UNCERTAIN);}
+-                self.prepared[slot] = None; // consommation avant toute écriture
+-                self.pending = Some(plan);
++                if self.pending.is_none() {
++                    let plan=make_plan(state,grant,operation,current,c.reference,operation_kind,retired.as_ref())?;
++                    if plan.retirement().is_some() && plan.retirement()!=p.closed {return Err(UNCERTAIN);}
++                    self.pending=Some(plan);
++                }
+                 self.pending_owner = Some(grant.subject());
+                 self.effects_submitted=false;
+                 let p = self.pending.as_mut().unwrap();
+-                p.submit(storage).map_err(|_| UNCERTAIN)?;
++                let submitted=p.submit(storage);
++                // Si une fermeture privée reste à réconcilier, la confirmation
++                // garde son identité. Dès la première écriture, aucun rejeu.
++                if p.started(){self.prepared[slot]=None;}
++                submitted.map_err(|_| UNCERTAIN)?;
+                 *state = p.activate(storage).map_err(|_| UNCERTAIN)?;
+                 if p.retirement().is_some() {
+                     self.effects_submitted=true; // avant l'envoi ; jamais de répétition
+                     retirement::acknowledge(p)?;
+                     retirement::terminal(p)?;
+                 }
++                #[cfg(feature="membership-r2-guest")]
++                p.finish_membership(state)?;
++                #[cfg(feature="membership-r2-guest")]
++                if let Some(s)=p.selective.take(){self.selective_complete=Some((grant.subject(),s));}
+                 self.pending = None;
+                 self.pending_owner = None;
+                 self.remember(operation, grant.subject(), state.head().generation);
+@@ -184,6 +237,17 @@ impl Transactions {
+                 for action in [Action::Users, Action::Groups] {
+                     state.authorize_administrative(grant, c.image, c.scope, action).map_err(|_| rt::DENIED)?;
+                 }
++                #[cfg(feature="membership-r2-guest")]
++                {
++                    if self.pending.as_ref().is_some_and(|p|p.plan.head().request==operation){return Err(UNCERTAIN);}
++                    if let Some((owner,s))=&self.selective_complete {
++                        if s.binding.operation==operation {
++                            if *owner!=grant.subject(){return Err(rt::DENIED);}
++                            let generation=s.terminal_for_state(state)?;
++                            completed(answer,operation,generation);return Ok(());
++                        }
++                    }
++                }
+                 let mut packet = [0; 160]; packet[..112].copy_from_slice(&current);
+                 packet[112..128].copy_from_slice(&operation);
+                 packet[128..].copy_from_slice(&common::random()?[..]);
+@@ -240,6 +304,9 @@ fn operation_for<'a>(state: &View, grant: Grant, change: Mutation<'a>) -> rt::Re
+             subject: user(s)?,
+             group: state.group_info(grant,selected(g)).map_err(|_|rt::DENIED)?.id,
+         },
++        #[cfg(feature="membership-r2-guest")]
++        Mutation::RemoveMember {user:s,group:g}=>Operation::RemoveMember{
++            subject:user(s)?,group:state.group_info(grant,selected(g)).map_err(|_|rt::DENIED)?.id},
+         Mutation::Rename {user: s, name} => Operation::Rename {subject: user(s)?, name},
+         Mutation::Disable(s) => Operation::Disable {subject: user(s)?},
+         Mutation::Reactivate(s) => Operation::Reactivate {subject: user(s)?},
+@@ -248,6 +315,13 @@ fn operation_for<'a>(state: &View, grant: Grant, change: Mutation<'a>) -> rt::Re
+         _ => return Err(rt::REFUSED),
+     })
+ }
++fn make_plan(state:&View,grant:Grant,operation:[u8;16],current:[u8;112],reference:[u8;16],change:Operation<'_>,retired:Option<&novaos_identity::administration::Retired>)->rt::Result<Pending>{
++    #[cfg(feature="membership-r2-guest")]
++    if let Operation::RemoveMember{subject,group}=change {
++        return Pending::from_membership(state,grant,operation,current,reference,subject,group);
++    }
++    Pending::from_administration(state,grant,operation,current,reference,change,retired)
++}
+ fn retired_for(state:&View,grant:Grant,change:&Operation<'_>,current:[u8;112])
+     ->rt::Result<Option<novaos_identity::administration::Retired>> {
+     if let Operation::Reactivate{subject}=change {
+diff --git a/novaOS/user/novaauth/service/src/bin/common/administration_registry.rs b/novaOS/user/novaauth/service/src/bin/common/administration_registry.rs
+index a774a93..7ee95dd 100644
+--- a/novaOS/user/novaauth/service/src/bin/common/administration_registry.rs
++++ b/novaOS/user/novaauth/service/src/bin/common/administration_registry.rs
+@@ -35,6 +35,12 @@ impl Port {
+             #[cfg(feature="administration-r2-guest")]
+             transactions: mutations::Transactions::new() }
+     }
++    #[cfg(feature="membership-r2-guest")]
++    pub fn selective_in_progress(&self)->bool{self.transactions.selective_in_progress()}
++    #[cfg(feature="membership-r2-guest")]
++    pub fn reconcile_request(&mut self,state:&mut View,storage:&mut crate::recovery_store::Storage,q:&[u8;128])->rt::Result<()> {
++        self.transactions.reconcile_request(state,storage,q)
++    }
+     pub fn clear(&mut self) {
+         self.context = None;
+     }
+diff --git a/novaOS/user/novaauth/service/src/bin/common/membership_exec.rs b/novaOS/user/novaauth/service/src/bin/common/membership_exec.rs
+index 10394fd..daced0f 100644
+--- a/novaOS/user/novaauth/service/src/bin/common/membership_exec.rs
++++ b/novaOS/user/novaauth/service/src/bin/common/membership_exec.rs
+@@ -14,5 +14,7 @@ pub(super) fn independent(login:&mut Login, subject:[u8;16], group:[u8;16], revi
+     q[104..112].copy_from_slice(&revision.to_le_bytes());q[112..].copy_from_slice(&operation);
+     // Ce SEND est intercepté par le noyau sur la route privée du vérificateur,
+     // après contrôle du propriétaire, de l'instance, de la session et du tag.
+-    rt::send_for(login.port(19),login.relay_seq,&q,250)
++    rt::send_for(login.port(19),login.relay_seq,&q,250)?;
++    marker(b"NARM EXEC inspection instance et provenance personnelle acquittee");
++    Ok(())
+ }
+diff --git a/novaOS/user/novaauth/service/src/bin/common/membership_transaction.rs b/novaOS/user/novaauth/service/src/bin/common/membership_transaction.rs
+new file mode 100644
+index 0000000..44b2821
+--- /dev/null
++++ b/novaOS/user/novaauth/service/src/bin/common/membership_transaction.rs
+@@ -0,0 +1,105 @@
++//! Coordinateur privé : aucun ACK avant le fait local et la publication relue.
++use crate::{common,incarnation,recovery_rpc,runtime as rt,tete,recovery_store::Storage};
++use novaos_identity::{membership::Removal,recuperation_view::View};
++use novaos_recovery::{membership::{self as m,Binding,Receipt,State},membership_effectors::VfsClosure,framing::{MAX,HEADER}};
++use ed25519_dalek::VerifyingKey;
++const UNCERTAIN:u64=22;
++pub struct Selective {
++    pub binding:Binding,
++    principal:[u8;16],epoch:u64,instances:[[u8;32];3],
++    reserve_sent:bool,position:u64,closed:bool,exec:bool,ack_sent:u8,
++}
++// Extension privée du bloc de démarrage R22, publiée par le noyau QEMU.
++// runtime::config conserve sa borne historique 0..=19 pour les anciens clients.
++fn identity_from(first:usize,read:impl Fn(usize)->u64)->rt::Result<[u8;32]> {
++    if !matches!(first,23|27){return Err(rt::DENIED);}
++    let mut out=[0;32];
++    for (i,c) in out.chunks_exact_mut(8).enumerate(){c.copy_from_slice(&read(first+i).to_le_bytes());}
++    if out==[0;32]{Err(rt::DENIED)}else{Ok(out)}
++}
++pub(crate) fn identity(first:usize)->rt::Result<[u8;32]> {
++    identity_from(first,|word| {
++        // Le registre ne peut écrire cette page. Ces deux plages seules
++        // contiennent les identités de ses interlocuteurs, sans nouveaux droits.
++        unsafe {(&*(0x401000 as *const core::sync::atomic::AtomicU64).add(word))
++            .load(core::sync::atomic::Ordering::Acquire)}
++    })
++}
++fn key()->rt::Result<VerifyingKey>{VerifyingKey::from_bytes(include_bytes!(env!("NOVA_DECISION_PUB"))).map_err(|_|rt::REFUSED)}
++pub fn exchange(operation:u16,q:&[u8],reply:&mut[u8;MAX])->rt::Result<usize>{
++    m::Message::parse(operation,q).map_err(|_|rt::BAD_ARGUMENT)?;
++    let n=recovery_rpc::Client::new(rt::config(8),incarnation::identity()).exchange(operation,q,reply).map_err(|_|UNCERTAIN)?;
++    if n<8{return Err(UNCERTAIN)}let status=common::number(&reply[HEADER..]);
++    if status!=0{return Err(status)}Ok(n-8)
++}
++impl Selective {
++    pub fn new(removal:&Removal,current:&[u8;112])->rt::Result<Self>{
++        let h=removal.triplet.head();
++        Ok(Self{binding:Binding{server:incarnation::SERVER,domain:incarnation::DOMAIN,incarnation:incarnation::identity(),
++            operation:h.request,subject:removal.source.subject(),group:removal.source.group(),revision:removal.source.revision(),
++            generation:h.generation,previous:current[80..112].try_into().unwrap(),published:h.digest,expected:7},
++            principal:removal.principal,epoch:removal.principal_epoch,
++            instances:[identity(23)?,identity(27)?,identity(27)?],
++            reserve_sent:false,position:0,closed:false,exec:false,ack_sent:0})
++    }
++    pub fn query(&self)->rt::Result<Receipt>{
++        let mut q=[0;160];q[..112].copy_from_slice(&tete::query(rt::config(8),&incarnation::identity())?);
++        q[112..128].copy_from_slice(&self.binding.operation);let nonce=*common::random()?;q[128..].copy_from_slice(&nonce);
++        let mut reply=[0;MAX];let n=exchange(m::QUERY,&q,&mut reply)?;
++        Receipt::verify(&key()?,&reply[HEADER+8..HEADER+8+n],&self.binding,&nonce).map_err(|_|rt::REFUSED)
++    }
++    pub fn reserve(&mut self,previous:&[u8;112])->rt::Result<()> {
++        if !self.reserve_sent {
++            let mut q=[0;324];q[..112].copy_from_slice(previous);q[112..128].copy_from_slice(&self.binding.operation);
++            q[128..160].copy_from_slice(&self.binding.published);q[160..176].copy_from_slice(&self.principal);
++            q[176..184].copy_from_slice(&self.epoch.to_be_bytes());q[184..200].copy_from_slice(&self.binding.subject);
++            q[200..216].copy_from_slice(&self.binding.group);q[216..224].copy_from_slice(&self.binding.revision.to_be_bytes());q[224]=3;
++            for (i,kind) in [1,2,4].iter().enumerate(){q[225+33*i]=*kind;q[226+33*i..258+33*i].copy_from_slice(&self.instances[i]);}
++            self.reserve_sent=true;let mut reply=[0;MAX];exchange(m::RESERVE,&q,&mut reply)?;
++        }
++        let r=self.query()?;if r.state()!=State::Reserved{return Err(UNCERTAIN)}self.position=r.position();Ok(())
++    }
++    pub fn selection(&self,a:&mut[u8;128])->rt::Result<()> {
++        if self.position==0{return Err(UNCERTAIN)}
++        a[8..24].copy_from_slice(&self.binding.subject);a[24..40].copy_from_slice(&self.binding.group);
++        a[40..48].copy_from_slice(&self.binding.revision.to_le_bytes());a[48..56].copy_from_slice(b"NXMGSEL1");
++        a[56..72].copy_from_slice(&self.binding.operation);a[72..104].copy_from_slice(&self.instances[2]);Ok(())
++    }
++    pub fn exec_verified(&mut self){self.exec=true;}
++    pub fn close(&mut self,storage:&mut Storage)->rt::Result<()> {
++        if self.position==0 || !self.exec{return Err(UNCERTAIN)}
++        let q=VfsClosure::new(self.binding.operation,self.binding.subject,self.binding.group,self.binding.revision,
++            self.position,self.instances[0]).map_err(|_|rt::REFUSED)?;
++        let facts=storage.membership_close(&q)?;
++        // L'association de l'écriture à son admission est exigée, jamais inférée
++        // d'un compteur. Ce cas reste non terminal tant que son issue manque.
++        if facts.cancelled_prepare().is_some(){return Err(UNCERTAIN)}
++        self.closed=true;common::marker(b"NARM VFS fermeture selective acquittee");Ok(())
++    }
++    pub fn terminal_for_state(&self,state:&View)->rt::Result<u64>{
++        let current=tete::query(rt::config(8),&incarnation::identity())?;let h=state.head();
++        let receipt=self.query()?;
++        if !receipt.completed(h.generation,&h.digest,u64::from_be_bytes(current[72..80].try_into().unwrap()),current[80..].try_into().unwrap()).map_err(|_|rt::REFUSED)? {return Err(UNCERTAIN);}
++        Ok(self.binding.generation)
++    }
++    pub fn finish(&mut self,state:&View)->rt::Result<()> {
++        self.finish_head(&state.head())
++    }
++    fn finish_head(&mut self,head:&novaos_identity::Head)->rt::Result<()> {
++        if !self.closed || !self.exec{return Err(UNCERTAIN)}
++        let current=tete::query(rt::config(8),&incarnation::identity())?;
++        if current[72..80]!=head.generation.to_be_bytes() || current[80..]!=head.digest{return Err(UNCERTAIN)}
++        for (i,kind) in [1u8,2,4].iter().enumerate(){
++            let receipt=self.query()?;
++            if receipt.acknowledged()&kind!=0{continue;}
++            if self.ack_sent&kind!=0{return Err(UNCERTAIN)}
++            let mut q=[0;161];q[..112].copy_from_slice(&current);q[112..128].copy_from_slice(&self.binding.operation);
++            q[128]=*kind;q[129..].copy_from_slice(&self.instances[i]);self.ack_sent|=kind;
++            let mut reply=[0;MAX];exchange(m::EFFECT,&q,&mut reply)?;
++        }
++        let r=self.query()?;
++        if !r.completed(head.generation,&head.digest,u64::from_be_bytes(current[72..80].try_into().unwrap()),current[80..].try_into().unwrap()).map_err(|_|rt::REFUSED)?{return Err(UNCERTAIN)}
++        common::marker(b"NARM RETIREE recu durable tete P9 relue effecteurs acquittes");Ok(())
++    }
++}
++const _:()=assert!(core::mem::size_of::<Selective>()<=512);
+diff --git a/novaOS/user/novaauth/service/src/bin/common/recovery_mutation.rs b/novaOS/user/novaauth/service/src/bin/common/recovery_mutation.rs
+index 7f5ef86..bdc719c 100644
+--- a/novaOS/user/novaauth/service/src/bin/common/recovery_mutation.rs
++++ b/novaOS/user/novaauth/service/src/bin/common/recovery_mutation.rs
+@@ -17,6 +17,8 @@ pub struct Pending {
+     captured:bool,
+     #[cfg(feature="administration-r2-guest")]
+     administration:Option<[u8;49]>,
++    #[cfg(feature="membership-r2-guest")]
++    pub selective:Option<crate::membership_transaction::Selective>,
+ }
+ fn verify(prefix:&[u8],data:&[u8],sig:&[u8])->rt::Result<()> {
+     let mut signed=[0;512];let n=prefix.len()+data.len();
+@@ -33,7 +35,8 @@ impl Pending {
+         }
+         let plan=state.revoke_plan(grant,object,operation).map_err(|_|rt::DENIED)?;
+         Ok(Self {plan,previous:current,submitted:false,started:false,confirmed:false,reference,captured:false,
+-            #[cfg(feature="administration-r2-guest")] administration:None})
++            #[cfg(feature="administration-r2-guest")] administration:None,
++            #[cfg(feature="membership-r2-guest")] selective:None})
+     }
+     #[cfg(feature="administration-r2-guest")]
+     pub fn from_administration(state:&View,grant:Grant,operation:[u8;16],current:[u8;112],reference:[u8;16],
+@@ -51,7 +54,29 @@ impl Pending {
+             novaos_identity::Fault::Corrupt|novaos_identity::Fault::StateMismatch=>rt::REFUSED,
+             _=>rt::DENIED,
+         })?;
+-        Ok(Self{plan:p.triplet,previous:current,submitted:false,started:false,confirmed:false,reference,captured:false,administration:Some(p.metadata)})
++        Ok(Self{plan:p.triplet,previous:current,submitted:false,started:false,confirmed:false,reference,captured:false,administration:Some(p.metadata),
++            #[cfg(feature="membership-r2-guest")] selective:None})
++    }
++    #[cfg(feature="membership-r2-guest")]
++    pub fn from_membership(state:&View,grant:Grant,operation:[u8;16],current:[u8;112],reference:[u8;16],subject:[u8;16],group:[u8;16])->rt::Result<Self> {
++        if current[..16]!=incarnation::SERVER || current[16..32]!=state.head().domain
++            || current[32..64]!=incarnation::identity() || current[72..80]!=state.head().generation.to_be_bytes()
++            || current[80..]!=state.head().digest {return Err(rt::REVOKED);}
++        let removal=state.prepare_membership_removal(grant,operation,subject,group).map_err(|e|match e {
++            novaos_identity::Fault::Conflict=>24,novaos_identity::Fault::Limit=>rt::LIMIT,
++            novaos_identity::Fault::Uncertain=>UNCERTAIN,_=>rt::DENIED})?;
++        let selective=crate::membership_transaction::Selective::new(&removal,&current)?;
++        Ok(Self{plan:removal.triplet,previous:current,submitted:false,started:false,confirmed:false,
++            reference,captured:false,administration:None,selective:Some(selective)})
++    }
++    pub fn started(&self)->bool {self.started}
++    #[cfg(feature="membership-r2-guest")]
++    pub fn reserve_membership(&mut self)->rt::Result<()> {
++        self.selective.as_mut().ok_or(rt::DENIED)?.reserve(&self.previous)
++    }
++    #[cfg(feature="membership-r2-guest")]
++    pub fn finish_membership(&mut self,state:&View)->rt::Result<()> {
++        if let Some(s)=self.selective.as_mut(){s.finish(state)?;}Ok(())
+     }
+     pub fn backup(&mut self,epoch:u64,recipients:[[u8;32];2])->rt::Result<()> {
+         if !self.confirmed || self.captured {return Err(rt::DENIED);}
+@@ -92,6 +117,8 @@ impl Pending {
+     }
+     pub fn submit(&mut self,storage:&mut Storage)->rt::Result<()> {
+         if self.started {return Err(rt::DENIED);}
++        #[cfg(feature="membership-r2-guest")]
++        if let Some(s)=self.selective.as_mut(){s.close(storage)?;}
+         self.started=true;
+         let h=*self.plan.head();let lengths=self.plan.parts().map(|p|p.len() as u32);
+         storage.begin_next(self.previous[80..112].try_into().unwrap(),h.request,
+@@ -103,7 +130,13 @@ impl Pending {
+         let mut client=rpc::Client::new(rt::config(8),incarnation::identity());
+         let mut answer=[0;MAX];
+         #[cfg(feature="administration-r2-guest")]
+-        let n=if let Some(metadata)=self.administration {
++        let n=if {
++            #[cfg(feature="membership-r2-guest")] {self.selective.is_some()}
++            #[cfg(not(feature="membership-r2-guest"))] {false}
++        } {
++            let mut q=[0;128];q[..112].copy_from_slice(&self.previous);q[112..].copy_from_slice(&h.request);
++            client.exchange(novaos_recovery::membership::PUBLISH,&q,&mut answer).map_err(|_|UNCERTAIN)?
++        }else if let Some(metadata)=self.administration {
+             let mut packet=[0;209];packet[..160].copy_from_slice(&self.proposal());packet[160..].copy_from_slice(&metadata);
+             novaos_recovery::administration::Message::parse(novaos_recovery::administration::PUBLISH,&packet).map_err(|_|UNCERTAIN)?;
+             client.exchange(novaos_recovery::administration::PUBLISH,&packet,&mut answer).map_err(|_|UNCERTAIN)?
+diff --git a/novaOS/user/novaauth/service/src/bin/common/recovery_store.rs b/novaOS/user/novaauth/service/src/bin/common/recovery_store.rs
+index 1a20dac..6b3feae 100644
+--- a/novaOS/user/novaauth/service/src/bin/common/recovery_store.rs
++++ b/novaOS/user/novaauth/service/src/bin/common/recovery_store.rs
+@@ -49,11 +49,7 @@ impl Storage {
+     /// L'instance provient de la page de démarrage écrite par le noyau QEMU,
+     /// liée à la conversation existante. Aucun identifiant choisi par le CLI.
+     pub fn membership_instance(&self)->rt::Result<[u8;32]> {
+-        let mut id=[0;32];
+-        for (i,chunk) in id.chunks_exact_mut(8).enumerate() {
+-            chunk.copy_from_slice(&rt::config(23+i).to_le_bytes());
+-        }
+-        if id==[0;32] {Err(rt::DENIED)} else {Ok(id)}
++        crate::membership_transaction::identity(23)
+     }
+     pub fn membership_close(&mut self, request:&novaos_recovery::membership_effectors::VfsClosure)
+         ->rt::Result<novaos_recovery::membership_effectors::VfsFacts> {
+diff --git a/novaOS/user/novaauth/service/src/bin/registre-incarnation.rs b/novaOS/user/novaauth/service/src/bin/registre-incarnation.rs
+index 639746c..57848bd 100644
+--- a/novaOS/user/novaauth/service/src/bin/registre-incarnation.rs
++++ b/novaOS/user/novaauth/service/src/bin/registre-incarnation.rs
+@@ -10,6 +10,9 @@ mod recovery_capture;
+ #[cfg(feature="vfs-guest")]
+ #[path="common/recovery_mutation.rs"]
+ mod recovery_mutation;
++#[cfg(feature="membership-r2-guest")]
++#[path="common/membership_transaction.rs"]
++mod membership_transaction;
+ #[cfg(all(feature="recuperation-guest",not(feature="vue-guest")))]
+ #[path="common/no_heap.rs"]
+ mod no_heap;
+diff --git a/novaOS/user/novaauth/src/membership.rs b/novaOS/user/novaauth/src/membership.rs
+index 6afe64d..a32b553 100644
+--- a/novaOS/user/novaauth/src/membership.rs
++++ b/novaOS/user/novaauth/src/membership.rs
+@@ -30,6 +30,11 @@ impl View {
+         if source.revision!=expected_revision {return Err(Fault::Conflict);}
+         Ok(Removal{source,triplet,principal:admin.subject(),principal_epoch})
+     }
++    /// Préparation sur la révision effectivement lue dans CETTE vue immuable.
++    pub fn prepare_membership_removal(&self,admin:Grant,op:Id,subject:Id,group:Id)->Result<Removal> {
++        let source=self.source(subject,group)?;
++        self.membership_removal(admin,op,subject,group,source.revision)
++    }
+     /// Décision pour une image attestée par le lanceur et une session vérifiée.
+     /// Le raccord applique aussi la barrière durable de cette origine, même si
+     /// P9 correspond encore à la tête d'avant publication.
+diff --git a/novaOS/user/novaauth/tests/administration.rs b/novaOS/user/novaauth/tests/administration.rs
+index 56b8bc3..086537c 100644
+--- a/novaOS/user/novaauth/tests/administration.rs
++++ b/novaOS/user/novaauth/tests/administration.rs
+@@ -711,6 +711,10 @@ fn selective_removal_preserves_direct_other_group_and_authentication_epoch() {
+         assert!(before.membership_removal(admin,[99;16],f.alice,g,old_g.membership_revision+1).is_err());
+         assert!(before.administration_publication(admin,[99;16],Operation::RemoveMember{subject:f.alice,group:g},None).is_err());
+         let removal=before.membership_removal(admin,[99;16],f.alice,g,old_g.membership_revision).unwrap();
++        let fresh_removal=before.prepare_membership_removal(admin,[99;16],f.alice,g).unwrap();
++        assert_eq!(fresh_removal.source,removal.source);
++        assert_eq!(fresh_removal.triplet.head(),removal.triplet.head());
++        assert!(before.prepare_membership_removal(alice,[99;16],f.alice,g).is_err());
+         assert_eq!(removal.source.subject(),f.alice);assert_eq!(removal.source.group(),g);
+         // Publication P9 simulée isolée : ce test ne tient pas lieu d'acquittement
+         // des effecteurs ni de qualification du raccord QEMU de la commande.

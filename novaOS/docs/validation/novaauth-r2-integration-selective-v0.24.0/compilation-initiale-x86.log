@@ -1,0 +1,1705 @@
+   Compiling novaos v0.20.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/export/novaOS/kernel)
+   Compiling nova-system v0.2.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/export/novaOS/libs/nova-system)
+warning: stripping debug info with `rust-objcopy` failed: signal: 6 (SIGABRT)
+  |
+  = note: dyld[12247]: Library not loaded: @rpath/libLLVM.dylib
+            Referenced from: <D6B3C499-A2AF-3E42-8F77-C42BD658AAB5> /Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/bin/rust-objcopy
+            Reason: tried: '/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/bin/../lib/libLLVM.dylib' (no such file), '/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/bin/../lib/libLLVM.dylib' (no such file), '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/target-invite/release/deps/libLLVM.dylib' (no such file), '/Users/thierry/lib/libLLVM.dylib' (no such file), '/usr/local/lib/libLLVM.dylib' (no such file), '/usr/lib/libLLVM.dylib' (no such file, not in dyld cache)
+          
+
+warning: `novaos` (build script) generated 1 warning
+error: failed to run custom build command for `novaos v0.20.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/export/novaOS/kernel)`
+
+Caused by:
+  process didn't exit successfully: `/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/target-invite/release/build/novaos-69db7f3ff2cfd4cc/build-script-build` (exit status: 101)
+  --- stdout
+  cargo::rerun-if-changed=linker.ld
+  cargo::rustc-link-arg-bin=novaos=-T/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/export/novaOS/kernel/linker.ld
+  cargo::rerun-if-changed=../user
+  cargo::rerun-if-changed=../abi
+  cargo::rerun-if-env-changed=NOVA_VFS_OBJECTS
+  cargo::rerun-if-changed=../../novaFS/src
+  cargo::rerun-if-changed=../../novaFS/Cargo.toml
+  cargo::rerun-if-env-changed=NOVA_RELAY_FAULT
+  cargo::rerun-if-env-changed=NOVA_PACKAGE_CUT
+  cargo::rerun-if-env-changed=NOVA_LAB_ALICE
+  cargo::rerun-if-env-changed=NOVA_LAB_BOB
+  cargo::rerun-if-env-changed=NOVA_VFS_OBJECTS
+  cargo::rerun-if-env-changed=NOVA_PACKAGE_PUBLIC
+  cargo::rerun-if-env-changed=NOVA_LAB_ALICE
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/alice
+  cargo::rerun-if-env-changed=NOVA_LAB_BOB
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/bob
+  cargo::rerun-if-env-changed=NOVA_VFS_OBJECTS
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/preuves-recuperation-v2-cf3d218/vfs-volume-512/dossiers.bin
+  cargo::rerun-if-env-changed=NOVA_PACKAGE_PUBLIC
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/distribution.pub
+  cargo::rerun-if-env-changed=NOVA_QEMU_SERVER_SEED
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05/serveur
+  cargo::rerun-if-env-changed=NOVA_QEMU_SERVER_PUB
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/serveur.pub
+  cargo::rerun-if-env-changed=NOVA_GUEST_CERT
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05/serveur.der
+  cargo::rerun-if-env-changed=NOVA_AUTHORITY_CERT
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05/autorite.der
+  cargo::rerun-if-env-changed=NOVA_FIXTURE_CA
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05/ca.der
+  cargo::rerun-if-env-changed=NOVA_AUTHORITY_PUB
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05/autorite.pub
+  cargo::rerun-if-env-changed=NOVA_DECISION_PUB
+  cargo::rerun-if-changed=/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision.pub
+
+  --- stderr
+  warning: constant `HEAP_RESIZE` is never used
+   --> ../user/../abi/native.rs:4:11
+    |
+  4 | pub const HEAP_RESIZE: u64 = 0x0001_0041;
+    |           ^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `CLOCK_UTC` is never used
+   --> ../user/../abi/native.rs:6:11
+    |
+  6 | pub const CLOCK_UTC: u64 = 0x10044;
+    |           ^^^^^^^^^
+
+  warning: constant `THREAD_YIELD` is never used
+   --> ../user/../abi/native.rs:9:11
+    |
+  9 | pub const THREAD_YIELD: u64 = 0x0001_0003;
+    |           ^^^^^^^^^^^^
+
+  warning: constant `PROCESS_EXIT` is never used
+    --> ../user/../abi/native.rs:10:11
+     |
+  10 | pub const PROCESS_EXIT: u64 = 0x0001_0004;
+     |           ^^^^^^^^^^^^
+
+  warning: constant `THREAD_CREATE` is never used
+    --> ../user/../abi/native.rs:15:11
+     |
+  15 | pub const THREAD_CREATE: u64 = 0x10060;
+     |           ^^^^^^^^^^^^^
+
+  warning: constant `THREAD_EXIT` is never used
+    --> ../user/../abi/native.rs:16:11
+     |
+  16 | pub const THREAD_EXIT: u64 = 0x10061;
+     |           ^^^^^^^^^^^
+
+  warning: constant `THREAD_JOIN` is never used
+    --> ../user/../abi/native.rs:17:11
+     |
+  17 | pub const THREAD_JOIN: u64 = 0x10062;
+     |           ^^^^^^^^^^^
+
+  warning: constant `THREAD_DETACH` is never used
+    --> ../user/../abi/native.rs:18:11
+     |
+  18 | pub const THREAD_DETACH: u64 = 0x10063;
+     |           ^^^^^^^^^^^^^
+
+  warning: constant `THREAD_CANCEL` is never used
+    --> ../user/../abi/native.rs:19:11
+     |
+  19 | pub const THREAD_CANCEL: u64 = 0x10064;
+     |           ^^^^^^^^^^^^^
+
+  warning: constant `THREAD_CANCELLED` is never used
+    --> ../user/../abi/native.rs:20:11
+     |
+  20 | pub const THREAD_CANCELLED: u64 = 0x10065;
+     |           ^^^^^^^^^^^^^^^^
+
+  warning: constant `THREAD_TLS` is never used
+    --> ../user/../abi/native.rs:21:11
+     |
+  21 | pub const THREAD_TLS: u64 = 0x10066;
+     |           ^^^^^^^^^^
+
+  warning: constant `THREAD_WAIT` is never used
+    --> ../user/../abi/native.rs:22:11
+     |
+  22 | pub const THREAD_WAIT: u64 = 0x10067;
+     |           ^^^^^^^^^^^
+
+  warning: constant `THREAD_NOTIFY` is never used
+    --> ../user/../abi/native.rs:23:11
+     |
+  23 | pub const THREAD_NOTIFY: u64 = 0x10068;
+     |           ^^^^^^^^^^^^^
+
+  warning: constant `DEBUG_MAX` is never used
+    --> ../user/../abi/native.rs:32:11
+     |
+  32 | pub const DEBUG_MAX: usize = 256;
+     |           ^^^^^^^^^
+
+  warning: constant `IPC_CREATE` is never used
+    --> ../user/../abi/native.rs:52:11
+     |
+  52 | pub const IPC_CREATE: u64 = 0x10020;
+     |           ^^^^^^^^^^
+
+  warning: constant `IPC_DUP` is never used
+    --> ../user/../abi/native.rs:53:11
+     |
+  53 | pub const IPC_DUP: u64 = 0x10021;
+     |           ^^^^^^^
+
+  warning: constant `IPC_CLOSE` is never used
+    --> ../user/../abi/native.rs:54:11
+     |
+  54 | pub const IPC_CLOSE: u64 = 0x10022;
+     |           ^^^^^^^^^
+
+  warning: constant `IPC_REVOKE` is never used
+    --> ../user/../abi/native.rs:55:11
+     |
+  55 | pub const IPC_REVOKE: u64 = 0x10023;
+     |           ^^^^^^^^^^
+
+  warning: constant `IPC_SEND` is never used
+    --> ../user/../abi/native.rs:56:11
+     |
+  56 | pub const IPC_SEND: u64 = 0x10024;
+     |           ^^^^^^^^
+
+  warning: constant `IPC_RECEIVE` is never used
+    --> ../user/../abi/native.rs:57:11
+     |
+  57 | pub const IPC_RECEIVE: u64 = 0x10025;
+     |           ^^^^^^^^^^^
+
+  warning: constant `IPC_GIVE` is never used
+    --> ../user/../abi/native.rs:58:11
+     |
+  58 | pub const IPC_GIVE: u64 = 0x10026;
+     |           ^^^^^^^^
+
+  warning: constant `IPC_NOTIFY` is never used
+    --> ../user/../abi/native.rs:59:11
+     |
+  59 | pub const IPC_NOTIFY: u64 = 0x10027;
+     |           ^^^^^^^^^^
+
+  warning: constant `IPC_CANCEL` is never used
+    --> ../user/../abi/native.rs:60:11
+     |
+  60 | pub const IPC_CANCEL: u64 = 0x10028;
+     |           ^^^^^^^^^^
+
+  warning: constant `IPC_BOOTSTRAP` is never used
+    --> ../user/../abi/native.rs:61:11
+     |
+  61 | pub const IPC_BOOTSTRAP: u64 = 0x10029;
+     |           ^^^^^^^^^^^^^
+
+  warning: constant `IPC_PUT` is never used
+    --> ../user/../abi/native.rs:63:11
+     |
+  63 | pub const IPC_PUT: u64 = 0x1002c;
+     |           ^^^^^^^
+
+  warning: constant `IPC_TAKE` is never used
+    --> ../user/../abi/native.rs:64:11
+     |
+  64 | pub const IPC_TAKE: u64 = 0x1002d;
+     |           ^^^^^^^^
+
+  warning: constant `BULK_MAX` is never used
+    --> ../user/../abi/native.rs:65:11
+     |
+  65 | pub const BULK_MAX: usize = 4096;
+     |           ^^^^^^^^
+
+  warning: struct `BulkV1` is never constructed
+    --> ../user/../abi/native.rs:67:12
+     |
+  67 | pub struct BulkV1 {
+     |            ^^^^^^
+
+  warning: constant `SEND` is never used
+    --> ../user/../abi/native.rs:74:11
+     |
+  74 | pub const SEND: u32 = 1;
+     |           ^^^^
+
+  warning: constant `RECEIVE` is never used
+    --> ../user/../abi/native.rs:75:11
+     |
+  75 | pub const RECEIVE: u32 = 2;
+     |           ^^^^^^^
+
+  warning: constant `GRANT` is never used
+    --> ../user/../abi/native.rs:76:11
+     |
+  76 | pub const GRANT: u32 = 4;
+     |           ^^^^^
+
+  warning: constant `MANAGE` is never used
+    --> ../user/../abi/native.rs:77:11
+     |
+  77 | pub const MANAGE: u32 = 8;
+     |           ^^^^^^
+
+  warning: constant `WOULD_BLOCK` is never used
+    --> ../user/../abi/native.rs:78:11
+     |
+  78 | pub const WOULD_BLOCK: u64 = 7;
+     |           ^^^^^^^^^^^
+
+  warning: constant `TIMED_OUT` is never used
+    --> ../user/../abi/native.rs:79:11
+     |
+  79 | pub const TIMED_OUT: u64 = 8;
+     |           ^^^^^^^^^
+
+  warning: constant `CANCELLED` is never used
+    --> ../user/../abi/native.rs:80:11
+     |
+  80 | pub const CANCELLED: u64 = 9;
+     |           ^^^^^^^^^
+
+  warning: constant `REVOKED` is never used
+    --> ../user/../abi/native.rs:81:11
+     |
+  81 | pub const REVOKED: u64 = 10;
+     |           ^^^^^^^
+
+  warning: constant `CLOSED` is never used
+    --> ../user/../abi/native.rs:82:11
+     |
+  82 | pub const CLOSED: u64 = 11;
+     |           ^^^^^^
+
+  warning: constant `REFUSED` is never used
+    --> ../user/../abi/native.rs:83:11
+     |
+  83 | pub const REFUSED: u64 = 12;
+     |           ^^^^^^^
+
+  warning: constant `NO_MEMORY` is never used
+    --> ../user/../abi/native.rs:84:11
+     |
+  84 | pub const NO_MEMORY: u64 = 13;
+     |           ^^^^^^^^^
+
+  warning: constant `IPC_FEATURES` is never used
+     --> ../user/../abi/native.rs:163:11
+      |
+  163 | pub const IPC_FEATURES: u64 = 0x1003b;
+      |           ^^^^^^^^^^^^
+
+  warning: constant `IPC_FEATURE_PAGE` is never used
+     --> ../user/../abi/native.rs:164:11
+      |
+  164 | pub const IPC_FEATURE_PAGE: u64 = 1;
+      |           ^^^^^^^^^^^^^^^^
+
+  warning: 41 warnings emitted
+
+  warning: constant `HEAP_RESIZE` is never used
+   --> ../user/../abi/native.rs:4:11
+    |
+  4 | pub const HEAP_RESIZE: u64 = 0x0001_0041;
+    |           ^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `CLOCK_UTC` is never used
+   --> ../user/../abi/native.rs:6:11
+    |
+  6 | pub const CLOCK_UTC: u64 = 0x10044;
+    |           ^^^^^^^^^
+
+  warning: constant `THREAD_YIELD` is never used
+   --> ../user/../abi/native.rs:9:11
+    |
+  9 | pub const THREAD_YIELD: u64 = 0x0001_0003;
+    |           ^^^^^^^^^^^^
+
+  warning: constant `PROCESS_EXIT` is never used
+    --> ../user/../abi/native.rs:10:11
+     |
+  10 | pub const PROCESS_EXIT: u64 = 0x0001_0004;
+     |           ^^^^^^^^^^^^
+
+  warning: constant `THREAD_CREATE` is never used
+    --> ../user/../abi/native.rs:15:11
+     |
+  15 | pub const THREAD_CREATE: u64 = 0x10060;
+     |           ^^^^^^^^^^^^^
+
+  warning: constant `THREAD_EXIT` is never used
+    --> ../user/../abi/native.rs:16:11
+     |
+  16 | pub const THREAD_EXIT: u64 = 0x10061;
+     |           ^^^^^^^^^^^
+
+  warning: constant `THREAD_JOIN` is never used
+    --> ../user/../abi/native.rs:17:11
+     |
+  17 | pub const THREAD_JOIN: u64 = 0x10062;
+     |           ^^^^^^^^^^^
+
+  warning: constant `THREAD_DETACH` is never used
+    --> ../user/../abi/native.rs:18:11
+     |
+  18 | pub const THREAD_DETACH: u64 = 0x10063;
+     |           ^^^^^^^^^^^^^
+
+  warning: constant `THREAD_CANCEL` is never used
+    --> ../user/../abi/native.rs:19:11
+     |
+  19 | pub const THREAD_CANCEL: u64 = 0x10064;
+     |           ^^^^^^^^^^^^^
+
+  warning: constant `THREAD_CANCELLED` is never used
+    --> ../user/../abi/native.rs:20:11
+     |
+  20 | pub const THREAD_CANCELLED: u64 = 0x10065;
+     |           ^^^^^^^^^^^^^^^^
+
+  warning: constant `THREAD_TLS` is never used
+    --> ../user/../abi/native.rs:21:11
+     |
+  21 | pub const THREAD_TLS: u64 = 0x10066;
+     |           ^^^^^^^^^^
+
+  warning: constant `THREAD_WAIT` is never used
+    --> ../user/../abi/native.rs:22:11
+     |
+  22 | pub const THREAD_WAIT: u64 = 0x10067;
+     |           ^^^^^^^^^^^
+
+  warning: constant `THREAD_NOTIFY` is never used
+    --> ../user/../abi/native.rs:23:11
+     |
+  23 | pub const THREAD_NOTIFY: u64 = 0x10068;
+     |           ^^^^^^^^^^^^^
+
+  warning: constant `DEBUG_MAX` is never used
+    --> ../user/../abi/native.rs:32:11
+     |
+  32 | pub const DEBUG_MAX: usize = 256;
+     |           ^^^^^^^^^
+
+  warning: constant `IPC_CREATE` is never used
+    --> ../user/../abi/native.rs:52:11
+     |
+  52 | pub const IPC_CREATE: u64 = 0x10020;
+     |           ^^^^^^^^^^
+
+  warning: constant `IPC_DUP` is never used
+    --> ../user/../abi/native.rs:53:11
+     |
+  53 | pub const IPC_DUP: u64 = 0x10021;
+     |           ^^^^^^^
+
+  warning: constant `IPC_CLOSE` is never used
+    --> ../user/../abi/native.rs:54:11
+     |
+  54 | pub const IPC_CLOSE: u64 = 0x10022;
+     |           ^^^^^^^^^
+
+  warning: constant `IPC_REVOKE` is never used
+    --> ../user/../abi/native.rs:55:11
+     |
+  55 | pub const IPC_REVOKE: u64 = 0x10023;
+     |           ^^^^^^^^^^
+
+  warning: constant `IPC_SEND` is never used
+    --> ../user/../abi/native.rs:56:11
+     |
+  56 | pub const IPC_SEND: u64 = 0x10024;
+     |           ^^^^^^^^
+
+  warning: constant `IPC_RECEIVE` is never used
+    --> ../user/../abi/native.rs:57:11
+     |
+  57 | pub const IPC_RECEIVE: u64 = 0x10025;
+     |           ^^^^^^^^^^^
+
+  warning: constant `IPC_GIVE` is never used
+    --> ../user/../abi/native.rs:58:11
+     |
+  58 | pub const IPC_GIVE: u64 = 0x10026;
+     |           ^^^^^^^^
+
+  warning: constant `IPC_NOTIFY` is never used
+    --> ../user/../abi/native.rs:59:11
+     |
+  59 | pub const IPC_NOTIFY: u64 = 0x10027;
+     |           ^^^^^^^^^^
+
+  warning: constant `IPC_CANCEL` is never used
+    --> ../user/../abi/native.rs:60:11
+     |
+  60 | pub const IPC_CANCEL: u64 = 0x10028;
+     |           ^^^^^^^^^^
+
+  warning: constant `IPC_BOOTSTRAP` is never used
+    --> ../user/../abi/native.rs:61:11
+     |
+  61 | pub const IPC_BOOTSTRAP: u64 = 0x10029;
+     |           ^^^^^^^^^^^^^
+
+  warning: constant `IPC_PUT` is never used
+    --> ../user/../abi/native.rs:63:11
+     |
+  63 | pub const IPC_PUT: u64 = 0x1002c;
+     |           ^^^^^^^
+
+  warning: constant `IPC_TAKE` is never used
+    --> ../user/../abi/native.rs:64:11
+     |
+  64 | pub const IPC_TAKE: u64 = 0x1002d;
+     |           ^^^^^^^^
+
+  warning: constant `BULK_MAX` is never used
+    --> ../user/../abi/native.rs:65:11
+     |
+  65 | pub const BULK_MAX: usize = 4096;
+     |           ^^^^^^^^
+
+  warning: struct `BulkV1` is never constructed
+    --> ../user/../abi/native.rs:67:12
+     |
+  67 | pub struct BulkV1 {
+     |            ^^^^^^
+
+  warning: constant `SEND` is never used
+    --> ../user/../abi/native.rs:74:11
+     |
+  74 | pub const SEND: u32 = 1;
+     |           ^^^^
+
+  warning: constant `RECEIVE` is never used
+    --> ../user/../abi/native.rs:75:11
+     |
+  75 | pub const RECEIVE: u32 = 2;
+     |           ^^^^^^^
+
+  warning: constant `GRANT` is never used
+    --> ../user/../abi/native.rs:76:11
+     |
+  76 | pub const GRANT: u32 = 4;
+     |           ^^^^^
+
+  warning: constant `MANAGE` is never used
+    --> ../user/../abi/native.rs:77:11
+     |
+  77 | pub const MANAGE: u32 = 8;
+     |           ^^^^^^
+
+  warning: constant `WOULD_BLOCK` is never used
+    --> ../user/../abi/native.rs:78:11
+     |
+  78 | pub const WOULD_BLOCK: u64 = 7;
+     |           ^^^^^^^^^^^
+
+  warning: constant `TIMED_OUT` is never used
+    --> ../user/../abi/native.rs:79:11
+     |
+  79 | pub const TIMED_OUT: u64 = 8;
+     |           ^^^^^^^^^
+
+  warning: constant `CANCELLED` is never used
+    --> ../user/../abi/native.rs:80:11
+     |
+  80 | pub const CANCELLED: u64 = 9;
+     |           ^^^^^^^^^
+
+  warning: constant `REVOKED` is never used
+    --> ../user/../abi/native.rs:81:11
+     |
+  81 | pub const REVOKED: u64 = 10;
+     |           ^^^^^^^
+
+  warning: constant `CLOSED` is never used
+    --> ../user/../abi/native.rs:82:11
+     |
+  82 | pub const CLOSED: u64 = 11;
+     |           ^^^^^^
+
+  warning: constant `REFUSED` is never used
+    --> ../user/../abi/native.rs:83:11
+     |
+  83 | pub const REFUSED: u64 = 12;
+     |           ^^^^^^^
+
+  warning: constant `NO_MEMORY` is never used
+    --> ../user/../abi/native.rs:84:11
+     |
+  84 | pub const NO_MEMORY: u64 = 13;
+     |           ^^^^^^^^^
+
+  warning: constant `IPC_FEATURES` is never used
+     --> ../user/../abi/native.rs:163:11
+      |
+  163 | pub const IPC_FEATURES: u64 = 0x1003b;
+      |           ^^^^^^^^^^^^
+
+  warning: constant `IPC_FEATURE_PAGE` is never used
+     --> ../user/../abi/native.rs:164:11
+      |
+  164 | pub const IPC_FEATURE_PAGE: u64 = 1;
+      |           ^^^^^^^^^^^^^^^^
+
+  warning: 41 warnings emitted
+
+  warning: unused import: `service_caps::CAPABILITY_NAMES`
+    --> ../user/services/protocol.rs:33:9
+     |
+  33 | pub use service_caps::CAPABILITY_NAMES;
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `DRAIN` is never used
+   --> ../user/../abi/service_process.rs:7:11
+    |
+  7 | pub const DRAIN: u64 = 5;
+    |           ^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `FIN` is never used
+    --> ../user/storage/runtime.rs:14:11
+     |
+  14 | pub const FIN: u8 = 2;
+     |           ^^^
+
+  warning: constant `BAD_FRAME` is never used
+    --> ../user/storage/runtime.rs:15:11
+     |
+  15 | pub const BAD_FRAME: u8 = 1;
+     |           ^^^^^^^^^
+
+  warning: constant `UNSUPPORTED` is never used
+    --> ../user/storage/runtime.rs:16:11
+     |
+  16 | pub const UNSUPPORTED: u8 = 2;
+     |           ^^^^^^^^^^^
+
+  warning: constant `NO_VOLUME` is never used
+    --> ../user/storage/runtime.rs:17:11
+     |
+  17 | pub const NO_VOLUME: u8 = 3;
+     |           ^^^^^^^^^
+
+  warning: constant `TIMEOUT` is never used
+    --> ../user/storage/runtime.rs:19:11
+     |
+  19 | pub const TIMEOUT: u64 = 250;
+     |           ^^^^^^^
+
+  warning: function `channels` is never used
+    --> ../user/storage/runtime.rs:51:8
+     |
+  51 | pub fn channels() -> Result<(u64, u64)> {
+     |        ^^^^^^^^
+
+  warning: function `receive` is never used
+   --> ../user/storage/client_io.rs:4:8
+    |
+  4 | pub fn receive(key: u64) -> Result<ReceiveV1> {
+    |        ^^^^^^^
+
+  warning: function `send` is never used
+    --> ../user/storage/client_io.rs:29:8
+     |
+  29 | pub fn send(key: u64, tag: u64, bytes: &[u8]) -> Result<()> {
+     |        ^^^^
+
+  warning: function `launch` is never used
+   --> ../user/novaauth/service/shell_launcher.rs:3:15
+    |
+  3 | pub(super) fn launch() -> rt::Result<u64> {
+    |               ^^^^^^
+
+  warning: 11 warnings emitted
+
+  warning: unused import: `service_caps::CAPABILITY_NAMES`
+    --> ../user/services/protocol.rs:33:9
+     |
+  33 | pub use service_caps::CAPABILITY_NAMES;
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+  warning: 1 warning emitted
+
+  warning: unused import: `service_caps::CAPABILITY_NAMES`
+    --> ../user/services/protocol.rs:33:9
+     |
+  33 | pub use service_caps::CAPABILITY_NAMES;
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `BAD_FRAME` is never used
+    --> ../user/storage/runtime.rs:15:11
+     |
+  15 | pub const BAD_FRAME: u8 = 1;
+     |           ^^^^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `UNSUPPORTED` is never used
+    --> ../user/storage/runtime.rs:16:11
+     |
+  16 | pub const UNSUPPORTED: u8 = 2;
+     |           ^^^^^^^^^^^
+
+  warning: constant `NO_VOLUME` is never used
+    --> ../user/storage/runtime.rs:17:11
+     |
+  17 | pub const NO_VOLUME: u8 = 3;
+     |           ^^^^^^^^^
+
+  warning: constant `TIMEOUT` is never used
+    --> ../user/storage/runtime.rs:19:11
+     |
+  19 | pub const TIMEOUT: u64 = 250;
+     |           ^^^^^^^
+
+  warning: function `channels` is never used
+    --> ../user/storage/runtime.rs:51:8
+     |
+  51 | pub fn channels() -> Result<(u64, u64)> {
+     |        ^^^^^^^^
+
+  warning: function `receive` is never used
+   --> ../user/storage/client_io.rs:4:8
+    |
+  4 | pub fn receive(key: u64) -> Result<ReceiveV1> {
+    |        ^^^^^^^
+
+  warning: function `send` is never used
+    --> ../user/storage/client_io.rs:29:8
+     |
+  29 | pub fn send(key: u64, tag: u64, bytes: &[u8]) -> Result<()> {
+     |        ^^^^
+
+  warning: 8 warnings emitted
+
+  warning: unused import: `service_caps::CAPABILITY_NAMES`
+    --> ../user/services/protocol.rs:33:9
+     |
+  33 | pub use service_caps::CAPABILITY_NAMES;
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+  warning: 1 warning emitted
+
+  warning: unused import: `service_caps::CAPABILITY_NAMES`
+    --> ../user/services/protocol.rs:33:9
+     |
+  33 | pub use service_caps::CAPABILITY_NAMES;
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `INFO` is never used
+    --> ../user/storage/runtime.rs:13:11
+     |
+  13 | pub const INFO: u8 = 1;
+     |           ^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `FIN` is never used
+    --> ../user/storage/runtime.rs:14:11
+     |
+  14 | pub const FIN: u8 = 2;
+     |           ^^^
+
+  warning: constant `BAD_FRAME` is never used
+    --> ../user/storage/runtime.rs:15:11
+     |
+  15 | pub const BAD_FRAME: u8 = 1;
+     |           ^^^^^^^^^
+
+  warning: constant `UNSUPPORTED` is never used
+    --> ../user/storage/runtime.rs:16:11
+     |
+  16 | pub const UNSUPPORTED: u8 = 2;
+     |           ^^^^^^^^^^^
+
+  warning: constant `NO_VOLUME` is never used
+    --> ../user/storage/runtime.rs:17:11
+     |
+  17 | pub const NO_VOLUME: u8 = 3;
+     |           ^^^^^^^^^
+
+  warning: constant `WIRE_VERSION` is never used
+    --> ../user/storage/runtime.rs:18:11
+     |
+  18 | pub const WIRE_VERSION: u8 = 1;
+     |           ^^^^^^^^^^^^
+
+  warning: constant `TIMEOUT` is never used
+    --> ../user/storage/runtime.rs:19:11
+     |
+  19 | pub const TIMEOUT: u64 = 250;
+     |           ^^^^^^^
+
+  warning: constant `IDENTITY` is never used
+    --> ../user/storage/runtime.rs:20:11
+     |
+  20 | pub const IDENTITY: &[u8; 4] = b"NVFS";
+     |           ^^^^^^^^
+
+  warning: function `receive` is never used
+   --> ../user/storage/client_io.rs:4:8
+    |
+  4 | pub fn receive(key: u64) -> Result<ReceiveV1> {
+    |        ^^^^^^^
+
+  warning: function `send` is never used
+    --> ../user/storage/client_io.rs:29:8
+     |
+  29 | pub fn send(key: u64, tag: u64, bytes: &[u8]) -> Result<()> {
+     |        ^^^^
+
+  warning: 11 warnings emitted
+
+  warning: unused import: `service_caps::CAPABILITY_NAMES`
+    --> ../user/storage/../services/protocol.rs:33:9
+     |
+  33 | pub use service_caps::CAPABILITY_NAMES;
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+  warning: method `active` is never used
+    --> ../user/storage/info_session.rs:12:12
+     |
+   7 | impl Session {
+     | ------------ method in this implementation
+  ...
+  12 |     pub fn active(&self) -> bool {
+     |            ^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `TIMEOUT` is never used
+    --> ../user/storage/runtime.rs:19:11
+     |
+  19 | pub const TIMEOUT: u64 = 250;
+     |           ^^^^^^^
+
+  warning: function `channels` is never used
+    --> ../user/storage/runtime.rs:51:8
+     |
+  51 | pub fn channels() -> Result<(u64, u64)> {
+     |        ^^^^^^^^
+
+  warning: function `receive` is never used
+   --> ../user/storage/client_io.rs:4:8
+    |
+  4 | pub fn receive(key: u64) -> Result<ReceiveV1> {
+    |        ^^^^^^^
+
+  warning: function `send` is never used
+    --> ../user/storage/client_io.rs:29:8
+     |
+  29 | pub fn send(key: u64, tag: u64, bytes: &[u8]) -> Result<()> {
+     |        ^^^^
+
+  warning: function `worker` is never used
+    --> ../user/storage/../services/node.rs:29:8
+     |
+  29 | pub fn worker(mode: u64) -> rt::Result<()> {
+     |        ^^^^^^
+
+  warning: 7 warnings emitted
+
+  warning: constant `INFO` is never used
+    --> ../user/storage/runtime.rs:13:11
+     |
+  13 | pub const INFO: u8 = 1;
+     |           ^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `FIN` is never used
+    --> ../user/storage/runtime.rs:14:11
+     |
+  14 | pub const FIN: u8 = 2;
+     |           ^^^
+
+  warning: constant `BAD_FRAME` is never used
+    --> ../user/storage/runtime.rs:15:11
+     |
+  15 | pub const BAD_FRAME: u8 = 1;
+     |           ^^^^^^^^^
+
+  warning: constant `UNSUPPORTED` is never used
+    --> ../user/storage/runtime.rs:16:11
+     |
+  16 | pub const UNSUPPORTED: u8 = 2;
+     |           ^^^^^^^^^^^
+
+  warning: constant `NO_VOLUME` is never used
+    --> ../user/storage/runtime.rs:17:11
+     |
+  17 | pub const NO_VOLUME: u8 = 3;
+     |           ^^^^^^^^^
+
+  warning: constant `WIRE_VERSION` is never used
+    --> ../user/storage/runtime.rs:18:11
+     |
+  18 | pub const WIRE_VERSION: u8 = 1;
+     |           ^^^^^^^^^^^^
+
+  warning: constant `IDENTITY` is never used
+    --> ../user/storage/runtime.rs:20:11
+     |
+  20 | pub const IDENTITY: &[u8; 4] = b"NVFS";
+     |           ^^^^^^^^
+
+  warning: function `channels` is never used
+    --> ../user/storage/runtime.rs:51:8
+     |
+  51 | pub fn channels() -> Result<(u64, u64)> {
+     |        ^^^^^^^^
+
+  warning: 8 warnings emitted
+
+  warning: function `receive` is never used
+   --> ../user/storage/client_io.rs:4:8
+    |
+  4 | pub fn receive(key: u64) -> Result<ReceiveV1> {
+    |        ^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: 1 warning emitted
+
+  warning: constant `INFO` is never used
+    --> ../user/storage/runtime.rs:13:11
+     |
+  13 | pub const INFO: u8 = 1;
+     |           ^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `FIN` is never used
+    --> ../user/storage/runtime.rs:14:11
+     |
+  14 | pub const FIN: u8 = 2;
+     |           ^^^
+
+  warning: constant `BAD_FRAME` is never used
+    --> ../user/storage/runtime.rs:15:11
+     |
+  15 | pub const BAD_FRAME: u8 = 1;
+     |           ^^^^^^^^^
+
+  warning: constant `UNSUPPORTED` is never used
+    --> ../user/storage/runtime.rs:16:11
+     |
+  16 | pub const UNSUPPORTED: u8 = 2;
+     |           ^^^^^^^^^^^
+
+  warning: constant `NO_VOLUME` is never used
+    --> ../user/storage/runtime.rs:17:11
+     |
+  17 | pub const NO_VOLUME: u8 = 3;
+     |           ^^^^^^^^^
+
+  warning: constant `WIRE_VERSION` is never used
+    --> ../user/storage/runtime.rs:18:11
+     |
+  18 | pub const WIRE_VERSION: u8 = 1;
+     |           ^^^^^^^^^^^^
+
+  warning: constant `IDENTITY` is never used
+    --> ../user/storage/runtime.rs:20:11
+     |
+  20 | pub const IDENTITY: &[u8; 4] = b"NVFS";
+     |           ^^^^^^^^
+
+  warning: 7 warnings emitted
+
+  warning: constant `INFO` is never used
+    --> ../user/storage/runtime.rs:13:11
+     |
+  13 | pub const INFO: u8 = 1;
+     |           ^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `FIN` is never used
+    --> ../user/storage/runtime.rs:14:11
+     |
+  14 | pub const FIN: u8 = 2;
+     |           ^^^
+
+  warning: constant `BAD_FRAME` is never used
+    --> ../user/storage/runtime.rs:15:11
+     |
+  15 | pub const BAD_FRAME: u8 = 1;
+     |           ^^^^^^^^^
+
+  warning: constant `UNSUPPORTED` is never used
+    --> ../user/storage/runtime.rs:16:11
+     |
+  16 | pub const UNSUPPORTED: u8 = 2;
+     |           ^^^^^^^^^^^
+
+  warning: constant `NO_VOLUME` is never used
+    --> ../user/storage/runtime.rs:17:11
+     |
+  17 | pub const NO_VOLUME: u8 = 3;
+     |           ^^^^^^^^^
+
+  warning: constant `WIRE_VERSION` is never used
+    --> ../user/storage/runtime.rs:18:11
+     |
+  18 | pub const WIRE_VERSION: u8 = 1;
+     |           ^^^^^^^^^^^^
+
+  warning: constant `IDENTITY` is never used
+    --> ../user/storage/runtime.rs:20:11
+     |
+  20 | pub const IDENTITY: &[u8; 4] = b"NVFS";
+     |           ^^^^^^^^
+
+  warning: function `receive` is never used
+   --> ../user/storage/client_io.rs:4:8
+    |
+  4 | pub fn receive(key: u64) -> Result<ReceiveV1> {
+    |        ^^^^^^^
+
+  warning: 8 warnings emitted
+
+  warning: constant `INFO` is never used
+    --> ../user/storage/runtime.rs:13:11
+     |
+  13 | pub const INFO: u8 = 1;
+     |           ^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `FIN` is never used
+    --> ../user/storage/runtime.rs:14:11
+     |
+  14 | pub const FIN: u8 = 2;
+     |           ^^^
+
+  warning: constant `BAD_FRAME` is never used
+    --> ../user/storage/runtime.rs:15:11
+     |
+  15 | pub const BAD_FRAME: u8 = 1;
+     |           ^^^^^^^^^
+
+  warning: constant `UNSUPPORTED` is never used
+    --> ../user/storage/runtime.rs:16:11
+     |
+  16 | pub const UNSUPPORTED: u8 = 2;
+     |           ^^^^^^^^^^^
+
+  warning: constant `NO_VOLUME` is never used
+    --> ../user/storage/runtime.rs:17:11
+     |
+  17 | pub const NO_VOLUME: u8 = 3;
+     |           ^^^^^^^^^
+
+  warning: constant `WIRE_VERSION` is never used
+    --> ../user/storage/runtime.rs:18:11
+     |
+  18 | pub const WIRE_VERSION: u8 = 1;
+     |           ^^^^^^^^^^^^
+
+  warning: constant `IDENTITY` is never used
+    --> ../user/storage/runtime.rs:20:11
+     |
+  20 | pub const IDENTITY: &[u8; 4] = b"NVFS";
+     |           ^^^^^^^^
+
+  warning: 7 warnings emitted
+
+  warning: constant `BAD_FRAME` is never used
+    --> ../user/storage/runtime.rs:15:11
+     |
+  15 | pub const BAD_FRAME: u8 = 1;
+     |           ^^^^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `UNSUPPORTED` is never used
+    --> ../user/storage/runtime.rs:16:11
+     |
+  16 | pub const UNSUPPORTED: u8 = 2;
+     |           ^^^^^^^^^^^
+
+  warning: constant `NO_VOLUME` is never used
+    --> ../user/storage/runtime.rs:17:11
+     |
+  17 | pub const NO_VOLUME: u8 = 3;
+     |           ^^^^^^^^^
+
+  warning: 3 warnings emitted
+
+  warning: constant `INFO` is never used
+    --> ../user/storage/runtime.rs:13:11
+     |
+  13 | pub const INFO: u8 = 1;
+     |           ^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `FIN` is never used
+    --> ../user/storage/runtime.rs:14:11
+     |
+  14 | pub const FIN: u8 = 2;
+     |           ^^^
+
+  warning: constant `BAD_FRAME` is never used
+    --> ../user/storage/runtime.rs:15:11
+     |
+  15 | pub const BAD_FRAME: u8 = 1;
+     |           ^^^^^^^^^
+
+  warning: constant `UNSUPPORTED` is never used
+    --> ../user/storage/runtime.rs:16:11
+     |
+  16 | pub const UNSUPPORTED: u8 = 2;
+     |           ^^^^^^^^^^^
+
+  warning: constant `NO_VOLUME` is never used
+    --> ../user/storage/runtime.rs:17:11
+     |
+  17 | pub const NO_VOLUME: u8 = 3;
+     |           ^^^^^^^^^
+
+  warning: constant `WIRE_VERSION` is never used
+    --> ../user/storage/runtime.rs:18:11
+     |
+  18 | pub const WIRE_VERSION: u8 = 1;
+     |           ^^^^^^^^^^^^
+
+  warning: constant `TIMEOUT` is never used
+    --> ../user/storage/runtime.rs:19:11
+     |
+  19 | pub const TIMEOUT: u64 = 250;
+     |           ^^^^^^^
+
+  warning: constant `IDENTITY` is never used
+    --> ../user/storage/runtime.rs:20:11
+     |
+  20 | pub const IDENTITY: &[u8; 4] = b"NVFS";
+     |           ^^^^^^^^
+
+  warning: function `receive` is never used
+   --> ../user/storage/client_io.rs:4:8
+    |
+  4 | pub fn receive(key: u64) -> Result<ReceiveV1> {
+    |        ^^^^^^^
+
+  warning: function `send` is never used
+    --> ../user/storage/client_io.rs:29:8
+     |
+  29 | pub fn send(key: u64, tag: u64, bytes: &[u8]) -> Result<()> {
+     |        ^^^^
+
+  warning: multiple associated items are never used
+     --> ../user/storage/fileapi.rs:29:12
+      |
+   14 | impl Client {
+      | ----------- associated items in this implementation
+  ...
+   29 |     pub fn scoped() -> rt::Result<Self> {
+      |            ^^^^^^
+  ...
+   32 |     pub fn scoped_ports((tx, rx): (u64, u64)) -> Self {
+      |            ^^^^^^^^^^^^
+  ...
+   44 |     pub fn give(&self, source: u64, rights: u32) -> rt::Result<()> {
+      |            ^^^^
+  ...
+   63 |     pub fn delegate(&mut self, kind: u8, handle: u64, leaf: &[u8]) -> rt::Result<()> {
+      |            ^^^^^^^^
+  ...
+   73 |     pub fn probe_exclusive(&mut self,path:&[u8])->rt::Result<()> {
+      |            ^^^^^^^^^^^^^^^
+  ...
+  214 |     pub fn read_grouped(&mut self, h: u64, off: u64, out: &mut [u8]) -> rt::Result<usize> {
+      |            ^^^^^^^^^^^^
+  ...
+  228 |     pub fn read_version(&mut self, h: u64, off: u64, out: &mut [u8], rev: u64) -> rt::Result<u64> {
+      |            ^^^^^^^^^^^^
+
+  warning: 11 warnings emitted
+
+     Compiling typenum v1.20.1
+     Compiling cfg-if v1.0.5
+     Compiling subtle v2.6.1
+     Compiling const-oid v0.9.6
+     Compiling cpufeatures v0.2.17
+     Compiling cmov v0.5.4
+     Compiling opaque-debug v0.3.1
+     Compiling cpufeatures v0.3.1
+     Compiling base16ct v0.2.0
+     Compiling serde_core v1.0.229
+     Compiling zmij v1.0.23
+     Compiling generic-array v0.14.7
+     Compiling base64ct v1.8.3
+     Compiling curve25519-dalek v4.1.3
+     Compiling zeroize v1.9.1
+     Compiling novafs v0.9.13 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/export/novaFS)
+     Compiling getrandom v0.2.17
+     Compiling byteorder v1.5.0
+     Compiling heapless v0.9.3
+     Compiling portable-atomic v1.15.0
+     Compiling der v0.7.10
+     Compiling serde v1.0.229
+     Compiling rand_core v0.6.4
+     Compiling ctutils v0.4.8
+  warning: stripping debug info with `rust-objcopy` failed: signal: 6 (SIGABRT)
+    |
+    = note: dyld[12326]: Library not loaded: @rpath/libLLVM.dylib
+              Referenced from: <D6B3C499-A2AF-3E42-8F77-C42BD658AAB5> /Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/bin/rust-objcopy
+              Reason: tried: '/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/bin/../lib/libLLVM.dylib' (no such file), '/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/bin/../lib/libLLVM.dylib' (no such file), '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/target-invite/x86_64-unknown-none/release/build/novaos-43ec2d81e6357e85/out/service-target/release/deps/libLLVM.dylib' (no such file), '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/target-invite/release/libLLVM.dylib' (no such file), '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/target-invite/release/deps/libLLVM.dylib' (no such file), '/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/lib/rustlib/aarch64-apple-darwin/lib/libLLVM.dylib' (no such file), '/Users/thierry/lib/libLLVM.dylib' (no such file), '/usr/local/lib/libLLVM.dylib' (no such file), '/usr/lib/libLLVM.dylib' (no such file, not in dyld cache)
+            
+
+  warning: `novafs` (build script) generated 1 warning
+     Compiling serde_json v1.0.154
+     Compiling hash32 v0.3.1
+     Compiling itoa v1.0.19
+     Compiling spin v0.9.9
+     Compiling ff v0.13.1
+     Compiling embedded-io v0.7.1
+     Compiling memchr v2.8.3
+     Compiling stable_deref_trait v1.2.1
+     Compiling dlmalloc v0.2.14
+     Compiling embedded-io-async v0.7.0
+     Compiling group v0.13.0
+     Compiling hybrid-array v0.4.15
+     Compiling crypto-common v0.2.2
+     Compiling block-buffer v0.12.1
+     Compiling inout v0.2.6
+     Compiling crypto-common v0.1.7
+     Compiling block-buffer v0.10.4
+     Compiling inout v0.1.4
+     Compiling sec1 v0.7.3
+     Compiling crypto-bigint v0.5.5
+     Compiling universal-hash v0.5.1
+     Compiling aead v0.5.2
+     Compiling cipher v0.4.4
+     Compiling digest v0.10.7
+     Compiling polyval v0.6.2
+     Compiling poly1305 v0.8.0
+     Compiling hmac v0.12.1
+     Compiling signature v2.2.0
+     Compiling sha2 v0.10.9
+     Compiling ctr v0.9.2
+     Compiling aes v0.8.4
+     Compiling chacha20 v0.9.1
+     Compiling ghash v0.5.1
+     Compiling ed25519 v2.2.3
+     Compiling hkdf v0.12.4
+     Compiling rfc6979 v0.4.0
+     Compiling chacha20poly1305 v0.10.1
+     Compiling aes-gcm v0.10.3
+     Compiling digest v0.11.3
+     Compiling universal-hash v0.6.1
+     Compiling cipher v0.5.2
+     Compiling aead v0.6.1
+     Compiling x25519-dalek v2.0.1
+     Compiling ed25519-dalek v2.2.0
+     Compiling poly1305 v0.9.1
+     Compiling hmac v0.13.0
+     Compiling blake2 v0.11.0
+     Compiling sha2 v0.11.1
+     Compiling hpke v0.12.0
+     Compiling chacha20 v0.10.2
+     Compiling hkdf v0.13.0
+     Compiling elliptic-curve v0.13.8
+     Compiling argon2 v0.6.0
+     Compiling chacha20poly1305 v0.11.0
+     Compiling novaos-recovery v0.1.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/export/novaOS/user/novaauth/recuperation)
+     Compiling primeorder v0.13.6
+     Compiling ecdsa v0.16.9
+     Compiling p256 v0.13.2
+     Compiling embedded-tls v0.19.0
+     Compiling novaos-identity v0.1.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/export/novaOS/user/novaauth)
+     Compiling novaos-auth-session v0.1.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/export/novaOS/user/novaauth/service)
+  warning: unused import: `common::*`
+    --> src/bin/shell-signer-bob.rs:10:5
+     |
+  10 | use common::*;
+     |     ^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+  warning: unused import: `common::*`
+    --> src/bin/shell-signer.rs:10:5
+     |
+  10 | use common::*;
+     |     ^^^^^^^^^
+     |
+     = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `INFO` is never used
+    --> src/bin/../../../../storage/runtime.rs:13:11
+     |
+  13 | pub const INFO: u8 = 1;
+     |           ^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `FIN` is never used
+    --> src/bin/../../../../storage/runtime.rs:14:11
+     |
+  14 | pub const FIN: u8 = 2;
+     |           ^^^
+
+  warning: constant `BAD_FRAME` is never used
+    --> src/bin/../../../../storage/runtime.rs:15:11
+     |
+  15 | pub const BAD_FRAME: u8 = 1;
+     |           ^^^^^^^^^
+
+  warning: constant `UNSUPPORTED` is never used
+    --> src/bin/../../../../storage/runtime.rs:16:11
+     |
+  16 | pub const UNSUPPORTED: u8 = 2;
+     |           ^^^^^^^^^^^
+
+  warning: constant `NO_VOLUME` is never used
+    --> src/bin/../../../../storage/runtime.rs:17:11
+     |
+  17 | pub const NO_VOLUME: u8 = 3;
+     |           ^^^^^^^^^
+
+  warning: constant `WIRE_VERSION` is never used
+    --> src/bin/../../../../storage/runtime.rs:18:11
+     |
+  18 | pub const WIRE_VERSION: u8 = 1;
+     |           ^^^^^^^^^^^^
+
+  warning: constant `TIMEOUT` is never used
+    --> src/bin/../../../../storage/runtime.rs:19:11
+     |
+  19 | pub const TIMEOUT: u64 = 250;
+     |           ^^^^^^^
+
+  warning: constant `IDENTITY` is never used
+    --> src/bin/../../../../storage/runtime.rs:20:11
+     |
+  20 | pub const IDENTITY: &[u8; 4] = b"NVFS";
+     |           ^^^^^^^^
+
+  warning: function `channels` is never used
+    --> src/bin/../../../../storage/runtime.rs:51:8
+     |
+  51 | pub fn channels() -> Result<(u64, u64)> {
+     |        ^^^^^^^^
+
+  warning: function `receive` is never used
+   --> src/bin/../../../../storage/client_io.rs:4:8
+    |
+  4 | pub fn receive(key: u64) -> Result<ReceiveV1> {
+    |        ^^^^^^^
+
+  warning: function `send` is never used
+    --> src/bin/../../../../storage/client_io.rs:29:8
+     |
+  29 | pub fn send(key: u64, tag: u64, bytes: &[u8]) -> Result<()> {
+     |        ^^^^
+
+  warning: constant `TTL_MS` is never used
+   --> src/bin/common/mod.rs:2:11
+    |
+  2 | pub const TTL_MS: u32 = 1500;
+    |           ^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `DOMAIN` is never used
+   --> src/bin/common/mod.rs:3:11
+    |
+  3 | pub const DOMAIN: [u8; 16] = [7; 16];
+    |           ^^^^^^
+
+  warning: function `marker` is never used
+   --> src/bin/common/mod.rs:4:8
+    |
+  4 | pub fn marker(bytes: &[u8]) {
+    |        ^^^^^^
+
+  warning: function `remote` is never used
+    --> src/bin/common/mod.rs:28:8
+     |
+  28 | pub fn remote(rx: u64, tag: u64) -> rt::Result<rt::ReceiveV1> {
+     |        ^^^^^^
+
+  warning: function `number` is never used
+    --> src/bin/common/mod.rs:35:8
+     |
+  35 | pub fn number(data: &[u8]) -> u64 {
+     |        ^^^^^^
+
+  warning: function `rpc` is never used
+    --> src/bin/common/mod.rs:38:8
+     |
+  38 | pub fn rpc(tx: u64, rx: u64, tag: u64, frame: &[u8; 128]) -> rt::Result<[u8; 128]> {
+     |        ^^^
+
+  warning: function `random` is never used
+    --> src/bin/common/mod.rs:44:8
+     |
+  44 | pub fn random() -> rt::Result<zeroize::Zeroizing<[u8; 32]>> {
+     |        ^^^^^^
+
+  warning: function `word` is never used
+    --> src/bin/common/mod.rs:56:4
+     |
+  56 | fn word() -> Option<u64> {
+     |    ^^^^
+
+  warning: constant `INFO` is never used
+    --> src/bin/../../../../storage/runtime.rs:13:11
+     |
+  13 | pub const INFO: u8 = 1;
+     |           ^^^^
+
+  warning: method `directory` is never used
+    --> src/bin/common/client_api.rs:16:8
+     |
+   5 | impl Client {
+     | ----------- method in this implementation
+  ...
+  16 |     fn directory(
+     |        ^^^^^^^^^
+     |
+     = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `TTL_MS` is never used
+   --> src/bin/common/mod.rs:2:11
+    |
+  2 | pub const TTL_MS: u32 = 1500;
+    |           ^^^^^^
+
+  warning: unused import: `Signer`
+   --> src/bin/common/canal.rs:3:32
+    |
+  3 | use ed25519_dalek::{Signature, Signer, SigningKey, VerifyingKey};
+    |                                ^^^^^^
+    |
+    = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+  warning: `novaos-auth-session` (bin "exec-relay") generated 11 warnings
+  error: lifetime may not live long enough
+     --> src/bin/common/administration_channel.rs:287:19
+      |
+  282 | fn inspect_membership(login:&mut Login,peer:&mut Login,q:&[u8;128],request:&[u8])->rt::Result<()> {
+      |                       -----            ---- has type `&mut shell_verifier::Login<'2>`
+      |                       |
+      |                       has type `&mut shell_verifier::Login<'1>`
+  ...
+  287 |     for actor in [&mut *login,&mut *peer] {
+      |                   ^^^^^^^^^^^ requires that `'2` must outlive `'1`
+      |
+      = note: requirement occurs because of a mutable reference to `shell_verifier::Login<'_>`
+      = note: mutable references are invariant over their type parameter
+      = help: see <https://doc.rust-lang.org/nomicon/subtyping.html> for more information about variance
+  help: consider introducing a named lifetime parameter
+      |
+  282 | fn inspect_membership<'a>(login:&mut Login<'a>,peer:&mut Login<'a>,q:&[u8;128],request:&[u8])->rt::Result<()> {
+      |                      ++++                 ++++                ++++
+
+  error: lifetime may not live long enough
+     --> src/bin/common/administration_channel.rs:287:31
+      |
+  282 | fn inspect_membership(login:&mut Login,peer:&mut Login,q:&[u8;128],request:&[u8])->rt::Result<()> {
+      |                       -----            ---- has type `&mut shell_verifier::Login<'2>`
+      |                       |
+      |                       has type `&mut shell_verifier::Login<'1>`
+  ...
+  287 |     for actor in [&mut *login,&mut *peer] {
+      |                               ^^^^^^^^^^ requires that `'1` must outlive `'2`
+      |
+      = note: requirement occurs because of a mutable reference to `shell_verifier::Login<'_>`
+      = note: mutable references are invariant over their type parameter
+      = help: see <https://doc.rust-lang.org/nomicon/subtyping.html> for more information about variance
+  help: consider introducing a named lifetime parameter
+      |
+  282 | fn inspect_membership<'a>(login:&mut Login<'a>,peer:&mut Login<'a>,q:&[u8;128],request:&[u8])->rt::Result<()> {
+      |                      ++++                 ++++                ++++
+
+  warning: `novaos-auth-session` (bin "shell-signer-bob") generated 20 warnings (10 duplicates) (run `cargo fix --bin "shell-signer-bob" -p novaos-auth-session` to apply 1 suggestion)
+  warning: `novaos-auth-session` (bin "shell-signer") generated 20 warnings (19 duplicates) (run `cargo fix --bin "shell-signer" -p novaos-auth-session` to apply 1 suggestion)
+  warning: constant `INFO` is never used
+   --> src/bin/common/../../../../../../abi/generated/instances.rs:2:11
+    |
+  2 | pub const INFO: u64 = 0x10070;
+    |           ^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: constant `WORKER` is never used
+   --> src/bin/common/../../../../../../abi/generated/instances.rs:3:11
+    |
+  3 | pub const WORKER: u64 = 0x10071;
+    |           ^^^^^^
+
+  warning: constant `STOP` is never used
+   --> src/bin/common/../../../../../../abi/generated/instances.rs:4:11
+    |
+  4 | pub const STOP: u64 = 0x10072;
+    |           ^^^^
+
+  warning: constant `OFFER_STOP` is never used
+   --> src/bin/common/../../../../../../abi/generated/instances.rs:5:11
+    |
+  5 | pub const OFFER_STOP: u64 = 0x10073;
+    |           ^^^^^^^^^^
+
+  warning: constant `WATCH` is never used
+   --> src/bin/common/../../../../../../abi/generated/instances.rs:6:11
+    |
+  6 | pub const WATCH: u64 = 0x10074;
+    |           ^^^^^
+
+  warning: constant `OFFERED` is never used
+   --> src/bin/common/../../../../../../abi/generated/instances.rs:7:11
+    |
+  7 | pub const OFFERED: u64 = 0x10075;
+    |           ^^^^^^^
+
+  warning: constant `SYSTEM` is never used
+   --> src/bin/common/../../../../../../abi/instances.rs:6:11
+    |
+  6 | pub const SYSTEM: u64 = 0x4e4f_5641_0000_0001;
+    |           ^^^^^^
+
+  warning: constant `SHELL` is never used
+   --> src/bin/common/../../../../../../abi/instances.rs:7:11
+    |
+  7 | pub const SHELL: u64 = 0x4e4f_5641_0000_0010;
+    |           ^^^^^
+
+  warning: constant `WITNESS` is never used
+   --> src/bin/common/../../../../../../abi/instances.rs:8:11
+    |
+  8 | pub const WITNESS: u64 = 0x4e4f_5641_ffff_0001;
+    |           ^^^^^^^
+
+  warning: constant `SAMPLE` is never used
+   --> src/bin/common/../../../../../../abi/instances.rs:9:11
+    |
+  9 | pub const SAMPLE: u64 = 0x4e4f_5641_0000_0020;
+    |           ^^^^^^
+
+  warning: constant `ALLOW` is never used
+    --> src/bin/common/../../../../../../abi/instances.rs:10:11
+     |
+  10 | pub const ALLOW: u64 = 1;
+     |           ^^^^^
+
+  warning: constant `SAMPLE_INDEX` is never used
+    --> src/bin/common/../../../../../../abi/instances.rs:13:11
+     |
+  13 | pub const SAMPLE_INDEX: usize = 16;
+     |           ^^^^^^^^^^^^
+
+  warning: struct `Identity` is never constructed
+    --> src/bin/common/../../../../../../abi/instances.rs:18:12
+     |
+  18 | pub struct Identity {
+     |            ^^^^^^^^
+
+  warning: associated items `SIZE`, `encode`, and `decode` are never used
+    --> src/bin/common/../../../../../../abi/instances.rs:25:15
+     |
+  24 | impl Identity {
+     | ------------- associated items in this implementation
+  25 |     pub const SIZE: u64 = 32;
+     |               ^^^^
+  26 |
+  27 |     pub fn encode(self) -> [u8; Self::SIZE as usize] {
+     |            ^^^^^^
+  ...
+  35 |     pub fn decode(bytes: [u8; Self::SIZE as usize]) -> Self {
+     |            ^^^^^^
+
+  warning: constant `SHUTDOWN_NOTICE` is never used
+   --> src/bin/common/../../../../../../abi/service_process.rs:8:11
+    |
+  8 | pub const SHUTDOWN_NOTICE: u64 = 1 << 40;
+    |           ^^^^^^^^^^^^^^^
+
+  warning: constant `FRAME` is never used
+   --> src/bin/common/../../../../../../abi/service_process.rs:9:11
+    |
+  9 | pub const FRAME: usize = 128;
+    |           ^^^^^
+
+  warning: constant `KEYS` is never used
+   --> src/bin/common/recovery_rpc.rs:8:11
+    |
+  8 | pub const KEYS:u16=11;
+    |           ^^^^
+
+  warning: constant `BACKUP` is never used
+   --> src/bin/common/recovery_rpc.rs:9:11
+    |
+  9 | pub const BACKUP:u16=12;
+    |           ^^^^^^
+
+  warning: constant `CHALLENGE` is never used
+    --> src/bin/common/recovery_rpc.rs:10:11
+     |
+  10 | pub const CHALLENGE:u16=13;
+     |           ^^^^^^^^^
+
+  warning: constant `APPROVE` is never used
+    --> src/bin/common/recovery_rpc.rs:11:11
+     |
+  11 | pub const APPROVE:u16=14;
+     |           ^^^^^^^
+
+  warning: constant `RESERVE` is never used
+    --> src/bin/common/recovery_rpc.rs:12:11
+     |
+  12 | pub const RESERVE:u16=15;
+     |           ^^^^^^^
+
+  warning: constant `DELIVER` is never used
+    --> src/bin/common/recovery_rpc.rs:13:11
+     |
+  13 | pub const DELIVER:u16=16;
+     |           ^^^^^^^
+
+  warning: constant `ACK` is never used
+    --> src/bin/common/recovery_rpc.rs:14:11
+     |
+  14 | pub const ACK:u16=17;
+     |           ^^^
+
+  warning: constant `ACTIVATE` is never used
+    --> src/bin/common/recovery_rpc.rs:15:11
+     |
+  15 | pub const ACTIVATE:u16=18;
+     |           ^^^^^^^^
+
+  warning: constant `CIPHERTEXT` is never used
+    --> src/bin/common/recovery_rpc.rs:16:11
+     |
+  16 | pub const CIPHERTEXT:u16=19;
+     |           ^^^^^^^^^^
+
+  warning: constant `ISSUE` is never used
+    --> src/bin/common/recovery_rpc.rs:17:11
+     |
+  17 | pub const ISSUE:u16=20;
+     |           ^^^^^
+
+  warning: constant `OBSERVE` is never used
+    --> src/bin/common/recovery_rpc.rs:18:11
+     |
+  18 | pub const OBSERVE:u16=21;
+     |           ^^^^^^^
+
+  warning: struct `Client` is never constructed
+    --> src/bin/common/recovery_rpc.rs:43:12
+     |
+  43 | pub struct Client {port:u64,sequence:u32,instance:[u8;32]}
+     |            ^^^^^^
+
+  warning: associated items `new` and `exchange` are never used
+    --> src/bin/common/recovery_rpc.rs:45:12
+     |
+  44 | impl Client {
+     | ----------- associated items in this implementation
+  45 |     pub fn new(port:u64,instance:[u8;32])->Self {Self {port,sequence:0,instance}}
+     |            ^^^
+  46 |     pub fn exchange(&mut self,operation:u16,data:&[u8],answer:&mut [u8;MAX])->rt::Result<usize> {
+     |            ^^^^^^^^
+
+  warning: constant `PREFIX` is never used
+   --> src/bin/common/tete.rs:7:11
+    |
+  7 | pub const PREFIX: &[u8] = b"NovaAuth/QEMU/etat-courant/1\0";
+    |           ^^^^^^
+
+  warning: function `query` is never used
+    --> src/bin/common/tete.rs:10:8
+     |
+  10 | pub fn query(port: u64, local: &[u8; 32]) -> rt::Result<[u8;112]> {
+     |        ^^^^^
+
+  warning: unreachable expression
+     --> src/bin/common/recovery_guest.rs:299:5
+      |
+  293 |             return Ok(Activated {storage,head:manifest.head().try_into().map_err(|_|rt::REFUSED)?,lengths,epoch:manifest.epoch(),recipients:[keys[0],keys[1]]});
+      |             --------------------------------------------------------------------------------------------------------------------------------------------------- any code following this expression is unreachable
+  ...
+  299 |     Err(rt::REFUSED)
+      |     ^^^^^^^^^^^^^^^^ unreachable expression
+      |
+      = note: `#[warn(unreachable_code)]` (part of `#[warn(unused)]`) on by default
+
+  warning: unreachable expression
+     --> src/bin/registre-incarnation.rs:128:5
+      |
+  105 |           return recovery_view::serve(recovered);
+      |           -------------------------------------- any code following this expression is unreachable
+  ...
+  128 | /     loop {
+  129 | |         match rt::receive_for(rt::config(1), 500) {
+  130 | |             Err(rt::TIMED_OUT) => (),
+  131 | |             _ => return Ok(()),
+  132 | |         }
+  133 | |     }
+      | |_____^ unreachable expression
+
+  error: could not compile `novaos-auth-session` (bin "auth-verifier") due to 2 previous errors
+  warning: build failed, waiting for other jobs to finish...
+  warning: unreachable pattern
+     --> src/bin/common/administration_mutations.rs:280:9
+      |
+  280 |         _ => return Err(rt::REFUSED),
+      |         ^ no value can reach this
+      |
+  note: multiple earlier patterns match some of the same values
+     --> src/bin/common/administration_mutations.rs:280:9
+      |
+  263 |         Mutation::Create {name,group,factor} => {
+      |         ------------------------------------ matches some of the same values
+  ...
+  267 |         Mutation::CreateGroup(name) => Operation::CreateGroup { name },
+      |         --------------------------- matches some of the same values
+  268 |         Mutation::AddMember {user: s, group: g} => Operation::AddMember {
+      |         --------------------------------------- matches some of the same values
+  ...
+  273 |         Mutation::RemoveMember {user:s,group:g}=>Operation::RemoveMember{
+      |         --------------------------------------- matches some of the same values
+  ...
+  280 |         _ => return Err(rt::REFUSED),
+      |         ^ ...and 3 other patterns collectively make this unreachable
+      = note: `#[warn(unreachable_patterns)]` (part of `#[warn(unused)]`) on by default
+
+  warning: `novaos-auth-session` (bin "recovery-alice") generated 4 warnings (2 duplicates)
+  warning: `novaos-auth-session` (bin "recovery-bob") generated 4 warnings (4 duplicates)
+  warning: constant `EXCHANGE` is never used
+    --> src/bin/common/incarnation.rs:28:11
+     |
+  28 | pub const EXCHANGE: u64 = u64::from_le_bytes(*b"NATLS001");
+     |           ^^^^^^^^
+
+  warning: `novaos-auth-session` (bin "auth-client") generated 1 warning (1 duplicate)
+  warning: `novaos-auth-session` (bin "signataire-incarnation") generated 36 warnings (4 duplicates)
+  warning: `novaos-auth-session` (bin "registre-incarnation") generated 7 warnings (3 duplicates)
+
+  thread 'main' (9681084) panicked at kernel/build.rs:214:9:
+  liaison des ELF NovaAuth
+  note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace

@@ -1,0 +1,133 @@
+{
+  "succes": true,
+  "architecture": "aarch64",
+  "secteur": 512,
+  "portee": "raccord administratif sans delegation G ouverte ; ne qualifie pas Q1-Q4",
+  "lot": "retrait-selectif-vide",
+  "mode_commande": "interactif",
+  "commandes": [
+    {
+      "commande": "usermod --remove-group base alice --prepare",
+      "statut_shell": 0,
+      "statut_attendu": 0,
+      "pid": [
+        21
+      ],
+      "shell": 5,
+      "stdout_octets": 134,
+      "stderr_octets": 0,
+      "octets_conformes": true,
+      "statut_natif": 0
+    },
+    {
+      "commande": "usermod --remove-group base alice --confirm 1cf85c0ffc6bfa663c8ccd177473e71639fec8acec21ceb46ae2c4eeec904d10 --request 1cf85c0ffc6bfa663c8ccd177473e716",
+      "statut_shell": 20,
+      "statut_attendu": 20,
+      "pid": [
+        22
+      ],
+      "shell": 5,
+      "stdout_octets": 0,
+      "stderr_octets": 95,
+      "statut_novaAuth": 22,
+      "octets_conformes": true,
+      "statut_natif": 20
+    },
+    {
+      "commande": "usermod --outcome 1cf85c0ffc6bfa663c8ccd177473e716",
+      "statut_shell": 0,
+      "statut_attendu": 0,
+      "pid": [
+        23
+      ],
+      "shell": 5,
+      "stdout_octets": 70,
+      "stderr_octets": 0,
+      "octets_conformes": true,
+      "statut_natif": 0
+    }
+  ],
+  "drapeaux_locale": 0,
+  "langue_ELF": "en",
+  "validite_certificats_hote": {
+    "ca": {
+      "debut": "2026-11-22T23:29:47+00:00",
+      "fin": "2026-11-23T23:30:47+00:00"
+    },
+    "autorite": {
+      "debut": "2026-11-22T23:29:47+00:00",
+      "fin": "2026-11-23T23:30:47+00:00"
+    },
+    "serveur": {
+      "debut": "2026-11-22T23:29:47+00:00",
+      "fin": "2026-11-23T23:30:47+00:00"
+    }
+  },
+  "evenements": [],
+  "intention": {
+    "operation": "1cf85c0ffc6bfa663c8ccd177473e716",
+    "confirmation": "1cf85c0ffc6bfa663c8ccd177473e71639fec8acec21ceb46ae2c4eeec904d10"
+  },
+  "publication_selective_perdue": {
+    "etat": 1,
+    "mutations": 1,
+    "durable_avant_perte": true
+  },
+  "rpc_selectifs": {
+    "54": 1,
+    "59": 7,
+    "55": 1,
+    "56": 3
+  },
+  "ordre_durable": [
+    {
+      "position": 10,
+      "transition": "membership-reserved"
+    },
+    {
+      "position": 11,
+      "transition": "membership-withdrawing"
+    },
+    {
+      "position": 12,
+      "transition": "membership-effector-ack"
+    },
+    {
+      "position": 13,
+      "transition": "membership-effector-ack"
+    },
+    {
+      "position": 14,
+      "transition": "membership-effector-ack"
+    },
+    {
+      "position": 15,
+      "transition": "membership-retired"
+    }
+  ],
+  "retrait_selectif": {
+    "etat": "RETIREE",
+    "generation": 25,
+    "effecteurs": [
+      {
+        "classe": 1,
+        "instance": "b0bafb29b7be3842e4a81abd500cecef03000000000000800100000000000000",
+        "acquitte": true
+      },
+      {
+        "classe": 2,
+        "instance": "b0bafb29b7be3842e4a81abd500cecef06000000000000800100000000000000",
+        "acquitte": true
+      },
+      {
+        "classe": 4,
+        "instance": "b0bafb29b7be3842e4a81abd500cecef06000000000000800100000000000000",
+        "acquitte": true
+      }
+    ],
+    "delegations_G_ouvertes": false
+  },
+  "enrolement_epoques": true,
+  "fermeture_deux_sessions": true,
+  "drainage_global": true
+}

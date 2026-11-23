@@ -1,0 +1,17 @@
+{
+  "architecture": "x86_64",
+  "commande": [
+    "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+    "build",
+    "--release",
+    "--locked",
+    "--offline",
+    "--features",
+    "novaauth-sessions-lab",
+    "--target",
+    "x86_64-unknown-none"
+  ],
+  "statut": 0,
+  "duree_hote_s": 20.84022862499114,
+  "source": "76eea1961d63e6003278afbe1c833a65ee20018a export membership_r2+administration_last_admin, pas QEMU"
+}

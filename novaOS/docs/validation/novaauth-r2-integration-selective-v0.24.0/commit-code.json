@@ -1,0 +1,26 @@
+{
+  "commit": "1d5a678a5c8451c01606b102d997e76681eceee2",
+  "arbre": "e18173ad333aa467552122cfd4d863006a6f79b2",
+  "instantane_compilation": "95defcc22404b35ffd9b06dbcbbc33af30538bfe",
+  "identite_arbre": true,
+  "fichiers": {
+    "novaOS/user/novaauth/autorite_qemu/administration_collector_qemu.py": "53702ba446321a2c8bd265bbeb715e04f210daee1f9db011a974b78d89ed5a27",
+    "novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py": "f4a2bc9809a8a03f81c1dd8672a7549d515db4fe550d5e36eb4d6174ab87f628",
+    "novaOS/user/novaauth/autorite_qemu/test_administration_collector.py": "10874ce04df6939743e6e58289dbba1dc88abf92ed0642f6b1211de49e50f2d6",
+    "novaOS/user/novaauth/service/membership_profile.py": "3fd886daf64af1ca7b02a6da90476665c2b6b7764d13ea869ef34b8e39deabdc",
+    "novaOS/user/novaauth/service/src/bin/common/administration_channel.rs": "e34ce23d9acc2e595d000db49ddd5bd78d3f2a0569af03bbbe65070cf438f8fc",
+    "novaOS/user/novaauth/service/src/bin/common/administration_mutations.rs": "7fdf90cd72319f2e0b4ab70df3c6f722a247322b4363c9a3204e9a6c7f0dc23c",
+    "novaOS/user/novaauth/service/src/bin/common/administration_registry.rs": "f6e21314a7bbbd43bbb8d4459edb5bcd305c9080724d6d654902ad6d2abce827",
+    "novaOS/user/novaauth/service/src/bin/common/membership_exec.rs": "0673e63699b1ae89ac48c64ad3abea86cebf8d74ee42620c2c49f0435039882e",
+    "novaOS/user/novaauth/service/src/bin/common/recovery_mutation.rs": "65226ddfce06563de9bf61b6fb2629caac8d0ca4ea70040877def4664ca7fe36",
+    "novaOS/user/novaauth/service/src/bin/common/recovery_store.rs": "208799227b018581dbc368c4752f35feec2c50e99d9facb182b95e7a27bc5dc6",
+    "novaOS/user/novaauth/service/src/bin/registre-incarnation.rs": "b8e5dbc1e7d694f22be51e223377189bcaf549d119c6c1bed211aedf1cecf9bd",
+    "novaOS/user/novaauth/src/membership.rs": "a9a40b8b052fc1a978770a148fb530c6e50c295edd936004366b4c196a4e9f2a",
+    "novaOS/user/novaauth/tests/administration.rs": "deec79bb60c5ea7df668423b45f60f7d2cfc70fcadf22e7581ec40a6738a812a",
+    "novaOS/user/novaauth/autorite_qemu/test_membership_guest_profile.py": "2e86924d8950bfc5bf5486188e5957ebd334c7f4e2e1cf7f9152fe2a95d3c05b",
+    "novaOS/user/novaauth/service/membership_transaction_mock.rs": "e05da7393e97fadb2336c27e178a81dde78779c7710b145fa04c4f4f87d4a781",
+    "novaOS/user/novaauth/service/membership_transaction_tests.rs": "5cc6a7e64d117d6e779e0654006473c0318d04a811d99dfe45ac7f50148c38ce",
+    "novaOS/user/novaauth/service/qualify_membership_transaction.py": "a8b9e7c4e852752bc3d8e9839c6fe8bf697d902528a1f762a424dbf505da94d3",
+    "novaOS/user/novaauth/service/src/bin/common/membership_transaction.rs": "87ac795f3e1bc8d864bce98bf55412a69c705bb08a102fa8da56f825d52cda99"
+  }
+}

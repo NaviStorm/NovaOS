@@ -1,0 +1,18 @@
+{
+  "source": "76eea1961d63e6003278afbe1c833a65ee20018a",
+  "profil": "membership_r2+administration_last_admin",
+  "commande": [
+    "sh",
+    "scripts/iso.sh",
+    "novaauth-sessions",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/integration-49739dd-05/x86_64.iso"
+  ],
+  "duree_hote_s": 0.3813409999711439,
+  "artefacts": {
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/integration-49739dd-05/x86_64-kernel.elf": "8f84c0d2258899f21104a93365f8392a65dbd610487989bfb9a43c5f5eb429ee",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/integration-49739dd-05/x86_64-registre.elf": "321e676310e56694fa344ded6e86cbe5c83b9dc51985db1ad5ce904a53be53dc",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/integration-49739dd-05/x86_64.iso": "b6a8b853107a497d86b6215bb4aae8927f062892413bdfde173e5375edb637a2"
+  },
+  "profil_ISO_verifie": true,
+  "noyau_ISO_identique": true
+}

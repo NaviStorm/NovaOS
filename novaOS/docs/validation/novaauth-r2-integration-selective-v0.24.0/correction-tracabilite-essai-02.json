@@ -1,0 +1,8 @@
+{
+  "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-02",
+  "source_annoncee_erronee": "c227e888fbc1bbfdea52506c96889337d7f61d2b",
+  "source_reellement_executee": "1f69c2bcb4ca0c719607d838f49ed3921f574164",
+  "preuve": "sha256 identiques aux trois artefacts essai 01",
+  "cause": "substitution du chemin du runner sans correspondance exacte",
+  "qualification_correctif": false
+}

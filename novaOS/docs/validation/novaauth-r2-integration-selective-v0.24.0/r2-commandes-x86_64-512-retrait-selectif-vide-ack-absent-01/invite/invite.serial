@@ -1,0 +1,565 @@
+[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01H[2J[01;01H[=3h[2J[01;01HBdsDxe: loading Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+BdsDxe: starting Boot0001 "UEFI QEMU DVD-ROM QM00005 " from PciRoot(0x0)/Pci(0x1F,0x2)/Sata(0x2,0xFFFF,0x0)
+[2J[01;01H[01;01H[2J[01;01H[01;01HMMU : sections et alias verifies, 49454 pages libres.
+NovaOS v0.20.0
+NAUTH install pid=2 roots=1 handles=1 endpoints=1 nodes=1 waits=0
+NAUTH install pid=3 roots=0 handles=1 endpoints=1 nodes=2 waits=0
+NAUTH install pid=2 roots=2 handles=2 endpoints=2 nodes=3 waits=0
+NAUTH install pid=3 roots=0 handles=2 endpoints=2 nodes=4 waits=0
+NAUTH install pid=4 roots=1 handles=1 endpoints=3 nodes=5 waits=0
+NAUTH install pid=2 roots=2 handles=3 endpoints=3 nodes=6 waits=0
+NAUTH install pid=4 roots=2 handles=2 endpoints=4 nodes=7 waits=0
+NAUTH install pid=2 roots=2 handles=4 endpoints=4 nodes=8 waits=0
+NAUTH install pid=4 roots=3 handles=3 endpoints=5 nodes=9 waits=0
+NAUTH install pid=3 roots=0 handles=3 endpoints=5 nodes=10 waits=0
+NAUTH install pid=3 roots=1 handles=4 endpoints=6 nodes=11 waits=0
+NAUTH install pid=3 roots=2 handles=5 endpoints=7 nodes=12 waits=0
+NAUTH install pid=5 roots=0 handles=1 endpoints=7 nodes=13 waits=0
+NAUTH install pid=5 roots=0 handles=2 endpoints=7 nodes=14 waits=0
+NAUTH install pid=1 roots=1 handles=1 endpoints=8 nodes=15 waits=0
+NAUTH install pid=1 roots=2 handles=2 endpoints=9 nodes=16 waits=0
+NAUTH install pid=1 roots=3 handles=3 endpoints=10 nodes=17 waits=0
+NAUTH install pid=5 roots=0 handles=3 endpoints=10 nodes=18 waits=0
+NAUTH install pid=1 roots=4 handles=4 endpoints=11 nodes=19 waits=0
+NAUTH install pid=5 roots=0 handles=4 endpoints=11 nodes=20 waits=0
+NAUTH install pid=3 roots=3 handles=6 endpoints=12 nodes=21 waits=0
+NAUTH install pid=1 roots=4 handles=5 endpoints=12 nodes=22 waits=0
+NAUTH install pid=3 roots=4 handles=7 endpoints=13 nodes=23 waits=0
+NAUTH install pid=1 roots=4 handles=6 endpoints=13 nodes=24 waits=0
+RAM phase=services_admis image=2211 tables=192 kpile=128 upile=194 heap=32 buddy=2 ipc=18 utilisateur=210 processus=5 meta_octets=30928 meta_actifs=3600 tcb_octets=6656 heap_va=65536 libres=60927 cache=0 chargeur=0 restitue=12124 extra_elf=0 video=469 ram_video=0 resident=3003 retenu=3003 dma=16 elf_preparation=0
+BLOC chaine novaFS=3 bloc=2 pilote=4 client=5 generation=1
+DEBUG pid=3 NVFS coeur initialise ELF tas prive
+NAUTH install pid=6 roots=1 handles=1 endpoints=14 nodes=25 waits=3
+NAUTH install pid=1 roots=4 handles=7 endpoints=14 nodes=26 waits=3
+NAUTH install pid=6 roots=2 handles=2 endpoints=15 nodes=27 waits=3
+NAUTH install pid=1 roots=4 handles=8 endpoints=15 nodes=28 waits=3
+NA3 memoire pid=6 id=17 privees=36 pile=64 octets_page=4096
+NAUTH install pid=6 roots=3 handles=3 endpoints=16 nodes=29 waits=3
+NAUTH install pid=3 roots=4 handles=8 endpoints=16 nodes=30 waits=3
+NAUTH install pid=6 roots=4 handles=4 endpoints=17 nodes=31 waits=3
+NAUTH install pid=3 roots=4 handles=9 endpoints=17 nodes=32 waits=3
+NAUTH install pid=7 roots=1 handles=1 endpoints=18 nodes=33 waits=4
+NAUTH install pid=1 roots=4 handles=9 endpoints=18 nodes=34 waits=4
+NAUTH install pid=7 roots=2 handles=2 endpoints=19 nodes=35 waits=4
+NAUTH install pid=1 roots=4 handles=10 endpoints=19 nodes=36 waits=4
+NAUTH install pid=7 roots=3 handles=3 endpoints=20 nodes=37 waits=4
+NAUTH install pid=6 roots=4 handles=5 endpoints=20 nodes=38 waits=4
+NAUTH install pid=7 roots=3 handles=4 endpoints=20 nodes=39 waits=4
+NAUTH install pid=7 roots=4 handles=5 endpoints=21 nodes=40 waits=4
+NAUTH install pid=3 roots=4 handles=10 endpoints=21 nodes=41 waits=4
+NAUTH install pid=7 roots=4 handles=6 endpoints=21 nodes=42 waits=4
+NAUTH saturation pid=7 avant=(21, 42, 6, 4) apres=(21, 42, 6, 4) statut=Err(6)
+NAUTH espace service=22 pid=7 pages=149 pile=64
+NAUTH phase=22 pid=1 service=0 roots=4 handles=10 endpoints=21 nodes=42 waits=4
+NAUTH phase=22 pid=2 service=0 roots=2 handles=4 endpoints=21 nodes=42 waits=4
+NAUTH phase=22 pid=3 service=0 roots=4 handles=10 endpoints=21 nodes=42 waits=4
+NAUTH phase=22 pid=4 service=0 roots=3 handles=3 endpoints=21 nodes=42 waits=4
+NAUTH phase=22 pid=5 service=0 roots=0 handles=4 endpoints=21 nodes=42 waits=4
+NAUTH phase=22 pid=6 service=17 roots=4 handles=5 endpoints=21 nodes=42 waits=4
+NAUTH phase=22 pid=7 service=22 roots=4 handles=6 endpoints=21 nodes=42 waits=4
+NAUTH install pid=8 roots=1 handles=1 endpoints=22 nodes=43 waits=4
+NAUTH install pid=1 roots=4 handles=11 endpoints=22 nodes=44 waits=4
+NAUTH install pid=8 roots=2 handles=2 endpoints=23 nodes=45 waits=4
+NAUTH install pid=1 roots=4 handles=12 endpoints=23 nodes=46 waits=4
+NAUTH install pid=8 roots=3 handles=3 endpoints=24 nodes=47 waits=4
+NAUTH install pid=7 roots=4 handles=7 endpoints=24 nodes=48 waits=4
+NAUTH install pid=8 roots=3 handles=4 endpoints=24 nodes=49 waits=4
+NAUTH install pid=8 roots=4 handles=5 endpoints=25 nodes=50 waits=4
+NAUTH install pid=3 roots=4 handles=11 endpoints=25 nodes=51 waits=4
+NAUTH install pid=8 roots=4 handles=6 endpoints=25 nodes=52 waits=4
+NAUTH saturation pid=8 avant=(25, 52, 6, 4) apres=(25, 52, 6, 4) statut=Err(6)
+NAUTH espace service=23 pid=8 pages=69 pile=64
+NAUTH phase=23 pid=1 service=0 roots=4 handles=12 endpoints=25 nodes=52 waits=4
+NAUTH phase=23 pid=2 service=0 roots=2 handles=4 endpoints=25 nodes=52 waits=4
+NAUTH phase=23 pid=3 service=0 roots=4 handles=11 endpoints=25 nodes=52 waits=4
+NAUTH phase=23 pid=4 service=0 roots=3 handles=3 endpoints=25 nodes=52 waits=4
+NAUTH phase=23 pid=5 service=0 roots=0 handles=4 endpoints=25 nodes=52 waits=4
+NAUTH phase=23 pid=6 service=17 roots=4 handles=5 endpoints=25 nodes=52 waits=4
+NAUTH phase=23 pid=7 service=22 roots=4 handles=7 endpoints=25 nodes=52 waits=4
+NAUTH phase=23 pid=8 service=23 roots=4 handles=6 endpoints=25 nodes=52 waits=4
+nsh> DEBUG pid=7 NAUTH incarnation preuve invitee OK substitutions=3 rejeu=refuse
+NAR2 mesure NAR2 registre avant roots=4 handles=7 waits=0 pages=149 pile=64 cadres_ipc_globaux=31
+DEBUG pid=7 NAR2 registre avant
+DEBUG pid=8 NAUTH signataire NOW autorise gestion et arguments refuses 8/8
+NAUTH mesure NAUTH TLS avant roots=4 handles=6 waits=0 pages=69 pile=64 cadres_ipc_globaux=31
+DEBUG pid=8 NAUTH TLS avant
+NAUTH mesure NAUTH TLS actif roots=4 handles=6 waits=0 pages=69 pile=64 cadres_ipc_globaux=31
+DEBUG pid=8 NAUTH TLS actif
+DEBUG pid=7 NAR2 tete courante authentifiee cache-tests=OK
+DEBUG pid=7 NAR2 incarnation et deux recepteurs approuves
+DEBUG pid=7 NAR2 remise G valide autre cle refusee
+DEBUG pid=7 NAR2 remise A valide autre cle refusee
+DEBUG pid=7 NAR2 empreinte native triplet conforme tete durable cache=3120 structure=3920
+DEBUG pid=7 NAR2 preparation P9 relue empreinte conforme aucune activation cache nettoye
+DEBUG pid=7 NAR2 activation distante recue et tete fraiche validees VFS non raccorde
+NAR2 mesure NAR2 registre apres roots=4 handles=7 waits=0 pages=149 pile=64 cadres_ipc_globaux=31
+DEBUG pid=7 NAR2 registre apres
+DEBUG pid=8 NAUTH transport ferme
+DEBUG pid=8 NAUTH TLS debut=00000000000002b0 echeance=00000000000029c0 fin=0000000000000de0
+NAUTH mesure NAUTH TLS apres roots=4 handles=6 waits=0 pages=69 pile=64 cadres_ipc_globaux=31
+DEBUG pid=8 NAUTH TLS apres
+DEBUG pid=8 R2TLS op=18 seq=38 debut=3488 fin=3524
+DEBUG pid=8 R2TLS op=10 seq=39 debut=3524 fin=3544
+DEBUG pid=8 R2TLS op=1 seq=40 debut=3548 fin=0
+DEBUG pid=8 NAR2 dialogue ferme delai global inchange
+DEBUG pid=7 NAR2 vue registre isole integre aucune decision locale NovaFS
+NAUTH install pid=9 roots=1 handles=1 endpoints=26 nodes=53 waits=5
+NAUTH install pid=1 roots=4 handles=13 endpoints=26 nodes=54 waits=5
+NAUTH install pid=9 roots=2 handles=2 endpoints=27 nodes=55 waits=5
+NAUTH install pid=1 roots=4 handles=14 endpoints=27 nodes=56 waits=5
+NAUTH install pid=9 roots=3 handles=3 endpoints=28 nodes=57 waits=5
+NAUTH install pid=6 roots=4 handles=6 endpoints=28 nodes=58 waits=5
+NAUTH install pid=9 roots=4 handles=4 endpoints=29 nodes=59 waits=5
+NAUTH install pid=6 roots=4 handles=7 endpoints=29 nodes=60 waits=5
+NAUTH install pid=5 roots=1 handles=5 endpoints=30 nodes=61 waits=5
+NAUTH install pid=6 roots=4 handles=8 endpoints=30 nodes=62 waits=5
+NAUTH install pid=5 roots=1 handles=6 endpoints=30 nodes=63 waits=5
+NXLOGIN route shell=5 verificateur=6 signataire=9
+NAUTH install pid=10 roots=1 handles=1 endpoints=31 nodes=64 waits=5
+NAUTH install pid=1 roots=4 handles=15 endpoints=31 nodes=65 waits=5
+NAUTH install pid=10 roots=2 handles=2 endpoints=32 nodes=66 waits=5
+NAUTH install pid=1 roots=4 handles=16 endpoints=32 nodes=67 waits=5
+NAUTH install pid=10 roots=3 handles=3 endpoints=33 nodes=68 waits=5
+NAUTH install pid=6 roots=4 handles=9 endpoints=33 nodes=69 waits=5
+NAUTH install pid=10 roots=4 handles=4 endpoints=34 nodes=70 waits=5
+NAUTH install pid=6 roots=4 handles=10 endpoints=34 nodes=71 waits=5
+NXRELAY branche shell=5 verificateur=6 courtier=10 racines_auth=4 racines_courtier=4
+DEBUG pid=10 NXRELAY aucun droit de creation ou duplication
+NAUTH install pid=11 roots=1 handles=1 endpoints=35 nodes=72 waits=6
+NAUTH install pid=1 roots=4 handles=17 endpoints=35 nodes=73 waits=6
+NAUTH install pid=11 roots=2 handles=2 endpoints=36 nodes=74 waits=6
+NAUTH install pid=1 roots=4 handles=18 endpoints=36 nodes=75 waits=6
+NAUTH install pid=12 roots=1 handles=1 endpoints=37 nodes=76 waits=8
+NAUTH install pid=1 roots=4 handles=19 endpoints=37 nodes=77 waits=8
+NAUTH install pid=12 roots=2 handles=2 endpoints=38 nodes=78 waits=8
+NAUTH install pid=1 roots=4 handles=20 endpoints=38 nodes=79 waits=8
+NAUTH install pid=12 roots=3 handles=3 endpoints=39 nodes=80 waits=8
+NAUTH install pid=6 roots=4 handles=11 endpoints=39 nodes=81 waits=8
+NAUTH install pid=12 roots=4 handles=4 endpoints=40 nodes=82 waits=8
+NAUTH install pid=6 roots=4 handles=12 endpoints=40 nodes=83 waits=8
+NAUTH install pid=11 roots=3 handles=3 endpoints=41 nodes=84 waits=8
+NAUTH install pid=6 roots=4 handles=13 endpoints=41 nodes=85 waits=8
+NAUTH install pid=11 roots=3 handles=4 endpoints=41 nodes=86 waits=8
+NXLOGIN route shell=11 verificateur=6 signataire=12
+NAUTH install pid=13 roots=1 handles=1 endpoints=42 nodes=87 waits=9
+NAUTH install pid=1 roots=4 handles=21 endpoints=42 nodes=88 waits=9
+NAUTH install pid=13 roots=2 handles=2 endpoints=43 nodes=89 waits=9
+NAUTH install pid=1 roots=4 handles=22 endpoints=43 nodes=90 waits=9
+NAUTH install pid=13 roots=3 handles=3 endpoints=44 nodes=91 waits=9
+NAUTH install pid=6 roots=4 handles=14 endpoints=44 nodes=92 waits=9
+NAUTH install pid=13 roots=4 handles=4 endpoints=45 nodes=93 waits=9
+NAUTH install pid=6 roots=4 handles=15 endpoints=45 nodes=94 waits=9
+NXRELAY branche shell=11 verificateur=6 courtier=13 racines_auth=4 racines_courtier=4
+DEBUG pid=13 NXRELAY aucun droit de creation ou duplication
+DEBUG pid=1 NAEXEC registre pret puis connexion du vrai nsh
+NAUTH install pid=14 roots=1 handles=1 endpoints=46 nodes=95 waits=10
+NAUTH install pid=1 roots=4 handles=23 endpoints=46 nodes=96 waits=10
+NAUTH install pid=14 roots=2 handles=2 endpoints=47 nodes=97 waits=10
+NAUTH install pid=1 roots=4 handles=24 endpoints=47 nodes=98 waits=10
+NAUTH install pid=15 roots=1 handles=1 endpoints=48 nodes=99 waits=10
+NAUTH install pid=1 roots=4 handles=25 endpoints=48 nodes=100 waits=10
+NAUTH install pid=15 roots=2 handles=2 endpoints=49 nodes=101 waits=10
+NAUTH install pid=1 roots=4 handles=26 endpoints=49 nodes=102 waits=10
+NAEXEC survivant apres_pid=16 pid=1 service=0 roots=4 handles=26 waits=1 pages=12 pile=64
+NAEXEC survivant apres_pid=16 pid=2 service=0 roots=2 handles=4 waits=1 pages=2 pile=1
+NAEXEC survivant apres_pid=16 pid=3 service=0 roots=4 handles=11 waits=1 pages=155 pile=64
+NAEXEC survivant apres_pid=16 pid=4 service=0 roots=3 handles=3 waits=1 pages=3 pile=1
+NAEXEC survivant apres_pid=16 pid=5 service=0 roots=1 handles=6 waits=0 pages=70 pile=64
+NAEXEC survivant apres_pid=16 pid=6 service=17 roots=4 handles=15 waits=1 pages=36 pile=64
+NAEXEC survivant apres_pid=16 pid=7 service=22 roots=4 handles=7 waits=1 pages=149 pile=64
+NAEXEC survivant apres_pid=16 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64
+NAEXEC survivant apres_pid=16 pid=9 service=18 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=16 pid=10 service=21 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=16 pid=11 service=24 roots=3 handles=4 waits=1 pages=70 pile=64
+NAEXEC survivant apres_pid=16 pid=12 service=25 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=16 pid=13 service=26 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=16 pid=14 service=1 roots=2 handles=2 waits=0 pages=5 pile=64
+NAEXEC survivant apres_pid=16 pid=15 service=2 roots=2 handles=2 waits=0 pages=5 pile=64
+NAEXEC restitue pid=16 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=49 nodes=102 espaces=15 cadres_ipc=57 cadres_libres=Ok(59608)
+NAEXEC survivant apres_pid=17 pid=1 service=0 roots=4 handles=26 waits=1 pages=12 pile=64
+NAEXEC survivant apres_pid=17 pid=2 service=0 roots=2 handles=4 waits=1 pages=2 pile=1
+NAEXEC survivant apres_pid=17 pid=3 service=0 roots=4 handles=11 waits=0 pages=155 pile=64
+NAEXEC survivant apres_pid=17 pid=4 service=0 roots=3 handles=3 waits=1 pages=3 pile=1
+NAEXEC survivant apres_pid=17 pid=5 service=0 roots=1 handles=6 waits=0 pages=70 pile=64
+NAEXEC survivant apres_pid=17 pid=6 service=17 roots=4 handles=15 waits=1 pages=36 pile=64
+NAEXEC survivant apres_pid=17 pid=7 service=22 roots=4 handles=7 waits=1 pages=149 pile=64
+NAEXEC survivant apres_pid=17 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64
+NAEXEC survivant apres_pid=17 pid=9 service=18 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=17 pid=10 service=21 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=17 pid=11 service=24 roots=3 handles=4 waits=1 pages=70 pile=64
+NAEXEC survivant apres_pid=17 pid=12 service=25 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=17 pid=13 service=26 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=17 pid=14 service=1 roots=2 handles=2 waits=0 pages=5 pile=64
+NAEXEC survivant apres_pid=17 pid=15 service=2 roots=2 handles=2 waits=0 pages=5 pile=64
+NAEXEC restitue pid=17 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=49 nodes=102 espaces=15 cadres_ipc=57 cadres_libres=Ok(59608)
+NAUTH install pid=18 roots=1 handles=1 endpoints=50 nodes=103 waits=10
+NAUTH install pid=1 roots=4 handles=27 endpoints=50 nodes=104 waits=10
+NAUTH install pid=18 roots=2 handles=2 endpoints=51 nodes=105 waits=10
+NAUTH install pid=1 roots=4 handles=28 endpoints=51 nodes=106 waits=10
+NAUTH install pid=19 roots=1 handles=1 endpoints=52 nodes=107 waits=11
+NAUTH install pid=1 roots=4 handles=29 endpoints=52 nodes=108 waits=11
+NAUTH install pid=19 roots=2 handles=2 endpoints=53 nodes=109 waits=11
+NAUTH install pid=1 roots=4 handles=30 endpoints=53 nodes=110 waits=11
+NAUTH install pid=19 roots=3 handles=3 endpoints=54 nodes=111 waits=11
+NAUTH install pid=3 roots=4 handles=12 endpoints=54 nodes=112 waits=11
+NAUTH install pid=19 roots=4 handles=4 endpoints=55 nodes=113 waits=11
+NAUTH install pid=3 roots=4 handles=13 endpoints=55 nodes=114 waits=11
+NAUTH install pid=2 roots=3 handles=5 endpoints=56 nodes=115 waits=11
+NAUTH install pid=5 roots=1 handles=7 endpoints=56 nodes=116 waits=11
+NAUTH install pid=19 roots=4 handles=5 endpoints=56 nodes=117 waits=11
+NAUTH install pid=2 roots=4 handles=6 endpoints=57 nodes=118 waits=11
+NAUTH install pid=19 roots=4 handles=6 endpoints=57 nodes=119 waits=11
+NAUTH install pid=5 roots=1 handles=8 endpoints=57 nodes=120 waits=11
+NAUTH install pid=20 roots=1 handles=1 endpoints=58 nodes=121 waits=14
+NAUTH install pid=1 roots=4 handles=31 endpoints=58 nodes=122 waits=14
+NAUTH install pid=20 roots=2 handles=2 endpoints=59 nodes=123 waits=14
+NAUTH install pid=1 roots=4 handles=32 endpoints=59 nodes=124 waits=14
+DEBUG pid=7 NAUTH tete signature et portee verifiees
+DEBUG pid=6 NXAUTH c1d235003dc5acb7568998e915e3a86c92da68b547ca872af2765e5896184ffa 0000000000000001 0000000000001174 0000000000001750 0000000000001178 0000000000001248 0000000000000000 000000000000fd18 0000000000001320 
+DEBUG pid=11 NAR2 Bob authentifie route distincte
+DEBUG pid=11 NAR2 Bob fermeture acquittee
+PROC pid=11 niveau=Ring3 pc=0x102c33b sortie=0
+NAEXEC survivant apres_pid=11 pid=1 service=0 roots=4 handles=30 waits=1 pages=12 pile=64
+NAEXEC survivant apres_pid=11 pid=2 service=0 roots=4 handles=6 waits=1 pages=2 pile=1
+NAEXEC survivant apres_pid=11 pid=3 service=0 roots=4 handles=13 waits=1 pages=155 pile=64
+NAEXEC survivant apres_pid=11 pid=4 service=0 roots=3 handles=3 waits=1 pages=3 pile=1
+NAEXEC survivant apres_pid=11 pid=5 service=0 roots=1 handles=8 waits=0 pages=70 pile=64
+NAEXEC survivant apres_pid=11 pid=6 service=17 roots=4 handles=14 waits=1 pages=36 pile=64
+NAEXEC survivant apres_pid=11 pid=7 service=22 roots=4 handles=7 waits=1 pages=149 pile=64
+NAEXEC survivant apres_pid=11 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64
+NAEXEC survivant apres_pid=11 pid=9 service=18 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=11 pid=10 service=21 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=11 pid=12 service=25 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=11 pid=13 service=26 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=11 pid=14 service=1 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=11 pid=15 service=2 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=11 pid=18 service=9 roots=2 handles=2 waits=1 pages=4 pile=64
+NAEXEC survivant apres_pid=11 pid=19 service=16 roots=4 handles=6 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=11 pid=20 service=10 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC restitue pid=11 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=56 nodes=117 espaces=17 cadres_ipc=65 cadres_libres=Ok(59480)
+usermod --remove-group base alice --prepare; echo NXR2_0[Knsh> lice --prepare; echo NXR2_0_nsh> lice --prepare; echo NXR2_0_$?__FIN
+DEBUG pid=6 NXAUTH 67a624acd06c7102ebfa5a6bfde2c5abe83d39a8618ff95900540b71bcc6a50c 0000000000000001 0000000000001414 00000000000019f0 0000000000001418 0000000000001480 0000000000000000 000000000000ff50 000000000000155c 
+DEBUG pid=6 NAR2 route auth fermee autres routes preservees
+DEBUG pid=3 NXMEM4 0000000157a8 000000000017 000000000030 000000000000 000000014215 0000000287a8 00000000002a 000000000050 000000000000 0000000142f5 000000014200 000000027200 000000104200 00000000002c 000000027b85 000000000000 00000000000a 0000000098e0 0000000098e0 
+NAEXEC ressources phase=avant_ticket owner=5 roots=1 handles=8 endpoints=56 nodes=117 waits=16 processus=17 threads=1 joins=0 cadres_ipc=65 cadres_libres=Ok(59412)
+NAEXEC resident phase=avant_ticket pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=avant_ticket pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=avant_ticket pid=3 service=0 pages=187 pile=64
+NAEXEC resident phase=avant_ticket pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=avant_ticket pid=5 service=0 pages=86 pile=64
+NAEXEC resident phase=avant_ticket pid=6 service=17 pages=36 pile=64
+NAEXEC resident phase=avant_ticket pid=7 service=22 pages=149 pile=64
+NAEXEC resident phase=avant_ticket pid=8 service=23 pages=69 pile=64
+NAEXEC resident phase=avant_ticket pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=avant_ticket pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=avant_ticket owner=5 pid=5 service=0 roots=1 handles=8 waits=1 pages=86 pile=64 threads=1 cadres_ipc=65
+NAEXEC acteur phase=avant_ticket owner=5 pid=7 service=22 roots=4 handles=7 waits=1 pages=149 pile=64 threads=1 cadres_ipc=65
+NAEXEC acteur phase=avant_ticket owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64 threads=1 cadres_ipc=65
+NAUTH install pid=5 roots=2 handles=9 endpoints=57 nodes=118 waits=16
+NAUTH install pid=7 roots=4 handles=8 endpoints=57 nodes=119 waits=16
+NAEXEC ressources phase=consommation owner=5 roots=2 handles=9 endpoints=57 nodes=119 waits=16 processus=17 threads=1 joins=0 cadres_ipc=66 cadres_libres=Ok(59411)
+NAEXEC resident phase=consommation pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=consommation pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=consommation pid=3 service=0 pages=187 pile=64
+NAEXEC resident phase=consommation pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=consommation pid=5 service=0 pages=86 pile=64
+NAEXEC resident phase=consommation pid=6 service=17 pages=36 pile=64
+NAEXEC resident phase=consommation pid=7 service=22 pages=149 pile=64
+NAEXEC resident phase=consommation pid=8 service=23 pages=69 pile=64
+NAEXEC resident phase=consommation pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=consommation pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=consommation pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=consommation pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=consommation pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=consommation pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=consommation pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=consommation pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=consommation pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=consommation owner=5 pid=5 service=0 roots=2 handles=9 waits=0 pages=86 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=consommation owner=5 pid=7 service=22 roots=4 handles=8 waits=1 pages=149 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=consommation owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64 threads=1 cadres_ipc=66
+NAEXEC attente owner=5 ticket=4611686018427388029 maintenant=1630 echeance=2852
+NAEXEC transition registry=7 owner=5 kind=0 value=24
+NAEXEC transition registry=7 owner=5 kind=1 value=6
+NAUTH install pid=21 roots=1 handles=1 endpoints=58 nodes=120 waits=15
+NAUTH install pid=5 roots=2 handles=10 endpoints=58 nodes=121 waits=15
+NAUTH install pid=21 roots=2 handles=2 endpoints=59 nodes=122 waits=15
+NAUTH install pid=5 roots=2 handles=11 endpoints=59 nodes=123 waits=15
+NAUTH install pid=21 roots=3 handles=3 endpoints=60 nodes=124 waits=15
+NAUTH install pid=21 roots=3 handles=4 endpoints=60 nodes=125 waits=15
+NAUTH install pid=6 roots=4 handles=15 endpoints=60 nodes=126 waits=15
+NAEXEC enfant owner=5 child=21
+NAEXEC transition registry=7 owner=5 kind=3 value=1
+request=dd6a8b3649aaaecb718e01d4af74df86 confirmation=dd6a8b3649aaaecb718e01d4af74df869d5434b6f07d470d80da8f206420c635 state=PREPARED
+PROC pid=21 niveau=Ring3 pc=0x1004e91 sortie=0
+NAEXEC survivant apres_pid=21 pid=1 service=0 roots=4 handles=30 waits=1 pages=12 pile=64
+NAEXEC survivant apres_pid=21 pid=2 service=0 roots=4 handles=6 waits=1 pages=2 pile=1
+NAEXEC survivant apres_pid=21 pid=3 service=0 roots=4 handles=13 waits=1 pages=187 pile=64
+NAEXEC survivant apres_pid=21 pid=4 service=0 roots=3 handles=3 waits=1 pages=3 pile=1
+NAEXEC survivant apres_pid=21 pid=5 service=0 roots=2 handles=9 waits=0 pages=86 pile=64
+NAEXEC survivant apres_pid=21 pid=6 service=17 roots=4 handles=14 waits=1 pages=36 pile=64
+NAEXEC survivant apres_pid=21 pid=7 service=22 roots=4 handles=7 waits=1 pages=149 pile=64
+NAEXEC survivant apres_pid=21 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64
+NAEXEC survivant apres_pid=21 pid=9 service=18 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=21 pid=10 service=21 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=21 pid=12 service=25 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=21 pid=13 service=26 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=21 pid=14 service=1 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=21 pid=15 service=2 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=21 pid=18 service=9 roots=2 handles=2 waits=1 pages=4 pile=64
+NAEXEC survivant apres_pid=21 pid=19 service=16 roots=4 handles=6 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=21 pid=20 service=10 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC restitue pid=21 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=57 nodes=118 espaces=17 cadres_ipc=66 cadres_libres=Ok(59428)
+DEBUG pid=3 TMP retrait confirme NXFIN5 000000024760 000000000026 000000000050 000000000000 0000000156ea 00000000000a 0000000098e0 0000000098e0 000000023200 000000104200 000000000168 000000000020 
+TMP retrait instance=9223372036854775827 statut=0
+NXFLUX pid=21 fd=1 octets=134 prefixe=726571756573743d646436613862333634396161616563623731386530316434616637346466383620636f6e6669726d6174696f6e3d64643661386233363439
+NXFLUX pid=21 fd=2 octets=0 prefixe=
+NAEXEC ressources phase=fermeture owner=5 roots=1 handles=8 endpoints=56 nodes=117 waits=16 processus=17 threads=1 joins=0 cadres_ipc=66 cadres_libres=Ok(59428)
+NAEXEC resident phase=fermeture pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=fermeture pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=fermeture pid=3 service=0 pages=187 pile=64
+NAEXEC resident phase=fermeture pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=fermeture pid=5 service=0 pages=86 pile=64
+NAEXEC resident phase=fermeture pid=6 service=17 pages=36 pile=64
+NAEXEC resident phase=fermeture pid=7 service=22 pages=149 pile=64
+NAEXEC resident phase=fermeture pid=8 service=23 pages=69 pile=64
+NAEXEC resident phase=fermeture pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=fermeture pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=fermeture owner=5 pid=5 service=0 roots=1 handles=8 waits=0 pages=86 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=fermeture owner=5 pid=7 service=22 roots=4 handles=7 waits=1 pages=149 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=fermeture owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64 threads=1 cadres_ipc=66
+DEBUG pid=5 NXR2_0_0__FIN
+nsh> usermod --remove-group base alice --confirm dd6a8b3649aa[Knsh> lice --confirm dd6a8b3649aaansh> lice --confirm dd6a8b3649aaaecb718e01d4af74df869d5434b6f[Knsh> cb718e01d4af74df869d5434b6f0nsh> cb718e01d4af74df869d5434b6f07d470d80da8f206420c635 --req[Knsh> d470d80da8f206420c635 --requnsh> d470d80da8f206420c635 --request dd6a8b3649aaaecb718e01d4[Knsh> st dd6a8b3649aaaecb718e01d4ansh> st dd6a8b3649aaaecb718e01d4af74df86; echo NXR2_1_$?__FIN
+DEBUG pid=3 NXMEM4 000000024760 000000000026 000000000050 000000000000 0000000156ea 000000026760 000000000028 000000000050 000000000000 0000000157b9 000000023200 000000025200 000000104200 00000000000a 0000000098e0 0000000098e0 00000000000a 0000000098e0 0000000098e0 
+NAEXEC ressources phase=avant_ticket owner=5 roots=1 handles=8 endpoints=56 nodes=117 waits=15 processus=17 threads=1 joins=0 cadres_ipc=65 cadres_libres=Ok(59412)
+NAEXEC resident phase=avant_ticket pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=avant_ticket pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=avant_ticket pid=3 service=0 pages=187 pile=64
+NAEXEC resident phase=avant_ticket pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=avant_ticket pid=5 service=0 pages=86 pile=64
+NAEXEC resident phase=avant_ticket pid=6 service=17 pages=36 pile=64
+NAEXEC resident phase=avant_ticket pid=7 service=22 pages=149 pile=64
+NAEXEC resident phase=avant_ticket pid=8 service=23 pages=69 pile=64
+NAEXEC resident phase=avant_ticket pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=avant_ticket pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=avant_ticket owner=5 pid=5 service=0 roots=1 handles=8 waits=1 pages=86 pile=64 threads=1 cadres_ipc=65
+NAEXEC acteur phase=avant_ticket owner=5 pid=7 service=22 roots=4 handles=7 waits=0 pages=149 pile=64 threads=1 cadres_ipc=65
+NAEXEC acteur phase=avant_ticket owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64 threads=1 cadres_ipc=65
+NAUTH install pid=5 roots=2 handles=9 endpoints=57 nodes=118 waits=15
+NAUTH install pid=7 roots=4 handles=8 endpoints=57 nodes=119 waits=15
+NAEXEC ressources phase=consommation owner=5 roots=2 handles=9 endpoints=57 nodes=119 waits=15 processus=17 threads=1 joins=0 cadres_ipc=66 cadres_libres=Ok(59411)
+NAEXEC resident phase=consommation pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=consommation pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=consommation pid=3 service=0 pages=187 pile=64
+NAEXEC resident phase=consommation pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=consommation pid=5 service=0 pages=86 pile=64
+NAEXEC resident phase=consommation pid=6 service=17 pages=36 pile=64
+NAEXEC resident phase=consommation pid=7 service=22 pages=149 pile=64
+NAEXEC resident phase=consommation pid=8 service=23 pages=69 pile=64
+NAEXEC resident phase=consommation pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=consommation pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=consommation pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=consommation pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=consommation pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=consommation pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=consommation pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=consommation pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=consommation pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=consommation owner=5 pid=5 service=0 roots=2 handles=9 waits=0 pages=86 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=consommation owner=5 pid=7 service=22 roots=4 handles=8 waits=1 pages=149 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=consommation owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64 threads=1 cadres_ipc=66
+NAEXEC attente owner=5 ticket=4611686018427388038 maintenant=2184 echeance=3402
+NAEXEC transition registry=7 owner=5 kind=0 value=24
+NAEXEC transition registry=7 owner=5 kind=1 value=8
+NAUTH install pid=22 roots=1 handles=1 endpoints=58 nodes=120 waits=15
+NAUTH install pid=5 roots=2 handles=10 endpoints=58 nodes=121 waits=15
+NAUTH install pid=22 roots=2 handles=2 endpoints=59 nodes=122 waits=15
+NAUTH install pid=5 roots=2 handles=11 endpoints=59 nodes=123 waits=15
+NAUTH install pid=22 roots=3 handles=3 endpoints=60 nodes=124 waits=15
+NAUTH install pid=22 roots=3 handles=4 endpoints=60 nodes=125 waits=15
+NAUTH install pid=6 roots=4 handles=15 endpoints=60 nodes=126 waits=15
+NAEXEC enfant owner=5 child=22
+NAEXEC transition registry=7 owner=5 kind=3 value=1
+DEBUG pid=6 NARM EXEC inspection instance et provenance personnelle acquittee
+DEBUG pid=7 NARM VFS fermeture selective acquittee
+PROC pid=22 niveau=Ring3 pc=0x1004e91 sortie=20
+NAEXEC survivant apres_pid=22 pid=1 service=0 roots=4 handles=30 waits=1 pages=12 pile=64
+NAEXEC survivant apres_pid=22 pid=2 service=0 roots=4 handles=6 waits=1 pages=2 pile=1
+NAEXEC survivant apres_pid=22 pid=3 service=0 roots=4 handles=13 waits=1 pages=187 pile=64
+NAEXEC survivant apres_pid=22 pid=4 service=0 roots=3 handles=3 waits=1 pages=3 pile=1
+NAEXEC survivant apres_pid=22 pid=5 service=0 roots=2 handles=9 waits=0 pages=86 pile=64
+NAEXEC survivant apres_pid=22 pid=6 service=17 roots=4 handles=14 waits=1 pages=36 pile=64
+NAEXEC survivant apres_pid=22 pid=7 service=22 roots=4 handles=7 waits=1 pages=149 pile=64
+NAEXEC survivant apres_pid=22 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64
+NAEXEC survivant apres_pid=22 pid=9 service=18 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=22 pid=10 service=21 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=22 pid=12 service=25 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=22 pid=13 service=26 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=22 pid=14 service=1 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=22 pid=15 service=2 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=22 pid=18 service=9 roots=2 handles=2 waits=1 pages=4 pile=64
+NAEXEC survivant apres_pid=22 pid=19 service=16 roots=4 handles=6 waits=0 pages=5 pile=64
+NAEXEC survivant apres_pid=22 pid=20 service=10 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC restitue pid=22 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=57 nodes=118 espaces=17 cadres_ipc=66 cadres_libres=Ok(59428)
+Administrative failure: native=22 status=20
+request=dd6a8b3649aaaecb718e01d4af74df86 --outcome
+DEBUG pid=3 TMP retrait confirme NXFIN5 000000029748 00000000002b 000000000050 000000000000 0000000267cc 00000000000a 0000000098e0 0000000098e0 000000028200 000000104200 000000000150 000000000020 
+TMP retrait instance=9223372036854775828 statut=0
+NXFLUX pid=22 fd=1 octets=0 prefixe=
+NXFLUX pid=22 fd=2 octets=95 prefixe=41646d696e697374726174697665206661696c7572653a206e61746976653d3232207374617475733d32300a726571756573743d646436613862333634396161
+NAEXEC ressources phase=fermeture owner=5 roots=1 handles=8 endpoints=56 nodes=117 waits=16 processus=17 threads=1 joins=0 cadres_ipc=66 cadres_libres=Ok(59428)
+NAEXEC resident phase=fermeture pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=fermeture pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=fermeture pid=3 service=0 pages=187 pile=64
+NAEXEC resident phase=fermeture pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=fermeture pid=5 service=0 pages=86 pile=64
+NAEXEC resident phase=fermeture pid=6 service=17 pages=36 pile=64
+NAEXEC resident phase=fermeture pid=7 service=22 pages=149 pile=64
+NAEXEC resident phase=fermeture pid=8 service=23 pages=69 pile=64
+NAEXEC resident phase=fermeture pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=fermeture pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=fermeture owner=5 pid=5 service=0 roots=1 handles=8 waits=0 pages=86 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=fermeture owner=5 pid=7 service=22 roots=4 handles=7 waits=1 pages=149 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=fermeture owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64 threads=1 cadres_ipc=66
+DEBUG pid=5 NXR2_1_20__FIN
+nsh> usermod --outcome dd6a8b3649aaaecb718e01d4af74df86; echo[Knsh> aaecb718e01d4af74df86; echo nsh> aaecb718e01d4af74df86; echo NXR2_2_$?__FIN; exit
+DEBUG pid=3 NXMEM4 00000002b748 00000000002d 000000000050 000000000000 000000036e94 00000002b748 00000000002d 000000000060 000000000000 000000036f61 00000002a200 00000002a200 000000104200 00000000000a 0000000098e0 0000000098e0 000000000001 0000000086d0 000000000000 
+NAEXEC ressources phase=avant_ticket owner=5 roots=1 handles=8 endpoints=56 nodes=117 waits=15 processus=17 threads=1 joins=0 cadres_ipc=65 cadres_libres=Ok(59396)
+NAEXEC resident phase=avant_ticket pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=avant_ticket pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=avant_ticket pid=3 service=0 pages=203 pile=64
+NAEXEC resident phase=avant_ticket pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=avant_ticket pid=5 service=0 pages=86 pile=64
+NAEXEC resident phase=avant_ticket pid=6 service=17 pages=36 pile=64
+NAEXEC resident phase=avant_ticket pid=7 service=22 pages=149 pile=64
+NAEXEC resident phase=avant_ticket pid=8 service=23 pages=69 pile=64
+NAEXEC resident phase=avant_ticket pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=avant_ticket pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=avant_ticket owner=5 pid=5 service=0 roots=1 handles=8 waits=1 pages=86 pile=64 threads=1 cadres_ipc=65
+NAEXEC acteur phase=avant_ticket owner=5 pid=7 service=22 roots=4 handles=7 waits=0 pages=149 pile=64 threads=1 cadres_ipc=65
+NAEXEC acteur phase=avant_ticket owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64 threads=1 cadres_ipc=65
+NAUTH install pid=5 roots=2 handles=9 endpoints=57 nodes=118 waits=15
+NAUTH install pid=7 roots=4 handles=8 endpoints=57 nodes=119 waits=15
+NAEXEC ressources phase=consommation owner=5 roots=2 handles=9 endpoints=57 nodes=119 waits=15 processus=17 threads=1 joins=0 cadres_ipc=66 cadres_libres=Ok(59395)
+NAEXEC resident phase=consommation pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=consommation pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=consommation pid=3 service=0 pages=203 pile=64
+NAEXEC resident phase=consommation pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=consommation pid=5 service=0 pages=86 pile=64
+NAEXEC resident phase=consommation pid=6 service=17 pages=36 pile=64
+NAEXEC resident phase=consommation pid=7 service=22 pages=149 pile=64
+NAEXEC resident phase=consommation pid=8 service=23 pages=69 pile=64
+NAEXEC resident phase=consommation pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=consommation pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=consommation pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=consommation pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=consommation pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=consommation pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=consommation pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=consommation pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=consommation pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=consommation owner=5 pid=5 service=0 roots=2 handles=9 waits=0 pages=86 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=consommation owner=5 pid=7 service=22 roots=4 handles=8 waits=1 pages=149 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=consommation owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64 threads=1 cadres_ipc=66
+NAEXEC attente owner=5 ticket=4611686018427388047 maintenant=6530 echeance=7478
+NAEXEC transition registry=7 owner=5 kind=0 value=25
+NAEXEC transition registry=7 owner=5 kind=1 value=12
+NAUTH install pid=23 roots=1 handles=1 endpoints=58 nodes=120 waits=15
+NAUTH install pid=5 roots=2 handles=10 endpoints=58 nodes=121 waits=15
+NAUTH install pid=23 roots=2 handles=2 endpoints=59 nodes=122 waits=15
+NAUTH install pid=5 roots=2 handles=11 endpoints=59 nodes=123 waits=15
+NAUTH install pid=23 roots=3 handles=3 endpoints=60 nodes=124 waits=15
+NAUTH install pid=23 roots=3 handles=4 endpoints=60 nodes=125 waits=15
+NAUTH install pid=6 roots=4 handles=15 endpoints=60 nodes=126 waits=15
+NAEXEC enfant owner=5 child=23
+NAEXEC transition registry=7 owner=5 kind=3 value=1
+DEBUG pid=8 NXADMIN transport op=02 statut=000000000000000b
+DEBUG pid=8 R2TLS handshake=Io(BrokenPipe)
+DEBUG pid=8 NXADMIN transport op=02 statut=000000000000000b
+DEBUG pid=8 R2TLS handshake=Io(BrokenPipe)
+Administrative failure: native=12 status=6
+request=dd6a8b3649aaaecb718e01d4af74df86 --outcome
+PROC pid=23 niveau=Ring3 pc=0x1004e91 sortie=6
+NAEXEC survivant apres_pid=23 pid=1 service=0 roots=4 handles=30 waits=1 pages=12 pile=64
+NAEXEC survivant apres_pid=23 pid=2 service=0 roots=4 handles=6 waits=1 pages=2 pile=1
+NAEXEC survivant apres_pid=23 pid=3 service=0 roots=4 handles=13 waits=1 pages=203 pile=64
+NAEXEC survivant apres_pid=23 pid=4 service=0 roots=3 handles=3 waits=1 pages=3 pile=1
+NAEXEC survivant apres_pid=23 pid=5 service=0 roots=2 handles=9 waits=1 pages=86 pile=64
+NAEXEC survivant apres_pid=23 pid=6 service=17 roots=4 handles=14 waits=1 pages=36 pile=64
+NAEXEC survivant apres_pid=23 pid=7 service=22 roots=4 handles=7 waits=1 pages=149 pile=64
+NAEXEC survivant apres_pid=23 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64
+NAEXEC survivant apres_pid=23 pid=9 service=18 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=23 pid=10 service=21 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=23 pid=12 service=25 roots=4 handles=4 waits=1 pages=14 pile=64
+NAEXEC survivant apres_pid=23 pid=13 service=26 roots=4 handles=4 waits=1 pages=3 pile=64
+NAEXEC survivant apres_pid=23 pid=14 service=1 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=23 pid=15 service=2 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=23 pid=18 service=9 roots=2 handles=2 waits=1 pages=4 pile=64
+NAEXEC survivant apres_pid=23 pid=19 service=16 roots=4 handles=6 waits=1 pages=5 pile=64
+NAEXEC survivant apres_pid=23 pid=20 service=10 roots=2 handles=2 waits=1 pages=5 pile=64
+NAEXEC restitue pid=23 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=57 nodes=118 espaces=17 cadres_ipc=66 cadres_libres=Ok(59412)
+DEBUG pid=3 TMP retrait confirme NXFIN5 000000029778 00000000002b 000000000060 000000000000 00000004f6e3 000000000001 0000000086d0 000000000000 000000028200 000000104200 000000000180 000000000020 
+TMP retrait instance=9223372036854775829 statut=0
+DEBUG pid=8 NXADMIN transport op=02 statut=000000000000000b
+DEBUG pid=8 R2TLS handshake=Io(BrokenPipe)
+DEBUG pid=6 NXADMIN ouverture etape=0000000000000016 statut=000000000000000c
+DEBUG pid=6 NXBAIL op=NSHLIVE1 tag=17 decision=0 valide=0 echeance=65360 retour=5 fin=28556
+NAEXEC ressources phase=fermeture owner=5 roots=1 handles=8 endpoints=56 nodes=117 waits=16 processus=17 threads=1 joins=0 cadres_ipc=66 cadres_libres=Ok(59412)
+NAEXEC resident phase=fermeture pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=fermeture pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=fermeture pid=3 service=0 pages=203 pile=64
+NAEXEC resident phase=fermeture pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=fermeture pid=5 service=0 pages=86 pile=64
+NAEXEC resident phase=fermeture pid=6 service=17 pages=36 pile=64
+NAEXEC resident phase=fermeture pid=7 service=22 pages=149 pile=64
+NAEXEC resident phase=fermeture pid=8 service=23 pages=69 pile=64
+NAEXEC resident phase=fermeture pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=fermeture pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=fermeture owner=5 pid=5 service=0 roots=1 handles=8 waits=0 pages=86 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=fermeture owner=5 pid=7 service=22 roots=4 handles=7 waits=1 pages=149 pile=64 threads=1 cadres_ipc=66
+NAEXEC acteur phase=fermeture owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=69 pile=64 threads=1 cadres_ipc=66
+exécutable absent ou accès refusé
+DEBUG pid=5 NXR2_2_126__FIN
+qemu-system-x86_64: terminating on signal 15 from pid 20085 (<unknown process>)

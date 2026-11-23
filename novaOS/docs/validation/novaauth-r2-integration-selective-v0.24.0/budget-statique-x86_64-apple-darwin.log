@@ -1,0 +1,10 @@
+   Compiling membership-transaction-native v0.0.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/layout-integration-09)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.27s
+     Running unittests src/lib.rs (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/x86_64-apple-darwin/debug/deps/membership_transaction_native-a04a589a1aa647c6)
+
+running 1 test
+pending=336 completed=352 inherited=2960 subtotal=3648
+test global_incremental_control_layout ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 12 filtered out; finished in 0.00s
+

@@ -1,0 +1,6 @@
+# Preuves brutes R2 : conserver exactement les octets archives et controles par SHA-256.
+novaauth-r2-integration-selective-v0.24.0/**/invite.serial -text -diff
+novaauth-r2-integration-selective-v0.24.0/instantanes/*.patch -text -diff
+novaauth-r2-integration-selective-v0.24.0/**/*.bin -text -diff
+novaauth-r2-integration-selective-v0.24.0/**/*.log -text -diff
+novaauth-r2-integration-selective-v0.24.0/*.log -text -diff

@@ -1,0 +1,28 @@
+limine-uefi-cd.bin: OK
+BOOTX64.EFI: OK
+BOOTAA64.EFI: OK
+   Compiling version_check v0.9.5
+   Compiling typenum v1.20.1
+   Compiling cfg-if v1.0.5
+   Compiling cpufeatures v0.2.17
+   Compiling r-efi v6.0.0
+   Compiling generic-array v0.14.7
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling digest v0.10.7
+   Compiling sha2 v0.10.9
+   Compiling relais-bootid v0.1.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/export-05/novaOS/boot/relais-bootid)
+    Finished `release` profile [optimized] target(s) in 1.25s
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Drive current: -outdev 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.vbeQ1qYr/novaos.iso'
+Media current: stdio file, overwriteable
+Media status : is blank
+Media summary: 0 sessions, 0 data blocks, 0 data,  175g free
+Added to ISO image: directory '/'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.vbeQ1qYr/root'
+xorriso : UPDATE :      17 files added in 1 seconds
+xorriso : UPDATE :      17 files added in 1 seconds
+ISO image produced: 6372 sectors
+Written to medium : 6372 sectors at LBA 0
+Writing to 'stdio:/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/iso.vbeQ1qYr/novaos.iso' completed successfully.
+

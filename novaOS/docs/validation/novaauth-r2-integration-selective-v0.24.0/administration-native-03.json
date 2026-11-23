@@ -1,0 +1,18 @@
+{
+  "label": "administration-native-03",
+  "commande": [
+    "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+    "test",
+    "--offline",
+    "--target",
+    "aarch64-apple-darwin",
+    "--features",
+    "administration-lab",
+    "--test",
+    "administration"
+  ],
+  "cwd": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth",
+  "statut": 0,
+  "duree_hote_s": 0.928884792025201,
+  "qemu": false
+}

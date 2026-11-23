@@ -1,0 +1,16 @@
+GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.
+
+Copying of file objects from ISO image to disk filesystem is: Enabled
+xorriso : NOTE : Loading ISO image tree from LBA 0
+xorriso : UPDATE :      17 nodes read in 1 seconds
+xorriso : NOTE : Detected El-Torito boot information which currently is set to be discarded
+Drive current: -indev '/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/integration-49739dd-04/x86_64.iso'
+Media current: stdio file, overwriteable
+Media status : is written , is appendable
+Boot record  : El Torito , MBR protective-msdos-label cyl-align-off GPT
+Media summary: 1 session, 6402 data blocks, 12.5m data,  174g free
+Volume id    : 'NOVAOS'
+xorriso : UPDATE :       1 files restored (   133b) in 1 seconds = 0.0xD
+Extracted from ISO image: file '/limine.conf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/iso-extract-04/limine.conf'
+xorriso : UPDATE :       1 files restored (9083.8k) in 1 seconds = 6.7xD
+Extracted from ISO image: file '/boot/novaos.elf'='/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/iso-extract-04/kernel.elf'

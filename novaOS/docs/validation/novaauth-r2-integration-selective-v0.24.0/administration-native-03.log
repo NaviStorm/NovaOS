@@ -1,0 +1,19 @@
+   Compiling novaos-identity v0.1.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.24s
+     Running tests/administration.rs (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/target-natif/aarch64-apple-darwin/debug/deps/administration-65ef54ab5f8fc993)
+
+running 11 tests
+test no_self_promotion_no_admin_disable_and_no_directory_leak ... ok
+test invalid_receipts_and_substitution_are_rejected ... ok
+test prepared_concurrent_plans_do_not_grant_publication_or_replace_current_head ... ok
+test publication_metadata_is_derived_from_the_authorized_exact_plan ... ok
+test ordinary_rename_and_membership_do_not_rotate_authentication_epoch ... ok
+test concurrent_enrollments_cannot_assign_one_factor_twice ... ok
+test selective_preparation_can_remove_membership_of_disabled_subject ... ok
+test persistence_reactivation_requires_exact_authenticated_terminal_receipt ... ok
+test reactivation_keeps_current_memberships_and_same_identity_after_restart ... ok
+test attested_channel_never_grants_account_privilege_and_update_requires_reauthorization ... ok
+test selective_removal_preserves_direct_other_group_and_authentication_epoch ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.47s
+

@@ -1,0 +1,26 @@
+{
+  "preuves_anterieures_verifiees": 74,
+  "ecarts_manifestes": 0,
+  "sources_identiques": [
+    "novaOS/user/novaauth/autorite_qemu/membership_rpc.py",
+    "novaOS/user/novaauth/autorite_qemu/recuperation_qemu.py",
+    "novaOS/user/novaauth/autorite_qemu/test_membership_retirement.py",
+    "novaOS/user/novaauth/recuperation/src/lib.rs",
+    "novaOS/user/novaauth/service/profile.py",
+    "novaOS/user/novaauth/recuperation/src/membership_effectors.rs",
+    "novaOS/user/novaauth/recuperation/tests/membership_effectors.rs",
+    "novaOS/user/novaauth/service/exec_membership_lab.rs",
+    "novaOS/user/novaauth/service/membership_exec_tests.rs",
+    "novaOS/user/novaauth/service/membership_vfs.rs",
+    "novaOS/user/novaauth/service/membership_vfs_tests.rs",
+    "novaOS/user/novaauth/service/qualify_membership_effectors.py"
+  ],
+  "sources_modifiees": [
+    "novaOS/user/novaauth/service/src/bin/common/recovery_store.rs",
+    "novaOS/user/novaauth/service/membership_profile.py",
+    "novaOS/user/novaauth/service/src/bin/common/membership_exec.rs"
+  ],
+  "effecteurs_natifs_applicables": true,
+  "portee": "Tests natifs et protocole seulement ; ne prouve pas le raccord administratif invit\u00e9 ni ses courses.",
+  "qemu_anteriorite": "Les parcours d\u2019incertitude du candidat 05 sont rejou\u00e9s sur 1d5a678 ; nominal applicable selon analyse du chemin sans pending terminal."
+}

@@ -1,0 +1,13 @@
+test_one_stalled_stop_then_real_progress (test_administration_collector.BoundedStep.test_one_stalled_stop_then_real_progress) ... ok
+test_stall_is_bounded_and_never_success (test_administration_collector.BoundedStep.test_stall_is_bounded_and_never_success) ... ok
+test_wrong_cpu_and_changed_stack_are_not_retryable (test_administration_collector.BoundedStep.test_wrong_cpu_and_changed_stack_are_not_retryable) ... ok
+test_distinct_symbols_keep_their_formats (test_administration_collector.ProbeAliasing.test_distinct_symbols_keep_their_formats) ... ok
+test_exact_aarch64_alias_preserves_session_then_output (test_administration_collector.ProbeAliasing.test_exact_aarch64_alias_preserves_session_then_output) ... ok
+test_refuses_missing_ambiguous_or_invalid_thread (test_administration_collector.StoppedCPU.test_refuses_missing_ambiguous_or_invalid_thread) ... ok
+test_refuses_unsuccessful_selection (test_administration_collector.StoppedCPU.test_refuses_unsuccessful_selection) ... ok
+test_selects_stop_packet_thread_not_previous_current_cpu (test_administration_collector.StoppedCPU.test_selects_stop_packet_thread_not_previous_current_cpu) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.000s
+
+OK

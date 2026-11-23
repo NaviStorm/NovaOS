@@ -1,0 +1,18 @@
+{
+  "commande": [
+    "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+    "test",
+    "--offline",
+    "--locked",
+    "--target",
+    "aarch64-apple-darwin",
+    "global_incremental_control_layout",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-integration-49739dd/layout-integration-09",
+  "statut": 0,
+  "duree_hote_s": 0.5133957079960965,
+  "qemu": false,
+  "limite": "Sous-total statique additionnel, pas un pic physique continu"
+}

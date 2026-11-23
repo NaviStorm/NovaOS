@@ -1,0 +1,14 @@
+{
+  "commande": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-B",
+    "-m",
+    "unittest",
+    "test_administration_collector",
+    "test_administration_outputs"
+  ],
+  "cwd": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu",
+  "statut": 0,
+  "duree_hote_s": 0.0698565419879742,
+  "qemu": false
+}

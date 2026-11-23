@@ -1,0 +1,12 @@
+test_confirmation_values_are_data (test_administration_modes.Modes.test_confirmation_values_are_data) ... ok
+test_exact_source (test_administration_modes.Modes.test_exact_source) ... ok
+test_fragment_count_bounded_before_allocation (test_administration_modes.Modes.test_fragment_count_bounded_before_allocation) ... ok
+test_no_unknown_mode (test_administration_modes.Modes.test_no_unknown_mode) ... ok
+test_script_never_substitutes_business_arguments (test_administration_modes.Modes.test_script_never_substitutes_business_arguments) ... ok
+test_scripts_are_fixed_files (test_administration_modes.Modes.test_scripts_are_fixed_files) ... ok
+test_thirteen_fragments_keep_numeric_order (test_administration_modes.Modes.test_thirteen_fragments_keep_numeric_order) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.003s
+
+OK
