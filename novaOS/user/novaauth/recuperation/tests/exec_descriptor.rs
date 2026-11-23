@@ -70,3 +70,19 @@ const FIXTURE:&[u8;800]=include_bytes!("fixtures/exec_descriptor_v1.bin");
  assert_eq!(&out[..n],[REGISTER,FIXTURE].concat());
  assert!(m::Message::parse(m::ADMIT,FIXTURE).is_err());assert!(m::Message::parse(40,FIXTURE).is_err());
 }
+#[test] fn fresh_lookup_binds_every_historical_byte_without_admitting_it(){
+ let key=SigningKey::from_bytes(&[9;32]);let d=Descriptor::parse(FIXTURE).unwrap();
+ let mut q=[0;112];q[..64].copy_from_slice(&FIXTURE[8..72]);q[64..80].copy_from_slice(&d.operation());q[80..].fill(42);
+ let mut r=Vec::from(q);r.extend_from_slice(&7u64.to_be_bytes());r.extend_from_slice(FIXTURE);r.extend_from_slice(&[81;64]);
+ let mut signed=Vec::from(LOOKUP);signed.extend_from_slice(&r);r.extend_from_slice(&key.sign(&signed).to_bytes());
+ let (position,found)=verify_lookup(&key.verifying_key(),&q,&r).unwrap();assert_eq!(position,7);assert_eq!(found,d);
+ for at in [0,16,32,64,80]{let mut wrong=q;wrong[at]^=1;assert!(verify_lookup(&key.verifying_key(),&wrong,&r).is_err());}
+ for at in [112,120+224,120+432,120+800,120+863,r.len()-1] {let mut wrong=r.clone();wrong[at]^=1;assert!(verify_lookup(&key.verifying_key(),&q,&wrong).is_err());}
+ for n in 0..r.len(){assert!(verify_lookup(&key.verifying_key(),&q,&r[..n]).is_err());}
+ let mut wrong=r.clone();wrong.push(0);assert!(verify_lookup(&key.verifying_key(),&q,&wrong).is_err());
+ // L'historique reste consultable après reprise, sans falsifier l'incarnation
+ // d'origine : matches() interdira son admission dans la nouvelle incarnation.
+ q[32..64].fill(77);r[..112].copy_from_slice(&q);let end=r.len()-64;
+ let mut msg=Vec::from(LOOKUP);msg.extend_from_slice(&r[..end]);r[end..].copy_from_slice(&key.sign(&msg).to_bytes());
+ assert_eq!(verify_lookup(&key.verifying_key(),&q,&r).unwrap().1.bytes()[40..72],FIXTURE[40..72]);
+}

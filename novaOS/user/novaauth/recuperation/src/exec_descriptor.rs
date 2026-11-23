@@ -133,3 +133,20 @@ pub fn fragment(d:Descriptor<'_>,index:usize)->Result<[u8;128]>{
  for (at,n) in [(56,index),(58,count),(60,bytes.len()),(62,part)]{p[at..at+2].copy_from_slice(&(n as u16).to_be_bytes());}
  p[64..64+part].copy_from_slice(&bytes[index*64..index*64+part]);Ok(p)
 }
+
+/// Consultation fraîche d'un descripteur HISTORIQUE. Ce reçu ne constitue
+/// jamais une admission et ne remplace ni View ni la barrière de révocation.
+/// La nouvelle incarnation peut consulter l'histoire sans reprendre ses droits.
+pub fn verify_lookup<'a>(key:&VerifyingKey,query:&[u8;112],reply:&'a [u8])->Result<(u64,Descriptor<'a>)>{
+ if key.is_weak() || query[80..]==[0;32] || reply.len()<120+HEADER+DEPENDENCY+128
+  || reply.len()>120+MAX_SIZE+128 || reply[..112]!=*query{return Err(Error::Scope);}
+ let end=reply.len()-64;let position=u64_at(reply,112);
+ if position==0{return Err(Error::Format);}
+ let d=Descriptor::parse(&reply[120..end-64])?;
+ if d.bytes()[8..40]!=query[..32] || d.operation()!=query[64..80]{return Err(Error::Scope);}
+ let mut signed=[0;MAX_SIZE+320];let n=LOOKUP.len();
+ signed[..n].copy_from_slice(LOOKUP);signed[n..n+end].copy_from_slice(&reply[..end]);
+ key.verify_strict(&signed[..n+end],&Signature::from_slice(&reply[end..]).map_err(|_|Error::Format)?)
+  .map_err(|_|Error::Crypto)?;
+ Ok((position,d))
+}

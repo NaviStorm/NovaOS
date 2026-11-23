@@ -8,6 +8,7 @@ publish = false
 [workspace]
 
 [features]
+selective-exec-guest = ["membership-r2-guest"]
 membership-r2-guest = ["administration-r2-guest"]
 administration-r2-guest = ["administration-guest", "novaos-recovery/administration-lab"]
 administration-lab = []

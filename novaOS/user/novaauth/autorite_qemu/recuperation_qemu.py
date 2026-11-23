@@ -91,6 +91,10 @@ def fixture(args,stack):
     if getattr(args,"membership_r2",False):
         from membership_retirement import initialize as initialize_memberships
         initialize_memberships(database)
+    if getattr(args,"selective_exec",False):
+        if not getattr(args,"membership_r2",False):raise Refus("profil sélectif requis")
+        from exec_selective import initialize as initialize_descriptors
+        initialize_descriptors(database)
     measurement=bytes.fromhex(sha(args.registre))
     authority=RecoveryAuthority(old,[measurement])
     authority.provision_keys(SERVER,DOMAIN,2,backup+signing)
@@ -265,6 +269,12 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
                                     Ed25519PrivateKey.from_private_bytes(args.decision.read_bytes()),
                                     (args.cles/"serveur.pub").read_bytes(),(SERVER,DOMAIN),operation,body,
                                     administration=getattr(args,"administration_r2",False))
+                            elif getattr(args,"selective_exec",False) and operation in range(62,66):
+                                from exec_selective_rpc import request as selective_request
+                                result=selective_request(dispatcher.authority.path,
+                                    Ed25519PrivateKey.from_private_bytes(args.decision.read_bytes()),
+                                    (args.cles/"serveur.pub").read_bytes(),(SERVER,DOMAIN),operation,body,
+                                    selective=True)
                             elif getattr(args,"membership_r2",False) and operation in range(54,62):
                                 from membership_rpc import request as membership_request
                                 result=membership_request(dispatcher.authority.path,
@@ -302,6 +312,9 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
                             if status==22:result=b""
                         except Refus as error:
                             status=22 if "UNCERTAIN" in str(error) else 5;result=b""
+                            if getattr(args,"selective_exec",False) and operation in range(62,66):
+                                from exec_selective import Refusal
+                                if isinstance(error,Refusal):status=error.status
                             with (out/"refus.log").open("a") as f:print(sequence,operation,str(error),file=f)
                         with (out/"rpc-public.log").open("a") as f:
                             print(sequence,operation,n,len(result),status,start,time.monotonic_ns(),file=f)

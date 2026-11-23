@@ -4,6 +4,9 @@
 #[path = "common/canal.rs"]
 mod canal;
 mod common;
+#[cfg(feature="selective-exec-guest")]
+#[path="common/exec_selective_bridge.rs"]
+mod exec_selective_bridge;
 #[cfg(feature="vfs-guest")]
 #[path="common/mutation_bridge.rs"]
 mod mutation_bridge;
@@ -108,6 +111,12 @@ fn serve() -> rt::Result<()> {
         }
         #[cfg(feature="vfs-guest")]
         if issued && recovery_done && recovery_bridge::is_request(&m) {
+            #[cfg(feature="selective-exec-guest")]
+            if novaos_recovery::framing::Header::parse(&m.payload[..novaos_recovery::framing::HEADER])
+                .is_ok_and(|h|matches!(h.operation,62..=65)) {
+                exec_selective_bridge::serve(&key,port,&id,m)?;
+                continue;
+            }
             #[cfg(feature="membership-r2-guest")]
             if novaos_recovery::framing::Header::parse(&m.payload[..novaos_recovery::framing::HEADER])
                 .is_ok_and(|h|matches!(h.operation,54..=61)) {
