@@ -66,6 +66,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
+    parser.add_argument('--retrait-reserve-reprise-froide',action='store_true',help='Q4 coupure après RESERVE puis refus de nouvelle incarnation tant que le retrait reste incomplet')
     parser.add_argument('--issue-vfs-perdue',action='store_true',help='Q2 perte de reponse FINISH durable, consultation sans seconde E/S')
     parser.add_argument('--vfs-en-vol',action='store_true',help='E/S VFS réelle avant retrait, FINISH individuel après réservation')
     parser.add_argument('--membership-io',action='store_true',help='Q1 droits VFS Direct/G/H réels')
@@ -121,6 +122,7 @@ def main():
     if a.publication_selective_perdue and (not a.membership_r2 or a.acquittement_selectif_perdu):parser.error('perte de publication sélective isolée requise')
     if a.acquittement_selectif_perdu and not a.membership_r2:parser.error('perte ACK réservée au retrait sélectif')
     if a.acquittement_selectif_absent and (not a.membership_r2 or a.acquittement_selectif_perdu or a.publication_selective_perdue):parser.error('absence ACK sélectif isolée requise')
+    if a.retrait_reserve_reprise_froide and (not a.membership_r2 or not a.membership_io or a.redemarrage_issue or a.issue_vfs_perdue or a.vfs_en_vol or a.acquittement_selectif_absent or a.acquittement_selectif_perdu or a.publication_selective_perdue or a.retraits_concurrents):parser.error('reprise froide réservée : recette indépendante, droits VFS réels requis')
     a.capture_administrative = a.redemarrage_issue
     carol_active=False
     a.mode = 'nominal'
@@ -305,11 +307,19 @@ def main():
         cut_before_publication=False
         selective_calls={}
         restarted=False
+        reserved_cut=False
 
         def rpc_hook(phase, operation, body, result, qmp, disk):
-            nonlocal enrolled, discarded_receipt, cut_before_publication
+            nonlocal enrolled, discarded_receipt, cut_before_publication, reserved_cut
             if a.membership_r2 and phase=='before' and 54<=operation<=61:
                 selective_calls[operation]=selective_calls.get(operation,0)+1
+            if phase=='after' and operation==54 and a.retrait_reserve_reprise_froide and not reserved_cut:
+                from membership_cold_qemu import reservation_snapshot
+                from exec_vm_debug import qmp as control_vm
+                report['reservation_avant_coupure']=reservation_snapshot(api.path,bytes.fromhex(intention['operation']))
+                reserved_cut=True
+                control_vm(qmp,'quit')
+                raise Refus('coupure Q4 après réservation durable, avant publication et acquittements')
             if phase=='after' and operation==58 and a.issue_vfs_perdue and not discarded_receipt:
                 with transaction(api.path) as db:
                     rows=db.execute('SELECT op,state,evidence FROM membership_operations ORDER BY sequence').fetchall()
@@ -711,6 +721,14 @@ def main():
             case = copy.copy(a)
             case.sortie = root / 'invite'
             result = run(case, env, scenario=scenario, rpc_hook=rpc_hook)
+            if a.retrait_reserve_reprise_froide:
+                from membership_cold_qemu import cold_reserved
+                if not reserved_cut or result==0:raise Refus('coupure Q4 attendue non démontrée')
+                report['premier_invite_interrompu']=result
+                outcome=cold_reserved(case,env,root,bytes.fromhex(intention['operation']),stack)
+                report['reprise_froide_reservee']=outcome
+                report['succes']=outcome['succes']
+                return 0 if outcome['succes'] else 1
             if not a.redemarrage_issue:return result
             if result and not (a.coupure_avant_publication and cut_before_publication):return result
             if a.coupure_avant_publication:
