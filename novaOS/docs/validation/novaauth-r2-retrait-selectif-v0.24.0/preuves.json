@@ -1,0 +1,17 @@
+{
+  "commit": "b84f896007bc02e8ebfad04fe10462f6538542aa",
+  "base": "0e7d0b2141e976e99d3a676957e0517eba0e8782",
+  "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/retrait-selectif-0e7d0b2-20261123.tar.gz",
+  "archive_sha256": "15f548703effa7a0b0302ce101d85b91fe23627a3cda5f07352327252ebe0c27",
+  "manifest": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/retrait-selectif-0e7d0b2/SHA256SUMS",
+  "manifest_sha256": "289120e9ccc1f99dfa118c8a70ed6ffb12a40f3d2eb630df3759632635e9a24b",
+  "files": 71,
+  "qemu": "NON_EXECUTE sur les quatre profils",
+  "host_authority_distinct_covered": 201,
+  "guest_resources": "NON_MESURE",
+  "ordinary_kernel_abi_p9_source_changes": false,
+  "historical_reservations": [
+    "301 cadres AArch64 instrument\u00e9s",
+    "reproductibilit\u00e9 entre environnements"
+  ]
+}

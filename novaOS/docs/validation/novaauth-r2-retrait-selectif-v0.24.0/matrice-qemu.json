@@ -1,0 +1,58 @@
+[
+  {
+    "profile": "aarch64/P9-512",
+    "commit": "b84f896007bc02e8ebfad04fe10462f6538542aa",
+    "scenarios": {
+      "droits-directs-G-H": "NON_EXECUTE",
+      "admission-concurrente": "NON_EXECUTE",
+      "capacites-G-exclusivement": "NON_EXECUTE",
+      "reponse-perdue-redemarrage": "NON_EXECUTE",
+      "administration-refusee": "NON_EXECUTE",
+      "ressources-et-quota": "NON_EXECUTE",
+      "dernier-administrateur": "NON_EXECUTE"
+    },
+    "reason": "raccord r\u00e9el aux effecteurs et orchestration administrative non termin\u00e9s"
+  },
+  {
+    "profile": "aarch64/P9-4096",
+    "commit": "b84f896007bc02e8ebfad04fe10462f6538542aa",
+    "scenarios": {
+      "droits-directs-G-H": "NON_EXECUTE",
+      "admission-concurrente": "NON_EXECUTE",
+      "capacites-G-exclusivement": "NON_EXECUTE",
+      "reponse-perdue-redemarrage": "NON_EXECUTE",
+      "administration-refusee": "NON_EXECUTE",
+      "ressources-et-quota": "NON_EXECUTE",
+      "dernier-administrateur": "NON_EXECUTE"
+    },
+    "reason": "raccord r\u00e9el aux effecteurs et orchestration administrative non termin\u00e9s"
+  },
+  {
+    "profile": "x86_64/P9-512",
+    "commit": "b84f896007bc02e8ebfad04fe10462f6538542aa",
+    "scenarios": {
+      "droits-directs-G-H": "NON_EXECUTE",
+      "admission-concurrente": "NON_EXECUTE",
+      "capacites-G-exclusivement": "NON_EXECUTE",
+      "reponse-perdue-redemarrage": "NON_EXECUTE",
+      "administration-refusee": "NON_EXECUTE",
+      "ressources-et-quota": "NON_EXECUTE",
+      "dernier-administrateur": "NON_EXECUTE"
+    },
+    "reason": "raccord r\u00e9el aux effecteurs et orchestration administrative non termin\u00e9s"
+  },
+  {
+    "profile": "x86_64/P9-4096",
+    "commit": "b84f896007bc02e8ebfad04fe10462f6538542aa",
+    "scenarios": {
+      "droits-directs-G-H": "NON_EXECUTE",
+      "admission-concurrente": "NON_EXECUTE",
+      "capacites-G-exclusivement": "NON_EXECUTE",
+      "reponse-perdue-redemarrage": "NON_EXECUTE",
+      "administration-refusee": "NON_EXECUTE",
+      "ressources-et-quota": "NON_EXECUTE",
+      "dernier-administrateur": "NON_EXECUTE"
+    },
+    "reason": "raccord r\u00e9el aux effecteurs et orchestration administrative non termin\u00e9s"
+  }
+]
