@@ -28,6 +28,7 @@ Un nouvel ajout ultérieur au même groupe reçoit une nouvelle révision d'appa
 ## 3. Transaction et points d'effet
 
 1. **PREPARED** : intention sans effet, liée au principal, à la session, à l'instance, à la tête et à l'opération. CONFIRM revalide tous ces éléments et le rôle administratif. Le plan compare la tête et l'appartenance exacte dans la transaction faisant autorité.
+   Avant tout effet local de CONFIRM, réserver durablement l'identifiant et le tuple de retrait dans le journal de l'autorité indépendante, sans encore publier le changement d'appartenance. Cette réservation privée fait partie de la proposition à arbitrer : elle conserve l'auteur authentifié, la tête attendue et la liste d'effecteurs. Une perte de réponse se consulte par cet identifiant. Sans preuve de réservation, aucune mutation ni déclaration d'achèvement.
 2. **BLOCAGE_LOCAL** : le registre bloque les nouvelles décisions pour cette provenance et adresse aux effecteurs une fermeture préparatoire liée à l'opération. Les autres origines restent actives. Aucun succès terminal n'est rendu ici. Une interruption conserve une opération à réconcilier ; aucun rétablissement implicite des anciennes capacités.
 3. **RETRAIT_EN_COURS** : l'autorité a durablement ordonné le retrait et la nouvelle tête ; toute nouvelle admission portant l'ancienne provenance est refusée. NovaFS reste le seul écrivain et publie atomiquement le triplet complet. L'acquittement de l'autorité et la publication P9 sont deux preuves distinctes ; aucune des deux ne remplace l'autre.
 4. **DRAINAGE** : chaque effecteur ferme les capacités de cette origine, réveille les attentes concernées et établit l'issue des opérations précédemment admises. Les barrières existantes d'incarnation, de session et d'admission ELF restent cumulatives.
@@ -66,20 +67,20 @@ Corps canonique proposé de 248 octets, puis signature Ed25519 de 64 octets sous
 | 136 | 32 | Tête précédente |
 | 168 | 32 | Tête publiée |
 | 200 | 8 | Position durable, u64 BE |
-| 208 | 1 | État : EN_COURS ou RETIREE |
+| 208 | 1 | État : RESERVEE, EN_COURS ou RETIREE |
 | 209 | 1 | Masque des classes d’effecteurs attendues |
 | 210 | 1 | Masque des classes entièrement acquittées |
 | 211 | 5 | Réservés nuls |
 | 216 | 32 | Défi frais de consultation |
 | 248 | 64 | Signature sur domaine et corps complet |
 
-Bits proposés des deux masques : 1 = VFS/stockage, 2 = vérificateur/délégations, 4 = admission/création ELF ; autres bits refusés. Un bit satisfait signifie que **toutes** les instances attendues de cette classe ont acquitté. Le masque satisfait doit être inclus dans le masque attendu ; RETIREE exige leur égalité et les preuves de publication. Les valeurs proposées pour l’état sont 1 = RETRAIT_EN_COURS et 2 = RETIREE ; toute autre valeur est refusée.
+Bits proposés des deux masques : 1 = VFS/stockage, 2 = vérificateur/délégations, 4 = admission/création ELF ; autres bits refusés. Un bit satisfait signifie que **toutes** les instances attendues de cette classe ont acquitté. Le masque satisfait doit être inclus dans le masque attendu ; RETIREE exige leur égalité et les preuves de publication. Les valeurs proposées pour l’état sont 0 = RESERVEE (aucun effet global promis), 1 = RETRAIT_EN_COURS et 2 = RETIREE ; toute autre valeur est refusée.
 
 L'historique persistant conserve séparément les instances et acquittements détaillés : le masque compact ne remplace pas cette liste. La requête authentifiée conserve également le principal administratif et son époque, comme les mutations R2 existantes. La réponse signée au défi prouve une consultation actuelle ; une ancienne réponse signée ne suffit pas à autoriser un accès. Les identifiants de retrait ne sont jamais réutilisés.
 
 312 octets applicatifs restent sous la capacité des pages hors P9 ; ils ne sont **pas** des métadonnées de liaison. La borne de 256 octets des métadonnées et leur représentation native actuelle restent inchangées. Fragments, version, taille exacte et réservés sont vérifiés ; aucun tronquage.
 
-Après redémarrage : récupérer une tête indépendante fraîche, relire le triplet, retrouver l'opération et les acquittements par identifiant, réconcilier les publications déjà engagées. Ne jamais rejouer automatiquement CONFIRM. Une tête P9 ancienne, un reçu altéré, une autorité inaccessible ou un historique incomplet impose un refus sûr. Une réauthentification ne recrée aucune ancienne capacité ; elle utilise les appartenances actuelles.
+Après redémarrage : récupérer une tête indépendante fraîche **et les retraits réservés/en cours** avant de rouvrir les décisions concernées, relire le triplet, retrouver l'opération et les acquittements par identifiant, réconcilier les publications déjà engagées. La tête seule ne prouve pas l'absence d'un retrait réservé. Une réservation persistante non résolue maintient fermée cette origine jusqu'à réconciliation de l'opération unique ; elle ne bloque pas les droits directs/H. Il est interdit de perdre une intention dans la seule mémoire volatile puis d'accepter l'ancien droit parce que P9 correspond encore à la tête. Ne jamais rejouer automatiquement CONFIRM. Une tête P9 ancienne, un reçu altéré, une autorité inaccessible ou un historique incomplet impose un refus sûr. Une réauthentification ne recrée aucune ancienne capacité ; elle utilise les appartenances actuelles.
 
 ## 6. Protection administrative et budget proposé
 
@@ -119,7 +120,7 @@ Sur chacun des quatre profils AArch64/x86_64 × P9/512/4096 :
 1. Alice lit directement, écrit par G et dispose aussi d'un droit indépendant par H ; ouvrir handles et sous-délégations avant retrait. Retirer seulement G avec Bob non administrateur comme témoin négatif. Exiger lecture directe et droits H inchangés, écriture G refusée avant expiration.
 2. Retirer G pendant une écriture en attente, puis pendant une mutation déjà admise. Archiver réveil, issue exacte, reçus et drainage. Couvrir une issue UNCERTAIN sans la répéter.
 3. Faire concourir deux retraits, retrait/ajout et admission/retrait. Vérifier tête, révision d'appartenance, absence de double mutation et conservation du dernier administrateur.
-4. Perdre chaque acquittement et couper avant/après publication P9 et admission durable. Redémarrer registre/NovaFS et restaurer les disques locaux ; conserver l'autorité indépendante. Reprendre par identifiant, sans réactivation de G.
+4. Perdre chaque acquittement et couper avant/après réservation durable, blocage local, publication P9 et admission durable. Redémarrer registre/NovaFS et restaurer les disques locaux ; conserver l'autorité indépendante. Reprendre par identifiant, sans réactivation de G.
 5. Une nouvelle authentification conserve les droits directs/H, refuse G. Un nouvel ajout explicite à G ne valide pas les anciens handles.
 6. Mesurer racines, handles, endpoints, processus et cadres avant/pendant/après. La cinquième racine doit rendre LIMIT sans allocation résiduelle. Saturation et effecteur inaccessible ne doivent pas terminer artificiellement le retrait.
 7. Rejouer uniquement les contrôles R1/R2, ABI et ELF réellement affectés. Verrou QEMU obligatoire ; temps d'attente séparé de l'exécution. Conserver la réserve AArch64 de 301 cadres et la reproductibilité entre environnements.
@@ -140,4 +141,4 @@ La protection du dernier administrateur est évaluée sur la tête courante dans
 
 ## 9. Arbitrage demandé
 
-Valider la provenance portée jusqu'aux effecteurs isolés, les états et points d'effet ci-dessus, la catégorie et le reçu privés additifs, puis le budget natif mesuré avant raccord fonctionnel. Aucun de ces changements n'est implémenté par ce document. La CLI continue de refuser le retrait actuellement non démontré. Les quatre autres fonctionnalités R2 poursuivent leur qualification indépendamment.
+Valider la provenance portée jusqu'aux effecteurs isolés, la réservation durable préalable, les états et points d'effet ci-dessus, la catégorie et le reçu privés additifs, puis le budget natif mesuré avant raccord fonctionnel. Aucun de ces changements n'est implémenté par ce document. La CLI continue de refuser le retrait actuellement non démontré. Les quatre autres fonctionnalités R2 poursuivent leur qualification indépendamment.
