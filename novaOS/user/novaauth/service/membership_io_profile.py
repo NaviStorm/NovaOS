@@ -51,26 +51,43 @@ def install(root):
         }
         let mut grant = None;''')
  path='novaOS/user/novaauth/service/triplet_effecteur.rs'
- edit(path,'        if matches!(&msg.payload[..8],b"NXMGVFS1"|b"NXMGEND1") {','''        if matches!(&msg.payload[..8],b"NXMGCTX2"|b"NXMGGO01"|b"NXMGDEN1") {
+ edit(path,'        if matches!(&msg.payload[..8],b"NXMGVFS1"|b"NXMGEND1") {','''        if matches!(&msg.payload[..8],b"NXMGCTX2"|b"NXMGGO01"|b"NXMGDEN1"|b"NXMGRES1"|b"NXMGREL1") {
             response=membership_io::control(session,&msg.payload)?;return Ok(());
         }
         if matches!(&msg.payload[..8],b"NXMGVFS1"|b"NXMGEND1") {''')
+ # Réserver la 16e trace au reçu terminal : vérification cryptographique inchangée.
+ edit('novaOS/user/novaauth/service/src/bin/common/tete.rs',
+      '    common::marker(b"NAUTH tete signature et portee verifiees");','')
  path='novaOS/user/novaauth/service/src/bin/common/recovery_view.rs'
  edit(path,'    let mut sequence=0;','    let mut sequence=0;\n    let mut membership_io=crate::membership_io::Io::default();')
  edit(path,'            sequence=m.tag;','''            sequence=m.tag;
+            if &m.payload[..8]==b"NXRTACK2" && administration.selective_in_progress() && membership_io.pending() {
+                // RESERVE est déjà durable ; aucune publication/ACK de retrait
+                // ne précède la consultation et l'issue individuelle du VFS.
+                membership_io.reconcile(&mut recovered.storage)?;
+                common::marker(b"NARM Q2 drainage VFS apres reservation avant fermeture");
+            }
             if crate::membership_io::Io::accepts(&m.payload) {
                 return membership_io.request(&state,&mut recovered.storage,&m.payload,&mut answer);
             }''')
  edit('novaOS/user/novaauth/service/src/bin/common/administration_channel.rs','fn port() -> rt::Result<u64> {','pub(super) fn port() -> rt::Result<u64> {')
  path='novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs'
  edit(path,'            match &m.payload[..8] {','''            match &m.payload[..8] {
-                b"NSHMGVF1" => {
+                b"NSHMGRC1" => {
+                    if login.slot!=0 || m.payload[40..]!=[0;88]{return Err(rt::DENIED);}
+                    let sid=m.payload[8..40].try_into().unwrap();login.inspected_binding(sid)?;
+                    let mut q=[0;128];q[..8].copy_from_slice(b"NXMGREC1");
+                    login.store_seq=login.store_seq.checked_add(1).ok_or(rt::LIMIT)?;
+                    let port=administrative::port()?;let a=rpc(port,port,login.store_seq,&q)?;
+                    if number(&a)!=0{return Err(number(&a));}reply[8..16].copy_from_slice(&a[8..16]);
+                }
+                b"NSHMGVF1"|b"NSHMGVH1" => {
                     if login.slot!=0{return Err(rt::DENIED);}
                     let sid=m.payload[8..40].try_into().unwrap();login.inspected_binding(sid)?;
                     let reference=login.live.filter(|(s,_)|s==&sid).ok_or(rt::REVOKED)?.1;
                     let mut ctx=[0;128];ctx[..8].copy_from_slice(b"NXMGCTX1");ctx[8..24].copy_from_slice(&reference);ctx[24..56].copy_from_slice(&sid);ctx[56..88].copy_from_slice(&login.route.client);
                     for i in 0..4 {let v=unsafe {(&*(0x401000 as *const core::sync::atomic::AtomicU64).add(44+i)).load(core::sync::atomic::Ordering::Acquire)};ctx[88+8*i..96+8*i].copy_from_slice(&v.to_le_bytes());}
-                    let mut q=m.payload;q[..8].copy_from_slice(b"NXMGOP01");
+                    let mut q=m.payload;q[..8].copy_from_slice(if &m.payload[..8]==b"NSHMGVH1"{b"NXMGHLD1"}else{b"NXMGOP01"});
                     for request in [&ctx,&q] {
                         login.store_seq=login.store_seq.checked_add(1).ok_or(rt::LIMIT)?;
                         let port=administrative::port()?;let a=rpc(port,port,login.store_seq,request)?;

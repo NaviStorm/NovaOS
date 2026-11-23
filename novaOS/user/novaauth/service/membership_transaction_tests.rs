@@ -4,7 +4,7 @@ use super::*;
 fn setup()->Selective {
     crate::sim::reset();
     Selective{binding:crate::sim::binding(),principal:[8;16],epoch:1,
-        instances:[[4;32],[5;32],[5;32]],reserve_sent:false,position:0,closed:false,exec:false,ack_sent:0}
+        instances:[[4;32],[5;32]],reserve_sent:false,position:0,closed:false,exec:false,ack_sent:0}
 }
 fn reserved()->Selective {
     let mut s=setup();s.reserve(&crate::sim::head(false)).unwrap();s

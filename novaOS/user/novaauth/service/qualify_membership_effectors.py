@@ -32,8 +32,9 @@ mod rt {
     pub const BAD_ARGUMENT:u64=3;pub const WOULD_BLOCK:u64=7;pub const CANCELLED:u64=9;
     std::thread_local! {pub static STATUS:core::cell::Cell<u64>=const{core::cell::Cell::new(0)};
         pub static SENDS:core::cell::Cell<u64>=const{core::cell::Cell::new(0)};}
+    pub fn config(_:usize)->u64{5}
     pub fn send_frame(_:u64,_:u64,b:&[u8;128],_:u64,_:bool)->Result<()> {
-        assert_eq!(&b[120..],b"DIRREPLY");assert_eq!(&b[..8],&CANCELLED.to_le_bytes());
+        if &b[..8]!=b"NXMGOUT1" {assert_eq!(&b[120..],b"DIRREPLY");assert_eq!(&b[..8],&CANCELLED.to_le_bytes());}
         SENDS.with(|s|s.set(s.get()+1));match STATUS.with(|s|s.get()) {0=>Ok(()),e=>Err(e)}
     }
 }
@@ -86,7 +87,11 @@ mod execution {
     io_tests=source/'novaOS/user/novaauth/service/membership_io_queue_tests.rs'
     queue=io.read_text().split('fn n(b:',1)[0].replace('//!','//')
     with(destination/'src/lib.rs').open('a') as out:
-        out.write('\nmod io_queue { type Frame=[u8;128];\n'+queue+'\n'+io_tests.read_text()+'\n}\n')
-    (destination/'sources.json').write_text(json.dumps({str(x.relative_to(source)):hashlib.sha256(x.read_bytes()).hexdigest() for x in (p,vfs,tests,execution,exec_tests,io,io_tests,Path(__file__).resolve(),source/"novaOS/abi/native.rs")},indent=2)+'\n')
+        out.write('\nmod io_queue { type Frame=[u8;128]; mod w {pub const UNCERTAIN:u64=22;}\n'+queue+'\n'+io_tests.read_text()+'\n}\n')
+    store=source/'novaOS/user/novaauth/service/src/bin/common/recovery_store.rs'
+    block=store.read_text().split('#[cfg(feature="membership-r2-guest")]')[-1]
+    with(destination/'src/lib.rs').open('a') as out:
+        out.write('\nmod storage_io {use super::rt;struct Storage {sequence:u64,port:u64}mod common {use super::rt;pub fn rpc(_:u64,_:u64,_:u64,_:&[u8;128])->rt::Result<[u8;128]>{Ok([0;128])}pub fn number(b:&[u8])->u64{u64::from_le_bytes(b[..8].try_into().unwrap())}}\n'+block+'\n#[test] fn storage_accepts_reconciliation_and_refuses_other_messages(){let mut s=Storage{sequence:0,port:1};for tag in [b"NXMGCTX2",b"NXMGGO01",b"NXMGDEN1",b"NXMGRES1",b"NXMGREL1"]{let mut q=[0;128];q[..8].copy_from_slice(tag);assert!(s.membership_io(&q).is_ok());}assert_eq!(s.sequence,5);assert_eq!(s.membership_io(&[0;128]),Err(rt::DENIED));assert_eq!(s.sequence,5);}\n}\n')
+    (destination/'sources.json').write_text(json.dumps({str(x.relative_to(source)):hashlib.sha256(x.read_bytes()).hexdigest() for x in (p,vfs,tests,execution,exec_tests,io,io_tests,store,Path(__file__).resolve(),source/"novaOS/abi/native.rs")},indent=2)+'\n')
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('source',type=Path);p.add_argument('destination',type=Path);a=p.parse_args();prepare(a.source,a.destination)

@@ -230,3 +230,14 @@ impl<'a> History<'a> {
     pub fn receipt(&self)->&Receipt{&self.receipt}
 }
 const _:()=assert!(170+MAX_REQUEST+RECEIPT+64+64+crate::framing::HEADER<=crate::framing::MAX);
+
+/// Retrouver les octets originaux depuis une réponse signée, en les liant à
+/// l'empreinte conservée AVANT émission. Aucun nouvel ADMIT n'est produit.
+pub fn recovered_operation<'a>(key:&VerifyingKey,query:&[u8],expected:&[u8;32],response:&'a[u8])
+    ->Result<(OperationOutcome,&'a[u8])> {
+    if response.len()!=522 || *expected==[0;32]{return Err(Error::Format);}
+    let original=&response[168..409];
+    let state=operation_outcome(key,query,original,response)?;
+    if crate::hash(original)!=*expected{return Err(Error::Scope);}
+    Ok((state,original))
+}

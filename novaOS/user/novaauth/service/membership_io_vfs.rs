@@ -2,29 +2,63 @@
 use super::*;
 use novaos_identity::policy::{Origin,Permission};
 #[derive(Default)]
-pub(super) struct Exchange {pub pending:Option<(u64,Frame)>,context:Option<Frame>}
+pub(super) struct Exchange {pub pending:Option<(u64,[u8;80])>,context:Option<[u8;120]>}
+fn compact<const N:usize>(frame:&Frame)->rt::Result<[u8;N]> {
+    if N>128 || frame[N..].iter().any(|b|*b!=0){return Err(rt::BAD_ARGUMENT);}
+    frame[..N].try_into().map_err(|_|rt::BAD_ARGUMENT)
+}
 impl Exchange {
     pub(super) fn enqueue(&mut self,lane:usize,last:&mut u64,tag:u64,data:Frame)->rt::Result<()> {
         if lane!=0 || tag<=*last {return Err(rt::DENIED);}
-        if self.pending.is_some(){return Err(rt::WOULD_BLOCK);}
+        if self.pending.is_some() || self.context.is_some(){return Err(rt::WOULD_BLOCK);}
         if &data[..8]!=b"NXMGDAT1" || data[8..40]==[0;32] || data[40..48]==[0;8]
             || !matches!(data[72],1|2) || !matches!(data[73],1|3) || data[74..]!=[0;54]
             || (data[72]==1 && data[64..72]!=[0;8]) || (data[72]==2 && data[64..72]==[0;8]) {
             return Err(rt::BAD_ARGUMENT);
         }
-        *last=tag;self.pending=Some((tag,data));Ok(())
+        *last=tag;self.pending=Some((tag,compact(&data)?));Ok(())
+    }
+}
+impl Exchange {
+    /// Le fait et la réponse remplacent les buffers de requête : aucun octet
+    /// statique supplémentaire. Une consultation ne rejoue jamais les E/S.
+    fn remembered(&self,digest:&[u8])->rt::Result<Frame> {
+        let mut fact=[0;128];fact[..120].copy_from_slice(&self.context.ok_or(rt::WOULD_BLOCK)?);
+        if &fact[8..16]!=b"NXMGIOA1" || &fact[16..48]!=digest {return Err(rt::DENIED);}
+        Ok(fact)
+    }
+    fn deliver(&mut self)->rt::Result<()> {
+        if let Some((tag,stored))=self.pending {
+            let mut output=[0;128];output[..80].copy_from_slice(&stored);
+            match rt::send_frame(rt::config(5),tag,&output,0,false) {
+                Ok(_) | Err(rt::CLOSED|rt::REVOKED)=>self.pending=None,
+                Err(_)=>return Err(w::UNCERTAIN),
+            }
+        }
+        Ok(())
     }
 }
 fn n(b:&[u8],i:usize)->u64{u64::from_le_bytes(b[i..i+8].try_into().unwrap())}
 fn identity(at:usize)->[u8;32]{let mut b=[0;32];for(i,c)in b.chunks_exact_mut(8).enumerate(){c.copy_from_slice(&exec_files_lab::config(at+i).to_le_bytes());}b}
 pub(super) fn control(s:&mut Session<'_,'_>,q:&Frame)->rt::Result<Frame>{
+    if matches!(&q[..8],b"NXMGRES1"|b"NXMGREL1") {
+        if q[8..40]==[0;32] || q[40..]!=[0;88]{return Err(rt::BAD_ARGUMENT);}
+        // REL est un nettoyage idempotent, jamais une preuve de réussite.
+        if &q[..8]==b"NXMGREL1" && s.membership_io.context.is_none() && s.membership_io.pending.is_none(){return Ok([0;128]);}
+        let fact=s.membership_io.remembered(&q[8..40])?;
+        s.membership_io.deliver()?;
+        if &q[..8]==b"NXMGREL1" {s.membership_io.context=None;return Ok([0;128]);}
+        return Ok(fact);
+    }
+
     if &q[..8]==b"NXMGCTX2" {
         if q[8..24]==[0;16] || q[24..56]==[0;32] || q[56..88]!=identity(472) || q[120..]!=[0;8] {return Err(rt::DENIED);}
         if s.membership_io.context.is_some(){return Err(rt::WOULD_BLOCK);}
-        s.membership_io.context=Some(*q);return Ok([0;128]);
+        s.membership_io.context=Some(compact(q)?);return Ok([0;128]);
     }
-    let c=s.membership_io.context.take().ok_or(rt::DENIED)?;
-    let (tag,data)=s.membership_io.pending.take().ok_or(rt::WOULD_BLOCK)?;
+    let mut c=[0;128];c[..120].copy_from_slice(&s.membership_io.context.take().ok_or(rt::DENIED)?);
+    let (tag,stored)=s.membership_io.pending.take().ok_or(rt::WOULD_BLOCK)?;
+    let mut data=[0;128];data[..80].copy_from_slice(&stored);
     let mut output=[0;128];output[..8].copy_from_slice(b"NXMGOUT1");
     let r=(||{
         if !matches!(&q[..8],b"NXMGGO01"|b"NXMGDEN1") || n(q,8)!=tag
@@ -86,6 +120,11 @@ pub(super) fn control(s:&mut Session<'_,'_>,q:&Frame)->rt::Result<Frame>{
     a[48..80].copy_from_slice(&identity(468));
     a[80..112].copy_from_slice(&novaos_identity::recuperation_view::seal_digest(&output));
     a[112..120].copy_from_slice(&output[8..16]);
-    rt::send_frame(rt::config(5),tag,&output,0,false).map_err(|_|w::UNCERTAIN)?;
+    s.membership_io.context=Some(compact(&a)?);
+    s.membership_io.pending=Some((tag,compact(&output)?));
+    s.membership_io.deliver()?;
     Ok(a)
 }
+
+// Vérifié aussi par les compilations invitées des deux architectures.
+const _:()=assert!(core::mem::size_of::<Exchange>()==224);

@@ -66,7 +66,7 @@ class Events:
 
 
 def membership_revision_pattern(phase, origin, code):
-    if phase not in ('avant', 'apres', 'reprise') or origin not in ('Direct', 'G', 'H') or code not in (0, 10):
+    if phase not in ('avant', 'apres', 'reprise', 'en-vol', 'apres-en-vol') or origin not in ('Direct', 'G', 'H') or code not in (0, 10):
         raise Refus('étape VFS invalide')
     prefix = f'NARM Q1 phase={phase} origine={origin} native={code} octets={0 if code else 12} revision='
     # Une lecture série peut s'arrêter après le premier chiffre d'une révision.

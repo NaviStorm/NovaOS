@@ -66,6 +66,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
+    parser.add_argument('--issue-vfs-perdue',action='store_true',help='Q2 perte de reponse FINISH durable, consultation sans seconde E/S')
+    parser.add_argument('--vfs-en-vol',action='store_true',help='E/S VFS réelle avant retrait, FINISH individuel après réservation')
     parser.add_argument('--membership-io',action='store_true',help='Q1 droits VFS Direct/G/H réels')
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation', 'creation', 'refus-facteurs', 'facteurs-concurrents','retrait-selectif-vide'], required=True)
     parser.add_argument('--mode-commande', choices=['interactif','nsh-c','script'], default='interactif')
@@ -111,6 +113,8 @@ def main():
     if a.carol_reprise and (a.lot!='creation' or not a.redemarrage_issue):parser.error('Carol exige création et reprise')
     if a.coupure_avant_publication and (a.lot!='creation' or not a.redemarrage_issue or a.recu_supprime or a.carol_reprise):parser.error('coupure isolée avant création')
     a.membership_r2=a.lot=='retrait-selectif-vide'
+    if a.vfs_en_vol and (not a.membership_io or a.issue_vfs_perdue):parser.error('admission en vol distincte de perte de FINISH, VFS réel requis')
+    if a.issue_vfs_perdue and not a.membership_io:parser.error('perte issue exige VFS réel')
     if a.membership_io and not a.membership_r2:parser.error('droits réels réservés au retrait sélectif')
     if a.publication_selective_perdue and (not a.membership_r2 or a.acquittement_selectif_perdu):parser.error('perte de publication sélective isolée requise')
     if a.acquittement_selectif_perdu and not a.membership_r2:parser.error('perte ACK réservée au retrait sélectif')
@@ -292,6 +296,13 @@ def main():
             nonlocal enrolled, discarded_receipt, cut_before_publication
             if a.membership_r2 and phase=='before' and 54<=operation<=61:
                 selective_calls[operation]=selective_calls.get(operation,0)+1
+            if phase=='after' and operation==58 and a.issue_vfs_perdue and not discarded_receipt:
+                with transaction(api.path) as db:
+                    rows=db.execute('SELECT op,state,evidence FROM membership_operations ORDER BY sequence').fetchall()
+                if len(rows)!=1 or rows[0][1]!=1 or rows[0][2] is None:raise Refus('fait VFS non durable avant perte')
+                report['issue_vfs_perdue']={'operation':rows[0][0].hex(),'etat':1,'fait':rows[0][2].hex(),'durable_avant_perte':True}
+                discarded_receipt=True
+                raise Refus('UNCERTAIN : reponse FINISH VFS perdue apres persistance')
             if phase=='before' and operation==50 and a.coupure_avant_publication and not cut_before_publication:
                 from exec_vm_debug import qmp as control_vm
                 with transaction(api.path) as db:
@@ -374,20 +385,27 @@ def main():
                 start=len(serial.data);serial.offset=start
                 serial.submit(command+'; echo NXQ1_'+phase+'_$?__FIN')
                 revisions={}
-                for origin in ('Direct','G','H'):
-                    code=10 if phase!='avant' and origin=='G' else 0
+                before=phase in ('avant','en-vol')
+                for origin in (('Direct','H','G') if phase=='en-vol' else ('Direct','G','H')):
+                    code=10 if not before and origin=='G' else 0
                     matched=serial.expect(membership_revision_pattern(phase,origin,code),60)
                     revisions[origin]=int(matched[1])
-                if phase=='avant':
-                    if not revisions['Direct']<revisions['G']<revisions['H']:raise Refus('écritures G/H non démontrées par les révisions P9')
+                if before:
+                    order=('Direct','H','G') if phase=='en-vol' else ('Direct','G','H')
+                    if not revisions[order[0]]<revisions[order[1]]<revisions[order[2]]:raise Refus('écritures G/H non démontrées par les révisions P9')
                 else:
                     before=report['droits_vfs_reels'][-1]['revisions_P9']
-                    if revisions['Direct']!=before['H'] or revisions['G']!=0 or revisions['H']<=revisions['Direct']:raise Refus('écriture G non refusée ou H non conservée')
+                    if revisions['Direct']!=before['G' if phase=='apres-en-vol' else 'H'] or revisions['G']!=0 or revisions['H']<=revisions['Direct']:raise Refus('écriture G non refusée ou H non conservée')
                 status=serial.expect(('NXQ1_'+phase+r'_(\d+)__FIN').encode(),20)
                 if int(status[1])!=0:raise Refus('lecture VFS Q1 échouée')
                 (out/('q1-'+phase+'.bin')).write_bytes(bytes(serial.data[start:serial.offset]))
-                report.setdefault('droits_vfs_reels',[]).append({'phase':phase,'Direct':0,'G':10 if phase!='avant' else 0,'H':0,'reference_hex_par_origine':{origin:((bytes([first])+b'\tB\tC\nD\tE\tF\n').hex() if first is not None else '') for origin,first in [('Direct',65 if phase=='avant' else f[24]^(0x80 if phase=='reprise' else 0)),('G',f[8] if phase=='avant' else None),('H',f[24]^(0x80 if phase=='apres' else 0))]},'comparaison_invitee':True,'revisions_P9':revisions,'droits_demandes':{'Direct':1,'G':3,'H':3}})
-            if a.membership_io:membership_probe('avant')
+                report.setdefault('droits_vfs_reels',[]).append({'phase':phase,'Direct':0,'G':0 if phase in ('avant','en-vol') else 10,'H':0,'reference_hex_par_origine':{origin:((bytes([first])+b'\tB\tC\nD\tE\tF\n').hex() if first is not None else '') for origin,first in [('Direct',65 if phase in ('avant','en-vol') else f[8 if phase=='apres-en-vol' else 24]^(0x80 if phase=='reprise' else 0)),('G',f[8] if phase in ('avant','en-vol') else None),('H',f[24]^(0x80 if phase.startswith('apres') else 0))]},'comparaison_invitee':True,'revisions_P9':revisions,'droits_demandes':{'Direct':1,'G':3,'H':3}})
+            if a.membership_io:membership_probe('en-vol' if a.vfs_en_vol else 'avant')
+            if a.vfs_en_vol:
+                with transaction(api.path) as db:
+                    live=db.execute('SELECT grp,state FROM membership_operations ORDER BY sequence').fetchall()
+                if live!=[(membership_fixture[24:40],1),(membership_fixture[8:24],0)]:raise Refus('admission G non réellement en vol avant retrait')
+                report['vfs_G_en_vol_avant_retrait']=True
             for i, (command, expected) in enumerate(cases):
                 expected_status = 3 if a.lot == 'dernier-administrateur' else 0
                 expected_stderr = b''
@@ -515,7 +533,7 @@ def main():
                         events.expect(bob_pid,message,40)
             if a.membership_io:
                 if b'NARM VFS fermeture selective acquittee retires=01 conserves=02' not in serial.data:raise Refus('fermeture réelle du seul handle G non démontrée')
-                membership_probe('apres')
+                membership_probe('apres-en-vol' if a.vfs_en_vol else 'apres')
             if a.membership_r2 and not restarted:
                 terminal=b'NARM RETIREE recu durable tete P9 relue effecteurs acquittes'
                 if a.acquittement_selectif_absent and terminal in serial.data:raise Refus('RETIREE inventé sans ACK durable')
@@ -543,7 +561,18 @@ def main():
                     with transaction(api.path) as db:
                         admissions=db.execute('SELECT op,subject,grp,kind,instance,packet,sequence,state,evidence,terminal_sequence FROM membership_operations ORDER BY sequence').fetchall()
                     if len(admissions)!=3 or any(r[7]!=1 or r[8] is None or r[9]<=r[6] for r in admissions):raise Refus('issues individuelles Q1 incomplètes')
-                    if [r[2] for r in admissions]!=[membership_fixture[8:24],membership_fixture[24:40],membership_fixture[24:40]]:raise Refus('origines Q1 différentes')
+                    if [r[2] for r in admissions]!=([membership_fixture[24:40],membership_fixture[8:24],membership_fixture[24:40]] if a.vfs_en_vol else [membership_fixture[8:24],membership_fixture[24:40],membership_fixture[24:40]]):raise Refus('origines Q1 différentes')
+                    if a.vfs_en_vol:
+                        reserve=next(n for n,k in ordered if k=='membership-reserved')
+                        publish=next(n for n,k in ordered if k=='membership-withdrawing')
+                        group_op=admissions[1]
+                        if not group_op[6]<reserve<group_op[9]<publish:raise Refus('drainage individuel hors ordre durable attendu')
+                        if b'NARM Q2 drainage VFS apres reservation avant fermeture' not in serial.data:raise Refus('raccord du drainage au coordinateur absent')
+                        report['vfs_drainage_individuel']={'admission':group_op[6],'reservation':reserve,'issue':group_op[9],'publication':publish}
+                    if a.issue_vfs_perdue:
+                        if not discarded_receipt or selective_calls.get(57)!=3 or selective_calls.get(58)!=3:raise Refus('admission ou FINISH repete apres perte')
+                        if b'NARM Q2 UNCERTAIN consultation explicite' not in serial.data or b'NARM Q2 issue individuelle reconciliee sans seconde E/S' not in serial.data:raise Refus('reconciliation invitee non demontree')
+                        report['reconciliation_vfs_sans_repetition']=True
                     report['admissions_vfs']=[{'operation':r[0].hex(),'titulaire':r[1].hex(),'groupe':r[2].hex(),'classe':r[3],'effecteur':r[4].hex(),'session':r[5][209:241].hex(),'position':r[6],'etat':r[7],'fait_sha256':r[8].hex(),'terminal':r[9]} for r in admissions]
             if a.membership_r2 and restarted:
                 membership_probe('reprise')

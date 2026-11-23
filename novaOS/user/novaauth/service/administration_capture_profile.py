@@ -37,7 +37,8 @@ def install(root):
     if selective:
         # La preuve de tête reste vérifiée ; ne pas consommer un 17e DEBUG.
         # Les marqueurs avant/après capture restent présents pour les ressources.
-        edit(base+'tete.rs','    common::marker(b"NAUTH tete signature et portee verifiees");','')
+        if 'common::marker(b"NAUTH tete signature et portee verifiees")' in (root/(base+'tete.rs')).read_text():
+            edit(base+'tete.rs','    common::marker(b"NAUTH tete signature et portee verifiees");','')
         edit(base+'recovery_view.rs','administration.reconcile_request(&mut state,&mut recovered.storage,&m.payload)',
              'administration.reconcile_request(&mut state,&mut recovered.storage,&m.payload,recovered.epoch,recovered.recipients)')
         for name in ('administration_registry.rs','administration_mutations.rs'):

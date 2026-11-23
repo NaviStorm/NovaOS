@@ -72,7 +72,7 @@ impl Storage {
 #[cfg(feature="membership-r2-guest")]
 impl Storage {
     pub fn membership_io(&mut self,q:&[u8;128])->rt::Result<[u8;128]> {
-        if !matches!(&q[..8],b"NXMGCTX2"|b"NXMGGO01"|b"NXMGDEN1"){return Err(rt::DENIED);}
+        if !matches!(&q[..8],b"NXMGCTX2"|b"NXMGGO01"|b"NXMGDEN1"|b"NXMGRES1"|b"NXMGREL1"){return Err(rt::DENIED);}
         self.sequence=self.sequence.checked_add(1).ok_or(rt::LIMIT)?;
         let a=common::rpc(self.port,self.port,self.sequence,q)?;
         if common::number(&a)!=0{return Err(common::number(&a));}Ok(a)

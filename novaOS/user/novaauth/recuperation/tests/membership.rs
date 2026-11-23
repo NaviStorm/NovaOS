@@ -122,3 +122,16 @@ fn history_reconstructs_only_signed_original_and_distinguishes_unfinished() {
     let mut pending=receipt;pending[208]=1;pending[210]=3;sign(&key,&mut pending);let pending=wrap(&pending);
     assert!(!History::verify(&key.verifying_key(),&query,&pending).unwrap().receipt().completed(8,&b.published,8,&b.published).unwrap());
 }
+
+#[test] fn recovered_individual_request_must_match_digest_signature_and_fresh_query() {
+    use ed25519_dalek::VerifyingKey;
+    let v:Vec<Vec<u8>>=include_str!("vectors/membership.txt").lines().map(|s|s.as_bytes().chunks_exact(2).map(|b|u8::from_str_radix(core::str::from_utf8(b).unwrap(),16).unwrap()).collect()).collect();
+    let key=VerifyingKey::from_bytes(v[0].as_slice().try_into().unwrap()).unwrap();
+    let digest=novaos_recovery::hash(&v[8]);
+    let (state,original)=recovered_operation(&key,&v[16],&digest,&v[17]).unwrap();
+    assert_eq!(state,OperationOutcome::Completed([b'C';32]));assert_eq!(original,v[8]);
+    assert!(recovered_operation(&key,&v[16],&[1;32],&v[17]).is_err());
+    let mut query=v[16].clone();query[128]^=1;
+    assert!(recovered_operation(&key,&query,&digest,&v[17]).is_err());
+    for at in [168,280,353,409,417,450,521] {let mut bad=v[17].clone();bad[at]^=1;assert!(recovered_operation(&key,&v[16],&digest,&bad).is_err());}
+}

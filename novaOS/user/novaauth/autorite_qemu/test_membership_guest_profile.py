@@ -38,6 +38,14 @@ class GuestProfile(unittest.TestCase):
    self.assertIsNone(re.search(pattern,line[:end]))
   self.assertEqual(int(re.search(pattern,line)[1]),193)
   self.assertIsNone(re.search(pattern,line.replace(b'origine=G',b'origine=H')))
+ def test_inflight_markers_are_complete_and_never_confused_with_previous_phase(self):
+  for phase in ('en-vol','apres-en-vol'):
+   pattern=membership_revision_pattern(phase,'G',0 if phase=='en-vol' else 10)
+   code=0 if phase=='en-vol' else 10
+   line=f'NARM Q1 phase={phase} origine=G native={code} octets={12 if code==0 else 0} revision=193\r\n'.encode()
+   self.assertIsNone(re.search(pattern,line[:-2]))
+   self.assertEqual(int(re.search(pattern,line)[1]),193)
+   self.assertIsNone(re.search(pattern,line.replace(phase.encode(),b'avant')))
  def test_restarted_vfs_probe_precedes_shell_exit(self):
   source=Path(__file__).with_name('administration_commandes_qemu.py').read_text()
   node=next(n.value for n in ast.walk(ast.parse(source)) if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='line' for t in n.targets))

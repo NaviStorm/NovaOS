@@ -96,6 +96,31 @@ class Membership(unittest.TestCase):
   self.reserve();self.publish();self.ack(1,b'V'*32);self.ack(2,b'R'*32);self.ack(4,b'E'*32)
   self.assertEqual(self.query()[208:211],bytes([1,7,6]));self.ack(1,b'W'*32)
   self.assertEqual(self.query()[208:211],bytes([2,7,7]))
+ def test_shared_verifier_identity_keeps_three_independent_acknowledgements(self):
+  # Deux classes utilisent la même instance authentifiée, jamais le même ACK.
+  self.expected=((1,b'V'*32),(2,b'R'*32),(4,b'R'*32))
+  self.reserve();self.publish();self.ack(4,b'R'*32)
+  self.assertEqual(self.query()[208:211],bytes([1,7,4]))
+  with self.assertRaises(r.Refus):self.ack(4,b'R'*32)
+  with self.assertRaises(r.Refus):self.ack(1,b'R'*32)
+  with self.assertRaises(r.Refus):self.ack(2,b'V'*32)
+  self.assertEqual(self.query()[210],4)
+  self.ack(1,b'V'*32);self.assertEqual(self.query()[208:211],bytes([1,7,5]))
+  self.api=m.Memberships(r.Recovery(self.f.path,self.f.key))
+  self.assertEqual(self.query(b'Z'*32)[208:211],bytes([1,7,5]))
+  self.ack(2,b'R'*32);self.assertEqual(self.query()[208:211],bytes([2,7,7]))
+  with r.transaction(self.f.path) as db:
+   facts=db.execute('SELECT kind,instance,acknowledged FROM membership_effectors WHERE op=? ORDER BY kind',(self.op,)).fetchall()
+  self.assertEqual(facts,[(1,b'V'*32,1),(2,b'R'*32,1),(4,b'R'*32,1)])
+ def test_ack_for_another_operation_or_signed_by_another_actor_is_refused(self):
+  self.expected=((1,b'V'*32),(2,b'R'*32),(4,b'R'*32));self.reserve();self.publish()
+  state=self.f.current()
+  for op,kind,instance in [(b'X'*16,2,b'R'*32),(self.op,8,b'R'*32)]:
+   packet=state.packet()+op+bytes([kind])+instance
+   with self.assertRaises(r.Refus):self.api.acknowledge(state,op,kind,instance,self.f.server.sign(m.EFFECT+packet))
+  packet=state.packet()+self.op+bytes([2])+b'R'*32
+  with self.assertRaises(r.Refus):self.api.acknowledge(state,self.op,2,b'R'*32,self.f.admin.sign(m.EFFECT+packet))
+  self.assertEqual(self.query()[208:211],bytes([1,7,0]))
  def test_limits_leave_no_partial_reservation(self):
   for expected in [(),((1,b'V'*32),)*2,tuple((1,bytes([i])*32) for i in range(1,34))]:
    args=(self.f.current(),self.op,b'N'*32,self.f.principal,1,self.source,expected)

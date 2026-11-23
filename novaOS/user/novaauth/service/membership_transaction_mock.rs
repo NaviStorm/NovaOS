@@ -55,8 +55,10 @@ mod sim {
             let lost=s.lost.filter(|(k,_)|*k==op);if lost.is_some(){s.lost=None;}
             if lost==Some((op,false)){return Err(())}
             let n=match op {
-                54=>{assert!(!s.reserved);s.reserved=true;8},
-                56=>{assert!(s.reserved&&s.published);let kind=q[128];assert_eq!(s.ack&kind,0);s.ack|=kind;8},
+                54=>{assert!(!s.reserved);assert_eq!(q.len(),324);assert_eq!(q[224],3);
+                    for (i,kind) in [1,2,4].iter().enumerate(){assert_eq!(q[225+33*i],*kind);assert_eq!(&q[226+33*i..258+33*i],&[if *kind==1{4}else{5};32]);}
+                    s.reserved=true;8},
+                56=>{assert!(s.reserved&&s.published);let kind=q[128];assert_eq!(&q[112..128],&[6;16]);assert_eq!(&q[129..],&[if kind==1{4}else{5};32]);assert_eq!(s.ack&kind,0);s.ack|=kind;8},
                 59=>{
                     if !s.reserved{return Err(())}let b=binding();let mut v=[0u8;312];v[..8].copy_from_slice(b"NAMBRE01");
                     for (offset,data) in [(8,b.server.as_slice()),(24,&b.domain),(40,&b.incarnation),(72,&b.operation),(88,&b.subject),(104,&b.group),(136,&b.previous),(168,&b.published)]{v[offset..offset+data.len()].copy_from_slice(data);}

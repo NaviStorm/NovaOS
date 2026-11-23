@@ -6,7 +6,7 @@ use ed25519_dalek::VerifyingKey;
 const UNCERTAIN:u64=22;
 pub struct Selective {
     pub binding:Binding,
-    principal:[u8;16],epoch:u64,instances:[[u8;32];3],
+    principal:[u8;16],epoch:u64,instances:[[u8;32];2],
     reserve_sent:bool,position:u64,closed:bool,exec:bool,ack_sent:u8,
 }
 // Extension privée du bloc de démarrage R22, publiée par le noyau QEMU.
@@ -39,7 +39,7 @@ impl Selective {
             operation:h.request,subject:removal.source.subject(),group:removal.source.group(),revision:removal.source.revision(),
             generation:h.generation,previous:current[80..112].try_into().unwrap(),published:h.digest,expected:7},
             principal:removal.principal,epoch:removal.principal_epoch,
-            instances:[identity(23)?,identity(27)?,identity(27)?],
+            instances:[identity(23)?,identity(27)?],
             reserve_sent:false,position:0,closed:false,exec:false,ack_sent:0})
     }
     pub fn query(&self)->rt::Result<Receipt>{Self::query_binding(&self.binding)}
@@ -69,7 +69,7 @@ impl Selective {
             q[128..160].copy_from_slice(&self.binding.published);q[160..176].copy_from_slice(&self.principal);
             q[176..184].copy_from_slice(&self.epoch.to_be_bytes());q[184..200].copy_from_slice(&self.binding.subject);
             q[200..216].copy_from_slice(&self.binding.group);q[216..224].copy_from_slice(&self.binding.revision.to_be_bytes());q[224]=3;
-            for (i,kind) in [1,2,4].iter().enumerate(){q[225+33*i]=*kind;q[226+33*i..258+33*i].copy_from_slice(&self.instances[i]);}
+            for (i,kind) in [1,2,4].iter().enumerate(){q[225+33*i]=*kind;q[226+33*i..258+33*i].copy_from_slice(&self.instances[i.min(1)]);}
             self.reserve_sent=true;let mut reply=[0;MAX];exchange(m::RESERVE,&q,&mut reply)?;
         }
         let r=self.query()?;if r.state()!=State::Reserved{return Err(UNCERTAIN)}self.position=r.position();Ok(())
@@ -78,7 +78,7 @@ impl Selective {
         if self.position==0{return Err(UNCERTAIN)}
         a[8..24].copy_from_slice(&self.binding.subject);a[24..40].copy_from_slice(&self.binding.group);
         a[40..48].copy_from_slice(&self.binding.revision.to_le_bytes());a[48..56].copy_from_slice(b"NXMGSEL1");
-        a[56..72].copy_from_slice(&self.binding.operation);a[72..104].copy_from_slice(&self.instances[2]);Ok(())
+        a[56..72].copy_from_slice(&self.binding.operation);a[72..104].copy_from_slice(&self.instances[1]);Ok(())
     }
     pub fn exec_verified(&mut self){self.exec=true;}
     pub fn close(&mut self,storage:&mut Storage)->rt::Result<()> {
@@ -116,7 +116,7 @@ impl Selective {
             if receipt.acknowledged()&kind!=0{continue;}
             if self.ack_sent&kind!=0{return Err(UNCERTAIN)}
             let mut q=[0;161];q[..112].copy_from_slice(&current);q[112..128].copy_from_slice(&self.binding.operation);
-            q[128]=*kind;q[129..].copy_from_slice(&self.instances[i]);self.ack_sent|=kind;
+            q[128]=*kind;q[129..].copy_from_slice(&self.instances[i.min(1)]);self.ack_sent|=kind;
             let mut reply=[0;MAX];exchange(m::EFFECT,&q,&mut reply)?;
         }
         let r=self.query()?;
@@ -135,3 +135,7 @@ fn closure_marker(removed:u64,retained:u64)->rt::Result<[u8;62]> {
     }
     Ok(out)
 }
+
+// Représentations réellement conservées dans le registre du profil R2.
+const _:()=assert!(core::mem::size_of::<Option<Selective>>()==304);
+const _:()=assert!(core::mem::size_of::<Option<([u8;16],Binding)>>()==224);
