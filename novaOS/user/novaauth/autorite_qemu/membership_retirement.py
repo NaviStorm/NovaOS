@@ -146,6 +146,8 @@ class Memberships:
                 raise Refus('réservation déjà décidée ou retrait en cours : consulter')
             known=db.execute('SELECT DISTINCT kind,instance FROM membership_operations WHERE server=? AND domain=? AND subject=? AND grp=? AND revision=?',
                              (state.server,state.domain,*source.values())).fetchall()
+            from exec_selective import known_effectors
+            known += known_effectors(db,state.server,state.domain,*source.values())
             if any(e not in expected for e in known): raise Refus('inventaire effecteurs incomplet')
             sequence=ex.event(db,'membership-reserved',packet)
             db.execute('INSERT INTO membership_changes VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,0)',
@@ -235,6 +237,8 @@ class Memberships:
 
     @staticmethod
     def _unfinished(db,row,kind=None,instance=None):
+        from exec_selective import unfinished
+        if unfinished(db,row,kind,instance): return True
         sql='SELECT 1 FROM membership_operations WHERE server=? AND domain=? AND subject=? AND grp=? AND revision=?'
         args=[row[k] for k in ('server','domain','subject','grp','revision')]
         if kind is not None: sql+=' AND kind=? AND instance=?';args.extend((kind,instance))

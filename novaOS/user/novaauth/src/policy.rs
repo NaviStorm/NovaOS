@@ -373,3 +373,11 @@ impl State {
         })
     }
 }
+
+#[cfg(feature="administration-lab")]
+impl State {
+    pub(super) fn installed_revision(&self,owner:Id,image:Image)->Result<u64>{
+        self.authorize_installed_image(owner,image.installation,image.digest)?;
+        Ok(self.installation(image.installation)?.revision)
+    }
+}

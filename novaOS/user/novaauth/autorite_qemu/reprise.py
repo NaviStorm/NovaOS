@@ -200,7 +200,10 @@ class Recovery:
             db.execute("INSERT INTO used VALUES(?,?,?)", (server, domain, instance))
 
     @staticmethod
-    def _decided(db, op, *, membership_reservation=False):
+    def _decided(db, op, *, membership_reservation=False, exec_descriptor=False):
+        from exec_selective import registered
+        if not exec_descriptor and registered(db,op):
+            return True
         from membership_retirement import used_operation
         if used_operation(db,op,reservation=not membership_reservation):
             return True

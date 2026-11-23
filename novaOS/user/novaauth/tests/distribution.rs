@@ -464,3 +464,55 @@ fn provisionnement_explicite_bob_sans_promotion_ni_heritage() {
         assert!(matches!(view.executable(a,&key,machine,"bob-seul"),Err(Fault::Denied)));
     }}
 }
+
+#[cfg(feature="administration-lab")]
+#[test]
+fn selective_exec_revalidates_own_state_and_actual_required_permissions() {
+ use novaos_identity::{recuperation::Triplet,recuperation_view::View,policy::*,execution_selective::RequiredPermission};
+ fn view(t:&Triplet)->View{
+  let parts=t.parts();View::read(*t.head(),parts.map(|p|p.len() as u32),|i,o,b|{
+   let o=o as usize;let n=b.len().min(parts[i].len()-o);b[..n].copy_from_slice(&parts[i][o..o+n]);Ok(n)
+  }).unwrap()
+ }
+ let sign=SigningKey::from_bytes(&[3;32]);let key=sign.verifying_key();
+ for sector in [512,4096] {for machine in [Machine::Aarch64,Machine::X86_64] {
+  let mut authority=Ledger::new(SimDevice::new(32,sector).unwrap());let domain=[8;16];
+  let mut fs=provision(SimDevice::new(1024,sector).unwrap(),Ids{fs:[9;16],lv:[10;16]},domain,[11;16],&mut authority).unwrap();
+  let enrol=Enrollment::from_provisioner(&mut authority).unwrap();
+  let mut r=Registry::open(&mut fs,&mut authority,domain).unwrap();
+  let holder=created_user(&r.enroll(&enrol,[1;16],"alice",[4;16],"admins").unwrap());
+  let mut groups=Vec::new();
+  for (op,name) in [(2,"g"),(3,"h")] {let head=r.mutate(r.grant_attested(holder).unwrap(),[op;16],Change::AddGroup(name)).unwrap();groups.push(created_group(&head));}
+  for (op,group) in [(4,groups[0]),(5,groups[1])] {r.mutate(r.grant_attested(holder).unwrap(),[op;16],Change::AddMember(holder,group)).unwrap();}
+  let packet=fixture(&sign,machine,1,&[("alpha",&elf(machine,1))]);
+  let installed_head=r.publish_package(r.grant_attested(holder).unwrap(),[6;16],Action::Install,&key,machine,&packet).unwrap();
+  let loaded=r.load_package(r.grant_attested(holder).unwrap(),&key,machine,"alpha").unwrap();
+  let image=Image{installation:loaded.principal.unwrap(),digest:loaded.digest};
+  r.bind_folder(installed_head,holder,17,b"scope reel requis par le producteur",[7;16]).unwrap();
+  for (op,origin) in [(8,Origin::Direct),(9,Origin::Group(groups[0])),(10,Origin::Group(groups[1]))] {
+   r.set_permission(r.grant_attested(holder).unwrap(),holder,17,image.installation,origin,READ,[op;16]).unwrap();
+  }
+  drop(r);let before=view(&Triplet::capture(&fs,&authority,domain).unwrap());let grant=before.resolve_verified_factor([4;16]).unwrap();
+  let epoch=before.authentication_epoch(grant).unwrap();let own=before.execution_identity(grant,image,&key,machine).unwrap();
+  let needs:[RequiredPermission;3]=[Origin::Direct,Origin::Group(groups[0]),Origin::Group(groups[1])].map(|origin|{
+   let p=before.permission(grant,image,holder,17,origin).unwrap();RequiredPermission{owner:holder,object:17,origin,rights:READ,
+    membership_revision:p.membership_revision,rule_revision:p.rule_revision,image_revision:p.image_revision}
+  });
+  for need in needs {before.revalidate_execution_dependencies(grant,epoch,image,own,&key,machine,&[need]).unwrap();}
+  let removal=before.prepare_membership_removal(grant,[12;16],holder,groups[0]).unwrap();let after=view(&removal.triplet);
+  let fresh=after.resolve_verified_factor([4;16]).unwrap();assert_ne!(before.head(),after.head());
+  after.revalidate_execution_dependencies(fresh,epoch,image,own,&key,machine,&[]).unwrap();
+  for set in [vec![needs[0]],vec![needs[2]],vec![needs[0],needs[2]]] {after.revalidate_execution_dependencies(fresh,epoch,image,own,&key,machine,&set).unwrap();}
+  for set in [vec![needs[1]],vec![needs[0],needs[1]],vec![needs[1],needs[2]]] {assert!(after.revalidate_execution_dependencies(fresh,epoch,image,own,&key,machine,&set).is_err());}
+  assert!(after.revalidate_execution_dependencies(grant,epoch,image,own,&key,machine,&[]).is_err());
+  assert!(after.revalidate_execution_dependencies(fresh,epoch+1,image,own,&key,machine,&[]).is_err());
+  for changed in [ExecutionIdentity{version:own.version+1,..own},ExecutionIdentity{revision:own.revision+1,..own},
+   ExecutionIdentity{administration:1,..own},ExecutionIdentity{offset:own.offset+1,..own},ExecutionIdentity{image_revision:own.image_revision+1,..own}] {
+   assert!(after.revalidate_execution_dependencies(fresh,epoch,image,changed,&key,machine,&[]).is_err());
+  }
+  let added=after.administration_plan(fresh,[13;16],novaos_identity::administration::Operation::AddMember{subject:holder,group:groups[0]},None).unwrap();
+  let reopened=view(&added);let g=reopened.resolve_verified_factor([4;16]).unwrap();
+  assert!(reopened.revalidate_execution_dependencies(g,epoch,image,own,&key,machine,&[needs[1]]).is_err());
+  reopened.revalidate_execution_dependencies(g,epoch,image,own,&key,machine,&[needs[0],needs[2]]).unwrap();
+ }}
+}

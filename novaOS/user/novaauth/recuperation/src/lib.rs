@@ -575,3 +575,9 @@ pub mod membership;
 
 #[cfg(feature="administration-lab")]
 pub mod membership_effectors;
+
+#[cfg(feature="administration-lab")]
+pub mod exec_descriptor;
+
+#[cfg(feature="administration-lab")]
+pub mod exec_selective_message;

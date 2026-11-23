@@ -597,3 +597,9 @@ impl crate::recuperation_view::View {
         out[232..234].copy_from_slice(&(machine as u16).to_le_bytes());Ok(out)
     }
 }
+
+#[cfg(feature="administration-lab")]
+#[path="execution_identity.rs"]
+mod execution_identity;
+#[cfg(feature="administration-lab")]
+pub use execution_identity::ExecutionIdentity;

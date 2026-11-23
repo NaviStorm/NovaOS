@@ -16,9 +16,17 @@ impl Gate {
     pub fn phase(&self)->Phase {self.phase}
     pub fn operation(&self)->[u8;16] {self.operation}
     pub fn position(&self)->u64 {self.position}
+    /// Liaison privée préalable, sans admission et sans mémoire supplémentaire.
+    /// Appel uniquement après le reçu du descripteur et les liaisons vérifiées.
+    pub fn bind(&mut self,op:[u8;16])->Result<(),Error> {
+        if op==[0;16] {return Err(Error::Invalid);}
+        if self.phase!=Phase::Dormant || self.operation!=[0;16] {return Err(Error::Refused);}
+        self.operation=op;Ok(())
+    }
     pub fn request(&mut self,op:[u8;16])->Result<(),Error> {
         if op==[0;16] {return Err(Error::Invalid);}
         if self.phase!=Phase::Dormant {return Err(Error::Refused);}
+        if self.operation!=[0;16] && self.operation!=op {return Err(Error::Invalid);}
         self.operation=op;self.phase=Phase::Requested;Ok(())
     }
     pub fn admit(&mut self,op:[u8;16],position:u64)->Result<(),Error> {
@@ -97,4 +105,17 @@ mod tests {
         assert!(g.admit([2;16],9).is_err());assert!(g.admit([1;16],0).is_err());
         assert!(g.terminal().is_err());assert!(!g.detachable());
     }
+}
+
+#[cfg(test)] mod descriptor_tests {
+ use super::*;
+ #[test] fn dormant_binding_is_immutable_and_is_not_admission(){
+  let mut g=Gate::new();g.bind([7;16]).unwrap();assert_eq!(g.phase(),Phase::Dormant);
+  assert!(g.start().is_err());assert!(g.admit([7;16],1).is_err());
+  assert!(g.bind([7;16]).is_err());assert!(g.bind([8;16]).is_err());
+  assert!(g.request([8;16]).is_err());assert_eq!(g.operation(),[7;16]);
+  g.request([7;16]).unwrap();g.cancel_before_creation().unwrap();
+  assert!(g.admit([7;16],1).is_err());assert!(g.bind([8;16]).is_err());
+  g.settle([7;16],2,[0;32]).unwrap();assert!(g.bind([8;16]).is_err());
+ }
 }
