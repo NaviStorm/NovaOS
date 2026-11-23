@@ -67,6 +67,7 @@ def main():
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--retrait-reserve-reprise-froide',action='store_true',help='Q4 coupure après RESERVE puis refus de nouvelle incarnation tant que le retrait reste incomplet')
+    parser.add_argument('--selective-exec',action='store_true',help='raccord expérimental Direct ; exige une ISO exportée avec selective_exec_profile')
     parser.add_argument('--admission-vfs-perdue',action='store_true',help='Q2 admission durable perdue avant GO : annulation réelle de la file VFS')
     parser.add_argument('--issue-vfs-perdue',action='store_true',help='Q2 perte de reponse FINISH durable, consultation sans seconde E/S')
     parser.add_argument('--vfs-en-vol',action='store_true',help='E/S VFS réelle avant retrait, FINISH individuel après réservation')
@@ -117,6 +118,7 @@ def main():
     if a.carol_reprise and (a.lot!='creation' or not a.redemarrage_issue):parser.error('Carol exige création et reprise')
     if a.coupure_avant_publication and (a.lot!='creation' or not a.redemarrage_issue or a.recu_supprime or a.carol_reprise):parser.error('coupure isolée avant création')
     a.membership_r2=a.lot=='retrait-selectif-vide'
+    if a.selective_exec and not a.membership_r2:parser.error('EXEC sélectif exige le lot privé de retrait')
     if a.vfs_en_vol and (not a.membership_io or a.issue_vfs_perdue):parser.error('admission en vol distincte de perte de FINISH, VFS réel requis')
     if a.admission_vfs_perdue and (not a.membership_io or a.issue_vfs_perdue or a.vfs_en_vol or a.redemarrage_issue or a.retrait_reserve_reprise_froide):parser.error('annulation avant GO : recette indépendante avec VFS réel')
     if a.issue_vfs_perdue and not a.membership_io:parser.error('perte issue exige VFS réel')

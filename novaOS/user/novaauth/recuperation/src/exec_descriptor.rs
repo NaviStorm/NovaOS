@@ -150,3 +150,23 @@ pub fn verify_lookup<'a>(key:&VerifyingKey,query:&[u8;112],reply:&'a [u8])->Resu
   .map_err(|_|Error::Crypto)?;
  Ok((position,d))
 }
+
+impl Descriptor<'_> {
+ /// Métadonnées de la porte privée, lues par le registre. La validité temporelle
+ /// reste vérifiée sous le verrou noyau à la liaison et à la consommation.
+ pub fn matches_direct_metadata(self,m:&[u64;48])->Result<()> {
+  fn bytes<const N:usize>(words:&[u64])->[u8;N]{let mut out=[0;N];for(w,b)in words.iter().zip(out.chunks_exact_mut(8)){b.copy_from_slice(&w.to_le_bytes());}out}
+  let p=self.bytes();
+  if m[32..35]!=[0;3] || m[35]!=1 || self.dependencies().count()!=1 || p[294]!=1
+   || p[72..104]!=bytes::<32>(&m[4..8]) || p[104..136]!=bytes::<32>(&m[43..47])
+   || p[136..152]!=bytes::<16>(&m[29..31]) || u64_at(p,152)!=m[31]
+   || p[160..192]!=bytes::<32>(&m[8..12]) || p[192..224]!=p[72..104]
+   || p[240..256]!=bytes::<16>(&m[12..14]) || p[296..328]!=bytes::<32>(&m[14..18])
+   || p[328..344]!=bytes::<16>(&m[40..42])
+   || u64_at(p,360)!=m[36] || u64_at(p,368)!=m[37] || u64_at(p,384)!=m[38]
+   || u64_at(p,424)!=m[39] || p[432..464]!=bytes::<32>(&m[18..22])
+   || u64_at(p,464)!=m[3] || p[472..504]!=p[72..104] || u64::from(p[504])!=m[47]
+   || (m[26..28]!=[0;2] && self.operation()!=bytes::<16>(&m[26..28])) {return Err(Error::Scope);}
+  Ok(())
+ }
+}

@@ -27,3 +27,12 @@ impl View {
   Ok(())
  }
 }
+
+impl View {
+ /// Décision de politique seulement. Le raccord doit avoir vérifié la session,
+ /// l'instance et le descripteur signé ; cette fonction n'admet aucun processus.
+ pub fn revalidate_execution_subject(&self,subject:Id,epoch:u64,image:Image,
+  expected:ExecutionIdentity,key:&VerifyingKey,machine:Machine,required:&[RequiredPermission])->Result<()> {
+  self.revalidate_execution_dependencies(Grant{owner:subject,head:self.head},epoch,image,expected,key,machine,required)
+ }
+}
