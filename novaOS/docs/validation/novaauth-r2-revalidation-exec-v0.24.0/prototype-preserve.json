@@ -1,0 +1,16 @@
+{
+  "head_initial": "91d0da7766e56b2e60481d9768ce280952ec2022",
+  "sha256_inchanges": {
+    "novaOS/user/novaauth/service/exec_membership_lab.rs": true,
+    "novaOS/user/novaauth/service/membership_exec_tests.rs": true,
+    "novaOS/user/novaauth/service/membership_profile.py": true,
+    "novaOS/user/novaauth/service/qualify_membership_effectors.py": true,
+    "novaOS/user/novaauth/service/src/bin/common/exec_admission_guest.rs": true,
+    "novaOS/user/novaauth/src/distribution.rs": true,
+    "novaOS/user/novaauth/src/membership.rs": true,
+    "novaOS/user/novaauth/service/membership_exec_origin.rs": true,
+    "novaOS/user/novaauth/service/membership_exec_profile.py": true,
+    "novaOS/user/novaauth/service/src/bin/common/membership_exec_gate.rs": true
+  },
+  "prototype_active": false
+}

@@ -1,0 +1,3337 @@
+{
+  "base": "91d0da7766e56b2e60481d9768ce280952ec2022",
+  "commit_banc": "e1718681d07a09cad525d6f832a878a155f9ca98",
+  "profils": [
+    {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "Q2_Q3_croise": "r2-commandes-x86_64-512-retrait-selectif-vide-q23-croise-03",
+      "Q4_refus_froid": "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02",
+      "Q1_VFS": "préconditions et conservation Direct/H contrôlées dans Q2/Q3",
+      "Q2_PREPARE": "non qualifié en invité : liaison individuelle encore manquante",
+      "Q3_nouvelle_admission_simultanee": "ordres testés à l’autorité hôte ; pas de nouvel essai invité pour ce sous-cas",
+      "Q4_disponibilite": "non rétablie ; réservation incomplète et ancienne route RETRAIT_EN_COURS",
+      "EXEC_revalidation": "non implémentée, non exécutée, contrat soumis"
+    },
+    {
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "Q2_Q3_croise": "r2-commandes-x86_64-4096-retrait-selectif-vide-q23-croise-03",
+      "Q4_refus_froid": "r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02",
+      "Q1_VFS": "préconditions et conservation Direct/H contrôlées dans Q2/Q3",
+      "Q2_PREPARE": "non qualifié en invité : liaison individuelle encore manquante",
+      "Q3_nouvelle_admission_simultanee": "ordres testés à l’autorité hôte ; pas de nouvel essai invité pour ce sous-cas",
+      "Q4_disponibilite": "non rétablie ; réservation incomplète et ancienne route RETRAIT_EN_COURS",
+      "EXEC_revalidation": "non implémentée, non exécutée, contrat soumis"
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 512,
+      "Q2_Q3_croise": "r2-commandes-aarch64-512-retrait-selectif-vide-q23-croise-03",
+      "Q4_refus_froid": "r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02",
+      "Q1_VFS": "préconditions et conservation Direct/H contrôlées dans Q2/Q3",
+      "Q2_PREPARE": "non qualifié en invité : liaison individuelle encore manquante",
+      "Q3_nouvelle_admission_simultanee": "ordres testés à l’autorité hôte ; pas de nouvel essai invité pour ce sous-cas",
+      "Q4_disponibilite": "non rétablie ; réservation incomplète et ancienne route RETRAIT_EN_COURS",
+      "EXEC_revalidation": "non implémentée, non exécutée, contrat soumis"
+    },
+    {
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "Q2_Q3_croise": "r2-commandes-aarch64-4096-retrait-selectif-vide-q23-croise-03",
+      "Q4_refus_froid": "r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02",
+      "Q1_VFS": "préconditions et conservation Direct/H contrôlées dans Q2/Q3",
+      "Q2_PREPARE": "non qualifié en invité : liaison individuelle encore manquante",
+      "Q3_nouvelle_admission_simultanee": "ordres testés à l’autorité hôte ; pas de nouvel essai invité pour ce sous-cas",
+      "Q4_disponibilite": "non rétablie ; réservation incomplète et ancienne route RETRAIT_EN_COURS",
+      "EXEC_revalidation": "non implémentée, non exécutée, contrat soumis"
+    }
+  ],
+  "essais": [
+    {
+      "essai": "r2-commandes-aarch64-4096-retrait-selectif-vide-q23-croise-03",
+      "scenario": "Q2-Q3-croise",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "code": 0,
+      "succes": true,
+      "coordination": {
+        "debut_attente": "2026-11-23T18:03:56.579219+00:00",
+        "debut_attente_ns": 461077586671666,
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "conflits_evites": [],
+        "acquisition": "2026-11-23T18:03:56.579616+00:00",
+        "acquisition_ns": 461077586969416,
+        "attente_secondes": 0.00029775,
+        "commit_de_reference": "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+        "arbre_noyau_services": "6722a86eddfa0e27339bd9dbd269b39dd4176d6f",
+        "source_ELF_et_banc": "e63d3f237ae932558f67adcee42a41b2144735e7",
+        "commit_banc": "91d0da7766e56b2e60481d9768ce280952ec2022",
+        "banc_q4_sha256": "013e7189d3e44266af4899924dc7351746a98b3b02675232efc49a5206e69b5b",
+        "collecteur_sha256": "53702ba446321a2c8bd265bbeb715e04f210daee1f9db011a974b78d89ed5a27",
+        "banc_sha256": "e1e158c11a02e113110f3dc2d80b11e293824eabab7d6671c97faeab0448f98f",
+        "artefacts_sha256": {
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64.iso": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-kernel.elf": "a76734fd22d4fa4a4d541b6c3b423bc6857738c5c2cd2fa8140de6bac8107f9e",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-registre.elf": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-shell.elf": "1fe4d082fe8407435186476a7828c6ff9f3ea46ac686d0e14edeb870c9778496",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-admin-sonde.elf": "b4d886418efeecdf376eade829c7e3191a5212ea369d296fe614224cac76b8b0",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-sonde.paquet": "6dbe21aa9737e5bdda826a88e21165fc37d52c2e5d7afbaf95b6f4ed149fcaa6",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-4096/identites.p9": "f8cc554c6a99d4537424dffc4313a4c98146e3216507fb7c50ccc8a48b5a1158",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-4096/autorite.raw": "cf7849aa0f970ec263e58c175520c1c119227a0660a614a12113588bdf9a9163"
+        },
+        "liaison_source_artefacts_verifiee": true,
+        "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+        "adaptateur_option": "--cfg r2_page_512",
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+          "aarch64",
+          "4096",
+          "--kernel",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-kernel.elf",
+          "--iso",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64.iso",
+          "--registre",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-registre.elf",
+          "--genese",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-4096/identites.p9",
+          "--triplet",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-4096/triplet.bin",
+          "--cles",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05",
+          "--decision",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+          "--detenteur",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+          "--capture",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+          "--sortie",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/revalidation-selective-91d0da7/r2-commandes-aarch64-4096-retrait-selectif-vide-q23-croise-03",
+          "--secrets",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/cinq-fonctions-82349ed/r2-commandes-aarch64-4096-retrait-selectif-vide-q23-croise-03",
+          "--lot",
+          "retrait-selectif-vide",
+          "--bob-minimal",
+          "--membership-io",
+          "--retraits-concurrents",
+          "--vfs-en-vol"
+        ],
+        "execution_ns": 461077645775291,
+        "code": 0,
+        "execution_secondes": 32.966229584,
+        "liberation": "2026-11-23T18:04:29.604806+00:00",
+        "verrou_libere": true
+      },
+      "intention": {
+        "operation": "aa1b7711d430dcd767ed299ea19bd778"
+      },
+      "retraits_concurrents": [
+        {
+          "preparation": 0,
+          "confirmation": 0,
+          "operation": "aa1b7711d430dcd767ed299ea19bd778",
+          "recu": "0000000000000000aa1b7711d430dcd767ed299ea19bd7781f000000000000000100000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "preparation": 0,
+          "confirmation": 5,
+          "operation": "aa1b7711d430dcd767ed299ea19bd778",
+          "recu": "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "retrait": {
+        "etat": "RETIREE",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "dce9623c4886448f983e86f14419d8db03000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "dce9623c4886448f983e86f14419d8db06000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "dce9623c4886448f983e86f14419d8db06000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": true
+      },
+      "ordre_durable": [
+        {
+          "position": 6,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 7,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 8,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 13,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 14,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 15,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 17,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 18,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 19,
+          "transition": "membership-retired"
+        },
+        {
+          "position": 22,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 23,
+          "transition": "membership-operation-finished"
+        }
+      ],
+      "droits_vfs": [
+        {
+          "phase": "en-vol",
+          "Direct": 0,
+          "G": 0,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "41094209430a44094509460a",
+            "G": "28094209430a44094509460a",
+            "H": "a9094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 15,
+            "H": 193,
+            "G": 194
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        },
+        {
+          "phase": "apres-en-vol",
+          "Direct": 0,
+          "G": 10,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "28094209430a44094509460a",
+            "G": "",
+            "H": "29094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 194,
+            "G": 0,
+            "H": 274
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        }
+      ],
+      "admissions": [
+        {
+          "operation": "775d5d028e8943e0e3853c6d5eab3876",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "a94c7aa68e5779499a56a7fadaecd8b7",
+          "classe": 1,
+          "effecteur": "dce9623c4886448f983e86f14419d8db03000000000000800100000000000000",
+          "session": "1e227826af352a99e90e4932702010d495c27a1f5b38860a312a3362263a80f5",
+          "position": 6,
+          "etat": 1,
+          "fait_sha256": "45912128eb0cda0229330bf6c32379b816fad6728542e88e89f72d4283d9be5c",
+          "terminal": 7
+        },
+        {
+          "operation": "973115f498e497fd7bc81a4eafa5f634",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "2859df791130439c35d4d64482f9a753",
+          "classe": 1,
+          "effecteur": "dce9623c4886448f983e86f14419d8db03000000000000800100000000000000",
+          "session": "1e227826af352a99e90e4932702010d495c27a1f5b38860a312a3362263a80f5",
+          "position": 8,
+          "etat": 1,
+          "fait_sha256": "61479f563d14011ae6d494e9d9bef54fe0f14bc7b635c35eb7d9cab202d86154",
+          "terminal": 14
+        },
+        {
+          "operation": "3406319d6f02270cbc7cf812d506d64a",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "a94c7aa68e5779499a56a7fadaecd8b7",
+          "classe": 1,
+          "effecteur": "dce9623c4886448f983e86f14419d8db03000000000000800100000000000000",
+          "session": "1e227826af352a99e90e4932702010d495c27a1f5b38860a312a3362263a80f5",
+          "position": 22,
+          "etat": 1,
+          "fait_sha256": "5178193d65448353f1106a6ee8f99218a6e0a661ebc0b07b77b72ad1a75be444",
+          "terminal": 23
+        }
+      ],
+      "drainage_individuel": {
+        "admission": 8,
+        "reservation": 13,
+        "issue": 14,
+        "publication": 15
+      },
+      "reprise_froide": null,
+      "rpc_selectifs": {
+        "57": 3,
+        "59": 14,
+        "58": 3,
+        "54": 1,
+        "55": 1,
+        "56": 3
+      },
+      "drainage_global": true,
+      "invites": [
+        {
+          "succes": true,
+          "erreur_invite": null,
+          "iso_sha256": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+          "registre_sha256": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 4,
+            "3": 4,
+            "4": 3,
+            "5": 3,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 3,
+            "12": 4,
+            "13": 4,
+            "14": 2,
+            "15": 2,
+            "18": 2,
+            "19": 4,
+            "20": 2,
+            "21": 2,
+            "22": 3,
+            "23": 3
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": true,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": 424,
+          "echeance_ms": 10424,
+          "fin_ms": 3280,
+          "duree_hote_ns": 32167267166,
+          "phase": "invite",
+          "pics_RAM_observes": {
+            "resident": 2992,
+            "retenu": 3461,
+            "utilisateur": 323,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 16,
+            "image": 2186
+          },
+          "minimum_cadres_libres_observe": 58690,
+          "derniere_collecte": "NAEXEC restitue pid=4 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=0 nodes=0 espaces=0 cadres_ipc=0 cadres_libres=Ok(60916)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        }
+      ],
+      "preuves": {
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q23-croise-03/commandes-resultats.json": "ae0c61fae89b9957cc9e3ee0cd8170597c7f1f53d84c2a4200558862dd71a60a",
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q23-croise-03/invite/resultat.json": "56ad5e0f06d78568067f057633b6a73fa71066368d125f3722c98e025f929300",
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q23-croise-03/invite/invite.serial": "8665233f6453537a4dce3cd1ae70226a66157fcb4b2614ebae9aff50b7073b55",
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q23-croise-03/invite/rpc-public.log": "de3463c85e7ced15b26a540e5bca84f3611f93c67b6314ee90a71aeb06c3df4d"
+      }
+    },
+    {
+      "essai": "r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02",
+      "scenario": "Q4-reserve-froid",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "code": 0,
+      "succes": true,
+      "coordination": {
+        "debut_attente": "2026-11-23T17:57:58.823396+00:00",
+        "debut_attente_ns": 460719832368666,
+        "architecture": "aarch64",
+        "secteur": 4096,
+        "conflits_evites": [],
+        "acquisition": "2026-11-23T17:57:58.823882+00:00",
+        "acquisition_ns": 460719832727500,
+        "attente_secondes": 0.000358834,
+        "commit_de_reference": "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+        "arbre_noyau_services": "6722a86eddfa0e27339bd9dbd269b39dd4176d6f",
+        "source_ELF_et_banc": "e63d3f237ae932558f67adcee42a41b2144735e7",
+        "commit_banc": "91d0da7766e56b2e60481d9768ce280952ec2022",
+        "banc_q4_sha256": "013e7189d3e44266af4899924dc7351746a98b3b02675232efc49a5206e69b5b",
+        "collecteur_sha256": "53702ba446321a2c8bd265bbeb715e04f210daee1f9db011a974b78d89ed5a27",
+        "banc_sha256": "e1e158c11a02e113110f3dc2d80b11e293824eabab7d6671c97faeab0448f98f",
+        "artefacts_sha256": {
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64.iso": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-kernel.elf": "a76734fd22d4fa4a4d541b6c3b423bc6857738c5c2cd2fa8140de6bac8107f9e",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-registre.elf": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-shell.elf": "1fe4d082fe8407435186476a7828c6ff9f3ea46ac686d0e14edeb870c9778496",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-admin-sonde.elf": "b4d886418efeecdf376eade829c7e3191a5212ea369d296fe614224cac76b8b0",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-sonde.paquet": "6dbe21aa9737e5bdda826a88e21165fc37d52c2e5d7afbaf95b6f4ed149fcaa6",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-4096/identites.p9": "f8cc554c6a99d4537424dffc4313a4c98146e3216507fb7c50ccc8a48b5a1158",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-4096/autorite.raw": "cf7849aa0f970ec263e58c175520c1c119227a0660a614a12113588bdf9a9163"
+        },
+        "liaison_source_artefacts_verifiee": true,
+        "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+        "adaptateur_option": "--cfg r2_page_512",
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+          "aarch64",
+          "4096",
+          "--kernel",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-kernel.elf",
+          "--iso",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64.iso",
+          "--registre",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-registre.elf",
+          "--genese",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-4096/identites.p9",
+          "--triplet",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-4096/triplet.bin",
+          "--cles",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05",
+          "--decision",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+          "--detenteur",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+          "--capture",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+          "--sortie",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/revalidation-selective-91d0da7/r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02",
+          "--secrets",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/cinq-fonctions-82349ed/r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02",
+          "--lot",
+          "retrait-selectif-vide",
+          "--bob-minimal",
+          "--membership-io",
+          "--retrait-reserve-reprise-froide"
+        ],
+        "execution_ns": 460719901209666,
+        "code": 0,
+        "execution_secondes": 28.964977459,
+        "liberation": "2026-11-23T17:58:27.857483+00:00",
+        "verrou_libere": true
+      },
+      "intention": {
+        "operation": "3a4cd642c105ebe3d07d6ce12eac27c2",
+        "confirmation": "3a4cd642c105ebe3d07d6ce12eac27c29a034364c8d27dcdeda68f2b5cf7c0bd"
+      },
+      "retraits_concurrents": null,
+      "retrait": null,
+      "ordre_durable": null,
+      "droits_vfs": [
+        {
+          "phase": "avant",
+          "Direct": 0,
+          "G": 0,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "41094209430a44094509460a",
+            "G": "28094209430a44094509460a",
+            "H": "a9094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 15,
+            "G": 193,
+            "H": 194
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        }
+      ],
+      "admissions": null,
+      "drainage_individuel": null,
+      "reprise_froide": {
+        "statut_RPC_approbation": 5,
+        "registre_en_quarantaine": true,
+        "ressources_restituees": {
+          "registre": {
+            "pid": 7,
+            "statut_retrait": 125,
+            "roots": 0,
+            "handles": 0,
+            "waits": 0,
+            "pages": 0,
+            "pile": 0,
+            "threads": 0
+          },
+          "signataire": {
+            "pid": 8,
+            "statut_retrait": 125,
+            "roots": 0,
+            "handles": 0,
+            "waits": 0,
+            "pages": 0,
+            "pile": 0,
+            "threads": 0
+          }
+        },
+        "refus_activation": true,
+        "aucune_authentification": true,
+        "aucun_triplet_active": true,
+        "succes": true,
+        "reservation": {
+          "operation": "3a4cd642c105ebe3d07d6ce12eac27c2",
+          "etat": "RESERVEE",
+          "generation_attendue": 31,
+          "tete_avant": "58d432e927ba1713092f56e3cd12725efc80ac385d519810a7da1b73b7069e88",
+          "tete_prevue": "b5169398de324da12274d31cc3aa85c4ad6dad10db0b70d97556d8e7cd32f5ac",
+          "mutations": 0,
+          "admissions_non_terminees": 0,
+          "effecteurs": [
+            {
+              "classe": 1,
+              "instance": "aad50b7dac8a7c38cc33f7d0238b436703000000000000800100000000000000",
+              "acquitte": false
+            },
+            {
+              "classe": 2,
+              "instance": "aad50b7dac8a7c38cc33f7d0238b436706000000000000800100000000000000",
+              "acquitte": false
+            },
+            {
+              "classe": 4,
+              "instance": "aad50b7dac8a7c38cc33f7d0238b436706000000000000800100000000000000",
+              "acquitte": false
+            }
+          ]
+        },
+        "refus_drainage": "UNCERTAIN : drainage sélectif incomplet, nouvelle incarnation inactive",
+        "ancienne_incarnation": "aad50b7dac8a7c38cc33f7d0238b436707000000000000800100000000000000",
+        "nouvelle_incarnation_refusee": "f6d4861eca8cb8d8def5ad748821b8d707000000000000800100000000000000",
+        "reservation_inchangee": true,
+        "publications": 0,
+        "nouveaux_acquittements": 0,
+        "ancienne_route": "RETRAIT_EN_COURS",
+        "activation_nouvelle": false,
+        "disponibilite_restauree": false,
+        "resultat_seconde_VM": 0,
+        "retour_signataire_normal": false,
+        "retrait_signataire_supervise": true,
+        "drainage_registre": true,
+        "plafond_respecte": true
+      },
+      "rpc_selectifs": null,
+      "drainage_global": null,
+      "invites": [
+        {
+          "succes": false,
+          "erreur_invite": "b'(?m)^DEBUG pid=(\\\\d+) NXR2_1_(\\\\d+)__FIN\\\\r?\\\\n'",
+          "iso_sha256": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+          "registre_sha256": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 4,
+            "3": 4,
+            "4": 3,
+            "5": 2,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 3,
+            "12": 4,
+            "13": 4,
+            "14": 2,
+            "15": 2,
+            "18": 2,
+            "19": 4,
+            "20": 2,
+            "21": 3,
+            "22": 3
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": true,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": 408,
+          "echeance_ms": 10408,
+          "fin_ms": 3252,
+          "duree_hote_ns": 21195888875,
+          "phase": "invite",
+          "pics_RAM_observes": {
+            "resident": 2964,
+            "retenu": 3433,
+            "utilisateur": 207,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 16,
+            "image": 2186
+          },
+          "minimum_cadres_libres_observe": 58856,
+          "derniere_collecte": "NAEXEC restitue pid=21 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=57 nodes=118 espaces=17 cadres_ipc=66 cadres_libres=Ok(58874)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        },
+        {
+          "succes": true,
+          "erreur_invite": null,
+          "iso_sha256": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+          "registre_sha256": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": false,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": null,
+          "echeance_ms": null,
+          "fin_ms": null,
+          "duree_hote_ns": 6828783583,
+          "phase": "redemarrage-reserve",
+          "pics_RAM_observes": {
+            "resident": 2964,
+            "retenu": 3433,
+            "utilisateur": 207,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 16,
+            "image": 2186
+          },
+          "minimum_cadres_libres_observe": 59937,
+          "derniere_collecte": "NAEXEC restitue pid=8 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=9 nodes=16 espaces=4 cadres_ipc=14 cadres_libres=Ok(60447)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        }
+      ],
+      "preuves": {
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02/commandes-resultats.json": "083f577b2d481e3f2748508df4ca179838b7fc7a2e32b956f58889bcaa68c0dc",
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02/invite/resultat.json": "4d3e8ff63d2bafa1ef8a52eae9445e9564f3438d2ee9d7e997af6b6fc21766a2",
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02/invite/invite.serial": "faae7f5fbe82cd5fabb852d08c84780cbdf87d3c4c285c247f4f64bd65837133",
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02/invite/rpc-public.log": "050ee89f401c7b8f1e696a2450b80f96a7c5901584e8fe2201704b13f2c6510e",
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/resultat.json": "1a62cabf7360893b4f4287b4e4d8a58ef216e1e15e502dbdeece566a98e0d9ad",
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/invite.serial": "00edb71891663ff51575b1eb904f04c80400717ae2f5d2bba0b4404d31985033",
+        "r2-commandes-aarch64-4096-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/rpc-public.log": "1640b8920c52befbd51bf091f75b67c554dd4699c39478d451205afbbab1fc8e"
+      }
+    },
+    {
+      "essai": "r2-commandes-aarch64-512-retrait-selectif-vide-q23-croise-03",
+      "scenario": "Q2-Q3-croise",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "code": 0,
+      "succes": true,
+      "coordination": {
+        "debut_attente": "2026-11-23T18:03:12.985326+00:00",
+        "debut_attente_ns": 461033993006166,
+        "architecture": "aarch64",
+        "secteur": 512,
+        "conflits_evites": [],
+        "acquisition": "2026-11-23T18:03:12.985866+00:00",
+        "acquisition_ns": 461033993401083,
+        "attente_secondes": 0.000394917,
+        "commit_de_reference": "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+        "arbre_noyau_services": "6722a86eddfa0e27339bd9dbd269b39dd4176d6f",
+        "source_ELF_et_banc": "e63d3f237ae932558f67adcee42a41b2144735e7",
+        "commit_banc": "91d0da7766e56b2e60481d9768ce280952ec2022",
+        "banc_q4_sha256": "013e7189d3e44266af4899924dc7351746a98b3b02675232efc49a5206e69b5b",
+        "collecteur_sha256": "53702ba446321a2c8bd265bbeb715e04f210daee1f9db011a974b78d89ed5a27",
+        "banc_sha256": "e1e158c11a02e113110f3dc2d80b11e293824eabab7d6671c97faeab0448f98f",
+        "artefacts_sha256": {
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64.iso": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-kernel.elf": "a76734fd22d4fa4a4d541b6c3b423bc6857738c5c2cd2fa8140de6bac8107f9e",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-registre.elf": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-shell.elf": "1fe4d082fe8407435186476a7828c6ff9f3ea46ac686d0e14edeb870c9778496",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-admin-sonde.elf": "b4d886418efeecdf376eade829c7e3191a5212ea369d296fe614224cac76b8b0",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-sonde.paquet": "6dbe21aa9737e5bdda826a88e21165fc37d52c2e5d7afbaf95b6f4ed149fcaa6",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-512/identites.p9": "6be7fd49a56f0da9c32ff8748700e2e181d40559afb31fcb2308ae1cd1ca80d4",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-512/autorite.raw": "cf7849aa0f970ec263e58c175520c1c119227a0660a614a12113588bdf9a9163"
+        },
+        "liaison_source_artefacts_verifiee": true,
+        "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+        "adaptateur_option": "--cfg r2_page_512",
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+          "aarch64",
+          "512",
+          "--kernel",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-kernel.elf",
+          "--iso",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64.iso",
+          "--registre",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-registre.elf",
+          "--genese",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-512/identites.p9",
+          "--triplet",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-512/triplet.bin",
+          "--cles",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05",
+          "--decision",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+          "--detenteur",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+          "--capture",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+          "--sortie",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/revalidation-selective-91d0da7/r2-commandes-aarch64-512-retrait-selectif-vide-q23-croise-03",
+          "--secrets",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/cinq-fonctions-82349ed/r2-commandes-aarch64-512-retrait-selectif-vide-q23-croise-03",
+          "--lot",
+          "retrait-selectif-vide",
+          "--bob-minimal",
+          "--membership-io",
+          "--retraits-concurrents",
+          "--vfs-en-vol"
+        ],
+        "execution_ns": 461034056359416,
+        "code": 0,
+        "execution_secondes": 43.504218417,
+        "liberation": "2026-11-23T18:03:56.553255+00:00",
+        "verrou_libere": true
+      },
+      "intention": {
+        "operation": "938a521a81c65aa0a1cc5d2b78c18a70"
+      },
+      "retraits_concurrents": [
+        {
+          "preparation": 0,
+          "confirmation": 0,
+          "operation": "938a521a81c65aa0a1cc5d2b78c18a70",
+          "recu": "0000000000000000938a521a81c65aa0a1cc5d2b78c18a701f000000000000000100000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "preparation": 0,
+          "confirmation": 5,
+          "operation": "938a521a81c65aa0a1cc5d2b78c18a70",
+          "recu": "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "retrait": {
+        "etat": "RETIREE",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "433553f6b56f1e11ff009f6bfd697c0403000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "433553f6b56f1e11ff009f6bfd697c0406000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "433553f6b56f1e11ff009f6bfd697c0406000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": true
+      },
+      "ordre_durable": [
+        {
+          "position": 6,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 7,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 8,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 13,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 14,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 15,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 17,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 18,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 19,
+          "transition": "membership-retired"
+        },
+        {
+          "position": 22,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 23,
+          "transition": "membership-operation-finished"
+        }
+      ],
+      "droits_vfs": [
+        {
+          "phase": "en-vol",
+          "Direct": 0,
+          "G": 0,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "41094209430a44094509460a",
+            "G": "28094209430a44094509460a",
+            "H": "a9094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 15,
+            "H": 193,
+            "G": 194
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        },
+        {
+          "phase": "apres-en-vol",
+          "Direct": 0,
+          "G": 10,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "28094209430a44094509460a",
+            "G": "",
+            "H": "29094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 194,
+            "G": 0,
+            "H": 274
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        }
+      ],
+      "admissions": [
+        {
+          "operation": "11e4580aeee6ea9de25aa2492616c98e",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "a94c7aa68e5779499a56a7fadaecd8b7",
+          "classe": 1,
+          "effecteur": "433553f6b56f1e11ff009f6bfd697c0403000000000000800100000000000000",
+          "session": "5d250a3d6eaf8218904a6d9fcd6232035a6e2c6853ce1719b9153554236b8258",
+          "position": 6,
+          "etat": 1,
+          "fait_sha256": "45912128eb0cda0229330bf6c32379b816fad6728542e88e89f72d4283d9be5c",
+          "terminal": 7
+        },
+        {
+          "operation": "c7a3af61bba2cb0c8323daeeb7dc3ec7",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "2859df791130439c35d4d64482f9a753",
+          "classe": 1,
+          "effecteur": "433553f6b56f1e11ff009f6bfd697c0403000000000000800100000000000000",
+          "session": "5d250a3d6eaf8218904a6d9fcd6232035a6e2c6853ce1719b9153554236b8258",
+          "position": 8,
+          "etat": 1,
+          "fait_sha256": "61479f563d14011ae6d494e9d9bef54fe0f14bc7b635c35eb7d9cab202d86154",
+          "terminal": 14
+        },
+        {
+          "operation": "7ae789370b68d3db1b6d105300401229",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "a94c7aa68e5779499a56a7fadaecd8b7",
+          "classe": 1,
+          "effecteur": "433553f6b56f1e11ff009f6bfd697c0403000000000000800100000000000000",
+          "session": "5d250a3d6eaf8218904a6d9fcd6232035a6e2c6853ce1719b9153554236b8258",
+          "position": 22,
+          "etat": 1,
+          "fait_sha256": "5178193d65448353f1106a6ee8f99218a6e0a661ebc0b07b77b72ad1a75be444",
+          "terminal": 23
+        }
+      ],
+      "drainage_individuel": {
+        "admission": 8,
+        "reservation": 13,
+        "issue": 14,
+        "publication": 15
+      },
+      "reprise_froide": null,
+      "rpc_selectifs": {
+        "57": 3,
+        "59": 14,
+        "58": 3,
+        "54": 1,
+        "55": 1,
+        "56": 3
+      },
+      "drainage_global": true,
+      "invites": [
+        {
+          "succes": true,
+          "erreur_invite": null,
+          "iso_sha256": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+          "registre_sha256": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 4,
+            "3": 4,
+            "4": 3,
+            "5": 3,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 3,
+            "12": 4,
+            "13": 4,
+            "14": 2,
+            "15": 2,
+            "18": 2,
+            "19": 4,
+            "20": 2,
+            "21": 2,
+            "22": 3,
+            "23": 3
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": true,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": 408,
+          "echeance_ms": 10408,
+          "fin_ms": 3712,
+          "duree_hote_ns": 42688106000,
+          "phase": "invite",
+          "pics_RAM_observes": {
+            "resident": 2992,
+            "retenu": 3461,
+            "utilisateur": 323,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 16,
+            "image": 2186
+          },
+          "minimum_cadres_libres_observe": 58690,
+          "derniere_collecte": "NAEXEC restitue pid=3 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=0 nodes=0 espaces=0 cadres_ipc=0 cadres_libres=Ok(60916)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        }
+      ],
+      "preuves": {
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q23-croise-03/commandes-resultats.json": "aadf0f81044859cf7f80a8ff6e2c79816ed82dbe9a571545d86af4389ec06b0b",
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q23-croise-03/invite/resultat.json": "6b9291ff8f6d9e200f3a16146576dfc87e1732d4e80bca332231ec84ae28a6bc",
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q23-croise-03/invite/invite.serial": "13632bbe9a2f1cff5d24487519bb584c4e9c077cf35b0245e9ae94db9b0deb8c",
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q23-croise-03/invite/rpc-public.log": "9e9f1c0f4a88241cf0b7170fc8fea4f19937d0ef9458c5cf1563d89123355cc1"
+      }
+    },
+    {
+      "essai": "r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02",
+      "scenario": "Q4-reserve-froid",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "code": 0,
+      "succes": true,
+      "coordination": {
+        "debut_attente": "2026-11-23T17:57:23.316804+00:00",
+        "debut_attente_ns": 460684325906708,
+        "architecture": "aarch64",
+        "secteur": 512,
+        "conflits_evites": [],
+        "acquisition": "2026-11-23T17:57:23.317231+00:00",
+        "acquisition_ns": 460684326224375,
+        "attente_secondes": 0.000317667,
+        "commit_de_reference": "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+        "arbre_noyau_services": "6722a86eddfa0e27339bd9dbd269b39dd4176d6f",
+        "source_ELF_et_banc": "e63d3f237ae932558f67adcee42a41b2144735e7",
+        "commit_banc": "91d0da7766e56b2e60481d9768ce280952ec2022",
+        "banc_q4_sha256": "013e7189d3e44266af4899924dc7351746a98b3b02675232efc49a5206e69b5b",
+        "collecteur_sha256": "53702ba446321a2c8bd265bbeb715e04f210daee1f9db011a974b78d89ed5a27",
+        "banc_sha256": "e1e158c11a02e113110f3dc2d80b11e293824eabab7d6671c97faeab0448f98f",
+        "artefacts_sha256": {
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64.iso": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-kernel.elf": "a76734fd22d4fa4a4d541b6c3b423bc6857738c5c2cd2fa8140de6bac8107f9e",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-registre.elf": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-shell.elf": "1fe4d082fe8407435186476a7828c6ff9f3ea46ac686d0e14edeb870c9778496",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-admin-sonde.elf": "b4d886418efeecdf376eade829c7e3191a5212ea369d296fe614224cac76b8b0",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-sonde.paquet": "6dbe21aa9737e5bdda826a88e21165fc37d52c2e5d7afbaf95b6f4ed149fcaa6",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-512/identites.p9": "6be7fd49a56f0da9c32ff8748700e2e181d40559afb31fcb2308ae1cd1ca80d4",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-512/autorite.raw": "cf7849aa0f970ec263e58c175520c1c119227a0660a614a12113588bdf9a9163"
+        },
+        "liaison_source_artefacts_verifiee": true,
+        "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+        "adaptateur_option": "--cfg r2_page_512",
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+          "aarch64",
+          "512",
+          "--kernel",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-kernel.elf",
+          "--iso",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64.iso",
+          "--registre",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/aarch64-registre.elf",
+          "--genese",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-512/identites.p9",
+          "--triplet",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-aarch64-512/triplet.bin",
+          "--cles",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05",
+          "--decision",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+          "--detenteur",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+          "--capture",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+          "--sortie",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/revalidation-selective-91d0da7/r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02",
+          "--secrets",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/cinq-fonctions-82349ed/r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02",
+          "--lot",
+          "retrait-selectif-vide",
+          "--bob-minimal",
+          "--membership-io",
+          "--retrait-reserve-reprise-froide"
+        ],
+        "execution_ns": 460684390350958,
+        "code": 0,
+        "execution_secondes": 35.412393708,
+        "liberation": "2026-11-23T17:57:58.793917+00:00",
+        "verrou_libere": true
+      },
+      "intention": {
+        "operation": "aef89505e9681b40cfbb56543d198089",
+        "confirmation": "aef89505e9681b40cfbb56543d1980896ac86881392441f2af6741d7a666d200"
+      },
+      "retraits_concurrents": null,
+      "retrait": null,
+      "ordre_durable": null,
+      "droits_vfs": [
+        {
+          "phase": "avant",
+          "Direct": 0,
+          "G": 0,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "41094209430a44094509460a",
+            "G": "28094209430a44094509460a",
+            "H": "a9094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 15,
+            "G": 193,
+            "H": 194
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        }
+      ],
+      "admissions": null,
+      "drainage_individuel": null,
+      "reprise_froide": {
+        "statut_RPC_approbation": 5,
+        "registre_en_quarantaine": true,
+        "ressources_restituees": {
+          "registre": {
+            "pid": 7,
+            "statut_retrait": 125,
+            "roots": 0,
+            "handles": 0,
+            "waits": 0,
+            "pages": 0,
+            "pile": 0,
+            "threads": 0
+          },
+          "signataire": {
+            "pid": 8,
+            "statut_retrait": 125,
+            "roots": 0,
+            "handles": 0,
+            "waits": 0,
+            "pages": 0,
+            "pile": 0,
+            "threads": 0
+          }
+        },
+        "refus_activation": true,
+        "aucune_authentification": true,
+        "aucun_triplet_active": true,
+        "succes": true,
+        "reservation": {
+          "operation": "aef89505e9681b40cfbb56543d198089",
+          "etat": "RESERVEE",
+          "generation_attendue": 31,
+          "tete_avant": "58d432e927ba1713092f56e3cd12725efc80ac385d519810a7da1b73b7069e88",
+          "tete_prevue": "ea3fcbf7632f97d9e8ef181e8814aadeab370f1ee3b57e7e7a2dec90f081bc35",
+          "mutations": 0,
+          "admissions_non_terminees": 0,
+          "effecteurs": [
+            {
+              "classe": 1,
+              "instance": "5e1bd92d6a2eae1a538bcd08838700a703000000000000800100000000000000",
+              "acquitte": false
+            },
+            {
+              "classe": 2,
+              "instance": "5e1bd92d6a2eae1a538bcd08838700a706000000000000800100000000000000",
+              "acquitte": false
+            },
+            {
+              "classe": 4,
+              "instance": "5e1bd92d6a2eae1a538bcd08838700a706000000000000800100000000000000",
+              "acquitte": false
+            }
+          ]
+        },
+        "refus_drainage": "UNCERTAIN : drainage sélectif incomplet, nouvelle incarnation inactive",
+        "ancienne_incarnation": "5e1bd92d6a2eae1a538bcd08838700a707000000000000800100000000000000",
+        "nouvelle_incarnation_refusee": "d1085ddc5553fabf5080ddf5d98047c707000000000000800100000000000000",
+        "reservation_inchangee": true,
+        "publications": 0,
+        "nouveaux_acquittements": 0,
+        "ancienne_route": "RETRAIT_EN_COURS",
+        "activation_nouvelle": false,
+        "disponibilite_restauree": false,
+        "resultat_seconde_VM": 0,
+        "retour_signataire_normal": false,
+        "retrait_signataire_supervise": true,
+        "drainage_registre": true,
+        "plafond_respecte": true
+      },
+      "rpc_selectifs": null,
+      "drainage_global": null,
+      "invites": [
+        {
+          "succes": false,
+          "erreur_invite": "b'(?m)^DEBUG pid=(\\\\d+) NXR2_1_(\\\\d+)__FIN\\\\r?\\\\n'",
+          "iso_sha256": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+          "registre_sha256": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 4,
+            "3": 4,
+            "4": 3,
+            "5": 2,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 3,
+            "12": 4,
+            "13": 4,
+            "14": 2,
+            "15": 2,
+            "18": 2,
+            "19": 4,
+            "20": 2,
+            "21": 3,
+            "22": 3
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": true,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": 396,
+          "echeance_ms": 10396,
+          "fin_ms": 3884,
+          "duree_hote_ns": 27475926834,
+          "phase": "invite",
+          "pics_RAM_observes": {
+            "resident": 2964,
+            "retenu": 3433,
+            "utilisateur": 207,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 16,
+            "image": 2186
+          },
+          "minimum_cadres_libres_observe": 58856,
+          "derniere_collecte": "NAEXEC restitue pid=21 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=57 nodes=118 espaces=17 cadres_ipc=66 cadres_libres=Ok(58874)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        },
+        {
+          "succes": true,
+          "erreur_invite": null,
+          "iso_sha256": "11c37b8058abafeeb0d3a5ef62a504858319c716aaf67281e0ca2a3b19986478",
+          "registre_sha256": "133a928c5264d75a1d81f7deb84e1275ec768b7e9eadf8e900e83660193bd1dd",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              61,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              152,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": false,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": null,
+          "echeance_ms": null,
+          "fin_ms": null,
+          "duree_hote_ns": 7059856458,
+          "phase": "redemarrage-reserve",
+          "pics_RAM_observes": {
+            "resident": 2964,
+            "retenu": 3433,
+            "utilisateur": 207,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 16,
+            "image": 2186
+          },
+          "minimum_cadres_libres_observe": 59937,
+          "derniere_collecte": "NAEXEC restitue pid=8 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=9 nodes=16 espaces=4 cadres_ipc=14 cadres_libres=Ok(60447)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        }
+      ],
+      "preuves": {
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02/commandes-resultats.json": "f5db9ad97fadeb3a08203223baec6eb92d33c5009142fcae4f54442368735014",
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02/invite/resultat.json": "b81c3c2140446fc71bec774b2330d76f12a4220a5d4f9de8fea09a269dade1e2",
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02/invite/invite.serial": "9a2dffd5c2ef72e9e56a7551d8e547b79fa55c13857ea9f378284a0d5c1744e7",
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02/invite/rpc-public.log": "5f940c43843798ff3e28e7d6ad5bbf7e4d5a0ec0c94ac28124be9f44d7a76702",
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/resultat.json": "63ae26cc98824196e7ec28b4eadcd19016118642a8cf8220db348d5f1383664b",
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/invite.serial": "dbdd9d87a0c7e15b9cac4fe0573923a0df1b1b200f6098ec058ecf4de0dc9f36",
+        "r2-commandes-aarch64-512-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/rpc-public.log": "b8aaa2011e6417f7d4046b554d02dd477a7cb69ddc0247190ee58109ec64b772"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-4096-retrait-selectif-vide-q23-croise-03",
+      "scenario": "Q2-Q3-croise",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "code": 0,
+      "succes": true,
+      "coordination": {
+        "debut_attente": "2026-11-23T18:02:48.475992+00:00",
+        "debut_attente_ns": 461009483741291,
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "conflits_evites": [],
+        "acquisition": "2026-11-23T18:02:48.476460+00:00",
+        "acquisition_ns": 461009484097583,
+        "attente_secondes": 0.000356292,
+        "commit_de_reference": "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+        "arbre_noyau_services": "6722a86eddfa0e27339bd9dbd269b39dd4176d6f",
+        "source_ELF_et_banc": "e63d3f237ae932558f67adcee42a41b2144735e7",
+        "commit_banc": "91d0da7766e56b2e60481d9768ce280952ec2022",
+        "banc_q4_sha256": "013e7189d3e44266af4899924dc7351746a98b3b02675232efc49a5206e69b5b",
+        "collecteur_sha256": "53702ba446321a2c8bd265bbeb715e04f210daee1f9db011a974b78d89ed5a27",
+        "banc_sha256": "e1e158c11a02e113110f3dc2d80b11e293824eabab7d6671c97faeab0448f98f",
+        "artefacts_sha256": {
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf": "7ff2a60d98944e3f01659ff88eeba89ede765a579c7cb8b7eabbad086e25577b",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-shell.elf": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-admin-sonde.elf": "0d2f1a9dbd1dcf821e192ae8c101aad4f4f5455d200151a4a0fe815ca9745f1e",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-sonde.paquet": "3bc6de4802b239f48783b0f8a2a57e45b1234fcee9c449301f57170e9f2ae087",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-4096/identites.p9": "bc6a76ed2614289790ec0c2b112d9e4be7dd3ef353a43f7b565265bf7c19f5a4",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-4096/autorite.raw": "95209f70be2e1e0f3f956ea395f6e54b0da6d1c958eb53d7dff2ecb4cfbba10c"
+        },
+        "liaison_source_artefacts_verifiee": true,
+        "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+        "adaptateur_option": "--cfg r2_page_512",
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+          "x86_64",
+          "4096",
+          "--kernel",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf",
+          "--iso",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso",
+          "--registre",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf",
+          "--genese",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-4096/identites.p9",
+          "--triplet",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-4096/triplet.bin",
+          "--cles",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05",
+          "--decision",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+          "--detenteur",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+          "--capture",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+          "--sortie",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/revalidation-selective-91d0da7/r2-commandes-x86_64-4096-retrait-selectif-vide-q23-croise-03",
+          "--secrets",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/cinq-fonctions-82349ed/r2-commandes-x86_64-4096-retrait-selectif-vide-q23-croise-03",
+          "--lot",
+          "retrait-selectif-vide",
+          "--bob-minimal",
+          "--membership-io",
+          "--retraits-concurrents",
+          "--vfs-en-vol"
+        ],
+        "execution_ns": 461009544308458,
+        "code": 0,
+        "execution_secondes": 24.42056,
+        "liberation": "2026-11-23T18:03:12.957350+00:00",
+        "verrou_libere": true
+      },
+      "intention": {
+        "operation": "f46d8a4cf9d702c41e51a3afcd6f8aa2"
+      },
+      "retraits_concurrents": [
+        {
+          "preparation": 0,
+          "confirmation": 0,
+          "operation": "f46d8a4cf9d702c41e51a3afcd6f8aa2",
+          "recu": "0000000000000000f46d8a4cf9d702c41e51a3afcd6f8aa21f000000000000000100000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "preparation": 0,
+          "confirmation": 5,
+          "operation": "f46d8a4cf9d702c41e51a3afcd6f8aa2",
+          "recu": "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "retrait": {
+        "etat": "RETIREE",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "c5240d461078dd35b01424d458f54c7703000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "c5240d461078dd35b01424d458f54c7706000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "c5240d461078dd35b01424d458f54c7706000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": true
+      },
+      "ordre_durable": [
+        {
+          "position": 6,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 7,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 8,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 13,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 14,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 15,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 17,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 18,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 19,
+          "transition": "membership-retired"
+        },
+        {
+          "position": 22,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 23,
+          "transition": "membership-operation-finished"
+        }
+      ],
+      "droits_vfs": [
+        {
+          "phase": "en-vol",
+          "Direct": 0,
+          "G": 0,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "41094209430a44094509460a",
+            "G": "28094209430a44094509460a",
+            "H": "a9094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 15,
+            "H": 193,
+            "G": 194
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        },
+        {
+          "phase": "apres-en-vol",
+          "Direct": 0,
+          "G": 10,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "28094209430a44094509460a",
+            "G": "",
+            "H": "29094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 194,
+            "G": 0,
+            "H": 274
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        }
+      ],
+      "admissions": [
+        {
+          "operation": "4b920ea2df54659cb9e60bbc36ce63cb",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "a94c7aa68e5779499a56a7fadaecd8b7",
+          "classe": 1,
+          "effecteur": "c5240d461078dd35b01424d458f54c7703000000000000800100000000000000",
+          "session": "fd893dee7d3c632a462d614459817512e226f69b8a1800c015c05dc2b5c18e60",
+          "position": 6,
+          "etat": 1,
+          "fait_sha256": "45912128eb0cda0229330bf6c32379b816fad6728542e88e89f72d4283d9be5c",
+          "terminal": 7
+        },
+        {
+          "operation": "3cf8d08a2d269353b62b9c9932d0f66f",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "2859df791130439c35d4d64482f9a753",
+          "classe": 1,
+          "effecteur": "c5240d461078dd35b01424d458f54c7703000000000000800100000000000000",
+          "session": "fd893dee7d3c632a462d614459817512e226f69b8a1800c015c05dc2b5c18e60",
+          "position": 8,
+          "etat": 1,
+          "fait_sha256": "61479f563d14011ae6d494e9d9bef54fe0f14bc7b635c35eb7d9cab202d86154",
+          "terminal": 14
+        },
+        {
+          "operation": "76e4cbf410bb9c3320adffbab1172054",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "a94c7aa68e5779499a56a7fadaecd8b7",
+          "classe": 1,
+          "effecteur": "c5240d461078dd35b01424d458f54c7703000000000000800100000000000000",
+          "session": "fd893dee7d3c632a462d614459817512e226f69b8a1800c015c05dc2b5c18e60",
+          "position": 22,
+          "etat": 1,
+          "fait_sha256": "5178193d65448353f1106a6ee8f99218a6e0a661ebc0b07b77b72ad1a75be444",
+          "terminal": 23
+        }
+      ],
+      "drainage_individuel": {
+        "admission": 8,
+        "reservation": 13,
+        "issue": 14,
+        "publication": 15
+      },
+      "reprise_froide": null,
+      "rpc_selectifs": {
+        "57": 3,
+        "59": 14,
+        "58": 3,
+        "54": 1,
+        "55": 1,
+        "56": 3
+      },
+      "drainage_global": true,
+      "invites": [
+        {
+          "succes": true,
+          "erreur_invite": null,
+          "iso_sha256": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "registre_sha256": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 4,
+            "3": 4,
+            "4": 3,
+            "5": 3,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 3,
+            "12": 4,
+            "13": 4,
+            "14": 2,
+            "15": 2,
+            "18": 2,
+            "19": 4,
+            "20": 2,
+            "21": 2,
+            "22": 3,
+            "23": 3
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": true,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": 700,
+          "echeance_ms": 10700,
+          "fin_ms": 3684,
+          "duree_hote_ns": 23614461333,
+          "phase": "invite",
+          "pics_RAM_observes": {
+            "resident": 3044,
+            "retenu": 3044,
+            "utilisateur": 330,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 32,
+            "image": 2220
+          },
+          "minimum_cadres_libres_observe": 59207,
+          "derniere_collecte": "NAEXEC restitue pid=2 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=0 nodes=0 espaces=0 cadres_ipc=0 cadres_libres=Ok(61462)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        }
+      ],
+      "preuves": {
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q23-croise-03/commandes-resultats.json": "9fba00aa15e71a985db6376cb100c00a9f63d94edb184e1cc189a9580644312a",
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q23-croise-03/invite/resultat.json": "98752a89ee022fb18fce96c0a85cd1ec3b22348db5f2d168b7ee360c64601d3d",
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q23-croise-03/invite/invite.serial": "f7fcf838b47950c7ca8d644cfb5cc4b8a623df41e2335a4a9c137a46159fa531",
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q23-croise-03/invite/rpc-public.log": "f28b0e83f5a01d764d70eb53b5ecce807cab598ad7015e6a040214fe3561c10f"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02",
+      "scenario": "Q4-reserve-froid",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "code": 0,
+      "succes": true,
+      "coordination": {
+        "debut_attente": "2026-11-23T17:57:05.256701+00:00",
+        "debut_attente_ns": 460666265889166,
+        "architecture": "x86_64",
+        "secteur": 4096,
+        "conflits_evites": [],
+        "acquisition": "2026-11-23T17:57:05.257166+00:00",
+        "acquisition_ns": 460666266234875,
+        "attente_secondes": 0.000345709,
+        "commit_de_reference": "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+        "arbre_noyau_services": "6722a86eddfa0e27339bd9dbd269b39dd4176d6f",
+        "source_ELF_et_banc": "e63d3f237ae932558f67adcee42a41b2144735e7",
+        "commit_banc": "91d0da7766e56b2e60481d9768ce280952ec2022",
+        "banc_q4_sha256": "013e7189d3e44266af4899924dc7351746a98b3b02675232efc49a5206e69b5b",
+        "collecteur_sha256": "53702ba446321a2c8bd265bbeb715e04f210daee1f9db011a974b78d89ed5a27",
+        "banc_sha256": "e1e158c11a02e113110f3dc2d80b11e293824eabab7d6671c97faeab0448f98f",
+        "artefacts_sha256": {
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf": "7ff2a60d98944e3f01659ff88eeba89ede765a579c7cb8b7eabbad086e25577b",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-shell.elf": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-admin-sonde.elf": "0d2f1a9dbd1dcf821e192ae8c101aad4f4f5455d200151a4a0fe815ca9745f1e",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-sonde.paquet": "3bc6de4802b239f48783b0f8a2a57e45b1234fcee9c449301f57170e9f2ae087",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-4096/identites.p9": "bc6a76ed2614289790ec0c2b112d9e4be7dd3ef353a43f7b565265bf7c19f5a4",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-4096/autorite.raw": "95209f70be2e1e0f3f956ea395f6e54b0da6d1c958eb53d7dff2ecb4cfbba10c"
+        },
+        "liaison_source_artefacts_verifiee": true,
+        "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+        "adaptateur_option": "--cfg r2_page_512",
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+          "x86_64",
+          "4096",
+          "--kernel",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf",
+          "--iso",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso",
+          "--registre",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf",
+          "--genese",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-4096/identites.p9",
+          "--triplet",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-4096/triplet.bin",
+          "--cles",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05",
+          "--decision",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+          "--detenteur",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+          "--capture",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+          "--sortie",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/revalidation-selective-91d0da7/r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02",
+          "--secrets",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/cinq-fonctions-82349ed/r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02",
+          "--lot",
+          "retrait-selectif-vide",
+          "--bob-minimal",
+          "--membership-io",
+          "--retrait-reserve-reprise-froide"
+        ],
+        "execution_ns": 460666325467250,
+        "code": 0,
+        "execution_secondes": 17.973771166,
+        "liberation": "2026-11-23T17:57:23.290261+00:00",
+        "verrou_libere": true
+      },
+      "intention": {
+        "operation": "2d8dfef902e83916153299beca239390",
+        "confirmation": "2d8dfef902e83916153299beca239390724aa40f69b81f33d7928d5d7ddcfb93"
+      },
+      "retraits_concurrents": null,
+      "retrait": null,
+      "ordre_durable": null,
+      "droits_vfs": [
+        {
+          "phase": "avant",
+          "Direct": 0,
+          "G": 0,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "41094209430a44094509460a",
+            "G": "28094209430a44094509460a",
+            "H": "a9094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 15,
+            "G": 193,
+            "H": 194
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        }
+      ],
+      "admissions": null,
+      "drainage_individuel": null,
+      "reprise_froide": {
+        "statut_RPC_approbation": 5,
+        "registre_en_quarantaine": true,
+        "ressources_restituees": {
+          "registre": {
+            "pid": 7,
+            "statut_retrait": 125,
+            "roots": 0,
+            "handles": 0,
+            "waits": 0,
+            "pages": 0,
+            "pile": 0,
+            "threads": 0
+          },
+          "signataire": {
+            "pid": 8,
+            "statut_retrait": 125,
+            "roots": 0,
+            "handles": 0,
+            "waits": 0,
+            "pages": 0,
+            "pile": 0,
+            "threads": 0
+          }
+        },
+        "refus_activation": true,
+        "aucune_authentification": true,
+        "aucun_triplet_active": true,
+        "succes": true,
+        "reservation": {
+          "operation": "2d8dfef902e83916153299beca239390",
+          "etat": "RESERVEE",
+          "generation_attendue": 31,
+          "tete_avant": "4fe83a2322b2bb816d91912d5ba9faea4d3a475ba314867b7e5a2f98af83ff5c",
+          "tete_prevue": "fc31eac63753e802a009e151a5b25241557670be97231fcf99bb8f5bb498045c",
+          "mutations": 0,
+          "admissions_non_terminees": 0,
+          "effecteurs": [
+            {
+              "classe": 1,
+              "instance": "b1ec594513451c56c7ba6bed0e4bb6f603000000000000800100000000000000",
+              "acquitte": false
+            },
+            {
+              "classe": 2,
+              "instance": "b1ec594513451c56c7ba6bed0e4bb6f606000000000000800100000000000000",
+              "acquitte": false
+            },
+            {
+              "classe": 4,
+              "instance": "b1ec594513451c56c7ba6bed0e4bb6f606000000000000800100000000000000",
+              "acquitte": false
+            }
+          ]
+        },
+        "refus_drainage": "UNCERTAIN : drainage sélectif incomplet, nouvelle incarnation inactive",
+        "ancienne_incarnation": "b1ec594513451c56c7ba6bed0e4bb6f607000000000000800100000000000000",
+        "nouvelle_incarnation_refusee": "2eabd5b0d4e1edd1bde540e32e3de90707000000000000800100000000000000",
+        "reservation_inchangee": true,
+        "publications": 0,
+        "nouveaux_acquittements": 0,
+        "ancienne_route": "RETRAIT_EN_COURS",
+        "activation_nouvelle": false,
+        "disponibilite_restauree": false,
+        "resultat_seconde_VM": 0,
+        "retour_signataire_normal": false,
+        "retrait_signataire_supervise": true,
+        "drainage_registre": true,
+        "plafond_respecte": true
+      },
+      "rpc_selectifs": null,
+      "drainage_global": null,
+      "invites": [
+        {
+          "succes": false,
+          "erreur_invite": "b'(?m)^DEBUG pid=(\\\\d+) NXR2_1_(\\\\d+)__FIN\\\\r?\\\\n'",
+          "iso_sha256": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "registre_sha256": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 4,
+            "3": 4,
+            "4": 3,
+            "5": 2,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 3,
+            "12": 4,
+            "13": 4,
+            "14": 2,
+            "15": 2,
+            "18": 2,
+            "19": 4,
+            "20": 2,
+            "21": 3,
+            "22": 3
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": true,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": 720,
+          "echeance_ms": 10720,
+          "fin_ms": 3624,
+          "duree_hote_ns": 14156923750,
+          "phase": "invite",
+          "pics_RAM_observes": {
+            "resident": 3012,
+            "retenu": 3012,
+            "utilisateur": 213,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 32,
+            "image": 2220
+          },
+          "minimum_cadres_libres_observe": 59375,
+          "derniere_collecte": "NAEXEC restitue pid=21 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=57 nodes=118 espaces=17 cadres_ipc=66 cadres_libres=Ok(59392)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        },
+        {
+          "succes": true,
+          "erreur_invite": null,
+          "iso_sha256": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "registre_sha256": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": false,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": null,
+          "echeance_ms": null,
+          "fin_ms": null,
+          "duree_hote_ns": 2936628625,
+          "phase": "redemarrage-reserve",
+          "pics_RAM_observes": {
+            "resident": 3016,
+            "retenu": 3016,
+            "utilisateur": 214,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 32,
+            "image": 2220
+          },
+          "minimum_cadres_libres_observe": 60477,
+          "derniere_collecte": "NAEXEC restitue pid=8 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=9 nodes=16 espaces=4 cadres_ipc=14 cadres_libres=Ok(61002)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        }
+      ],
+      "preuves": {
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02/commandes-resultats.json": "593362c6ee3fdc2abed1e61159018e3de1bd19455540f5cb84049105938457c0",
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02/invite/resultat.json": "ed0bb2d4560575ee3d5dca3c912de0383ab373f2c6ec1305b42fe4c8ff12d4dd",
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02/invite/invite.serial": "a8db683b973b10689fa4888f26c34f69a784a981bd2c7e4c7e51bcdfa4fda51e",
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02/invite/rpc-public.log": "5cb419224d5e75d63ac43caedacea6f8fc3c1449892441a499ee5e263263154c",
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/resultat.json": "c3438f36a32f2428bc641fc472405b578ab07ce3bd3e5e351141d0dd7a79bf6a",
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/invite.serial": "cc9abe7afbe0752669e486eafbf6c25c4e6cf2257fcadb7954776cdb782f2e56",
+        "r2-commandes-x86_64-4096-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/rpc-public.log": "c2579b4a797f5d2d44f1bed068c42a64c11f4b7611a7304e40e9f47b4bb7d951"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-q23-croise-03",
+      "scenario": "Q2-Q3-croise",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "code": 0,
+      "succes": true,
+      "coordination": {
+        "debut_attente": "2026-11-23T18:02:03.979909+00:00",
+        "debut_attente_ns": 460964987851166,
+        "architecture": "x86_64",
+        "secteur": 512,
+        "conflits_evites": [],
+        "acquisition": "2026-11-23T18:02:03.980399+00:00",
+        "acquisition_ns": 460964988222208,
+        "attente_secondes": 0.000371042,
+        "commit_de_reference": "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+        "arbre_noyau_services": "6722a86eddfa0e27339bd9dbd269b39dd4176d6f",
+        "source_ELF_et_banc": "e63d3f237ae932558f67adcee42a41b2144735e7",
+        "commit_banc": "91d0da7766e56b2e60481d9768ce280952ec2022",
+        "banc_q4_sha256": "013e7189d3e44266af4899924dc7351746a98b3b02675232efc49a5206e69b5b",
+        "collecteur_sha256": "53702ba446321a2c8bd265bbeb715e04f210daee1f9db011a974b78d89ed5a27",
+        "banc_sha256": "e1e158c11a02e113110f3dc2d80b11e293824eabab7d6671c97faeab0448f98f",
+        "artefacts_sha256": {
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf": "7ff2a60d98944e3f01659ff88eeba89ede765a579c7cb8b7eabbad086e25577b",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-shell.elf": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-admin-sonde.elf": "0d2f1a9dbd1dcf821e192ae8c101aad4f4f5455d200151a4a0fe815ca9745f1e",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-sonde.paquet": "3bc6de4802b239f48783b0f8a2a57e45b1234fcee9c449301f57170e9f2ae087",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/identites.p9": "ff6c43cb70d1765f8069e8290dc4cb08e4b68e4221b07276b0a7892052fde9d3",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/autorite.raw": "95209f70be2e1e0f3f956ea395f6e54b0da6d1c958eb53d7dff2ecb4cfbba10c"
+        },
+        "liaison_source_artefacts_verifiee": true,
+        "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+        "adaptateur_option": "--cfg r2_page_512",
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+          "x86_64",
+          "512",
+          "--kernel",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf",
+          "--iso",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso",
+          "--registre",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf",
+          "--genese",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/identites.p9",
+          "--triplet",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/triplet.bin",
+          "--cles",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05",
+          "--decision",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+          "--detenteur",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+          "--capture",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+          "--sortie",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/revalidation-selective-91d0da7/r2-commandes-x86_64-512-retrait-selectif-vide-q23-croise-03",
+          "--secrets",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/cinq-fonctions-82349ed/r2-commandes-x86_64-512-retrait-selectif-vide-q23-croise-03",
+          "--lot",
+          "retrait-selectif-vide",
+          "--bob-minimal",
+          "--membership-io",
+          "--retraits-concurrents",
+          "--vfs-en-vol"
+        ],
+        "execution_ns": 460965050342708,
+        "code": 0,
+        "execution_secondes": 24.545477958,
+        "liberation": "2026-11-23T18:02:28.588117+00:00",
+        "verrou_libere": true
+      },
+      "intention": {
+        "operation": "88c7fc4dbe8d1430888c4f9a124b5a0a"
+      },
+      "retraits_concurrents": [
+        {
+          "preparation": 0,
+          "confirmation": 0,
+          "operation": "88c7fc4dbe8d1430888c4f9a124b5a0a",
+          "recu": "000000000000000088c7fc4dbe8d1430888c4f9a124b5a0a1f000000000000000100000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "preparation": 0,
+          "confirmation": 5,
+          "operation": "88c7fc4dbe8d1430888c4f9a124b5a0a",
+          "recu": "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        }
+      ],
+      "retrait": {
+        "etat": "RETIREE",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "def9e52ea1358b2f3aa26ab209778c5003000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "def9e52ea1358b2f3aa26ab209778c5006000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "def9e52ea1358b2f3aa26ab209778c5006000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": true
+      },
+      "ordre_durable": [
+        {
+          "position": 6,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 7,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 8,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 13,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 14,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 15,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 17,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 18,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 19,
+          "transition": "membership-retired"
+        },
+        {
+          "position": 22,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 23,
+          "transition": "membership-operation-finished"
+        }
+      ],
+      "droits_vfs": [
+        {
+          "phase": "en-vol",
+          "Direct": 0,
+          "G": 0,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "41094209430a44094509460a",
+            "G": "28094209430a44094509460a",
+            "H": "a9094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 15,
+            "H": 193,
+            "G": 194
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        },
+        {
+          "phase": "apres-en-vol",
+          "Direct": 0,
+          "G": 10,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "28094209430a44094509460a",
+            "G": "",
+            "H": "29094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 194,
+            "G": 0,
+            "H": 274
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        }
+      ],
+      "admissions": [
+        {
+          "operation": "0151eae51894771cb11184a4d0297042",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "a94c7aa68e5779499a56a7fadaecd8b7",
+          "classe": 1,
+          "effecteur": "def9e52ea1358b2f3aa26ab209778c5003000000000000800100000000000000",
+          "session": "e263f3fab85582e3e4032d1abd7326ca3b2531f7ab994f6a745405a44495289b",
+          "position": 6,
+          "etat": 1,
+          "fait_sha256": "45912128eb0cda0229330bf6c32379b816fad6728542e88e89f72d4283d9be5c",
+          "terminal": 7
+        },
+        {
+          "operation": "c62dfe33c1c112b36ac4fa0c547d6669",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "2859df791130439c35d4d64482f9a753",
+          "classe": 1,
+          "effecteur": "def9e52ea1358b2f3aa26ab209778c5003000000000000800100000000000000",
+          "session": "e263f3fab85582e3e4032d1abd7326ca3b2531f7ab994f6a745405a44495289b",
+          "position": 8,
+          "etat": 1,
+          "fait_sha256": "61479f563d14011ae6d494e9d9bef54fe0f14bc7b635c35eb7d9cab202d86154",
+          "terminal": 14
+        },
+        {
+          "operation": "5837020f5ffc4364eb102e336ec1aa2e",
+          "titulaire": "e7dcfc8994f427b1ebc8302659e784ef",
+          "groupe": "a94c7aa68e5779499a56a7fadaecd8b7",
+          "classe": 1,
+          "effecteur": "def9e52ea1358b2f3aa26ab209778c5003000000000000800100000000000000",
+          "session": "e263f3fab85582e3e4032d1abd7326ca3b2531f7ab994f6a745405a44495289b",
+          "position": 22,
+          "etat": 1,
+          "fait_sha256": "5178193d65448353f1106a6ee8f99218a6e0a661ebc0b07b77b72ad1a75be444",
+          "terminal": 23
+        }
+      ],
+      "drainage_individuel": {
+        "admission": 8,
+        "reservation": 13,
+        "issue": 14,
+        "publication": 15
+      },
+      "reprise_froide": null,
+      "rpc_selectifs": {
+        "57": 3,
+        "59": 14,
+        "58": 3,
+        "54": 1,
+        "55": 1,
+        "56": 3
+      },
+      "drainage_global": true,
+      "invites": [
+        {
+          "succes": true,
+          "erreur_invite": null,
+          "iso_sha256": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "registre_sha256": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 4,
+            "3": 4,
+            "4": 3,
+            "5": 3,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 3,
+            "12": 4,
+            "13": 4,
+            "14": 2,
+            "15": 2,
+            "18": 2,
+            "19": 4,
+            "20": 2,
+            "21": 2,
+            "22": 3,
+            "23": 3
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": true,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": 700,
+          "echeance_ms": 10700,
+          "fin_ms": 3676,
+          "duree_hote_ns": 23665097917,
+          "phase": "invite",
+          "pics_RAM_observes": {
+            "resident": 3044,
+            "retenu": 3044,
+            "utilisateur": 330,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 32,
+            "image": 2220
+          },
+          "minimum_cadres_libres_observe": 59207,
+          "derniere_collecte": "NAEXEC restitue pid=2 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=0 nodes=0 espaces=0 cadres_ipc=0 cadres_libres=Ok(61462)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        }
+      ],
+      "preuves": {
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q23-croise-03/commandes-resultats.json": "540ea93de0758118046e021cb10aecf39a151366c5082ab490e888aaa7d345fc",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q23-croise-03/invite/resultat.json": "3a564f66aeaf414e453d651513e189ff41b4e20a1ca7348a11f9b2c1df587241",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q23-croise-03/invite/invite.serial": "27dc0d24f3a8db364bf3de3a4c1987789573beda554a8d0644d20aecf070dc7a",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q23-croise-03/invite/rpc-public.log": "9040676eaf658f7f056839736a97590240117b4bceb395b8097c02f686bc2ec4"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01",
+      "scenario": "Q4-reserve-froid",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "code": 1,
+      "succes": false,
+      "coordination": {
+        "debut_attente": "2026-11-23T17:53:10.318630+00:00",
+        "debut_attente_ns": 460431328771458,
+        "architecture": "x86_64",
+        "secteur": 512,
+        "conflits_evites": [],
+        "acquisition": "2026-11-23T17:53:10.319014+00:00",
+        "acquisition_ns": 460431329063458,
+        "attente_secondes": 0.000292,
+        "commit_de_reference": "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+        "arbre_noyau_services": "6722a86eddfa0e27339bd9dbd269b39dd4176d6f",
+        "source_ELF_et_banc": "e63d3f237ae932558f67adcee42a41b2144735e7",
+        "commit_banc": "91d0da7766e56b2e60481d9768ce280952ec2022",
+        "banc_q4_sha256": "c1fa9edc7a5cac47ea846f99bed20ac55ac323e6a738a5a1a90e7c1f8f9a57d2",
+        "collecteur_sha256": "53702ba446321a2c8bd265bbeb715e04f210daee1f9db011a974b78d89ed5a27",
+        "banc_sha256": "e1e158c11a02e113110f3dc2d80b11e293824eabab7d6671c97faeab0448f98f",
+        "artefacts_sha256": {
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf": "7ff2a60d98944e3f01659ff88eeba89ede765a579c7cb8b7eabbad086e25577b",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-shell.elf": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-admin-sonde.elf": "0d2f1a9dbd1dcf821e192ae8c101aad4f4f5455d200151a4a0fe815ca9745f1e",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-sonde.paquet": "3bc6de4802b239f48783b0f8a2a57e45b1234fcee9c449301f57170e9f2ae087",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/identites.p9": "ff6c43cb70d1765f8069e8290dc4cb08e4b68e4221b07276b0a7892052fde9d3",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/autorite.raw": "95209f70be2e1e0f3f956ea395f6e54b0da6d1c958eb53d7dff2ecb4cfbba10c"
+        },
+        "liaison_source_artefacts_verifiee": true,
+        "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+        "adaptateur_option": "--cfg r2_page_512",
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+          "x86_64",
+          "512",
+          "--kernel",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf",
+          "--iso",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso",
+          "--registre",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf",
+          "--genese",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/identites.p9",
+          "--triplet",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/triplet.bin",
+          "--cles",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05",
+          "--decision",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+          "--detenteur",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+          "--capture",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+          "--sortie",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/revalidation-selective-91d0da7/r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01",
+          "--secrets",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/cinq-fonctions-82349ed/r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01",
+          "--lot",
+          "retrait-selectif-vide",
+          "--bob-minimal",
+          "--membership-io",
+          "--retrait-reserve-reprise-froide"
+        ],
+        "execution_ns": 460431379164666,
+        "code": 1,
+        "execution_secondes": 81.162687042,
+        "liberation": "2026-11-23T17:54:31.532158+00:00",
+        "verrou_libere": true
+      },
+      "intention": {
+        "operation": "1eb37c783b352d849194e1e355c21cef",
+        "confirmation": "1eb37c783b352d849194e1e355c21cefd2eccdb3ace5f5039c7e4693fa71a1c9"
+      },
+      "retraits_concurrents": null,
+      "retrait": null,
+      "ordre_durable": null,
+      "droits_vfs": [
+        {
+          "phase": "avant",
+          "Direct": 0,
+          "G": 0,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "41094209430a44094509460a",
+            "G": "28094209430a44094509460a",
+            "H": "a9094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 15,
+            "G": 193,
+            "H": 194
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        }
+      ],
+      "admissions": null,
+      "drainage_individuel": null,
+      "reprise_froide": {
+        "succes": false,
+        "reservation": {
+          "operation": "1eb37c783b352d849194e1e355c21cef",
+          "etat": "RESERVEE",
+          "generation_attendue": 31,
+          "tete_avant": "4fe83a2322b2bb816d91912d5ba9faea4d3a475ba314867b7e5a2f98af83ff5c",
+          "tete_prevue": "03711d7f6092f377ecc665a4266a64f41f2c6a4d1234a9f639e8e99f71a73662",
+          "mutations": 0,
+          "admissions_non_terminees": 0,
+          "effecteurs": [
+            {
+              "classe": 1,
+              "instance": "a89111dfe2d509bfc87d8f0caf13ff9a03000000000000800100000000000000",
+              "acquitte": false
+            },
+            {
+              "classe": 2,
+              "instance": "a89111dfe2d509bfc87d8f0caf13ff9a06000000000000800100000000000000",
+              "acquitte": false
+            },
+            {
+              "classe": 4,
+              "instance": "a89111dfe2d509bfc87d8f0caf13ff9a06000000000000800100000000000000",
+              "acquitte": false
+            }
+          ]
+        },
+        "refus_drainage": "UNCERTAIN : drainage sélectif incomplet, nouvelle incarnation inactive",
+        "ancienne_incarnation": "a89111dfe2d509bfc87d8f0caf13ff9a07000000000000800100000000000000",
+        "nouvelle_incarnation_refusee": "27b6f0d1d1636c5c299beb8efb95a03b07000000000000800100000000000000",
+        "reservation_inchangee": true,
+        "publications": 0,
+        "nouveaux_acquittements": 0,
+        "ancienne_route": "RETRAIT_EN_COURS",
+        "activation_nouvelle": false,
+        "disponibilite_restauree": false,
+        "resultat_seconde_VM": 1,
+        "drainage_signataire": false,
+        "drainage_registre": true,
+        "plafond_respecte": true
+      },
+      "rpc_selectifs": null,
+      "drainage_global": null,
+      "invites": [
+        {
+          "succes": false,
+          "erreur_invite": "b'(?m)^DEBUG pid=(\\\\d+) NXR2_1_(\\\\d+)__FIN\\\\r?\\\\n'",
+          "iso_sha256": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "registre_sha256": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 4,
+            "3": 4,
+            "4": 3,
+            "5": 2,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 3,
+            "12": 4,
+            "13": 4,
+            "14": 2,
+            "15": 2,
+            "18": 2,
+            "19": 4,
+            "20": 2,
+            "21": 3,
+            "22": 3
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": true,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": 688,
+          "echeance_ms": 10688,
+          "fin_ms": 3600,
+          "duree_hote_ns": 14970649459,
+          "phase": "invite",
+          "pics_RAM_observes": {
+            "resident": 3016,
+            "retenu": 3016,
+            "utilisateur": 214,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 32,
+            "image": 2220
+          },
+          "minimum_cadres_libres_observe": 59375,
+          "derniere_collecte": "NAEXEC restitue pid=21 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=57 nodes=118 espaces=17 cadres_ipc=66 cadres_libres=Ok(59392)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        },
+        {
+          "succes": false,
+          "erreur_invite": "b'NAR2 registre termine statut=([0-9a-f]{16})'",
+          "iso_sha256": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "registre_sha256": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": false,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": null,
+          "echeance_ms": null,
+          "fin_ms": null,
+          "duree_hote_ns": 65095964833,
+          "phase": "redemarrage-reserve",
+          "pics_RAM_observes": {
+            "resident": 3016,
+            "retenu": 3016,
+            "utilisateur": 214,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 32,
+            "image": 2220
+          },
+          "minimum_cadres_libres_observe": 60477,
+          "derniere_collecte": "NAEXEC restitue pid=6 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=9 nodes=16 espaces=4 cadres_ipc=14 cadres_libres=Ok(61002)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        }
+      ],
+      "preuves": {
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01/commandes-resultats.json": "86095ae1fa3acdbf5b8008713323d6dd32e92e4897eced5aeb4ae19550b35ee6",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01/invite/resultat.json": "7abb27e2a4806bbd9cd8cf7ab782c695f06b26c1d2f439f4ef930aa2a8cea5e1",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01/invite/invite.serial": "029edd51b313cb7268fe48dd2c39545ed3c881f1ed27b9c05f2e7c1b86895b1f",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01/invite/rpc-public.log": "380f1fcda2a29e8d576616cb8204437149e010a470b2222d2558f61ca8f5234f",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01/redemarrage-reserve/resultat.json": "884ec500323fefe3ff290abf9dd7a852c3774700846f793009420a13d14a2dc1",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01/redemarrage-reserve/invite.serial": "3fd62781dcb6e6ba2bb3aaab5a564fc2de0392f0d013dcb056bae22fa08fcd6c",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01/redemarrage-reserve/rpc-public.log": "6fdd81637c77969c59a2d2ab0fb8e29073110327e50ecbdb8721520f1404e277"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02",
+      "scenario": "Q4-reserve-froid",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "code": 0,
+      "succes": true,
+      "coordination": {
+        "debut_attente": "2026-11-23T17:55:50.465680+00:00",
+        "debut_attente_ns": 460591475177208,
+        "architecture": "x86_64",
+        "secteur": 512,
+        "conflits_evites": [],
+        "acquisition": "2026-11-23T17:55:50.466168+00:00",
+        "acquisition_ns": 460591475549083,
+        "attente_secondes": 0.000371875,
+        "commit_de_reference": "8cc96199fd1293ab7294e38d48d04d3e4cdafbf0",
+        "arbre_noyau_services": "6722a86eddfa0e27339bd9dbd269b39dd4176d6f",
+        "source_ELF_et_banc": "e63d3f237ae932558f67adcee42a41b2144735e7",
+        "commit_banc": "91d0da7766e56b2e60481d9768ce280952ec2022",
+        "banc_q4_sha256": "013e7189d3e44266af4899924dc7351746a98b3b02675232efc49a5206e69b5b",
+        "collecteur_sha256": "53702ba446321a2c8bd265bbeb715e04f210daee1f9db011a974b78d89ed5a27",
+        "banc_sha256": "e1e158c11a02e113110f3dc2d80b11e293824eabab7d6671c97faeab0448f98f",
+        "artefacts_sha256": {
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf": "7ff2a60d98944e3f01659ff88eeba89ede765a579c7cb8b7eabbad086e25577b",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-shell.elf": "e0f49b080727d5fdecabdbd388b37367791868662386821660ffb62401cc3dc8",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-admin-sonde.elf": "0d2f1a9dbd1dcf821e192ae8c101aad4f4f5455d200151a4a0fe815ca9745f1e",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-sonde.paquet": "3bc6de4802b239f48783b0f8a2a57e45b1234fcee9c449301f57170e9f2ae087",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/identites.p9": "ff6c43cb70d1765f8069e8290dc4cb08e4b68e4221b07276b0a7892052fde9d3",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/autorite.raw": "95209f70be2e1e0f3f956ea395f6e54b0da6d1c958eb53d7dff2ecb4cfbba10c"
+        },
+        "liaison_source_artefacts_verifiee": true,
+        "adaptateur_sha256": "dff09ae34b1f2c238d782874b24d461c6978dc14ab626505c46a381b9b844d65",
+        "adaptateur_option": "--cfg r2_page_512",
+        "commande": [
+          "/opt/homebrew/opt/python@3.15/bin/python3.15",
+          "-B",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+          "x86_64",
+          "512",
+          "--kernel",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-kernel.elf",
+          "--iso",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64.iso",
+          "--registre",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/x86_64-registre.elf",
+          "--genese",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/identites.p9",
+          "--triplet",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09/genese-x86_64-512/triplet.bin",
+          "--cles",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/certificats-fonctions-05",
+          "--decision",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r1/decision",
+          "--detenteur",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/detenteur",
+          "--capture",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-raccord-exec-42128c2/outils-recuperation/capture",
+          "--sortie",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/revalidation-selective-91d0da7/r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02",
+          "--secrets",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/cinq-fonctions-82349ed/r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02",
+          "--lot",
+          "retrait-selectif-vide",
+          "--bob-minimal",
+          "--membership-io",
+          "--retrait-reserve-reprise-froide"
+        ],
+        "execution_ns": 460591547256583,
+        "code": 0,
+        "execution_secondes": 18.152803458,
+        "liberation": "2026-11-23T17:56:08.690776+00:00",
+        "verrou_libere": true
+      },
+      "intention": {
+        "operation": "04cecd442c153cb47d00559eb0059468",
+        "confirmation": "04cecd442c153cb47d00559eb0059468762691722f0f0d3f5e1125b8db39cb8b"
+      },
+      "retraits_concurrents": null,
+      "retrait": null,
+      "ordre_durable": null,
+      "droits_vfs": [
+        {
+          "phase": "avant",
+          "Direct": 0,
+          "G": 0,
+          "H": 0,
+          "reference_hex_par_origine": {
+            "Direct": "41094209430a44094509460a",
+            "G": "28094209430a44094509460a",
+            "H": "a9094209430a44094509460a"
+          },
+          "comparaison_invitee": true,
+          "revisions_P9": {
+            "Direct": 15,
+            "G": 193,
+            "H": 194
+          },
+          "droits_demandes": {
+            "Direct": 1,
+            "G": 3,
+            "H": 3
+          }
+        }
+      ],
+      "admissions": null,
+      "drainage_individuel": null,
+      "reprise_froide": {
+        "statut_RPC_approbation": 5,
+        "registre_en_quarantaine": true,
+        "ressources_restituees": {
+          "registre": {
+            "pid": 7,
+            "statut_retrait": 125,
+            "roots": 0,
+            "handles": 0,
+            "waits": 0,
+            "pages": 0,
+            "pile": 0,
+            "threads": 0
+          },
+          "signataire": {
+            "pid": 8,
+            "statut_retrait": 125,
+            "roots": 0,
+            "handles": 0,
+            "waits": 0,
+            "pages": 0,
+            "pile": 0,
+            "threads": 0
+          }
+        },
+        "refus_activation": true,
+        "aucune_authentification": true,
+        "aucun_triplet_active": true,
+        "succes": true,
+        "reservation": {
+          "operation": "04cecd442c153cb47d00559eb0059468",
+          "etat": "RESERVEE",
+          "generation_attendue": 31,
+          "tete_avant": "4fe83a2322b2bb816d91912d5ba9faea4d3a475ba314867b7e5a2f98af83ff5c",
+          "tete_prevue": "e501261aadc4b9c65ad5965327701409012eb99cc3b3202cac28a361742246e4",
+          "mutations": 0,
+          "admissions_non_terminees": 0,
+          "effecteurs": [
+            {
+              "classe": 1,
+              "instance": "2078221f0814b4049c343cc7ea026d5603000000000000800100000000000000",
+              "acquitte": false
+            },
+            {
+              "classe": 2,
+              "instance": "2078221f0814b4049c343cc7ea026d5606000000000000800100000000000000",
+              "acquitte": false
+            },
+            {
+              "classe": 4,
+              "instance": "2078221f0814b4049c343cc7ea026d5606000000000000800100000000000000",
+              "acquitte": false
+            }
+          ]
+        },
+        "refus_drainage": "UNCERTAIN : drainage sélectif incomplet, nouvelle incarnation inactive",
+        "ancienne_incarnation": "2078221f0814b4049c343cc7ea026d5607000000000000800100000000000000",
+        "nouvelle_incarnation_refusee": "17a051e08f6e892f65e56d99d6f8a76807000000000000800100000000000000",
+        "reservation_inchangee": true,
+        "publications": 0,
+        "nouveaux_acquittements": 0,
+        "ancienne_route": "RETRAIT_EN_COURS",
+        "activation_nouvelle": false,
+        "disponibilite_restauree": false,
+        "resultat_seconde_VM": 0,
+        "retour_signataire_normal": false,
+        "retrait_signataire_supervise": true,
+        "drainage_registre": true,
+        "plafond_respecte": true
+      },
+      "rpc_selectifs": null,
+      "drainage_global": null,
+      "invites": [
+        {
+          "succes": false,
+          "erreur_invite": "b'(?m)^DEBUG pid=(\\\\d+) NXR2_1_(\\\\d+)__FIN\\\\r?\\\\n'",
+          "iso_sha256": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "registre_sha256": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 4,
+            "3": 4,
+            "4": 3,
+            "5": 2,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4,
+            "9": 4,
+            "10": 4,
+            "11": 3,
+            "12": 4,
+            "13": 4,
+            "14": 2,
+            "15": 2,
+            "18": 2,
+            "19": 4,
+            "20": 2,
+            "21": 3,
+            "22": 3
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": true,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": 720,
+          "echeance_ms": 10720,
+          "fin_ms": 3672,
+          "duree_hote_ns": 14271871666,
+          "phase": "invite",
+          "pics_RAM_observes": {
+            "resident": 3012,
+            "retenu": 3012,
+            "utilisateur": 213,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 32,
+            "image": 2220
+          },
+          "minimum_cadres_libres_observe": 59375,
+          "derniere_collecte": "NAEXEC restitue pid=21 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=57 nodes=118 espaces=17 cadres_ipc=66 cadres_libres=Ok(59392)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        },
+        {
+          "succes": true,
+          "erreur_invite": null,
+          "iso_sha256": "d5163cd751c80df000e8fe86aae65f79b41573f8efcbbc2e28777b58dd43ec14",
+          "registre_sha256": "767d8fd46b6e5d732d0c451eb90ad2b432b4ac0a37b7abb82050c6446a5ae9f6",
+          "plafond_respecte": true,
+          "cinquieme_racine_refusee": true,
+          "pics_racines_par_pid": {
+            "2": 2,
+            "3": 4,
+            "4": 3,
+            "5": 0,
+            "1": 4,
+            "6": 4,
+            "7": 4,
+            "8": 4
+          },
+          "ressources": {
+            "avant": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ],
+            "actif": [
+              4,
+              6,
+              0,
+              69,
+              64,
+              31
+            ]
+          },
+          "ressources_registre": {
+            "avant": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ],
+            "apres": [
+              4,
+              7,
+              0,
+              156,
+              64,
+              31
+            ]
+          },
+          "drainage_signataire": false,
+          "drainage_registre": true,
+          "relais_draine": true,
+          "debut_ms": null,
+          "echeance_ms": null,
+          "fin_ms": null,
+          "duree_hote_ns": 2932322917,
+          "phase": "redemarrage-reserve",
+          "pics_RAM_observes": {
+            "resident": 3016,
+            "retenu": 3016,
+            "utilisateur": 214,
+            "processus": 5,
+            "ipc": 18,
+            "heap": 32,
+            "image": 2220
+          },
+          "minimum_cadres_libres_observe": 60477,
+          "derniere_collecte": "NAEXEC restitue pid=6 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=9 nodes=16 espaces=4 cadres_ipc=14 cadres_libres=Ok(61002)",
+          "limite_mesures": "Extrema des points instrumentés ; aucune prétention de maximum continu."
+        }
+      ],
+      "preuves": {
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02/commandes-resultats.json": "3a8a8bade9a9fa55b6f453881c0516690c6c5adcbc2fb7adf7899b403991dd3b",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02/invite/resultat.json": "12ec951507098037489fce3b7d02a22889d1e84e1f1e8c80d2e731d999d0c451",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02/invite/invite.serial": "7a76dc678d652bf7563f3d4d79779fd85dbaa6a20004e17273d9c344ce523102",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02/invite/rpc-public.log": "cb9673e2282e93ec8d248a529590fb14997e88c40d29439af14af3520f117dfd",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/resultat.json": "05833d42949fbdce462d2a8ccf3ed12a502ec4c4f4a697a07ef2d400b7dac6c2",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/invite.serial": "d91c77464398e1c9f716f812ccab9f2d7ecc6905d8192652cb5ce8457af01930",
+        "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-02/redemarrage-reserve/rpc-public.log": "6e2429337b9f77fdc87999dd34906dde2976ffabf7984fecd6996ef23d60aa8f"
+      }
+    }
+  ],
+  "statistiques": {
+    "campagnes": 9,
+    "reussies": 8,
+    "echecs_conserves": 1,
+    "verrous_liberes": true
+  },
+  "temps": {
+    "debut_UTC": "2026-11-23T17:40:37+00:00",
+    "arrete_mesures_UTC": "2026-11-23T18:11:26.052930+00:00",
+    "attente_verrou_s": 0.003106086,
+    "execution_banc_s": 307.103118792,
+    "hors_fenetres_banc_s": 1541.9467051220001,
+    "methode": "Horloges hôtes uniquement. Les tests et la conception effectués pendant QEMU chevauchent ses fenêtres ; hors_fenetres_banc ne mesure donc pas tout le temps humain de diagnostic. Durées invitées séparées."
+  },
+  "hotes": {
+    "nouveaux_tests": 7,
+    "total_regressions_ciblees": 27,
+    "resultat": "27/27",
+    "ABI": "9/9"
+  },
+  "memoire_statique": {
+    "octets": 3994,
+    "plafond": 4096,
+    "marge": 102,
+    "origine": "mesure native précédente réutilisée ; sources et binaires invités inchangés",
+    "nouveau_layout_revalidation": "non implémenté, non mesuré"
+  },
+  "qualification_R2_complete": false
+}

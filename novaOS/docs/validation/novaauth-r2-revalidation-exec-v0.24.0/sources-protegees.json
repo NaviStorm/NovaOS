@@ -1,0 +1,14 @@
+{
+  "base": "91d0da7766e56b2e60481d9768ce280952ec2022",
+  "banc": "e1718681d07a09cad525d6f832a878a155f9ca98",
+  "fichiers_committes": [
+    "novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+    "novaOS/user/novaauth/autorite_qemu/membership_cold_qemu.py",
+    "novaOS/user/novaauth/autorite_qemu/test_membership_cold_qemu.py",
+    "novaOS/user/novaauth/autorite_qemu/test_membership_interleavings.py"
+  ],
+  "sources_invitees_modifiees": false,
+  "noyaux_ordinaires_modifies": false,
+  "ABI_modifiee": false,
+  "format_P9_modifie": false
+}

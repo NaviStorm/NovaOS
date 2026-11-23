@@ -1,0 +1,15 @@
+{
+  "scenario": "x86_64/P9-512 q4-reserve-01",
+  "qualification": false,
+  "premier_refus": "Refus: approbation hors mandat unique",
+  "RPC": 14,
+  "statut_RPC": 5,
+  "defaut_banc": "Mandat de reprise consommé par A ; absence de nouvelle approbation explicite pour B. Marqueur attendu non émis par ce profil en quarantaine.",
+  "correction": "Nouvelle approbation indépendante par le mécanisme existant ; vérification du refus précis du drainage, de la quarantaine et de la restitution supervisée.",
+  "preuves_originales": [
+    "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01/redemarrage-reserve/refus.log",
+    "r2-commandes-x86_64-512-retrait-selectif-vide-q4-reserve-01/redemarrage-reserve/invite.serial"
+  ],
+  "aucune_modification_invitee": true,
+  "aucun_timeout_augmente": true
+}
