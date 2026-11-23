@@ -42,6 +42,7 @@ def main():
     parser.add_argument('--mode-commande', choices=['interactif','nsh-c','script'], default='interactif')
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
     parser.add_argument('--redemarrage-issue', action='store_true', help='mutation sans retrait, capture native, arrêt complet et consultation après reprise approuvée')
+    parser.add_argument('--coupure-avant-publication',action='store_true',help='arrêt QEMU avant admission de la mutation ; reprise sans résultat inventé')
     parser.add_argument('--carol-reprise',type=lambda v:Path(v).resolve(),help='artefacts privés du signataire Carol, utilisés seulement après création native')
     parser.add_argument('--course',action='store_true',help='ticket Bob présenté pendant la confirmation Alice')
     parser.add_argument('--mutation-concurrente',action='store_true',help='confirmation de groupe concurrente au refus du dernier administrateur')
@@ -76,6 +77,7 @@ def main():
         parser.error('options de publication réservées aux lots de mutation')
     if a.redemarrage_issue and (a.lot not in ('creation','groupe','renommage','appartenance') or a.reauth_issue):parser.error('reprise réservée aux mutations nominales sans retrait avec capture native')
     if a.carol_reprise and (a.lot!='creation' or not a.redemarrage_issue):parser.error('Carol exige création et reprise')
+    if a.coupure_avant_publication and (a.lot!='creation' or not a.redemarrage_issue or a.recu_supprime or a.carol_reprise):parser.error('coupure isolée avant création')
     a.capture_administrative = a.redemarrage_issue
     carol_active=False
     a.mode = 'nominal'
@@ -236,9 +238,20 @@ def main():
         api.drain(SERVER, DOMAIN, old)
         enrolled = False
         discarded_receipt = False
+        cut_before_publication=False
 
         def rpc_hook(phase, operation, body, result, qmp, disk):
-            nonlocal enrolled, discarded_receipt
+            nonlocal enrolled, discarded_receipt, cut_before_publication
+            if phase=='before' and operation==50 and a.coupure_avant_publication and not cut_before_publication:
+                from exec_vm_debug import qmp as control_vm
+                with transaction(api.path) as db:
+                    if db.execute('SELECT count(*) FROM admin_changes').fetchone()!=(0,):raise Refus('mutation déjà présente avant injection')
+                    state=api.authority._current(db,SERVER,DOMAIN)
+                if state.generation!=int.from_bytes(raw[96:104],'big'):raise Refus('tête déjà modifiée avant coupure')
+                cut_before_publication=True
+                report['coupure_avant_publication']={'operation':intention['operation'],'generation':state.generation,'mutation_absente':True,'statut_confirmation':None,'arret_force_QEMU':True}
+                control_vm(qmp,'quit')
+                raise Refus('coupure injectée avant admission durable, aucune confirmation')
             if phase == 'after' and operation == 50 and a.recu_supprime and not discarded_receipt:
                 discarded_receipt = True
                 # L'autorité a déjà décidé. Le banc supprime uniquement le reçu,
@@ -520,17 +533,28 @@ def main():
             case = copy.copy(a)
             case.sortie = root / 'invite'
             result = run(case, env, scenario=scenario, rpc_hook=rpc_hook)
-            if result or not a.redemarrage_issue:return result
+            if not a.redemarrage_issue:return result
+            if result and not (a.coupure_avant_publication and cut_before_publication):return result
+            if a.coupure_avant_publication:
+                if result==0 or not cut_before_publication:raise Refus('coupure attendue non exercée')
+                with transaction(api.path) as db:
+                    if db.execute('SELECT count(*) FROM admin_changes').fetchone()!=(0,) or db.execute('SELECT count(*) FROM mutations').fetchone()!=(0,):raise Refus('mutation inattendue après coupure')
+                report['coupure_avant_publication']['resultat_banc_interrompu']=result
             # L'invité A est arrêté et ses ressources drainées avant toute reprise.
             first=copy.deepcopy(report)
             report['succes']=False
             report['reprise']={'resultat':'non terminee'}
             (root/'avant-redemarrage.json').write_text(json.dumps(first,indent=2)+'\n')
-            paths=list((case.sortie/'captures-invite').glob('*/manifeste.bin'))
-            if len(paths)!=1:raise Refus('capture native administrative absente ou ambiguë')
-            manifest=paths[0].read_bytes();folder=paths[0].parent
-            if b'NAR2 sauvegarde administrative confirmee' not in (case.sortie/'invite.serial').read_bytes():
-                raise Refus('capture non acquittée dans le registre invité')
+            if a.coupure_avant_publication:
+                manifest=(root/'manifeste.bin').read_bytes()
+                chunks=[q.read_bytes() for q in sorted(root.glob('fragment-*.chiffre'))]
+            else:
+                paths=list((case.sortie/'captures-invite').glob('*/manifeste.bin'))
+                if len(paths)!=1:raise Refus('capture native administrative absente ou ambiguë')
+                manifest=paths[0].read_bytes();folder=paths[0].parent
+                chunks=[q.read_bytes() for q in sorted(folder.glob('*.chiffre'))]
+                if b'NAR2 sauvegarde administrative confirmee' not in (case.sortie/'invite.serial').read_bytes():
+                    raise Refus('capture non acquittée dans le registre invité')
             from rpc_recuperation import Dispatcher
             from recuperation import digest
             old_route=route(api)
@@ -543,7 +567,7 @@ def main():
                 int.from_bytes(manifest[78:86],'big'),manifest[270:302],keys)
             resumed=Dispatcher(dispatcher.authority,dispatcher.enrollment,SERVER,DOMAIN,
                 dispatcher.peer_key,dispatcher.measurement,{digest(manifest):manifest},
-                {digest(manifest):[q.read_bytes() for q in sorted(folder.glob('*.chiffre'))]},
+                {digest(manifest):chunks},
                 dispatcher.approve_independently,dispatcher.deliver_independently,dispatcher.retrieve_independently)
             after=copy.copy(case);after.sortie=root/'redemarrage';after.genese=case.sortie/'identites.p9'
             if a.carol_reprise:
@@ -559,9 +583,13 @@ def main():
             cases=[(binary+' --outcome '+intention['operation'],complete),view,('whoami',b'alice\n')]
             a.recu_supprime=False # injection consommée uniquement dans la première VM
             case_status={}
+            if a.coupure_avant_publication:
+                cases=[(binary+' --outcome '+intention['operation'],b''),('id carol',b''),('whoami',b'alice\n')]
+                case_status={0:(20,('Administrative failure: native=22 status=20\nrequest='+intention['operation']+' --outcome\n').encode()),1:(3,b'Administrative failure: native=5 status=3\n')}
+                a.coupure_avant_publication=False # injection unique, jamais de CONFIRM en reprise
             report['commandes']=[];report['evenements']=[];report['succes']=False
             result=run(after,(resumed,holders,admin),scenario=scenario,rpc_hook=rpc_hook)
-            report['reprise']={'arret_complet':True,'capture_native':True,'ancienne_incarnation':old_route.hex(),
+            report['reprise']={'arret_complet':True,'capture_native':not cut_before_publication,'coupure_avant_admission':cut_before_publication,'ancienne_incarnation':old_route.hex(),
                 'nouvelle_incarnation':route(api).hex(),'meme_operation':intention['operation'],'resultat':result}
             if route(api)==old_route:raise Refus('incarnation réutilisée au redémarrage')
             return result
