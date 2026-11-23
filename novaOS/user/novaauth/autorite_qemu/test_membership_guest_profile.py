@@ -68,3 +68,11 @@ class GuestProfile(unittest.TestCase):
   values['restarted']=False
   self.assertTrue(eval(expression,{},values).endswith('; exit'))
 if __name__=='__main__':unittest.main()
+
+class CancellationMarkers(unittest.TestCase):
+ def test_cancelled_is_only_valid_for_the_explicit_before_go_case(self):
+  import re
+  marker=b'NARM Q1 phase=avant-annule origine=G native=9 octets=0 revision=0\r\n'
+  self.assertIsNotNone(re.search(membership_revision_pattern('avant-annule','G',9),marker))
+  for phase,origin,code in [('avant','G',9),('avant-annule','H',9),('apres-annule','G',0)]:
+   with self.assertRaises(Exception):membership_revision_pattern(phase,origin,code)
