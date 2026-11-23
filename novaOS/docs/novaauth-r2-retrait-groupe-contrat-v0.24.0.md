@@ -23,6 +23,8 @@ Une capacité administrative de gestion des groupes n'accorde aucun droit de lec
 
 Les droits de lecture directe et d'écriture par G restent représentés séparément. Une sous-délégation conserve exactement la provenance de son parent. Un handle ne doit pas fusionner des origines en une autorité indifférenciée : l'opération sélectionne une permission précise. Si plusieurs permissions indépendantes autorisent une opération, celles encore valides restent utilisables, sans réactiver le lease retiré.
 
+Le changement de génération globale impose une consultation fraîche, pas la destruction des capacités indépendantes. Pour Direct ou H, l'effecteur conserve la référence du handle et fait revalider sa provenance et ses droits contre la tête courante avant la prochaine admission ; il ne transforme jamais un reçu ancien en preuve de fraîcheur, et le client ne peut choisir une autre origine pour sauver une délégation de G.
+
 Un nouvel ajout ultérieur au même groupe reçoit une nouvelle révision d'appartenance. Il ne réactive ni l'ancienne provenance, ni ses handles, tickets ou sous-délégations.
 
 ## 3. Transaction et points d'effet
