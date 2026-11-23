@@ -36,6 +36,10 @@ def request(database,key,peer,scope,operation,body,*,membership=False):
         api.admit(current,source,q[152],q[153:185],q[185:201],int.from_bytes(q[201:209],'big'),q[209:241],proof)
     elif operation==FINISH:
         api.finish(current,q[112:128],q[128],q[129:161],q[161],q[162:194],proof)
+        # Progresser uniquement après le fait terminal durable et authentifié,
+        # comme le raccord EXEC historique ; QUERY demeure une lecture pure.
+        from administration_mutation_rpc import progress
+        progress(api.epochs,server,domain)
     elif operation==QUERY:
         from reprise import transaction
         with transaction(database) as db:

@@ -181,4 +181,17 @@ class Membership(unittest.TestCase):
    self.assertEqual(db.execute('SELECT count(*) FROM membership_operations WHERE state=0').fetchone(),(64,))
   with self.assertRaises(r.Refus):self.admit(op=(1).to_bytes(16,'big'))
 
+ def test_rpc_finish_advances_subject_drain_only_after_signed_terminal_fact(self):
+  import membership_rpc as rpc
+  self.admit();self.f.disable();self.f.ack()
+  with self.assertRaisesRegex(r.Refus,'groupe'):self.f.api.drain(*self.f.scope,b'R'*16)
+  state=self.f.current();q=state.packet()+b'J'*16+bytes([4])+b'E'*32+bytes([1])+b'C'*32
+  body=b''.join(self.f.scope)+state.instance+q+self.f.server.sign(m.FINISH+q)
+  peer=self.f.server.public_key().public_bytes_raw()
+  self.assertEqual(rpc.request(self.f.path,self.f.key,peer,self.f.scope,rpc.FINISH,body,membership=True),b'')
+  with r.transaction(self.f.path) as db:
+   self.assertIsNotNone(db.execute('SELECT terminal FROM admin_changes WHERE op=?',(b'R'*16,)).fetchone()[0])
+   self.assertEqual(db.execute("SELECT count(*) FROM exec_events WHERE kind='subject-retired'").fetchone(),(1,))
+  self.f.enable()
+
 if __name__=='__main__':unittest.main()
