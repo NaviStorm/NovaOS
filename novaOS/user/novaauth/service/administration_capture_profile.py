@@ -30,3 +30,16 @@ def install(root):
                 }
                 self.pending = None;
                 self.pending_owner = None;''')
+
+    # Une réponse d'autorité perdue passe par reconcile, pas par Confirm.
+    # Réutiliser le plan vérifié après activation, jamais submit une seconde fois.
+    edit(base+'recovery_view.rs','administration.reconcile(&mut state,&mut recovered.storage)?;',
+         'administration.reconcile(&mut state,&mut recovered.storage,recovered.epoch,recovered.recipients)?;')
+    edit(base+'administration_registry.rs','pub fn reconcile(&mut self,state:&mut View,storage:&mut crate::recovery_store::Storage)->rt::Result<()> {',
+         'pub fn reconcile(&mut self,state:&mut View,storage:&mut crate::recovery_store::Storage,backup_epoch:u64,recipients:[[u8;32];2])->rt::Result<()> {')
+    edit(base+'administration_registry.rs','self.transactions.reconcile(state,storage)',
+         'self.transactions.reconcile(state,storage,backup_epoch,recipients)')
+    edit(base+'administration_mutations.rs','pub fn reconcile(&mut self, state: &mut View, storage: &mut Storage) -> rt::Result<()> {',
+         'pub fn reconcile(&mut self, state: &mut View, storage: &mut Storage,backup_epoch:u64,recipients:[[u8;32];2]) -> rt::Result<()> {')
+    edit(base+'administration_mutations.rs','            let owner = self.pending_owner.ok_or(UNCERTAIN)?;',
+         '            match p.backup(backup_epoch,recipients) {\n                Ok(())=>common::marker(b"NAR2 sauvegarde administrative confirmee"),\n                Err(_)=>common::marker(b"NAR2 sauvegarde administrative non confirmee"),\n            }\n            let owner = self.pending_owner.ok_or(UNCERTAIN)?;')

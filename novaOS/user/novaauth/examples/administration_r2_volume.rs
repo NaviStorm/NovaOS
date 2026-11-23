@@ -158,6 +158,16 @@ fn main() {
         .unwrap()
         .commit()
         .unwrap();
+    // Fichiers synthétiques du banc, créés avant montage invité. Aucun droit
+    // nouveau : ils restent dans le dossier déjà autorisé à Alice.
+    if std::env::var_os("NOVA_R2_SCRIPTS").is_some() {
+        for (name,command) in [("r2-whoami.nsh","whoami"),("r2-id.nsh","id"),("r2-groups.nsh","groups"),
+            ("r2-useradd.nsh","useradd --version"),("r2-usermod.nsh","usermod --version"),("r2-groupadd.nsh","groupadd --version"),
+            ("r2-refus.nsh","usermod --disable alice --prepare")] {
+            let object=fs.create_at(work,name,Kind::File).unwrap().id;
+            fs.prepare_write_id(object,0,format!("#!/bin/nsh\n{command}\n").as_bytes()).unwrap().commit().unwrap();
+        }
+    }
     let system = fs.lookup_at(root_id, "system").unwrap().id;
     fs.create_at(system, "bin", Kind::Directory).unwrap();
     let mut seal = Vec::from(*b"NXScope1");

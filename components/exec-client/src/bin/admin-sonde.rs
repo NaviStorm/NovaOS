@@ -5,6 +5,9 @@ use nova_cli::runtime as rt;
 use nova_exec_client::admin::{AdministrativeLaunch, Conversation};
 fn perform() -> rt::Result<()> {
     let launch = AdministrativeLaunch::current()?;
+    if let [role @ ("--factor-writer" | "--factor-reader"), factor] = launch.streams.argv.as_slice() {
+        return factor_race(&launch, *role == "--factor-writer", factor);
+    }
     if launch.streams.argv.as_slice()==["--prepare-group"] {
         use nova_exec_client::admin_cli::{self,Program};
         let action=admin_cli::parse(Program::Groupadd,&["equipe-r2","--prepare"]).map_err(|_|rt::BAD_ARGUMENT)?;
@@ -327,6 +330,54 @@ fn transport_probe(
     }
     launch.streams.write_stdout(&answer[..64])?;
     rt::value(rt::call(rt::IPC_CLOSE, key, 0, 0))?;
+    Ok(())
+}
+/// Deux créations distinctes du même facteur, avec requêtes PREPARE en vol
+/// simultanément. Le pipe synchronise les deux premiers acquittements IPC.
+/// Aucun changement de capacité, de table d'intentions ou d'oracle serveur.
+fn factor_race(launch:&AdministrativeLaunch<'_>, writer:bool, factor:&str)->rt::Result<()> {
+    use nova_exec_client::{admin_wire::{self,Direction,Inbox},admin_command};
+    if factor.len()!=32 || !factor.is_ascii() {return Err(rt::BAD_ARGUMENT);}
+    let mut q=[0;128];q[..8].copy_from_slice(b"NXACMD01");q[8]=16;
+    for (offset,name) in [(32,if writer {b"carol".as_slice()}else{b"caroline".as_slice()}),(72,b"base")] {
+        q[offset]=2;q[offset+1]=name.len() as u8;q[offset+8..offset+8+name.len()].copy_from_slice(name);
+    }
+    for i in 0..16 {q[112+i]=u8::from_str_radix(&factor[i*2..i*2+2],16).map_err(|_|rt::BAD_ARGUMENT)?;}
+    admin_command::decode(&q).map_err(|_|rt::BAD_ARGUMENT)?;
+    let exchange=|tag:u64,q:&[u8;128],barrier:bool|->rt::Result<[u8;128]> {
+        let key=launch.endpoint();
+        rt::send_for(key,tag,&admin_wire::frame(tag,Direction::Request,q,0).map_err(|_|rt::BAD_ARGUMENT)?,5000)?;
+        let ack=rt::receive_for(key,5000)?;
+        if ack.kind!=1 || ack.tag!=tag || ack.len!=8 || ack.handle!=0 || ack.aux!=0 || ack.payload[..8]!=[0;8] {return Err(241);}
+        if barrier {
+            if writer {launch.streams.write_stdout(&[b'F';9*128])?;}
+            else {let mut b=[0;128];for _ in 0..9 {if launch.streams.read_stdin(&mut b)?!=128 || b!=[b'F';128] {return Err(242);}}}
+        }
+        rt::send_for(key,tag,&admin_wire::frame(tag,Direction::Request,q,96).map_err(|_|rt::BAD_ARGUMENT)?,5000)?;
+        let mut inbox=Inbox::new();let mut result=None;
+        for _ in 0..2 {
+            let m=rt::receive_for(key,5000)?;
+            if m.kind!=1 || m.tag!=tag || m.len!=128 || m.handle!=0 || m.aux!=0 {return Err(243);}
+            if inbox.accept(&m.payload,Direction::Response).map_err(|_|244u64)? {
+                result=Some(inbox.message().map_err(|_|245u64)?.1.try_into().map_err(|_|246u64)?);
+            }
+        }
+        result.ok_or(247)
+    };
+    let prepared=exchange(1,&q,true)?;
+    let mut result=[0;80];result[..8].copy_from_slice(&prepared[..8]);
+    if prepared[..8]==[0;8] {
+        let mut confirm=[0;128];confirm[..8].copy_from_slice(b"NXACMD01");confirm[8]=32;
+        confirm[16..32].copy_from_slice(&prepared[8..24]);confirm[32..64].copy_from_slice(&prepared[24..56]);
+        let answer=exchange(2,&confirm,false)?;
+        result[8..16].copy_from_slice(&answer[..8]);result[16..].copy_from_slice(&answer[..64]);
+    }else {result[8..16].copy_from_slice(&u64::MAX.to_le_bytes());}
+    if !writer {
+        let mut producer=[0;128];if launch.streams.read_stdin(&mut producer)?!=80 {return Err(248);}
+        launch.streams.write_stdout(&producer[..80])?;
+    }
+    launch.streams.write_stdout(&result)?;
+    rt::value(rt::call(rt::IPC_CLOSE,launch.endpoint(),0,0))?;
     Ok(())
 }
 #[unsafe(no_mangle)]

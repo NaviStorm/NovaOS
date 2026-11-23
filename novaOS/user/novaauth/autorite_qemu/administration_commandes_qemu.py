@@ -27,6 +27,10 @@ def command_mode(command, mode):
     if mode == 'nsh-c':
         import shlex
         return 'nsh -c ' + shlex.quote(command)
+    if mode == 'script':
+        names={'whoami':'whoami','id':'id','groups':'groups','useradd --version':'useradd','usermod --version':'usermod','groupadd --version':'groupadd','usermod --disable alice --prepare':'refus'}
+        if command not in names:raise ValueError('script non préprovisionné')
+        return 'nsh /travail/r2-' + names[command] + '.nsh'
     raise ValueError('mode inconnu')
 
 
@@ -34,10 +38,11 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
-    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation', 'creation', 'refus-facteurs'], required=True)
-    parser.add_argument('--mode-commande', choices=['interactif','nsh-c'], default='interactif')
+    parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation', 'creation', 'refus-facteurs', 'facteurs-concurrents'], required=True)
+    parser.add_argument('--mode-commande', choices=['interactif','nsh-c','script'], default='interactif')
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
     parser.add_argument('--redemarrage-issue', action='store_true', help='mutation sans retrait, capture native, arrêt complet et consultation après reprise approuvée')
+    parser.add_argument('--carol-reprise',type=lambda v:Path(v).resolve(),help='artefacts privés du signataire Carol, utilisés seulement après création native')
     parser.add_argument('--course',action='store_true',help='ticket Bob présenté pendant la confirmation Alice')
     parser.add_argument('--mutation-concurrente',action='store_true',help='confirmation de groupe concurrente au refus du dernier administrateur')
     parser.add_argument('--dernier-concurrent',action='store_true',help='deux requêtes partielles simultanées contre le dernier administrateur')
@@ -70,7 +75,9 @@ def main():
     if (a.reauth_issue or a.recu_supprime) and a.lot not in ('groupe','desactivation','creation','renommage','appartenance'):
         parser.error('options de publication réservées aux lots de mutation')
     if a.redemarrage_issue and (a.lot not in ('creation','groupe','renommage','appartenance') or a.reauth_issue):parser.error('reprise réservée aux mutations nominales sans retrait avec capture native')
+    if a.carol_reprise and (a.lot!='creation' or not a.redemarrage_issue):parser.error('Carol exige création et reprise')
     a.capture_administrative = a.redemarrage_issue
+    carol_active=False
     a.mode = 'nominal'
     a.vue = a.activation = a.exec_admission = a.administration_r2 = True
     a.collecteur_r2 = True
@@ -196,6 +203,22 @@ def main():
                    ('whoami',b'alice\n')]
             report['portee']='S7 publication explicite de groupe concurrente au refus du retrait du dernier administrateur'
 
+    if a.lot=='facteurs-concurrents':
+        a.dernier_concurrent=True
+        factor=catalog['references']['carol']
+        def factor_results(data):
+            if len(data)!=160:raise Refus('deux résultats de création absents')
+            rows=[]
+            for offset in (0,80):
+                p,c=int.from_bytes(data[offset:offset+8],'little'),int.from_bytes(data[offset+8:offset+16],'little')
+                if p not in (0,24) or (p==0 and c not in (0,5,10,24)) or (p!=0 and c!=2**64-1):raise Refus('statuts concurrence facteur inattendus')
+                rows.append({'preparation':p,'confirmation':c,'recu':data[offset+16:offset+80].hex()})
+            if sum(r['preparation']==0 and r['confirmation']==0 for r in rows)!=1:raise Refus('création unique non démontrée')
+            report['attribution_concurrente']=rows
+            return data
+        cases=[('admin-sonde --factor-writer '+factor+' | admin-sonde --factor-reader '+factor,factor_results),('whoami',b'alice\n')]
+        report['portee']='deux demandes PREPARE simultanément en vol, facteur commun, utilisateurs distincts'
+
     if a.commande:
         cases = [(cmd, expected) for cmd, expected in cases if isinstance(cmd, str) and cmd.split()[0] == a.commande]
         if not cases:
@@ -251,6 +274,12 @@ def main():
                 serial.expect(rb'NAR2 Bob fermeture acquittee', 100)
                 if b'NAR2 Bob refus serveur et substitutions verifies' not in serial.data:
                     raise Refus('témoin négatif Bob absent')
+            if carol_active:
+                pid=events.actor(b'NAR2 Bob authentifie route distincte')
+                found=re.findall(rb'DEBUG pid='+str(pid).encode()+rb' R2IDENTITY subject= ([0-9a-f]{32})',serial.data)
+                if found!=[report['nouvelle_identite'].encode()]:raise Refus('Carol non authentifiée avec son identité native')
+                if b'NAR2 Carol sans installations heritees statut=5 aucun enfant' not in serial.data:raise Refus('refus des installations héritées absent')
+                report['authentification_carol']={'pid':pid,'subject':found[0].decode(),'facteur_public':catalog['references']['carol'],'installations_refusees':['whoami','admin-sonde','alice-seulement'],'statuts':[5,5,5]}
             for i, (command, expected) in enumerate(cases):
                 expected_status = 3 if a.lot == 'dernier-administrateur' else 0
                 expected_stderr = b''
@@ -312,11 +341,12 @@ def main():
                     writer,reader=map(int,match.groups());item['pid']=[writer,reader]
                     rows=[(binding,closed,data) for binding,closed,data in observer.outputs() if binding.child in (writer,reader)]
                     actual={(b.child,b.fd):data for b,_,data in rows}
+                    if a.lot=='facteurs-concurrents':expected=expected(actual.get((reader,1),b''))
                     if len(rows)!=3 or any(not closed for _,closed,_ in rows) or actual!={(writer,2):b'',(reader,1):expected,(reader,2):b''}:
                         raise Refus('refus natifs concurrent dernier administrateur non conformes')
                     shells={b.shell for b,_,_ in rows}
                     if len(shells)!=1 or int(status[1]) not in shells:raise Refus('pipe hors session Alice')
-                    item.update(shell=next(iter(shells)),stdout_octets=len(expected),stderr_octets=0,octets_conformes=True,statuts_requetes=[0,5] if a.mutation_concurrente else [5,5])
+                    item.update(shell=next(iter(shells)),stdout_octets=len(expected),stderr_octets=0,octets_conformes=True,statuts_requetes=report.get('attribution_concurrente',[0,5] if a.mutation_concurrente else [5,5]))
                     (out/'concurrence-refus.bin').write_bytes(expected)
                     continue
                 no_child=a.etat_ticket=='expire' and i==0
@@ -516,6 +546,12 @@ def main():
                 {digest(manifest):[q.read_bytes() for q in sorted(folder.glob('*.chiffre'))]},
                 dispatcher.approve_independently,dispatcher.deliver_independently,dispatcher.retrieve_independently)
             after=copy.copy(case);after.sortie=root/'redemarrage';after.genese=case.sortie/'identites.p9'
+            if a.carol_reprise:
+                carol_active=True
+                for attr,suffix in [('iso','.iso'),('kernel','-kernel.elf'),('registre','-registre.elf')]:
+                    setattr(after,attr,a.carol_reprise/(a.arch+suffix))
+                if after.registre.read_bytes()!=case.registre.read_bytes():raise Refus('registre différent entre création et authentification Carol')
+                a.kernel=after.kernel
             # Même identifiant, aucune seconde confirmation. Conserver la vue
             # attendue du parcours initial, puis le contrôle positif Alice.
             view=cases[-1]
