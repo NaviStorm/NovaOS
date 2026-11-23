@@ -567,7 +567,16 @@ def main():
                                     b'NAR2 Bob fermeture acquittee']:
                         events.expect(bob_pid,message,40)
             if a.membership_io:
-                if b'NARM VFS fermeture selective acquittee retires=01 conserves=02' not in serial.data:raise Refus('fermeture réelle du seul handle G non démontrée')
+                closure=b'NARM VFS fermeture selective acquittee retires=01 conserves=02'
+                if a.admission_vfs_perdue:
+                    # Recette distincte : G annulé AVANT GO n'a créé aucun bail.
+                    # Exiger son terminal durable avant d'attendre zéro retrait.
+                    with transaction(api.path) as db:
+                        cancelled=db.execute('SELECT state,evidence,sequence,terminal_sequence FROM membership_operations ORDER BY sequence LIMIT 1').fetchone()
+                        reserve=db.execute("SELECT sequence FROM exec_events WHERE kind='membership-reserved'").fetchone()
+                    if cancelled is None or reserve is None or cancelled[0]!=2 or cancelled[1]!=bytes(32) or not cancelled[2]<cancelled[3]<reserve[0]:raise Refus('absence de délégation G non justifiée par annulation durable')
+                    closure=b'NARM VFS fermeture selective acquittee retires=00 conserves=02'
+                if closure not in serial.data:raise Refus('fermeture VFS ou conservation Direct/H non démontrée')
                 membership_probe('apres-annule' if a.admission_vfs_perdue else 'apres-en-vol' if a.vfs_en_vol else 'apres')
             if a.membership_r2 and not restarted:
                 terminal=b'NARM RETIREE recu durable tete P9 relue effecteurs acquittes'
