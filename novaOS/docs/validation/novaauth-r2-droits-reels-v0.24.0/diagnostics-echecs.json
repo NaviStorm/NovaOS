@@ -1,0 +1,56 @@
+[
+  {
+    "essai_suffixe": "q1-01",
+    "categorie": "configuration privée",
+    "cause": "Lecture rt::config(21) au-delà de la borne historique 19 ; arrêt du vérificateur avant lecture Direct.",
+    "correction": "Utiliser le port administratif privé déjà validé, sans modifier la borne."
+  },
+  {
+    "essai_suffixe": "q1-02",
+    "categorie": "préconditions du banc",
+    "cause": "Première admission VFS avant enrôlement indépendant de l’époque ; refus natif 5.",
+    "correction": "Déclencher l’enrôlement de fixture existant avant ADMIT 57 comme avant EXEC 40."
+  },
+  {
+    "essai_suffixe": "q1-03",
+    "categorie": "instrumentation",
+    "cause": "Le quota DEBUG supprimait le marqueur terminal attendu.",
+    "correction": "Réduire les messages redondants du profil, conserver les contrôles."
+  },
+  {
+    "essai_suffixe": "q1-04",
+    "categorie": "instrumentation",
+    "cause": "Offsets erronés des compteurs dans le marqueur de fermeture.",
+    "correction": "Construire les offsets par longueur des préfixes et tester les octets exacts."
+  },
+  {
+    "essai_suffixe": "q1-rw-01",
+    "categorie": "oracle et données de test",
+    "cause": "Réécriture des mêmes octets : P9 conserve légitimement la révision.",
+    "correction": "Utiliser des données synthétiques différentes par origine et phase."
+  },
+  {
+    "essai_suffixe": "q1-rw-02",
+    "categorie": "collecte",
+    "cause": "La regex accepte un préfixe numérique incomplet de la révision.",
+    "correction": "Attendre LF ; test de toutes les coupures de la ligne."
+  },
+  {
+    "essai_suffixe": "q4-froid-01",
+    "categorie": "instrumentation",
+    "cause": "Capture effective mais confirmation finale au-delà du quota DEBUG.",
+    "correction": "Supprimer une trace redondante dans le seul profil capture+sélectif."
+  },
+  {
+    "essai_suffixe": "q4-froid-03",
+    "categorie": "ordonnancement du banc",
+    "cause": "exit était envoyé après whoami, avant la sonde VFS de reprise.",
+    "correction": "Différer exit et tester la commande réellement construite."
+  },
+  {
+    "essai_suffixe": "q4-final-ack-perdu",
+    "categorie": "assemblage du banc",
+    "cause": "128 connexions atteintes avec capture indépendante ; H rend UNCERTAIN 22 à 22328 ms, avant échéance 65600 ms.",
+    "correction": "Séparer pertes à chaud et capture froide ; borne 128 et délais inchangés."
+  }
+]

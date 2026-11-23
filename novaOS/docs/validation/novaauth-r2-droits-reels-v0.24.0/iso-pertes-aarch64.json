@@ -1,0 +1,19 @@
+{
+  "source": "cddbaaf4047e3768954765c143edcea841d6a3c9",
+  "profil": "membership_r2+administration_last_admin",
+  "commande": [
+    "sh",
+    "scripts/iso.sh",
+    "novaauth-sessions",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/achevement-1d5a678-16/aarch64.iso"
+  ],
+  "duree_hote_s": 1.6494414159678854,
+  "artefacts": {
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/achevement-1d5a678-16/aarch64-kernel.elf": "b398f057d6abcb51a09440e6e44bfcf9a50e50bdecb41c654e2ceaa1473d49d8",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/achevement-1d5a678-16/aarch64-shell.elf": "44063622efb1f2e66ad6323f6e852bceb7c3cbc2851ce673548eb67af7c11763",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/achevement-1d5a678-16/aarch64-registre.elf": "cc59787385415dc8d579587cb1272692784c212c0269418af8efc7218e9f6f67",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/artefacts-prives-administration-0240-r2/achevement-1d5a678-16/aarch64.iso": "75ee7136156294bebad6ab0c5260a49516f8ebbc655433569957ba52fa351030"
+  },
+  "profil_ISO_verifie": true,
+  "noyau_ISO_identique": true
+}

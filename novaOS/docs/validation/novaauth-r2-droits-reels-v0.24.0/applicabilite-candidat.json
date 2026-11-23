@@ -1,0 +1,26 @@
+{
+  "code": "cddbaaf4047e3768954765c143edcea841d6a3c9",
+  "arbre": "04c95cfcbc2c4f82a93b9cc0869a189849570a9e",
+  "instantane_compilation": "16eb8598ebb778baae64d438ad2db2b943e5d44d",
+  "differences": [
+    "novaOS/user/novaauth/autorite_qemu/administration_commandes_qemu.py",
+    "novaOS/user/novaauth/autorite_qemu/test_membership_guest_profile.py"
+  ],
+  "arbres_identiques": {
+    "novaOS/kernel": true,
+    "novaOS/abi": true,
+    "novaFS": true,
+    "components": true,
+    "novaOS/user/novaauth/service": true,
+    "novaOS/user/novaauth/src": true,
+    "novaOS/user/novaauth/recuperation": true
+  },
+  "sources_ordinaires_inchangees": {
+    "novaOS/kernel": [],
+    "novaOS/abi": [],
+    "novaFS": [],
+    "components": []
+  },
+  "patch_sha256": "a303047ec51070247a3f78720d559cb269533e4fed028f0f9d3e3c48255272eb",
+  "limite": "Identit\u00e9 des sources s\u00e9lectionn\u00e9es, pas une preuve de reproductibilit\u00e9 binaire entre environnements."
+}

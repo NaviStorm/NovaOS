@@ -1,0 +1,66 @@
+[
+  {
+    "test": "layout",
+    "arch": "aarch64-apple-darwin",
+    "code": 0,
+    "seconds": 0.9825554999988526,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--release",
+      "--target",
+      "aarch64-apple-darwin",
+      "--",
+      "--nocapture"
+    ]
+  },
+  {
+    "test": "layout",
+    "arch": "x86_64-apple-darwin",
+    "code": 0,
+    "seconds": 1.0014126250171103,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--release",
+      "--target",
+      "x86_64-apple-darwin",
+      "--",
+      "--nocapture"
+    ]
+  },
+  {
+    "test": "effectors",
+    "arch": "aarch64-apple-darwin",
+    "code": 0,
+    "seconds": 0.6231849170289934,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--release",
+      "--target",
+      "aarch64-apple-darwin",
+      "--",
+      "--nocapture"
+    ]
+  },
+  {
+    "test": "effectors",
+    "arch": "x86_64-apple-darwin",
+    "code": 0,
+    "seconds": 0.7001546249957755,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--offline",
+      "--release",
+      "--target",
+      "x86_64-apple-darwin",
+      "--",
+      "--nocapture"
+    ]
+  }
+]

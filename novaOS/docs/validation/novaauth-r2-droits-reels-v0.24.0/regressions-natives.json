@@ -1,0 +1,70 @@
+[
+  {
+    "component": "identity",
+    "arch": "aarch64-apple-darwin",
+    "code": 0,
+    "seconds": 6.719345166988205,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "--features",
+      "administration-lab",
+      "--target",
+      "aarch64-apple-darwin"
+    ]
+  },
+  {
+    "component": "identity",
+    "arch": "x86_64-apple-darwin",
+    "code": 0,
+    "seconds": 8.534008665999863,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "--features",
+      "administration-lab",
+      "--target",
+      "x86_64-apple-darwin"
+    ]
+  },
+  {
+    "component": "recovery",
+    "arch": "aarch64-apple-darwin",
+    "code": 0,
+    "seconds": 2.5988689579535276,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "--features",
+      "administration-lab",
+      "--target",
+      "aarch64-apple-darwin"
+    ]
+  },
+  {
+    "component": "recovery",
+    "arch": "x86_64-apple-darwin",
+    "code": 0,
+    "seconds": 3.9208452500170097,
+    "command": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "--features",
+      "administration-lab",
+      "--target",
+      "x86_64-apple-darwin"
+    ]
+  }
+]

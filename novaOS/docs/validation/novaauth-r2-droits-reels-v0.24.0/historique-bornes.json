@@ -1,0 +1,36 @@
+[
+  {
+    "architecture": "aarch64-apple-darwin",
+    "commande": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "--features",
+      "administration-lab",
+      "--test",
+      "membership",
+      "--target",
+      "aarch64-apple-darwin"
+    ],
+    "statut": 0
+  },
+  {
+    "architecture": "x86_64-apple-darwin",
+    "commande": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "test",
+      "--locked",
+      "--offline",
+      "--release",
+      "--features",
+      "administration-lab",
+      "--test",
+      "membership",
+      "--target",
+      "x86_64-apple-darwin"
+    ],
+    "statut": 0
+  }
+]

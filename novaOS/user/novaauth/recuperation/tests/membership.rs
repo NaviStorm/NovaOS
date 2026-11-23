@@ -109,6 +109,16 @@ fn history_reconstructs_only_signed_original_and_distinguishes_unfinished() {
     for i in [0,8,40,128,168,170,330,494,800,869] {let mut bad=encoded.clone();bad[i]^=1;assert!(History::verify(&key.verifying_key(),&query,&bad).is_err(),"offset {i}");}
     for n in [0,169,493,805,869] {assert!(History::verify(&key.verifying_key(),&query,&encoded[..n]).is_err());}
     let mut other=query.clone();other[128]^=1;assert!(History::verify(&key.verifying_key(),&other,&encoded).is_err());
+    // Borne applicative réelle : 32 effecteurs canoniques, signature valide.
+    let mut largest=original[..225].to_vec();largest[224]=32;
+    for i in 1u8..=32 {largest.push(if i<=30{1}else if i==31{2}else{4});largest.extend_from_slice(&[i;32]);}
+    let seal_history=|request:&[u8]| {let mut body=b"NAMBHI01".to_vec();body.extend_from_slice(&query);body.extend_from_slice(&(request.len() as u16).to_be_bytes());body.extend_from_slice(request);body.extend_from_slice(&receipt);
+        let mut signed=b"NovaAuth/QEMU/membership/history/v1\0".to_vec();signed.extend_from_slice(&body);body.extend_from_slice(&key.sign(&signed).to_bytes());body};
+    let maximum=seal_history(&largest);assert_eq!(maximum.len(),1827);
+    assert_eq!(History::verify(&key.verifying_key(),&query,&maximum).unwrap().original(),largest);
+    let mut extra=maximum.clone();extra.push(0);assert!(History::verify(&key.verifying_key(),&query,&extra).is_err());
+    largest[224]=33;largest.push(4);largest.extend_from_slice(&[33;32]);
+    assert!(History::verify(&key.verifying_key(),&query,&seal_history(&largest)).is_err());
     let mut pending=receipt;pending[208]=1;pending[210]=3;sign(&key,&mut pending);let pending=wrap(&pending);
     assert!(!History::verify(&key.verifying_key(),&query,&pending).unwrap().receipt().completed(8,&b.published,8,&b.published).unwrap());
 }
