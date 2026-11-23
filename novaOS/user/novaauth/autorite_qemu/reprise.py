@@ -200,7 +200,10 @@ class Recovery:
             db.execute("INSERT INTO used VALUES(?,?,?)", (server, domain, instance))
 
     @staticmethod
-    def _decided(db, op):
+    def _decided(db, op, *, membership_reservation=False):
+        from membership_retirement import used_operation
+        if used_operation(db,op,reservation=not membership_reservation):
+            return True
         return (
             db.execute(
                 "SELECT 1 FROM mutations WHERE op=? UNION ALL "
@@ -257,7 +260,7 @@ class Recovery:
             signature = self._commit_head(db, state, op, next_head)
         return signature
 
-    def _commit_head(self, db, state, op, next_head):
+    def _commit_head(self, db, state, op, next_head, *, membership=False):
         """Private shared writer; the caller verifies its complete signed variant.
 
         Requires the caller's existing transaction. No second database writer or
@@ -265,8 +268,10 @@ class Recovery:
         """
         from admission_exec import guard_mutation
         guard_mutation(db, state.server, state.domain, state.instance)
-        if self._current(db, state.server, state.domain) != state or self._decided(db, op):
+        if self._current(db, state.server, state.domain) != state or self._decided(db, op, membership_reservation=membership):
             raise Refus("route, tête ou requête déjà décidée")
+        from membership_retirement import guard_publication
+        guard_publication(db,state,op,next_head,membership)
         packet = state.mutation(op, next_head)
         signature = self.key.sign(HEAD_RECEIPT + packet)
         db.execute("INSERT INTO mutations VALUES(?,?,?)", (op, packet, signature))

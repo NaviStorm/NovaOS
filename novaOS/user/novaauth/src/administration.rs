@@ -249,7 +249,8 @@ impl RegistryView {
             Operation::Rename { .. } => (5, [0;16], 0),
             Operation::CreateGroup { .. } => (6, [0;16], 0),
             Operation::AddMember { .. } => (7, [0;16], 0),
-            Operation::RemoveMember { .. } => (4, [0;16], 0),
+            // Un retrait ne peut emprunter le reçu sans drainage UPDATE.
+            Operation::RemoveMember { .. } => return Err(Fault::Denied),
         };
         // Contrôles du rôle, du dernier administrateur, de la tête et du reçu
         // terminal dans le plan existant. Aucun octet n'est publié ici.

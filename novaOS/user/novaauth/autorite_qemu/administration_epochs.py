@@ -234,6 +234,8 @@ class Epochs:
                 "(e.state=1 AND e.child=zeroblob(32)) OR (e.state=2 AND e.child!=zeroblob(32))) LIMIT 1",(server,domain,subject,epoch)).fetchone()
             if invalid:
                 raise Refus("UNCERTAIN : lancement antérieur non réconcilié")
+            from membership_retirement import guard_drained
+            guard_drained(db,server,domain,subject=subject,epoch=epoch)
             seq = execs.event(db,"subject-retired",server+domain+subject+struct.pack('>Q',epoch)+op)
             body = server+domain+subject+struct.pack('>Q',epoch)+op+struct.pack('>QQ',r[1],seq)+bytes([1])+bytes(7)+r[2]
             assert len(body)==128

@@ -63,6 +63,8 @@ def guard_activation(db, server, domain, old, new):
         raise Refus("registre d'admission non provisionné")
     if row != (RETIRED,):
         raise Refus("drainage EXEC non confirmé : nouvelle incarnation inactive")
+    from membership_retirement import guard_activation as guard_membership_activation
+    guard_membership_activation(db,server,domain)
     db.execute("INSERT INTO exec_routes VALUES(?,?,?,?)", (server, domain, new, ACTIVE))
     event(db, "activation", server + domain + old + new)
 
@@ -237,6 +239,8 @@ class Admissions:
                 (server,domain,incarnation)).fetchone()
             if invalid:
                 raise Refus("UNCERTAIN : issue terminale incomplète, B inactive")
+            from membership_retirement import guard_activation as guard_membership_drain
+            guard_membership_drain(db,server,domain)
             seq = event(db,RETIRED,data)
             db.execute("UPDATE exec_routes SET state=? WHERE server=? AND domain=? AND incarnation=?",
                        (RETIRED,server,domain,incarnation))

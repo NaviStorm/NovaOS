@@ -8,6 +8,7 @@ publish = false
 [workspace]
 
 [features]
+membership-r2-guest = ["administration-r2-guest"]
 administration-r2-guest = ["administration-guest", "novaos-recovery/administration-lab"]
 administration-lab = []
 administration-guest = ["exec-admission-guest", "administration-lab", "novaos-identity/administration-lab"]

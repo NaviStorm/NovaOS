@@ -569,3 +569,6 @@ pub mod subject_admission;
 
 #[cfg(feature = "administration-lab")]
 pub mod administration;
+
+#[cfg(feature = "administration-lab")]
+pub mod membership;

@@ -682,3 +682,70 @@ fn concurrent_enrollments_cannot_assign_one_factor_twice() {
         assert!(after.user_info(current,Some(Selector::Name("david"))).is_err());
     }
 }
+
+#[test]
+fn selective_removal_preserves_direct_other_group_and_authentication_epoch() {
+    use policy::*;
+    for sector in [512,4096] {
+        let mut f=Fixture::new(sector);
+        let (image,g,h)= {
+            let mut r=Registry::open(&mut f.fs,&mut f.authority,DOMAIN).unwrap();
+            let head=r.mutate(r.resolve_verified_factor([1;16]).unwrap(),[90;16],Change::AddGroup("g-selectif")).unwrap();let g=created_group(&head);
+            let head=r.mutate(r.resolve_verified_factor([1;16]).unwrap(),[91;16],Change::AddGroup("h-conserve")).unwrap();let h=created_group(&head);
+            let head=r.provision_install(head,[92;16],f.alice,InstallChange::New([42;32])).unwrap();
+            let image=Image{installation:installed(&head),digest:[42;32]};
+            r.bind_folder(head,f.alice,17,b"private-seal",[93;16]).unwrap();
+            for (op,origin,rights) in [(94,Origin::Direct,READ),(95,Origin::Group(g),WRITE),(96,Origin::Group(h),READ|WRITE)] {
+                r.set_permission(r.resolve_verified_factor([2;16]).unwrap(),f.alice,17,image.installation,origin,rights,[op;16]).unwrap();
+            }
+            for (op,group) in [(97,g),(98,h)] {r.mutate(r.resolve_verified_factor([1;16]).unwrap(),[op;16],Change::AddMember(f.alice,group)).unwrap();}
+            (image,g,h)
+        };
+        let before=f.view();let admin=before.resolve_verified_factor([1;16]).unwrap();let alice=before.resolve_verified_factor([2;16]).unwrap();
+        let epoch=before.authentication_epoch(alice).unwrap();
+        let direct=before.permission(alice,image,f.alice,17,Origin::Direct).unwrap();
+        let old_g=before.permission(alice,image,f.alice,17,Origin::Group(g)).unwrap();
+        let other=before.permission(alice,image,f.alice,17,Origin::Group(h)).unwrap();
+        assert!(matches!(before.membership_removal(alice,[99;16],f.alice,g,old_g.membership_revision),Err(Fault::Denied)));
+        assert!(matches!(before.membership_removal(alice,[99;16],f.alice,g,old_g.membership_revision+1),Err(Fault::Denied)));
+        assert!(before.membership_removal(admin,[99;16],f.alice,g,old_g.membership_revision+1).is_err());
+        assert!(before.administration_publication(admin,[99;16],Operation::RemoveMember{subject:f.alice,group:g},None).is_err());
+        let removal=before.membership_removal(admin,[99;16],f.alice,g,old_g.membership_revision).unwrap();
+        assert_eq!(removal.source.subject(),f.alice);assert_eq!(removal.source.group(),g);
+        // Publication P9 simulée isolée : ce test ne tient pas lieu d'acquittement
+        // des effecteurs ni de qualification du raccord QEMU de la commande.
+        f.publish(&removal.triplet);let after=f.view();let fresh=after.resolve_verified_factor([2;16]).unwrap();
+        assert_eq!(after.authentication_epoch(fresh).unwrap(),epoch);
+        assert_eq!(after.revalidate_permission(fresh,image,f.alice,17,direct).unwrap(),direct);
+        assert_eq!(after.revalidate_permission(fresh,image,f.alice,17,other).unwrap(),other);
+        assert!(after.revalidate_permission(fresh,image,f.alice,17,old_g).is_err());
+        assert!(after.permission(alice,image,f.alice,17,Origin::Direct).is_err()); // tête ancienne
+        assert!(after.administration_plan(after.resolve_verified_factor([1;16]).unwrap(),[100;16],Operation::Disable{subject:f.admin},None).is_err());
+        let added=after.administration_plan(after.resolve_verified_factor([1;16]).unwrap(),[100;16],Operation::AddMember{subject:f.alice,group:g},None).unwrap();f.publish(&added);
+        let restart=f.view();let fresh=restart.resolve_verified_factor([2;16]).unwrap();
+        assert!(restart.revalidate_permission(fresh,image,f.alice,17,old_g).is_err());
+        let new_g=restart.permission(fresh,image,f.alice,17,Origin::Group(g)).unwrap();assert!(new_g.membership_revision>old_g.membership_revision);
+        assert_eq!(restart.revalidate_permission(fresh,image,f.alice,17,direct).unwrap(),direct);
+        assert_eq!(restart.revalidate_permission(fresh,image,f.alice,17,other).unwrap(),other);
+    }
+}
+
+#[test]
+fn selective_preparation_can_remove_membership_of_disabled_subject() {
+    for sector in [512,4096] {
+        let mut f=Fixture::new(sector);
+        let before=f.view();
+        let admin=before.resolve_verified_factor([1;16]).unwrap();
+        let disabled=before.administration_plan(admin,[6;16],Operation::Disable{subject:f.alice},None).unwrap();
+        f.publish(&disabled);
+        let current=f.view();
+        let admin=current.resolve_verified_factor([1;16]).unwrap();
+        // L'appartenance initiale a la révision historique zéro.
+        let removal=current.membership_removal(admin,[7;16],f.alice,f.group,0).unwrap();
+        f.publish(&removal.triplet);
+        let after=f.view();let grant=after.resolve_verified_factor([1;16]).unwrap();
+        let user=after.user_info(grant,Some(Selector::Id(f.alice))).unwrap();
+        assert_eq!(user.status,Status::Disabled);assert!(user.groups.is_empty());
+        assert!(after.resolve_verified_factor([2;16]).is_err());
+    }
+}

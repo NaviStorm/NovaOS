@@ -282,47 +282,7 @@ impl<D: Device, A: Authority> Registry<'_, D, A> {
         origin: Origin,
     ) -> Result<Permission> {
         let (_, s) = self.view()?;
-        if s.user(principal)?.status != Status::Active {
-            return Err(Fault::Denied);
-        }
-        let installation = s.installation(image.installation)?;
-        if installation.image != Some(image.digest) {
-            return Err(Fault::Denied);
-        }
-        let owner = s.user(folder_owner)?;
-        if owner.status != Status::Active {
-            return Err(Fault::Denied);
-        }
-        let r = owner
-            .rules
-            .iter()
-            .find(|r| {
-                r.object == object && r.installation == image.installation && r.origin == origin
-            })
-            .ok_or(Fault::Denied)?;
-        let membership_revision = match origin {
-            Origin::Direct if principal == owner.id => 0,
-            Origin::Direct => return Err(Fault::Denied),
-            Origin::Group(id) => {
-                let group = s
-                    .groups
-                    .iter()
-                    .find(|g| g.id == id && g.members.contains(&principal))
-                    .ok_or(Fault::Denied)?;
-                group
-                    .admissions
-                    .iter()
-                    .find(|(u, _)| *u == principal)
-                    .map_or(0, |(_, rev)| *rev)
-            }
-        };
-        Ok(Permission {
-            origin,
-            rights: r.rights,
-            rule_revision: r.revision,
-            membership_revision,
-            image_revision: installation.revision,
-        })
+        s.permission(principal, image, folder_owner, object, origin)
     }
 }
 
@@ -364,5 +324,52 @@ impl<D:Device,A:Authority> Registry<'_,D,A> {
             .installations.iter_mut().find(|i|i.id==image.installation).ok_or(Fault::Denied)?;
         item.administration=scope.map(|s|s.bits());
         self.publish_state(head,state,request,head.generation.checked_add(1).ok_or(Fault::Limit)?)
+    }
+}
+
+impl State {
+    pub(super) fn permission(&self, principal: Id, image: Image, folder_owner: Id,
+        object: u64, origin: Origin) -> Result<Permission> {
+        if self.user(principal)?.status != Status::Active {
+            return Err(Fault::Denied);
+        }
+        let installation = self.installation(image.installation)?;
+        if installation.image != Some(image.digest) {
+            return Err(Fault::Denied);
+        }
+        let owner = self.user(folder_owner)?;
+        if owner.status != Status::Active {
+            return Err(Fault::Denied);
+        }
+        let r = owner
+            .rules
+            .iter()
+            .find(|r| {
+                r.object == object && r.installation == image.installation && r.origin == origin
+            })
+            .ok_or(Fault::Denied)?;
+        let membership_revision = match origin {
+            Origin::Direct if principal == owner.id => 0,
+            Origin::Direct => return Err(Fault::Denied),
+            Origin::Group(id) => {
+                let group = self
+                    .groups
+                    .iter()
+                    .find(|g| g.id == id && g.members.contains(&principal))
+                    .ok_or(Fault::Denied)?;
+                group
+                    .admissions
+                    .iter()
+                    .find(|(u, _)| *u == principal)
+                    .map_or(0, |(_, rev)| *rev)
+            }
+        };
+        Ok(Permission {
+            origin,
+            rights: r.rights,
+            rule_revision: r.revision,
+            membership_revision,
+            image_revision: installation.revision,
+        })
     }
 }

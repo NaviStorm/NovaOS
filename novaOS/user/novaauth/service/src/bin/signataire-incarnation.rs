@@ -71,6 +71,9 @@ mod exec_admission_bridge;
 #[cfg(feature="administration-r2-guest")]
 #[path="common/administration_bridge.rs"]
 mod administration_bridge;
+#[cfg(feature="membership-r2-guest")]
+#[path="common/membership_bridge.rs"]
+mod membership_bridge;
 fn serve() -> rt::Result<()> {
     let id = incarnation::identity();
     let port = rt::config(8);
@@ -105,6 +108,12 @@ fn serve() -> rt::Result<()> {
         }
         #[cfg(feature="vfs-guest")]
         if issued && recovery_done && recovery_bridge::is_request(&m) {
+            #[cfg(feature="membership-r2-guest")]
+            if novaos_recovery::framing::Header::parse(&m.payload[..novaos_recovery::framing::HEADER])
+                .is_ok_and(|h|matches!(h.operation,54..=60)) {
+                membership_bridge::serve(&key,port,&id,m)?;
+                continue;
+            }
             #[cfg(feature="administration-r2-guest")]
             if novaos_recovery::framing::Header::parse(&m.payload[..novaos_recovery::framing::HEADER])
                 .is_ok_and(|h|matches!(h.operation,50..=53)) {

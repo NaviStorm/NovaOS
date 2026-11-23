@@ -11,6 +11,8 @@ pub mod lab;
 #[cfg(feature = "administration-lab")]
 pub mod administration;
 #[cfg(feature = "administration-lab")]
+pub mod membership;
+#[cfg(feature = "administration-lab")]
 pub mod enrollment_catalog;
 #[cfg(feature = "recuperation-lab")]
 pub mod recuperation;
