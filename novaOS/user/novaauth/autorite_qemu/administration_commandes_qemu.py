@@ -24,9 +24,11 @@ from administration_events import Events, command_status_pattern, observed_comma
 def initial_fragments(root, manifest):
     # Les fichiers du provisionnement ont des indices décimaux non rembourrés.
     # Ne jamais placer fragment-10 avant fragment-2.
+    if len(manifest)!=418:raise Refus('manifeste initial tronque')
     count=int.from_bytes(manifest[378:382], 'big')
+    if not 0<count<=64:raise Refus('nombre de fragments initial hors borne')
     names={f'fragment-{i}.chiffre' for i in range(count)}
-    if not 0<count<=64 or {p.name for p in root.glob('fragment-*.chiffre')}!=names:
+    if {p.name for p in root.glob('fragment-*.chiffre')}!=names:
         raise Refus('fragments initiaux incomplets ou surnumeraires')
     chunks=[(root/f'fragment-{i}.chiffre').read_bytes() for i in range(count)]
     if any(not 17<=len(c)<=1040 for c in chunks):raise Refus('fragment initial hors borne')

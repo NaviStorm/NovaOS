@@ -28,6 +28,10 @@ class Modes(unittest.TestCase):
             self.assertEqual(initial_fragments(root,manifest),expected)
             (root/'fragment-2.chiffre').unlink()
             with self.assertRaises(Refus):initial_fragments(root,manifest)
+    def test_fragment_count_bounded_before_allocation(self):
+        manifest=bytearray(418);manifest[378:382]=b'\xff'*4
+        with self.assertRaises(Refus):initial_fragments(Path('.'),manifest)
+        with self.assertRaises(Refus):initial_fragments(Path('.'),b'')
     def test_no_unknown_mode(self):
         with self.assertRaises(ValueError): command_mode('whoami', 'inconnu')
 
