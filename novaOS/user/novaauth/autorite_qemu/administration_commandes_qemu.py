@@ -21,6 +21,18 @@ from administration_epochs import Epochs, initialize
 from administration_events import Events, command_status_pattern, observed_command_status_pattern
 
 
+def initial_fragments(root, manifest):
+    # Les fichiers du provisionnement ont des indices décimaux non rembourrés.
+    # Ne jamais placer fragment-10 avant fragment-2.
+    count=int.from_bytes(manifest[378:382], 'big')
+    names={f'fragment-{i}.chiffre' for i in range(count)}
+    if not 0<count<=64 or {p.name for p in root.glob('fragment-*.chiffre')}!=names:
+        raise Refus('fragments initiaux incomplets ou surnumeraires')
+    chunks=[(root/f'fragment-{i}.chiffre').read_bytes() for i in range(count)]
+    if any(not 17<=len(c)<=1040 for c in chunks):raise Refus('fragment initial hors borne')
+    return chunks
+
+
 def command_mode(command, mode):
     if mode == 'interactif':
         return command
@@ -561,7 +573,7 @@ def main():
             (root/'avant-redemarrage.json').write_text(json.dumps(first,indent=2)+'\n')
             if a.coupure_avant_publication:
                 manifest=(root/'manifeste.bin').read_bytes()
-                chunks=[q.read_bytes() for q in sorted(root.glob('fragment-*.chiffre'))]
+                chunks=initial_fragments(root,manifest)
             else:
                 paths=list((case.sortie/'captures-invite').glob('*/manifeste.bin'))
                 if len(paths)!=1:raise Refus('capture native administrative absente ou ambiguë')

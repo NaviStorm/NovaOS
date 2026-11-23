@@ -1,7 +1,10 @@
 """Oracles du banc : la syntaxe imbriquée ne change pas la demande native."""
 import shlex
 import unittest
-from administration_commandes_qemu import command_mode
+from administration_commandes_qemu import command_mode, initial_fragments
+from reprise import Refus
+from pathlib import Path
+from tempfile import TemporaryDirectory
 
 class Modes(unittest.TestCase):
     def test_exact_source(self):
@@ -17,6 +20,14 @@ class Modes(unittest.TestCase):
     def test_script_never_substitutes_business_arguments(self):
         with self.assertRaises(ValueError):command_mode('usermod --disable bob --prepare','script')
         with self.assertRaises(ValueError):command_mode('groupadd intrus --prepare','script')
+    def test_thirteen_fragments_keep_numeric_order(self):
+        with TemporaryDirectory() as d:
+            root=Path(d);manifest=bytearray(418);manifest[378:382]=(13).to_bytes(4,'big')
+            expected=[bytes([i])*17 for i in range(13)]
+            for i,data in enumerate(expected):(root/f'fragment-{i}.chiffre').write_bytes(data)
+            self.assertEqual(initial_fragments(root,manifest),expected)
+            (root/'fragment-2.chiffre').unlink()
+            with self.assertRaises(Refus):initial_fragments(root,manifest)
     def test_no_unknown_mode(self):
         with self.assertRaises(ValueError): command_mode('whoami', 'inconnu')
 
