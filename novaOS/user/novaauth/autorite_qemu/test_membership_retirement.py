@@ -124,6 +124,15 @@ class Membership(unittest.TestCase):
   self.finish();self.ack(1,b'V'*32);self.ack(2,b'R'*32);self.ack(4,b'E'*32)
   self.assertEqual(self.query()[208],2)
   with r.transaction(self.f.path) as db:m.guard_activation(db,*self.f.scope)
+ def test_opt_in_without_schema_is_refused_without_implicit_migration(self):
+  import membership_rpc as rpc
+  with r.transaction(self.f.path) as db:
+   db.execute('DROP TABLE membership_effectors');db.execute('DROP TABLE membership_operations');db.execute('DROP TABLE membership_changes')
+  old=self.f.current()
+  with self.assertRaisesRegex(r.Refus,'non initialisé'):
+   rpc.request(self.f.path,self.f.key,self.f.server.public_key().public_bytes_raw(),self.f.scope,54,bytes(128),membership=True)
+  self.assertEqual(self.f.current(),old)
+  with r.transaction(self.f.path) as db:self.assertFalse(m.available(db))
  def test_private_rpc_scope_enablement_and_signed_receipt(self):
   import membership_rpc as rpc
   s=self.f.current();args=(s,self.op,b'N'*32,self.f.principal,1,self.source,self.expected)

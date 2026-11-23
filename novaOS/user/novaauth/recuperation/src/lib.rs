@@ -572,3 +572,6 @@ pub mod administration;
 
 #[cfg(feature = "administration-lab")]
 pub mod membership;
+
+#[cfg(feature="administration-lab")]
+pub mod membership_effectors;

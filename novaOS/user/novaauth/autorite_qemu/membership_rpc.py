@@ -11,6 +11,10 @@ RESERVE,PUBLISH,EFFECT,ADMIT,FINISH,QUERY,PENDING=range(54,61)
 
 def request(database,key,peer,scope,operation,body,*,membership=False):
     if not membership: raise Refus('route sélective non activée')
+    from reprise import transaction
+    from membership_retirement import available
+    with transaction(database) as db:
+        if not available(db): raise Refus('registre sélectif non initialisé')
     if len(body)<128: raise Refus('taille invalide')
     server,domain=scope;incarnation=fixed(body[32:64],32)
     if body[:32]!=server+domain: raise Refus('portée substituée')

@@ -88,6 +88,9 @@ def fixture(args,stack):
     old=Recovery(database,decision)
     old.provision(SERVER,DOMAIN,b"i"*32,generation,native_head,public(server),administrator.keys[0])
     initialize(database)
+    if getattr(args,"membership_r2",False):
+        from membership_retirement import initialize as initialize_memberships
+        initialize_memberships(database)
     measurement=bytes.fromhex(sha(args.registre))
     authority=RecoveryAuthority(old,[measurement])
     authority.provision_keys(SERVER,DOMAIN,2,backup+signing)
@@ -262,6 +265,12 @@ def run(args,environment=None,before_mutation=None,scenario=None,rpc_hook=None):
                                     Ed25519PrivateKey.from_private_bytes(args.decision.read_bytes()),
                                     (args.cles/"serveur.pub").read_bytes(),(SERVER,DOMAIN),operation,body,
                                     administration=getattr(args,"administration_r2",False))
+                            elif getattr(args,"membership_r2",False) and operation in range(54,61):
+                                from membership_rpc import request as membership_request
+                                result=membership_request(dispatcher.authority.path,
+                                    Ed25519PrivateKey.from_private_bytes(args.decision.read_bytes()),
+                                    (args.cles/"serveur.pub").read_bytes(),(SERVER,DOMAIN),operation,body,
+                                    membership=True)
                             elif getattr(args,"administration_r2",False) and operation in (50,51,52,53):
                                 from administration_mutation_rpc import request as admin_request
                                 result=admin_request(dispatcher.authority.path,

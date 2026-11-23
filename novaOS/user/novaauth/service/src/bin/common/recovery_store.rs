@@ -43,3 +43,24 @@ impl Storage {
         data[..n].copy_from_slice(&a[32..32+n]);Ok(n)
     }
 }
+
+#[cfg(feature="membership-r2-guest")]
+impl Storage {
+    /// L'instance provient de la page de démarrage écrite par le noyau QEMU,
+    /// liée à la conversation existante. Aucun identifiant choisi par le CLI.
+    pub fn membership_instance(&self)->rt::Result<[u8;32]> {
+        let mut id=[0;32];
+        for (i,chunk) in id.chunks_exact_mut(8).enumerate() {
+            chunk.copy_from_slice(&rt::config(23+i).to_le_bytes());
+        }
+        if id==[0;32] {Err(rt::DENIED)} else {Ok(id)}
+    }
+    pub fn membership_close(&mut self, request:&novaos_recovery::membership_effectors::VfsClosure)
+        ->rt::Result<novaos_recovery::membership_effectors::VfsFacts> {
+        if request.bytes()[72..104]!=self.membership_instance()? {return Err(rt::DENIED);}
+        self.sequence=self.sequence.checked_add(1).ok_or(rt::LIMIT)?;
+        let reply=common::rpc(self.port,self.port,self.sequence,request.bytes())?;
+        if common::number(&reply)!=rt::OK {return Err(common::number(&reply));}
+        request.verify(&reply).map_err(|_|rt::REFUSED)
+    }
+}
