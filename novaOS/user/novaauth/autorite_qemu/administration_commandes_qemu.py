@@ -379,7 +379,7 @@ def main():
                 # jamais la mutation, et ne soumet aucune seconde demande.
                 report['recu_supprime_apres_publication'] = True
                 raise Refus('UNCERTAIN : reçu administratif supprimé par le banc')
-            if phase == 'before' and (operation == 40 or (a.membership_io and operation == 57)) and not enrolled:
+            if phase == 'before' and (operation == 40 or (a.membership_io and operation == 57) or (a.selective_exec and operation == 62)) and not enrolled:
                 with transaction(api.path) as db:
                     state = api.authority._current(db, SERVER, DOMAIN)
                 proof = admin.call('r2-enroll', state)
