@@ -124,4 +124,23 @@ mod tests {
         assert_eq!(Directory::default().membership_close(&q,[5;32]),Err(rt::DENIED));
     }
 
+    #[test] fn later_retirement_requires_terminal_and_keeps_previous_barrier() {
+        let mut d=Directory::default();let who=holder(2);
+        let own=d.membership_grant(who,0,READ,direct()).unwrap();
+        let gh=d.membership_grant(who,0,WRITE,g()).unwrap();let hh=d.membership_grant(who,0,ALL,h()).unwrap();
+        let q=request();d.membership_close(&q,[4;32]).unwrap();
+        let mut second=q;second[8..24].fill(2);second[40..56].fill(8);second[56..64].copy_from_slice(&6u64.to_le_bytes());second[64..72].copy_from_slice(&20u64.to_le_bytes());
+        assert_eq!(d.membership_close(&second,[4;32]),Err(rt::WOULD_BLOCK));
+        let mut end=q;end[..8].copy_from_slice(b"NXMGEND1");
+        assert_eq!(d.membership_terminal(&end,[5;32]),Err(rt::DENIED));
+        d.membership_terminal(&end,[4;32]).unwrap();d.membership_terminal(&end,[4;32]).unwrap();
+        d.membership_close(&second,[4;32]).unwrap();
+        assert_eq!(d.check(who,gh,WRITE),Err(rt::REVOKED));assert_eq!(d.check(who,hh,WRITE),Err(rt::REVOKED));d.check(who,own,READ).unwrap();
+        assert_eq!(d.membership_grant(who,0,WRITE,g()),Err(rt::REVOKED));assert_eq!(d.membership_grant(who,0,WRITE,h()),Err(rt::REVOKED));
+        let mut end=second;end[..8].copy_from_slice(b"NXMGEND1");d.membership_terminal(&end,[4;32]).unwrap();
+        let mut third=second;third[8..24].fill(3);third[40..56].fill(9);
+        assert_eq!(d.membership_close(&third,[4;32]),Err(rt::LIMIT));
+        assert_eq!(d.membership_grant(who,0,WRITE,g()),Err(rt::REVOKED));assert_eq!(d.membership_grant(who,0,WRITE,h()),Err(rt::REVOKED));
+    }
+
 }

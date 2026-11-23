@@ -63,3 +63,12 @@ class Events:
                                  'deja_recu': position < saved})
         finally:
             self.serial.offset = saved
+
+
+def membership_revision_pattern(phase, origin, code):
+    if phase not in ('avant', 'apres', 'reprise') or origin not in ('Direct', 'G', 'H') or code not in (0, 10):
+        raise Refus('étape VFS invalide')
+    prefix = f'NARM Q1 phase={phase} origine={origin} native={code} octets={0 if code else 12} revision='
+    # Une lecture série peut s'arrêter après le premier chiffre d'une révision.
+    # Attendre sa délimitation ; ne jamais accepter ce préfixe comme la valeur.
+    return re.escape(prefix.encode()) + rb'(\d+)\r?\n'

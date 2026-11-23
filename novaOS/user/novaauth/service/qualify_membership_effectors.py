@@ -22,7 +22,7 @@ def prepare(source, destination):
     text=text.replace('    #[cfg(feature = "politiques-lab")]\n    permission:', '    permission:')
     text=text.replace('            #[cfg(feature = "politiques-lab")]\n            permission:', '            permission:')
     text=text.replace('    #[cfg(feature = "politiques-lab")]\n    sleeper:', '    sleeper:')
-    text=text.replace('    next: u64,','    membership: Option<GroupClosure>,\n    next: u64,')
+    text=text.replace('    next: u64,','    membership: Option<GroupClosure>,\n    membership_previous: Option<GroupSource>,\n    next: u64,')
     runtime='''#![allow(dead_code)]
 use novaos_identity::policy::{Origin,Permission};
 mod rt {
@@ -82,6 +82,11 @@ mod execution {
     with (destination/'src/lib.rs').open('a') as out:
         out.write(prelude+execution.read_text().replace('//!','//')+'\n'+exec_tests.read_text()+'\n}\n')
 
-    (destination/'sources.json').write_text(json.dumps({str(x.relative_to(source)):hashlib.sha256(x.read_bytes()).hexdigest() for x in (p,vfs,tests,execution,exec_tests,Path(__file__).resolve(),source/"novaOS/abi/native.rs")},indent=2)+'\n')
+    io=source/'novaOS/user/novaauth/service/membership_io_vfs.rs'
+    io_tests=source/'novaOS/user/novaauth/service/membership_io_queue_tests.rs'
+    queue=io.read_text().split('fn n(b:',1)[0].replace('//!','//')
+    with(destination/'src/lib.rs').open('a') as out:
+        out.write('\nmod io_queue { type Frame=[u8;128];\n'+queue+'\n'+io_tests.read_text()+'\n}\n')
+    (destination/'sources.json').write_text(json.dumps({str(x.relative_to(source)):hashlib.sha256(x.read_bytes()).hexdigest() for x in (p,vfs,tests,execution,exec_tests,io,io_tests,Path(__file__).resolve(),source/"novaOS/abi/native.rs")},indent=2)+'\n')
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('source',type=Path);p.add_argument('destination',type=Path);a=p.parse_args();prepare(a.source,a.destination)

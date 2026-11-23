@@ -112,7 +112,7 @@ fn main() {
     // Ce disque sert à fabriquer/vérifier la fixture ; l'invité consulte
     // exclusivement l'autorité indépendante, pas ce journal local.
     // Les E/S directes QEMU sur Darwin exigent un multiple de 16 Kio.
-    let mut ledger = Ledger::new(image("autorite.raw", if a.get(10).is_some() {28} else if a.get(9).is_some() {24} else {12}));
+    let mut ledger = Ledger::new(image("autorite.raw", if std::env::var_os("NOVA_MEMBERSHIP_SHELL").is_some() {40} else if a.get(10).is_some() {28} else if a.get(9).is_some() {24} else {12}));
     let domain = [7; 16];
     let mut fs = provision(
         image("identites.p9", 512),
@@ -267,6 +267,22 @@ fn main() {
         assert_eq!(name,"equipe-r2");
         let grant=reg.grant_attested(owner).unwrap();
         reg.mutate(grant,[190;16],Change::AddGroup(name)).unwrap();
+    }
+    if let Some(path)=std::env::var_os("NOVA_MEMBERSHIP_SHELL") {
+        use novaos_identity::policy::{InstallChange,Origin,READ,installed};
+        let a=reg.grant_attested(owner).unwrap();
+        let result=reg.mutate(a,[200;16],Change::AddGroup("independant-h")).unwrap();
+        let hgroup=created_group(&result);
+        let a=reg.grant_attested(owner).unwrap();reg.mutate(a,[201;16],Change::AddMember(owner,hgroup)).unwrap();
+        let digest:Hash=Sha256::digest(fs::read(path).unwrap()).into();
+        let current=reg.outcome([201;16]).unwrap().unwrap();
+        let head=reg.provision_install(current,[202;16],owner,InstallChange::New(digest)).unwrap();
+        let installation=installed(&head);
+        for(i,origin) in [Origin::Direct,Origin::Group(group),Origin::Group(hgroup)].into_iter().enumerate(){
+            let a=reg.grant_attested(owner).unwrap();reg.set_permission(a,owner,work,installation,origin,if i==0{READ}else{READ|2},[203+i as u8;16]).unwrap();
+        }
+        let mut fixture=Vec::new();fixture.extend_from_slice(&work.to_le_bytes());fixture.extend_from_slice(&group);fixture.extend_from_slice(&hgroup);fixture.extend_from_slice(&digest);
+        save(&root.join("membership.bin"),&fixture);
     }
     drop(reg);
     let mut identities=Vec::new();identities.extend_from_slice(&owner);identities.extend_from_slice(&bob);identities.extend_from_slice(&group);

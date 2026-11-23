@@ -14,6 +14,7 @@ from administration_epochs import Epochs, enabled
 PREFIX = b'NovaAuth/QEMU/membership/'
 RESERVE, PUBLISH, EFFECT, ADMIT, FINISH, QUERY, PENDING = [PREFIX+x+b'/v1\0' for x in
     (b'reserve',b'publish',b'effect',b'admit',b'finish',b'query',b'pending')]
+HISTORY = PREFIX+b'history/v1\0'
 RECEIPT = b'NovaAuth/QEMU/membership-retired/v1'
 RESERVED, DRAINING, RETIRED = 0, 1, 2
 MAX_EFFECTORS, MAX_PENDING = 32, 64
@@ -297,3 +298,31 @@ class Memberships:
             if len(original)!=241: raise Refus('historique incomplet')
             body=b'NAMBOU01'+packet+original+number(position,1)+bytes([status])+(evidence or bytes(32))+number(terminal or 0)
         return body,self.authority.key.sign(QUERY+body)
+
+
+    def history(self,state,op,fresh,proof):
+        """Réservation canonique et reçu signé : lecture pure, sans nouvel ACK.
+
+        Le registre contrôle le principal courant avant de divulguer l'issue.
+        Une incarnation neuve ne réécrit jamais l'identité des effecteurs anciens.
+        """
+        packet=state.packet()+fixed(op,16)+fixed(fresh,32)
+        with transaction(self.path) as db:
+            key=self._reconcile_key(db,state);verify(key,HISTORY,packet,proof)
+            row=self._row(db,state,op);original=row['packet']
+            if len(original)<258 or len(original)!=225+33*original[224] or not 1<=original[224]<=32:
+                raise Refus('historique de réservation incomplet')
+            if original[:32]!=packet[:32] or original[112:128]!=op or original[160:176]!=row['principal']:
+                raise Refus('historique de réservation incohérent')
+            expected=acknowledged=0
+            for kind in (1,2,4):
+                flags=db.execute('SELECT acknowledged FROM membership_effectors WHERE op=? AND kind=?',(op,kind)).fetchall()
+                if flags:
+                    expected|=kind
+                    if all(x==(1,) for x in flags):acknowledged|=kind
+            receipt=(b'NAMBRE01'+state.server+state.domain+row['incarnation']+op+row['subject']+row['grp']+
+                number(row['revision'])+number(row['generation'])+row['previous']+row['next_head']+
+                number(row['sequence'],1)+bytes([row['state'],expected,acknowledged])+bytes(5)+fresh)
+            receipt+=self.authority.key.sign(RECEIPT+receipt)
+            body=b'NAMBHI01'+packet+len(original).to_bytes(2,'big')+original+receipt
+        return body,self.authority.key.sign(HISTORY+body)

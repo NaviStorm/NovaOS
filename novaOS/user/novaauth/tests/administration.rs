@@ -703,6 +703,9 @@ fn selective_removal_preserves_direct_other_group_and_authentication_epoch() {
         };
         let before=f.view();let admin=before.resolve_verified_factor([1;16]).unwrap();let alice=before.resolve_verified_factor([2;16]).unwrap();
         let epoch=before.authentication_epoch(alice).unwrap();
+        assert_eq!(before.membership_image(alice,[42;32]).unwrap(),image);
+        assert!(before.membership_image(admin,[42;32]).is_err());
+        assert!(before.membership_image(alice,[41;32]).is_err());
         let direct=before.permission(alice,image,f.alice,17,Origin::Direct).unwrap();
         let old_g=before.permission(alice,image,f.alice,17,Origin::Group(g)).unwrap();
         let other=before.permission(alice,image,f.alice,17,Origin::Group(h)).unwrap();
@@ -724,6 +727,8 @@ fn selective_removal_preserves_direct_other_group_and_authentication_epoch() {
         assert_eq!(after.revalidate_permission(fresh,image,f.alice,17,other).unwrap(),other);
         assert!(after.revalidate_permission(fresh,image,f.alice,17,old_g).is_err());
         assert!(after.permission(alice,image,f.alice,17,Origin::Direct).is_err()); // tête ancienne
+        assert!(after.membership_image(alice,[42;32]).is_err());
+        assert_eq!(after.membership_image(fresh,[42;32]).unwrap(),image);
         assert!(after.administration_plan(after.resolve_verified_factor([1;16]).unwrap(),[100;16],Operation::Disable{subject:f.admin},None).is_err());
         let added=after.administration_plan(after.resolve_verified_factor([1;16]).unwrap(),[100;16],Operation::AddMember{subject:f.alice,group:g},None).unwrap();f.publish(&added);
         let restart=f.view();let fresh=restart.resolve_verified_factor([2;16]).unwrap();

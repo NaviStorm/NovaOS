@@ -8,6 +8,7 @@ from reprise import Recovery,Refus,fixed
 from administration_mutation_rpc import state
 from membership_retirement import Memberships,Source
 RESERVE,PUBLISH,EFFECT,ADMIT,FINISH,QUERY,PENDING=range(54,61)
+HISTORY=61
 
 def request(database,key,peer,scope,operation,body,*,membership=False):
     if not membership: raise Refus('route sélective non activée')
@@ -19,7 +20,7 @@ def request(database,key,peer,scope,operation,body,*,membership=False):
     server,domain=scope;incarnation=fixed(body[32:64],32)
     if body[:32]!=server+domain: raise Refus('portée substituée')
     q,proof=body[64:-64],body[-64:]
-    lengths={PUBLISH:128,EFFECT:161,ADMIT:241,FINISH:194,QUERY:160,PENDING:144}
+    lengths={PUBLISH:128,EFFECT:161,ADMIT:241,FINISH:194,QUERY:160,PENDING:144,HISTORY:160}
     size=225+33*q[224] if operation==RESERVE and len(q)>=225 and 1<=q[224]<=32 else lengths.get(operation)
     if size is None or len(q)!=size: raise Refus('opération ou taille invalide')
     current=state(q[:112])
@@ -50,6 +51,9 @@ def request(database,key,peer,scope,operation,body,*,membership=False):
             launch=db.execute('SELECT 1 FROM membership_operations WHERE op=? AND server=? AND domain=?',(q[112:128],server,domain)).fetchone()
         method=api.operation_outcome if launch else api.outcome
         reply,signature=method(current,q[112:128],q[128:160],proof)
+        return reply+signature
+    elif operation==HISTORY:
+        reply,signature=api.history(current,q[112:128],q[128:160],proof)
         return reply+signature
     else:
         reply,signature=api.pending(current,q[112:],proof)

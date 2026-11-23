@@ -18,6 +18,7 @@ mod recovery_store {
     pub struct Storage{pub calls:usize,pub cancelled:u64,pub error:Option<u64>}
     impl Storage {
         pub fn new()->Self{Self{calls:0,cancelled:0,error:None}}
+        pub fn membership_terminal(&mut self,_:&VfsClosure)->crate::runtime::Result<()>{self.calls+=1;Ok(())}
         pub fn membership_close(&mut self,q:&VfsClosure)->crate::runtime::Result<VfsFacts>{
             self.calls+=1;if let Some(e)=self.error{return Err(e)}
             let mut a=[0;128];a[8..16].copy_from_slice(b"NXMGACK1");a[16..48].copy_from_slice(&hash(q.bytes()));

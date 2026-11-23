@@ -49,3 +49,16 @@ impl View {
         Ok(current)
     }
 }
+
+impl View {
+    /// Résoudre une image mesurée par le noyau sur le port privé du vérificateur.
+    /// Aucune sélection par nom et aucune installation appartenant à un tiers.
+    pub fn membership_image(&self,grant:Grant,digest:Hash)->Result<Image> {
+        if grant.head!=self.head || digest==[0;32]{return Err(Fault::Denied);}
+        let user=self.state.user(grant.owner)?;
+        let mut images=user.installations.iter().filter(|i|i.image==Some(digest));
+        let item=images.next().ok_or(Fault::Denied)?;
+        if images.next().is_some(){return Err(Fault::Conflict);}
+        Ok(Image{installation:item.id,digest})
+    }
+}

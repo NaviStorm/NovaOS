@@ -144,3 +144,7 @@ extern "C" fn run() -> ! {
     }
     rt::exit(status)
 }
+
+#[cfg(feature="membership-r2-guest")]
+#[path="common/membership_io.rs"]
+mod membership_io;

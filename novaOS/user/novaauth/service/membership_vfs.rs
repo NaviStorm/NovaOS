@@ -15,6 +15,7 @@ struct GroupClosure {
     pub removed: u64,
     pub cancelled: u64,
     pub wake: bool,
+    terminal: bool,
     notify: Option<(Holder, u64, u64)>,
 }
 impl GroupSource {
@@ -35,6 +36,17 @@ impl GroupSource {
     }
 }
 impl Directory {
+    /// Appelé par le registre sur son port privé après vérification de RETIREE.
+    /// Ce terminal ne retire aucune barrière et ne confère aucun droit.
+    pub(super) fn membership_terminal(&mut self,q:&[u8;128],instance:[u8;32])->rt::Result<[u8;128]> {
+        if &q[..8]!=b"NXMGEND1" {return Err(rt::BAD_ARGUMENT);}
+        let mut original=*q;original[..8].copy_from_slice(b"NXMGVFS1");GroupSource::parse(&original)?;
+        if instance==[0;32] || original[72..104]!=instance {return Err(rt::DENIED);}
+        if self.membership.is_none_or(|prior|prior.request!=original){return Err(rt::DENIED);}
+        let facts=self.membership_close(&original,instance)?;
+        self.membership.as_mut().unwrap().terminal=true;Ok(facts)
+    }
+
     fn membership_permission(&self, holder: Holder, mut key: u64) -> rt::Result<Permission> {
         for _ in &self.leases {
             let l = self.leases.iter().flatten().find(|l| l.holder == holder && l.key == key)
@@ -47,6 +59,7 @@ impl Directory {
     /// Appeler sous la même sérialisation que grant/folder_op. La provenance
     /// appartient au parent ; une sous-délégation ne peut la remplacer.
     fn membership_admit(&self, holder: Holder, permission: Permission) -> rt::Result<()> {
+        if self.membership_previous.is_some_and(|source|source.matches(holder,permission)){return Err(rt::REVOKED);}
         if let Some(closed) = self.membership {
             let source = GroupSource::parse(&closed.request)?;
             if source.matches(holder, permission) { return Err(rt::REVOKED); }
@@ -75,8 +88,16 @@ impl Directory {
         let source = GroupSource::parse(q)?;
         if instance == [0; 32] || q[72..104] != instance { return Err(rt::DENIED); }
         if let Some(prior) = self.membership {
-            if prior.request != *q { return Err(rt::WOULD_BLOCK); }
-        } else {
+            if prior.request != *q {
+                if !prior.terminal {return Err(rt::WOULD_BLOCK);}
+                let previous=GroupSource::parse(&prior.request)?;
+                if previous==source {return Err(rt::REVOKED);}
+                if self.membership_previous.is_some(){return Err(rt::LIMIT);}
+                // Deux retraits bornés ; aucune barrière précédente effacée.
+                self.membership_previous=Some(previous);self.membership=None;
+            }
+        }
+        if self.membership.is_none() {
             // Refuser un inventaire ambigu plutôt que classer un ancien lease
             // sans provenance comme personnel. Aucun effet avant cette revue.
             for l in self.leases.iter().flatten().filter(|l| l.holder.subject == source.subject) {
@@ -91,7 +112,7 @@ impl Directory {
                 }
                 self.sleeper
             }else{None};
-            self.membership = Some(GroupClosure { request: *q, removed: 0, cancelled, wake: false, notify });
+            self.membership = Some(GroupClosure { request: *q, removed: 0, cancelled, wake: false, terminal:false, notify });
             let before = self.leases.iter().flatten().count();
             for i in 0..self.leases.len() {
                 if let Some(l) = self.leases[i]

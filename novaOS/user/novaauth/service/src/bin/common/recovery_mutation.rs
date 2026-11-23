@@ -75,8 +75,8 @@ impl Pending {
         self.selective.as_mut().ok_or(rt::DENIED)?.reserve(&self.previous)
     }
     #[cfg(feature="membership-r2-guest")]
-    pub fn finish_membership(&mut self,state:&View)->rt::Result<()> {
-        if let Some(s)=self.selective.as_mut(){s.finish(state)?;}Ok(())
+    pub fn finish_membership(&mut self,state:&View,storage:&mut Storage)->rt::Result<()> {
+        if let Some(s)=self.selective.as_mut(){s.finish(state)?;s.release_terminal(storage)?;}Ok(())
     }
     pub fn backup(&mut self,epoch:u64,recipients:[[u8;32];2])->rt::Result<()> {
         if !self.confirmed || self.captured {return Err(rt::DENIED);}

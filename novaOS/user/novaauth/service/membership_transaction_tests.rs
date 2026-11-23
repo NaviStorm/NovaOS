@@ -68,3 +68,16 @@ fn closed()->Selective {
     }
     assert_eq!(identity_from(23,|_|0),Err(5));
 }
+
+#[test] fn closure_trace_preserves_text_and_counts() {
+ assert_eq!(closure_marker(1,2).unwrap(),*b"NARM VFS fermeture selective acquittee retires=01 conserves=02");
+ assert_eq!(closure_marker(0,12).unwrap(),*b"NARM VFS fermeture selective acquittee retires=00 conserves=12");
+ assert_eq!(closure_marker(100,0),Err(rt::REFUSED));
+}
+
+#[test] fn terminal_release_requires_verified_durable_receipt() {
+ let mut s=closed();let mut storage=Storage::new();
+ assert_eq!(s.release_terminal(&mut storage),Err(22));assert_eq!(storage.calls,0);
+ s.finish_head(&crate::sim::p9()).unwrap();s.release_terminal(&mut storage).unwrap();
+ assert_eq!(storage.calls,1);crate::sim::substitute();assert_eq!(s.release_terminal(&mut storage),Err(rt::REFUSED));assert_eq!(storage.calls,1);
+}

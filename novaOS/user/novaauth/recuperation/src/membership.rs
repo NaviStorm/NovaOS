@@ -92,6 +92,7 @@ pub const ADMIT:u16=57;
 pub const FINISH:u16=58;
 pub const QUERY:u16=59;
 pub const PENDING:u16=60;
+pub const HISTORY:u16=61;
 pub const MAX_REQUEST:usize=225+32*33;
 pub const MAX_SIGNED:usize=MAX_REQUEST+64;
 pub struct Message<'a> {operation:u16,bytes:&'a[u8]}
@@ -100,7 +101,7 @@ impl<'a> Message<'a> {
         let length=match operation {RESERVE=>{
             if b.len()<225 || b[224]==0 || b[224]>32 {return Err(Error::Format);}
             225+usize::from(b[224])*33
-        },PUBLISH=>128,EFFECT=>161,ADMIT=>241,FINISH=>194,QUERY=>160,PENDING=>144,_=>return Err(Error::Format)};
+        },PUBLISH=>128,EFFECT=>161,ADMIT=>241,FINISH=>194,QUERY|HISTORY=>160,PENDING=>144,_=>return Err(Error::Format)};
         if b.len()!=length || b[..16]==[0;16] || b[16..32]==[0;16] || b[32..64]==[0;32]
             || word(b,64)>=1<<63 || word(b,72)>=1<<63 || b[80..112]==[0;32] {return Err(Error::Format);}
         match operation {
@@ -124,7 +125,7 @@ impl<'a> Message<'a> {
                 if b[112..128]==[0;16] || !matches!(b[128],1|2|4) || b[129..161]==[0;32] {return Err(Error::Format);}
                 if operation==FINISH && (!matches!(b[161],1|2) || (b[162..194]!=[0;32])!=(b[161]==1)) {return Err(Error::Format);}
             },
-            QUERY if b[112..128]==[0;16] || b[128..]==[0;32]=>return Err(Error::Format),
+            QUERY|HISTORY if b[112..128]==[0;16] || b[128..]==[0;32]=>return Err(Error::Format),
             PENDING if b[112..]==[0;32]=>return Err(Error::Format),
             PUBLISH if b[112..]==[0;16]=>return Err(Error::Format),
             _=>(),
@@ -140,7 +141,7 @@ impl<'a> Message<'a> {
             RESERVE=>b"NovaAuth/QEMU/membership/reserve/v1\0",PUBLISH=>b"NovaAuth/QEMU/membership/publish/v1\0",
             EFFECT=>b"NovaAuth/QEMU/membership/effect/v1\0",ADMIT=>b"NovaAuth/QEMU/membership/admit/v1\0",
             FINISH=>b"NovaAuth/QEMU/membership/finish/v1\0",QUERY=>b"NovaAuth/QEMU/membership/query/v1\0",
-            PENDING=>b"NovaAuth/QEMU/membership/pending/v1\0",_=>unreachable!()};
+            PENDING=>b"NovaAuth/QEMU/membership/pending/v1\0",HISTORY=>b"NovaAuth/QEMU/membership/history/v1\0",_=>unreachable!()};
         out[..prefix.len()].copy_from_slice(prefix);out[prefix.len()..prefix.len()+self.bytes.len()].copy_from_slice(self.bytes);
         prefix.len()+self.bytes.len()
     }
@@ -195,3 +196,37 @@ pub fn operation_outcome(key:&VerifyingKey,query:&[u8],original:&[u8],response:&
         _=>Err(Error::Order),
     }
 }
+
+
+/// Historique privé additif, sans modification des reçus QUERY historiques.
+/// Le principal et les effecteurs sont ceux de la réservation admise, jamais
+/// des valeurs proposées par le CLI pendant la récupération.
+pub struct History<'a> { original:&'a[u8], receipt:Receipt }
+impl<'a> History<'a> {
+    pub fn verify(key:&VerifyingKey,query:&[u8],response:&'a[u8])->Result<Self> {
+        Message::parse(HISTORY,query)?;
+        if response.len()<170+258+RECEIPT+64 || response.len()>170+MAX_REQUEST+RECEIPT+64
+            || &response[..8]!=b"NAMBHI01" || response[8..168]!=*query {return Err(Error::Format);}
+        let size=usize::from(u16::from_be_bytes(response[168..170].try_into().unwrap()));
+        if response.len()!=170+size+RECEIPT+64{return Err(Error::Format);}
+        const P:&[u8]=b"NovaAuth/QEMU/membership/history/v1\0";
+        let end=response.len()-64;let mut signed=[0;crate::framing::MAX];
+        signed[..P.len()].copy_from_slice(P);signed[P.len()..P.len()+end].copy_from_slice(&response[..end]);
+        key.verify_strict(&signed[..P.len()+end],&Signature::from_slice(&response[end..]).map_err(|_|Error::Crypto)?).map_err(|_|Error::Crypto)?;
+        let original=&response[170..170+size];Message::parse(RESERVE,original)?;
+        if original[..32]!=query[..32] || original[112..128]!=query[112..128]{return Err(Error::Scope);}
+        let expected=original[225..].chunks_exact(33).fold(0,|v,e|v|e[0]);
+        let binding=Binding{server:original[..16].try_into().unwrap(),domain:original[16..32].try_into().unwrap(),
+            incarnation:original[32..64].try_into().unwrap(),operation:original[112..128].try_into().unwrap(),
+            subject:original[184..200].try_into().unwrap(),group:original[200..216].try_into().unwrap(),
+            revision:word(original,216),generation:word(original,72).checked_add(1).ok_or(Error::Order)?,
+            previous:original[80..112].try_into().unwrap(),published:original[128..160].try_into().unwrap(),expected};
+        let receipt=Receipt::verify(key,&response[170+size..end],&binding,query[128..].try_into().unwrap())?;
+        Ok(Self{original,receipt})
+    }
+    pub fn original(&self)->&[u8]{self.original}
+    pub fn principal(&self)->[u8;16]{self.original[160..176].try_into().unwrap()}
+    pub fn binding(&self)->&Binding{&self.receipt.binding}
+    pub fn receipt(&self)->&Receipt{&self.receipt}
+}
+const _:()=assert!(170+MAX_REQUEST+RECEIPT+64+64+crate::framing::HEADER<=crate::framing::MAX);

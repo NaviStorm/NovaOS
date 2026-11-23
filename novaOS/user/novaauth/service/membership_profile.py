@@ -37,15 +37,16 @@ def install(root):
     edit(path, '            #[cfg(feature = "politiques-lab")]\n            permission: None,',
          '            permission: None,')
     edit(path, '    #[cfg(feature = "politiques-lab")]\n    sleeper: Option<(Holder, u64, u64)>,',
-         '    sleeper: Option<(Holder, u64, u64)>,\n    membership: Option<GroupClosure>,')
+         '    sleeper: Option<(Holder, u64, u64)>,\n    membership: Option<GroupClosure>,\n    membership_previous: Option<GroupSource>,')
     path = 'novaOS/user/novaauth/service/triplet_effecteur.rs'
     edit(path, '        if !session.writable || session.failed.is_some() || session.pending.is_some() ||',
-         '''        if &msg.payload[..8] == b"NXMGVFS1" {
+         '''        if matches!(&msg.payload[..8],b"NXMGVFS1"|b"NXMGEND1") {
             let mut instance=[0;32];
             for (i,word) in instance.chunks_exact_mut(8).enumerate() {
                 word.copy_from_slice(&exec_files_lab::config(468+i).to_le_bytes());
             }
-            response=session.directory.membership_close(&msg.payload,instance)?;
+            response=if &msg.payload[..8]==b"NXMGEND1" {session.directory.membership_terminal(&msg.payload,instance)?}
+                else {session.directory.membership_close(&msg.payload,instance)?};
             return Ok(());
         }
         if !session.writable || session.failed.is_some() || session.pending.is_some() ||''')
@@ -76,3 +77,6 @@ def install(root):
     edit('novaOS/user/novaauth/service/src/bin/common/recovery_view.rs',
          '            administration.reconcile(&mut state,&mut recovered.storage)?;',
          '            if let Err(code)=administration.reconcile_request(&mut state,&mut recovered.storage,&m.payload) {\n                // Le retrait G ne ferme pas les consultations Direct/H.\n                // Chaque demande recontrôle ensuite la tête et ses propres droits.\n                // CONFIRM/OUTCOME conservent UNCERTAIN tant que les faits manquent.\n                if !administration.selective_in_progress(){return Err(code);}\n            }')
+
+    import runpy
+    runpy.run_path(str(root/"novaOS/user/novaauth/service/membership_io_profile.py"))["install"](root)

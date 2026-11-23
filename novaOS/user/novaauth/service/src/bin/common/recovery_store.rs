@@ -51,6 +51,14 @@ impl Storage {
     pub fn membership_instance(&self)->rt::Result<[u8;32]> {
         crate::membership_transaction::identity(23)
     }
+    pub fn membership_terminal(&mut self,request:&novaos_recovery::membership_effectors::VfsClosure)->rt::Result<()> {
+        if request.bytes()[72..104]!=self.membership_instance()? {return Err(rt::DENIED);}
+        let mut q=*request.bytes();q[..8].copy_from_slice(b"NXMGEND1");
+        self.sequence=self.sequence.checked_add(1).ok_or(rt::LIMIT)?;
+        let reply=common::rpc(self.port,self.port,self.sequence,&q)?;
+        if common::number(&reply)!=0{return Err(common::number(&reply));}
+        request.verify(&reply).map_err(|_|rt::REFUSED)?;Ok(())
+    }
     pub fn membership_close(&mut self, request:&novaos_recovery::membership_effectors::VfsClosure)
         ->rt::Result<novaos_recovery::membership_effectors::VfsFacts> {
         if request.bytes()[72..104]!=self.membership_instance()? {return Err(rt::DENIED);}
@@ -58,5 +66,15 @@ impl Storage {
         let reply=common::rpc(self.port,self.port,self.sequence,request.bytes())?;
         if common::number(&reply)!=rt::OK {return Err(common::number(&reply));}
         request.verify(&reply).map_err(|_|rt::REFUSED)
+    }
+}
+
+#[cfg(feature="membership-r2-guest")]
+impl Storage {
+    pub fn membership_io(&mut self,q:&[u8;128])->rt::Result<[u8;128]> {
+        if !matches!(&q[..8],b"NXMGCTX2"|b"NXMGGO01"|b"NXMGDEN1"){return Err(rt::DENIED);}
+        self.sequence=self.sequence.checked_add(1).ok_or(rt::LIMIT)?;
+        let a=common::rpc(self.port,self.port,self.sequence,q)?;
+        if common::number(&a)!=0{return Err(common::number(&a));}Ok(a)
     }
 }

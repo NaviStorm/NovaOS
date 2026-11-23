@@ -31,7 +31,7 @@ pub struct Transactions {
     next_completed: usize,
     effects_submitted: bool,
     #[cfg(feature="membership-r2-guest")]
-    selective_complete:Option<([u8;16],crate::membership_transaction::Selective)>,
+    selective_complete:Option<([u8;16],novaos_recovery::membership::Binding)>,
 }
 impl Transactions {
     pub fn new() -> Self { Self { prepared: [None; 2], pending: None, pending_owner: None,
@@ -76,10 +76,10 @@ impl Transactions {
                 retirement::terminal(p)?;
             }
             #[cfg(feature="membership-r2-guest")]
-            p.finish_membership(state)?;
+            p.finish_membership(state,storage)?;
             let owner = self.pending_owner.ok_or(UNCERTAIN)?;
             #[cfg(feature="membership-r2-guest")]
-            if let Some(s)=p.selective.take(){self.selective_complete=Some((owner,s));}
+            if let Some(s)=p.selective.take(){self.selective_complete=Some((owner,s.binding));}
             self.pending = None;
             self.pending_owner = None;
             self.remember(operation, owner, state.head().generation);
@@ -221,9 +221,9 @@ impl Transactions {
                     retirement::terminal(p)?;
                 }
                 #[cfg(feature="membership-r2-guest")]
-                p.finish_membership(state)?;
+                p.finish_membership(state,storage)?;
                 #[cfg(feature="membership-r2-guest")]
-                if let Some(s)=p.selective.take(){self.selective_complete=Some((grant.subject(),s));}
+                if let Some(s)=p.selective.take(){self.selective_complete=Some((grant.subject(),s.binding));}
                 self.pending = None;
                 self.pending_owner = None;
                 self.remember(operation, grant.subject(), state.head().generation);
@@ -241,12 +241,16 @@ impl Transactions {
                 {
                     if self.pending.as_ref().is_some_and(|p|p.plan.head().request==operation){return Err(UNCERTAIN);}
                     if let Some((owner,s))=&self.selective_complete {
-                        if s.binding.operation==operation {
+                        if s.operation==operation {
                             if *owner!=grant.subject(){return Err(rt::DENIED);}
-                            let generation=s.terminal_for_state(state)?;
+                            let generation=crate::membership_transaction::Selective::terminal_for_binding(s,state)?;
                             completed(answer,operation,generation);return Ok(());
                         }
                     }
+                }
+                #[cfg(feature="membership-r2-guest")]
+                if let Some(generation)=crate::membership_transaction::Selective::historical_terminal(&current,operation,grant.subject(),state)? {
+                    completed(answer,operation,generation);return Ok(());
                 }
                 let mut packet = [0; 160]; packet[..112].copy_from_slice(&current);
                 packet[112..128].copy_from_slice(&operation);

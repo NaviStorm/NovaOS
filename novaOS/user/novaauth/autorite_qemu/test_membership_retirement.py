@@ -204,3 +204,27 @@ class Membership(unittest.TestCase):
   self.f.enable()
 
 if __name__=='__main__':unittest.main()
+
+
+class History(unittest.TestCase):
+ setUp=Membership.setUp
+ reserve=Membership.reserve
+ publish=Membership.publish
+ ack=Membership.ack
+ def test_signed_history_preserves_original_principal_and_effectors_after_restart(self):
+  self.reserve();self.publish();self.ack(1,b'V'*32);self.ack(2,b'R'*32);self.ack(4,b'E'*32)
+  self.api=m.Memberships(r.Recovery(self.f.path,self.f.key));s=self.f.current();q=s.packet()+self.op+b'F'*32
+  body,sig=self.api.history(s,self.op,b'F'*32,self.f.server.sign(m.HISTORY+q))
+  self.f.key.public_key().verify(sig,m.HISTORY+body)
+  self.assertEqual(body[:8],b'NAMBHI01');self.assertEqual(body[8:168],q)
+  size=int.from_bytes(body[168:170],'big');original=body[170:170+size]
+  self.assertEqual(original[160:176],self.f.principal)
+  self.assertEqual(original[225:],b''.join(bytes([k])+i for k,i in self.expected))
+  self.assertEqual(body[170+size+208:170+size+211],bytes([2,7,7]))
+  with r.transaction(self.f.path) as db:self.assertEqual(db.execute('SELECT count(*) FROM membership_changes').fetchone(),(1,))
+ def test_pending_history_never_fabricates_completion_and_rejects_bad_signature(self):
+  self.reserve();s=self.f.current();q=s.packet()+self.op+b'F'*32
+  with self.assertRaises(r.Refus):self.api.history(s,self.op,b'F'*32,bytes(64))
+  body,sig=self.api.history(s,self.op,b'F'*32,self.f.server.sign(m.HISTORY+q));size=int.from_bytes(body[168:170],'big')
+  self.assertEqual(body[170+size+208:170+size+211],bytes([0,7,0]))
+  with self.assertRaises(r.Refus):self.api.history(s,b'Z'*16,b'F'*32,self.f.server.sign(m.HISTORY+q))

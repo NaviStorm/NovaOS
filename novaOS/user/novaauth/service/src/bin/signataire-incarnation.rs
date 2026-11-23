@@ -110,7 +110,7 @@ fn serve() -> rt::Result<()> {
         if issued && recovery_done && recovery_bridge::is_request(&m) {
             #[cfg(feature="membership-r2-guest")]
             if novaos_recovery::framing::Header::parse(&m.payload[..novaos_recovery::framing::HEADER])
-                .is_ok_and(|h|matches!(h.operation,54..=60)) {
+                .is_ok_and(|h|matches!(h.operation,54..=61)) {
                 membership_bridge::serve(&key,port,&id,m)?;
                 continue;
             }

@@ -84,3 +84,31 @@ fn restart_must_authenticate_even_an_empty_pending_list() {
     assert_eq!(operation_outcome(&key,&v[16],&v[8],&r).unwrap(),OperationOutcome::Cancelled);
     let mut query=v[16].clone();query[128]^=1;assert!(operation_outcome(&key,&query,&v[8],&r).is_err());
 }
+
+
+#[test]
+fn history_reconstructs_only_signed_original_and_distinguishes_unfinished() {
+    let (key,b,f,receipt)=fixture();let mut original=vec![0;324];
+    original[..16].copy_from_slice(&b.server);original[16..32].copy_from_slice(&b.domain);
+    original[32..64].copy_from_slice(&b.incarnation);original[64..72].copy_from_slice(&1u64.to_be_bytes());
+    original[72..80].copy_from_slice(&7u64.to_be_bytes());original[80..112].copy_from_slice(&b.previous);
+    original[112..128].copy_from_slice(&b.operation);original[128..160].copy_from_slice(&b.published);
+    original[160..176].copy_from_slice(&[44;16]);original[176..184].copy_from_slice(&1u64.to_be_bytes());
+    original[184..200].copy_from_slice(&b.subject);original[200..216].copy_from_slice(&b.group);
+    original[216..224].copy_from_slice(&b.revision.to_be_bytes());original[224]=3;
+    for(i,k)in [1u8,2,4].iter().enumerate(){original[225+33*i]=*k;original[226+33*i..258+33*i].fill(*k);}
+    let mut query=vec![0;160];query[..112].copy_from_slice(&original[..112]);
+    query[32..64].fill(99); // nouvelle incarnation de consultation, pas ancien effecteur
+    query[72..80].copy_from_slice(&8u64.to_be_bytes());query[80..112].copy_from_slice(&b.published);
+    query[112..128].copy_from_slice(&b.operation);query[128..].copy_from_slice(&f);
+    let wrap=|r:&[u8]| {let mut body=b"NAMBHI01".to_vec();body.extend_from_slice(&query);body.extend_from_slice(&324u16.to_be_bytes());body.extend_from_slice(&original);body.extend_from_slice(r);
+        let mut signed=b"NovaAuth/QEMU/membership/history/v1\0".to_vec();signed.extend_from_slice(&body);body.extend_from_slice(&key.sign(&signed).to_bytes());body};
+    let encoded=wrap(&receipt);let h=History::verify(&key.verifying_key(),&query,&encoded).unwrap();
+    assert_eq!(h.principal(),[44;16]);assert_eq!(h.original(),original);assert_eq!(h.binding(),&b);
+    assert!(h.receipt().completed(8,&b.published,8,&b.published).unwrap());
+    for i in [0,8,40,128,168,170,330,494,800,869] {let mut bad=encoded.clone();bad[i]^=1;assert!(History::verify(&key.verifying_key(),&query,&bad).is_err(),"offset {i}");}
+    for n in [0,169,493,805,869] {assert!(History::verify(&key.verifying_key(),&query,&encoded[..n]).is_err());}
+    let mut other=query.clone();other[128]^=1;assert!(History::verify(&key.verifying_key(),&other,&encoded).is_err());
+    let mut pending=receipt;pending[208]=1;pending[210]=3;sign(&key,&mut pending);let pending=wrap(&pending);
+    assert!(!History::verify(&key.verifying_key(),&query,&pending).unwrap().receipt().completed(8,&b.published,8,&b.published).unwrap());
+}

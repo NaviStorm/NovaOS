@@ -42,11 +42,26 @@ impl Selective {
             instances:[identity(23)?,identity(27)?,identity(27)?],
             reserve_sent:false,position:0,closed:false,exec:false,ack_sent:0})
     }
-    pub fn query(&self)->rt::Result<Receipt>{
+    pub fn query(&self)->rt::Result<Receipt>{Self::query_binding(&self.binding)}
+    pub fn query_binding(binding:&Binding)->rt::Result<Receipt>{
         let mut q=[0;160];q[..112].copy_from_slice(&tete::query(rt::config(8),&incarnation::identity())?);
-        q[112..128].copy_from_slice(&self.binding.operation);let nonce=*common::random()?;q[128..].copy_from_slice(&nonce);
+        q[112..128].copy_from_slice(&binding.operation);let nonce=*common::random()?;q[128..].copy_from_slice(&nonce);
         let mut reply=[0;MAX];let n=exchange(m::QUERY,&q,&mut reply)?;
-        Receipt::verify(&key()?,&reply[HEADER+8..HEADER+8+n],&self.binding,&nonce).map_err(|_|rt::REFUSED)
+        Receipt::verify(&key()?,&reply[HEADER+8..HEADER+8+n],binding,&nonce).map_err(|_|rt::REFUSED)
+    }
+    /// Consultation après perte du cache. Aucun ACK ni nouvelle mutation.
+    pub fn historical_terminal(current:&[u8;112],operation:[u8;16],principal:[u8;16],state:&View)->rt::Result<Option<u64>> {
+        let mut q=[0;160];q[..112].copy_from_slice(current);q[112..128].copy_from_slice(&operation);q[128..].copy_from_slice(&*common::random()?);
+        let mut reply=[0;MAX];let n=match exchange(m::HISTORY,&q,&mut reply) {
+            Ok(n)=>n,Err(rt::DENIED)=>return Ok(None),Err(e)=>return Err(e),
+        };
+        let history=m::History::verify(&key()?,&q,&reply[HEADER+8..HEADER+8+n]).map_err(|_|rt::REFUSED)?;
+        if history.principal()!=principal {return Err(rt::DENIED);}
+        let head=state.head();
+        if !history.receipt().completed(head.generation,&head.digest,u64::from_be_bytes(current[72..80].try_into().unwrap()),current[80..].try_into().unwrap()).map_err(|_|rt::REFUSED)? {
+            return Err(UNCERTAIN);
+        }
+        Ok(Some(history.binding().generation))
     }
     pub fn reserve(&mut self,previous:&[u8;112])->rt::Result<()> {
         if !self.reserve_sent {
@@ -74,13 +89,20 @@ impl Selective {
         // L'association de l'écriture à son admission est exigée, jamais inférée
         // d'un compteur. Ce cas reste non terminal tant que son issue manque.
         if facts.cancelled_prepare().is_some(){return Err(UNCERTAIN)}
-        self.closed=true;common::marker(b"NARM VFS fermeture selective acquittee");Ok(())
+        common::marker(&closure_marker(facts.removed(),facts.retained())?);
+        self.closed=true;Ok(())
     }
-    pub fn terminal_for_state(&self,state:&View)->rt::Result<u64>{
+    pub fn terminal_for_binding(binding:&Binding,state:&View)->rt::Result<u64>{
         let current=tete::query(rt::config(8),&incarnation::identity())?;let h=state.head();
-        let receipt=self.query()?;
+        let receipt=Self::query_binding(binding)?;
         if !receipt.completed(h.generation,&h.digest,u64::from_be_bytes(current[72..80].try_into().unwrap()),current[80..].try_into().unwrap()).map_err(|_|rt::REFUSED)? {return Err(UNCERTAIN);}
-        Ok(self.binding.generation)
+        Ok(binding.generation)
+    }
+    pub fn release_terminal(&self,storage:&mut Storage)->rt::Result<()> {
+        let r=self.query()?;if r.state()!=State::Retired{return Err(UNCERTAIN);}
+        let q=VfsClosure::new(self.binding.operation,self.binding.subject,self.binding.group,self.binding.revision,
+            self.position,self.instances[0]).map_err(|_|rt::REFUSED)?;
+        storage.membership_terminal(&q)
     }
     pub fn finish(&mut self,state:&View)->rt::Result<()> {
         self.finish_head(&state.head())
@@ -103,3 +125,13 @@ impl Selective {
     }
 }
 const _:()=assert!(core::mem::size_of::<Selective>()<=512);
+
+fn closure_marker(removed:u64,retained:u64)->rt::Result<[u8;62]> {
+    if removed>99 || retained>99{return Err(rt::REFUSED)}
+    let mut out=*b"NARM VFS fermeture selective acquittee retires=00 conserves=00";
+    for (offset,value) in [(b"NARM VFS fermeture selective acquittee retires=".len(),removed),
+        (b"NARM VFS fermeture selective acquittee retires=00 conserves=".len(),retained)] {
+        out[offset]=b'0'+(value/10) as u8;out[offset+1]=b'0'+(value%10) as u8;
+    }
+    Ok(out)
+}

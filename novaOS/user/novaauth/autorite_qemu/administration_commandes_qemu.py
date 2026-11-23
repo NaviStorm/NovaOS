@@ -18,7 +18,7 @@ from exec_deux_vm import route, signature
 from reprise import Refus, transaction
 import admission_exec as execs
 from administration_epochs import Epochs, initialize
-from administration_events import Events, command_status_pattern, observed_command_status_pattern
+from administration_events import Events, command_status_pattern, observed_command_status_pattern, membership_revision_pattern
 
 
 def initial_fragments(root, manifest):
@@ -66,6 +66,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
+    parser.add_argument('--membership-io',action='store_true',help='Q1 droits VFS Direct/G/H réels')
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation', 'creation', 'refus-facteurs', 'facteurs-concurrents','retrait-selectif-vide'], required=True)
     parser.add_argument('--mode-commande', choices=['interactif','nsh-c','script'], default='interactif')
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
@@ -106,10 +107,11 @@ def main():
         parser.error('le témoin de ticket vivant exige le lot désactivation')
     if (a.reauth_issue or a.recu_supprime) and a.lot not in ('groupe','desactivation','creation','renommage','appartenance'):
         parser.error('options de publication réservées aux lots de mutation')
-    if a.redemarrage_issue and (a.lot not in ('creation','groupe','renommage','appartenance') or a.reauth_issue):parser.error('reprise réservée aux mutations nominales sans retrait avec capture native')
+    if a.redemarrage_issue and (a.lot not in ('creation','groupe','renommage','appartenance','retrait-selectif-vide') or a.reauth_issue):parser.error('reprise réservée aux mutations nominales sans retrait avec capture native')
     if a.carol_reprise and (a.lot!='creation' or not a.redemarrage_issue):parser.error('Carol exige création et reprise')
     if a.coupure_avant_publication and (a.lot!='creation' or not a.redemarrage_issue or a.recu_supprime or a.carol_reprise):parser.error('coupure isolée avant création')
     a.membership_r2=a.lot=='retrait-selectif-vide'
+    if a.membership_io and not a.membership_r2:parser.error('droits réels réservés au retrait sélectif')
     if a.publication_selective_perdue and (not a.membership_r2 or a.acquittement_selectif_perdu):parser.error('perte de publication sélective isolée requise')
     if a.acquittement_selectif_perdu and not a.membership_r2:parser.error('perte ACK réservée au retrait sélectif')
     if a.acquittement_selectif_absent and (not a.membership_r2 or a.acquittement_selectif_perdu or a.publication_selective_perdue):parser.error('absence ACK sélectif isolée requise')
@@ -138,6 +140,11 @@ def main():
     if len(ids) != 48:
         raise Refus('identités témoins invalides')
     alice, bob, group = (ids[i:i+16].hex() for i in (0, 16, 32))
+    membership_fixture=None
+    if a.membership_io:
+        membership_fixture=a.genese.with_name('membership.bin').read_bytes()
+        if len(membership_fixture)!=72 or membership_fixture[8:24].hex()!=group:raise Refus('fixture Q1 mal liée')
+        report['fixture_q1_sha256']=hashlib.sha256(membership_fixture).hexdigest()
     case_status = {}
     catalog=json.loads((Path(__file__).parent/'references-administration-r2/catalogue-public.json').read_text())
     cases = [('whoami', b'alice\n'),
@@ -177,7 +184,7 @@ def main():
             identity=hashlib.sha256(b'NovaAuth/subject/1'+raw[8:24]+generation.to_bytes(8,'little')+bytes.fromhex(intention['operation'])+b'\x02').digest()[:16].hex()
             return f'group={identity} name=equipe-r2 members=\n'.encode()
         if a.membership_r2:
-            report['portee']='raccord administratif sans delegation G ouverte ; ne qualifie pas Q1-Q4'
+            report['portee']='Droits VFS Direct/G/H réels et injection déclarée ; EXEC G, Q2/Q3 et reprise froide non qualifiés' if a.membership_io else 'raccord administratif sans delegation G ouverte ; ne qualifie pas Q1-Q4'
         if a.lot == 'renommage':
             report['portee']='renommage natif, identité stable, aucun changement des droits'
             cases[-1]=('id --subject-id '+bob,f'subject={bob} name=robert state=ACTIVE groups=base({group})\n'.encode())
@@ -258,6 +265,8 @@ def main():
         cases=[('admin-sonde --factor-writer '+factor+' | admin-sonde --factor-reader '+factor,factor_results),('whoami',b'alice\n')]
         report['portee']='deux demandes PREPARE simultanément en vol, facteur commun, utilisateurs distincts'
 
+    if a.redemarrage_issue and a.membership_r2:
+        cases=cases[:2] # la consultation est exercée après arrêt complet
     if a.commande:
         cases = [(cmd, expected) for cmd, expected in cases if isinstance(cmd, str) and cmd.split()[0] == a.commande]
         if not cases:
@@ -277,10 +286,11 @@ def main():
         discarded_receipt = False
         cut_before_publication=False
         selective_calls={}
+        restarted=False
 
         def rpc_hook(phase, operation, body, result, qmp, disk):
             nonlocal enrolled, discarded_receipt, cut_before_publication
-            if a.membership_r2 and phase=='before' and 54<=operation<=60:
+            if a.membership_r2 and phase=='before' and 54<=operation<=61:
                 selective_calls[operation]=selective_calls.get(operation,0)+1
             if phase=='before' and operation==50 and a.coupure_avant_publication and not cut_before_publication:
                 from exec_vm_debug import qmp as control_vm
@@ -323,7 +333,7 @@ def main():
                 # jamais la mutation, et ne soumet aucune seconde demande.
                 report['recu_supprime_apres_publication'] = True
                 raise Refus('UNCERTAIN : reçu administratif supprimé par le banc')
-            if phase == 'before' and operation == 40 and not enrolled:
+            if phase == 'before' and (operation == 40 or (a.membership_io and operation == 57)) and not enrolled:
                 with transaction(api.path) as db:
                     state = api.authority._current(db, SERVER, DOMAIN)
                 proof = admin.call('r2-enroll', state)
@@ -358,6 +368,26 @@ def main():
                 if found!=[report['nouvelle_identite'].encode()]:raise Refus('Carol non authentifiée avec son identité native')
                 if b'NAR2 Carol sans installations heritees statut=5 aucun enfant' not in serial.data:raise Refus('refus des installations héritées absent')
                 report['authentification_carol']={'pid':pid,'subject':found[0].decode(),'facteur_public':catalog['references']['carol'],'installations_refusees':['whoami','admin-sonde','alice-seulement'],'statuts':[5,5,5]}
+            def membership_probe(phase):
+                f=membership_fixture
+                command='membership-test '+phase+' '+str(int.from_bytes(f[:8],'little'))+' '+f[8:24].hex()+' '+f[24:40].hex()
+                start=len(serial.data);serial.offset=start
+                serial.submit(command+'; echo NXQ1_'+phase+'_$?__FIN')
+                revisions={}
+                for origin in ('Direct','G','H'):
+                    code=10 if phase!='avant' and origin=='G' else 0
+                    matched=serial.expect(membership_revision_pattern(phase,origin,code),60)
+                    revisions[origin]=int(matched[1])
+                if phase=='avant':
+                    if not revisions['Direct']<revisions['G']<revisions['H']:raise Refus('écritures G/H non démontrées par les révisions P9')
+                else:
+                    before=report['droits_vfs_reels'][-1]['revisions_P9']
+                    if revisions['Direct']!=before['H'] or revisions['G']!=0 or revisions['H']<=revisions['Direct']:raise Refus('écriture G non refusée ou H non conservée')
+                status=serial.expect(('NXQ1_'+phase+r'_(\d+)__FIN').encode(),20)
+                if int(status[1])!=0:raise Refus('lecture VFS Q1 échouée')
+                (out/('q1-'+phase+'.bin')).write_bytes(bytes(serial.data[start:serial.offset]))
+                report.setdefault('droits_vfs_reels',[]).append({'phase':phase,'Direct':0,'G':10 if phase!='avant' else 0,'H':0,'reference_hex_par_origine':{origin:((bytes([first])+b'\tB\tC\nD\tE\tF\n').hex() if first is not None else '') for origin,first in [('Direct',65 if phase=='avant' else f[24]^(0x80 if phase=='reprise' else 0)),('G',f[8] if phase=='avant' else None),('H',f[24]^(0x80 if phase=='apres' else 0))]},'comparaison_invitee':True,'revisions_P9':revisions,'droits_demandes':{'Direct':1,'G':3,'H':3}})
+            if a.membership_io:membership_probe('avant')
             for i, (command, expected) in enumerate(cases):
                 expected_status = 3 if a.lot == 'dernier-administrateur' else 0
                 expected_stderr = b''
@@ -384,7 +414,7 @@ def main():
                 # Identité d'étape distincte ; aucune réponse d'une commande
                 # précédente ne peut terminer la commande courante.
                 step = 'NXR2_' + str(i) + '_'
-                line=command + '; echo ' + step + '$?__FIN' + ('; exit' if i == len(cases)-1 and not (a.reactivation or a.separation) else '')
+                line=command + '; echo ' + step + '$?__FIN' + ('; exit' if i == len(cases)-1 and not (a.reactivation or a.separation or a.membership_io or (a.membership_r2 and restarted)) else '')
                 serial.offset = len(serial.data)
                 start = serial.offset
                 serial.submit(line)
@@ -483,7 +513,10 @@ def main():
                                     b'NAR2 Bob nouveau lancement autorise droits ordinaires',
                                     b'NAR2 Bob fermeture acquittee']:
                         events.expect(bob_pid,message,40)
-            if a.membership_r2:
+            if a.membership_io:
+                if b'NARM VFS fermeture selective acquittee retires=01 conserves=02' not in serial.data:raise Refus('fermeture réelle du seul handle G non démontrée')
+                membership_probe('apres')
+            if a.membership_r2 and not restarted:
                 terminal=b'NARM RETIREE recu durable tete P9 relue effecteurs acquittes'
                 if a.acquittement_selectif_absent and terminal in serial.data:raise Refus('RETIREE inventé sans ACK durable')
                 markers=(b'NARM EXEC inspection instance et provenance personnelle acquittee',b'NARM VFS fermeture selective acquittee')+(() if a.acquittement_selectif_absent else (terminal,))
@@ -501,17 +534,32 @@ def main():
                     if db.execute('SELECT count(*) FROM mutations WHERE op=?',(op,)).fetchone()!=(1,):raise Refus('publication non unique')
                     ordered=db.execute("SELECT sequence,kind FROM exec_events WHERE kind LIKE 'membership-%' ORDER BY sequence").fetchall()
                 expected_order=['membership-reserved','membership-withdrawing']+([] if a.acquittement_selectif_absent else ['membership-effector-ack']*3+['membership-retired'])
-                if [k for _,k in ordered]!=expected_order:raise Refus('ordre durable sélectif non conforme')
+                if [k for _,k in ordered if k not in ('membership-admitted','membership-operation-finished')]!=expected_order:raise Refus('ordre durable sélectif non conforme')
                 report['rpc_selectifs']=selective_calls
                 report['ordre_durable']=[{'position':n,'transition':k} for n,k in ordered]
-                report['retrait_selectif']={'etat':'RETRAIT_EN_COURS' if a.acquittement_selectif_absent else 'RETIREE','generation':row[1],'effecteurs':[{'classe':k,'instance':i.hex(),'acquitte':bool(v)} for k,i,v in effects],'delegations_G_ouvertes':False}
+                report['retrait_selectif']={'etat':'RETRAIT_EN_COURS' if a.acquittement_selectif_absent else 'RETIREE','generation':row[1],'effecteurs':[{'classe':k,'instance':i.hex(),'acquitte':bool(v)} for k,i,v in effects],'delegations_G_ouvertes':a.membership_io}
+                report['injection_vfs_reelle']=('ack-absent' if a.acquittement_selectif_absent else 'ack-perdu' if a.acquittement_selectif_perdu else 'publication-perdue' if a.publication_selective_perdue else 'aucune') if a.membership_io else None
+                if a.membership_io:
+                    with transaction(api.path) as db:
+                        admissions=db.execute('SELECT op,subject,grp,kind,instance,packet,sequence,state,evidence,terminal_sequence FROM membership_operations ORDER BY sequence').fetchall()
+                    if len(admissions)!=3 or any(r[7]!=1 or r[8] is None or r[9]<=r[6] for r in admissions):raise Refus('issues individuelles Q1 incomplètes')
+                    if [r[2] for r in admissions]!=[membership_fixture[8:24],membership_fixture[24:40],membership_fixture[24:40]]:raise Refus('origines Q1 différentes')
+                    report['admissions_vfs']=[{'operation':r[0].hex(),'titulaire':r[1].hex(),'groupe':r[2].hex(),'classe':r[3],'effecteur':r[4].hex(),'session':r[5][209:241].hex(),'position':r[6],'etat':r[7],'fait_sha256':r[8].hex(),'terminal':r[9]} for r in admissions]
+            if a.membership_r2 and restarted:
+                membership_probe('reprise')
+                if selective_calls.get(61)!=1:raise Refus('historique sélectif signé non consulté une fois')
+                if any(selective_calls.get(k,0)!=v for k,v in [(54,1),(55,1),(56,3)]):raise Refus('mutation ou ACK répété après redémarrage')
+                with transaction(api.path) as db:
+                    op=bytes.fromhex(intention['operation'])
+                    if db.execute('SELECT state FROM membership_changes WHERE op=?',(op,)).fetchone()!=(2,) or db.execute('SELECT count(*) FROM mutations WHERE op=?',(op,)).fetchone()!=(1,):raise Refus('terminal historique absent ou seconde mutation')
+                report['recu_selectif_apres_redemarrage']={'rpc':61,'auteur_verifie_dans_invite':True,'recu_RETIREE_verifie_dans_invite':True,'publications':1,'nouvel_ACK':False}
             if a.separation:
                 bob_pid=events.actor(b'NAR2 Bob references pret')
                 for message in (b'NAR2 S3 ticket Alice statut=5 aucun enfant',b'NAR2 S3 canal Alice statut=5',
                                 b'NAR2 S3 session Alice statut=5',b'NAR2 S5 admission session Alice statut=5',
                                 b'NAR2 Bob session propre preservee',b'NAR2 Bob fermeture acquittee'):
                     events.expect(bob_pid,message,20)
-            if a.reactivation or a.separation:serial.submit('exit')
+            if a.reactivation or a.separation or a.membership_io or (a.membership_r2 and restarted):serial.submit('exit')
             serial.expect(rb'BLOC bilan mode=41 service=Exit\(0\) bloc=Exit\(0\) pilote=Exit\(0\) client=Exit\(0\) retrait=Ok\(\(\)\)', 40)
             rows = observer.outputs()
             by_shell = {}
@@ -674,6 +722,10 @@ def main():
                 cases=[(binary+' --outcome '+intention['operation'],b''),('id carol',b''),('whoami',b'alice\n')]
                 case_status={0:(20,('Administrative failure: native=22 status=20\nrequest='+intention['operation']+' --outcome\n').encode()),1:(3,b'Administrative failure: native=5 status=3\n')}
                 a.coupure_avant_publication=False # injection unique, jamais de CONFIRM en reprise
+            if a.membership_r2:
+                restarted=True
+                a.membership_io=False # aucun ancien handle local n'existe dans cette VM
+                cases=[(binary+' --outcome '+intention['operation'],complete),('whoami',b'alice\n')]
             report['commandes']=[];report['evenements']=[];report['succes']=False
             result=run(after,(resumed,holders,admin),scenario=scenario,rpc_hook=rpc_hook)
             report['reprise']={'arret_complet':True,'capture_native':not cut_before_publication,'coupure_avant_admission':cut_before_publication,'ancienne_incarnation':old_route.hex(),

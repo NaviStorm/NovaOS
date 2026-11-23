@@ -6,8 +6,8 @@ pub const READ: u8 = 1;
 pub const WRITE: u8 = 2;
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub(super) struct Installation {
-    id: Id,
-    image: Option<Hash>,
+    pub(super) id: Id,
+    pub(super) image: Option<Hash>,
     revision: u64,
     #[cfg(feature="administration-lab")]
     #[serde(default,skip_serializing_if="Option::is_none")]
