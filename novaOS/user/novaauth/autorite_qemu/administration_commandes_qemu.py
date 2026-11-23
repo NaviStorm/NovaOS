@@ -67,6 +67,7 @@ def main():
     parser.add_argument('arch', choices=['aarch64', 'x86_64'])
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--retrait-reserve-reprise-froide',action='store_true',help='Q4 coupure après RESERVE puis refus de nouvelle incarnation tant que le retrait reste incomplet')
+    parser.add_argument('--ancien-direct',action='store_true',help='consommation réelle du ticket Bob Direct émis avant mutation Alice')
     parser.add_argument('--selective-exec',action='store_true',help='raccord expérimental Direct ; exige une ISO exportée avec selective_exec_profile')
     parser.add_argument('--admission-vfs-perdue',action='store_true',help='Q2 admission durable perdue avant GO : annulation réelle de la file VFS')
     parser.add_argument('--issue-vfs-perdue',action='store_true',help='Q2 perte de reponse FINISH durable, consultation sans seconde E/S')
@@ -106,11 +107,12 @@ def main():
     if a.mutation_concurrente and a.lot!='groupe':parser.error("mutation concurrente : lot groupe requis")
     a.dernier_concurrent=a.dernier_concurrent or a.mutation_concurrente
     a.bob_minimal=a.bob_minimal or a.dernier_concurrent
-    a.ticket_vivant = a.ticket_vivant or a.reactivation or a.course
+    a.ticket_vivant = a.ticket_vivant or a.reactivation or a.course or a.ancien_direct
+    if a.ancien_direct and (not a.selective_exec or a.lot!='retrait-selectif-vide' or a.bob_minimal or a.membership_io):parser.error('ancien Direct : profil sélectif dédié sans autre injection')
     atomic_status = a.ticket_vivant or a.separation or bool(a.etat_ticket) or a.bob_minimal
     if a.etat_ticket and (a.separation or a.ticket_vivant or a.securite):parser.error("profils de recette distincts")
     if a.securite and a.ticket_vivant:parser.error('les deux profils sont distincts')
-    if a.ticket_vivant and a.lot!='desactivation':
+    if a.ticket_vivant and not a.ancien_direct and a.lot!='desactivation':
         parser.error('le témoin de ticket vivant exige le lot désactivation')
     if (a.reauth_issue or a.recu_supprime) and a.lot not in ('groupe','desactivation','creation','renommage','appartenance'):
         parser.error('options de publication réservées aux lots de mutation')
@@ -568,6 +570,9 @@ def main():
                                     b'NAR2 Bob nouveau lancement autorise droits ordinaires',
                                     b'NAR2 Bob fermeture acquittee']:
                         events.expect(bob_pid,message,40)
+            if a.ancien_direct:
+                events.expect(bob_pid,b'NAR2 Bob ancien Direct consomme statut=0 collecte unique',30)
+                events.expect(bob_pid,b'NAR2 Bob fermeture acquittee',30)
             if a.membership_io:
                 closure=b'NARM VFS fermeture selective acquittee retires=01 conserves=02'
                 if a.admission_vfs_perdue:
@@ -602,9 +607,9 @@ def main():
                 if a.selective_exec:
                     with transaction(api.path) as db:
                         descriptors=db.execute('SELECT d.op,d.packet,d.sequence,a.sequence,a.state,a.child,a.terminal_sequence FROM exec_descriptors d LEFT JOIN exec_admissions a ON a.op=d.op ORDER BY d.sequence').fetchall()
-                    if len(descriptors)!=len(cases) or any(len(p)!=584 or not r<a<t or state!=1 or child is None or child==bytes(32) for op,p,r,a,state,child,t in descriptors):raise Refus('admission EXEC Direct ou issue individuelle non démontrée')
-                    if len({child for _,_,_,_,_,child,_ in descriptors})!=len(cases):raise Refus('enfants EXEC confondus')
-                    report['exec_direct_selectif']={'portee':'tickets neufs sans délégation VFS ; pas encore un ancien ticket après mutation','operations':[{'operation':op.hex(),'descripteur_sha256':__import__('hashlib').sha256(p).hexdigest(),'inscription':r,'admission':a,'terminal':t,'etat':state,'enfant':child.hex()} for op,p,r,a,state,child,t in descriptors]}
+                    if len(descriptors)!=len(cases)+int(a.ancien_direct) or any(len(p)!=584 or not r<a<t or state!=1 or child is None or child==bytes(32) for op,p,r,a,state,child,t in descriptors):raise Refus('admission EXEC Direct ou issue individuelle non démontrée')
+                    if len({child for _,_,_,_,_,child,_ in descriptors})!=len(cases)+int(a.ancien_direct):raise Refus('enfants EXEC confondus')
+                    report['exec_direct_selectif']={'portee':'ancien ticket Direct réellement consommé après retrait' if a.ancien_direct else 'tickets neufs sans délégation VFS ; pas encore un ancien ticket après mutation','operations':[{'operation':op.hex(),'descripteur_sha256':__import__('hashlib').sha256(p).hexdigest(),'inscription':r,'admission':a,'terminal':t,'etat':state,'enfant':child.hex()} for op,p,r,a,state,child,t in descriptors]}
                 report['rpc_selectifs']=selective_calls
                 report['ordre_durable']=[{'position':n,'transition':k} for n,k in ordered]
                 report['retrait_selectif']={'etat':'RETRAIT_EN_COURS' if a.acquittement_selectif_absent else 'RETIREE','generation':row[1],'effecteurs':[{'classe':k,'instance':i.hex(),'acquitte':bool(v)} for k,i,v in effects],'delegations_G_ouvertes':a.membership_io and not a.admission_vfs_perdue}
@@ -647,7 +652,7 @@ def main():
                                 b'NAR2 S3 session Alice statut=5',b'NAR2 S5 admission session Alice statut=5',
                                 b'NAR2 Bob session propre preservee',b'NAR2 Bob fermeture acquittee'):
                     events.expect(bob_pid,message,20)
-            if a.reactivation or a.separation or a.membership_io or (a.membership_r2 and restarted):serial.submit('exit')
+            if a.reactivation or a.separation or a.membership_io or a.ancien_direct or (a.membership_r2 and restarted):serial.submit('exit')
             serial.expect(rb'BLOC bilan mode=41 service=Exit\(0\) bloc=Exit\(0\) pilote=Exit\(0\) client=Exit\(0\) retrait=Ok\(\(\)\)', 40)
             rows = observer.outputs()
             by_shell = {}
@@ -677,6 +682,8 @@ def main():
                         raise Refus('session Bob réactivée ou instance remplacée')
                     report['nouvelle_session_bob']={'instance':current[0][1].hex(),'session':current[0][2].hex(),
                         'ancien_ticket':10,'ancienne_session':5,'nouveau_lancement':0}
+                elif a.ancien_direct:
+                    if len(by_shell)!=2 or list(by_shell.get(bob[0],{}).values())!=[{1:bob_oracle,2:b''}]:raise Refus('ancien Direct : sortie Bob non conforme')
                 elif a.course:
                     children=by_shell.get(bob[0],{})
                     if len(children)>1 or any(streams not in ({1:b'A\tB\tC\nD\tE\tF\n',2:b''},{1:b'',2:b''}) for streams in children.values()):
@@ -706,7 +713,7 @@ def main():
             elif len(by_shell) != 2 or len(bob) != 1:
                 raise Refus('sorties Bob confondues ou absentes')
             if a.ticket_vivant:
-                if not a.course and b'NAR2 Bob ancien ticket statut=10 aucun enfant' not in serial.data:
+                if not a.course and not a.ancien_direct and b'NAR2 Bob ancien ticket statut=10 aucun enfant' not in serial.data:
                     raise Refus('ancien ticket Bob sans refus REVOKED')
                 attempts=re.findall(rb'NAEXEC attente owner='+str(bob[0]).encode()+rb' ticket=(\d+) maintenant=(\d+) echeance=(\d+)',serial.data)
                 if not attempts or (not a.reactivation and len(attempts)!=1) or int(attempts[0][1])>=int(attempts[0][2]):
@@ -727,9 +734,18 @@ def main():
                     if re.search(rb'NAEXEC enfant owner='+str(bob[0]).encode()+rb' child=',serial.data[terminal:]):raise Refus('enfant après RETIREE')
                     if len(children)!=(1 if int(end[0][1])==0 else 0):raise Refus('PID de course absent ou interdit')
                     report['course']={'debut_bob_ticks':int(beg[0]),'fin_bob_ticks':int(end[0][0]),'statut_spawn':int(end[0][1]),'debut_confirmation_ticks':int(confirm[0]),'fin_confirmation_ticks':int(complete[0]),'enfants':[int(v) for v in children],'aucune_creation_apres_RETIREE':True}
+                elif a.ancien_direct:
+                    if len(children)!=1:raise Refus('ancien Direct : enfant absent ou double')
+                    with transaction(api.path) as db:
+                        ds=db.execute('SELECT d.packet,d.sequence,a.sequence,a.state,a.child,a.terminal_sequence FROM exec_descriptors d JOIN exec_admissions a ON a.op=d.op WHERE d.subject=?',(ids[16:32],)).fetchall()
+                        mutation=db.execute("SELECT sequence FROM exec_events WHERE kind='membership-retired'").fetchone()
+                    if len(ds)!=1 or mutation is None:raise Refus('ancien Direct : descripteur/mutation absent')
+                    packet,registration,admission,state,child,terminal=ds[0]
+                    if not registration<mutation[0]<admission<terminal or state!=1 or child==bytes(32):raise Refus('ancien Direct : ordre durable incohérent')
+                    report['ancien_direct']={'inscription':registration,'mutation':mutation[0],'admission':admission,'terminal':terminal,'enfant':child.hex(),'pid':int(children[0]),'ancien_descripteur_sha256':hashlib.sha256(packet).hexdigest(),'utilisation_effective':True}
                 elif children:
                     raise Refus('création Bob supplémentaire ou non identifiée')
-                report['ticket_bob']={'reference':int(attempts[0][0]),'presentation_ticks':int(attempts[0][1]),'expiration_ticks':int(attempts[0][2]),'frequence_hz':250,'statut_natif':report['course']['statut_spawn'] if a.course else 10,'enfants_supplementaires':0}
+                report['ticket_bob']={'reference':int(attempts[0][0]),'presentation_ticks':int(attempts[0][1]),'expiration_ticks':int(attempts[0][2]),'frequence_hz':250,'statut_natif':report['course']['statut_spawn'] if a.course else (0 if a.ancien_direct else 10),'enfants_supplementaires':0}
             for pid in set(by_shell) | set(bob):
                 if not re.search(rb'NAEXEC restitue pid=' + str(pid).encode() + rb' roots=0 handles=0 waits=0 pages=0 pile=0 threads=0', serial.data):
                     raise Refus('ressources de session non restituées')
