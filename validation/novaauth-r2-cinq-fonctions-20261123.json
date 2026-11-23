@@ -1,0 +1,3346 @@
+{
+  "reference": "82349ed9cc35a7b1bd601642cb8e0738ed1ab919",
+  "commit_avant_livraison": "b2088cdcd098aa95c9e4e65a9e127e9e77e9ba46",
+  "parcours_reussis": 52,
+  "echecs_conserves": 2,
+  "matrice": [
+    {
+      "profil": "x86_64/P9-512",
+      "retrait_groupe": {
+        "etat": "conception seulement, non implemente, aucun essai",
+        "contrat": "novaOS/docs/novaauth-r2-retrait-groupe-contrat-v0.24.0.md"
+      },
+      "facteur_concurrent": [
+        "r2-commandes-x86_64-512-facteurs-concurrents-f01"
+      ],
+      "Carol_authentifiee_et_perte_recu": [
+        "r2-commandes-x86_64-512-creation-perte02"
+      ],
+      "scripts_et_nsh_c": [
+        "r2-commandes-x86_64-512-creation-c-mut01",
+        "r2-commandes-x86_64-512-creation-script-mut01",
+        "r2-commandes-x86_64-512-dernier-administrateur-c-mut01",
+        "r2-commandes-x86_64-512-dernier-administrateur-script-mut01",
+        "r2-commandes-x86_64-512-groupe-c-mut01",
+        "r2-commandes-x86_64-512-groupe-script-mut01",
+        "r2-commandes-x86_64-512-lectures-c01",
+        "r2-commandes-x86_64-512-lectures-script01",
+        "r2-commandes-x86_64-512-renommage-c-mut01",
+        "r2-commandes-x86_64-512-renommage-script-mut01"
+      ],
+      "coupure_avant_admission": [
+        "r2-commandes-x86_64-512-creation-coupure02"
+      ]
+    },
+    {
+      "profil": "x86_64/P9-4096",
+      "retrait_groupe": {
+        "etat": "conception seulement, non implemente, aucun essai",
+        "contrat": "novaOS/docs/novaauth-r2-retrait-groupe-contrat-v0.24.0.md"
+      },
+      "facteur_concurrent": [
+        "r2-commandes-x86_64-4096-facteurs-concurrents-f01"
+      ],
+      "Carol_authentifiee_et_perte_recu": [
+        "r2-commandes-x86_64-4096-creation-perte02"
+      ],
+      "scripts_et_nsh_c": [
+        "r2-commandes-x86_64-4096-creation-c-mut01",
+        "r2-commandes-x86_64-4096-creation-script-mut01",
+        "r2-commandes-x86_64-4096-dernier-administrateur-c-mut01",
+        "r2-commandes-x86_64-4096-dernier-administrateur-script-mut01",
+        "r2-commandes-x86_64-4096-groupe-c-mut01",
+        "r2-commandes-x86_64-4096-groupe-script-mut01",
+        "r2-commandes-x86_64-4096-lectures-c01",
+        "r2-commandes-x86_64-4096-lectures-script01",
+        "r2-commandes-x86_64-4096-renommage-c-mut01",
+        "r2-commandes-x86_64-4096-renommage-script-mut01"
+      ],
+      "coupure_avant_admission": [
+        "r2-commandes-x86_64-4096-creation-coupure02"
+      ]
+    },
+    {
+      "profil": "aarch64/P9-512",
+      "retrait_groupe": {
+        "etat": "conception seulement, non implemente, aucun essai",
+        "contrat": "novaOS/docs/novaauth-r2-retrait-groupe-contrat-v0.24.0.md"
+      },
+      "facteur_concurrent": [
+        "r2-commandes-aarch64-512-facteurs-concurrents-f01"
+      ],
+      "Carol_authentifiee_et_perte_recu": [
+        "r2-commandes-aarch64-512-creation-perte02"
+      ],
+      "scripts_et_nsh_c": [
+        "r2-commandes-aarch64-512-creation-c-mut01",
+        "r2-commandes-aarch64-512-creation-script-mut01",
+        "r2-commandes-aarch64-512-dernier-administrateur-c-mut01",
+        "r2-commandes-aarch64-512-dernier-administrateur-script-mut01",
+        "r2-commandes-aarch64-512-groupe-c-mut01",
+        "r2-commandes-aarch64-512-groupe-script-mut01",
+        "r2-commandes-aarch64-512-lectures-c01",
+        "r2-commandes-aarch64-512-lectures-script01",
+        "r2-commandes-aarch64-512-renommage-c-mut01",
+        "r2-commandes-aarch64-512-renommage-script-mut01"
+      ],
+      "coupure_avant_admission": [
+        "r2-commandes-aarch64-512-creation-coupure02"
+      ]
+    },
+    {
+      "profil": "aarch64/P9-4096",
+      "retrait_groupe": {
+        "etat": "conception seulement, non implemente, aucun essai",
+        "contrat": "novaOS/docs/novaauth-r2-retrait-groupe-contrat-v0.24.0.md"
+      },
+      "facteur_concurrent": [
+        "r2-commandes-aarch64-4096-facteurs-concurrents-f01"
+      ],
+      "Carol_authentifiee_et_perte_recu": [
+        "r2-commandes-aarch64-4096-creation-perte02"
+      ],
+      "scripts_et_nsh_c": [
+        "r2-commandes-aarch64-4096-creation-c-mut01",
+        "r2-commandes-aarch64-4096-creation-script-mut01",
+        "r2-commandes-aarch64-4096-dernier-administrateur-c-mut01",
+        "r2-commandes-aarch64-4096-dernier-administrateur-script-mut01",
+        "r2-commandes-aarch64-4096-groupe-c-mut01",
+        "r2-commandes-aarch64-4096-groupe-script-mut01",
+        "r2-commandes-aarch64-4096-lectures-c01",
+        "r2-commandes-aarch64-4096-lectures-script01",
+        "r2-commandes-aarch64-4096-renommage-c-mut01",
+        "r2-commandes-aarch64-4096-renommage-script-mut01"
+      ],
+      "coupure_avant_admission": [
+        "r2-commandes-aarch64-4096-creation-coupure02"
+      ]
+    }
+  ],
+  "parcours": [
+    {
+      "preuve": "r2-commandes-aarch64-4096-creation-c-mut01",
+      "profil": "aarch64/P9-4096",
+      "lot": "creation",
+      "mode": "nsh-c",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "fe0fff1c5719b6fdb56ad68252c011298c32c4996c9db73219eccf24de6a7bfa",
+      "commandes": [
+        {
+          "commande": "nsh -c 'useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol --confirm dc36d8e692c6ed8ed01575bc33f12008dfafa7f6ba7a23e5ff3cc169386b3e36 --request dc36d8e692c6ed8ed01575bc33f12008'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'id carol'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 26.284451708,
+      "attente_secondes": 0.000391042,
+      "acquisition": "2026-11-23T06:19:01.162026+00:00",
+      "liberation": "2026-11-23T06:19:27.509548+00:00",
+      "persistance": {
+        "mutation_unique": "dc36d8e692c6ed8ed01575bc33f12008",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-creation-coupure02",
+      "profil": "aarch64/P9-4096",
+      "lot": "creation",
+      "mode": "interactif",
+      "commit_banc": "a653cf5173cc9caf4bd0fdd08c2f6f6659c8ed6e",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "b5881486adf1b764e9d7a7ababd74a8cbd1d6d5c61390fbdb47f17e86c18535b",
+      "succes": true,
+      "resultat_sha256": "b61ddff8b9e17ba46e0c181c63f2b14c7f391dd77869ac4f60a3b3539f0aec50",
+      "commandes": [
+        {
+          "commande": "useradd --outcome 2c918af210f305f028f65ee7d423f38d",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "id carol",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 43.369740583,
+      "attente_secondes": 0.000379666,
+      "acquisition": "2026-11-23T06:24:00.309026+00:00",
+      "liberation": "2026-11-23T06:24:43.730446+00:00",
+      "persistance": {
+        "coupure_avant_admission": true,
+        "mutation_absente": true,
+        "reprise_native": true,
+        "aucun_resultat_invente": true,
+        "aucune_seconde_mutation": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-creation-perte02",
+      "profil": "aarch64/P9-4096",
+      "lot": "creation",
+      "mode": "interactif",
+      "commit_banc": "73bde840b0861319ed53e93623290b6526ccc783",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "874927942980588cd89c4d7ab026ee1028e9950163bf563eee90b59edfdc64c1",
+      "succes": true,
+      "resultat_sha256": "475be637f1620a590335223a9073bbbfb8e05dceb1607c877720390c207122f5",
+      "commandes": [
+        {
+          "commande": "useradd --outcome 3d4b82d3306d35fc070298c141af9084",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "id carol",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 52.697555291,
+      "attente_secondes": 0.000372833,
+      "acquisition": "2026-11-23T06:03:27.375739+00:00",
+      "liberation": "2026-11-23T06:04:20.125565+00:00",
+      "persistance": {
+        "mutation_unique": "3d4b82d3306d35fc070298c141af9084",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true,
+        "reprise_native": true,
+        "meme_operation_sans_repetition": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-creation-script-mut01",
+      "profil": "aarch64/P9-4096",
+      "lot": "creation",
+      "mode": "script",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "553d7d80584e4888e35a558321303b205d776c18fe4fcfd475999e5c4344b61f",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-creation-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=8da529f70ea5b48411fc448b33f762f8f348213e0eefa7e10d241a2946ac3db9 R2_REQUEST=8da529f70ea5b48411fc448b33f762f8; nsh /travail/r2-creation-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-carol.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 26.866954709,
+      "attente_secondes": 0.000327333,
+      "acquisition": "2026-11-23T06:18:34.204273+00:00",
+      "liberation": "2026-11-23T06:19:01.132492+00:00",
+      "persistance": {
+        "mutation_unique": "8da529f70ea5b48411fc448b33f762f8",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-dernier-administrateur-c-mut01",
+      "profil": "aarch64/P9-4096",
+      "lot": "dernier-administrateur",
+      "mode": "nsh-c",
+      "commit_banc": "a653cf5173cc9caf4bd0fdd08c2f6f6659c8ed6e",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "b5881486adf1b764e9d7a7ababd74a8cbd1d6d5c61390fbdb47f17e86c18535b",
+      "succes": true,
+      "resultat_sha256": "ebb178f51be55508ebf25d988b5805266b19aa7b744b54d5dbc237e5dd82731a",
+      "commandes": [
+        {
+          "commande": "nsh -c 'usermod --disable alice --prepare'",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        }
+      ],
+      "execution_secondes": 16.776634,
+      "attente_secondes": 0.000342792,
+      "acquisition": "2026-11-23T06:21:30.668727+00:00",
+      "liberation": "2026-11-23T06:21:47.507097+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-dernier-administrateur-script-mut01",
+      "profil": "aarch64/P9-4096",
+      "lot": "dernier-administrateur",
+      "mode": "script",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "a7f4982126d06f52169285a11cf81f48f63bec642819e98cad41fcdb74bbcf5d",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-refus.nsh",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        }
+      ],
+      "execution_secondes": 16.875597625,
+      "attente_secondes": 0.000329625,
+      "acquisition": "2026-11-23T06:21:13.702675+00:00",
+      "liberation": "2026-11-23T06:21:30.640075+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-facteurs-concurrents-f01",
+      "profil": "aarch64/P9-4096",
+      "lot": "facteurs-concurrents",
+      "mode": "interactif",
+      "commit_banc": "73bde840b0861319ed53e93623290b6526ccc783",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "874927942980588cd89c4d7ab026ee1028e9950163bf563eee90b59edfdc64c1",
+      "succes": true,
+      "resultat_sha256": "8da609d1033cd59ba2c880aa4636adc9a25fe73c6c761fcc946b810e914390bb",
+      "commandes": [
+        {
+          "commande": "admin-sonde --factor-writer d3e1962bb9c6e8962e338b1972b5359f | admin-sonde --factor-reader d3e1962bb9c6e8962e338b1972b5359f",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21,
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 160,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statuts_requetes": [
+            {
+              "preparation": 0,
+              "confirmation": 5,
+              "recu": "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "preparation": 0,
+              "confirmation": 0,
+              "recu": "000000000000000008a395b0c56507e673a84aa89d42fcd319000000000000000100000000000000000000000000000000000000000000000000000000000000"
+            }
+          ],
+          "statuts_natifs": [
+            0,
+            0
+          ],
+          "statut_natif": 0
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 25.875859917,
+      "attente_secondes": 0.000373125,
+      "acquisition": "2026-11-23T06:03:01.419667+00:00",
+      "liberation": "2026-11-23T06:03:27.347058+00:00",
+      "persistance": {
+        "mutation_unique": "08a395b0c56507e673a84aa89d42fcd3",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-groupe-c-mut01",
+      "profil": "aarch64/P9-4096",
+      "lot": "groupe",
+      "mode": "nsh-c",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "ec42caf85561735f66172d9a5d8c37659601b46f550c6d1b30cd88083a3481b7",
+      "commandes": [
+        {
+          "commande": "nsh -c 'groupadd equipe-r2 --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'groupadd equipe-r2 --confirm d1fc0a2856ef5f0e5c0bde7196f823c7a36a4aac48b50c0d77439a9a9c3f1d56 --request d1fc0a2856ef5f0e5c0bde7196f823c7'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'groupadd --outcome d1fc0a2856ef5f0e5c0bde7196f823c7'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 26.112644458,
+      "attente_secondes": 0.0003565,
+      "acquisition": "2026-11-23T06:20:47.499381+00:00",
+      "liberation": "2026-11-23T06:21:13.674467+00:00",
+      "persistance": {
+        "mutation_unique": "d1fc0a2856ef5f0e5c0bde7196f823c7",
+        "type_prive": 6,
+        "generation": 24,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-groupe-script-mut01",
+      "profil": "aarch64/P9-4096",
+      "lot": "groupe",
+      "mode": "script",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "c85f6e67460676e747c777a135e846eb202ad693f3d06e5f43ead4b969c68c03",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-groupe-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=626e3278433f15b1d2f9aee60e0524360ee752152b02410b52eb32d1a9a2bcd2 R2_REQUEST=626e3278433f15b1d2f9aee60e052436; nsh /travail/r2-groupe-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_REQUEST=626e3278433f15b1d2f9aee60e052436; nsh /travail/r2-issue-groupadd.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 26.237101458,
+      "attente_secondes": 0.000318125,
+      "acquisition": "2026-11-23T06:20:21.170162+00:00",
+      "liberation": "2026-11-23T06:20:47.470447+00:00",
+      "persistance": {
+        "mutation_unique": "626e3278433f15b1d2f9aee60e052436",
+        "type_prive": 6,
+        "generation": 24,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-lectures-c01",
+      "profil": "aarch64/P9-4096",
+      "lot": "lectures",
+      "mode": "nsh-c",
+      "commit_banc": "2f7e950509020156416947bb7192a2703bae4df9",
+      "arbre_sources_invite": "3aa6d9c11026fed10ad3d83a22d58364892ecfbc",
+      "banc_sha256": "01edc497e1f951a7f59123268c2ebe0ada1e59a392b9800130106d00c25bc4a9",
+      "succes": true,
+      "resultat_sha256": "b92a3b648df102188b7af85cf600757e969e92f976882b871ab207d3ed0a2936",
+      "commandes": [
+        {
+          "commande": "nsh -c whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c id",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c groups",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 5,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 23.301011417,
+      "attente_secondes": 0.000347709,
+      "acquisition": "2026-11-23T05:44:05.619218+00:00",
+      "liberation": "2026-11-23T05:44:28.972747+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-lectures-script01",
+      "profil": "aarch64/P9-4096",
+      "lot": "lectures",
+      "mode": "script",
+      "commit_banc": "73bde840b0861319ed53e93623290b6526ccc783",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "dc075bbdc3b8b15597e058941459bab7e871dd41786233d30cc39e272ec560b4",
+      "succes": true,
+      "resultat_sha256": "f53f48cb4356e24bae8f227cf11790474faf411dba5b0a58f16a6776c4e1dba9",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-whoami.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-id.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-groups.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 5,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 24.009078834,
+      "attente_secondes": 0.0003465,
+      "acquisition": "2026-11-23T06:04:20.154079+00:00",
+      "liberation": "2026-11-23T06:04:44.214551+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-renommage-c-mut01",
+      "profil": "aarch64/P9-4096",
+      "lot": "renommage",
+      "mode": "nsh-c",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "eb66bd51c68125a5d3ccda9a4b46aeab9e4dbdc423b49905b05155675fe4f913",
+      "commandes": [
+        {
+          "commande": "nsh -c 'usermod --rename robert bob --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'usermod --rename robert bob --confirm 55dbe73e5e9ed34b3362073c098e464343a9828755329ab6754c80e5c87f2ec4 --request 55dbe73e5e9ed34b3362073c098e4643'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'id --subject-id fdb851f42231a8db4a0a6fc75f9bb46a'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 112,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 26.674080375,
+      "attente_secondes": 0.000342541,
+      "acquisition": "2026-11-23T06:19:54.404396+00:00",
+      "liberation": "2026-11-23T06:20:21.141175+00:00",
+      "persistance": {
+        "mutation_unique": "55dbe73e5e9ed34b3362073c098e4643",
+        "type_prive": 5,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-4096-renommage-script-mut01",
+      "profil": "aarch64/P9-4096",
+      "lot": "renommage",
+      "mode": "script",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "9cbc856711a0b62f9dfa31fa79d02081afce07939282ad5cf43685e8464151ef",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-renommage-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=6e1af4d9168d5970e23566a4b81db8f63684d684213f95900ed0d60ffe3798e1 R2_REQUEST=6e1af4d9168d5970e23566a4b81db8f6; nsh /travail/r2-renommage-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_SUBJECT=fdb851f42231a8db4a0a6fc75f9bb46a; nsh /travail/r2-renomme.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 112,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 26.771557,
+      "attente_secondes": 0.000364625,
+      "acquisition": "2026-11-23T06:19:27.539445+00:00",
+      "liberation": "2026-11-23T06:19:54.375911+00:00",
+      "persistance": {
+        "mutation_unique": "6e1af4d9168d5970e23566a4b81db8f6",
+        "type_prive": 5,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-creation-c-mut01",
+      "profil": "aarch64/P9-512",
+      "lot": "creation",
+      "mode": "nsh-c",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "ebe511acea1d1f6d95b110316481a0ab8504d8aba109f1e2fb15e918a20eb619",
+      "commandes": [
+        {
+          "commande": "nsh -c 'useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol --confirm 1692ad5aa5c2462d020fc74be17afaaed81fc4e0dfc6b2504df67789c5e6321a --request 1692ad5aa5c2462d020fc74be17afaae'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'id carol'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 34.052934875,
+      "attente_secondes": 0.000374083,
+      "acquisition": "2026-11-23T06:15:05.050413+00:00",
+      "liberation": "2026-11-23T06:15:39.166089+00:00",
+      "persistance": {
+        "mutation_unique": "1692ad5aa5c2462d020fc74be17afaae",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-creation-coupure02",
+      "profil": "aarch64/P9-512",
+      "lot": "creation",
+      "mode": "interactif",
+      "commit_banc": "a653cf5173cc9caf4bd0fdd08c2f6f6659c8ed6e",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "b5881486adf1b764e9d7a7ababd74a8cbd1d6d5c61390fbdb47f17e86c18535b",
+      "succes": true,
+      "resultat_sha256": "62f47e9a3975b0161fb0a7c9b739544ae08bed7efa3fbbe9f089d3cf309a84bc",
+      "commandes": [
+        {
+          "commande": "useradd --outcome 8dd26e30f3aeed41893c16763efe832d",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "id carol",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 54.690886458,
+      "attente_secondes": 0.000370792,
+      "acquisition": "2026-11-23T06:23:05.536150+00:00",
+      "liberation": "2026-11-23T06:24:00.279525+00:00",
+      "persistance": {
+        "coupure_avant_admission": true,
+        "mutation_absente": true,
+        "reprise_native": true,
+        "aucun_resultat_invente": true,
+        "aucune_seconde_mutation": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-creation-perte02",
+      "profil": "aarch64/P9-512",
+      "lot": "creation",
+      "mode": "interactif",
+      "commit_banc": "e34ccfb3b46504f51d3b735e237eec62b9580b2b",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "efc47f83099b9fba2215d30b8c86d79e173f2c2a161181e5ca4d4b2bbcef053b",
+      "succes": true,
+      "resultat_sha256": "59aff95152cef83acca3a93e926de7691bc05a9813e5a380e57b569e0ef7cce1",
+      "commandes": [
+        {
+          "commande": "useradd --outcome 6c19b156f9a4539ef3fe93f518b2b3ae",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "id carol",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 69.9125315,
+      "attente_secondes": 0.000321125,
+      "acquisition": "2026-11-23T06:01:20.948516+00:00",
+      "liberation": "2026-11-23T06:02:30.913491+00:00",
+      "persistance": {
+        "mutation_unique": "6c19b156f9a4539ef3fe93f518b2b3ae",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true,
+        "reprise_native": true,
+        "meme_operation_sans_repetition": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-creation-script-mut01",
+      "profil": "aarch64/P9-512",
+      "lot": "creation",
+      "mode": "script",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "abe1e43f34c4567edd02ec01890af7a478b3fb0f6c7a9ac1140935779002f589",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-creation-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=f82b8afaf3f1b2f7fb01414b721bf0c649e5f5c6f2853b118f72dd5bbcea0e7d R2_REQUEST=f82b8afaf3f1b2f7fb01414b721bf0c6; nsh /travail/r2-creation-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-carol.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 33.899094542,
+      "attente_secondes": 0.000378375,
+      "acquisition": "2026-11-23T06:14:31.058600+00:00",
+      "liberation": "2026-11-23T06:15:05.021294+00:00",
+      "persistance": {
+        "mutation_unique": "f82b8afaf3f1b2f7fb01414b721bf0c6",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-dernier-administrateur-c-mut01",
+      "profil": "aarch64/P9-512",
+      "lot": "dernier-administrateur",
+      "mode": "nsh-c",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "70f5a3d21d606ded310874c847729136ebca8b2f2b525cf0b9b4a1ec4117f364",
+      "commandes": [
+        {
+          "commande": "nsh -c 'usermod --disable alice --prepare'",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        }
+      ],
+      "execution_secondes": 19.71470875,
+      "attente_secondes": 0.000354334,
+      "acquisition": "2026-11-23T06:18:14.397564+00:00",
+      "liberation": "2026-11-23T06:18:34.176160+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-dernier-administrateur-script-mut01",
+      "profil": "aarch64/P9-512",
+      "lot": "dernier-administrateur",
+      "mode": "script",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "932a7cc98471f451dd61771171594359e2a9d2bac79feb7c6b27290ccada1c8e",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-refus.nsh",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        }
+      ],
+      "execution_secondes": 19.8749775,
+      "attente_secondes": 0.000342042,
+      "acquisition": "2026-11-23T06:17:54.430131+00:00",
+      "liberation": "2026-11-23T06:18:14.368566+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-facteurs-concurrents-f01",
+      "profil": "aarch64/P9-512",
+      "lot": "facteurs-concurrents",
+      "mode": "interactif",
+      "commit_banc": "e34ccfb3b46504f51d3b735e237eec62b9580b2b",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "efc47f83099b9fba2215d30b8c86d79e173f2c2a161181e5ca4d4b2bbcef053b",
+      "succes": true,
+      "resultat_sha256": "b623306877231f0331d0185487f7744aacabfa9ac14926fe38d0dd1c1ca70260",
+      "commandes": [
+        {
+          "commande": "admin-sonde --factor-writer d3e1962bb9c6e8962e338b1972b5359f | admin-sonde --factor-reader d3e1962bb9c6e8962e338b1972b5359f",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21,
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 160,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statuts_requetes": [
+            {
+              "preparation": 0,
+              "confirmation": 5,
+              "recu": "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "preparation": 0,
+              "confirmation": 0,
+              "recu": "000000000000000054c07c3fe89d03bf200493ed3bf9000b19000000000000000100000000000000000000000000000000000000000000000000000000000000"
+            }
+          ],
+          "statuts_natifs": [
+            0,
+            0
+          ],
+          "statut_natif": 0
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 32.721185541,
+      "attente_secondes": 0.000341625,
+      "acquisition": "2026-11-23T06:00:48.146554+00:00",
+      "liberation": "2026-11-23T06:01:20.919989+00:00",
+      "persistance": {
+        "mutation_unique": "54c07c3fe89d03bf200493ed3bf9000b",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-groupe-c-mut01",
+      "profil": "aarch64/P9-512",
+      "lot": "groupe",
+      "mode": "nsh-c",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "46cb410ff18b704db2459f4799139e409a997903f6f31bdf2bf0d0fe8eb6fab8",
+      "commandes": [
+        {
+          "commande": "nsh -c 'groupadd equipe-r2 --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'groupadd equipe-r2 --confirm 9cdb8b48122e85c65ada78f72049f3b00d2c18b4b35d11b4698f2544ab749aff --request 9cdb8b48122e85c65ada78f72049f3b0'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'groupadd --outcome 9cdb8b48122e85c65ada78f72049f3b0'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 33.367334584,
+      "attente_secondes": 0.000459334,
+      "acquisition": "2026-11-23T06:17:20.969281+00:00",
+      "liberation": "2026-11-23T06:17:54.401157+00:00",
+      "persistance": {
+        "mutation_unique": "9cdb8b48122e85c65ada78f72049f3b0",
+        "type_prive": 6,
+        "generation": 24,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-groupe-script-mut01",
+      "profil": "aarch64/P9-512",
+      "lot": "groupe",
+      "mode": "script",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "8e905a16741cb66787d0b6b685c5a8c3a1a2ff203673aac8f2d0d678835e82ec",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-groupe-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=73bda7c6ed3b4fb6ef25f3fe7cbcafcb0ff827b053f90db75141470af07e5822 R2_REQUEST=73bda7c6ed3b4fb6ef25f3fe7cbcafcb; nsh /travail/r2-groupe-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_REQUEST=73bda7c6ed3b4fb6ef25f3fe7cbcafcb; nsh /travail/r2-issue-groupadd.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 33.223431125,
+      "attente_secondes": 0.000327542,
+      "acquisition": "2026-11-23T06:16:47.651644+00:00",
+      "liberation": "2026-11-23T06:17:20.939159+00:00",
+      "persistance": {
+        "mutation_unique": "73bda7c6ed3b4fb6ef25f3fe7cbcafcb",
+        "type_prive": 6,
+        "generation": 24,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-lectures-c01",
+      "profil": "aarch64/P9-512",
+      "lot": "lectures",
+      "mode": "nsh-c",
+      "commit_banc": "2f7e950509020156416947bb7192a2703bae4df9",
+      "arbre_sources_invite": "3aa6d9c11026fed10ad3d83a22d58364892ecfbc",
+      "banc_sha256": "01edc497e1f951a7f59123268c2ebe0ada1e59a392b9800130106d00c25bc4a9",
+      "succes": true,
+      "resultat_sha256": "7a2ae4738a486cb9b6e359e75a8b45fc5bb0d5d08cb952c3b269d3b45bcf27d3",
+      "commandes": [
+        {
+          "commande": "nsh -c whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c id",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c groups",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 5,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 30.045241875,
+      "attente_secondes": 0.000347416,
+      "acquisition": "2026-11-23T05:43:35.487838+00:00",
+      "liberation": "2026-11-23T05:44:05.590810+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-lectures-script01",
+      "profil": "aarch64/P9-512",
+      "lot": "lectures",
+      "mode": "script",
+      "commit_banc": "e34ccfb3b46504f51d3b735e237eec62b9580b2b",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "874927942980588cd89c4d7ab026ee1028e9950163bf563eee90b59edfdc64c1",
+      "succes": true,
+      "resultat_sha256": "2612703f73e4c3ebe04b6a5a3fc3354790433178f001967c50ff74a0b81fb052",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-whoami.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-id.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-groups.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 5,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 30.392340708,
+      "attente_secondes": 0.000380583,
+      "acquisition": "2026-11-23T06:02:30.943931+00:00",
+      "liberation": "2026-11-23T06:03:01.389790+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-renommage-c-mut01",
+      "profil": "aarch64/P9-512",
+      "lot": "renommage",
+      "mode": "nsh-c",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "c81060c5c86c6fa7d318c9e0767985b48558e8299c2193a45bcb017958e4c55e",
+      "commandes": [
+        {
+          "commande": "nsh -c 'usermod --rename robert bob --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'usermod --rename robert bob --confirm 880b6903141b5bd5d881882c6acf57f4bbc47a3000da682e65c1154bfc68069d --request 880b6903141b5bd5d881882c6acf57f4'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'id --subject-id fdb851f42231a8db4a0a6fc75f9bb46a'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 112,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 34.175810042,
+      "attente_secondes": 0.000331083,
+      "acquisition": "2026-11-23T06:16:13.383207+00:00",
+      "liberation": "2026-11-23T06:16:47.621470+00:00",
+      "persistance": {
+        "mutation_unique": "880b6903141b5bd5d881882c6acf57f4",
+        "type_prive": 5,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-aarch64-512-renommage-script-mut01",
+      "profil": "aarch64/P9-512",
+      "lot": "renommage",
+      "mode": "script",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "2be4946a2363c9a5a3e9dcd2d1ecb083af17f0d1d6015bc010f581bb9734c7a6",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-renommage-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=1ffc9b8f6c4df0ccb5958227acc0388b825290b849373cedd20480dd6b5c0233 R2_REQUEST=1ffc9b8f6c4df0ccb5958227acc0388b; nsh /travail/r2-renommage-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_SUBJECT=fdb851f42231a8db4a0a6fc75f9bb46a; nsh /travail/r2-renomme.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 112,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 34.095813125,
+      "attente_secondes": 0.000361042,
+      "acquisition": "2026-11-23T06:15:39.194518+00:00",
+      "liberation": "2026-11-23T06:16:13.354046+00:00",
+      "persistance": {
+        "mutation_unique": "1ffc9b8f6c4df0ccb5958227acc0388b",
+        "type_prive": 5,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-creation-c-mut01",
+      "profil": "x86_64/P9-4096",
+      "lot": "creation",
+      "mode": "nsh-c",
+      "commit_banc": "d211b6e84e3914ab38c0db9e4e6d791e21593182",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "2b88f4bb301747f57e0b8ad57fa86c6b86b5517ed8df3d49a3c339bc3125a671",
+      "commandes": [
+        {
+          "commande": "nsh -c 'useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol --confirm 0eda4d90767d09ef86c73dc943bf64c2774a959a6bdbd8f5b6b2bda101cc9cab --request 0eda4d90767d09ef86c73dc943bf64c2'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'id carol'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 17.139564209,
+      "attente_secondes": 0.000374667,
+      "acquisition": "2026-11-23T06:12:41.757348+00:00",
+      "liberation": "2026-11-23T06:12:58.958875+00:00",
+      "persistance": {
+        "mutation_unique": "0eda4d90767d09ef86c73dc943bf64c2",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-creation-coupure02",
+      "profil": "x86_64/P9-4096",
+      "lot": "creation",
+      "mode": "interactif",
+      "commit_banc": "a653cf5173cc9caf4bd0fdd08c2f6f6659c8ed6e",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "b5881486adf1b764e9d7a7ababd74a8cbd1d6d5c61390fbdb47f17e86c18535b",
+      "succes": true,
+      "resultat_sha256": "43eaa56d9e4d0e2b9c3e35070846e72b25593653f22da695f4703ce80e4c3b4b",
+      "commandes": [
+        {
+          "commande": "useradd --outcome a331bc9122fb08d59b8291153a1dd9f8",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "id carol",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 27.817985166,
+      "attente_secondes": 0.000349916,
+      "acquisition": "2026-11-23T06:22:37.636879+00:00",
+      "liberation": "2026-11-23T06:23:05.506661+00:00",
+      "persistance": {
+        "coupure_avant_admission": true,
+        "mutation_absente": true,
+        "reprise_native": true,
+        "aucun_resultat_invente": true,
+        "aucune_seconde_mutation": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-creation-perte02",
+      "profil": "x86_64/P9-4096",
+      "lot": "creation",
+      "mode": "interactif",
+      "commit_banc": "e34ccfb3b46504f51d3b735e237eec62b9580b2b",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "efc47f83099b9fba2215d30b8c86d79e173f2c2a161181e5ca4d4b2bbcef053b",
+      "succes": true,
+      "resultat_sha256": "4c8ecbebe13ef242cd324ac2dd8d6f6bc8dd138d1a4974048f7cdebc61aeda7c",
+      "commandes": [
+        {
+          "commande": "useradd --outcome 08444efd9016242f6b296dc6ee8e49fc",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "id carol",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 33.902185375,
+      "attente_secondes": 0.000353166,
+      "acquisition": "2026-11-23T05:59:59.147720+00:00",
+      "liberation": "2026-11-23T06:00:33.103026+00:00",
+      "persistance": {
+        "mutation_unique": "08444efd9016242f6b296dc6ee8e49fc",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true,
+        "reprise_native": true,
+        "meme_operation_sans_repetition": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-creation-script-mut01",
+      "profil": "x86_64/P9-4096",
+      "lot": "creation",
+      "mode": "script",
+      "commit_banc": "d211b6e84e3914ab38c0db9e4e6d791e21593182",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "c7a8123fae9983c344374d86be3fd98a4694e65ff4af37a799738ef66d36327a",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-creation-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=1fee92eebb6922b79a240939d4c35b7c5da7bd77662f422df6d12c509c6ec5c2 R2_REQUEST=1fee92eebb6922b79a240939d4c35b7c; nsh /travail/r2-creation-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-carol.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 17.663700167,
+      "attente_secondes": 0.00034475,
+      "acquisition": "2026-11-23T06:12:24.001703+00:00",
+      "liberation": "2026-11-23T06:12:41.728834+00:00",
+      "persistance": {
+        "mutation_unique": "1fee92eebb6922b79a240939d4c35b7c",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-dernier-administrateur-c-mut01",
+      "profil": "x86_64/P9-4096",
+      "lot": "dernier-administrateur",
+      "mode": "nsh-c",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "89a302caa05962c4a3c7281ff1704539704539b6079247dacefef91773118bba",
+      "commandes": [
+        {
+          "commande": "nsh -c 'usermod --disable alice --prepare'",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        }
+      ],
+      "execution_secondes": 11.002041166,
+      "attente_secondes": 0.000341458,
+      "acquisition": "2026-11-23T06:14:19.966225+00:00",
+      "liberation": "2026-11-23T06:14:31.029542+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-dernier-administrateur-script-mut01",
+      "profil": "x86_64/P9-4096",
+      "lot": "dernier-administrateur",
+      "mode": "script",
+      "commit_banc": "bc8623ea344069ea3ba55ef0b27c992a2d542823",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "e98c6eaf86ad2a207a5eee3d40488ab0b3cde51c9f34a18d59bcefbfb3cc5f7b",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-refus.nsh",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        }
+      ],
+      "execution_secondes": 10.390670709,
+      "attente_secondes": 0.000371417,
+      "acquisition": "2026-11-23T06:14:09.484622+00:00",
+      "liberation": "2026-11-23T06:14:19.937979+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-facteurs-concurrents-f01",
+      "profil": "x86_64/P9-4096",
+      "lot": "facteurs-concurrents",
+      "mode": "interactif",
+      "commit_banc": "e34ccfb3b46504f51d3b735e237eec62b9580b2b",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "efc47f83099b9fba2215d30b8c86d79e173f2c2a161181e5ca4d4b2bbcef053b",
+      "succes": true,
+      "resultat_sha256": "4bd0d1f8e8427dcc9a1ed26ff1056180657521e2e8600ce2d7439b90be548db4",
+      "commandes": [
+        {
+          "commande": "admin-sonde --factor-writer d3e1962bb9c6e8962e338b1972b5359f | admin-sonde --factor-reader d3e1962bb9c6e8962e338b1972b5359f",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21,
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 160,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statuts_requetes": [
+            {
+              "preparation": 0,
+              "confirmation": 5,
+              "recu": "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "preparation": 0,
+              "confirmation": 0,
+              "recu": "000000000000000025449aca9bd909edd4ec60a832967c2919000000000000000100000000000000000000000000000000000000000000000000000000000000"
+            }
+          ],
+          "statuts_natifs": [
+            0,
+            0
+          ],
+          "statut_natif": 0
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 16.329637125,
+      "attente_secondes": 0.000371875,
+      "acquisition": "2026-11-23T05:59:42.736989+00:00",
+      "liberation": "2026-11-23T05:59:59.119224+00:00",
+      "persistance": {
+        "mutation_unique": "25449aca9bd909edd4ec60a832967c29",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-groupe-c-mut01",
+      "profil": "x86_64/P9-4096",
+      "lot": "groupe",
+      "mode": "nsh-c",
+      "commit_banc": "d211b6e84e3914ab38c0db9e4e6d791e21593182",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "063560f27351cca7ed3f31964da8fed97f42871751da25d2f909b72a555ce760",
+      "commandes": [
+        {
+          "commande": "nsh -c 'groupadd equipe-r2 --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'groupadd equipe-r2 --confirm 3954712c3574483d89981b054ce466d47f0ca2f30d55f8e2b3eccbdfc31f7412 --request 3954712c3574483d89981b054ce466d4'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'groupadd --outcome 3954712c3574483d89981b054ce466d4'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 17.349544167,
+      "attente_secondes": 0.000366333,
+      "acquisition": "2026-11-23T06:13:52.044036+00:00",
+      "liberation": "2026-11-23T06:14:09.455707+00:00",
+      "persistance": {
+        "mutation_unique": "3954712c3574483d89981b054ce466d4",
+        "type_prive": 6,
+        "generation": 24,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-groupe-script-mut01",
+      "profil": "x86_64/P9-4096",
+      "lot": "groupe",
+      "mode": "script",
+      "commit_banc": "d211b6e84e3914ab38c0db9e4e6d791e21593182",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "8ec3b6951504557789a7f1749faf8847a56ae72162a878db4380a2c504f7dfa1",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-groupe-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=85a4cb04774d943e96d3ff87d561339e6f2202ed197cf7713e3d0fa59ff142a9 R2_REQUEST=85a4cb04774d943e96d3ff87d561339e; nsh /travail/r2-groupe-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_REQUEST=85a4cb04774d943e96d3ff87d561339e; nsh /travail/r2-issue-groupadd.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 17.286453959,
+      "attente_secondes": 0.000353917,
+      "acquisition": "2026-11-23T06:13:34.666805+00:00",
+      "liberation": "2026-11-23T06:13:52.015330+00:00",
+      "persistance": {
+        "mutation_unique": "85a4cb04774d943e96d3ff87d561339e",
+        "type_prive": 6,
+        "generation": 24,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-lectures-c01",
+      "profil": "x86_64/P9-4096",
+      "lot": "lectures",
+      "mode": "nsh-c",
+      "commit_banc": "2f7e950509020156416947bb7192a2703bae4df9",
+      "arbre_sources_invite": "3aa6d9c11026fed10ad3d83a22d58364892ecfbc",
+      "banc_sha256": "01edc497e1f951a7f59123268c2ebe0ada1e59a392b9800130106d00c25bc4a9",
+      "succes": true,
+      "resultat_sha256": "1a243e41aaaa39180ceb52545bbd0c0b988f53cdf6275ee085322952833c4fd0",
+      "commandes": [
+        {
+          "commande": "nsh -c whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c id",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c groups",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 5,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 14.975486,
+      "attente_secondes": 0.0003405,
+      "acquisition": "2026-11-23T05:43:20.427858+00:00",
+      "liberation": "2026-11-23T05:43:35.458353+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-lectures-script01",
+      "profil": "x86_64/P9-4096",
+      "lot": "lectures",
+      "mode": "script",
+      "commit_banc": "e34ccfb3b46504f51d3b735e237eec62b9580b2b",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "efc47f83099b9fba2215d30b8c86d79e173f2c2a161181e5ca4d4b2bbcef053b",
+      "succes": true,
+      "resultat_sha256": "9f314ba7170897b74eb4b8911f87bf98ee7cfef5d48fb5d9c5a8d1ca520abe97",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-whoami.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-id.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-groups.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 5,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 14.933256875,
+      "attente_secondes": 0.000345667,
+      "acquisition": "2026-11-23T06:00:33.131411+00:00",
+      "liberation": "2026-11-23T06:00:48.117391+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-renommage-c-mut01",
+      "profil": "x86_64/P9-4096",
+      "lot": "renommage",
+      "mode": "nsh-c",
+      "commit_banc": "d211b6e84e3914ab38c0db9e4e6d791e21593182",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "49a2accefdd49bfdf76e4533e17a85a45fd3040797d84d110a373039a53d7f84",
+      "commandes": [
+        {
+          "commande": "nsh -c 'usermod --rename robert bob --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'usermod --rename robert bob --confirm 616355c9ecb06ce4263e6feb2d02b4e15dca14aefd05ef523e4d42973c9e0be8 --request 616355c9ecb06ce4263e6feb2d02b4e1'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'id --subject-id fdb851f42231a8db4a0a6fc75f9bb46a'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 112,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 17.491251125,
+      "attente_secondes": 0.000339792,
+      "acquisition": "2026-11-23T06:13:17.084259+00:00",
+      "liberation": "2026-11-23T06:13:34.638132+00:00",
+      "persistance": {
+        "mutation_unique": "616355c9ecb06ce4263e6feb2d02b4e1",
+        "type_prive": 5,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-4096-renommage-script-mut01",
+      "profil": "x86_64/P9-4096",
+      "lot": "renommage",
+      "mode": "script",
+      "commit_banc": "d211b6e84e3914ab38c0db9e4e6d791e21593182",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "da89c7ee66f48ec58331b5d271a3713778f1711c76b28abc213ac37e490ba718",
+      "succes": true,
+      "resultat_sha256": "b006ed13720fd7542093ab961b43510b2beb07f5895235a0f4f9ee4e7450a787",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-renommage-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=f5c8c8625587df8a0c412d68c5d89109cbb8c091efdfcfd15e744114ef872228 R2_REQUEST=f5c8c8625587df8a0c412d68c5d89109; nsh /travail/r2-renommage-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_SUBJECT=fdb851f42231a8db4a0a6fc75f9bb46a; nsh /travail/r2-renomme.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 112,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 18.004889042,
+      "attente_secondes": 0.000324541,
+      "acquisition": "2026-11-23T06:12:58.987829+00:00",
+      "liberation": "2026-11-23T06:13:17.055376+00:00",
+      "persistance": {
+        "mutation_unique": "f5c8c8625587df8a0c412d68c5d89109",
+        "type_prive": 5,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-creation-c-mut01",
+      "profil": "x86_64/P9-512",
+      "lot": "creation",
+      "mode": "nsh-c",
+      "commit_banc": "8f09da47b121a934a27edc09ef45c3e676c2532c",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "2a79ed574380fccb85be141cf553848d498f04e8e1c34bee097fbc0eb70287bc",
+      "succes": true,
+      "resultat_sha256": "acb94c3c7d2b49f33fc3ea60564521aee6ce636f517f8d46253bcbe574840170",
+      "commandes": [
+        {
+          "commande": "nsh -c 'useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol --confirm b1d2d95337070a8fb6cba7994aa03e5828d647795bc95091d1566cb397ea3499 --request b1d2d95337070a8fb6cba7994aa03e58'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'id carol'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 17.29106375,
+      "attente_secondes": 0.000392334,
+      "acquisition": "2026-11-23T06:10:36.091057+00:00",
+      "liberation": "2026-11-23T06:10:53.444580+00:00",
+      "persistance": {
+        "mutation_unique": "b1d2d95337070a8fb6cba7994aa03e58",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-creation-coupure02",
+      "profil": "x86_64/P9-512",
+      "lot": "creation",
+      "mode": "interactif",
+      "commit_banc": "a653cf5173cc9caf4bd0fdd08c2f6f6659c8ed6e",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "b5881486adf1b764e9d7a7ababd74a8cbd1d6d5c61390fbdb47f17e86c18535b",
+      "succes": true,
+      "resultat_sha256": "479424effbf69582167ac119ae15feda153b2036ba4f8495b45e4f584f55c851",
+      "commandes": [
+        {
+          "commande": "useradd --outcome f67120e7188d2e3bdf9f20034e54e087",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "id carol",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 27.25367,
+      "attente_secondes": 380.242282375,
+      "acquisition": "2026-11-23T06:21:50.187400+00:00",
+      "liberation": "2026-11-23T06:22:17.496270+00:00",
+      "persistance": {
+        "coupure_avant_admission": true,
+        "mutation_absente": true,
+        "reprise_native": true,
+        "aucun_resultat_invente": true,
+        "aucune_seconde_mutation": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-creation-perte02",
+      "profil": "x86_64/P9-512",
+      "lot": "creation",
+      "mode": "interactif",
+      "commit_banc": "e34ccfb3b46504f51d3b735e237eec62b9580b2b",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "efc47f83099b9fba2215d30b8c86d79e173f2c2a161181e5ca4d4b2bbcef053b",
+      "succes": true,
+      "resultat_sha256": "ff15e90821684a735be94eddccb21ad34e320f0f32f26c3788765f2e45739335",
+      "commandes": [
+        {
+          "commande": "useradd --outcome c6521296ba2d6cd7bed9c99586758e33",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "id carol",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 33.85197825,
+      "attente_secondes": 0.000357708,
+      "acquisition": "2026-11-23T05:58:20.708904+00:00",
+      "liberation": "2026-11-23T05:58:54.612871+00:00",
+      "persistance": {
+        "mutation_unique": "c6521296ba2d6cd7bed9c99586758e33",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true,
+        "reprise_native": true,
+        "meme_operation_sans_repetition": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-creation-script-mut01",
+      "profil": "x86_64/P9-512",
+      "lot": "creation",
+      "mode": "script",
+      "commit_banc": "8f09da47b121a934a27edc09ef45c3e676c2532c",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "2a79ed574380fccb85be141cf553848d498f04e8e1c34bee097fbc0eb70287bc",
+      "succes": true,
+      "resultat_sha256": "60bf037d841e801d7fd03c208537e63e08998ee5ce8ea953bfca41d3d59c0069",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-creation-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=29dc278c5e477351fc56dd2b9948184d2b0c2648a894251c0706c5ed3d624c77 R2_REQUEST=29dc278c5e477351fc56dd2b9948184d; nsh /travail/r2-creation-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-carol.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 16.967069917,
+      "attente_secondes": 0.000388792,
+      "acquisition": "2026-11-23T06:09:54.653237+00:00",
+      "liberation": "2026-11-23T06:10:11.681600+00:00",
+      "persistance": {
+        "mutation_unique": "29dc278c5e477351fc56dd2b9948184d",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-dernier-administrateur-c-mut01",
+      "profil": "x86_64/P9-512",
+      "lot": "dernier-administrateur",
+      "mode": "nsh-c",
+      "commit_banc": "8f09da47b121a934a27edc09ef45c3e676c2532c",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "2a79ed574380fccb85be141cf553848d498f04e8e1c34bee097fbc0eb70287bc",
+      "succes": true,
+      "resultat_sha256": "546da5b3c1e1a3af145100195409c8277730f078e0bf290870e9edec40ce8ddc",
+      "commandes": [
+        {
+          "commande": "nsh -c 'usermod --disable alice --prepare'",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        }
+      ],
+      "execution_secondes": 10.362163917,
+      "attente_secondes": 0.000371208,
+      "acquisition": "2026-11-23T06:12:13.547945+00:00",
+      "liberation": "2026-11-23T06:12:23.972172+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-dernier-administrateur-script-mut01",
+      "profil": "x86_64/P9-512",
+      "lot": "dernier-administrateur",
+      "mode": "script",
+      "commit_banc": "8f09da47b121a934a27edc09ef45c3e676c2532c",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "2a79ed574380fccb85be141cf553848d498f04e8e1c34bee097fbc0eb70287bc",
+      "succes": true,
+      "resultat_sha256": "ff5741c409a166c5c507b4d3f04fde437f6f8a2a304ff3623f0dc63ce2b6aa45",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-refus.nsh",
+          "statut_shell": 3,
+          "statut_attendu": 3,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 42,
+          "statut_novaAuth": 5,
+          "octets_conformes": true,
+          "statut_natif": 3
+        }
+      ],
+      "execution_secondes": 10.322396291,
+      "attente_secondes": 0.000327917,
+      "acquisition": "2026-11-23T06:12:03.134140+00:00",
+      "liberation": "2026-11-23T06:12:13.519095+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-facteurs-concurrents-f01",
+      "profil": "x86_64/P9-512",
+      "lot": "facteurs-concurrents",
+      "mode": "interactif",
+      "commit_banc": "e34ccfb3b46504f51d3b735e237eec62b9580b2b",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "efc47f83099b9fba2215d30b8c86d79e173f2c2a161181e5ca4d4b2bbcef053b",
+      "succes": true,
+      "resultat_sha256": "7f8eee7bcd502aff09a003ec83ae31c5e2a64dd84e19d09bde62cd47cb82f832",
+      "commandes": [
+        {
+          "commande": "admin-sonde --factor-writer d3e1962bb9c6e8962e338b1972b5359f | admin-sonde --factor-reader d3e1962bb9c6e8962e338b1972b5359f",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21,
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 160,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statuts_requetes": [
+            {
+              "preparation": 0,
+              "confirmation": 5,
+              "recu": "05000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+            },
+            {
+              "preparation": 0,
+              "confirmation": 0,
+              "recu": "000000000000000030827e61100c74c12450c310eac23ccc19000000000000000100000000000000000000000000000000000000000000000000000000000000"
+            }
+          ],
+          "statuts_natifs": [
+            0,
+            0
+          ],
+          "statut_natif": 0
+        },
+        {
+          "commande": "whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 16.565257125,
+      "attente_secondes": 0.000352625,
+      "acquisition": "2026-11-23T05:55:40.751573+00:00",
+      "liberation": "2026-11-23T05:55:57.368537+00:00",
+      "persistance": {
+        "mutation_unique": "30827e61100c74c12450c310eac23ccc",
+        "type_prive": 1,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-groupe-c-mut01",
+      "profil": "x86_64/P9-512",
+      "lot": "groupe",
+      "mode": "nsh-c",
+      "commit_banc": "8f09da47b121a934a27edc09ef45c3e676c2532c",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "2a79ed574380fccb85be141cf553848d498f04e8e1c34bee097fbc0eb70287bc",
+      "succes": true,
+      "resultat_sha256": "d61a0e579ec2e198d568b0f7bc9d7cef8600353a332872241565bd2e53805249",
+      "commandes": [
+        {
+          "commande": "nsh -c 'groupadd equipe-r2 --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'groupadd equipe-r2 --confirm 17ae586548dacc3849dff7a12a87261d46184d33422122b3b02ae45e1e33f37a --request 17ae586548dacc3849dff7a12a87261d'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'groupadd --outcome 17ae586548dacc3849dff7a12a87261d'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 17.177063417,
+      "attente_secondes": 0.00034025,
+      "acquisition": "2026-11-23T06:11:45.862038+00:00",
+      "liberation": "2026-11-23T06:12:03.104383+00:00",
+      "persistance": {
+        "mutation_unique": "17ae586548dacc3849dff7a12a87261d",
+        "type_prive": 6,
+        "generation": 24,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-groupe-script-mut01",
+      "profil": "x86_64/P9-512",
+      "lot": "groupe",
+      "mode": "script",
+      "commit_banc": "8f09da47b121a934a27edc09ef45c3e676c2532c",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "2a79ed574380fccb85be141cf553848d498f04e8e1c34bee097fbc0eb70287bc",
+      "succes": true,
+      "resultat_sha256": "089fe0f80a5590e6e99fb203614ad414c80bc34384e179eb91b2e8393d2c8205",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-groupe-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=b493963ae7bcaf6b944e78f0aae25bfa50fbe7a5c6356f9bf5495473f00faff4 R2_REQUEST=b493963ae7bcaf6b944e78f0aae25bfa; nsh /travail/r2-groupe-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_REQUEST=b493963ae7bcaf6b944e78f0aae25bfa; nsh /travail/r2-issue-groupadd.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 17.152151416,
+      "attente_secondes": 0.000351,
+      "acquisition": "2026-11-23T06:11:28.618606+00:00",
+      "liberation": "2026-11-23T06:11:45.832681+00:00",
+      "persistance": {
+        "mutation_unique": "b493963ae7bcaf6b944e78f0aae25bfa",
+        "type_prive": 6,
+        "generation": 24,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-lectures-c01",
+      "profil": "x86_64/P9-512",
+      "lot": "lectures",
+      "mode": "nsh-c",
+      "commit_banc": "82349ed9cc35a7b1bd601642cb8e0738ed1ab919",
+      "arbre_sources_invite": "3aa6d9c11026fed10ad3d83a22d58364892ecfbc",
+      "banc_sha256": "01edc497e1f951a7f59123268c2ebe0ada1e59a392b9800130106d00c25bc4a9",
+      "succes": true,
+      "resultat_sha256": "b098b082390725d465a5c8d10cf1e2a2a9c65ecd7154d1fd2d965b6a59981ec4",
+      "commandes": [
+        {
+          "commande": "nsh -c whoami",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c id",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c groups",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 5,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 15.409850625,
+      "attente_secondes": 0.000312167,
+      "acquisition": "2026-11-23T05:42:28.787866+00:00",
+      "liberation": "2026-11-23T05:42:44.252199+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-lectures-script01",
+      "profil": "x86_64/P9-512",
+      "lot": "lectures",
+      "mode": "script",
+      "commit_banc": "e34ccfb3b46504f51d3b735e237eec62b9580b2b",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "efc47f83099b9fba2215d30b8c86d79e173f2c2a161181e5ca4d4b2bbcef053b",
+      "succes": true,
+      "resultat_sha256": "3452a26cec7f430da81729e89f91b65fb7abc40c52305450f5ec4a568fdf849e",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-whoami.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 6,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-id.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh /travail/r2-groups.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 5,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 15.011958291,
+      "attente_secondes": 0.000368625,
+      "acquisition": "2026-11-23T05:59:27.645003+00:00",
+      "liberation": "2026-11-23T05:59:42.708149+00:00",
+      "persistance": {
+        "triplet_identique": true,
+        "donnees_privees_inchangees": true,
+        "generation": 24,
+        "aucune_mutation_administrative": true,
+        "attributions_facteurs_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-renommage-c-mut01",
+      "profil": "x86_64/P9-512",
+      "lot": "renommage",
+      "mode": "nsh-c",
+      "commit_banc": "8f09da47b121a934a27edc09ef45c3e676c2532c",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "2a79ed574380fccb85be141cf553848d498f04e8e1c34bee097fbc0eb70287bc",
+      "succes": true,
+      "resultat_sha256": "21f547535ed3a89b64d0250537aa7bc14add7f65bef1271b792296b48f98fedd",
+      "commandes": [
+        {
+          "commande": "nsh -c 'usermod --rename robert bob --prepare'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'usermod --rename robert bob --confirm 6cfeb09807b27eeb4b17a0977011d5421ec4bb4a938029db9e823915ca791279 --request 6cfeb09807b27eeb4b17a0977011d542'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "nsh -c 'id --subject-id fdb851f42231a8db4a0a6fc75f9bb46a'",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 112,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 17.431675417,
+      "attente_secondes": 0.000349,
+      "acquisition": "2026-11-23T06:11:11.092841+00:00",
+      "liberation": "2026-11-23T06:11:28.589927+00:00",
+      "persistance": {
+        "mutation_unique": "6cfeb09807b27eeb4b17a0977011d542",
+        "type_prive": 5,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-renommage-script-mut01",
+      "profil": "x86_64/P9-512",
+      "lot": "renommage",
+      "mode": "script",
+      "commit_banc": "8f09da47b121a934a27edc09ef45c3e676c2532c",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "2a79ed574380fccb85be141cf553848d498f04e8e1c34bee097fbc0eb70287bc",
+      "succes": true,
+      "resultat_sha256": "07b0078545c902655ca6efefcecc1746d9076c3512333881007300bd4442f99b",
+      "commandes": [
+        {
+          "commande": "nsh /travail/r2-renommage-preparer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_CONFIRM=156a5c588a686e3154e04daf5c245c11b79a2acd3a4d89675442e41dc7967fdb R2_REQUEST=156a5c588a686e3154e04daf5c245c11; nsh /travail/r2-renommage-confirmer.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "export R2_SUBJECT=fdb851f42231a8db4a0a6fc75f9bb46a; nsh /travail/r2-renomme.nsh",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 112,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 17.529423667,
+      "attente_secondes": 0.000306792,
+      "acquisition": "2026-11-23T06:10:53.472670+00:00",
+      "liberation": "2026-11-23T06:11:11.063297+00:00",
+      "persistance": {
+        "mutation_unique": "156a5c588a686e3154e04daf5c245c11",
+        "type_prive": 5,
+        "generation": 25,
+        "signature_recu_verifiee": true,
+        "effets_persistants_exacts": true,
+        "donnees_privees_inchangees": true
+      }
+    }
+  ],
+  "echecs": [
+    {
+      "preuve": "r2-commandes-x86_64-512-creation-coupure01",
+      "profil": "x86_64/P9-512",
+      "lot": "creation",
+      "mode": "interactif",
+      "commit_banc": "8f09da47b121a934a27edc09ef45c3e676c2532c",
+      "arbre_sources_invite": "a440095b2862b3360db429ed417b18f32abc13ba",
+      "banc_sha256": "2a79ed574380fccb85be141cf553848d498f04e8e1c34bee097fbc0eb70287bc",
+      "succes": false,
+      "resultat_sha256": "442c2d47c74040b7f0aff54288ea8d46e8d803410f47d54f8add9986e37512d8",
+      "commandes": [],
+      "execution_secondes": 113.435252875,
+      "attente_secondes": 0.000403875,
+      "acquisition": "2026-11-23T06:05:11.366045+00:00",
+      "liberation": "2026-11-23T06:07:04.851707+00:00"
+    },
+    {
+      "preuve": "r2-commandes-x86_64-512-creation-perte01",
+      "profil": "x86_64/P9-512",
+      "lot": "creation",
+      "mode": "interactif",
+      "commit_banc": "2f7e950509020156416947bb7192a2703bae4df9",
+      "arbre_sources_invite": "3aa6d9c11026fed10ad3d83a22d58364892ecfbc",
+      "banc_sha256": "01edc497e1f951a7f59123268c2ebe0ada1e59a392b9800130106d00c25bc4a9",
+      "succes": false,
+      "resultat_sha256": "fcd43903af92b4689c9bbbe17a33755aa6ba434740dd9e1469287c5433260e1a",
+      "commandes": [
+        {
+          "commande": "useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "useradd --factor-reference d3e1962bb9c6e8962e338b1972b5359f --group base carol --confirm a4df2dc42503e57108580425cd998178e6468fb1ebd5ab0fda032b9f91fec7fb --request a4df2dc42503e57108580425cd998178",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "id carol",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 111,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "execution_secondes": 16.832563541,
+      "attente_secondes": 0.000342875,
+      "acquisition": "2026-11-23T05:44:29.001571+00:00",
+      "liberation": "2026-11-23T05:44:45.887396+00:00"
+    }
+  ],
+  "limites": [
+    "Retrait selectif de groupe : contrat soumis, aucune implementation ni qualification.",
+    "QEMU TCG seulement ; aucune activation ni qualification de production.",
+    "Concurrence du facteur : deux PREPARE en vol dans deux ELF sous la meme session Alice ; une confirmation 0 et une 5, une seule mutation.",
+    "Reponse perdue : reconciliation dans A et capture native avant arret complet, puis consultation sous B.",
+    "Coupure avant admission durable : resultat UNCERTAIN, mutation absente ; pas un essai de coupure dans chaque fenetre interne de publication P9.",
+    "Les quatre ELF historiques et les 36 recettes S1-S9 ne sont pas rejoues ; preuves preservees, sources metier et noyau ordinaires inchangees.",
+    "Reserve AArch64 instrumentee 301 cadres et reproductibilite entre environnements maintenues."
+  ]
+}

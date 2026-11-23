@@ -1,0 +1,14 @@
+{
+  "commit_fonctionnel": "e34ccfb3b46504f51d3b735e237eec62b9580b2b",
+  "commit_banc": "a653cf5173cc9caf4bd0fdd08c2f6f6659c8ed6e",
+  "commit_contrat": "b2088cdcd098aa95c9e4e65a9e127e9e77e9ba46",
+  "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/finalisation-cinq-fonctions-82349ed-20261123.tar.gz",
+  "archive_sha256": "b06b4d1e52cf56e32cb25cf958e4b04bb62375a6ca7d497e9fcdf76e9fe338b8",
+  "archive_octets": 28791014,
+  "manifeste_sha256": "e54b173ec9e6e088c856714eb2473e320a809d9a1243fad608d9c1fd9dd4d337",
+  "preuves": 2986,
+  "membres_archive": 2987,
+  "relecture_integrale_archive": true,
+  "borne_UTC": "2026-11-23T06:33:23.243743+00:00",
+  "limites": "États synthétiques seulement ; clés et ISO/noyaux privés exclus. Recherche exacte de secrets connus, pas garantie universelle."
+}
