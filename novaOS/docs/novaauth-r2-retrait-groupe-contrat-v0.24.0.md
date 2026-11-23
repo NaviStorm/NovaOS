@@ -67,10 +67,13 @@ Corps canonique proposé de 248 octets, puis signature Ed25519 de 64 octets sous
 | 168 | 32 | Tête publiée |
 | 200 | 8 | Position durable, u64 BE |
 | 208 | 1 | État : EN_COURS ou RETIREE |
-| 209 | 1 | Acquittements attendus/satisfaits selon type de reçu |
-| 210 | 6 | Réservés nuls |
+| 209 | 1 | Masque des classes d’effecteurs attendues |
+| 210 | 1 | Masque des classes entièrement acquittées |
+| 211 | 5 | Réservés nuls |
 | 216 | 32 | Défi frais de consultation |
 | 248 | 64 | Signature sur domaine et corps complet |
+
+Bits proposés des deux masques : 1 = VFS/stockage, 2 = vérificateur/délégations, 4 = admission/création ELF ; autres bits refusés. Un bit satisfait signifie que **toutes** les instances attendues de cette classe ont acquitté. Le masque satisfait doit être inclus dans le masque attendu ; RETIREE exige leur égalité et les preuves de publication. Les valeurs proposées pour l’état sont 1 = RETRAIT_EN_COURS et 2 = RETIREE ; toute autre valeur est refusée.
 
 L'historique persistant conserve séparément les instances et acquittements détaillés : le masque compact ne remplace pas cette liste. La requête authentifiée conserve également le principal administratif et son époque, comme les mutations R2 existantes. La réponse signée au défi prouve une consultation actuelle ; une ancienne réponse signée ne suffit pas à autoriser un accès. Les identifiants de retrait ne sont jamais réutilisés.
 
@@ -121,6 +124,20 @@ Sur chacun des quatre profils AArch64/x86_64 × P9/512/4096 :
 6. Mesurer racines, handles, endpoints, processus et cadres avant/pendant/après. La cinquième racine doit rendre LIMIT sans allocation résiduelle. Saturation et effecteur inaccessible ne doivent pas terminer artificiellement le retrait.
 7. Rejouer uniquement les contrôles R1/R2, ABI et ELF réellement affectés. Verrou QEMU obligatoire ; temps d'attente séparé de l'exécution. Conserver la réserve AArch64 de 301 cadres et la reproductibilité entre environnements.
 
-## 8. Arbitrage demandé
+## 8. Contrat des acquittements et fermeture des courses
+
+Un effecteur ne reçoit pas un identifiant de groupe librement choisi par l'application. Le registre produit la demande sur sa conversation authentifiée, avec l'identifiant d'opération, le tuple d'origine complet, la génération et la position durable. La réponse réutilise ces valeurs et l'identité d'instance vérifiée sur le canal. Une réponse issue d'un autre canal ou d'une instance redémarrée ne satisfait pas l'acquittement attendu.
+
+L'effecteur installe d'abord une barrière d'admission pour cette origine, puis prend l'inventaire de ses opérations et délégations antérieures sous la même synchronisation que leur admission. Une admission qui précède la barrière entre nécessairement dans cet inventaire ; une admission qui la suit est refusée. Il ne peut donc pas déclarer une liste vide pendant qu'un autre thread ajoute une opération admise. L'enregistrement d'un nouvel effecteur exige la tête et les origines actuelles, et ne peut obtenir l'ancienne origine pendant le retrait.
+
+Les opérations sont suivies individuellement : identifiant, origine, instance, position d'admission et état (en attente, publiée/achevée, annulée irréversiblement ou UNCERTAIN). Le reçu terminal atteste ces issues ; un simple compteur à zéro ou une absence de réponse ne suffit pas. Pour un lancement, l'issue « achevée » identifie l'enfant effectivement créé selon la barrière EXEC existante ; elle ne prétend pas que cet enfant a terminé son calcul. Ses délégations issues de G doivent cependant être révoquées. Aucun droit nouveau d'arrêt du processus n'est proposé.
+
+Les octets déjà livrés avant l'effet de révocation ne peuvent pas être retirés de la mémoire du destinataire. Après l'acquittement terminal, aucune nouvelle lecture, écriture ou création ne peut être autorisée par G. Entre la fermeture locale du registre et l'acquittement des autres effecteurs, le client reçoit un état intermédiaire, jamais la promesse d'un retrait global achevé. Une capacité directe ou issue de H reste utilisable indépendamment.
+
+La demande d'acquittement est une consultation/confirmation idempotente du **même** retrait, pas une répétition de la mutation d'appartenance. Après perte de réponse, la reprise interroge l'opération durable et ses effecteurs. Le retrait ne devient pas RETIREE à l'échéance d'un timeout. Les attentes IPC respectent la limite existante de 15 000 ticks par appel ; une nouvelle attente bornée recontrôle l'état et les révocations. Un effecteur durablement injoignable laisse le retrait incomplet ; toute nouvelle procédure de neutralisation exige un arbitrage.
+
+La protection du dernier administrateur est évaluée sur la tête courante dans la transaction de mutation, pas seulement à PREPARE. Deux changements concurrents ne peuvent chacun se baser sur l'autre administrateur encore présent : une seule publication peut comparer avec succès la même tête, puis le perdant revalide l'invariant sur la tête suivante. Ce contrat n'autorise aucune suppression définitive de compte, de groupe ou de données.
+
+## 9. Arbitrage demandé
 
 Valider la provenance portée jusqu'aux effecteurs isolés, les états et points d'effet ci-dessus, la catégorie et le reçu privés additifs, puis le budget natif mesuré avant raccord fonctionnel. Aucun de ces changements n'est implémenté par ce document. La CLI continue de refuser le retrait actuellement non démontré. Les quatre autres fonctionnalités R2 poursuivent leur qualification indépendamment.
