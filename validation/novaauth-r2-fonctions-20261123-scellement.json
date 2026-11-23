@@ -1,0 +1,12 @@
+{
+  "commit_fonctionnel": "47541062f105b36833c342492bf2f019e8b42231",
+  "archive": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-novaauth-administration-0240/finalisation-fonctionnelle-46d04ff-20261123.tar.gz",
+  "archive_sha256": "4b192b82a9807135d4ee869ea8dc9401b9485b6baaad13bba04ea2307230bd89",
+  "archive_octets": 28493980,
+  "manifeste_sha256": "677cc150047f17714e0d2254df445405860fd67bf5d2b814452f93df25ae1da2",
+  "preuves": 3466,
+  "membres_archive": 3467,
+  "relecture_integrale_archive": true,
+  "borne_UTC": "2026-11-23T00:04:42.986319+00:00",
+  "limites": "États synthétiques seulement ; clés et ISO/noyaux privés exclus. Recherche exacte de secrets connus, pas garantie universelle."
+}
