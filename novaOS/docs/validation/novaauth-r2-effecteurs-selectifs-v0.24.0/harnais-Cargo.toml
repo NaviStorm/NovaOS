@@ -1,0 +1,10 @@
+[package]
+name="membership-effectors-native"
+version="0.0.0"
+edition="2024"
+[workspace]
+[features]
+politiques-lab=[]
+[dependencies]
+novaos-identity={path="/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth", features=["administration-lab"]}
+novaos-recovery={path="/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/recuperation", features=["administration-lab"]}

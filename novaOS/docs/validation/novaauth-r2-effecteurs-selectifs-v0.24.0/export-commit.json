@@ -1,0 +1,14 @@
+{
+  "command": [
+    "python3",
+    "-B",
+    "novaOS/user/novaauth/service/profile.py",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-commit",
+    "--source-ref",
+    "735605b217837df91321db71cdee58d4ec7581ab",
+    "--membership-r2"
+  ],
+  "status": 0,
+  "source": "735605b217837df91321db71cdee58d4ec7581ab",
+  "duree_hote_s": 0.5832249170052819
+}

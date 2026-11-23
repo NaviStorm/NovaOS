@@ -1,0 +1,90 @@
+.fatal: not a git repository (or any of the parent directories): .git
+Efatal: not a git repository (or any of the parent directories): .git
+E...fatal: not a git repository (or any of the parent directories): .git
+Efatal: not a git repository (or any of the parent directories): .git
+E.
+======================================================================
+ERROR: test_exports_tmp (__main__.Registre.test_exports_tmp)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-commit/novaOS/tests/abi_registre.py", line 171, in test_exports_tmp
+    old = historical("df88f1cfeaf0940da876ea543584e59215abacd4", "abi/generated/nova_abi.h").decode()
+          ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-commit/novaOS/tests/abi_registre.py", line 24, in historical
+    return subprocess.check_output(["git", "show", f"{commit}:novaOS/{file}"], cwd=ROOT)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 587, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command ['git', 'show', 'df88f1cfeaf0940da876ea543584e59215abacd4:novaOS/abi/generated/nova_abi.h'] returned non-zero exit status 128.
+
+======================================================================
+ERROR: test_extension_services (__main__.Registre.test_extension_services)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-commit/novaOS/tests/abi_registre.py", line 91, in test_extension_services
+    previous = tomllib.loads(historical(
+                             ~~~~~~~~~~^
+        "bcdfe4ccfd98c9e4a58f5cead3ce666e917ce33c", "abi/syscalls.toml").decode())
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-commit/novaOS/tests/abi_registre.py", line 24, in historical
+    return subprocess.check_output(["git", "show", f"{commit}:novaOS/{file}"], cwd=ROOT)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 587, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command ['git', 'show', 'bcdfe4ccfd98c9e4a58f5cead3ce666e917ce33c:novaOS/abi/syscalls.toml'] returned non-zero exit status 128.
+
+======================================================================
+ERROR: test_selecteurs_litteraux (__main__.Registre.test_selecteurs_litteraux)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-commit/novaOS/tests/abi_registre.py", line 195, in test_selecteurs_litteraux
+    files = subprocess.check_output(["git", "ls-files", "-z", "--", "*.rs", "*.S", "*.s"],
+            ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                                    cwd=ROOT.parent).decode().split("\0")
+                                    ^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 587, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command ['git', 'ls-files', '-z', '--', '*.rs', '*.S', '*.s'] returned non-zero exit status 128.
+
+======================================================================
+ERROR: test_signatures_historiques (__main__.Registre.test_signatures_historiques)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-commit/novaOS/tests/abi_registre.py", line 67, in test_signatures_historiques
+    qualified = tomllib.loads(historical("df88f1cfeaf0940da876ea543584e59215abacd4", "abi/syscalls.toml").decode())
+                              ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-commit/novaOS/tests/abi_registre.py", line 24, in historical
+    return subprocess.check_output(["git", "show", f"{commit}:novaOS/{file}"], cwd=ROOT)
+           ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 587, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.15/3.15.2/Frameworks/Python.framework/Versions/3.15/lib/python3.15/subprocess.py", line 692, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command ['git', 'show', 'df88f1cfeaf0940da876ea543584e59215abacd4:novaOS/abi/syscalls.toml'] returned non-zero exit status 128.
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.136s
+
+FAILED (errors=4)

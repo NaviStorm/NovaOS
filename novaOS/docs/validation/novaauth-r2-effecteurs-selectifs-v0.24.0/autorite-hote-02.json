@@ -1,0 +1,16 @@
+{
+  "label": "autorite-hote-02",
+  "commande": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-B",
+    "-m",
+    "unittest",
+    "test_membership_retirement",
+    "test_administration_epochs",
+    "test_administration_mutation_rpc",
+    "-v"
+  ],
+  "cwd": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/autorite_qemu",
+  "status": 0,
+  "duree_hote_s": 6.489823541
+}

@@ -1,0 +1,25 @@
+   Compiling novaos-recovery v0.1.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/recuperation)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.27s
+     Running tests/membership.rs (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/target/x86_64-apple-darwin/debug/deps/membership-b02d1c1f020efb43)
+
+running 6 tests
+membership inventory=1536 receipt=312 total=2040 bytes
+test every_instance_must_ack_and_capacity_is_bounded ... ok
+test terminal_requires_signature_challenge_exact_origin_and_p9_head ... ok
+test restart_must_authenticate_even_an_empty_pending_list ... ok
+test valid_signature_does_not_turn_pending_or_partial_ack_into_completion ... ok
+test lost_response_preserves_individual_outcome_and_never_invents_cancellation ... ok
+test python_receipt_and_requests_match_native_canonical_encoding ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/membership_effectors.rs (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/target/x86_64-apple-darwin/debug/deps/membership_effectors-2ed73570f64e746f)
+
+running 4 tests
+test nonzero_identity_and_position_with_bounded_membership_revision ... ok
+test initial_membership_revision_zero_is_not_a_direct_permission ... ok
+test pending_wake_unknown_status_and_impossible_inventory_are_not_success ... ok
+test native_vfs_fact_is_bound_to_exact_request_and_live_instance ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,0 +1,9 @@
+{
+  "novaOS/user/novafs/files/auth_directory.rs": "ed6a51513ff0b749e5f3b6562787a2bec8fb209924c44b04a49f7f249eee36e6",
+  "novaOS/user/novaauth/service/membership_vfs.rs": "aa94bcf78e2204eb6c0758dcc037f052e9012f1a09812e03fcde77049e136339",
+  "novaOS/user/novaauth/service/membership_vfs_tests.rs": "3381378291d3e07939bc4323d191ce1992d7d55bb4ac93ee468c4b05139d87b3",
+  "novaOS/user/novaauth/service/exec_membership_lab.rs": "57abc9ae9fbf2734db8705c7fb77f09ddac07e05171657eb7888e9b19c8430b3",
+  "novaOS/user/novaauth/service/membership_exec_tests.rs": "6bb122faf8430fc4c8591ca33b61c868ddf7ec16d3eb400de411d952393595f9",
+  "novaOS/user/novaauth/service/qualify_membership_effectors.py": "d1350e7391644740922cdad1fb59ba4cefd6e236fbf4115a0240343beb716765",
+  "novaOS/abi/native.rs": "f12506b581f88eca89dea068dab0083e827171afb534ab76bc831cd2933350a7"
+}

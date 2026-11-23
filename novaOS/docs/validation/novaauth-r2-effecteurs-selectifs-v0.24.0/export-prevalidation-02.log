@@ -1,0 +1,12 @@
+3036827597d7761abc39c7e9b515a2a2da40a5ad /Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-prevalidation-02
+PREVALIDATION : copie 3036827 + diff local explicite, sans QEMU
+novaOS/user/novaauth/autorite_qemu/recuperation_qemu.py
+novaOS/user/novaauth/recuperation/src/lib.rs
+novaOS/user/novaauth/service/profile.py
+novaOS/user/novaauth/service/src/bin/common/recovery_store.rs
+novaOS/user/novaauth/recuperation/src/membership_effectors.rs
+novaOS/user/novaauth/recuperation/tests/membership_effectors.rs
+novaOS/user/novaauth/service/membership_profile.py
+novaOS/user/novaauth/service/membership_vfs.rs
+novaOS/user/novaauth/service/membership_vfs_tests.rs
+novaOS/user/novaauth/service/qualify_membership_effectors.py

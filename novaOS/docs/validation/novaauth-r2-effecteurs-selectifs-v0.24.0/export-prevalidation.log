@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "<stdin>", line 6, in <module>
+  File "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/service/profile.py", line 76, in prepare
+    runpy.run_path(str(destination / "novaOS/user/novaauth/service/exec_admission_profile.py"))["install"](destination)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-prevalidation/novaOS/user/novaauth/service/exec_admission_profile.py", line 138, in install
+    from auth_trace_profile import install as auth_trace
+ModuleNotFoundError: No module named 'auth_trace_profile'

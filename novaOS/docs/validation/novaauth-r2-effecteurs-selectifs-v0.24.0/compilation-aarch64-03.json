@@ -1,0 +1,17 @@
+{
+  "architecture": "aarch64",
+  "commande": [
+    "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+    "build",
+    "--release",
+    "--locked",
+    "--offline",
+    "--features",
+    "novaauth-sessions-lab",
+    "--target",
+    "aarch64-unknown-none-softfloat"
+  ],
+  "statut": 0,
+  "duree_hote_s": 21.089557082974352,
+  "source": "export de pr\u00e9validation 3036827 + diff local, pas QEMU"
+}

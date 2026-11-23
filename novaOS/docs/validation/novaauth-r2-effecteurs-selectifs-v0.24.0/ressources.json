@@ -1,0 +1,21 @@
+{
+  "nature": "Layouts natifs et compilation, aucune mesure invitée",
+  "directory_avant": 1256,
+  "directory_apres": 2048,
+  "directory_delta": 792,
+  "option_route_avant": 2648,
+  "option_route_apres": 2712,
+  "delta_par_route": 64,
+  "routes": 2,
+  "delta_routes": 128,
+  "inventaire": 1536,
+  "corps": 248,
+  "buffers": 256,
+  "sous_total_controle": 2960,
+  "limite_conception": 4096,
+  "pic_memoire_invite": null,
+  "racines_ipc_mesurees": null,
+  "restitution_invitee": null,
+  "reserve_AArch64_cadres": 301,
+  "limites": "Le sous-total ne couvre pas les piles, temporaires RPC/TLS, codes, allocations et pages physiques."
+}

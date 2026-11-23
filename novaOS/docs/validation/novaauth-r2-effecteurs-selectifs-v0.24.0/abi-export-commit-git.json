@@ -1,0 +1,12 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-B",
+    "novaOS/tests/abi_registre.py"
+  ],
+  "status": 0,
+  "source": "735605b217837df91321db71cdee58d4ec7581ab --membership-r2",
+  "duree_hote_s": 0.47747795801842585,
+  "git_historique": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS/.git/worktrees/novaos-novaauth-administration-0240-phase1",
+  "work_tree": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/export-commit"
+}

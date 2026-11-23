@@ -1,0 +1,18 @@
+{
+  "label": "effecteurs-aarch64-apple-darwin",
+  "commande": [
+    "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+    "test",
+    "--offline",
+    "--manifest-path",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/native-final/Cargo.toml",
+    "--target",
+    "aarch64-apple-darwin",
+    "--lib",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1",
+  "status": 0,
+  "duree_hote_s": 4.826522125
+}

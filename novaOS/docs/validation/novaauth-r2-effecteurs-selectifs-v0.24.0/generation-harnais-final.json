@@ -1,0 +1,13 @@
+{
+  "label": "generation-harnais-final",
+  "commande": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-B",
+    "novaOS/user/novaauth/service/qualify_membership_effectors.py",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/native-publication"
+  ],
+  "cwd": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1",
+  "status": 0,
+  "duree_hote_s": 0.030556709
+}

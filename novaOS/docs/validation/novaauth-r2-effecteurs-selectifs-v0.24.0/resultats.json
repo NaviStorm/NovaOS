@@ -1,0 +1,26 @@
+{
+  "base": "3036827597d7761abc39c7e9b515a2a2da40a5ad",
+  "commit_code": "735605b217837df91321db71cdee58d4ec7581ab",
+  "qualification": "PARTIELLE_NATIVE_SEULEMENT",
+  "tests": {
+    "autorite_hote": "40/40",
+    "effecteurs_arm64_natif": "15/15",
+    "effecteurs_x86_64_rosetta": "15/15",
+    "protocole_arm64": "10/10",
+    "protocole_x86_64": "10/10",
+    "abi_sources": "9/9",
+    "abi_export": "9/9",
+    "compilation_export_aarch64": 0,
+    "compilation_export_x86_64": 0,
+    "qemu_execute": 0,
+    "qemu_restant": 16
+  },
+  "acquittements_invites": false,
+  "restitution_invitee": "NON_MESUREE",
+  "blocages": [
+    "Propagation des permissions fraîches vers les leases VFS vivants",
+    "Association demande VFS et admission durable individuelle",
+    "Coordinateur réservation/publication/drainage/ACK/RETIREE",
+    "Reconstruction après redémarrage et changement d’opération"
+  ]
+}

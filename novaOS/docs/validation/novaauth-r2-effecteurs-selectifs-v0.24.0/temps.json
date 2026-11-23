@@ -1,0 +1,16 @@
+{
+  "debut_utc": "2026-11-23T07:59:19+00:00",
+  "fin_technique_utc": "2026-11-23T09:09:13.431627+00:00",
+  "actif_jusqua_scellement_s": 4194.431627,
+  "budget_s": 5400,
+  "attente_verrou_s": 0,
+  "execution_qemu_s": 0,
+  "acquisition_verrou": null,
+  "liberation_verrou": null,
+  "tests_hotes_natifs_s": 23.727323498018794,
+  "compilations_s": 130.0888750840677,
+  "exports_s": 1.1790662920102477,
+  "sondes_layout_s": 42.922548292030115,
+  "reliquat_non_instrumente_s": 3996.513813833873,
+  "limite": "Reliquat : développement, diagnostic, rédaction et premières prévalidations non chronométrées individuellement. Finalisation Git postérieure au scellement non comprise. Aucune horloge invitée utilisée."
+}

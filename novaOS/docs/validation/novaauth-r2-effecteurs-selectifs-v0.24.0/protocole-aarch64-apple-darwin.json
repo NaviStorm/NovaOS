@@ -1,0 +1,24 @@
+{
+  "label": "protocole-aarch64-apple-darwin",
+  "commande": [
+    "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+    "test",
+    "--offline",
+    "--locked",
+    "--manifest-path",
+    "novaOS/user/novaauth/recuperation/Cargo.toml",
+    "--features",
+    "administration-lab",
+    "--target",
+    "aarch64-apple-darwin",
+    "--test",
+    "membership",
+    "--test",
+    "membership_effectors",
+    "--",
+    "--nocapture"
+  ],
+  "cwd": "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1",
+  "status": 0,
+  "duree_hote_s": 2.420741708
+}

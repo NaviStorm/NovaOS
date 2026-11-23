@@ -1,0 +1,17 @@
+{
+  "novaOS/user/novaauth/autorite_qemu/membership_rpc.py": "6ab7804cf695fb9c1912fbb0d84882f866a1551bb87fb4dde6d3ce73e1e79602",
+  "novaOS/user/novaauth/autorite_qemu/recuperation_qemu.py": "4cb19ea97cd44f040f5717325d57532de618f420180ad208edcef9d794865786",
+  "novaOS/user/novaauth/autorite_qemu/test_membership_retirement.py": "a4740da3910c9a0e77db8670cd99712935721a6374e2f9eea7eed982973c5580",
+  "novaOS/user/novaauth/recuperation/src/lib.rs": "da634217af1743bbe3b6585f209cd461f1f01a2f97e5541da02db36fa6416b65",
+  "novaOS/user/novaauth/service/profile.py": "79559a20b413c111f793ad453a7090920a6d973b55602100f5ea75e4d0c36aa7",
+  "novaOS/user/novaauth/service/src/bin/common/recovery_store.rs": "86d8f16304d018806e049bff2d6ab283650f44858f6dfc400054cf5304d16c21",
+  "novaOS/user/novaauth/recuperation/src/membership_effectors.rs": "71e94a6b0751302863ac1c436f0f9adc82b91323af8b5db0a2a106fb03fbbbb4",
+  "novaOS/user/novaauth/recuperation/tests/membership_effectors.rs": "f1b090d42c31d9ea3663f53298633fe0603bce9bddfcb49b5466e5a4d65743b2",
+  "novaOS/user/novaauth/service/exec_membership_lab.rs": "57abc9ae9fbf2734db8705c7fb77f09ddac07e05171657eb7888e9b19c8430b3",
+  "novaOS/user/novaauth/service/membership_exec_tests.rs": "6bb122faf8430fc4c8591ca33b61c868ddf7ec16d3eb400de411d952393595f9",
+  "novaOS/user/novaauth/service/membership_profile.py": "86eab999d2a540af3fa061f6fa67af9e72e9d4645c6201ed6824f29a66f825e8",
+  "novaOS/user/novaauth/service/membership_vfs.rs": "aa94bcf78e2204eb6c0758dcc037f052e9012f1a09812e03fcde77049e136339",
+  "novaOS/user/novaauth/service/membership_vfs_tests.rs": "3381378291d3e07939bc4323d191ce1992d7d55bb4ac93ee468c4b05139d87b3",
+  "novaOS/user/novaauth/service/qualify_membership_effectors.py": "d1350e7391644740922cdad1fb59ba4cefd6e236fbf4115a0240343beb716765",
+  "novaOS/user/novaauth/service/src/bin/common/membership_exec.rs": "c34819aa776a9d07d722adab0be90794d989697c82d73d678af114a84b24b114"
+}

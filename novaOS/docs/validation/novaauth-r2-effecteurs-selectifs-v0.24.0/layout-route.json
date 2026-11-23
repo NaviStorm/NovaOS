@@ -1,0 +1,78 @@
+[
+  {
+    "profil": "export-temoin-r2",
+    "target": "aarch64-unknown-none-softfloat",
+    "taille_option_route": 2648,
+    "commande": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "check",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "novaauth-sessions-lab",
+      "--target",
+      "aarch64-unknown-none-softfloat"
+    ],
+    "duree_hote_s": 17.85320816701278,
+    "statut": 101,
+    "nature": "sonde de taille par erreur de type volontaire ; aucun essai invit\u00e9"
+  },
+  {
+    "profil": "export-temoin-r2",
+    "target": "x86_64-unknown-none",
+    "taille_option_route": 2648,
+    "commande": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "check",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "novaauth-sessions-lab",
+      "--target",
+      "x86_64-unknown-none"
+    ],
+    "duree_hote_s": 17.688663541979622,
+    "statut": 101,
+    "nature": "sonde de taille par erreur de type volontaire ; aucun essai invit\u00e9"
+  },
+  {
+    "profil": "export-commit",
+    "target": "aarch64-unknown-none-softfloat",
+    "taille_option_route": 2712,
+    "commande": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "check",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "novaauth-sessions-lab",
+      "--target",
+      "aarch64-unknown-none-softfloat"
+    ],
+    "duree_hote_s": 3.6431509160320275,
+    "statut": 101,
+    "nature": "sonde de taille par erreur de type volontaire ; aucun essai invit\u00e9"
+  },
+  {
+    "profil": "export-commit",
+    "target": "x86_64-unknown-none",
+    "taille_option_route": 2712,
+    "commande": [
+      "/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin/cargo",
+      "check",
+      "--release",
+      "--locked",
+      "--offline",
+      "--features",
+      "novaauth-sessions-lab",
+      "--target",
+      "x86_64-unknown-none"
+    ],
+    "duree_hote_s": 3.7375256670056842,
+    "statut": 101,
+    "nature": "sonde de taille par erreur de type volontaire ; aucun essai invit\u00e9"
+  }
+]

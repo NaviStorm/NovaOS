@@ -1,0 +1,10 @@
+{
+  "novaOS/kernel/src/sched/process/ipc/service/auth_lab.rs": "5a9b650e095a42a53b918b62ac849ee8058e351202054182e40af3de25b2cb3e",
+  "novaOS/kernel/src/sched/process/ipc/session_relay.rs": "26bd74640334d46ec15ca4ffd3df99de30e4de0b1390d06b9fdabf708cf99430",
+  "novaOS/kernel/src/sched/process/ipc/exec.rs": "28b2f4c89c5fbe583f0df4a0415604e79355838a9be89329e94cbc38d6189edc",
+  "novaOS/kernel/build.rs": "6fa7a3b3340ada9dc281f8fe3373d99d0b83ff0e1c1ace35c6c1deb62c344991",
+  "novaOS/user/novafs/files/auth_directory.rs": "129752879e28d64679ffc990069b8631fbcd3f54574409df260372ac58e91d28",
+  "novaOS/user/novaauth/service/triplet_effecteur.rs": "8a9cac3639ba57fce2dd445d4bd95cdd9bd05c85cf0e11c1bde888d51eb97815",
+  "novaOS/user/novaauth/service/membership_vfs_body.rs": "746a64970ce256f95840307dcf9c29d1d0089b08c15e4fdb6ae27edacde9eb56",
+  "novaOS/user/novaauth/service/exec_membership_body.rs": "3622eb0b34faf235feec99624565845b9015781049b9f8fa55ead369bc5e2010"
+}

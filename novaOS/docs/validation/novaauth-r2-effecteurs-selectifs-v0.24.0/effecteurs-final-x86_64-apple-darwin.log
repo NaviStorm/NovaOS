@@ -1,0 +1,40 @@
+   Compiling novaos-recovery v0.1.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1/novaOS/user/novaauth/recuperation)
+   Compiling membership-effectors-native v0.0.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/native-publication)
+warning: type `execution::Core` is more private than the item `execution::membership_independent`
+   --> src/lib.rs:550:1
+    |
+550 | pub(super) fn membership_independent(s:&Core, issuer:Pid, subject:[u8;16], domain:[u8;16])->Res<u64> {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ function `execution::membership_independent` is reachable at visibility `pub(crate)`
+    |
+note: but type `execution::Core` is only usable at visibility `pub(self)`
+   --> src/lib.rs:544:81
+    |
+544 |     struct Process{exec:Vec<Ticket>}struct Processes{slots:Vec<Option<Process>>}struct Core{processes:Processes}
+    |                                                                                 ^^^^^^^^^^^
+    = note: `#[warn(private_interfaces)]` on by default
+
+warning: `membership-effectors-native` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.39s
+     Running unittests src/lib.rs (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-selectif-effecteurs-3036827/target/x86_64-apple-darwin/debug/deps/membership_effectors_native-5547e907f961d68b)
+
+running 15 tests
+Directory=2048 Lease=128 Closure=232 OptionClosure=232
+Directory before=1256 after=2048 delta=792 measured_control_subtotal=2832
+test directory::tests::ambiguous_lease_and_wrong_instance_cannot_ack ... ok
+test directory::tests::changed_sleeper_and_restarted_instance_do_not_synthesize_ack ... ok
+test directory::tests::bounded_layout_and_full_table_refuses_without_losing_rights ... ok
+test directory::tests::concurrent_different_withdrawal_cannot_replace_the_first ... ok
+test directory::tests::initial_group_membership_zero_is_revoked_without_touching_direct ... ok
+test directory::tests::independent_pending_and_sleeper_are_preserved ... ok
+test directory::tests::failed_wake_does_not_ack_or_remove_independent_new_leases ... ok
+test directory::tests::ipc_saturation_keeps_cancelled_operation_and_wakeup_for_retry ... ok
+test directory::tests::no_matching_group_is_not_a_session_revocation ... ok
+test directory::tests::provenance_cannot_be_replaced_at_delegation ... ok
+test directory::tests::only_g_and_its_descendants_are_removed ... ok
+test execution::tests::different_subject_issuer_and_domain_are_not_touched ... ok
+test execution::tests::independent_ready_or_admitted_tickets_are_preserved ... ok
+test execution::tests::unresolved_file_scope_or_missing_independent_admission_cannot_ack ... ok
+test incremental_control_budget_is_measured_without_counting_legacy_state_twice ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

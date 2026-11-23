@@ -1,0 +1,10 @@
+{
+  "command": [
+    "/opt/homebrew/opt/python@3.15/bin/python3.15",
+    "-B",
+    "novaOS/tests/abi_registre.py"
+  ],
+  "status": 1,
+  "source": "735605b217837df91321db71cdee58d4ec7581ab --membership-r2",
+  "duree_hote_s": 0.2179397500003688
+}
