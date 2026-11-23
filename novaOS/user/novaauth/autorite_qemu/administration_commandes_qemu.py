@@ -27,7 +27,7 @@ def main():
     parser.add_argument('sector', type=int, choices=[512, 4096])
     parser.add_argument('--lot', choices=['lectures', 'versions', 'groupe', 'dernier-administrateur', 'desactivation', 'vue-groupe', 'renommage', 'appartenance', 'documentation', 'creation', 'refus-facteurs'], required=True)
     parser.add_argument('--commande', choices=['whoami', 'id', 'groups', 'useradd', 'usermod', 'groupadd'])
-    parser.add_argument('--redemarrage-issue', action='store_true', help='création, capture native, arrêt complet et consultation après reprise approuvée')
+    parser.add_argument('--redemarrage-issue', action='store_true', help='mutation sans retrait, capture native, arrêt complet et consultation après reprise approuvée')
     parser.add_argument('--course',action='store_true',help='ticket Bob présenté pendant la confirmation Alice')
     parser.add_argument('--mutation-concurrente',action='store_true',help='confirmation de groupe concurrente au refus du dernier administrateur')
     parser.add_argument('--dernier-concurrent',action='store_true',help='deux requêtes partielles simultanées contre le dernier administrateur')
@@ -59,7 +59,7 @@ def main():
         parser.error('le témoin de ticket vivant exige le lot désactivation')
     if (a.reauth_issue or a.recu_supprime) and a.lot not in ('groupe','desactivation'):
         parser.error('options de publication réservées aux lots de mutation')
-    if a.redemarrage_issue and (a.lot!='creation' or a.recu_supprime or a.reauth_issue):parser.error('reprise réservée à la création nominale avec capture native')
+    if a.redemarrage_issue and (a.lot not in ('creation','groupe','renommage','appartenance') or a.recu_supprime or a.reauth_issue):parser.error('reprise réservée aux mutations nominales sans retrait avec capture native')
     a.capture_administrative = a.redemarrage_issue
     a.mode = 'nominal'
     a.vue = a.activation = a.exec_admission = a.administration_r2 = True
@@ -118,6 +118,10 @@ def main():
                  (lambda: command+' --confirm ' + intention['confirmation'] +
                   ' --request ' + intention['operation'], complete),
                  (lambda: binary+' --outcome ' + intention['operation'], complete)]
+        def group_created(_):
+            generation=int.from_bytes(raw[96:104],'big')+1
+            identity=hashlib.sha256(b'NovaAuth/subject/1'+raw[8:24]+generation.to_bytes(8,'little')+bytes.fromhex(intention['operation'])+b'\x02').digest()[:16].hex()
+            return f'group={identity} name=equipe-r2 members=\n'.encode()
         if a.lot == 'renommage':
             report['portee']='renommage natif, identité stable, aucun changement des droits'
             cases[-1]=('id --subject-id '+bob,f'subject={bob} name=robert state=ACTIVE groups=base({group})\n'.encode())
@@ -501,7 +505,11 @@ def main():
                 {digest(manifest):[q.read_bytes() for q in sorted(folder.glob('*.chiffre'))]},
                 dispatcher.approve_independently,dispatcher.deliver_independently,dispatcher.retrieve_independently)
             after=copy.copy(case);after.sortie=root/'redemarrage';after.genese=case.sortie/'identites.p9'
-            cases=[('useradd --outcome '+intention['operation'],complete),('id carol',created_identity),('whoami',b'alice\n')]
+            # Même identifiant, aucune seconde confirmation. Conserver la vue
+            # attendue du parcours initial, puis le contrôle positif Alice.
+            view=cases[-1]
+            if a.lot=='groupe':view=('groups --group equipe-r2',group_created)
+            cases=[(binary+' --outcome '+intention['operation'],complete),view,('whoami',b'alice\n')]
             report['commandes']=[];report['evenements']=[];report['succes']=False
             result=run(after,(resumed,holders,admin),scenario=scenario,rpc_hook=rpc_hook)
             report['reprise']={'arret_complet':True,'capture_native':True,'ancienne_incarnation':old_route.hex(),
