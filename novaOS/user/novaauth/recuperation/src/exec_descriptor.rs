@@ -151,13 +151,15 @@ pub fn verify_lookup<'a>(key:&VerifyingKey,query:&[u8;112],reply:&'a [u8])->Resu
  Ok((position,d))
 }
 
-impl Descriptor<'_> {
- /// Métadonnées de la porte privée, lues par le registre. La validité temporelle
- /// reste vérifiée sous le verrou noyau à la liaison et à la consommation.
- pub fn matches_direct_metadata(self,m:&[u64;48])->Result<()> {
+impl<'a> Descriptor<'a> {
+ /// Métadonnées immuables de la porte privée, lues par le registre. La validité
+ /// temporelle reste vérifiée sous le verrou noyau. Cette voie couvre le rôle
+ /// simple et au plus une portée de lecture sur le dossier scellé du titulaire.
+ /// La permission et l'empreinte du sceau restent à vérifier dans la vue P9.
+ pub fn matches_launch_metadata(self,m:&[u64;48])->Result<Option<Dependency<'a>>> {
   fn bytes<const N:usize>(words:&[u64])->[u8;N]{let mut out=[0;N];for(w,b)in words.iter().zip(out.chunks_exact_mut(8)){b.copy_from_slice(&w.to_le_bytes());}out}
   let p=self.bytes();
-  if m[32..35]!=[0;3] || m[35]!=1 || self.dependencies().count()!=1 || p[294]!=1
+  if m[35]!=1 || p[294]!=1
    || p[72..104]!=bytes::<32>(&m[4..8]) || p[104..136]!=bytes::<32>(&m[43..47])
    || p[136..152]!=bytes::<16>(&m[29..31]) || u64_at(p,152)!=m[31]
    || p[160..192]!=bytes::<32>(&m[8..12]) || p[192..224]!=p[72..104]
@@ -167,6 +169,16 @@ impl Descriptor<'_> {
    || u64_at(p,424)!=m[39] || p[432..464]!=bytes::<32>(&m[18..22])
    || u64_at(p,464)!=m[3] || p[472..504]!=p[72..104] || u64::from(p[504])!=m[47]
    || (m[26..28]!=[0;2] && self.operation()!=bytes::<16>(&m[26..28])) {return Err(Error::Scope);}
-  Ok(())
+
+  let mut files=self.dependencies().skip(1);
+  let dependency=files.next();
+  let [directory,file,cwd]=m[32..35].try_into().unwrap();
+  match dependency {
+   None if [directory,file,cwd]==[0;3]=>Ok(None),
+   Some(dep) if files.next().is_none() && dep.owner()==p[136..152]
+    && dep.object()==directory && dep.rights()==1 && directory!=file
+    && (1..1<<63).contains(&file) && cwd==directory && p[504]==0=>Ok(Some(dep)),
+   _=>Err(Error::Scope),
+  }
  }
 }

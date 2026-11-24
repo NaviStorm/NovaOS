@@ -7,6 +7,8 @@ use ed25519_dalek::VerifyingKey;
 pub struct RequiredPermission {
  pub owner:Id,pub object:u64,pub origin:Origin,pub rights:u8,
  pub membership_revision:u64,pub rule_revision:u64,pub image_revision:u64,
+ /// Sceau complet issu de la portée VFS immuable effectivement liée au ticket.
+ pub seal:Hash,
 }
 impl View {
  pub fn revalidate_execution_dependencies(&self,grant:Grant,epoch:u64,image:Image,
@@ -19,6 +21,7 @@ impl View {
   for (i,need) in required.iter().enumerate(){
    if need.rights==0 || need.rights&!3!=0 || need.object==0{return Err(Fault::BadInput);}
    if required[..i].iter().any(|p|p.owner==need.owner&&p.object==need.object&&p.origin==need.origin){return Err(Fault::BadInput);}
+   if self.folder_binding(need.owner,need.object)?!=need.seal{return Err(Fault::Denied);}
    let p=self.permission(grant,image,need.owner,need.object,need.origin)?;
    if p.rights&need.rights!=need.rights || p.membership_revision!=need.membership_revision
     || p.rule_revision!=need.rule_revision || p.image_revision!=need.image_revision

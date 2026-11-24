@@ -1,7 +1,10 @@
-//! Descripteur du ticket sans délégation VFS. Les rôles/portées non raccordés
-//! conservent le contrôle historique strict ; aucune provenance n'est inventée.
+//! Descripteur du ticket EXEC. L'émission actuelle reste limitée au lancement
+//! sans portée VFS ; une portée liée exige aussi un sceau vérifié sur P9.
 use super::*;
-use novaos_identity::{recuperation_view::View,policy::Image,distribution::{ExecutionIdentity,Machine}};
+use novaos_identity::{
+ recuperation_view::{View,seal_digest}, policy::{Image,Origin},
+ distribution::{ExecutionIdentity,Machine}, execution_selective::RequiredPermission,
+};
 use novaos_recovery::exec_descriptor::{Descriptor,DEPENDENCY,HEADER as DESCRIPTOR_HEADER};
 const ALL:u64=0x4e5847415445414c;
 fn machine()->Machine {if cfg!(target_arch="aarch64"){Machine::Aarch64}else{Machine::X86_64}}
@@ -15,12 +18,28 @@ fn query(op:[u8;16],answer:&mut [u8;MAX])->rt::Result<(usize,[u8;112])>{
 }
 pub(super) fn validate(state:&View,d:Descriptor<'_>,m:&[u64;WORDS])->rt::Result<()> {
  let p=d.bytes();
- d.matches_direct_metadata(m).map_err(|_|rt::REVOKED)?;
+ let file=d.matches_launch_metadata(m).map_err(|_|rt::REVOKED)?;
  if p[8..24]!=incarnation::SERVER || p[24..40]!=incarnation::DOMAIN || p[40..72]!=incarnation::identity()
   || p[328..344]!=state.head().volume[0] || p[344..360]!=state.head().volume[1] {return Err(rt::REVOKED);}
  let own=d.dependencies().next().ok_or(rt::REFUSED)?;
  let expected=ExecutionIdentity{package:p[272..288].try_into().unwrap(),version:u32::from_be_bytes(p[288..292].try_into().unwrap()),machine:u16::from_be_bytes(p[292..294].try_into().unwrap()),manifest:p[392..424].try_into().unwrap(),object:number(p,360),revision:number(p,368),offset:number(p,376),size:number(p,384),image_revision:own.image_revision(),administration:p[504]};
- state.revalidate_execution_subject(p[136..152].try_into().unwrap(),m[31],Image{installation:bytes(&m[12..14]),digest:bytes(&m[14..18])},expected,&distribution()?,machine(),&[]).map_err(|_|rt::REVOKED)
+ let required=file.map(|dep| {
+  // Sélection immuable de la porte : la liaison du fichier est entière. La
+  // vue fraîche vérifie ce sceau et la provenance signée du descripteur.
+  let owner=dep.owner();
+  let mut seal=[0;40];
+  seal[..8].copy_from_slice(b"NXScope1");
+  seal[8..24].copy_from_slice(&owner);
+  seal[24..32].copy_from_slice(&m[32].to_le_bytes());
+  seal[32..40].copy_from_slice(&m[33].to_le_bytes());
+  RequiredPermission{
+   owner,object:dep.object(),rights:dep.rights(),
+   origin:if dep.origin()==1{Origin::Direct}else{Origin::Group(dep.group())},
+   membership_revision:dep.membership_revision(),rule_revision:dep.rule_revision(),
+   image_revision:dep.image_revision(),seal:seal_digest(&seal),
+  }
+ });
+ state.revalidate_execution_subject(p[136..152].try_into().unwrap(),m[31],Image{installation:bytes(&m[12..14]),digest:bytes(&m[14..18])},expected,&distribution()?,machine(),required.as_slice()).map_err(|_|rt::REVOKED)
 }
 pub(super) fn digest(state:&View,m:&[u64;WORDS])->rt::Result<[u8;32]>{
  let op=bytes::<16>(&m[26..28]);let mut a=[0;MAX];let(n,q)=query(op,&mut a)?;
@@ -38,8 +57,10 @@ pub(super) fn register(state:&View,q:&[u8;128])->rt::Result<()> {
   if m[1]==common::number(&q[88..]) && bytes::<32>(&m[4..8])==q[24..56] && bytes::<32>(&m[8..12])==q[56..88] {found=Some((leaf,m));break;}
  }
  let(leaf,m)=found.ok_or(rt::DENIED)?;
- // Absence de preuve de portée : aucun allègement de fraîcheur sur ces tickets.
- if m[32..35]!=[0;3] || m[35]!=1{return Ok(());}
+ // Le chargeur isolé ne publie encore aucune portée VFS attestée. Un
+ // lancement cadré ne doit pas retomber sur le chemin historique sans origine.
+ if m[32..35]!=[0;3]{return Err(rt::REVOKED);}
+ if m[35]!=1{return Ok(());}
  if m[0]!=0 || m[26..28]!=[0;2]{return Err(rt::DENIED);}
  let fresh=tete::query(rt::config(8),&incarnation::identity())?;
  if fresh[72..80]!=state.head().generation.to_be_bytes() || fresh[80..]!=state.head().digest || fresh[80..]!=bytes::<32>(&m[18..22]) {return Err(rt::REVOKED);}

@@ -93,7 +93,8 @@ impl Pump {
                         Err(e)=>return Err(e),
                     };h
                 },
-                Ok(h) if bound==[0;16] && h[80..112]==bytes::<32>(&m[18..22])=>h,
+                // Une portée fichier ne peut être admise sans descripteur lié.
+                Ok(h) if bound==[0;16] && m[32..35]==[0;3] && h[80..112]==bytes::<32>(&m[18..22])=>h,
                 _ if bound!=[0;16]=>return Err(UNCERTAIN),
                 _=>{command(leaf,2,[0;16],0,[0;32])?;return command(leaf,3,[0;16],2,[0;32]);}
             };

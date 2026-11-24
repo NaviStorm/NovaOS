@@ -496,9 +496,18 @@ fn selective_exec_revalidates_own_state_and_actual_required_permissions() {
   let epoch=before.authentication_epoch(grant).unwrap();let own=before.execution_identity(grant,image,&key,machine).unwrap();
   let needs:[RequiredPermission;3]=[Origin::Direct,Origin::Group(groups[0]),Origin::Group(groups[1])].map(|origin|{
    let p=before.permission(grant,image,holder,17,origin).unwrap();RequiredPermission{owner:holder,object:17,origin,rights:READ,
-    membership_revision:p.membership_revision,rule_revision:p.rule_revision,image_revision:p.image_revision}
+    membership_revision:p.membership_revision,rule_revision:p.rule_revision,image_revision:p.image_revision,
+    seal:before.folder(grant,17).unwrap()}
   });
   for need in needs {before.revalidate_execution_dependencies(grant,epoch,image,own,&key,machine,&[need]).unwrap();}
+  let wrong_seal=RequiredPermission{seal:[42;32],..needs[2]};
+  assert!(matches!(before.revalidate_execution_dependencies(grant,epoch,image,own,&key,machine,&[wrong_seal]),Err(Fault::Denied)));
+  let unbound=view(&before.revoke_plan(grant,17,[11;16]).unwrap());
+  let current=unbound.resolve_verified_factor([4;16]).unwrap();
+  // Le retrait du sceau laisse les règles enregistrées. Celles-ci ne
+  // suffisent plus à revalider la portée du ticket.
+  assert!(unbound.permission(current,image,holder,17,needs[2].origin).is_ok());
+  assert!(matches!(unbound.revalidate_execution_dependencies(current,epoch,image,own,&key,machine,&[needs[2]]),Err(Fault::Denied)));
   let removal=before.prepare_membership_removal(grant,[12;16],holder,groups[0]).unwrap();let after=view(&removal.triplet);
   let fresh=after.resolve_verified_factor([4;16]).unwrap();assert_ne!(before.head(),after.head());
   after.revalidate_execution_dependencies(fresh,epoch,image,own,&key,machine,&[]).unwrap();

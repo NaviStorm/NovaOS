@@ -47,7 +47,10 @@ impl View {
     /// Un identifiant de dossier connu n'accorde aucun droit à son détenteur.
     pub fn folder(&self, grant:Grant, object:u64)->Result<Hash> {
         if grant.head!=self.head || object==0 {return Err(Fault::Denied);}
-        let owner=self.state.user(grant.owner)?;
+        self.folder_binding(grant.owner, object)
+    }
+    pub(super) fn folder_binding(&self, owner:Id, object:u64)->Result<Hash> {
+        let owner=self.state.user(owner)?;
         if owner.status!=Status::Active {return Err(Fault::Denied);}
         owner.folders.iter().find(|(id,_)|*id==object)
             .map(|(_,seal)|*seal).ok_or(Fault::Denied)

@@ -86,16 +86,52 @@ const FIXTURE:&[u8;800]=include_bytes!("fixtures/exec_descriptor_v1.bin");
  let mut msg=Vec::from(LOOKUP);msg.extend_from_slice(&r[..end]);r[end..].copy_from_slice(&key.sign(&msg).to_bytes());
  assert_eq!(verify_lookup(&key.verifying_key(),&q,&r).unwrap().1.bytes()[40..72],FIXTURE[40..72]);
 }
+fn kernel_metadata(p:&[u8])->[u64;48] {
+ let mut m=[0;48];
+ for (at,word,n) in [(72,4,32),(104,43,32),(136,29,16),(160,8,32),
+     (240,12,16),(296,14,32),(328,40,16),(432,18,32),(224,26,16)] {
+  for (i,part) in p[at..at+n].chunks_exact(8).enumerate(){
+   m[word+i]=u64::from_le_bytes(part.try_into().unwrap());
+  }
+ }
+ for (at,word) in [(152,31),(360,36),(368,37),(384,38),(424,39),(464,3)] {
+  m[word]=u64::from_be_bytes(p[at..at+8].try_into().unwrap());
+ }
+ m[35]=1;m[47]=u64::from(p[504]);m
+}
 #[test] fn direct_kernel_metadata_rejects_every_foreign_binding_and_unknown_scope(){
  let mut p=FIXTURE[..584].to_vec();p[295]=1;p[192..224].copy_from_slice(&FIXTURE[72..104]);p[472..504].copy_from_slice(&FIXTURE[72..104]);
- let d=Descriptor::parse(&p).unwrap();let mut m=[0;48];
- for (at,word,n) in [(72,4,32),(104,43,32),(136,29,16),(160,8,32),(240,12,16),(296,14,32),(328,40,16),(432,18,32),(224,26,16)] {
-  for(i,part)in p[at..at+n].chunks_exact(8).enumerate(){m[word+i]=u64::from_le_bytes(part.try_into().unwrap());}
+ let d=Descriptor::parse(&p).unwrap();let mut m=kernel_metadata(&p);
+ assert_eq!(d.matches_launch_metadata(&m),Ok(None));
+ for i in [3,4,7,8,11,12,13,14,17,18,21,26,27,29,30,31,32,33,34,35,36,37,38,39,40,41,43,44,45,46,47]{let mut wrong=m;wrong[i]^=1;assert!(d.matches_launch_metadata(&wrong).is_err(),"word {i}");}
+ m[26..28].fill(0);d.matches_launch_metadata(&m).unwrap();
+ let mut other=p.clone();other[192]^=1;assert!(Descriptor::parse(&other).unwrap().matches_launch_metadata(&m).is_err());
+ let mut other=p.clone();other[472]^=1;assert!(Descriptor::parse(&other).unwrap().matches_launch_metadata(&m).is_err());
+}
+
+#[test] fn group_descriptor_requires_one_real_read_scope_and_no_admin_channel(){
+ let mut p=FIXTURE[..HEADER+2*DEPENDENCY].to_vec();
+ p[294]=1;p[295]=2;p[504]=0;
+ p[192..224].copy_from_slice(&FIXTURE[72..104]);
+ p[472..504].copy_from_slice(&FIXTURE[72..104]);
+ let dep=HEADER+DEPENDENCY;
+ p[dep..dep+3].copy_from_slice(&[2,2,1]);
+ p[dep+8..dep+24].copy_from_slice(&FIXTURE[136..152]);
+ p[dep+24..dep+32].copy_from_slice(&17u64.to_be_bytes());
+ p[dep+32..dep+48].fill(51);
+ let mut m=kernel_metadata(&p);
+ m[32..36].copy_from_slice(&[17,18,17,1]);
+ let d=Descriptor::parse(&p).unwrap();
+ assert_eq!(d.matches_launch_metadata(&m).unwrap().unwrap().group(),[51;16]);
+ for scope in [[0;3],[19,18,19],[17,0,17],[17,17,17],[17,1<<63,17],[17,18,19]] {
+  let mut wrong=m;wrong[32..35].copy_from_slice(&scope);
+  assert_eq!(d.matches_launch_metadata(&wrong),Err(Error::Scope));
  }
- for(at,word)in[(152,31),(360,36),(368,37),(384,38),(424,39),(464,3)]{m[word]=u64::from_be_bytes(p[at..at+8].try_into().unwrap());}
- m[35]=1;m[47]=u64::from(p[504]);d.matches_direct_metadata(&m).unwrap();
- for i in [3,4,7,8,11,12,13,14,17,18,21,26,27,29,30,31,32,33,34,35,36,37,38,39,40,41,43,44,45,46,47]{let mut wrong=m;wrong[i]^=1;assert!(d.matches_direct_metadata(&wrong).is_err(),"word {i}");}
- m[26..28].fill(0);d.matches_direct_metadata(&m).unwrap();
- let mut other=p.clone();other[192]^=1;assert!(Descriptor::parse(&other).unwrap().matches_direct_metadata(&m).is_err());
- let mut other=p;other[472]^=1;assert!(Descriptor::parse(&other).unwrap().matches_direct_metadata(&m).is_err());
+ let mut admin=m;admin[47]=1;
+ let mut changed=p.clone();changed[504]=1;
+ assert_eq!(Descriptor::parse(&changed).unwrap().matches_launch_metadata(&admin),Err(Error::Scope));
+ let mut writable=p.clone();writable[dep+2]=3;
+ assert_eq!(Descriptor::parse(&writable).unwrap().matches_launch_metadata(&m),Err(Error::Scope));
+ let mut foreign=p;foreign[dep+8]^=1;
+ assert_eq!(Descriptor::parse(&foreign).unwrap().matches_launch_metadata(&m),Err(Error::Scope));
 }
