@@ -252,10 +252,19 @@ fn main() {
     // argument reste identique. Seul le provisionneur accorde les portées.
     if let Some(path)=a.get(9) {
         let package=fs::read(path).unwrap();
+        // Le témoin Direct utilise usermod pour Alice et le paquet sonde
+        // déjà provisionné pour Bob. Préserver les volumes des autres recettes.
+        let direct_only = std::env::var_os("NOVA_R2_DIRECT_ONLY").is_some();
         for (slot,recipient,bits) in [(0,owner,15),(1,bob,1)] {
+            if direct_only && slot == 1 {
+                continue;
+            }
             let administrator=reg.grant_attested(owner).unwrap();
             let mut head=reg.provision_package_for_user(administrator,recipient,[160+slot*8;16],&key,machine,&package).unwrap();
             for (i,name) in ["whoami","id","groups","useradd","usermod","groupadd"].iter().enumerate() {
+                if direct_only && *name != "usermod" {
+                    continue;
+                }
                 let grant=reg.grant_attested(recipient).unwrap();
                 let loaded=reg.load_package(grant,&key,machine,name).unwrap();
                 let image=Image {installation:loaded.principal.unwrap(),digest:loaded.digest};
