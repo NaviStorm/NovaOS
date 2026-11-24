@@ -25,6 +25,19 @@ fn sign(k:&SigningKey,p:&mut[u8;312]) {let mut b=PREFIX.to_vec();b.extend_from_s
     p[208]=2;sign(&k,&mut p);assert!(Receipt::verify(&k.verifying_key(),&p,&b,&f).is_err());
     p[208]=0;p[210]=0;sign(&k,&mut p);assert_eq!(Receipt::verify(&k.verifying_key(),&p,&b,&f).unwrap().state(),State::Reserved);
 }
+#[test]
+fn signed_reservation_on_its_original_head_is_incomplete() {
+    let (key, binding, challenge, mut packet) = fixture();
+    packet[208] = 0;
+    packet[210] = 0;
+    sign(&key, &mut packet);
+    let receipt = Receipt::verify(&key.verifying_key(), &packet, &binding, &challenge).unwrap();
+    assert_eq!(receipt.completed(7, &binding.previous, 7, &binding.previous), Ok(false));
+    assert!(receipt.completed(7, &[99; 32], 7, &[99; 32]).is_err());
+    assert!(receipt.completed(6, &binding.previous, 6, &binding.previous).is_err());
+    assert!(receipt.completed(7, &binding.previous, 8, &binding.published).is_err());
+}
+
 #[test]fn every_instance_must_ack_and_capacity_is_bounded() {
     let mut inventory=Inventory::new();for i in 1..=32 {inventory.expect(if i==32 {4}else{1},[i;32],i as u64).unwrap();}
     assert_eq!(inventory.expect(2,[33;32],33),Err(Error::Limit));

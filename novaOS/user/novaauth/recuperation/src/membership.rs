@@ -47,8 +47,20 @@ impl Receipt {
     /// Cette comparaison n'invente aucune preuve de publication ou d'effecteur.
     pub fn completed(&self,p9_generation:u64,p9_digest:&[u8;32],authority_generation:u64,
         authority_digest:&[u8;32])->Result<bool> {
-        if p9_generation!=authority_generation || p9_digest!=authority_digest
-            || p9_generation<self.binding.generation {return Err(Error::Scope);}
+        if p9_generation != authority_generation || p9_digest != authority_digest {
+            return Err(Error::Scope);
+        }
+        if p9_generation < self.binding.generation {
+            // Une réservation authentique précède la publication. La tête
+            // d'origine exacte établit uniquement que le retrait est incomplet.
+            if self.state == State::Reserved
+                && p9_generation.checked_add(1) == Some(self.binding.generation)
+                && *p9_digest == self.binding.previous
+            {
+                return Ok(false);
+            }
+            return Err(Error::Scope);
+        }
         if p9_generation==self.binding.generation && *p9_digest!=self.binding.published {return Err(Error::Scope);}
         Ok(self.state==State::Retired)
     }
