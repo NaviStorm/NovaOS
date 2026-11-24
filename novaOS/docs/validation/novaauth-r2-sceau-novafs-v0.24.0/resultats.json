@@ -1,0 +1,272 @@
+{
+  "code": "46ea56a874c4b034f9620b24491ceaa021cfbde5",
+  "arbre": "268b9cc2f71d415f94faebf94780cef31a9be069",
+  "reference": "19cfbf6029bb5a0f3124088292728aa87a8c4c46",
+  "debut_travail_utc": "2026-11-24T23:34:04+00:00",
+  "fin_collecte_utc": "2026-11-24T23:50:10.757663+00:00",
+  "contrat_reprise": {
+    "commit": "1fdf10d66a44964c4f44abd3bb85082643be29a3",
+    "sha256": "4891465ab2df55ba05d3e9203e0059c16f333ae17d7ef56524e765797197d3c8",
+    "implementation": false
+  },
+  "native_par_cible": {
+    "sceau": 3,
+    "distribution": 6,
+    "coordinateur_layout": 17
+  },
+  "abi": {
+    "tests": 9,
+    "selecteurs_v1": 48
+  },
+  "statique": {
+    "octets_arm64": 4026,
+    "octets_x86_64": 4026,
+    "limite": 4096
+  },
+  "execution": [
+    {
+      "profil": "x86_64-512",
+      "lecture_sceau": 0,
+      "substitution_fichier": 10,
+      "substitution_volume": 10,
+      "entree_exec": false,
+      "racines_max_observees": 4,
+      "registre_avant_apres": {
+        "avant": [
+          4,
+          7,
+          0,
+          165,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          165,
+          64,
+          31
+        ]
+      },
+      "signataire_avant_apres": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "relais_draine": true,
+      "banc_s": 6.589014499913901,
+      "attente_s": 0.0002716659801080823,
+      "preuve": "x86_64-512/resultat.json",
+      "sha256": "2748ea2a2f892f00b502ad8e51742c7979c0a60dea320c13f1d1b5b4d273d371"
+    },
+    {
+      "profil": "x86_64-4096",
+      "lecture_sceau": 0,
+      "substitution_fichier": 10,
+      "substitution_volume": 10,
+      "entree_exec": false,
+      "racines_max_observees": 4,
+      "registre_avant_apres": {
+        "avant": [
+          4,
+          7,
+          0,
+          165,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          165,
+          64,
+          31
+        ]
+      },
+      "signataire_avant_apres": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "relais_draine": true,
+      "banc_s": 6.537609582999721,
+      "attente_s": 0.00023670902010053396,
+      "preuve": "x86_64-4096/resultat.json",
+      "sha256": "1ca0602fc837b01811de7db678077d6493d128f45fd462bac3e814faa6cee433"
+    },
+    {
+      "profil": "aarch64-512",
+      "lecture_sceau": 0,
+      "substitution_fichier": 10,
+      "substitution_volume": 10,
+      "entree_exec": false,
+      "racines_max_observees": 4,
+      "registre_avant_apres": {
+        "avant": [
+          4,
+          7,
+          0,
+          162,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          162,
+          64,
+          31
+        ]
+      },
+      "signataire_avant_apres": {
+        "avant": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ]
+      },
+      "relais_draine": true,
+      "banc_s": 12.259992666891776,
+      "attente_s": 0.00023741601034998894,
+      "preuve": "aarch64-512/resultat.json",
+      "sha256": "ae5856705bc369bde44c3bb8d1e7c09c26bbeaf9057d0f54940fe4507cbcaf8f"
+    },
+    {
+      "profil": "aarch64-4096",
+      "lecture_sceau": 0,
+      "substitution_fichier": 10,
+      "substitution_volume": 10,
+      "entree_exec": false,
+      "racines_max_observees": 4,
+      "registre_avant_apres": {
+        "avant": [
+          4,
+          7,
+          0,
+          162,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          162,
+          64,
+          31
+        ]
+      },
+      "signataire_avant_apres": {
+        "avant": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ]
+      },
+      "relais_draine": true,
+      "banc_s": 11.505137540982105,
+      "attente_s": 0.00022854201961308718,
+      "preuve": "aarch64-4096/resultat.json",
+      "sha256": "4b8049b5d60d727696cd5a517a4da05d8cd9429e21bc741a8b7bdee2efe2f32b"
+    }
+  ],
+  "temps_banc_s": 36.8917542907875,
+  "attente_verrou_s": 0.0009743330301716924,
+  "echec_hote_avant_qemu": "réentrée de la fonction principale via multiprocessing spawn, corrigée",
+  "EXEC_G_H": "non exécutés : octroi enfant et drainage manquants",
+  "prototypes_preserves_sha256": {
+    "novaOS/user/novaauth/service/exec_membership_lab.rs": "64a49106214af81de1ecd3526f00db641fb9f53eedca6ca891d79d3a6238d506",
+    "novaOS/user/novaauth/service/membership_exec_tests.rs": "01a6a0c475e307d6e3d3b17ce4008b6bc988dbee6945d219653548db3e302260",
+    "novaOS/user/novaauth/service/membership_profile.py": "664cfb776986616ec8732e451732713554b830b6d46bafc0d2a1faac336990b8",
+    "novaOS/user/novaauth/service/qualify_membership_effectors.py": "ecba0477c46d911e06e26e09245dbeebf08d4709651d1e1b3bb7f46dc6b11922",
+    "novaOS/user/novaauth/service/src/bin/common/exec_admission_guest.rs": "b6b6791377e3b5ca893267f3a9504ca781baec35bf482e45f780f1eee85621d7",
+    "novaOS/user/novaauth/src/distribution.rs": "7cce47084287fedc2670ee078c621dffab40ab83ed2b4aea76240f7b3567745a",
+    "novaOS/user/novaauth/src/membership.rs": "e2739c78256d57b12236d938ed38f8b36d3fb3d1a9380d1fea0c69d4fd336160",
+    "novaOS/user/novaauth/service/membership_exec_origin.rs": "ae574c9909b832591baca6140a4a882dccba689968e6bb8e7f5fb472872e50dd",
+    "novaOS/user/novaauth/service/membership_exec_profile.py": "13d04363d3e7ccb368c21d18d61c56a76fde7aa99c442a0051c16a377d9f4809",
+    "novaOS/user/novaauth/service/src/bin/common/membership_exec_gate.rs": "5b6f711f077e0c847b088a8baf55de7c91228ff6e89d3aae206424bd0cd50b9f"
+  }
+}
