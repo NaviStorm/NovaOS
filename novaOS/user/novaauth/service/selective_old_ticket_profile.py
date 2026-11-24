@@ -41,7 +41,13 @@ def install(root):
     edit(channel,
         '                        if exchange(login,&pre)?!=selected {return Err(rt::DENIED);}',
         '                        if exchange(login,&pre)?!=selected {return Err(rt::DENIED);}'+AFTER_EFFECTORS)
+    verifier = 'novaOS/user/novaauth/service/src/bin/common/shell_verifier.rs'
+    edit(verifier, '        self.r2_offered=true;\n        Ok(())',
+         '        self.r2_offered=true;\n        if self.slot==1 {self.r2_ready=Some(id);}\n        Ok(())')
     bob='novaOS/user/novaauth/service/administration_bob_shell.rs'
+    # L'offre est déjà acquittée par le noyau pour la session inspectée.
+    # Utiliser cet événement existant pour le rendez-vous de qualification.
+    edit(bob, '    login.authenticate()?; // session existante : NSHLIVE seulement, aucun nouveau bail\n', '')
     p=root/bob;s=p.read_text();start=s.index('    let mut retired=false;');end=s.index('    login.close()?;',start)
     p.write_text(s[:start]+CONSUME+s[end:])
     session='components/shell/session_auth_lab.rs'
