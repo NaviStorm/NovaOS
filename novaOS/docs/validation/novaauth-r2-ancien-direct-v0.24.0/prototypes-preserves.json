@@ -1,0 +1,15 @@
+{
+  "fichiers": {
+    "novaOS/user/novaauth/service/exec_membership_lab.rs": "64a49106214af81de1ecd3526f00db641fb9f53eedca6ca891d79d3a6238d506",
+    "novaOS/user/novaauth/service/membership_exec_tests.rs": "01a6a0c475e307d6e3d3b17ce4008b6bc988dbee6945d219653548db3e302260",
+    "novaOS/user/novaauth/service/membership_profile.py": "664cfb776986616ec8732e451732713554b830b6d46bafc0d2a1faac336990b8",
+    "novaOS/user/novaauth/service/qualify_membership_effectors.py": "ecba0477c46d911e06e26e09245dbeebf08d4709651d1e1b3bb7f46dc6b11922",
+    "novaOS/user/novaauth/service/src/bin/common/exec_admission_guest.rs": "b6b6791377e3b5ca893267f3a9504ca781baec35bf482e45f780f1eee85621d7",
+    "novaOS/user/novaauth/src/distribution.rs": "7cce47084287fedc2670ee078c621dffab40ab83ed2b4aea76240f7b3567745a",
+    "novaOS/user/novaauth/src/membership.rs": "e2739c78256d57b12236d938ed38f8b36d3fb3d1a9380d1fea0c69d4fd336160",
+    "novaOS/user/novaauth/service/membership_exec_origin.rs": "ae574c9909b832591baca6140a4a882dccba689968e6bb8e7f5fb472872e50dd",
+    "novaOS/user/novaauth/service/membership_exec_profile.py": "13d04363d3e7ccb368c21d18d61c56a76fde7aa99c442a0051c16a377d9f4809",
+    "novaOS/user/novaauth/service/src/bin/common/membership_exec_gate.rs": "5b6f711f077e0c847b088a8baf55de7c91228ff6e89d3aae206424bd0cd50b9f"
+  },
+  "identiques": true
+}

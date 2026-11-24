@@ -1,0 +1,2851 @@
+{
+  "date_utc": "2026-11-24T23:07:59.774832+00:00",
+  "reference": "07cef0854c8916c623497b7d986fc2685639a828",
+  "head_code": "0a472637c26a44df5c8848d8b40ef6992bffd146",
+  "executions": [
+    {
+      "essai": "r2-commandes-aarch64-4096-retrait-selectif-vide-ack-absent-07",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "commit_invite": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "commit_banc": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000384459,
+      "execution_banc_s": 32.445975042,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 400,
+          "echeance_ms": 10400,
+          "fin_ms": 3252
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          153,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          153,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          61,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          61,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          61,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 66,
+      "drainage_global": true,
+      "retrait_selectif": {
+        "etat": "RETRAIT_EN_COURS",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "65fbd71003c67184940be4fbd4b3025b03000000000000800100000000000000",
+            "acquitte": false
+          },
+          {
+            "classe": 2,
+            "instance": "65fbd71003c67184940be4fbd4b3025b06000000000000800100000000000000",
+            "acquitte": false
+          },
+          {
+            "classe": 4,
+            "instance": "65fbd71003c67184940be4fbd4b3025b06000000000000800100000000000000",
+            "acquitte": false
+          }
+        ],
+        "delegations_G_ouvertes": true
+      },
+      "portee": "Droits VFS Direct/G/H réels et injection déclarée ; EXEC G, Q2/Q3 et reprise froide non qualifiés",
+      "rpc_selectifs": {
+        "57": 3,
+        "59": 10,
+        "58": 3,
+        "54": 1,
+        "55": 1,
+        "56": 1
+      },
+      "ordre_durable": [
+        {
+          "position": 6,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 7,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 8,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 9,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 14,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 15,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 18,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 19,
+          "transition": "membership-operation-finished"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base alice --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base alice --confirm 5915afac9d92e5b70b3ce35a42259c518c4ae3bfbb3c8ff8c49c26aebfb72815 --request 5915afac9d92e5b70b3ce35a42259c51",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "usermod --outcome 5915afac9d92e5b70b3ce35a42259c51",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "a904836c8848502608f080c4184b9e044e78d4dae65d5736ef800fb077551e06",
+        "invite/identites.p9": "0cbdccc52d9f368f651b819fe8b88e435f97dc224fb3f45458014feab559bb61"
+      }
+    },
+    {
+      "essai": "r2-commandes-aarch64-4096-retrait-selectif-vide-ack-perdu-07",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "commit_invite": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "commit_banc": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000310167,
+      "execution_banc_s": 33.527807042,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 404,
+          "echeance_ms": 10404,
+          "fin_ms": 3328
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          153,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          153,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          61,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          61,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          61,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 66,
+      "drainage_global": true,
+      "retrait_selectif": {
+        "etat": "RETIREE",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "091bb51912ec3f2d140058747180ceef03000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "091bb51912ec3f2d140058747180ceef06000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "091bb51912ec3f2d140058747180ceef06000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": true
+      },
+      "acquittement_selectif_perdu": {
+        "classe": 1,
+        "durable_avant_perte": true
+      },
+      "portee": "Droits VFS Direct/G/H réels et injection déclarée ; EXEC G, Q2/Q3 et reprise froide non qualifiés",
+      "rpc_selectifs": {
+        "57": 3,
+        "59": 12,
+        "58": 3,
+        "54": 1,
+        "55": 1,
+        "56": 3
+      },
+      "ordre_durable": [
+        {
+          "position": 6,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 7,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 8,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 9,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 14,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 15,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 19,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 20,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 21,
+          "transition": "membership-retired"
+        },
+        {
+          "position": 22,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 23,
+          "transition": "membership-operation-finished"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base alice --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base alice --confirm d42c8fa8712b595cf9ec1f940f4a6c443d410c103716f1eaea3e18ec2ba1415f --request d42c8fa8712b595cf9ec1f940f4a6c44",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "usermod --outcome d42c8fa8712b595cf9ec1f940f4a6c44",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "29fd68e4d6c5c6ed2adac9e6553a3c531a5ac012434159f861266cb75b837a67",
+        "invite/identites.p9": "1610d9d0853e24bdec3d1c06ef5838a951736bce731f4f2f73b5e0b8843c91df"
+      }
+    },
+    {
+      "essai": "r2-commandes-aarch64-4096-retrait-selectif-vide-ancien-direct-07",
+      "architecture": "aarch64",
+      "secteur": 4096,
+      "commit_invite": "b67f25d8ea30b8ce6d6955020ecc407a29b8367a",
+      "commit_banc": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000294375,
+      "execution_banc_s": 28.91688825,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 308,
+          "echeance_ms": 10308,
+          "fin_ms": 2288
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          160,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          160,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": true,
+      "ancien_direct": {
+        "inscription": 13,
+        "publication": 14,
+        "retrait_terminal": 18,
+        "admission": 19,
+        "terminal": 20,
+        "enfant": "3da1a405ade5efb5638f1011632d58ad15000000000000800300000000000000",
+        "pid": 23,
+        "ancien_descripteur_sha256": "42d78cb180aafebf5e7eaf7da8fbded00c1c1fff75cef94baf2ea09179372c2b",
+        "titulaire_du_retrait": "fdb851f42231a8db4a0a6fc75f9bb46a",
+        "utilisation_effective": true
+      },
+      "ticket_bob": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 3186,
+        "expiration_ticks": 3795,
+        "frequence_hz": 250,
+        "statut_natif": 0,
+        "enfants_supplementaires": 0
+      },
+      "retrait_selectif": {
+        "etat": "RETIREE",
+        "generation": 13,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "3da1a405ade5efb5638f1011632d58ad03000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "3da1a405ade5efb5638f1011632d58ad06000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "3da1a405ade5efb5638f1011632d58ad06000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": false
+      },
+      "portee": "ancien ticket Direct du titulaire retiré de G, effectivement consommé après RETIREE",
+      "rpc_selectifs": {
+        "54": 1,
+        "59": 5,
+        "55": 1,
+        "56": 3
+      },
+      "ordre_durable": [
+        {
+          "position": 12,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 14,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 15,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 17,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 18,
+          "transition": "membership-retired"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base bob --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base bob --confirm b228e4c0c166a0bec9cbe2292b32791b9bfd51eda22f0a08bf32b2120b2cca5f --request b228e4c0c166a0bec9cbe2292b32791b",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --outcome b228e4c0c166a0bec9cbe2292b32791b",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            24
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "marge_creation_ms": 1976.0,
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "bbbced0aec4b41fb73e49d0cc5845993188f00c3f06662bca26cd706a4b747ad",
+        "invite/identites.p9": "80272f42ce80f5e6e6eba350e95c4a9ad7a79d493ca428560f28fa3f3883bdcc"
+      }
+    },
+    {
+      "essai": "r2-commandes-aarch64-512-retrait-selectif-vide-ack-perdu-07",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "commit_invite": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "commit_banc": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000309208,
+      "execution_banc_s": 44.470286459,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 428,
+          "echeance_ms": 10428,
+          "fin_ms": 3988
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          153,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          153,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          61,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          61,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          61,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 66,
+      "drainage_global": true,
+      "retrait_selectif": {
+        "etat": "RETIREE",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "8899c59239f00daf490c8fa008ce8b9403000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "8899c59239f00daf490c8fa008ce8b9406000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "8899c59239f00daf490c8fa008ce8b9406000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": true
+      },
+      "acquittement_selectif_perdu": {
+        "classe": 1,
+        "durable_avant_perte": true
+      },
+      "portee": "Droits VFS Direct/G/H réels et injection déclarée ; EXEC G, Q2/Q3 et reprise froide non qualifiés",
+      "rpc_selectifs": {
+        "57": 3,
+        "59": 12,
+        "58": 3,
+        "54": 1,
+        "55": 1,
+        "56": 3
+      },
+      "ordre_durable": [
+        {
+          "position": 6,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 7,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 8,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 9,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 14,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 15,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 19,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 20,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 21,
+          "transition": "membership-retired"
+        },
+        {
+          "position": 22,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 23,
+          "transition": "membership-operation-finished"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base alice --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base alice --confirm 39f6be002e0dcb01cc29cbc8723d97d92ccb8acb8211b14398b2548fbe080e33 --request 39f6be002e0dcb01cc29cbc8723d97d9",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "usermod --outcome 39f6be002e0dcb01cc29cbc8723d97d9",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "5653a293cb89bc2ef8a33c69c5ecf6559d7dba80daeec245834eea22c65b0c47",
+        "invite/identites.p9": "28a4e6326dc1ca37148e106b8530214defa28561e88153cc7b7d5b754f6d4b39"
+      }
+    },
+    {
+      "essai": "r2-commandes-aarch64-512-retrait-selectif-vide-ancien-direct-05",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "commit_invite": "a9039fb72d307285fadef05471a8117feafd3fc9",
+      "commit_banc": "96c2539128d061c2ec30accf62b192e94672b91c",
+      "code_banc": 1,
+      "attente_verrou_s": 0.000321625,
+      "execution_banc_s": 69.894189958,
+      "qemu_demarre": true,
+      "resultat_invite": "b'DEBUG pid=11 NAR2\\\\ Bob\\\\ ancien\\\\ Direct\\\\ consomme\\\\ statut=0\\\\ collecte\\\\ unique\\\\r?\\\\n'",
+      "tls": [
+        {
+          "debut_ms": 400,
+          "echeance_ms": 10400,
+          "fin_ms": 3896
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          160,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          160,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": false,
+      "portee": "ancien ticket Direct du titulaire retiré de G, effectivement consommé après RETIREE",
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base bob --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "commande": "usermod --remove-group base bob --confirm a8776fa1b72734d6540d823942b42ab6cdd5bc4968b281bf7dd92976aa385027 --request a8776fa1b72734d6540d823942b42ab6",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "commande": "usermod --outcome a8776fa1b72734d6540d823942b42ab6",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "d1e80f0e55df340f88731858b190bda2c2133a641d2821f0be38678f4994bf03",
+        "invite/identites.p9": "f9b410df0f342f1ff0b18133af301db2a6ec040e94fdc077aa4201d2c5557243"
+      }
+    },
+    {
+      "essai": "r2-commandes-aarch64-512-retrait-selectif-vide-ancien-direct-06",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "commit_invite": "b67f25d8ea30b8ce6d6955020ecc407a29b8367a",
+      "commit_banc": "b67f25d8ea30b8ce6d6955020ecc407a29b8367a",
+      "code_banc": 1,
+      "attente_verrou_s": 0.000352417,
+      "execution_banc_s": 70.294125375,
+      "qemu_demarre": true,
+      "resultat_invite": "b'DEBUG pid=11 NAR2\\\\ Bob\\\\ ancien\\\\ Direct\\\\ consomme\\\\ statut=0\\\\ collecte\\\\ unique\\\\r?\\\\n'",
+      "tls": [
+        {
+          "debut_ms": 396,
+          "echeance_ms": 10396,
+          "fin_ms": 3968
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          160,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          160,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": false,
+      "portee": "ancien ticket Direct du titulaire retiré de G, effectivement consommé après RETIREE",
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base bob --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "commande": "usermod --remove-group base bob --confirm 61e9b401ac5b98d328de606fa76122fa3f01cec9448d3f6008b9365f6095e461 --request 61e9b401ac5b98d328de606fa76122fa",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "commande": "usermod --outcome 61e9b401ac5b98d328de606fa76122fa",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "7a0c65ed276fa2e88668007fa55a848e5666b6e53e48cada503a88e71a2663c3",
+        "invite/identites.p9": "763a51d590e379ef62478e53c7344f939422532c29e72b0778f2e6dfdb43fb0b"
+      }
+    },
+    {
+      "essai": "r2-commandes-aarch64-512-retrait-selectif-vide-ancien-direct-07",
+      "architecture": "aarch64",
+      "secteur": 512,
+      "commit_invite": "b67f25d8ea30b8ce6d6955020ecc407a29b8367a",
+      "commit_banc": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000421792,
+      "execution_banc_s": 38.810620666,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 328,
+          "echeance_ms": 10328,
+          "fin_ms": 2796
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          160,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          160,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": true,
+      "ancien_direct": {
+        "inscription": 13,
+        "publication": 14,
+        "retrait_terminal": 18,
+        "admission": 19,
+        "terminal": 20,
+        "enfant": "4558253af60f97de2e1803e6c2437d6415000000000000800300000000000000",
+        "pid": 23,
+        "ancien_descripteur_sha256": "8eb8c698a21b498a17fe8deccaf80aeb6db4c3aca62814cc6a9ec7d8b026ccdf",
+        "titulaire_du_retrait": "fdb851f42231a8db4a0a6fc75f9bb46a",
+        "utilisation_effective": true
+      },
+      "ticket_bob": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 4553,
+        "expiration_ticks": 4908,
+        "frequence_hz": 250,
+        "statut_natif": 0,
+        "enfants_supplementaires": 0
+      },
+      "retrait_selectif": {
+        "etat": "RETIREE",
+        "generation": 13,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "4558253af60f97de2e1803e6c2437d6403000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "4558253af60f97de2e1803e6c2437d6406000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "4558253af60f97de2e1803e6c2437d6406000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": false
+      },
+      "portee": "ancien ticket Direct du titulaire retiré de G, effectivement consommé après RETIREE",
+      "rpc_selectifs": {
+        "54": 1,
+        "59": 5,
+        "55": 1,
+        "56": 3
+      },
+      "ordre_durable": [
+        {
+          "position": 12,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 14,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 15,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 17,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 18,
+          "transition": "membership-retired"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base bob --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base bob --confirm 5eaf787fa08f79a00ea28cfc9578e13bd418b4b76c8f4f7ba52ec65b274a29b5 --request 5eaf787fa08f79a00ea28cfc9578e13b",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --outcome 5eaf787fa08f79a00ea28cfc9578e13b",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            24
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "marge_creation_ms": 596.0,
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "e85941a3a85abd9c957cae2f4aaa11c321265b20ad78f41d380be0b609a1be05",
+        "invite/identites.p9": "5cd3cbe7712cb589b2edbd51958931e5a52f83e6644e28637f78bcc9a6560418"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-4096-retrait-selectif-vide-ack-perdu-07",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "commit_invite": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "commit_banc": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000302167,
+      "execution_banc_s": 24.555375334,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 768,
+          "echeance_ms": 10768,
+          "fin_ms": 3804
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          157,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          157,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          69,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          69,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          69,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 66,
+      "drainage_global": true,
+      "retrait_selectif": {
+        "etat": "RETIREE",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "296a246d250d06db0d37b97167cb9edd03000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "296a246d250d06db0d37b97167cb9edd06000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "296a246d250d06db0d37b97167cb9edd06000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": true
+      },
+      "acquittement_selectif_perdu": {
+        "classe": 1,
+        "durable_avant_perte": true
+      },
+      "portee": "Droits VFS Direct/G/H réels et injection déclarée ; EXEC G, Q2/Q3 et reprise froide non qualifiés",
+      "rpc_selectifs": {
+        "57": 3,
+        "59": 12,
+        "58": 3,
+        "54": 1,
+        "55": 1,
+        "56": 3
+      },
+      "ordre_durable": [
+        {
+          "position": 6,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 7,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 8,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 9,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 14,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 15,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 19,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 20,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 21,
+          "transition": "membership-retired"
+        },
+        {
+          "position": 22,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 23,
+          "transition": "membership-operation-finished"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base alice --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base alice --confirm e83d4257f104576841d63179008cdff6c1470b52ab2cac4a460dd1b2eb11dcda --request e83d4257f104576841d63179008cdff6",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "usermod --outcome e83d4257f104576841d63179008cdff6",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "28123e8179d12a868ca04816e5e64a437287bbb0998dc92f52c234941f6be9d8",
+        "invite/identites.p9": "baa8dc1f9476fede097686a33d43c0ad6c3e33d63fd16964f8e9af32435d3de4"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-4096-retrait-selectif-vide-ancien-direct-05",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "commit_invite": "a9039fb72d307285fadef05471a8117feafd3fc9",
+      "commit_banc": "96c2539128d061c2ec30accf62b192e94672b91c",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000272083,
+      "execution_banc_s": 23.196456584,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 736,
+          "echeance_ms": 10736,
+          "fin_ms": 3724
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": true,
+      "ancien_direct": {
+        "inscription": 13,
+        "publication": 14,
+        "retrait_terminal": 18,
+        "admission": 19,
+        "terminal": 20,
+        "enfant": "ff326fdab04fa7bc6331c2d3b70f935615000000000000800300000000000000",
+        "pid": 23,
+        "ancien_descripteur_sha256": "af05ecfda3bed6cc54562b35b7e82c4a649e0bee890118a7e95cdb3132e8aa09",
+        "titulaire_du_retrait": "fdb851f42231a8db4a0a6fc75f9bb46a",
+        "utilisation_effective": true
+      },
+      "ticket_bob": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 4030,
+        "expiration_ticks": 4273,
+        "frequence_hz": 250,
+        "statut_natif": 0,
+        "enfants_supplementaires": 0
+      },
+      "retrait_selectif": {
+        "etat": "RETIREE",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "ff326fdab04fa7bc6331c2d3b70f935603000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "ff326fdab04fa7bc6331c2d3b70f935606000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "ff326fdab04fa7bc6331c2d3b70f935606000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": false
+      },
+      "portee": "ancien ticket Direct du titulaire retiré de G, effectivement consommé après RETIREE",
+      "rpc_selectifs": {
+        "54": 1,
+        "59": 5,
+        "55": 1,
+        "56": 3
+      },
+      "ordre_durable": [
+        {
+          "position": 12,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 14,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 15,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 17,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 18,
+          "transition": "membership-retired"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base bob --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base bob --confirm 2b080a831d11a2338c6fd70431104730bbbff6a9aa68f1d3974e1007f7c7702b --request 2b080a831d11a2338c6fd70431104730",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --outcome 2b080a831d11a2338c6fd70431104730",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            24
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "marge_creation_ms": 480.0,
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "7d2e06d390aa809b2467b45cf25f22e213f9d17201a5c3d041299f12ac41bfea",
+        "invite/identites.p9": "b179f179de75747b6c759a84e209dfe4cbb770efef6649a6b5002e232327e66d"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-4096-retrait-selectif-vide-ancien-direct-07",
+      "architecture": "x86_64",
+      "secteur": 4096,
+      "commit_invite": "b67f25d8ea30b8ce6d6955020ecc407a29b8367a",
+      "commit_banc": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000489667,
+      "execution_banc_s": 20.650013083,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 656,
+          "echeance_ms": 10656,
+          "fin_ms": 2724
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": true,
+      "ancien_direct": {
+        "inscription": 13,
+        "publication": 14,
+        "retrait_terminal": 18,
+        "admission": 19,
+        "terminal": 20,
+        "enfant": "9fa918b6620ed0cd7cc0df8b3b41f68215000000000000800300000000000000",
+        "pid": 23,
+        "ancien_descripteur_sha256": "0f07cb5f1ce31ab209bb0d291decfbb9446784097e7709fbdb2ecdb2696e93a3",
+        "titulaire_du_retrait": "fdb851f42231a8db4a0a6fc75f9bb46a",
+        "utilisation_effective": true
+      },
+      "ticket_bob": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 3388,
+        "expiration_ticks": 3963,
+        "frequence_hz": 250,
+        "statut_natif": 0,
+        "enfants_supplementaires": 0
+      },
+      "retrait_selectif": {
+        "etat": "RETIREE",
+        "generation": 13,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "9fa918b6620ed0cd7cc0df8b3b41f68203000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "9fa918b6620ed0cd7cc0df8b3b41f68206000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "9fa918b6620ed0cd7cc0df8b3b41f68206000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": false
+      },
+      "portee": "ancien ticket Direct du titulaire retiré de G, effectivement consommé après RETIREE",
+      "rpc_selectifs": {
+        "54": 1,
+        "59": 5,
+        "55": 1,
+        "56": 3
+      },
+      "ordre_durable": [
+        {
+          "position": 12,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 14,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 15,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 17,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 18,
+          "transition": "membership-retired"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base bob --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base bob --confirm c594ad5263d83587d3abce41cac9315c1e1cd75e076a0c94471967694d76f1a5 --request c594ad5263d83587d3abce41cac9315c",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --outcome c594ad5263d83587d3abce41cac9315c",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            24
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "marge_creation_ms": 1808.0,
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "608a5f7f9a2fdac5c1604e5da341d67d94d8b9dd73edbde2b7188e12e436253d",
+        "invite/identites.p9": "074f7443f3a4cf18874325cfda59bef4f51ad66162c8ff99af13c32cd2d79f40"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-ack-absent-07",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "commit_invite": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "commit_banc": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000316917,
+      "execution_banc_s": 23.776521667,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 680,
+          "echeance_ms": 10680,
+          "fin_ms": 3732
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          157,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          157,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          69,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          69,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          69,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 66,
+      "drainage_global": true,
+      "retrait_selectif": {
+        "etat": "RETRAIT_EN_COURS",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "a72e2fcd2353cb73d12355988b511c2a03000000000000800100000000000000",
+            "acquitte": false
+          },
+          {
+            "classe": 2,
+            "instance": "a72e2fcd2353cb73d12355988b511c2a06000000000000800100000000000000",
+            "acquitte": false
+          },
+          {
+            "classe": 4,
+            "instance": "a72e2fcd2353cb73d12355988b511c2a06000000000000800100000000000000",
+            "acquitte": false
+          }
+        ],
+        "delegations_G_ouvertes": true
+      },
+      "portee": "Droits VFS Direct/G/H réels et injection déclarée ; EXEC G, Q2/Q3 et reprise froide non qualifiés",
+      "rpc_selectifs": {
+        "57": 3,
+        "59": 10,
+        "58": 3,
+        "54": 1,
+        "55": 1,
+        "56": 1
+      },
+      "ordre_durable": [
+        {
+          "position": 6,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 7,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 8,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 9,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 14,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 15,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 18,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 19,
+          "transition": "membership-operation-finished"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base alice --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base alice --confirm 8f0f6a7d46de7a6dc1418a87c8ed023a404e3aad046ab033c548c31661532fce --request 8f0f6a7d46de7a6dc1418a87c8ed023a",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "usermod --outcome 8f0f6a7d46de7a6dc1418a87c8ed023a",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "0cff18d4cc4c911413aba31b1af3c0f6da86a0b673b7087459376f7b051b06e5",
+        "invite/identites.p9": "b3c4c8d543a630ebebb1d747ce8c7cd0f81f19c09635d21f766322cacb3bdaa2"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-ack-perdu-07",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "commit_invite": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "commit_banc": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000316334,
+      "execution_banc_s": 24.450860208,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 768,
+          "echeance_ms": 10768,
+          "fin_ms": 3688
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          157,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          157,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          69,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          69,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          69,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 66,
+      "drainage_global": true,
+      "retrait_selectif": {
+        "etat": "RETIREE",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "4dad668ae688ebec27f46bf67b5b3a0003000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "4dad668ae688ebec27f46bf67b5b3a0006000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "4dad668ae688ebec27f46bf67b5b3a0006000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": true
+      },
+      "acquittement_selectif_perdu": {
+        "classe": 1,
+        "durable_avant_perte": true
+      },
+      "portee": "Droits VFS Direct/G/H réels et injection déclarée ; EXEC G, Q2/Q3 et reprise froide non qualifiés",
+      "rpc_selectifs": {
+        "57": 3,
+        "59": 12,
+        "58": 3,
+        "54": 1,
+        "55": 1,
+        "56": 3
+      },
+      "ordre_durable": [
+        {
+          "position": 6,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 7,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 8,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 9,
+          "transition": "membership-operation-finished"
+        },
+        {
+          "position": 14,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 15,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 19,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 20,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 21,
+          "transition": "membership-retired"
+        },
+        {
+          "position": 22,
+          "transition": "membership-admitted"
+        },
+        {
+          "position": 23,
+          "transition": "membership-operation-finished"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base alice --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base alice --confirm 647aae85f7c55e24cbf892ac0ff49a84c065bee5de2d6029b1c9459d40397c1d --request 647aae85f7c55e24cbf892ac0ff49a84",
+          "statut_shell": 20,
+          "statut_attendu": 20,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 0,
+          "stderr_octets": 95,
+          "statut_novaAuth": 22,
+          "octets_conformes": true,
+          "statut_natif": 20
+        },
+        {
+          "commande": "usermod --outcome 647aae85f7c55e24cbf892ac0ff49a84",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "ba55069f083b3165b316849cea29342e3338a61128c771853b99354bbe0f7d0d",
+        "invite/identites.p9": "68e8c259f481262964cf90acd995e889502d3d950bc9c7ae7501a53f2840bb8b"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-ancien-direct-01",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "commit_invite": "8fc2deb3b08018acd1dabe6559ec0dc171ffb809",
+      "commit_banc": "8fc2deb3b08018acd1dabe6559ec0dc171ffb809",
+      "code_banc": 1,
+      "attente_verrou_s": 0.001843416,
+      "execution_banc_s": 52.837970834,
+      "qemu_demarre": true,
+      "resultat_invite": "b'DEBUG pid=11 NAR2\\\\ Bob\\\\ ancien\\\\ Direct\\\\ consomme\\\\ statut=0\\\\ collecte\\\\ unique\\\\r?\\\\n'",
+      "tls": [
+        {
+          "debut_ms": 720,
+          "echeance_ms": 10720,
+          "fin_ms": 3652
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": true,
+      "portee": "raccord administratif sans delegation G ouverte ; ne qualifie pas Q1-Q4",
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base alice --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "commande": "usermod --remove-group base alice --confirm 0ef04e2a23a1170ced0ea7d6969d39abe64bcfafd5e9999d9497a0b8de185bb0 --request 0ef04e2a23a1170ced0ea7d6969d39ab",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "commande": "usermod --outcome 0ef04e2a23a1170ced0ea7d6969d39ab",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "c8880a16d6ea48e482f9c4549c89060635303122d411b81be8a3846c21f6329e",
+        "invite/identites.p9": "c7e731f36fc19b120a947e3d5f7c2a79c0e8bd90c6306caf6911c31feecad6fc"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-ancien-direct-02",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "commit_invite": "a5ce70749c42b8d7f929388b40e196ca16506a37",
+      "commit_banc": "a5ce70749c42b8d7f929388b40e196ca16506a37",
+      "code_banc": 1,
+      "attente_verrou_s": 0.000585958,
+      "execution_banc_s": 52.014474209,
+      "qemu_demarre": true,
+      "resultat_invite": "b'DEBUG pid=11 NAR2\\\\ Bob\\\\ ancien\\\\ Direct\\\\ consomme\\\\ statut=0\\\\ collecte\\\\ unique\\\\r?\\\\n'",
+      "tls": [
+        {
+          "debut_ms": 740,
+          "echeance_ms": 10740,
+          "fin_ms": 3744
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": true,
+      "portee": "raccord administratif sans delegation G ouverte ; ne qualifie pas Q1-Q4",
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base bob --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "commande": "usermod --remove-group base bob --confirm 51cef35488b6c9292bcaf14534ab70b4e097486da451ec601bddda7986b3a9d0 --request 51cef35488b6c9292bcaf14534ab70b4",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "commande": "usermod --outcome 51cef35488b6c9292bcaf14534ab70b4",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            23
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "f5fd2d9e1bfacda0857aad4bd931dcaedcadef57b249d2cdf9350cf1be999032",
+        "invite/identites.p9": "aab6d6b838faefbd03032315bb3a0606a2150390a52e972bc37ca562409b5aa6"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-ancien-direct-03",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "commit_invite": "a9039fb72d307285fadef05471a8117feafd3fc9",
+      "commit_banc": "a9039fb72d307285fadef05471a8117feafd3fc9",
+      "code_banc": 1,
+      "attente_verrou_s": 0.0004705,
+      "execution_banc_s": 22.968451458,
+      "qemu_demarre": true,
+      "resultat_invite": "cannot access local variable 'bob' where it is not associated with a value",
+      "tls": [
+        {
+          "debut_ms": 700,
+          "echeance_ms": 10700,
+          "fin_ms": 3656
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": false,
+      "portee": "raccord administratif sans delegation G ouverte ; ne qualifie pas Q1-Q4",
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base bob --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "commande": "usermod --remove-group base bob --confirm d5d63362bfac241bb977b8a7053ddf25dacff430ca2ee0c1394d542e13b43f1e --request d5d63362bfac241bb977b8a7053ddf25",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        },
+        {
+          "commande": "usermod --outcome d5d63362bfac241bb977b8a7053ddf25",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            24
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true
+        }
+      ],
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "2e5668b87a80c32f6fd80a18907c737871d0d557ca131447b572c4dcbb17cafa",
+        "invite/identites.p9": "25817f900f2af340993a43230a5c16fc3b43185fa68c23b516f9b3d1bbec3476"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-ancien-direct-04",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "commit_invite": "a9039fb72d307285fadef05471a8117feafd3fc9",
+      "commit_banc": "96c2539128d061c2ec30accf62b192e94672b91c",
+      "code_banc": 1,
+      "attente_verrou_s": 0.000341875,
+      "execution_banc_s": 0.081409959,
+      "qemu_demarre": false
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-ancien-direct-05",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "commit_invite": "a9039fb72d307285fadef05471a8117feafd3fc9",
+      "commit_banc": "96c2539128d061c2ec30accf62b192e94672b91c",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000300166,
+      "execution_banc_s": 23.039401834,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 696,
+          "echeance_ms": 10696,
+          "fin_ms": 3660
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": true,
+      "ancien_direct": {
+        "inscription": 13,
+        "publication": 14,
+        "retrait_terminal": 18,
+        "admission": 19,
+        "terminal": 20,
+        "enfant": "16135c4d93c7d7c956038b79106323a515000000000000800300000000000000",
+        "pid": 23,
+        "ancien_descripteur_sha256": "16ea80b23edade5d8e9018ba3a248216f804292c291d98b4139f8450cfd69b63",
+        "titulaire_du_retrait": "fdb851f42231a8db4a0a6fc75f9bb46a",
+        "utilisation_effective": true
+      },
+      "ticket_bob": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 4001,
+        "expiration_ticks": 4264,
+        "frequence_hz": 250,
+        "statut_natif": 0,
+        "enfants_supplementaires": 0
+      },
+      "retrait_selectif": {
+        "etat": "RETIREE",
+        "generation": 31,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "16135c4d93c7d7c956038b79106323a503000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "16135c4d93c7d7c956038b79106323a506000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "16135c4d93c7d7c956038b79106323a506000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": false
+      },
+      "portee": "ancien ticket Direct du titulaire retiré de G, effectivement consommé après RETIREE",
+      "rpc_selectifs": {
+        "54": 1,
+        "59": 5,
+        "55": 1,
+        "56": 3
+      },
+      "ordre_durable": [
+        {
+          "position": 12,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 14,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 15,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 17,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 18,
+          "transition": "membership-retired"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base bob --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base bob --confirm d3752293eebfebb16a4364858c2720dacf547cbe8cbe2e1a36f8addeb50da92f --request d3752293eebfebb16a4364858c2720da",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --outcome d3752293eebfebb16a4364858c2720da",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            24
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "marge_creation_ms": 464.0,
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "46b4113f1c427aa9163d0032aaa75524659423b6ec973dc224c34048377b9622",
+        "invite/identites.p9": "c11ee6ddf5d214c1369f4a63b93c5b0a09efebadd348f8e2e2f19392b71a62ac"
+      }
+    },
+    {
+      "essai": "r2-commandes-x86_64-512-retrait-selectif-vide-ancien-direct-07",
+      "architecture": "x86_64",
+      "secteur": 512,
+      "commit_invite": "b67f25d8ea30b8ce6d6955020ecc407a29b8367a",
+      "commit_banc": "d20b8637ed44cfd2563d0a5a00c802cfa8a24cc3",
+      "code_banc": 0,
+      "attente_verrou_s": 0.000366167,
+      "execution_banc_s": 20.393645708,
+      "qemu_demarre": true,
+      "resultat_invite": null,
+      "tls": [
+        {
+          "debut_ms": 628,
+          "echeance_ms": 10628,
+          "fin_ms": 2608
+        }
+      ],
+      "plafond_4_racines": true,
+      "refus_cinquieme": true,
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          163,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "pic_cadres_ipc_instrumente": 74,
+      "drainage_global": true,
+      "ancien_direct": {
+        "inscription": 13,
+        "publication": 14,
+        "retrait_terminal": 18,
+        "admission": 19,
+        "terminal": 20,
+        "enfant": "206159be4e0a3cd96cb49969e53be58b15000000000000800300000000000000",
+        "pid": 23,
+        "ancien_descripteur_sha256": "c1e0d894844d27952ebb613a58499a9beb577800c208de09c9e8cb3259b6c818",
+        "titulaire_du_retrait": "fdb851f42231a8db4a0a6fc75f9bb46a",
+        "utilisation_effective": true
+      },
+      "ticket_bob": {
+        "reference": 4611686018427388047,
+        "presentation_ticks": 3343,
+        "expiration_ticks": 3926,
+        "frequence_hz": 250,
+        "statut_natif": 0,
+        "enfants_supplementaires": 0
+      },
+      "retrait_selectif": {
+        "etat": "RETIREE",
+        "generation": 13,
+        "effecteurs": [
+          {
+            "classe": 1,
+            "instance": "206159be4e0a3cd96cb49969e53be58b03000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 2,
+            "instance": "206159be4e0a3cd96cb49969e53be58b06000000000000800100000000000000",
+            "acquitte": true
+          },
+          {
+            "classe": 4,
+            "instance": "206159be4e0a3cd96cb49969e53be58b06000000000000800100000000000000",
+            "acquitte": true
+          }
+        ],
+        "delegations_G_ouvertes": false
+      },
+      "portee": "ancien ticket Direct du titulaire retiré de G, effectivement consommé après RETIREE",
+      "rpc_selectifs": {
+        "54": 1,
+        "59": 5,
+        "55": 1,
+        "56": 3
+      },
+      "ordre_durable": [
+        {
+          "position": 12,
+          "transition": "membership-reserved"
+        },
+        {
+          "position": 14,
+          "transition": "membership-withdrawing"
+        },
+        {
+          "position": 15,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 16,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 17,
+          "transition": "membership-effector-ack"
+        },
+        {
+          "position": 18,
+          "transition": "membership-retired"
+        }
+      ],
+      "commandes": [
+        {
+          "commande": "usermod --remove-group base bob --prepare",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            21
+          ],
+          "shell": 5,
+          "stdout_octets": 134,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --remove-group base bob --confirm c8273b8fb13043bdc09ebb4e08f4450ee948921a4b33f2222e0dd85322ceafc0 --request c8273b8fb13043bdc09ebb4e08f4450e",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            22
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        },
+        {
+          "commande": "usermod --outcome c8273b8fb13043bdc09ebb4e08f4450e",
+          "statut_shell": 0,
+          "statut_attendu": 0,
+          "pid": [
+            24
+          ],
+          "shell": 5,
+          "stdout_octets": 70,
+          "stderr_octets": 0,
+          "octets_conformes": true,
+          "statut_natif": 0
+        }
+      ],
+      "marge_creation_ms": 1744.0,
+      "artefacts_prives_sha256": {
+        "autorite-independante.sqlite": "fae1b69c6c38c0c315233c866e7f9c057ffc0adf27b6641d1777b485c9f00149",
+        "invite/identites.p9": "075566346768b34dd33e551cdbc96d5f7f7104d423b956a603aba98f820399a2"
+      }
+    }
+  ],
+  "durees": {
+    "attente_verrou_s": 0.007999293,
+    "banc_s": 606.32447367,
+    "bancs_avec_qemu_s": 606.243063711
+  }
+}
