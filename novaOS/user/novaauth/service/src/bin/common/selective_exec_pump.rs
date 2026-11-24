@@ -8,7 +8,10 @@ use novaos_recovery::subject_admission::{Request,SIZE};
 const WORDS:usize=48;
 #[path="selective_exec_guest.rs"]
 mod selective;
-pub(crate) fn register(state:&novaos_identity::recuperation_view::View,q:&[u8;128])->rt::Result<()> {selective::register(state,q)}
+use crate::recovery_store::Storage;
+pub(crate) fn register(state:&novaos_identity::recuperation_view::View,storage:&mut Storage,q:&[u8;128])->rt::Result<()> {
+    selective::register(state,storage,q)
+}
 use ed25519_dalek::{VerifyingKey,Signature};
 const LIST:u64=0x4e58474154454c53;
 const READ:u64=0x4e58474154450000;
@@ -65,7 +68,7 @@ Request::parse(&q).map_err(|_|rt::REFUSED)
 }
 impl Pump {
     pub fn new()->Self {Self {pending:None}}
-    pub fn poll(&mut self,state:&novaos_identity::recuperation_view::View)->rt::Result<()> {
+    pub fn poll(&mut self,state:&novaos_identity::recuperation_view::View,storage:&mut Storage)->rt::Result<()> {
         let leaf=notify(rt::config(14),LIST)?;if leaf==0 {return Ok(());}
         let m=metadata(leaf)?;
         if m[0]==5 && m[26..28]==[0;2] && self.pending.is_none() {
@@ -87,7 +90,7 @@ impl Pump {
             // permet l'annulation locale ; aucune admission n'a été envoyée.
             let head=match tete::query(rt::config(8),&incarnation::identity()) {
                 Ok(h) if bound!=[0;16] && h[72..80]==state.head().generation.to_be_bytes() && h[80..112]==state.head().digest=>{
-                    descriptor=match selective::digest(state,&m){
+                    descriptor=match selective::digest(state,storage,&m){
                         Ok(d)=>d,
                         Err(rt::REVOKED)=>{command(leaf,2,bound,0,[0;32])?;return Ok(());},
                         Err(e)=>return Err(e),

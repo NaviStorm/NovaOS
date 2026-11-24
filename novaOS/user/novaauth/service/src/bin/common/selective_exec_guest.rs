@@ -2,7 +2,7 @@
 //! sans portée VFS ; une portée liée exige aussi un sceau vérifié sur P9.
 use super::*;
 use novaos_identity::{
- recuperation_view::{View,seal_digest}, policy::{Image,Origin},
+ recuperation_view::View, policy::{Image,Origin},
  distribution::{ExecutionIdentity,Machine}, execution_selective::RequiredPermission,
 };
 use novaos_recovery::exec_descriptor::{Descriptor,DEPENDENCY,HEADER as DESCRIPTOR_HEADER};
@@ -16,37 +16,30 @@ fn query(op:[u8;16],answer:&mut [u8;MAX])->rt::Result<(usize,[u8;112])>{
  q[32..64].copy_from_slice(&incarnation::identity());q[64..80].copy_from_slice(&op);q[80..].copy_from_slice(&*common::random()?);
  let n=exchange(63,&q,answer)?;novaos_recovery::exec_descriptor::verify_lookup(&key()?,&q,&answer[HEADER+8..HEADER+8+n]).map_err(|_|rt::REFUSED)?;Ok((n,q))
 }
-pub(super) fn validate(state:&View,d:Descriptor<'_>,m:&[u64;WORDS])->rt::Result<()> {
+pub(super) fn validate(state:&View,storage:&mut Storage,d:Descriptor<'_>,m:&[u64;WORDS])->rt::Result<()> {
  let p=d.bytes();
  let file=d.matches_launch_metadata(m).map_err(|_|rt::REVOKED)?;
  if p[8..24]!=incarnation::SERVER || p[24..40]!=incarnation::DOMAIN || p[40..72]!=incarnation::identity()
   || p[328..344]!=state.head().volume[0] || p[344..360]!=state.head().volume[1] {return Err(rt::REVOKED);}
  let own=d.dependencies().next().ok_or(rt::REFUSED)?;
  let expected=ExecutionIdentity{package:p[272..288].try_into().unwrap(),version:u32::from_be_bytes(p[288..292].try_into().unwrap()),machine:u16::from_be_bytes(p[292..294].try_into().unwrap()),manifest:p[392..424].try_into().unwrap(),object:number(p,360),revision:number(p,368),offset:number(p,376),size:number(p,384),image_revision:own.image_revision(),administration:p[504]};
- let required=file.map(|dep| {
-  // Sélection immuable de la porte : la liaison du fichier est entière. La
-  // vue fraîche vérifie ce sceau et la provenance signée du descripteur.
-  let owner=dep.owner();
-  let mut seal=[0;40];
-  seal[..8].copy_from_slice(b"NXScope1");
-  seal[8..24].copy_from_slice(&owner);
-  seal[24..32].copy_from_slice(&m[32].to_le_bytes());
-  seal[32..40].copy_from_slice(&m[33].to_le_bytes());
-  RequiredPermission{
-   owner,object:dep.object(),rights:dep.rights(),
+ let required=if let Some(dep)=file {
+  let seal=storage.exec_seal(d.operation(),state.head().volume,dep.owner(),dep.object(),m[33])?;
+  Some(RequiredPermission{
+   owner:dep.owner(),object:dep.object(),rights:dep.rights(),
    origin:if dep.origin()==1{Origin::Direct}else{Origin::Group(dep.group())},
    membership_revision:dep.membership_revision(),rule_revision:dep.rule_revision(),
-   image_revision:dep.image_revision(),seal:seal_digest(&seal),
-  }
- });
+   image_revision:dep.image_revision(),seal,
+  })
+ }else{None};
  state.revalidate_execution_subject(p[136..152].try_into().unwrap(),m[31],Image{installation:bytes(&m[12..14]),digest:bytes(&m[14..18])},expected,&distribution()?,machine(),required.as_slice()).map_err(|_|rt::REVOKED)
 }
-pub(super) fn digest(state:&View,m:&[u64;WORDS])->rt::Result<[u8;32]>{
+pub(super) fn digest(state:&View,storage:&mut Storage,m:&[u64;WORDS])->rt::Result<[u8;32]>{
  let op=bytes::<16>(&m[26..28]);let mut a=[0;MAX];let(n,q)=query(op,&mut a)?;
  let(_,d)=novaos_recovery::exec_descriptor::verify_lookup(&key()?,&q,&a[HEADER+8..HEADER+8+n]).map_err(|_|rt::REFUSED)?;
- validate(state,d,m)?;Ok(d.digest())
+ validate(state,storage,d,m)?;Ok(d.digest())
 }
-pub(super) fn register(state:&View,q:&[u8;128])->rt::Result<()> {
+pub(super) fn register(state:&View,storage:&mut Storage,q:&[u8;128])->rt::Result<()> {
  if &q[..8]!=b"NXEXBND1" || q[96..]!=[0;32]{return Err(rt::BAD_ARGUMENT);}
  let mut cursor=0;let mut found=None;
  // Au plus deux routes nsh. Ne jamais choisir une instance sur son seul PID.
@@ -75,7 +68,7 @@ pub(super) fn register(state:&View,q:&[u8;128])->rt::Result<()> {
  for(at,n)in[(360,own.object),(368,own.revision),(376,own.offset),(384,own.size),(424,state.head().generation),(464,m[3])]{put(&mut p,at,n);}
  p[392..424].copy_from_slice(&own.manifest);p[432..464].copy_from_slice(&state.head().digest);p[472..504].copy_from_slice(&q[24..56]);p[504]=own.administration;
  p[512]=1;p[513]=1;p[520..536].copy_from_slice(&grant.subject());put(&mut p,536,own.object);put(&mut p,576,own.image_revision);
- let d=Descriptor::parse(&p).map_err(|_|rt::REFUSED)?;validate(state,d,&m)?;
+ let d=Descriptor::parse(&p).map_err(|_|rt::REFUSED)?;validate(state,storage,d,&m)?;
  let mut answer=[0;MAX];match exchange(62,&p,&mut answer) {
   Ok(n)=>{let a=&answer[HEADER+8..HEADER+8+n];if n!=p.len()+72 || a[8..8+p.len()]!=p{return Err(rt::REFUSED);}
    d.verify_registration(&key()?,number(a,0),a[8+p.len()..].try_into().unwrap()).map_err(|_|rt::REFUSED)?;}

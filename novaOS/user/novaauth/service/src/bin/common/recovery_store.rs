@@ -71,6 +71,28 @@ impl Storage {
 
 #[cfg(feature="membership-r2-guest")]
 impl Storage {
+    #[cfg(feature="selective-exec-guest")]
+    pub fn exec_seal(&mut self, operation: [u8; 16], volume: [[u8; 16]; 2],
+        owner: [u8; 16], directory: u64, file: u64) -> rt::Result<[u8; 32]> {
+        use novaos_identity::exec_file_scope::Probe;
+        let mut request = [0; 128];
+        request[..8].copy_from_slice(Probe::TAG);
+        request[8..24].copy_from_slice(&operation);
+        request[24..40].copy_from_slice(&volume[0]);
+        request[40..56].copy_from_slice(&volume[1]);
+        request[56..72].copy_from_slice(&owner);
+        request[72..80].copy_from_slice(&directory.to_le_bytes());
+        request[80..88].copy_from_slice(&file.to_le_bytes());
+        request[88..120].copy_from_slice(&self.membership_instance()?);
+        let probe = Probe::parse(&request).map_err(|_| rt::DENIED)?;
+        self.sequence = self.sequence.checked_add(1).ok_or(rt::LIMIT)?;
+        let reply = common::rpc(self.port, self.port, self.sequence, &request)?;
+        if common::number(&reply) != rt::OK {
+            return Err(common::number(&reply));
+        }
+        probe.verify(&reply).map_err(|_| rt::REFUSED)
+    }
+
     pub fn membership_io(&mut self,q:&[u8;128])->rt::Result<[u8;128]> {
         if !matches!(&q[..8],b"NXMGCTX2"|b"NXMGGO01"|b"NXMGDEN1"|b"NXMGCAN1"|b"NXMGRES1"|b"NXMGREL1"){return Err(rt::DENIED);}
         self.sequence=self.sequence.checked_add(1).ok_or(rt::LIMIT)?;

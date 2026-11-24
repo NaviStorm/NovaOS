@@ -35,8 +35,14 @@ def install(root):
  service='novaOS/user/novaauth/service/'
  # Remplacement limité à cette copie de compilation, jamais au noyau ordinaire.
  (root/(service+'src/bin/common/exec_admission_guest.rs')).write_text((root/(service+'src/bin/common/selective_exec_pump.rs')).read_text())
- edit(service+'src/bin/common/recovery_view.rs','admissions.poll().err()','admissions.poll(&state).err()')
- edit(service+'src/bin/common/recovery_view.rs','            let folder=', '''            if &m.payload[..8]==b"NXEXBND1" {return crate::exec_admission_guest::register(&state,&m.payload);}
+ edit(service+'src/bin/common/recovery_view.rs','admissions.poll().err()','admissions.poll(&state,&mut recovered.storage).err()')
+ edit(service+'triplet_effecteur.rs','const TAG:u64=', 'include!("selective_exec_scope_vfs.rs");\nconst TAG:u64=')
+ edit(service+'triplet_effecteur.rs','        session.mount_volume()?;', '''        if &msg.payload[..8]==novaos_identity::exec_file_scope::Probe::TAG {
+            response=scope_seal(session,&msg.payload)?;
+            return Ok(());
+        }
+        session.mount_volume()?;''')
+ edit(service+'src/bin/common/recovery_view.rs','            let folder=', '''            if &m.payload[..8]==b"NXEXBND1" {return crate::exec_admission_guest::register(&state,&mut recovered.storage,&m.payload);}
             let folder=''')
  # Seul le vérificateur authentifié produit cette requête ; le CLI n'a aucun
  # accès au port privé et ne fournit ni provenance ni descripteur.

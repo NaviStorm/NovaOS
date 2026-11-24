@@ -23,6 +23,8 @@ pub mod recuperation_port;
 #[cfg(feature = "recuperation-lab")]
 pub mod recuperation_view;
 #[cfg(feature = "recuperation-lab")]
+pub mod exec_file_scope;
+#[cfg(feature = "recuperation-lab")]
 pub mod snapshot_digest;
 #[cfg(feature = "distribution-lab")]
 pub mod distribution;
