@@ -1,0 +1,169 @@
+[
+  {
+    "campagne": "confinement-01",
+    "horaires": {
+      "architectures": {},
+      "bail_attribue": false,
+      "debut_attente": "2026-11-25T11:18:50.817572+00:00",
+      "acquisition": "2026-11-25T11:18:50.817833+00:00",
+      "attente_s": 0.00027645903173834085,
+      "liberation": "2026-11-25T11:18:50.927179+00:00"
+    },
+    "captures": []
+  },
+  {
+    "campagne": "confinement-02",
+    "horaires": {
+      "architectures": {
+        "x86_64": {
+          "execution_s": 1.7820546659640968,
+          "bilan_invite": true
+        }
+      },
+      "bail_attribue": false,
+      "debut_attente": "2026-11-25T11:19:01.199388+00:00",
+      "acquisition": "2026-11-25T11:19:01.199697+00:00",
+      "attente_s": 0.0003164589870721102,
+      "liberation": "2026-11-25T11:19:03.169059+00:00"
+    },
+    "captures": [
+      {
+        "fichier": "confinement-02/x86_64/fin.json",
+        "vm": {
+          "status": "paused",
+          "running": false
+        },
+        "iommu_platform": true,
+        "vtd_version": 16,
+        "vtd_gsts": 0,
+        "pci_id_ecam": 272702196,
+        "pci_command": 7
+      },
+      {
+        "fichier": "confinement-02/x86_64/reset.json",
+        "vm": {
+          "status": "prelaunch",
+          "running": false
+        },
+        "iommu_platform": true,
+        "vtd_version": 16,
+        "vtd_gsts": 0,
+        "pci_id_ecam": null
+      }
+    ]
+  },
+  {
+    "campagne": "confinement-03",
+    "horaires": {
+      "architectures": {
+        "aarch64": {
+          "execution_s": 20.096901583950967,
+          "bilan_invite": false
+        }
+      },
+      "bail_attribue": false,
+      "debut_attente": "2026-11-25T11:19:32.879495+00:00",
+      "acquisition": "2026-11-25T11:19:32.879800+00:00",
+      "attente_s": 0.00031462498009204865,
+      "liberation": "2026-11-25T11:19:53.092130+00:00"
+    },
+    "captures": [
+      {
+        "fichier": "confinement-03/aarch64/fin.json",
+        "vm": {
+          "status": "paused",
+          "running": false
+        },
+        "iommu_platform": true,
+        "boot_bypass": false,
+        "pci_id_ecam": 272702196,
+        "pci_command": 0
+      },
+      {
+        "fichier": "confinement-03/aarch64/reset.json",
+        "vm": {
+          "status": "prelaunch",
+          "running": false
+        },
+        "iommu_platform": true,
+        "boot_bypass": false,
+        "pci_id_ecam": 272702196,
+        "pci_command": 0
+      }
+    ]
+  },
+  {
+    "campagne": "confinement-dxe-01",
+    "horaires": {
+      "bail_attribue": false,
+      "paquet_sha256": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+      "debut_attente": "2026-11-25T11:21:11.226483+00:00",
+      "acquisition": "2026-11-25T11:21:11.226738+00:00",
+      "attente_s": 0.00026454206090420485,
+      "bilan_invite": false,
+      "execution_s": 40.56312149995938,
+      "liberation": "2026-11-25T11:21:51.833270+00:00"
+    },
+    "captures": [
+      {
+        "fichier": "confinement-dxe-01/fin.json",
+        "vm": {
+          "status": "paused",
+          "running": false
+        },
+        "iommu_platform": true,
+        "boot_bypass": false,
+        "pci_id_ecam": 272702196,
+        "pci_command": 0
+      },
+      {
+        "fichier": "confinement-dxe-01/reset.json",
+        "vm": {
+          "status": "prelaunch",
+          "running": false
+        },
+        "iommu_platform": true,
+        "boot_bypass": false,
+        "pci_id_ecam": 272702196,
+        "pci_command": 0
+      }
+    ]
+  },
+  {
+    "campagne": "confinement-dxe-02",
+    "horaires": {
+      "bail_attribue": false,
+      "paquet_sha256": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+      "debut_attente": "2026-11-25T11:22:17.250028+00:00",
+      "acquisition": "2026-11-25T11:22:17.250290+00:00",
+      "attente_s": 0.00027075002435594797,
+      "bilan_invite": true,
+      "execution_s": 5.729013499920256,
+      "liberation": "2026-11-25T11:22:23.022896+00:00"
+    },
+    "captures": [
+      {
+        "fichier": "confinement-dxe-02/fin.json",
+        "vm": {
+          "status": "paused",
+          "running": false
+        },
+        "iommu_platform": true,
+        "boot_bypass": false,
+        "pci_id_ecam": 272702196,
+        "pci_command": 0
+      },
+      {
+        "fichier": "confinement-dxe-02/reset.json",
+        "vm": {
+          "status": "prelaunch",
+          "running": false
+        },
+        "iommu_platform": true,
+        "boot_bypass": false,
+        "pci_id_ecam": 272702196,
+        "pci_command": 0
+      }
+    ]
+  }
+]
