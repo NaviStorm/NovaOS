@@ -1,0 +1,352 @@
+{
+  "code": "99f3ad50718a131c2e9f43576fa40d16e4e18215",
+  "edk2": "fbe0805b2091393406952e84724188f8c1941837",
+  "qemu": {
+    "qemu": {
+      "micro": 3,
+      "minor": 1,
+      "major": 11
+    },
+    "package": ""
+  },
+  "firmwares_sha256": {
+    "amont": "982b7d3f93850cb0c27df86dacb0a6a8fd5890419edff4713bd50db503685b90",
+    "variante": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+  },
+  "q35_livraison": {
+    "livraison-avant-dbx/variante": {
+      "demandes_bme": 0,
+      "secure_boot": 1,
+      "setup_mode": 0,
+      "chargement_second_pe_avant_dbx": "0x0",
+      "commande_reset": 0,
+      "commande_fin": 0,
+      "gsts_fin": 0,
+      "rss_hote_pic_echantillonne_Kio": 120160,
+      "bail_attribue": false,
+      "nombre_ecritures_commande": 10
+    },
+    "livraison-comparaison/amont": {
+      "demandes_bme": 3,
+      "pages_uefi": {
+        "boot": 5776,
+        "runtime": 512,
+        "libres": 37693
+      },
+      "secure_boot": 1,
+      "setup_mode": 0,
+      "load_image_refuse": "0x800000000000000f",
+      "commande_reset": 0,
+      "commande_fin": 7,
+      "gsts_fin": 0,
+      "rss_hote_pic_echantillonne_Kio": 120352,
+      "bail_attribue": false,
+      "nombre_ecritures_commande": 12
+    },
+    "livraison-comparaison/variante": {
+      "demandes_bme": 0,
+      "pages_uefi": {
+        "boot": 5776,
+        "runtime": 512,
+        "libres": 37693
+      },
+      "secure_boot": 1,
+      "setup_mode": 0,
+      "load_image_refuse": "0x800000000000000f",
+      "commande_reset": 0,
+      "commande_fin": 0,
+      "gsts_fin": 0,
+      "rss_hote_pic_echantillonne_Kio": 115424,
+      "bail_attribue": false,
+      "nombre_ecritures_commande": 10
+    },
+    "livraison-dbx/variante": {
+      "demandes_bme": 0,
+      "pages_uefi": {
+        "boot": 5856,
+        "runtime": 512,
+        "libres": 37604
+      },
+      "secure_boot": 1,
+      "setup_mode": 0,
+      "load_image_refuse": "0x800000000000000f",
+      "commande_reset": 0,
+      "commande_fin": 0,
+      "gsts_fin": 3288334336,
+      "rss_hote_pic_echantillonne_Kio": 119376,
+      "bail_attribue": false,
+      "terminal_vtd": {
+        "octets_racine_nulle_relus": 4096,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "recu_qi": 1,
+        "cadres_reserves_terminal": 3
+      },
+      "nombre_ecritures_commande": 10
+    },
+    "livraison-sans-iommu/variante": {
+      "demandes_bme": 0,
+      "pages_uefi": {
+        "boot": 5856,
+        "runtime": 512,
+        "libres": 37604
+      },
+      "secure_boot": 1,
+      "setup_mode": 0,
+      "load_image_refuse": "0x800000000000000f",
+      "commande_reset": 0,
+      "commande_fin": 0,
+      "gsts_fin": null,
+      "rss_hote_pic_echantillonne_Kio": 111040,
+      "bail_attribue": false,
+      "terminal_vtd": {
+        "statut": "dmar-refusee",
+        "bail_attribue": false
+      },
+      "nombre_ecritures_commande": 10
+    },
+    "livraison-signature/variante": {
+      "demandes_bme": 0,
+      "pages_uefi": {
+        "boot": 5855,
+        "runtime": 512,
+        "libres": 37605
+      },
+      "secure_boot": 1,
+      "setup_mode": 0,
+      "load_image_refuse": "0x800000000000000f",
+      "commande_reset": 0,
+      "commande_fin": 0,
+      "gsts_fin": 3288334336,
+      "rss_hote_pic_echantillonne_Kio": 118272,
+      "bail_attribue": false,
+      "terminal_vtd": {
+        "octets_racine_nulle_relus": 4096,
+        "gsts": 3288334336,
+        "fsts": 0,
+        "recu_qi": 1,
+        "cadres_reserves_terminal": 3
+      },
+      "nombre_ecritures_commande": 10
+    }
+  },
+  "memoires_flash": {
+    "amont": {
+      "extrait": "FVMAIN_COMPACT [37%Full] 3440640 (0x348000) total, 1285240 (0x139c78) used, 2155400 (0x20e388) free",
+      "journal": "ovmf-q35-01/construction/stock2.log",
+      "octets_code": 3653632
+    },
+    "variante": {
+      "extrait": "FVMAIN_COMPACT [37%Full] 3440640 (0x348000) total, 1285272 (0x139c98) used, 2155368 (0x20e368) free",
+      "journal": "ovmf-q35-01/construction/variante.log",
+      "octets_code": 3653632
+    }
+  },
+  "controle_differentiel_dbx": {
+    "variables_modifiees": [
+      "dbx"
+    ],
+    "donnees_identiques_sha256": {
+      "support.raw": "afe8df0771cd45897321e385a481cc91ed7c9d8763e58506fd433f127b71b693",
+      "esp/EFI/BOOT/BOOTX64.EFI": "9f0622e3198df0eec64bc330536f1b65886e88419bc668d9a83b1ebdb6eea985",
+      "esp/EFI/BOOT/REFUSE.EFI": "fa6ac9dbafff554ce59a794c4020b4eb267c9a0364edf5e24b7f73ca185ade93"
+    },
+    "varstore_vierge_identique_sha256": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+  },
+  "signatures": {
+    "journal": "ovmf-q35-01/construction/certificats-livraison.log",
+    "extraits": [
+      "Current message digest    : E2AD3007C93F5F44537848A1432635155EF9AFA5E859EC78BD340E3927604CF7",
+      "Calculated message digest : E2AD3007C93F5F44537848A1432635155EF9AFA5E859EC78BD340E3927604CF7",
+      "Signature verification: ok",
+      "Current message digest    : F88E1A3C41B263C4C055A3DC3CDDA82EAC8A5B2824F577095658D673329D4BBB",
+      "Calculated message digest : F88E1A3C41B263C4C055A3DC3CDDA82EAC8A5B2824F577095658D673329D4BBB",
+      "Signature verification: ok"
+    ]
+  },
+  "relecture_aarch64": {
+    "attache_disque": 1,
+    "bail_nic": false,
+    "ecritures_demandant_bme_nic_lignes": [
+      194
+    ],
+    "map": 680,
+    "pic_plages": 5,
+    "retrait_disque": 1,
+    "route_nic_active": 2,
+    "traductions_disque": 5375,
+    "unmap_done": 680
+  },
+  "reference_aarch64": "confinement-dxe-02, relecture hors ligne du banc DXE/GICv3",
+  "campagnes_q35": {
+    "comparaison-01": {
+      "acquisition": "2026-11-25T13:21:40.398874+00:00",
+      "liberation": "2026-11-25T13:22:20.637984+00:00",
+      "attente_s": 0.00023245904594659805,
+      "executions_s": [
+        40.19610299996566
+      ],
+      "verdict_enregistre": []
+    },
+    "comparaison-02": {
+      "acquisition": "2026-11-25T13:22:43.223496+00:00",
+      "liberation": "2026-11-25T13:22:44.146930+00:00",
+      "attente_s": 0.00025462498888373375,
+      "executions_s": [
+        0.8830586250405759
+      ],
+      "verdict_enregistre": []
+    },
+    "comparaison-03": {
+      "acquisition": "2026-11-25T13:23:07.784905+00:00",
+      "liberation": "2026-11-25T13:23:09.611710+00:00",
+      "attente_s": 0.0002322500804439187,
+      "executions_s": [
+        0.8872666250681505,
+        0.8976480829296634
+      ],
+      "verdict_enregistre": [
+        "amont",
+        "variante"
+      ]
+    },
+    "controle-dbx": {
+      "acquisition": "2026-11-25T13:36:57.035580+00:00",
+      "liberation": "2026-11-25T13:36:57.951895+00:00",
+      "attente_s": 0.00022833305411040783,
+      "executions_s": [
+        0.8699977500364184
+      ],
+      "verdict_enregistre": [
+        "variante"
+      ]
+    },
+    "livraison-avant-dbx": {
+      "acquisition": "2026-11-25T13:38:19.702966+00:00",
+      "liberation": "2026-11-25T13:38:20.622591+00:00",
+      "attente_s": 0.0002519170520827174,
+      "executions_s": [
+        0.8781787080224603
+      ],
+      "verdict_enregistre": [
+        "variante"
+      ]
+    },
+    "livraison-comparaison": {
+      "acquisition": "2026-11-25T13:38:43.568665+00:00",
+      "liberation": "2026-11-25T13:38:45.376917+00:00",
+      "attente_s": 0.000277375103905797,
+      "executions_s": [
+        0.8807208749931306,
+        0.8797154170460999
+      ],
+      "verdict_enregistre": [
+        "amont",
+        "variante"
+      ]
+    },
+    "livraison-dbx": {
+      "acquisition": "2026-11-25T13:38:20.850960+00:00",
+      "liberation": "2026-11-25T13:38:21.786638+00:00",
+      "attente_s": 0.00022749998606741428,
+      "executions_s": [
+        0.8933180830208585
+      ],
+      "verdict_enregistre": [
+        "variante"
+      ]
+    },
+    "livraison-sans-iommu": {
+      "acquisition": "2026-11-25T13:38:23.186029+00:00",
+      "liberation": "2026-11-25T13:38:24.102391+00:00",
+      "attente_s": 0.0002416670322418213,
+      "executions_s": [
+        0.8719842089340091
+      ],
+      "verdict_enregistre": [
+        "variante"
+      ]
+    },
+    "livraison-signature": {
+      "acquisition": "2026-11-25T13:38:22.021702+00:00",
+      "liberation": "2026-11-25T13:38:22.959216+00:00",
+      "attente_s": 0.00023479200899600983,
+      "executions_s": [
+        0.892548416974023
+      ],
+      "verdict_enregistre": [
+        "variante"
+      ]
+    },
+    "terminal-01": {
+      "acquisition": "2026-11-25T13:31:37.632977+00:00",
+      "liberation": "2026-11-25T13:31:38.621769+00:00",
+      "attente_s": 0.0003797500394284725,
+      "executions_s": [
+        0.9359960830770433
+      ],
+      "verdict_enregistre": [
+        "variante"
+      ]
+    },
+    "terminal-absent": {
+      "acquisition": "2026-11-25T13:33:08.984426+00:00",
+      "liberation": "2026-11-25T13:33:09.908951+00:00",
+      "attente_s": 0.0002887910231947899,
+      "executions_s": [
+        0.8733801660127938
+      ],
+      "verdict_enregistre": [
+        "variante"
+      ]
+    },
+    "terminal-dbx": {
+      "acquisition": "2026-11-25T13:35:58.169831+00:00",
+      "liberation": "2026-11-25T13:35:59.105537+00:00",
+      "attente_s": 0.00022199994418770075,
+      "executions_s": [
+        0.8898165409918875
+      ],
+      "verdict_enregistre": [
+        "variante"
+      ]
+    },
+    "terminal-final": {
+      "acquisition": "2026-11-25T13:33:10.142807+00:00",
+      "liberation": "2026-11-25T13:33:11.069557+00:00",
+      "attente_s": 0.0005299580516293645,
+      "executions_s": [
+        0.8827483749482781
+      ],
+      "verdict_enregistre": [
+        "variante"
+      ]
+    },
+    "terminal-signature": {
+      "acquisition": "2026-11-25T13:35:56.976114+00:00",
+      "liberation": "2026-11-25T13:35:57.929683+00:00",
+      "attente_s": 0.00026887492276728153,
+      "executions_s": [
+        0.9026373750530183
+      ],
+      "verdict_enregistre": [
+        "variante"
+      ]
+    }
+  },
+  "temps_banc_q35_s": 53.51511833211407,
+  "attente_verrou_q35_s": 0.0038702923338860273,
+  "temps_banc_livraison_s": 5.296465708990581,
+  "vm_q35": 16,
+  "vm_livraison": 6,
+  "echecs_de_mise_au_point": {
+    "comparaison-01": "Statut EFI_ACCESS_DENIED écarté par la première attente.",
+    "comparaison-02": "Séparateur de ligne incorrect dans le marqueur de fin."
+  },
+  "bornes": [
+    "Fixture Q35 arrêtée au point de contrôle EFI",
+    "aucun bail NIC attribué",
+    "aucune mesure de débit, IRQ réseau ou coût total",
+    "gestionnaire partagé AArch64 soumis à arbitrage"
+  ]
+}
