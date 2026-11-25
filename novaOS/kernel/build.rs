@@ -88,6 +88,11 @@ fn main() {
         } else {
             linker
         };
+        if target == "aarch64-unknown-none-softfloat" && name == "storage/fileclient"
+            && env::var_os("CARGO_FEATURE_NET_P9_TRACE").is_some()
+        {
+            rust.args(["--cfg", "net_p9_trace"]);
+        }
         if nvme_lab && (nvme_rw || name == "storage/fileclient") {
             rust.arg("--cfg").arg("nvme_rw");
         }

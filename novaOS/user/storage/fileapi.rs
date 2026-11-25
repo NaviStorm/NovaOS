@@ -124,6 +124,17 @@ impl Client {
             }
             self.failed_cqe = Some(cause);
         }
+        #[cfg(net_p9_trace)]
+        if rt::config(1) == 11 && r.payload[3] != 0 {
+            // Métadonnées de la fixture uniquement. Ni contenu, ni référence de capacité.
+            let mut trace = *b"P9 client op=00 phase=00 statut=00";
+            let hex = b"0123456789abcdef";
+            for (index, valeur) in [(13, q[1]), (22, q[2]), (32, r.payload[3])] {
+                trace[index] = hex[usize::from(valeur >> 4)];
+                trace[index + 1] = hex[usize::from(valeur & 15)];
+            }
+            rt::call(rt::DEBUG_WRITE, trace.as_ptr() as u64, trace.len() as u64, 0);
+        }
         if r.payload[3] != 0 {
             return Err(r.payload[3] as u64);
         }
