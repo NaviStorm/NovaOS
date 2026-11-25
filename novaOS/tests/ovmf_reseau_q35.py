@@ -103,8 +103,8 @@ def controle_vtd(vm, qt, journal, fin):
             "recu_qi": 1, "cadres_reserves_terminal": 3}
 
 
-def arguments(code, temoin, out, absent):
-    args = [executable("x86_64", shutil.which("qemu-system-x86_64"), out), "-machine", "q35,smm=on", "-accel", "tcg",
+def arguments(code, temoin, out, absent, *, acpi_pio=False):
+    args = [executable("x86_64", shutil.which("qemu-system-x86_64"), out, acpi_pio=acpi_pio), "-machine", "q35,smm=on", "-accel", "tcg",
             "-cpu", "max", "-smp", "1", "-m", "256", "-nodefaults", "-no-reboot", "-S",
             "-display", "none", "-monitor", "none", "-serial", f"file:{out}/serie.log",
             "-debugcon", f"file:{out}/efi.log", "-global", "isa-debugcon.iobase=0xe9",

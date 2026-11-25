@@ -9,10 +9,12 @@ import subprocess
 from virtio_net_confinement import digest, dump
 
 
-def executable(arch, habituel, sortie):
+def executable(arch, habituel, sortie, *, acpi_pio=False):
     cle = {"aarch64": "NOVAOS_QEMU_RX_ARM", "x86_64": "NOVAOS_QEMU_RX_Q35"}[arch]
     fichier = os.environ.get(cle)
     if fichier is None:
+        if acpi_pio:
+            raise ValueError("Manifeste du modèle ACPI PIO absent")
         return habituel
     dossier = Path(fichier).resolve(strict=True)
     info = json.loads(dossier.read_text())
@@ -20,6 +22,10 @@ def executable(arch, habituel, sortie):
     attendu = {"aarch64": "10.0.12", "x86_64": "11.1.3"}[arch]
     if info["cible"] != arch or info["version"] != attendu or binaire.name != "qemu-system-" + arch:
         raise ValueError("Modèle QEMU d’une autre version ou architecture")
+    patch_pio = info.get("diff_acpi_pio")
+    if (acpi_pio != (patch_pio is not None) or acpi_pio and (arch != "x86_64" or "diff_faute" in info or
+            patch_pio != "ef953de95eaaad688f89bd49acf71c7bac7b75b594b5af5b8408dffbbd7cd3a9")):
+        raise ValueError("Modèle ACPI PIO utilisé hors de son profil")
     mode = os.environ.get("NOVAOS_NET_MODELE_FAUTE")
     injection = os.environ.get("NOVAOS_NET_FAUTE_RX")
     if "diff_faute" in info:
@@ -37,5 +43,5 @@ def executable(arch, habituel, sortie):
         raise ValueError("Identité du modèle RX incorrecte")
     dump(sortie / "modele-rx.json", dict(executable=str(binaire), version=version, sha256=empreinte,
                                        construction_sha256=digest(dossier), correctif=info["diff"],
-                                       correctif_faute=info.get("diff_faute"), mode_faute=mode))
+                                       correctif_faute=info.get("diff_faute"), mode_faute=mode, correctif_acpi_pio=patch_pio))
     return str(binaire)

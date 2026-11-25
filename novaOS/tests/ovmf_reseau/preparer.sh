@@ -14,9 +14,13 @@ compile() {
         -mno-red-zone -Werror -Wall -Os -I"$edk/MdePkg/Include" -I"$edk/MdePkg/Include/X64" "$@"
 }
 if [ "$#" -eq 4 ]; then
-    [ "$4" = "--vtd" ] || exit 2
+    case "$4" in
+        --vtd) define=-DNOVA_VTD_TERMINAL ;;
+        --vtd-pio-duo) define=-DNOVA_PIO_DUO ;;
+        *) exit 2 ;;
+    esac
     compile -DNOVA_VTD_TERMINAL -c "$src/temoin.c" -o "$out/temoin.obj"
-    compile -c "$src/vtd.c" -o "$out/vtd.obj"
+    compile "$define" -c "$src/vtd.c" -o "$out/vtd.obj"
     set -- "$out/temoin.obj" "$out/vtd.obj"
 else
     compile -c "$src/temoin.c" -o "$out/temoin.obj"

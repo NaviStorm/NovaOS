@@ -16,7 +16,11 @@ void nombre(UINT64);
 
 typedef struct { UINT8 sid; UINT32 id; } Fonction;
 static const Fonction profil[] = {
+#ifdef NOVA_PIO_DUO
+  {0, 0x29c08086}, {48, 0x00101b36}, {56, 0x10411af4}, {248, 0x29188086}, {251, 0x29308086}
+#else
   {0, 0x29c08086}, {56, 0x10411af4}, {248, 0x29188086}, {250, 0x29228086}, {251, 0x29308086}
+#endif
 };
 
 static void fin(const char *phase) {
@@ -138,7 +142,11 @@ void vtd_terminal(EFI_HANDLE image, EFI_SYSTEM_TABLE *st) {
   __asm__ volatile ("cpuid" : "+a"(a), "=b"(b), "=c"(c), "=d"(d));
   if (b != SIGNATURE_32('T','C','G','T') || c != SIGNATURE_32('C','G','T','C') ||
       d != SIGNATURE_32('G','T','C','G')) fin("profil-tcg-refuse");
+#ifdef NOVA_PIO_DUO
+  if (!topologie(TRUE)) fin("topologie-refusee");
+#else
   if (!topologie(FALSE)) fin("topologie-refusee");
+#endif
   if (!dmar(bs)) fin("dmar-refusee");
   UINT64 cap = REG64(8), ecap = REG64(16);
   if (REG32(0) != 0x10 || REG32(0x1c) != 0 || REG64(0x20) != 0 ||

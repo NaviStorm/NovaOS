@@ -24,6 +24,7 @@ def main():
     parser.add_argument("temoin", type=Path)
     parser.add_argument("modele_vars", type=Path)
     parser.add_argument("sortie", type=Path)
+    parser.add_argument("--cle-distincte", action="store_true", help="Révoquer le certificat du second PE dans dbx")
     a = parser.parse_args()
     out = a.sortie.resolve()
     out.mkdir()
@@ -38,11 +39,21 @@ def main():
         autorise = tmp / "autorise.efi"
         revoque = tmp / "revoque.efi"
         signer(source / "BOOTX64.EFI", autorise, cert, key)
-        signer(source / "REFUSE.EFI", revoque, cert, key)
+        second_cert = cert
+        second_key = key
+        if a.cle_distincte:
+            second_cert = out / "signataire-second.crt"
+            second_key = tmp / "second.key"
+            subprocess.run(["openssl", "req", "-x509", "-newkey", "rsa:2048", "-noenc", "-days", "2",
+                            "-subj", "/CN=NovaOS Q35 signataire secondaire/", "-addext", "extendedKeyUsage=codeSigning",
+                            "-keyout", second_key, "-out", second_cert], check=True, stderr=subprocess.DEVNULL)
+        signer(source / "REFUSE.EFI", revoque, second_cert, second_key)
         store = autodetect.open_varstore(str(a.modele_vars))
         variables = store.get_varlist()
         variables.enroll_platform_generate("NovaOS Q35 certificat laboratoire", ms_kek="none")
         variables.add_cert("db", OWNER, str(cert))
+        if a.cle_distincte:
+            variables.add_cert("db", OWNER, str(second_cert))
         variables.enable_secureboot()
         for cas in ("signature-alteree", "avant-dbx", "dbx"):
             dest = out / cas
@@ -52,7 +63,10 @@ def main():
             (esp / "BOOTX64.EFI").write_bytes(bon)
             if cas != "signature-alteree":
                 if cas == "dbx":
-                    variables.add_hash("dbx", OWNER, pe_authenticode_hash(pefile.PE(str(revoque))).hex())
+                    if a.cle_distincte:
+                        variables.add_cert("dbx", OWNER, str(second_cert))
+                    else:
+                        variables.add_hash("dbx", OWNER, pe_authenticode_hash(pefile.PE(str(revoque))).hex())
                 mauvais = revoque.read_bytes()
             else:
                 # Un octet de texte dans une section couverte. Conserver PE/COFF et le certificat.

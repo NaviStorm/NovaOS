@@ -28,7 +28,11 @@ def refus_liminer(serie):
     return b"PANIC: Blake2b hash for URI `boot():/novaos.elf` does not match!" in ligne
 
 
-def support(elf, firmware, out, limine, retrait=False, temoin_hash=False, ethernet=False):
+def support(elf, firmware, out, limine, retrait=False, temoin_hash=False, ethernet=False, duo=None):
+    if duo is not None and duo not in ("domaines", "retrait-nic", "retrait-disque", "perte-wait", "total-nic", "total-disque", "refus-ir"):
+        raise ValueError("Scénario des deux domaines inconnu")
+    scenario = ("net-q35-duo-" + duo if duo else "net-q35-ethernet" if ethernet else
+                "net-q35-retrait" if retrait else "net-q35-relais")
     from virt.firmware.varstore import autodetect
     from virt.peutils.pesign import pe_authenticode_hash
     import pefile
@@ -40,7 +44,7 @@ def support(elf, firmware, out, limine, retrait=False, temoin_hash=False, ethern
     conf = esp / "limine.conf"
     conf.write_text("timeout: 0\nserial: yes\neditor_enabled: no\nhash_mismatch_panic: yes\n"
                     "\n/NovaOS\n    protocol: limine\n    path: boot():/novaos.elf#"
-                    + blake2b(elf.read_bytes()).hexdigest() + "\n    cmdline: " + ("net-q35-ethernet" if ethernet else "net-q35-retrait" if retrait else "net-q35-relais") + "\n")
+                    + blake2b(elf.read_bytes()).hexdigest() + "\n    cmdline: " + scenario + "\n")
     subprocess.run([limine, "enroll-config", efi, blake2b(conf.read_bytes()).hexdigest()], check=True)
     h = pe_authenticode_hash(pefile.PE(str(efi))).hex()
     subprocess.run(["virt-fw-vars","-i",firmware/"OVMF_VARS.fd","-o",out/"variables.fd",

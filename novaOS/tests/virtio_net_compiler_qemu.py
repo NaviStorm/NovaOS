@@ -23,7 +23,7 @@ def sha(path):
         return hashlib.file_digest(f, "sha256").hexdigest()
 
 
-def construire(root, version, python, jobs, essai, dtc, faute=False):
+def construire(root, version, python, jobs, essai, dtc, faute=False, acpi_pio=False):
     arch, expected = VERSIONS[version]
     (root / "compilation").mkdir(exist_ok=True)
     (root / "modeles").mkdir(exist_ok=True)
@@ -31,7 +31,9 @@ def construire(root, version, python, jobs, essai, dtc, faute=False):
     patch = BASELINE / "proposition-num-buffers.diff"
     if sha(archive) != expected or sha(patch) != "64bba00421bea605521de0514a5639730fa61fee2e1de2ee55480608bec832ef":
         raise ValueError("Source ou diff différent de la référence de revue")
-    famille = "rx-faute" if faute else "rx"
+    if acpi_pio and (version != "11.1.3" or faute):
+        raise ValueError("Le report ACPI est réservé au Q35 nominal de laboratoire")
+    famille = "rx-pio" if acpi_pio else "rx-faute" if faute else "rx"
     work = Path(os.environ["NOVAOS_TMPDIR"]) / f"net-modele-{famille}-{version}-{essai}"
     work.mkdir()
     subprocess.run(["tar", "-xf", archive, "-C", work], check=True)
@@ -56,6 +58,9 @@ def construire(root, version, python, jobs, essai, dtc, faute=False):
         subprocess.run(["patch", "-p1", "-F", "0"], cwd=src, input=injection, check=True)
         shutil.copyfile(source, out / "virtio-net-faute.c")
         (out / "virtio_net_faute_rx.diff").write_bytes(injection)
+    if acpi_pio:
+        from virtio_net_acpi_pio_modele import modifier
+        diff_pio = modifier(src, out, root / "amont")
     build = work / "build-prive"
     build.mkdir()
     opts = [str(src / "configure"), f"--target-list={arch}-softmmu",
@@ -73,6 +78,9 @@ def construire(root, version, python, jobs, essai, dtc, faute=False):
                 diff=sha(patch), configure=opts, ninja=ninja)
     if faute:
         info.update(diff_faute=hashlib.sha256(injection).hexdigest(), base_corrige=base_corrige)
+    if acpi_pio:
+        info.update(diff_acpi_pio=diff_pio, fw_cfg_original=sha(out / "fw_cfg-original.c"),
+                    fw_cfg_corrige=sha(out / "fw_cfg-pio.c"), reference_pio=sha(out / "fw_cfg-reference-10.0.12.c"))
     dest = root / "modeles" / ("qemu-system-" + arch)
     if version.endswith("-utm"):
         dest = dest.parent / "utm" / dest.name
@@ -102,5 +110,6 @@ if __name__ == "__main__":
     p.add_argument("--dtc", required=True, type=Path)
     p.add_argument("--essai", required=True, type=int, choices=range(1, 100))
     p.add_argument("--faute", action="store_true", help="copie expérimentale pour une complétion RX manquante")
+    p.add_argument("--acpi-pio", action="store_true", help="copie Q35 distincte avec description ACPI PIO")
     a = p.parse_args()
-    construire(a.archive.resolve(), a.version, a.python, a.jobs, a.essai, a.dtc.resolve(strict=True), a.faute)
+    construire(a.archive.resolve(), a.version, a.python, a.jobs, a.essai, a.dtc.resolve(strict=True), a.faute, a.acpi_pio)
