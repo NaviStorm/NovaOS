@@ -97,12 +97,13 @@ static void virtio_stw_p(VirtIODevice *v, uint16_t *dest, uint16_t value) {
 #include "reception-amont.inc"
 
 int main(void) {
-    uint8_t trame[60];
+    uint8_t trame[1514];
     for (size_t i = 0; i < sizeof(trame); i++) trame[i] = (uint8_t)(i + 1);
-    struct Cas { const char *nom; bool moderne, fusion; uint8_t initial; };
+    struct Cas { const char *nom; bool moderne, fusion; uint8_t initial; size_t longueur; };
     static const struct Cas cas[] = {
-        {"moderne-simple", true, false, 0}, {"témoin-mémoire", true, false, 0x5a},
-        {"moderne-fusion", true, true, 0}, {"legacy-simple", false, false, 0}
+        {"moderne-simple", true, false, 0, 60}, {"témoin-mémoire", true, false, 0x5a, 60},
+        {"moderne-fusion", true, true, 0, 60}, {"legacy-simple", false, false, 0, 60},
+        {"fusion-1514", true, true, 0, 1514}, {"simple-1514", true, false, 0, 1514}
     };
     for (size_t i = 0; i < sizeof(cas) / sizeof(cas[0]); i++) {
         const struct Cas *c = &cas[i];
@@ -115,9 +116,9 @@ int main(void) {
         memset(tampon, c->initial, sizeof(tampon));
         completions = notifications = publications = extractions = 0;
         longueur = 0;
-        assert(virtio_net_receive_rcu(&n, trame, sizeof(trame)) == sizeof(trame));
-        assert(longueur == sizeof(trame) + n.guest_hdr_len && notifications == 1);
-        assert(memcmp(tampon + n.guest_hdr_len, trame, sizeof(trame)) == 0);
+        assert(virtio_net_receive_rcu(&n, trame, c->longueur) == (ssize_t)c->longueur);
+        assert(longueur == c->longueur + n.guest_hdr_len && notifications == 1);
+        assert(memcmp(tampon + n.guest_hdr_len, trame, c->longueur) == 0);
         if (c->moderne || c->fusion) {
             printf("cas=%s num_buffers=%u longueur=%zu contenu=conforme\n", c->nom,
                    (unsigned)(tampon[10] | (tampon[11] << 8)), longueur);

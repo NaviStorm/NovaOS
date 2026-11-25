@@ -49,11 +49,15 @@ def tester(version, sources, manifeste):
         m = re.fullmatch(r"cas=([^ ]+) num_buffers=(\d+) longueur=72 contenu=conforme", line)
         if m:
             counts[m[1]] = int(m[2])
+    maxima = {m[1]: int(m[2]) for line in lines
+              if (m := re.fullmatch(r"cas=(fusion-1514|simple-1514) num_buffers=(\d+) longueur=1526 contenu=conforme", line))}
+    if set(maxima) != {"fusion-1514", "simple-1514"} or maxima["fusion-1514"] != 1:
+        raise ValueError(f"Témoin de taille maximale incomplet : {lines}")
     if (set(counts) != {"moderne-simple", "moderne-fusion", "témoin-mémoire"}
             or counts["moderne-fusion"] != 1 or "cas=legacy-simple longueur=70 contenu=conforme" not in lines):
         raise ValueError(f"Témoin positif ou résultat RX incomplet : {lines}")
     return {"version": version, "traces": lines, "num_buffers": counts["moderne-simple"],
-            "attendu_sans_fusion": 1, "conforme_sans_fusion": counts["moderne-simple"] == counts["témoin-mémoire"] == 1}
+            "attendu_sans_fusion": 1, "conforme_sans_fusion": counts["moderne-simple"] == counts["témoin-mémoire"] == maxima["simple-1514"] == 1}
 
 
 if __name__ == "__main__":

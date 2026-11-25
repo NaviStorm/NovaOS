@@ -1,0 +1,22 @@
+{
+  "https://raw.githubusercontent.com/qemu/qemu/v10.0.12/hw/virtio/virtio.c": "c5c9cedd989f4c957a6a2689b52640e1b9f5efd54e37b6fc4e26ed84e556cf7b",
+  "https://raw.githubusercontent.com/qemu/qemu/v10.0.12/hw/virtio/virtio-pci.c": "527beaf95cd492dc2725abfc8f0f7beb043c40b7bf9ccbe7bfabeec76842e1ad",
+  "https://raw.githubusercontent.com/qemu/qemu/v10.0.12/hw/net/virtio-net.c": "97cab17ae0b66c0592bab6a62d74ac6b627828ac5c9de30d3b871c8f0ad2843e",
+  "https://raw.githubusercontent.com/qemu/qemu/v10.0.12/system/physmem.c": "a3cef69251c03a115b29e11549a25a5f8c38f549caa04c70de3c1ce7bf472018",
+  "https://raw.githubusercontent.com/qemu/qemu/v10.0.12/system/memory_ldst.c.inc": "fafda19bb42b44dbd4618c7d0e195671ec8772d5d3e996bcded12db9cacb1999",
+  "https://raw.githubusercontent.com/qemu/qemu/v10.0.12/hw/i386/intel_iommu.c": "2dd2ca458177dd27d19190a243cc0564d2becd747deda57fac0c4fa634d5df70",
+  "https://raw.githubusercontent.com/qemu/qemu/v10.0.12/hw/virtio/virtio-iommu.c": "c39f5d7cc9523599a1c4869310c902b2b6ca904910edebec5ae0e743b8bbfb7d",
+  "https://raw.githubusercontent.com/qemu/qemu/v11.1.3/hw/virtio/virtio.c": "7bd4565e13e674c7970049e9cf88ac53f776c537048e642011cd2d46a28c9126",
+  "https://raw.githubusercontent.com/qemu/qemu/v11.1.3/hw/virtio/virtio-pci.c": "affd3c3257c3b77350f7eba692d1fbe2a155d180f5a78b2e500a0c2256f10739",
+  "https://raw.githubusercontent.com/qemu/qemu/v11.1.3/hw/net/virtio-net.c": "14c4d68590a1c4c2e974b2f9374e5b84102c40e33dce4d4153503ea0b2ba01c6",
+  "https://raw.githubusercontent.com/qemu/qemu/v11.1.3/system/physmem.c": "3210a543353b435a146f7ae4a33608ea849aad038cd9e889ddb3a30c104c063f",
+  "https://raw.githubusercontent.com/qemu/qemu/v11.1.3/system/memory_ldst.c.inc": "9058d7705335c9ca016fd272666651889234bbc161f00b55a8ffc669cd712582",
+  "https://raw.githubusercontent.com/qemu/qemu/v11.1.3/hw/i386/intel_iommu.c": "c0c72123f5ffa5d49c07e31987c3b3ef12fb5a539f0bb6887e78f82756494ce1",
+  "https://raw.githubusercontent.com/qemu/qemu/v11.1.3/hw/virtio/virtio-iommu.c": "25d8cce10b7c9ad1b65f57500103235cf73b1664d86b637071b1df7b2cc4f2e8",
+  "https://raw.githubusercontent.com/qemu/qemu/v10.0.12/include/standard-headers/linux/virtio_net.h": "5edc56171a4d5cd55093f234149f9b9dead30c5cbd7e13b40d5f48bc4a1e4b47",
+  "https://raw.githubusercontent.com/qemu/qemu/v11.1.3/include/standard-headers/linux/virtio_net.h": "cb3536bb99846d161e6003eb9007d1b4349acb6298010386b3bd3910b23ba2b3",
+  "https://raw.githubusercontent.com/qemu/qemu/v10.0.12/include/standard-headers/linux/virtio_ring.h": "06837dbb5df00000619dc569b7b433d20d809afb898a7860f5d2f6a3ab94ba05",
+  "https://raw.githubusercontent.com/qemu/qemu/v10.0.12/include/hw/virtio/virtio.h": "279a20e65fed1ef325c4fc71dae29fff7259381686a15ac9e9593976e15e4696",
+  "https://raw.githubusercontent.com/qemu/qemu/v11.1.3/include/standard-headers/linux/virtio_ring.h": "2a9e64bca2f4216c835299eb360e5b4c813ee8de5265e0a7ff6f9a1fbc3a113c",
+  "https://raw.githubusercontent.com/qemu/qemu/v11.1.3/include/hw/virtio/virtio.h": "cc8ba9ca318699188bc3760b4cd9a7eca96cce94a209abea475af560cb1c4625"
+}

@@ -1,0 +1,18 @@
+{
+  "hote": "arm64",
+  "portee": "fonctions C, accès simulés, aucune IRQ matérielle",
+  "essais": {
+    "v10.0.12": {
+      "essais_decision": 21168128,
+      "franchissements": 2584,
+      "lectures_avail": 21299200,
+      "ecritures_used": 65536
+    },
+    "v11.1.3": {
+      "essais_decision": 21168128,
+      "franchissements": 2584,
+      "lectures_avail": 21299200,
+      "ecritures_used": 65536
+    }
+  }
+}

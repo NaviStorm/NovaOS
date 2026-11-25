@@ -1,0 +1,254 @@
+{
+  "cycles": [
+    {
+      "essai": "p9-4096-01-mesure",
+      "acquisition": "2026-11-25T17:04:10.240800+00:00",
+      "liberation": "2026-11-25T17:04:16.977327+00:00",
+      "attente_s": 0.0002626660279929638,
+      "execution_s": 6.689873000024818,
+      "elf_sha256": "aa265e4a224739603d494007b05ea082429587896d8b23268afd1ee3222d92c1",
+      "version": "ELF historique identifié par empreinte"
+    },
+    {
+      "essai": "p9-4096-02-lab",
+      "acquisition": "2026-11-25T17:04:17.605226+00:00",
+      "liberation": "2026-11-25T17:04:23.913730+00:00",
+      "attente_s": 0.0002697500167414546,
+      "execution_s": 6.261301624937914,
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "version": "ELF historique identifié par empreinte"
+    },
+    {
+      "essai": "p9-4096-03-lab",
+      "acquisition": "2026-11-25T17:04:24.496241+00:00",
+      "liberation": "2026-11-25T17:04:30.785146+00:00",
+      "attente_s": 0.00025320902932435274,
+      "execution_s": 6.245335875079036,
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "version": "ELF historique identifié par empreinte"
+    },
+    {
+      "essai": "p9-4096-04-mesure",
+      "acquisition": "2026-11-25T17:04:31.422683+00:00",
+      "liberation": "2026-11-25T17:04:37.764437+00:00",
+      "attente_s": 0.00028954201843589544,
+      "execution_s": 6.292002208065242,
+      "elf_sha256": "aa265e4a224739603d494007b05ea082429587896d8b23268afd1ee3222d92c1",
+      "version": "ELF historique identifié par empreinte"
+    },
+    {
+      "essai": "p9-4096-05-lab",
+      "acquisition": "2026-11-25T17:04:38.435652+00:00",
+      "liberation": "2026-11-25T17:04:44.764316+00:00",
+      "attente_s": 0.000279415980912745,
+      "execution_s": 6.280529040959664,
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "version": "ELF historique identifié par empreinte"
+    },
+    {
+      "essai": "p9-4096-06-mesure",
+      "acquisition": "2026-11-25T17:04:45.350116+00:00",
+      "liberation": "2026-11-25T17:04:51.678058+00:00",
+      "attente_s": 0.0002686249790713191,
+      "execution_s": 6.282133416971192,
+      "elf_sha256": "aa265e4a224739603d494007b05ea082429587896d8b23268afd1ee3222d92c1",
+      "version": "ELF historique identifié par empreinte"
+    },
+    {
+      "essai": "p9-4096-07-mesure",
+      "acquisition": "2026-11-25T17:04:52.309064+00:00",
+      "liberation": "2026-11-25T17:04:58.636806+00:00",
+      "attente_s": 0.0002560830907896161,
+      "execution_s": 6.284389124950394,
+      "elf_sha256": "aa265e4a224739603d494007b05ea082429587896d8b23268afd1ee3222d92c1",
+      "version": "ELF historique identifié par empreinte"
+    },
+    {
+      "essai": "p9-4096-08-lab",
+      "acquisition": "2026-11-25T17:04:59.297507+00:00",
+      "liberation": "2026-11-25T17:05:05.712824+00:00",
+      "attente_s": 0.00023554195649921894,
+      "execution_s": 6.368409333052114,
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "version": "ELF historique identifié par empreinte"
+    },
+    {
+      "essai": "negociation-q35-01",
+      "acquisition": "2026-11-25T17:15:11.223255+00:00",
+      "liberation": "2026-11-25T17:15:13.293584+00:00",
+      "attente_s": 0.00027312501333653927,
+      "execution_s": 2.027833417057991,
+      "elf_sha256": "184187b200be68534ef1478ccb4314de2b5e66d0f2134006193854a62ef30f8e",
+      "version": "intermédiaire identifié par empreinte"
+    },
+    {
+      "essai": "negociation-arm-01",
+      "acquisition": "2026-11-25T17:15:14.078238+00:00",
+      "liberation": "2026-11-25T17:15:20.817779+00:00",
+      "attente_s": 0.00023062503896653652,
+      "execution_s": 6.697192832943983,
+      "elf_sha256": "c5f6aeb63ea3007fbc8dab0a46eb19c545b78279926c085dc9e86f9f0df5c571",
+      "version": "intermédiaire identifié par empreinte"
+    },
+    {
+      "essai": "negociation-arm-off-02",
+      "acquisition": "2026-11-25T17:19:50.767334+00:00",
+      "liberation": "2026-11-25T17:19:56.664734+00:00",
+      "attente_s": 0.0002725839149206877,
+      "execution_s": 5.851231750100851,
+      "negociation": {
+        "offre": "0x10310bf8024",
+        "refus": "Feature",
+        "statut_apres_reset": 0
+      },
+      "elf_sha256": "70798deda7bc67caa28205a054c76715ef7b0783880b76b355deb73ed54170eb",
+      "version": "intermédiaire identifié par empreinte"
+    },
+    {
+      "essai": "negociation-q35-off-02",
+      "acquisition": "2026-11-25T17:19:57.609290+00:00",
+      "liberation": "2026-11-25T17:19:59.578803+00:00",
+      "attente_s": 0.0002574169775471091,
+      "execution_s": 1.9273754169698805,
+      "negociation": {
+        "offre": "0x10310bf8024",
+        "refus": "Feature",
+        "statut_apres_reset": 0
+      },
+      "elf_sha256": "184187b200be68534ef1478ccb4314de2b5e66d0f2134006193854a62ef30f8e",
+      "version": "intermédiaire identifié par empreinte"
+    },
+    {
+      "essai": "f46a652-q35-on",
+      "acquisition": "2026-11-25T17:28:37.980594+00:00",
+      "liberation": "2026-11-25T17:28:40.002286+00:00",
+      "attente_s": 0.0002532919170334935,
+      "execution_s": 1.9798273328924552,
+      "negociation": {
+        "offres": [
+          "0x10330bf8024",
+          "0x10330bf8024"
+        ],
+        "negocie": "0x320000020",
+        "statut": 11,
+        "paires_de_files_preparees": 2
+      },
+      "elf_sha256": "5f419c34922e9948e72637a8e996d83e6d9a23a2de8dd0c7f728f8447767c39f",
+      "version": "f46a652350d003c90790ebb0d39389861aea747c"
+    },
+    {
+      "essai": "f46a652-arm-on",
+      "acquisition": "2026-11-25T17:28:40.605701+00:00",
+      "liberation": "2026-11-25T17:28:47.418354+00:00",
+      "attente_s": 0.00023491692263633013,
+      "execution_s": 6.768823666963726,
+      "negociation": {
+        "offres": [
+          "0x10330bf8024",
+          "0x10330bf8024"
+        ],
+        "negocie": "0x320000020",
+        "statut": 11,
+        "paires_de_files_preparees": 1
+      },
+      "elf_sha256": "0c53fe01cf120633397648514db34771253162dc5dc52f2bac4ae776efcd1700",
+      "version": "f46a652350d003c90790ebb0d39389861aea747c"
+    },
+    {
+      "essai": "f46a652-q35-off",
+      "acquisition": "2026-11-25T17:28:48.404118+00:00",
+      "liberation": "2026-11-25T17:28:50.325269+00:00",
+      "attente_s": 0.0002610419178381562,
+      "execution_s": 1.8759099999442697,
+      "negociation": {
+        "offre": "0x10310bf8024",
+        "refus": "Feature",
+        "statut_apres_reset": 0
+      },
+      "elf_sha256": "5f419c34922e9948e72637a8e996d83e6d9a23a2de8dd0c7f728f8447767c39f",
+      "version": "f46a652350d003c90790ebb0d39389861aea747c"
+    },
+    {
+      "essai": "f46a652-arm-off",
+      "acquisition": "2026-11-25T17:28:50.793359+00:00",
+      "liberation": "2026-11-25T17:28:56.621671+00:00",
+      "attente_s": 0.00024225004017353058,
+      "execution_s": 5.784206000040285,
+      "negociation": {
+        "offre": "0x10310bf8024",
+        "refus": "Feature",
+        "statut_apres_reset": 0
+      },
+      "elf_sha256": "0c53fe01cf120633397648514db34771253162dc5dc52f2bac4ae776efcd1700",
+      "version": "f46a652350d003c90790ebb0d39389861aea747c"
+    },
+    {
+      "acquisition": "2026-11-25T17:40:58.363652+00:00",
+      "liberation": "2026-11-25T17:41:00.325937+00:00",
+      "attente_s": 0.00024933298118412495,
+      "execution_s": 1.920457832980901,
+      "negociation": {
+        "offres": [
+          "0x10330bf8024",
+          "0x10330bf8024"
+        ],
+        "negocie": "0x320000020",
+        "statut": 11,
+        "paires_de_files_preparees": 2
+      },
+      "essai": "e81e3bb-q35-on",
+      "version": "e81e3bbbf5b310c7a3dfac370ee326cc31b7f0b5",
+      "elf_sha256": "92ad65d5a4fca59336568d6d52e5c0a2b7f62ca8a782870c1863240fb2805dab"
+    },
+    {
+      "acquisition": "2026-11-25T17:41:00.799307+00:00",
+      "liberation": "2026-11-25T17:41:07.638228+00:00",
+      "attente_s": 0.00021341710817068815,
+      "execution_s": 6.797652666922659,
+      "negociation": {
+        "offres": [
+          "0x10330bf8024",
+          "0x10330bf8024"
+        ],
+        "negocie": "0x320000020",
+        "statut": 11,
+        "paires_de_files_preparees": 1
+      },
+      "essai": "e81e3bb-arm-on",
+      "version": "e81e3bbbf5b310c7a3dfac370ee326cc31b7f0b5",
+      "elf_sha256": "087dd75a052d458f9128e4228ff4a45d93f0478aeca3420156c3a34745e36090"
+    },
+    {
+      "acquisition": "2026-11-25T17:41:08.664759+00:00",
+      "liberation": "2026-11-25T17:41:10.578671+00:00",
+      "attente_s": 0.00024233292788267136,
+      "execution_s": 1.8740819590166211,
+      "negociation": {
+        "offre": "0x10310bf8024",
+        "refus": "Feature",
+        "statut_apres_reset": 0
+      },
+      "essai": "e81e3bb-q35-off",
+      "version": "e81e3bbbf5b310c7a3dfac370ee326cc31b7f0b5",
+      "elf_sha256": "92ad65d5a4fca59336568d6d52e5c0a2b7f62ca8a782870c1863240fb2805dab"
+    },
+    {
+      "acquisition": "2026-11-25T17:41:11.045257+00:00",
+      "liberation": "2026-11-25T17:41:16.887980+00:00",
+      "attente_s": 0.00023508397862315178,
+      "execution_s": 5.80061779206153,
+      "negociation": {
+        "offre": "0x10310bf8024",
+        "refus": "Feature",
+        "statut_apres_reset": 0
+      },
+      "essai": "e81e3bb-arm-off",
+      "version": "e81e3bbbf5b310c7a3dfac370ee326cc31b7f0b5",
+      "elf_sha256": "087dd75a052d458f9128e4228ff4a45d93f0478aeca3420156c3a34745e36090"
+    }
+  ],
+  "attente_s": 0.005080251838080585,
+  "execution_s": 100.00918429193553,
+  "candidat_execution_s": 16.39281025098171,
+  "candidat_attente_s": 0.0009401669958606362
+}

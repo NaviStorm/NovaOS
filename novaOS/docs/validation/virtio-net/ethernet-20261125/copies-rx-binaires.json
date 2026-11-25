@@ -1,0 +1,46 @@
+{
+  "aarch64": {
+    "symbole": "_virtio_net_do_receive",
+    "slice_arm64_sha256": "37661492c01b35a5ddaa57bc933a2e8cde4c494cab7be09a751758632850c47a",
+    "instructions": [
+      [
+        "7ee59c:       b.hs    0x7ee5cc <_virtio_net_do_receive+0x658>",
+        "7ee5a0:       add     x3, sp, #0x68",
+        "7ee5a4:       mov     x1, x24",
+        "7ee5a8:       mov     x2, #0x0                ; =0",
+        "7ee5ac:       mov     w4, #0xa                ; =10",
+        "7ee5b0:       bl      0x8f9a38 <_iov_from_buf_full>"
+      ],
+      [
+        "7ee8e8:       add     x0, sp, #0x80",
+        "7ee8ec:       add     x8, sp, #0x50",
+        "7ee8f0:       add     x3, x8, #0xa",
+        "7ee8f4:       mov     x2, #0x0                ; =0",
+        "7ee8f8:       mov     w4, #0x2                ; =2",
+        "7ee8fc:       bl      0x8f9a38 <_iov_from_buf_full>"
+      ]
+    ]
+  },
+  "x86_64": {
+    "symbole": "_virtio_net_do_receive",
+    "slice_arm64_sha256": "a462b64050825e6adfc88ea14b3896205056b2f0b0090938b536ce69381739ab",
+    "instructions": [
+      [
+        "1001d29b4:      add     x3, sp, #0x70",
+        "1001d29b8:      mov     x0, x28",
+        "1001d29bc:      mov     x1, x24",
+        "1001d29c0:      mov     x2, #0x0                ; =0",
+        "1001d29c4:      mov     w4, #0xa                ; =10",
+        "1001d29c8:      bl      0x10050a744 <_iov_from_buf_full>"
+      ],
+      [
+        "1001d2dd4:      add     x0, sp, #0x80",
+        "1001d2dd8:      add     x8, sp, #0x58",
+        "1001d2ddc:      add     x3, x8, #0xa",
+        "1001d2de0:      mov     x2, #0x0                ; =0",
+        "1001d2de4:      mov     w4, #0x2                ; =2",
+        "1001d2de8:      bl      0x10050a744 <_iov_from_buf_full>"
+      ]
+    ]
+  }
+}

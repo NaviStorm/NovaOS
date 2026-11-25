@@ -1,0 +1,556 @@
+{
+  "arm": {
+    "archive_avant": {
+      "nom": "ordinaire-anterieur-aarch64-unknown-none-softfloat.elf",
+      "sha256": "4c7047828ca6b31382886b6c6daead09d842e2161eff6d8109d40b94367bc8c0",
+      "point_entree": 18446744071562700988,
+      "segments_charges": [
+        {
+          "va": 18446744071562067968,
+          "pa": 18446744071562067968,
+          "flags": 6,
+          "octets": 680,
+          "taille_memoire": 680,
+          "align": 4096,
+          "sha256": "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+        },
+        {
+          "va": 18446744071562072064,
+          "pa": 18446744071562072064,
+          "flags": 5,
+          "octets": 749584,
+          "taille_memoire": 749584,
+          "align": 4096,
+          "sha256": "d732f1af7a4a9277070cd742abc2797b06e914bb564a186966f4ecff92c82136"
+        },
+        {
+          "va": 18446744071562825728,
+          "pa": 18446744071562825728,
+          "flags": 4,
+          "octets": 3750771,
+          "taille_memoire": 3750771,
+          "align": 4096,
+          "sha256": "678b717479239488eef7c4c21fb6d712470f5b4ba769b9903668ebee066b5c21"
+        },
+        {
+          "va": 18446744071566577664,
+          "pa": 18446744071566577664,
+          "flags": 6,
+          "octets": 28768,
+          "taille_memoire": 48728,
+          "align": 4096,
+          "sha256": "d82412e7e39c686b6fd4fe40c2b3ab9bceafa0769b38a4cb88da912c5266a602"
+        }
+      ],
+      "sections": {
+        "": [
+          0,
+          0,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        ".limine_requests": [
+          2097155,
+          680,
+          "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+        ],
+        ".text": [
+          6,
+          749584,
+          "d732f1af7a4a9277070cd742abc2797b06e914bb564a186966f4ecff92c82136"
+        ],
+        ".rodata": [
+          50,
+          3750771,
+          "678b717479239488eef7c4c21fb6d712470f5b4ba769b9903668ebee066b5c21"
+        ],
+        ".data": [
+          3,
+          28768,
+          "d82412e7e39c686b6fd4fe40c2b3ab9bceafa0769b38a4cb88da912c5266a602"
+        ],
+        ".bss": [
+          3,
+          19928,
+          null
+        ],
+        ".symtab": [
+          0,
+          152976,
+          "6742b59b973b31f42b7af2158b42c787aa9a0928806832b5be80f708ac764d0a"
+        ],
+        ".shstrtab": [
+          0,
+          69,
+          "982167f243fa65a69ed8a422ce7b7b1b5ac8e00cb98fae11538bfca48091b709"
+        ],
+        ".strtab": [
+          0,
+          198002,
+          "808bea752b22873e3b6493e5b20097d7eaa36cf722b1d623d73a4d2d87d38181"
+        ]
+      }
+    },
+    "essai_intermediaire": {
+      "nom": "ordinaire-actuel-aarch64-unknown-none-softfloat.elf",
+      "sha256": "1a7a8caccd2998b3ae8fe68393cc5aa4c1d8bbd55d75faede13179951224496f",
+      "point_entree": 18446744071562700988,
+      "segments_charges": [
+        {
+          "va": 18446744071562067968,
+          "pa": 18446744071562067968,
+          "flags": 6,
+          "octets": 680,
+          "taille_memoire": 680,
+          "align": 4096,
+          "sha256": "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+        },
+        {
+          "va": 18446744071562072064,
+          "pa": 18446744071562072064,
+          "flags": 5,
+          "octets": 749584,
+          "taille_memoire": 749584,
+          "align": 4096,
+          "sha256": "d732f1af7a4a9277070cd742abc2797b06e914bb564a186966f4ecff92c82136"
+        },
+        {
+          "va": 18446744071562825728,
+          "pa": 18446744071562825728,
+          "flags": 4,
+          "octets": 3750771,
+          "taille_memoire": 3750771,
+          "align": 4096,
+          "sha256": "ca4a82ae27a2c77ae675e900a96b0910d7148cc3b9ab0f9f5687a613982e02eb"
+        },
+        {
+          "va": 18446744071566577664,
+          "pa": 18446744071566577664,
+          "flags": 6,
+          "octets": 28768,
+          "taille_memoire": 48728,
+          "align": 4096,
+          "sha256": "d82412e7e39c686b6fd4fe40c2b3ab9bceafa0769b38a4cb88da912c5266a602"
+        }
+      ],
+      "sections": {
+        "": [
+          0,
+          0,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        ".limine_requests": [
+          2097155,
+          680,
+          "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+        ],
+        ".text": [
+          6,
+          749584,
+          "d732f1af7a4a9277070cd742abc2797b06e914bb564a186966f4ecff92c82136"
+        ],
+        ".rodata": [
+          50,
+          3750771,
+          "ca4a82ae27a2c77ae675e900a96b0910d7148cc3b9ab0f9f5687a613982e02eb"
+        ],
+        ".data": [
+          3,
+          28768,
+          "d82412e7e39c686b6fd4fe40c2b3ab9bceafa0769b38a4cb88da912c5266a602"
+        ],
+        ".bss": [
+          3,
+          19928,
+          null
+        ],
+        ".symtab": [
+          0,
+          152976,
+          "97a1537314bd2c7b365b8ff93df8741ec9d6689651396b026fe885d320321c4d"
+        ],
+        ".shstrtab": [
+          0,
+          69,
+          "982167f243fa65a69ed8a422ce7b7b1b5ac8e00cb98fae11538bfca48091b709"
+        ],
+        ".strtab": [
+          0,
+          198052,
+          "03a4b241a14d004b6d7cf845aa3be5e9de3d5ed5bd66a9b1a7715f69dde78a6c"
+        ]
+      }
+    },
+    "candidat": {
+      "nom": "positions-ordinaire-arm.elf",
+      "sha256": "f9820f52157f467b5ece6f74ad3ba9dca7b88a980f608589e62dabea49e48fdb",
+      "point_entree": 18446744071562700988,
+      "segments_charges": [
+        {
+          "va": 18446744071562067968,
+          "pa": 18446744071562067968,
+          "flags": 6,
+          "octets": 680,
+          "taille_memoire": 680,
+          "align": 4096,
+          "sha256": "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+        },
+        {
+          "va": 18446744071562072064,
+          "pa": 18446744071562072064,
+          "flags": 5,
+          "octets": 749584,
+          "taille_memoire": 749584,
+          "align": 4096,
+          "sha256": "d732f1af7a4a9277070cd742abc2797b06e914bb564a186966f4ecff92c82136"
+        },
+        {
+          "va": 18446744071562825728,
+          "pa": 18446744071562825728,
+          "flags": 4,
+          "octets": 3750771,
+          "taille_memoire": 3750771,
+          "align": 4096,
+          "sha256": "678b717479239488eef7c4c21fb6d712470f5b4ba769b9903668ebee066b5c21"
+        },
+        {
+          "va": 18446744071566577664,
+          "pa": 18446744071566577664,
+          "flags": 6,
+          "octets": 28768,
+          "taille_memoire": 48728,
+          "align": 4096,
+          "sha256": "d82412e7e39c686b6fd4fe40c2b3ab9bceafa0769b38a4cb88da912c5266a602"
+        }
+      ],
+      "sections": {
+        "": [
+          0,
+          0,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        ".limine_requests": [
+          2097155,
+          680,
+          "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+        ],
+        ".text": [
+          6,
+          749584,
+          "d732f1af7a4a9277070cd742abc2797b06e914bb564a186966f4ecff92c82136"
+        ],
+        ".rodata": [
+          50,
+          3750771,
+          "678b717479239488eef7c4c21fb6d712470f5b4ba769b9903668ebee066b5c21"
+        ],
+        ".data": [
+          3,
+          28768,
+          "d82412e7e39c686b6fd4fe40c2b3ab9bceafa0769b38a4cb88da912c5266a602"
+        ],
+        ".bss": [
+          3,
+          19928,
+          null
+        ],
+        ".symtab": [
+          0,
+          152976,
+          "8dc96ef8b4b03ed75424d104659250a2dde88c88e7e3254c382e9e8009eaec7a"
+        ],
+        ".shstrtab": [
+          0,
+          69,
+          "982167f243fa65a69ed8a422ce7b7b1b5ac8e00cb98fae11538bfca48091b709"
+        ],
+        ".strtab": [
+          0,
+          198031,
+          "14167e3ef5aa48f8e997cbf03fabf297024e10f7cb75dbc913f2cd1795a6a707"
+        ]
+      }
+    },
+    "differences_sections_finales": [
+      ".symtab",
+      ".strtab"
+    ],
+    "segments_PT_LOAD_identiques": true
+  },
+  "q35": {
+    "archive_avant": {
+      "nom": "ordinaire-anterieur-x86_64-unknown-none.elf",
+      "sha256": "79923b98fcb762e020f0dfe6a662764b8f448309b8fd891344801d9285dee9b4",
+      "point_entree": 18446744071562563424,
+      "segments_charges": [
+        {
+          "va": 18446744071562067968,
+          "pa": 18446744071562067968,
+          "flags": 6,
+          "octets": 488,
+          "taille_memoire": 488,
+          "align": 4096,
+          "sha256": "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+        },
+        {
+          "va": 18446744071562072064,
+          "pa": 18446744071562072064,
+          "flags": 5,
+          "octets": 932548,
+          "taille_memoire": 932548,
+          "align": 4096,
+          "sha256": "c24f2e4f3a197bf7f2ef7e110af7c95897ce6089040a0c87bddd40433f339fa6"
+        },
+        {
+          "va": 18446744071563005952,
+          "pa": 18446744071563005952,
+          "flags": 4,
+          "octets": 3868763,
+          "taille_memoire": 3868763,
+          "align": 4096,
+          "sha256": "02d7079edff32758393b117a01a72b48c423ab3890424abfce05f7c20fb8cf6e"
+        },
+        {
+          "va": 18446744071566876672,
+          "pa": 18446744071566876672,
+          "flags": 6,
+          "octets": 33488,
+          "taille_memoire": 69920,
+          "align": 4096,
+          "sha256": "e63578b69580dd815956d7fe6210aefc455d3adb3a3463d056a573f9bcf9a226"
+        }
+      ],
+      "sections": {
+        "": [
+          0,
+          0,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        ".limine_requests": [
+          2097155,
+          488,
+          "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+        ],
+        ".text": [
+          6,
+          932548,
+          "c24f2e4f3a197bf7f2ef7e110af7c95897ce6089040a0c87bddd40433f339fa6"
+        ],
+        ".rodata": [
+          50,
+          3868763,
+          "02d7079edff32758393b117a01a72b48c423ab3890424abfce05f7c20fb8cf6e"
+        ],
+        ".data": [
+          3,
+          33488,
+          "e63578b69580dd815956d7fe6210aefc455d3adb3a3463d056a573f9bcf9a226"
+        ],
+        ".bss": [
+          3,
+          36384,
+          null
+        ],
+        ".symtab": [
+          0,
+          53136,
+          "0081654650327f61461d341c4e0dcd4f464797733474453ef523ca7012959373"
+        ],
+        ".shstrtab": [
+          0,
+          69,
+          "982167f243fa65a69ed8a422ce7b7b1b5ac8e00cb98fae11538bfca48091b709"
+        ],
+        ".strtab": [
+          0,
+          198790,
+          "40a4e65e07f97633358766550ddb0ef0b75683ba184fe8fe5f5e893414eb7859"
+        ]
+      }
+    },
+    "essai_intermediaire": {
+      "nom": "ordinaire-actuel-x86_64-unknown-none.elf",
+      "sha256": "4d71c5ed11435c02b7f663d9af42a471ab3bd92921f7a9577760a5b8a8e29396",
+      "point_entree": 18446744071562563424,
+      "segments_charges": [
+        {
+          "va": 18446744071562067968,
+          "pa": 18446744071562067968,
+          "flags": 6,
+          "octets": 488,
+          "taille_memoire": 488,
+          "align": 4096,
+          "sha256": "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+        },
+        {
+          "va": 18446744071562072064,
+          "pa": 18446744071562072064,
+          "flags": 5,
+          "octets": 932548,
+          "taille_memoire": 932548,
+          "align": 4096,
+          "sha256": "c24f2e4f3a197bf7f2ef7e110af7c95897ce6089040a0c87bddd40433f339fa6"
+        },
+        {
+          "va": 18446744071563005952,
+          "pa": 18446744071563005952,
+          "flags": 4,
+          "octets": 3868763,
+          "taille_memoire": 3868763,
+          "align": 4096,
+          "sha256": "468df3b2a37b106dc5672b84e98f60df79f245c2cd7ce3ce45a7f774282fafbb"
+        },
+        {
+          "va": 18446744071566876672,
+          "pa": 18446744071566876672,
+          "flags": 6,
+          "octets": 33488,
+          "taille_memoire": 69920,
+          "align": 4096,
+          "sha256": "e63578b69580dd815956d7fe6210aefc455d3adb3a3463d056a573f9bcf9a226"
+        }
+      ],
+      "sections": {
+        "": [
+          0,
+          0,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        ".limine_requests": [
+          2097155,
+          488,
+          "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+        ],
+        ".text": [
+          6,
+          932548,
+          "c24f2e4f3a197bf7f2ef7e110af7c95897ce6089040a0c87bddd40433f339fa6"
+        ],
+        ".rodata": [
+          50,
+          3868763,
+          "468df3b2a37b106dc5672b84e98f60df79f245c2cd7ce3ce45a7f774282fafbb"
+        ],
+        ".data": [
+          3,
+          33488,
+          "e63578b69580dd815956d7fe6210aefc455d3adb3a3463d056a573f9bcf9a226"
+        ],
+        ".bss": [
+          3,
+          36384,
+          null
+        ],
+        ".symtab": [
+          0,
+          53136,
+          "bc5cb92978d27785de5b18edb4e2d1888dff00a5ddc274c06192a7c4a09f6f87"
+        ],
+        ".shstrtab": [
+          0,
+          69,
+          "982167f243fa65a69ed8a422ce7b7b1b5ac8e00cb98fae11538bfca48091b709"
+        ],
+        ".strtab": [
+          0,
+          198903,
+          "98c47182a0eda39044f3a8ebf3b8a33b3b2e146910f5400a8d7bbc0ab12d2cf7"
+        ]
+      }
+    },
+    "candidat": {
+      "nom": "positions-ordinaire-q35.elf",
+      "sha256": "5a131b036a7d3011b4b714cef4ce911450794897d7e8173f4b0ee581c52668f4",
+      "point_entree": 18446744071562563424,
+      "segments_charges": [
+        {
+          "va": 18446744071562067968,
+          "pa": 18446744071562067968,
+          "flags": 6,
+          "octets": 488,
+          "taille_memoire": 488,
+          "align": 4096,
+          "sha256": "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+        },
+        {
+          "va": 18446744071562072064,
+          "pa": 18446744071562072064,
+          "flags": 5,
+          "octets": 932548,
+          "taille_memoire": 932548,
+          "align": 4096,
+          "sha256": "c24f2e4f3a197bf7f2ef7e110af7c95897ce6089040a0c87bddd40433f339fa6"
+        },
+        {
+          "va": 18446744071563005952,
+          "pa": 18446744071563005952,
+          "flags": 4,
+          "octets": 3868763,
+          "taille_memoire": 3868763,
+          "align": 4096,
+          "sha256": "02d7079edff32758393b117a01a72b48c423ab3890424abfce05f7c20fb8cf6e"
+        },
+        {
+          "va": 18446744071566876672,
+          "pa": 18446744071566876672,
+          "flags": 6,
+          "octets": 33488,
+          "taille_memoire": 69920,
+          "align": 4096,
+          "sha256": "e63578b69580dd815956d7fe6210aefc455d3adb3a3463d056a573f9bcf9a226"
+        }
+      ],
+      "sections": {
+        "": [
+          0,
+          0,
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        ],
+        ".limine_requests": [
+          2097155,
+          488,
+          "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+        ],
+        ".text": [
+          6,
+          932548,
+          "c24f2e4f3a197bf7f2ef7e110af7c95897ce6089040a0c87bddd40433f339fa6"
+        ],
+        ".rodata": [
+          50,
+          3868763,
+          "02d7079edff32758393b117a01a72b48c423ab3890424abfce05f7c20fb8cf6e"
+        ],
+        ".data": [
+          3,
+          33488,
+          "e63578b69580dd815956d7fe6210aefc455d3adb3a3463d056a573f9bcf9a226"
+        ],
+        ".bss": [
+          3,
+          36384,
+          null
+        ],
+        ".symtab": [
+          0,
+          53136,
+          "9dc4d5816707e73dfddf5f985188457dcba7310c0c757b5beccca0e21b6b1b54"
+        ],
+        ".shstrtab": [
+          0,
+          69,
+          "982167f243fa65a69ed8a422ce7b7b1b5ac8e00cb98fae11538bfca48091b709"
+        ],
+        ".strtab": [
+          0,
+          198879,
+          "af63da6e4605d3582dc6eb94f15142dc8172261465555cab1f96afeb439f865c"
+        ]
+      }
+    },
+    "differences_sections_finales": [
+      ".symtab",
+      ".strtab"
+    ],
+    "segments_PT_LOAD_identiques": true
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "x86_64": {
+    "modele": "qemu-system-x86_64",
+    "version": "11.1.3",
+    "architecture_hote": "arm64",
+    "sha256": "a462b64050825e6adfc88ea14b3896205056b2f0b0090938b536ce69381739ab",
+    "sha256_tranche_arm64": "a462b64050825e6adfc88ea14b3896205056b2f0b0090938b536ce69381739ab",
+    "tx_notifications": [
+      "100527900:     \tmov\tx0, x19",
+      "100527904:     \tmov\tw1, #0x0                ; =0",
+      "100527908:     \tbl\t0x1002790c4 <_virtio_queue_set_notification>"
+    ],
+    "activer": [
+      "100279144:     \tadd\tx1, x21, #0xf0",
+      "100279148:     \tmov\tx0, x19",
+      "10027914c:     \tmov\tx2, #0x0                ; =0",
+      "100279150:     \tbl\t0x10027e578 <_virtio_lduw_phys_cached>",
+      "100279154:     \tadd\tx1, x21, #0xf0",
+      "100279158:     \tand\tw3, w0, #0xfffe",
+      "10027915c:     \tmov\tx0, x19",
+      "100279160:     \tmov\tx2, #0x0                ; =0",
+      "100279164:     \tbl\t0x10027e62c <_virtio_stw_phys_cached>"
+    ],
+    "desactiver": [
+      "1002792ac:     \tadd\tx1, x21, #0xf0",
+      "1002792b0:     \tmov\tx0, x19",
+      "1002792b4:     \tmov\tx2, #0x0                ; =0",
+      "1002792b8:     \tbl\t0x10027e578 <_virtio_lduw_phys_cached>",
+      "1002792bc:     \tadd\tx1, x21, #0xf0",
+      "1002792c0:     \torr\tw3, w0, #0x1",
+      "1002792c4:     \tmov\tx0, x19",
+      "1002792c8:     \tmov\tx2, #0x0                ; =0",
+      "1002792cc:     \tbl\t0x10027e62c <_virtio_stw_phys_cached>"
+    ],
+    "source_notifications": "https://github.com/qemu/qemu/blob/v11.1.3/hw/virtio/virtio.c",
+    "source_tx_rx": "https://github.com/qemu/qemu/blob/v11.1.3/hw/net/virtio-net.c"
+  },
+  "aarch64": {
+    "modele": "qemu-aarch64-softmmu",
+    "version": "10.0.12",
+    "architecture_hote": "arm64",
+    "sha256": "2f95a8c5af14a8355dae4220db1216f1e9a847e3bd8315e687606bc3e083d6da",
+    "sha256_tranche_arm64": "37661492c01b35a5ddaa57bc933a2e8cde4c494cab7be09a751758632850c47a",
+    "tx_notifications": [
+      "9909dc:      \tmov\tx0, x19",
+      "9909e0:      \tmov\tw1, #0x0                ; =0",
+      "9909e4:      \tbl\t0x7f34e8 <_virtio_queue_set_notification>"
+    ],
+    "activer": [
+      "7f3568:      \tadd\tx1, x21, #0xf0",
+      "7f356c:      \tmov\tx0, x19",
+      "7f3570:      \tmov\tx2, #0x0                ; =0",
+      "7f3574:      \tbl\t0x7f8be8 <_virtio_lduw_phys_cached>",
+      "7f3578:      \tadd\tx1, x21, #0xf0",
+      "7f357c:      \tand\tw3, w0, #0xfffe",
+      "7f3580:      \tmov\tx0, x19",
+      "7f3584:      \tmov\tx2, #0x0                ; =0",
+      "7f3588:      \tbl\t0x7f8c9c <_virtio_stw_phys_cached>"
+    ],
+    "desactiver": [
+      "7f36d0:      \tadd\tx1, x21, #0xf0",
+      "7f36d4:      \tmov\tx0, x19",
+      "7f36d8:      \tmov\tx2, #0x0                ; =0",
+      "7f36dc:      \tbl\t0x7f8be8 <_virtio_lduw_phys_cached>",
+      "7f36e0:      \tadd\tx1, x21, #0xf0",
+      "7f36e4:      \torr\tw3, w0, #0x1",
+      "7f36e8:      \tmov\tx0, x19",
+      "7f36ec:      \tmov\tx2, #0x0                ; =0",
+      "7f36f0:      \tbl\t0x7f8c9c <_virtio_stw_phys_cached>"
+    ],
+    "source_notifications": "https://github.com/qemu/qemu/blob/v10.0.12/hw/virtio/virtio.c",
+    "source_tx_rx": "https://github.com/qemu/qemu/blob/v10.0.12/hw/net/virtio-net.c"
+  }
+}

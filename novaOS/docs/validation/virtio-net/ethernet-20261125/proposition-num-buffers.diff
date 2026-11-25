@@ -1,0 +1,13 @@
+--- a/hw/net/virtio-net.c
++++ b/hw/net/virtio-net.c
+@@ -1997,3 +1997,4 @@
+             assert(offset == 0);
+-            if (n->mergeable_rx_bufs) {
++            if (n->mergeable_rx_bufs ||
++                virtio_vdev_has_feature(vdev, VIRTIO_F_VERSION_1)) {
+                 mhdr_cnt = iov_copy(mhdr_sg, ARRAY_SIZE(mhdr_sg),
+@@ -2002,4 +2003,2 @@
+                                     sizeof(extra_hdr.hdr.num_buffers));
+-            } else {
+-                extra_hdr.hdr.num_buffers = cpu_to_le16(1);
+             }
