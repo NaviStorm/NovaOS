@@ -1,0 +1,231 @@
+NAEXEC restitue pid=16 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=49 nodes=102 espaces=15 cadres_ipc=57 cadres_libres=Ok(59517)
+NAEXEC restitue pid=17 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=49 nodes=102 espaces=15 cadres_ipc=57 cadres_libres=Ok(59517)
+NAEXEC ressources phase=avant_ticket owner=5 roots=1 handles=8 endpoints=59 nodes=124 waits=17 processus=18 threads=1 joins=0 cadres_ipc=68 cadres_libres=Ok(59163)
+NAEXEC resident phase=avant_ticket pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=avant_ticket pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=avant_ticket pid=3 service=0 pages=191 pile=64
+NAEXEC resident phase=avant_ticket pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=avant_ticket pid=5 service=0 pages=89 pile=64
+NAEXEC resident phase=avant_ticket pid=6 service=17 pages=38 pile=64
+NAEXEC resident phase=avant_ticket pid=7 service=22 pages=169 pile=64
+NAEXEC resident phase=avant_ticket pid=8 service=23 pages=73 pile=64
+NAEXEC resident phase=avant_ticket pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=11 service=24 pages=73 pile=64
+NAEXEC resident phase=avant_ticket pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=avant_ticket pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=avant_ticket owner=5 pid=5 service=0 roots=1 handles=8 waits=1 pages=89 pile=64 threads=1 cadres_ipc=68
+NAEXEC acteur phase=avant_ticket owner=5 pid=7 service=22 roots=4 handles=7 waits=1 pages=169 pile=64 threads=1 cadres_ipc=68
+NAEXEC acteur phase=avant_ticket owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=73 pile=64 threads=1 cadres_ipc=68
+NAEXEC ressources phase=consommation owner=5 roots=2 handles=9 endpoints=60 nodes=126 waits=17 processus=18 threads=1 joins=0 cadres_ipc=69 cadres_libres=Ok(59162)
+NAEXEC resident phase=consommation pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=consommation pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=consommation pid=3 service=0 pages=191 pile=64
+NAEXEC resident phase=consommation pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=consommation pid=5 service=0 pages=89 pile=64
+NAEXEC resident phase=consommation pid=6 service=17 pages=38 pile=64
+NAEXEC resident phase=consommation pid=7 service=22 pages=169 pile=64
+NAEXEC resident phase=consommation pid=8 service=23 pages=73 pile=64
+NAEXEC resident phase=consommation pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=consommation pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=consommation pid=11 service=24 pages=73 pile=64
+NAEXEC resident phase=consommation pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=consommation pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=consommation pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=consommation pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=consommation pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=consommation pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=consommation pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=consommation owner=5 pid=5 service=0 roots=2 handles=9 waits=0 pages=89 pile=64 threads=1 cadres_ipc=69
+NAEXEC acteur phase=consommation owner=5 pid=7 service=22 roots=4 handles=8 waits=1 pages=169 pile=64 threads=1 cadres_ipc=69
+NAEXEC acteur phase=consommation owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=73 pile=64 threads=1 cadres_ipc=69
+NAEXEC enfant owner=5 child=21 ticks=719
+NAEXEC restitue pid=21 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=60 nodes=125 espaces=18 cadres_ipc=69 cadres_libres=Ok(59179)
+NAEXEC ressources phase=fermeture owner=5 roots=1 handles=8 endpoints=59 nodes=124 waits=17 processus=18 threads=1 joins=0 cadres_ipc=69 cadres_libres=Ok(59179)
+NAEXEC resident phase=fermeture pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=fermeture pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=fermeture pid=3 service=0 pages=191 pile=64
+NAEXEC resident phase=fermeture pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=fermeture pid=5 service=0 pages=89 pile=64
+NAEXEC resident phase=fermeture pid=6 service=17 pages=38 pile=64
+NAEXEC resident phase=fermeture pid=7 service=22 pages=169 pile=64
+NAEXEC resident phase=fermeture pid=8 service=23 pages=73 pile=64
+NAEXEC resident phase=fermeture pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=11 service=24 pages=73 pile=64
+NAEXEC resident phase=fermeture pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=fermeture pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=fermeture owner=5 pid=5 service=0 roots=1 handles=8 waits=0 pages=89 pile=64 threads=1 cadres_ipc=69
+NAEXEC acteur phase=fermeture owner=5 pid=7 service=22 roots=4 handles=7 waits=1 pages=169 pile=64 threads=1 cadres_ipc=69
+NAEXEC acteur phase=fermeture owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=73 pile=64 threads=1 cadres_ipc=69
+NAEXEC ressources phase=avant_ticket owner=5 roots=1 handles=8 endpoints=59 nodes=124 waits=17 processus=18 threads=1 joins=0 cadres_ipc=68 cadres_libres=Ok(59163)
+NAEXEC resident phase=avant_ticket pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=avant_ticket pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=avant_ticket pid=3 service=0 pages=191 pile=64
+NAEXEC resident phase=avant_ticket pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=avant_ticket pid=5 service=0 pages=89 pile=64
+NAEXEC resident phase=avant_ticket pid=6 service=17 pages=38 pile=64
+NAEXEC resident phase=avant_ticket pid=7 service=22 pages=169 pile=64
+NAEXEC resident phase=avant_ticket pid=8 service=23 pages=73 pile=64
+NAEXEC resident phase=avant_ticket pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=11 service=24 pages=73 pile=64
+NAEXEC resident phase=avant_ticket pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=avant_ticket pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=avant_ticket owner=5 pid=5 service=0 roots=1 handles=8 waits=1 pages=89 pile=64 threads=1 cadres_ipc=68
+NAEXEC acteur phase=avant_ticket owner=5 pid=7 service=22 roots=4 handles=7 waits=1 pages=169 pile=64 threads=1 cadres_ipc=68
+NAEXEC acteur phase=avant_ticket owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=73 pile=64 threads=1 cadres_ipc=68
+NAEXEC ressources phase=consommation owner=5 roots=2 handles=9 endpoints=60 nodes=126 waits=16 processus=18 threads=1 joins=0 cadres_ipc=69 cadres_libres=Ok(59162)
+NAEXEC resident phase=consommation pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=consommation pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=consommation pid=3 service=0 pages=191 pile=64
+NAEXEC resident phase=consommation pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=consommation pid=5 service=0 pages=89 pile=64
+NAEXEC resident phase=consommation pid=6 service=17 pages=38 pile=64
+NAEXEC resident phase=consommation pid=7 service=22 pages=169 pile=64
+NAEXEC resident phase=consommation pid=8 service=23 pages=73 pile=64
+NAEXEC resident phase=consommation pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=consommation pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=consommation pid=11 service=24 pages=73 pile=64
+NAEXEC resident phase=consommation pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=consommation pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=consommation pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=consommation pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=consommation pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=consommation pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=consommation pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=consommation owner=5 pid=5 service=0 roots=2 handles=9 waits=0 pages=89 pile=64 threads=1 cadres_ipc=69
+NAEXEC acteur phase=consommation owner=5 pid=7 service=22 roots=4 handles=8 waits=1 pages=169 pile=64 threads=1 cadres_ipc=69
+NAEXEC acteur phase=consommation owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=73 pile=64 threads=1 cadres_ipc=69
+NAEXEC enfant owner=5 child=22 ticks=1102
+NAEXEC ressources phase=avant_ticket owner=11 roots=3 handles=4 endpoints=63 nodes=132 waits=17 processus=19 threads=1 joins=0 cadres_ipc=73 cadres_libres=Ok(59025)
+NAEXEC resident phase=avant_ticket pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=avant_ticket pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=avant_ticket pid=3 service=0 pages=191 pile=64
+NAEXEC resident phase=avant_ticket pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=avant_ticket pid=5 service=0 pages=89 pile=64
+NAEXEC resident phase=avant_ticket pid=6 service=17 pages=38 pile=64
+NAEXEC resident phase=avant_ticket pid=7 service=22 pages=169 pile=64
+NAEXEC resident phase=avant_ticket pid=8 service=23 pages=73 pile=64
+NAEXEC resident phase=avant_ticket pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=11 service=24 pages=89 pile=64
+NAEXEC resident phase=avant_ticket pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=avant_ticket pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=avant_ticket pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=avant_ticket pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=20 service=10 pages=5 pile=64
+NAEXEC resident phase=avant_ticket pid=22 service=0 pages=30 pile=64
+NAEXEC acteur phase=avant_ticket owner=11 pid=7 service=22 roots=4 handles=7 waits=0 pages=169 pile=64 threads=1 cadres_ipc=73
+NAEXEC acteur phase=avant_ticket owner=11 pid=8 service=23 roots=4 handles=6 waits=1 pages=73 pile=64 threads=1 cadres_ipc=73
+NAEXEC acteur phase=avant_ticket owner=11 pid=11 service=24 roots=3 handles=4 waits=1 pages=89 pile=64 threads=1 cadres_ipc=73
+NAEXEC restitue pid=22 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=61 nodes=127 espaces=18 cadres_ipc=71 cadres_libres=Ok(59149)
+NAEXEC ressources phase=fermeture owner=5 roots=1 handles=8 endpoints=60 nodes=126 waits=17 processus=18 threads=1 joins=0 cadres_ipc=71 cadres_libres=Ok(59149)
+NAEXEC resident phase=fermeture pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=fermeture pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=fermeture pid=3 service=0 pages=191 pile=64
+NAEXEC resident phase=fermeture pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=fermeture pid=5 service=0 pages=89 pile=64
+NAEXEC resident phase=fermeture pid=6 service=17 pages=38 pile=64
+NAEXEC resident phase=fermeture pid=7 service=22 pages=169 pile=64
+NAEXEC resident phase=fermeture pid=8 service=23 pages=73 pile=64
+NAEXEC resident phase=fermeture pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=11 service=24 pages=89 pile=64
+NAEXEC resident phase=fermeture pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=fermeture pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=fermeture owner=5 pid=5 service=0 roots=1 handles=8 waits=0 pages=89 pile=64 threads=1 cadres_ipc=71
+NAEXEC acteur phase=fermeture owner=5 pid=7 service=22 roots=4 handles=8 waits=1 pages=169 pile=64 threads=1 cadres_ipc=71
+NAEXEC acteur phase=fermeture owner=5 pid=8 service=23 roots=4 handles=6 waits=1 pages=73 pile=64 threads=1 cadres_ipc=71
+NAEXEC ressources phase=consommation owner=11 roots=4 handles=5 endpoints=60 nodes=126 waits=16 processus=18 threads=1 joins=0 cadres_ipc=70 cadres_libres=Ok(59150)
+NAEXEC resident phase=consommation pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=consommation pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=consommation pid=3 service=0 pages=191 pile=64
+NAEXEC resident phase=consommation pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=consommation pid=5 service=0 pages=89 pile=64
+NAEXEC resident phase=consommation pid=6 service=17 pages=38 pile=64
+NAEXEC resident phase=consommation pid=7 service=22 pages=169 pile=64
+NAEXEC resident phase=consommation pid=8 service=23 pages=73 pile=64
+NAEXEC resident phase=consommation pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=consommation pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=consommation pid=11 service=24 pages=89 pile=64
+NAEXEC resident phase=consommation pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=consommation pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=consommation pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=consommation pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=consommation pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=consommation pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=consommation pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=consommation owner=11 pid=7 service=22 roots=4 handles=8 waits=1 pages=169 pile=64 threads=1 cadres_ipc=70
+NAEXEC acteur phase=consommation owner=11 pid=8 service=23 roots=4 handles=6 waits=1 pages=73 pile=64 threads=1 cadres_ipc=70
+NAEXEC acteur phase=consommation owner=11 pid=11 service=24 roots=4 handles=5 waits=0 pages=89 pile=64 threads=1 cadres_ipc=70
+NXDUPLEX phase=sortie child=23 roots=1 max_roots=4 endpoints=61 nodes=128 handles=1 waits=15 cadres_ipc=71 cadres_libres=Ok(59062)
+NXDUPLEX phase=erreur child=23 roots=2 max_roots=4 endpoints=62 nodes=130 handles=2 waits=15 cadres_ipc=72 cadres_libres=Ok(59061)
+NXDUPLEX phase=fichier_tx child=23 roots=3 max_roots=4 endpoints=63 nodes=132 handles=3 waits=15 cadres_ipc=73 cadres_libres=Ok(59060)
+NXDUPLEX phase=fichier_rx child=23 roots=4 max_roots=4 endpoints=64 nodes=134 handles=4 waits=15 cadres_ipc=74 cadres_libres=Ok(59059)
+NAEXEC enfant owner=11 child=23 ticks=1805
+NXDUPLEX phase=actif child=23 roots=4 max_roots=4 endpoints=64 nodes=134 handles=4 waits=15 cadres_ipc=74 cadres_libres=Ok(59059)
+NAEXEC restitue pid=23 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=60 nodes=125 espaces=18 cadres_ipc=69 cadres_libres=Ok(59160)
+NXDUPLEX phase=libre child=23 lane=0
+NAEXEC ressources phase=fermeture owner=11 roots=3 handles=4 endpoints=59 nodes=124 waits=16 processus=18 threads=1 joins=0 cadres_ipc=69 cadres_libres=Ok(59160)
+NAEXEC resident phase=fermeture pid=1 service=0 pages=12 pile=64
+NAEXEC resident phase=fermeture pid=2 service=0 pages=2 pile=1
+NAEXEC resident phase=fermeture pid=3 service=0 pages=191 pile=64
+NAEXEC resident phase=fermeture pid=4 service=0 pages=3 pile=1
+NAEXEC resident phase=fermeture pid=5 service=0 pages=89 pile=64
+NAEXEC resident phase=fermeture pid=6 service=17 pages=38 pile=64
+NAEXEC resident phase=fermeture pid=7 service=22 pages=169 pile=64
+NAEXEC resident phase=fermeture pid=8 service=23 pages=73 pile=64
+NAEXEC resident phase=fermeture pid=9 service=18 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=10 service=21 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=11 service=24 pages=89 pile=64
+NAEXEC resident phase=fermeture pid=12 service=25 pages=14 pile=64
+NAEXEC resident phase=fermeture pid=13 service=26 pages=3 pile=64
+NAEXEC resident phase=fermeture pid=14 service=1 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=15 service=2 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=18 service=9 pages=4 pile=64
+NAEXEC resident phase=fermeture pid=19 service=16 pages=5 pile=64
+NAEXEC resident phase=fermeture pid=20 service=10 pages=5 pile=64
+NAEXEC acteur phase=fermeture owner=11 pid=7 service=22 roots=4 handles=7 waits=1 pages=169 pile=64 threads=1 cadres_ipc=69
+NAEXEC acteur phase=fermeture owner=11 pid=8 service=23 roots=4 handles=6 waits=1 pages=73 pile=64 threads=1 cadres_ipc=69
+NAEXEC acteur phase=fermeture owner=11 pid=11 service=24 roots=3 handles=4 waits=0 pages=89 pile=64 threads=1 cadres_ipc=69
+NAEXEC restitue pid=11 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=56 nodes=117 espaces=17 cadres_ipc=65 cadres_libres=Ok(59344)
+NAEXEC restitue pid=19 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=50 nodes=103 espaces=16 cadres_ipc=59 cadres_libres=Ok(59443)
+NAEXEC restitue pid=20 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=48 nodes=99 espaces=15 cadres_ipc=57 cadres_libres=Ok(59538)
+NAEXEC restitue pid=14 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=46 nodes=95 espaces=14 cadres_ipc=55 cadres_libres=Ok(59633)
+NAEXEC restitue pid=15 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=44 nodes=91 espaces=13 cadres_ipc=53 cadres_libres=Ok(59728)
+NAEXEC restitue pid=18 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=42 nodes=87 espaces=12 cadres_ipc=49 cadres_libres=Ok(59824)
+NAEXEC restitue pid=1 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=10 nodes=18 espaces=11 cadres_ipc=15 cadres_libres=Ok(59958)
+NAEXEC restitue pid=7 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=10 nodes=18 espaces=10 cadres_ipc=15 cadres_libres=Ok(60215)
+NAEXEC restitue pid=8 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=10 nodes=18 espaces=9 cadres_ipc=15 cadres_libres=Ok(60376)
+NAEXEC restitue pid=9 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=10 nodes=18 espaces=8 cadres_ipc=15 cadres_libres=Ok(60478)
+NAEXEC restitue pid=6 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=10 nodes=18 espaces=7 cadres_ipc=15 cadres_libres=Ok(60604)
+NAEXEC restitue pid=10 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=10 nodes=18 espaces=6 cadres_ipc=15 cadres_libres=Ok(60695)
+NAEXEC restitue pid=12 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=10 nodes=18 espaces=5 cadres_ipc=15 cadres_libres=Ok(60797)
+NAEXEC restitue pid=13 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=10 nodes=18 espaces=4 cadres_ipc=15 cadres_libres=Ok(60888)
+NAEXEC restitue pid=5 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=9 nodes=14 espaces=3 cadres_ipc=13 cadres_libres=Ok(61070)
+NAEXEC restitue pid=4 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=5 nodes=7 espaces=2 cadres_ipc=8 cadres_libres=Ok(61103)
+NAEXEC restitue pid=2 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=0 nodes=0 espaces=1 cadres_ipc=0 cadres_libres=Ok(61137)
+NAEXEC restitue pid=3 roots=0 handles=0 waits=0 pages=0 pile=0 threads=0 endpoints=0 nodes=0 espaces=0 cadres_ipc=0 cadres_libres=Ok(61419)
