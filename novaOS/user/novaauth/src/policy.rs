@@ -376,6 +376,20 @@ impl State {
 
 #[cfg(feature="administration-lab")]
 impl State {
+    /// Le profil de lecture ne supporte qu'une provenance configurée pour
+    /// l'installation. Une provenance devenue invalide ne devient pas Direct.
+    pub(super) fn required_exec_read(&self, owner: Id, image: Image) -> Result<Option<(u64, Permission)>> {
+        self.authorize_installed_image(owner, image.installation, image.digest)?;
+        let mut rules = self.user(owner)?.rules.iter()
+            .filter(|r| r.installation == image.installation && r.rights & READ != 0);
+        let Some(rule) = rules.next() else { return Ok(None); };
+        if rules.next().is_some() {
+            return Err(Fault::Conflict);
+        }
+        let permission = self.permission(owner, image, owner, rule.object, rule.origin)?;
+        Ok(Some((rule.object, permission)))
+    }
+
     pub(super) fn installed_revision(&self,owner:Id,image:Image)->Result<u64>{
         self.authorize_installed_image(owner,image.installation,image.digest)?;
         Ok(self.installation(image.installation)?.revision)

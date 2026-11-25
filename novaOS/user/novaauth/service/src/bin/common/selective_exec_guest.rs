@@ -16,6 +16,36 @@ fn query(op:[u8;16],answer:&mut [u8;MAX])->rt::Result<(usize,[u8;112])>{
  q[32..64].copy_from_slice(&incarnation::identity());q[64..80].copy_from_slice(&op);q[80..].copy_from_slice(&*common::random()?);
  let n=exchange(63,&q,answer)?;novaos_recovery::exec_descriptor::verify_lookup(&key()?,&q,&answer[HEADER+8..HEADER+8+n]).map_err(|_|rt::REFUSED)?;Ok((n,q))
 }
+/// La précision de portée est produite par R à partir de l'installation
+/// attestée et du dossier de sa vue, sans accepter d'origine du demandeur.
+pub(super) fn resolve_file(state: &View, storage: &mut Storage, grant: novaos_identity::Grant,
+    descriptor: &mut [u8; 240], with_file: bool) -> rt::Result<()> {
+    let image = Image {
+        installation: descriptor[56..72].try_into().unwrap(),
+        digest: descriptor[152..184].try_into().unwrap(),
+    };
+    let Some(required) = state.required_exec_read(grant, image).map_err(|e| {
+        if matches!(e, novaos_identity::Fault::Conflict) { 24 } else { rt::REVOKED }
+    })? else {
+        return Ok(());
+    };
+    if state.execution_identity(grant, image, &distribution()?, machine())
+        .map_err(|_| rt::REVOKED)?.administration != 0 {
+        return Err(rt::DENIED);
+    }
+    descriptor[..8].copy_from_slice(b"NXRES002");
+    descriptor[184..232].fill(0);
+    if with_file {
+        let operation = common::random()?[..16].try_into().unwrap();
+        let scope = storage.select_exec_file(operation, state.head().volume,
+            required.owner, required.object, required.seal)?;
+        descriptor[184..192].copy_from_slice(&scope.directory.to_le_bytes());
+        descriptor[192..200].copy_from_slice(&scope.file.to_le_bytes());
+        descriptor[200..208].copy_from_slice(&scope.directory.to_le_bytes());
+    }
+    Ok(())
+}
+
 pub(super) fn validate(state:&View,storage:&mut Storage,d:Descriptor<'_>,m:&[u64;WORDS])->rt::Result<()> {
  let p=d.bytes();
  let file=d.matches_launch_metadata(m).map_err(|_|rt::REVOKED)?;

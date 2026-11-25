@@ -80,7 +80,36 @@ fn mounted_p9_read_scope_requires_the_sealed_parent() {
         let reply = probe.inspect(&fs, [5; 32], &seal).unwrap();
         assert_eq!(probe.verify(&reply).unwrap(), seal_digest(&seal));
 
+        let mut selection = frame;
+        selection[..8].copy_from_slice(Probe::SELECT);
+        selection[80..88].fill(0);
+        let select = Probe::parse(&selection).unwrap();
+        let response = select.inspect(&fs, [5; 32], &seal).unwrap();
+        assert_eq!(select.verify_selection(&response, seal_digest(&seal)).unwrap().file, file);
         fs.rename_at(directory, "temoin", root, "ailleurs").unwrap();
         assert!(probe.inspect(&fs, [5; 32], &seal).is_err());
+        assert!(select.inspect(&fs, [5; 32], &seal).is_err());
     }
+}
+
+#[test]
+fn selection_requires_the_authenticated_seal_and_remains_distinct_from_exact_readback() {
+    let exact = request();
+    let mut selection = exact;
+    selection[..8].copy_from_slice(Probe::SELECT);
+    selection[80..88].fill(0);
+    let query = Probe::parse(&selection).unwrap();
+    let mut seal = *b"NXScope1................................";
+    seal[8..].copy_from_slice(&exact[56..88]);
+    let reply = query.reply(&seal).unwrap();
+    let selected = query.verify_selection(&reply, seal_digest(&seal)).unwrap();
+    assert_eq!((selected.directory, selected.file), (11, 12));
+    assert!(query.verify(&reply).is_err());
+    assert!(query.verify_selection(&reply, [0; 32]).is_err());
+    assert!(Probe::parse(&exact).unwrap().verify_selection(&reply, seal_digest(&seal)).is_err());
+    let mut alternative = seal;
+    alternative[32] ^= 1;
+    assert!(query.verify_selection(&query.reply(&alternative).unwrap(), seal_digest(&seal)).is_err());
+    selection[80] = 12;
+    assert!(Probe::parse(&selection).is_err());
 }

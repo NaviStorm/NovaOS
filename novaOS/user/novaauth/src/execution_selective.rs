@@ -11,6 +11,27 @@ pub struct RequiredPermission {
  pub seal:Hash,
 }
 impl View {
+ /// Résolution de la seule règle de lecture explicitement liée à cette
+ /// installation. L'effecteur NovaFS doit encore attester le fichier physique.
+ pub fn required_exec_read(&self, grant: Grant, image: Image) -> Result<Option<RequiredPermission>> {
+  if grant.head != self.head {
+   return Err(Fault::Denied);
+  }
+  let Some((object, permission)) = self.state.required_exec_read(grant.owner, image)? else {
+   return Ok(None);
+  };
+  Ok(Some(RequiredPermission {
+   owner: grant.owner,
+   object,
+   origin: permission.origin,
+   rights: crate::policy::READ,
+   membership_revision: permission.membership_revision,
+   rule_revision: permission.rule_revision,
+   image_revision: permission.image_revision,
+   seal: self.folder_binding(grant.owner, object)?,
+  }))
+ }
+
  pub fn revalidate_execution_dependencies(&self,grant:Grant,epoch:u64,image:Image,
   expected:ExecutionIdentity,key:&VerifyingKey,machine:Machine,required:&[RequiredPermission])->Result<()> {
   // L'installation est une dépendance obligatoire ; au plus trois droits VFS
