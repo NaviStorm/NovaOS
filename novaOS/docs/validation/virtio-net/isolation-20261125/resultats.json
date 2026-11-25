@@ -1,0 +1,2156 @@
+{
+  "code_principal": "716a1d098a03649c4da63f32ffa95bcd1731b5aa",
+  "revision_diagnostic": "ad6479189ad62e37e4acd52cd64318643842282a",
+  "cas": {
+    "arm-temoin-512-01": {
+      "verdict": "échec",
+      "compte_rendu": "arm-temoin-512-01/campagne.json",
+      "elf_sha256": "545e3b174cb691865298359460c8f1695e3c9a8699325b245f740125812c90de",
+      "secteur": 512,
+      "bail_nic": false
+    },
+    "coupure-4096-apres-f1-05": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-4096-apres-f1-05/campagne.json",
+      "elf_sha256": "5f178bc7db5c9088898d358a74b5e4cca3c2e81cbb75870bf4d2732484c95608",
+      "phase": "apres-f1",
+      "secteur": 4096,
+      "issue": "ancien"
+    },
+    "coupure-4096-apres-f1-10": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-4096-apres-f1-10/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "phase": "apres-f1",
+      "secteur": 4096,
+      "issue": "ancien"
+    },
+    "coupure-4096-apres-f2-05": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-4096-apres-f2-05/campagne.json",
+      "elf_sha256": "5f178bc7db5c9088898d358a74b5e4cca3c2e81cbb75870bf4d2732484c95608",
+      "phase": "apres-f2",
+      "secteur": 4096,
+      "issue": "nouveau"
+    },
+    "coupure-4096-apres-f2-10": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-4096-apres-f2-10/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "phase": "apres-f2",
+      "secteur": 4096,
+      "issue": "nouveau"
+    },
+    "coupure-4096-avant-f1-05": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-4096-avant-f1-05/campagne.json",
+      "elf_sha256": "5f178bc7db5c9088898d358a74b5e4cca3c2e81cbb75870bf4d2732484c95608",
+      "phase": "avant-f1",
+      "secteur": 4096,
+      "issue": "ancien"
+    },
+    "coupure-4096-avant-f1-10": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-4096-avant-f1-10/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "phase": "avant-f1",
+      "secteur": 4096,
+      "issue": "ancien"
+    },
+    "coupure-4096-avant-f2-05": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-4096-avant-f2-05/campagne.json",
+      "elf_sha256": "5f178bc7db5c9088898d358a74b5e4cca3c2e81cbb75870bf4d2732484c95608",
+      "phase": "avant-f2",
+      "secteur": 4096,
+      "issue": "nouveau"
+    },
+    "coupure-4096-avant-f2-10": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-4096-avant-f2-10/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "phase": "avant-f2",
+      "secteur": 4096,
+      "issue": "nouveau"
+    },
+    "coupure-512-apres-f1-05": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-512-apres-f1-05/campagne.json",
+      "elf_sha256": "5f178bc7db5c9088898d358a74b5e4cca3c2e81cbb75870bf4d2732484c95608",
+      "phase": "apres-f1",
+      "secteur": 512,
+      "issue": "ancien"
+    },
+    "coupure-512-apres-f1-10": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-512-apres-f1-10/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "phase": "apres-f1",
+      "secteur": 512,
+      "issue": "ancien"
+    },
+    "coupure-512-apres-f2-05": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-512-apres-f2-05/campagne.json",
+      "elf_sha256": "5f178bc7db5c9088898d358a74b5e4cca3c2e81cbb75870bf4d2732484c95608",
+      "phase": "apres-f2",
+      "secteur": 512,
+      "issue": "nouveau"
+    },
+    "coupure-512-apres-f2-10": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-512-apres-f2-10/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "phase": "apres-f2",
+      "secteur": 512,
+      "issue": "nouveau"
+    },
+    "coupure-512-avant-f1-04": {
+      "verdict": "échec",
+      "compte_rendu": "coupure-512-avant-f1-04/campagne.json",
+      "elf_sha256": "d700fe0f763401005a9036390f4093d2dc4e7fdafa51a6dc350abe91fa45bb39",
+      "phase": "avant-f1",
+      "secteur": 512
+    },
+    "coupure-512-avant-f1-05": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-512-avant-f1-05/campagne.json",
+      "elf_sha256": "5f178bc7db5c9088898d358a74b5e4cca3c2e81cbb75870bf4d2732484c95608",
+      "phase": "avant-f1",
+      "secteur": 512,
+      "issue": "ancien"
+    },
+    "coupure-512-avant-f1-10": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-512-avant-f1-10/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "phase": "avant-f1",
+      "secteur": 512,
+      "issue": "ancien"
+    },
+    "coupure-512-avant-f2-05": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-512-avant-f2-05/campagne.json",
+      "elf_sha256": "5f178bc7db5c9088898d358a74b5e4cca3c2e81cbb75870bf4d2732484c95608",
+      "phase": "avant-f2",
+      "secteur": 512,
+      "issue": "nouveau"
+    },
+    "coupure-512-avant-f2-10": {
+      "verdict": "réussi",
+      "compte_rendu": "coupure-512-avant-f2-10/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "phase": "avant-f2",
+      "secteur": 512,
+      "issue": "nouveau"
+    },
+    "diag-net-arm-lab-512": {
+      "verdict": "échec",
+      "compte_rendu": "diag-net-arm-lab-512/campagne.json",
+      "elf_sha256": "4219c93c60f8a39fca4e1d1014884fb274d28c63f9818966e8d04a1cd7154cb8",
+      "secteur": 512,
+      "bail_nic": false
+    },
+    "diag-net-arm-mesure-512": {
+      "verdict": "échec",
+      "compte_rendu": "diag-net-arm-mesure-512/campagne.json",
+      "elf_sha256": "a2cde6e7394cfa95fb678d2923fbdca9edb1cfa4416a1d972e28ea9245c307c5",
+      "secteur": 512,
+      "bail_nic": false
+    },
+    "fichiers-net-arm-lab-4096-11": {
+      "verdict": "échec",
+      "compte_rendu": "fichiers-net-arm-lab-4096-11/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "secteur": 4096,
+      "bail_nic": false
+    },
+    "fichiers-net-arm-lab-512-11": {
+      "verdict": "échec",
+      "compte_rendu": "fichiers-net-arm-lab-512-11/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "secteur": 512,
+      "bail_nic": false
+    },
+    "fichiers-net-arm-mesure-4096-11": {
+      "verdict": "échec",
+      "compte_rendu": "fichiers-net-arm-mesure-4096-11/campagne.json",
+      "elf_sha256": "aa265e4a224739603d494007b05ea082429587896d8b23268afd1ee3222d92c1",
+      "secteur": 4096,
+      "bail_nic": false
+    },
+    "fichiers-net-arm-mesure-512-11": {
+      "verdict": "échec",
+      "compte_rendu": "fichiers-net-arm-mesure-512-11/campagne.json",
+      "elf_sha256": "aa265e4a224739603d494007b05ea082429587896d8b23268afd1ee3222d92c1",
+      "secteur": 512,
+      "bail_nic": false
+    },
+    "final-coupure-4096-apres-f1": {
+      "verdict": "réussi",
+      "compte_rendu": "final-coupure-4096-apres-f1/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "phase": "apres-f1",
+      "secteur": 4096,
+      "issue": "ancien"
+    },
+    "final-coupure-4096-apres-f2": {
+      "verdict": "réussi",
+      "compte_rendu": "final-coupure-4096-apres-f2/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "phase": "apres-f2",
+      "secteur": 4096,
+      "issue": "nouveau"
+    },
+    "final-coupure-4096-avant-f1": {
+      "verdict": "réussi",
+      "compte_rendu": "final-coupure-4096-avant-f1/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "phase": "avant-f1",
+      "secteur": 4096,
+      "issue": "ancien"
+    },
+    "final-coupure-4096-avant-f2": {
+      "verdict": "réussi",
+      "compte_rendu": "final-coupure-4096-avant-f2/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "phase": "avant-f2",
+      "secteur": 4096,
+      "issue": "nouveau"
+    },
+    "final-coupure-512-apres-f1": {
+      "verdict": "réussi",
+      "compte_rendu": "final-coupure-512-apres-f1/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "phase": "apres-f1",
+      "secteur": 512,
+      "issue": "ancien"
+    },
+    "final-coupure-512-apres-f2": {
+      "verdict": "réussi",
+      "compte_rendu": "final-coupure-512-apres-f2/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "phase": "apres-f2",
+      "secteur": 512,
+      "issue": "nouveau"
+    },
+    "final-coupure-512-avant-f1": {
+      "verdict": "réussi",
+      "compte_rendu": "final-coupure-512-avant-f1/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "phase": "avant-f1",
+      "secteur": 512,
+      "issue": "ancien"
+    },
+    "final-coupure-512-avant-f2": {
+      "verdict": "réussi",
+      "compte_rendu": "final-coupure-512-avant-f2/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "phase": "avant-f2",
+      "secteur": 512,
+      "issue": "nouveau"
+    },
+    "final-net-arm-lab-4096-1": {
+      "verdict": "réussi",
+      "compte_rendu": "final-net-arm-lab-4096-1/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 61.495999999999995,
+        "p95_us": 80.0,
+        "p99_us": 113.008,
+        "moyenne_us": 63.9375,
+        "Mio_s": 61.09481915933529
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 54.504000000000005,
+        "p95_us": 174.0,
+        "p99_us": 174.0,
+        "moyenne_us": 62.19
+      },
+      "generation": 7
+    },
+    "final-net-arm-lab-4096-2": {
+      "verdict": "réussi",
+      "compte_rendu": "final-net-arm-lab-4096-2/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 73.0,
+        "p95_us": 88.992,
+        "p99_us": 132.0,
+        "moyenne_us": 75.12525,
+        "Mio_s": 51.99649917970323
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 65.0,
+        "p95_us": 194.0,
+        "p99_us": 194.0,
+        "moyenne_us": 77.187
+      },
+      "generation": 7
+    },
+    "final-net-arm-lab-512-1": {
+      "verdict": "réussi",
+      "compte_rendu": "final-net-arm-lab-512-1/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 70.992,
+        "p95_us": 86.0,
+        "p99_us": 116.0,
+        "moyenne_us": 72.8435,
+        "Mio_s": 53.62523766705334
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 65.0,
+        "p95_us": 152.0,
+        "p99_us": 152.0,
+        "moyenne_us": 71.251
+      },
+      "generation": 7
+    },
+    "final-net-arm-lab-512-2": {
+      "verdict": "réussi",
+      "compte_rendu": "final-net-arm-lab-512-2/campagne.json",
+      "elf_sha256": "d1f08d9215761c6b8f09c13db561e842afe48cd9f2b22950a5bd74427170afe7",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 72.0,
+        "p95_us": 82.992,
+        "p99_us": 116.992,
+        "moyenne_us": 73.25,
+        "Mio_s": 53.32764505119454
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 67.50399999999999,
+        "p95_us": 184.992,
+        "p99_us": 184.992,
+        "moyenne_us": 74.311
+      },
+      "generation": 7
+    },
+    "final-net-arm-mesure-4096-1": {
+      "verdict": "réussi",
+      "compte_rendu": "final-net-arm-mesure-4096-1/campagne.json",
+      "elf_sha256": "aa265e4a224739603d494007b05ea082429587896d8b23268afd1ee3222d92c1",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 68.992,
+        "p95_us": 75.008,
+        "p99_us": 122.0,
+        "moyenne_us": 70.50025,
+        "Mio_s": 55.40760493757114
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 65.50399999999999,
+        "p95_us": 146.0,
+        "p99_us": 146.0,
+        "moyenne_us": 70.125
+      },
+      "generation": 7
+    },
+    "final-net-arm-mesure-4096-2": {
+      "verdict": "réussi",
+      "compte_rendu": "final-net-arm-mesure-4096-2/campagne.json",
+      "elf_sha256": "aa265e4a224739603d494007b05ea082429587896d8b23268afd1ee3222d92c1",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 74.992,
+        "p95_us": 86.992,
+        "p99_us": 138.992,
+        "moyenne_us": 76.06275,
+        "Mio_s": 51.35562413927974
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 75.008,
+        "p95_us": 212.0,
+        "p99_us": 212.0,
+        "moyenne_us": 81.876
+      },
+      "generation": 7
+    },
+    "final-net-arm-mesure-512-1": {
+      "verdict": "réussi",
+      "compte_rendu": "final-net-arm-mesure-512-1/campagne.json",
+      "elf_sha256": "aa265e4a224739603d494007b05ea082429587896d8b23268afd1ee3222d92c1",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 70.49600000000001,
+        "p95_us": 86.0,
+        "p99_us": 128.992,
+        "moyenne_us": 73.81225,
+        "Mio_s": 52.92143241806069
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 69.0,
+        "p95_us": 154.0,
+        "p99_us": 154.0,
+        "moyenne_us": 75.125
+      },
+      "generation": 7
+    },
+    "final-net-arm-mesure-512-2": {
+      "verdict": "réussi",
+      "compte_rendu": "final-net-arm-mesure-512-2/campagne.json",
+      "elf_sha256": "aa265e4a224739603d494007b05ea082429587896d8b23268afd1ee3222d92c1",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 67.008,
+        "p95_us": 74.0,
+        "p99_us": 114.992,
+        "moyenne_us": 68.76525,
+        "Mio_s": 56.80558130741908
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 64.50399999999999,
+        "p95_us": 147.008,
+        "p99_us": 147.008,
+        "moyenne_us": 69.814
+      },
+      "generation": 7
+    },
+    "final-q35-hash": {
+      "verdict": "réussi",
+      "compte_rendu": "final-q35-hash/campagne.json",
+      "noyau_altere_refuse": true,
+      "elf_esp_sha256": "7632842eb645def0d8d00b5b7afe7a8718ec6ee9666d2d69d5a92300a3090a33"
+    },
+    "final-q35-prepare": {
+      "verdict": "réussi",
+      "compte_rendu": "final-q35-prepare/campagne.json",
+      "cadres_verifies": 30,
+      "elf_esp_sha256": "74695de1ff6f6807a51ac6839db768259fe59278a970787b76d28ad5778cbd11"
+    },
+    "final-q35-retrait": {
+      "verdict": "réussi",
+      "compte_rendu": "final-q35-retrait/campagne.json",
+      "cadres_verifies": 3,
+      "elf_esp_sha256": "74695de1ff6f6807a51ac6839db768259fe59278a970787b76d28ad5778cbd11"
+    },
+    "net-arm-lab-4096-03": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-4096-03/campagne.json",
+      "elf_sha256": "ea4ce3a8ffa516be3bcd5ed5acb909ed7b112ea95edbffd41cf622d597c5c21d",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 68.0,
+        "p95_us": 76.992,
+        "moyenne_us": 70.2965,
+        "Mio_s": 55.568200408270684
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 65.50399999999999,
+        "p95_us": 164.0,
+        "moyenne_us": 71.372
+      },
+      "generation": 7
+    },
+    "net-arm-lab-4096-09-1": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-4096-09-1/campagne.json",
+      "elf_sha256": "4e4d25d7216b4c6fc7b7ec2f158e85e5723b3415131ab6c3b42ed0bafab79591",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 70.992,
+        "p95_us": 84.992,
+        "p99_us": 118.0,
+        "moyenne_us": 72.45275,
+        "Mio_s": 53.914447691771535
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 65.49600000000001,
+        "p95_us": 126.0,
+        "p99_us": 126.0,
+        "moyenne_us": 69.063
+      },
+      "generation": 7
+    },
+    "net-arm-lab-4096-09-2": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-4096-09-2/campagne.json",
+      "elf_sha256": "4e4d25d7216b4c6fc7b7ec2f158e85e5723b3415131ab6c3b42ed0bafab79591",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 70.0,
+        "p95_us": 84.0,
+        "p99_us": 124.0,
+        "moyenne_us": 71.5155,
+        "Mio_s": 54.62102621110109
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 62.992,
+        "p95_us": 134.992,
+        "p99_us": 134.992,
+        "moyenne_us": 67.872
+      },
+      "generation": 8
+    },
+    "net-arm-lab-4096-10-1": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-4096-10-1/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 71.50399999999999,
+        "p95_us": 79.008,
+        "p99_us": 128.0,
+        "moyenne_us": 73.04675,
+        "Mio_s": 53.47602733865641
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 65.0,
+        "p95_us": 156.0,
+        "p99_us": 156.0,
+        "moyenne_us": 70.688
+      },
+      "generation": 7
+    },
+    "net-arm-lab-4096-10-2": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-4096-10-2/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 70.0,
+        "p95_us": 80.992,
+        "p99_us": 112.992,
+        "moyenne_us": 71.81275,
+        "Mio_s": 54.39493683224776
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 64.0,
+        "p95_us": 162.992,
+        "p99_us": 162.992,
+        "moyenne_us": 70.873
+      },
+      "generation": 7
+    },
+    "net-arm-lab-512-03": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-512-03/campagne.json",
+      "elf_sha256": "ea4ce3a8ffa516be3bcd5ed5acb909ed7b112ea95edbffd41cf622d597c5c21d",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 75.50399999999999,
+        "p95_us": 87.008,
+        "moyenne_us": 76.828,
+        "Mio_s": 50.844093299317954
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 66.0,
+        "p95_us": 181.008,
+        "moyenne_us": 73.439
+      },
+      "generation": 8
+    },
+    "net-arm-lab-512-06": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-512-06/campagne.json",
+      "elf_sha256": "f63af69a4ab7a48025484dd7af4e3afabb8a3177b224f989ac47053491a1eb06",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 78.992,
+        "p95_us": 148.0,
+        "moyenne_us": 85.42225,
+        "Mio_s": 45.728718220369984
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 64.0,
+        "p95_us": 170.0,
+        "moyenne_us": 72.876
+      },
+      "generation": 7
+    },
+    "net-arm-lab-512-08": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-512-08/campagne.json",
+      "elf_sha256": "ce4440748a45b3121387fc18d694f36ab6eae3e01467f8122dcfb4149356c169",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 76.0,
+        "p95_us": 91.008,
+        "moyenne_us": 77.672,
+        "Mio_s": 50.29161087650633
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 78.0,
+        "p95_us": 158.0,
+        "moyenne_us": 82.939
+      },
+      "generation": 7
+    },
+    "net-arm-lab-512-09-1": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-512-09-1/campagne.json",
+      "elf_sha256": "4e4d25d7216b4c6fc7b7ec2f158e85e5723b3415131ab6c3b42ed0bafab79591",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 76.0,
+        "p95_us": 96.0,
+        "p99_us": 159.008,
+        "moyenne_us": 79.625,
+        "Mio_s": 49.058084772370485
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 74.50399999999999,
+        "p95_us": 158.0,
+        "p99_us": 158.0,
+        "moyenne_us": 78.875
+      },
+      "generation": 7
+    },
+    "net-arm-lab-512-09-2": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-512-09-2/campagne.json",
+      "elf_sha256": "4e4d25d7216b4c6fc7b7ec2f158e85e5723b3415131ab6c3b42ed0bafab79591",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 69.008,
+        "p95_us": 82.0,
+        "p99_us": 120.0,
+        "moyenne_us": 71.95375,
+        "Mio_s": 54.2883449438007
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 64.0,
+        "p95_us": 130.0,
+        "p99_us": 130.0,
+        "moyenne_us": 69.184
+      },
+      "generation": 7
+    },
+    "net-arm-lab-512-10-1": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-512-10-1/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 68.0,
+        "p95_us": 78.0,
+        "p99_us": 121.008,
+        "moyenne_us": 70.37525,
+        "Mio_s": 55.50601951680456
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 64.0,
+        "p95_us": 148.992,
+        "p99_us": 148.992,
+        "moyenne_us": 71.31
+      },
+      "generation": 7
+    },
+    "net-arm-lab-512-10-2": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-lab-512-10-2/campagne.json",
+      "elf_sha256": "3f006d673810c0bdc58ae955abf8fc9992bccb0ff1a48955ee2cca7488cb87cc",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 71.50399999999999,
+        "p95_us": 96.0,
+        "p99_us": 118.0,
+        "moyenne_us": 75.6875,
+        "Mio_s": 51.61023947151115
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 66.0,
+        "p95_us": 157.008,
+        "p99_us": 157.008,
+        "moyenne_us": 72.063
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-4096-03": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-4096-03/campagne.json",
+      "elf_sha256": "7bf933f792a2a384b85418a6ad1e0790b503ba1824a574c3493a3b7da82df1ee",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 68.992,
+        "p95_us": 83.008,
+        "moyenne_us": 70.89075,
+        "Mio_s": 55.102393471644746
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 64.0,
+        "p95_us": 150.0,
+        "moyenne_us": 68.439
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-4096-09-1": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-4096-09-1/campagne.json",
+      "elf_sha256": "645cd03c7b0bb64c73925ce31edc7e39574e5d3a824355e36d9fdc5750f559d7",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 72.0,
+        "p95_us": 96.0,
+        "p99_us": 136.0,
+        "moyenne_us": 76.24975,
+        "Mio_s": 51.229676162872664
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 66.49600000000001,
+        "p95_us": 140.992,
+        "p99_us": 140.992,
+        "moyenne_us": 71.312
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-4096-09-2": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-4096-09-2/campagne.json",
+      "elf_sha256": "645cd03c7b0bb64c73925ce31edc7e39574e5d3a824355e36d9fdc5750f559d7",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 68.0,
+        "p95_us": 76.992,
+        "p99_us": 122.0,
+        "moyenne_us": 70.14075,
+        "Mio_s": 55.691591549847985
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 65.0,
+        "p95_us": 141.008,
+        "p99_us": 141.008,
+        "moyenne_us": 70.126
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-4096-10-1": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-4096-10-1/campagne.json",
+      "elf_sha256": "679183c847d383134c82b35743d6115afa6e3713164efd17d90eba2e63d1ab95",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 68.0,
+        "p95_us": 78.992,
+        "p99_us": 116.992,
+        "moyenne_us": 69.8435,
+        "Mio_s": 55.92861182500877
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 62.504000000000005,
+        "p95_us": 144.992,
+        "p99_us": 144.992,
+        "moyenne_us": 68.126
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-4096-10-2": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-4096-10-2/campagne.json",
+      "elf_sha256": "679183c847d383134c82b35743d6115afa6e3713164efd17d90eba2e63d1ab95",
+      "secteur": 4096,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 69.008,
+        "p95_us": 84.0,
+        "p99_us": 126.0,
+        "moyenne_us": 72.078,
+        "Mio_s": 54.19476123088876
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 64.49600000000001,
+        "p95_us": 140.992,
+        "p99_us": 140.992,
+        "moyenne_us": 69.314
+      },
+      "generation": 8
+    },
+    "net-arm-mesure-512-03": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-512-03/campagne.json",
+      "elf_sha256": "7bf933f792a2a384b85418a6ad1e0790b503ba1824a574c3493a3b7da82df1ee",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 66.992,
+        "p95_us": 73.008,
+        "moyenne_us": 67.891,
+        "Mio_s": 57.53708149828402
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 62.495999999999995,
+        "p95_us": 130.992,
+        "moyenne_us": 67.81099999999999
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-512-06": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-512-06/campagne.json",
+      "elf_sha256": "19dd2c2eeab38b8ff2cb5b233067da21f271131f4ec4dbd6e192b7451ad20f56",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 74.0,
+        "p95_us": 96.992,
+        "moyenne_us": 75.906,
+        "Mio_s": 51.46167628382473
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 70.49600000000001,
+        "p95_us": 142.0,
+        "moyenne_us": 73.313
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-512-08": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-512-08/campagne.json",
+      "elf_sha256": "6df8334df5cb42729c4418b5639c6e66ce2f032c0071caf70696f273697a496f",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 79.0,
+        "p95_us": 101.008,
+        "moyenne_us": 79.797,
+        "Mio_s": 48.952341566725565
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 82.0,
+        "p95_us": 220.0,
+        "moyenne_us": 93.751
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-512-09-1": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-512-09-1/campagne.json",
+      "elf_sha256": "645cd03c7b0bb64c73925ce31edc7e39574e5d3a824355e36d9fdc5750f559d7",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 70.0,
+        "p95_us": 82.992,
+        "p99_us": 112.992,
+        "moyenne_us": 71.37475,
+        "Mio_s": 54.728738104161486
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 62.495999999999995,
+        "p95_us": 144.0,
+        "p99_us": 144.0,
+        "moyenne_us": 69.563
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-512-09-2": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-512-09-2/campagne.json",
+      "elf_sha256": "645cd03c7b0bb64c73925ce31edc7e39574e5d3a824355e36d9fdc5750f559d7",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 68.0,
+        "p95_us": 77.008,
+        "p99_us": 110.0,
+        "moyenne_us": 69.32775,
+        "Mio_s": 56.34468160296562
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 63.0,
+        "p95_us": 156.0,
+        "p99_us": 156.0,
+        "moyenne_us": 70.124
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-512-10-1": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-512-10-1/campagne.json",
+      "elf_sha256": "679183c847d383134c82b35743d6115afa6e3713164efd17d90eba2e63d1ab95",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 68.0,
+        "p95_us": 79.008,
+        "p99_us": 120.992,
+        "moyenne_us": 70.48425,
+        "Mio_s": 55.42018252304593
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 64.49600000000001,
+        "p95_us": 140.992,
+        "p99_us": 140.992,
+        "moyenne_us": 68.812
+      },
+      "generation": 7
+    },
+    "net-arm-mesure-512-10-2": {
+      "verdict": "réussi",
+      "compte_rendu": "net-arm-mesure-512-10-2/campagne.json",
+      "elf_sha256": "679183c847d383134c82b35743d6115afa6e3713164efd17d90eba2e63d1ab95",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 68.0,
+        "p95_us": 76.992,
+        "p99_us": 116.992,
+        "moyenne_us": 69.156,
+        "Mio_s": 56.48461449476546
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 63.0,
+        "p95_us": 148.992,
+        "p99_us": 148.992,
+        "moyenne_us": 68.124
+      },
+      "generation": 7
+    },
+    "preparation-files-512-07": {
+      "verdict": "échec",
+      "compte_rendu": "preparation-files-512-07/campagne.json",
+      "elf_sha256": "0ab488f0f5324d9fb5493b54d5888d1055ec922a4ddf77b52082da94de19bef0",
+      "secteur": 512,
+      "bail_nic": false
+    },
+    "preparation-files-512-08": {
+      "verdict": "réussi",
+      "compte_rendu": "preparation-files-512-08/campagne.json",
+      "elf_sha256": "ce4440748a45b3121387fc18d694f36ab6eae3e01467f8122dcfb4149356c169",
+      "secteur": 512,
+      "bail_nic": false,
+      "lectures": {
+        "n": 64,
+        "hz": 62500000,
+        "mediane_us": 81.50399999999999,
+        "p95_us": 98.0,
+        "moyenne_us": 83.46775,
+        "Mio_s": 46.79951238652054
+      },
+      "flush": {
+        "n": 16,
+        "hz": 62500000,
+        "mediane_us": 73.0,
+        "p95_us": 160.0,
+        "moyenne_us": 82.56
+      },
+      "generation": 7
+    },
+    "q35-01": {
+      "verdict": "échec",
+      "compte_rendu": "q35-01/campagne.json"
+    },
+    "q35-02": {
+      "verdict": "échec",
+      "compte_rendu": "q35-02/campagne.json"
+    },
+    "q35-03": {
+      "verdict": "échec",
+      "compte_rendu": "q35-03/campagne.json"
+    },
+    "q35-04": {
+      "verdict": "réussi",
+      "compte_rendu": "q35-04/campagne.json",
+      "cadres_verifies": 30
+    },
+    "q35-05": {
+      "verdict": "réussi",
+      "compte_rendu": "q35-05/campagne.json",
+      "cadres_verifies": 3
+    },
+    "q35-08": {
+      "verdict": "réussi",
+      "compte_rendu": "q35-08/campagne.json",
+      "cadres_verifies": 3,
+      "elf_esp_sha256": "41cfc744928b0ee34dc5b4948603d74e2f262187d0a4a54f03d2a4d6abfedf7e"
+    },
+    "q35-hash-08": {
+      "verdict": "réussi",
+      "compte_rendu": "q35-hash-08/campagne.json",
+      "noyau_altere_refuse": true,
+      "elf_esp_sha256": "08f88fb5d5460a8c69a4e889ab882c1a72fc9163f8272dd5a0762f6661ebf771"
+    },
+    "q35-prepare-08": {
+      "verdict": "réussi",
+      "compte_rendu": "q35-prepare-08/campagne.json",
+      "cadres_verifies": 30,
+      "elf_esp_sha256": "41cfc744928b0ee34dc5b4948603d74e2f262187d0a4a54f03d2a4d6abfedf7e"
+    },
+    "q35-retrait-06": {
+      "verdict": "réussi",
+      "compte_rendu": "q35-retrait-06/campagne.json",
+      "cadres_verifies": 3,
+      "elf_esp_sha256": "41a772806dd5d3428ceaac03817aacea6ce426e1f190c24eaab49ab3dea4afb2"
+    },
+    "q35-temoin-hash-06": {
+      "verdict": "échec",
+      "compte_rendu": "q35-temoin-hash-06/campagne.json",
+      "elf_esp_sha256": "0d6d9a33eb7209b98f61f32d2dc873e94c46985b6aec935ff558d7e636facb62"
+    },
+    "statut-net-arm-lab-512": {
+      "verdict": "échec",
+      "compte_rendu": "statut-net-arm-lab-512/campagne.json",
+      "elf_sha256": "6316603a1466073b25a9495db99f040e5d3c338fb1c229b827c7f818d27ad6f6",
+      "secteur": 512,
+      "bail_nic": false
+    },
+    "statut-net-arm-mesure-512": {
+      "verdict": "échec",
+      "compte_rendu": "statut-net-arm-mesure-512/campagne.json",
+      "elf_sha256": "95f792ed8c9c13f2413855f378d22396f3efabe271406bb39ee507de8326d959",
+      "secteur": 512,
+      "bail_nic": false
+    }
+  },
+  "mesures_P9": [
+    {
+      "secteur": 512,
+      "profil": "mesure",
+      "demarrages": 2,
+      "n_lectures": 128,
+      "Mio_s": 54.795,
+      "lecture": {
+        "p50_us": 68.0,
+        "p95_us": 84.992,
+        "p99_us": 114.992
+      },
+      "n_flush": 32,
+      "flush": {
+        "p50_us": 66.504,
+        "p95_us": 147.008,
+        "p99_us": 154.0
+      },
+      "releves": [
+        [
+          "RAM phase=bloc_repos image=962 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62321 cache=0 chargeur=0 restitue=6600 extra_elf=0 video=469 ram_video=469 resident=1162 retenu=1631 dma=16 elf_preparation=0",
+          "NET ARM racines relais novafs pilote client [2, 2, 2, 0]",
+          "RAM phase=bloc_publie image=962 tables=176 kpile=96 upile=130 heap=12 buddy=1 ipc=8 utilisateur=77 processus=4 meta_octets=23712 meta_actifs=2656 tcb_octets=6656 heap_va=65536 libres=62005 cache=0 chargeur=0 restitue=6600 extra_elf=0 video=469 ram_video=469 resident=1478 retenu=1947 dma=16 elf_preparation=0",
+          "RAM phase=bloc_collecte image=962 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62337 cache=0 chargeur=0 restitue=6600 extra_elf=0 video=469 ram_video=469 resident=1146 retenu=1615 dma=0 elf_preparation=0",
+          "BLOC memoire cadres_init=62321 cadres_fin=62337 allocations=336 pic_cadres=336 buddy_init=10304 buddy_fin=10304 hz=62500000 retrait_ns=504992"
+        ],
+        [
+          "RAM phase=bloc_repos image=962 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62321 cache=0 chargeur=0 restitue=6600 extra_elf=0 video=469 ram_video=469 resident=1162 retenu=1631 dma=16 elf_preparation=0",
+          "NET ARM racines relais novafs pilote client [2, 2, 2, 0]",
+          "RAM phase=bloc_publie image=962 tables=179 kpile=96 upile=130 heap=12 buddy=1 ipc=9 utilisateur=93 processus=4 meta_octets=23712 meta_actifs=2656 tcb_octets=6656 heap_va=65536 libres=61985 cache=0 chargeur=0 restitue=6600 extra_elf=0 video=469 ram_video=469 resident=1498 retenu=1967 dma=16 elf_preparation=0",
+          "RAM phase=bloc_collecte image=962 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62337 cache=0 chargeur=0 restitue=6600 extra_elf=0 video=469 ram_video=469 resident=1146 retenu=1615 dma=0 elf_preparation=0",
+          "BLOC memoire cadres_init=62321 cadres_fin=62337 allocations=336 pic_cadres=336 buddy_init=10304 buddy_fin=10304 hz=62500000 retrait_ns=568000"
+        ]
+      ]
+    },
+    {
+      "secteur": 512,
+      "profil": "lab",
+      "demarrages": 2,
+      "n_lectures": 128,
+      "Mio_s": 53.476,
+      "lecture": {
+        "p50_us": 71.008,
+        "p95_us": 86.0,
+        "p99_us": 116.0
+      },
+      "n_flush": 32,
+      "flush": {
+        "p50_us": 66.0,
+        "p95_us": 152.0,
+        "p99_us": 184.992
+      },
+      "releves": [
+        [
+          "NET ARM tailles controle=1816 endpoint=592 vol=56 statique_controle=1848 preparation=680",
+          "NET ARM pilote collecte resultat=Exit(0) racines=0 ipc_avant=0 ipc_apres=0",
+          "NET ARM GIC INTID=38 injecte par superviseur, ISR NIC=0, purge confirmee",
+          "RAM phase=bloc_repos image=972 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62289 cache=0 chargeur=0 restitue=6611 extra_elf=0 video=469 ram_video=469 resident=1194 retenu=1663 dma=38 elf_preparation=0",
+          "NET ARM racines relais novafs pilote client [2, 2, 2, 0]",
+          "RAM phase=bloc_publie image=972 tables=179 kpile=96 upile=130 heap=12 buddy=1 ipc=9 utilisateur=93 processus=4 meta_octets=23712 meta_actifs=2656 tcb_octets=6656 heap_va=65536 libres=61953 cache=0 chargeur=0 restitue=6611 extra_elf=0 video=469 ram_video=469 resident=1530 retenu=1999 dma=38 elf_preparation=0",
+          "RAM phase=bloc_collecte image=972 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62296 cache=0 chargeur=0 restitue=6611 extra_elf=0 video=469 ram_video=469 resident=1187 retenu=1656 dma=31 elf_preparation=0",
+          "BLOC memoire cadres_init=62289 cadres_fin=62296 allocations=336 pic_cadres=336 buddy_init=10304 buddy_fin=10304 hz=62500000 retrait_ns=244000",
+          "NET ARM terminaison cadres_dma=0"
+        ],
+        [
+          "NET ARM tailles controle=1816 endpoint=592 vol=56 statique_controle=1848 preparation=680",
+          "NET ARM pilote collecte resultat=Exit(0) racines=0 ipc_avant=0 ipc_apres=0",
+          "NET ARM GIC INTID=38 injecte par superviseur, ISR NIC=0, purge confirmee",
+          "RAM phase=bloc_repos image=972 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62289 cache=0 chargeur=0 restitue=6611 extra_elf=0 video=469 ram_video=469 resident=1194 retenu=1663 dma=38 elf_preparation=0",
+          "NET ARM racines relais novafs pilote client [2, 2, 2, 0]",
+          "RAM phase=bloc_publie image=972 tables=176 kpile=96 upile=130 heap=12 buddy=1 ipc=8 utilisateur=77 processus=4 meta_octets=23712 meta_actifs=2656 tcb_octets=6656 heap_va=65536 libres=61973 cache=0 chargeur=0 restitue=6611 extra_elf=0 video=469 ram_video=469 resident=1510 retenu=1979 dma=38 elf_preparation=0",
+          "RAM phase=bloc_collecte image=972 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62296 cache=0 chargeur=0 restitue=6611 extra_elf=0 video=469 ram_video=469 resident=1187 retenu=1656 dma=31 elf_preparation=0",
+          "BLOC memoire cadres_init=62289 cadres_fin=62296 allocations=336 pic_cadres=336 buddy_init=10304 buddy_fin=10304 hz=62500000 retrait_ns=258992",
+          "NET ARM terminaison cadres_dma=0"
+        ]
+      ]
+    },
+    {
+      "secteur": 4096,
+      "profil": "mesure",
+      "demarrages": 2,
+      "n_lectures": 128,
+      "Mio_s": 53.305,
+      "lecture": {
+        "p50_us": 71.008,
+        "p95_us": 85.008,
+        "p99_us": 122.0
+      },
+      "n_flush": 32,
+      "flush": {
+        "p50_us": 67.504,
+        "p95_us": 146.0,
+        "p99_us": 212.0
+      },
+      "releves": [
+        [
+          "RAM phase=bloc_repos image=962 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62321 cache=0 chargeur=0 restitue=6937 extra_elf=0 video=469 ram_video=469 resident=1162 retenu=1631 dma=16 elf_preparation=0",
+          "NET ARM racines relais novafs pilote client [2, 2, 2, 0]",
+          "RAM phase=bloc_publie image=962 tables=179 kpile=96 upile=130 heap=12 buddy=1 ipc=9 utilisateur=93 processus=4 meta_octets=23712 meta_actifs=2656 tcb_octets=6656 heap_va=65536 libres=61985 cache=0 chargeur=0 restitue=6937 extra_elf=0 video=469 ram_video=469 resident=1498 retenu=1967 dma=16 elf_preparation=0",
+          "RAM phase=bloc_collecte image=962 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62337 cache=0 chargeur=0 restitue=6937 extra_elf=0 video=469 ram_video=469 resident=1146 retenu=1615 dma=0 elf_preparation=0",
+          "BLOC memoire cadres_init=62321 cadres_fin=62337 allocations=336 pic_cadres=336 buddy_init=10304 buddy_fin=10304 hz=62500000 retrait_ns=556992"
+        ],
+        [
+          "RAM phase=bloc_repos image=962 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62321 cache=0 chargeur=0 restitue=6937 extra_elf=0 video=469 ram_video=469 resident=1162 retenu=1631 dma=16 elf_preparation=0",
+          "NET ARM racines relais novafs pilote client [2, 2, 2, 0]",
+          "RAM phase=bloc_publie image=962 tables=179 kpile=96 upile=130 heap=12 buddy=1 ipc=9 utilisateur=93 processus=4 meta_octets=23712 meta_actifs=2656 tcb_octets=6656 heap_va=65536 libres=61985 cache=0 chargeur=0 restitue=6937 extra_elf=0 video=469 ram_video=469 resident=1498 retenu=1967 dma=16 elf_preparation=0",
+          "RAM phase=bloc_collecte image=962 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62337 cache=0 chargeur=0 restitue=6937 extra_elf=0 video=469 ram_video=469 resident=1146 retenu=1615 dma=0 elf_preparation=0",
+          "BLOC memoire cadres_init=62321 cadres_fin=62337 allocations=336 pic_cadres=336 buddy_init=10304 buddy_fin=10304 hz=62500000 retrait_ns=745008"
+        ]
+      ]
+    },
+    {
+      "secteur": 4096,
+      "profil": "lab",
+      "demarrages": 2,
+      "n_lectures": 128,
+      "Mio_s": 56.18,
+      "lecture": {
+        "p50_us": 69.0,
+        "p95_us": 88.992,
+        "p99_us": 113.008
+      },
+      "n_flush": 32,
+      "flush": {
+        "p50_us": 59.504,
+        "p95_us": 174.0,
+        "p99_us": 194.0
+      },
+      "releves": [
+        [
+          "NET ARM tailles controle=1816 endpoint=592 vol=56 statique_controle=1848 preparation=680",
+          "NET ARM pilote collecte resultat=Exit(0) racines=0 ipc_avant=0 ipc_apres=0",
+          "NET ARM GIC INTID=38 injecte par superviseur, ISR NIC=0, purge confirmee",
+          "RAM phase=bloc_repos image=972 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62289 cache=0 chargeur=0 restitue=6948 extra_elf=0 video=469 ram_video=469 resident=1194 retenu=1663 dma=38 elf_preparation=0",
+          "NET ARM racines relais novafs pilote client [2, 2, 2, 0]",
+          "RAM phase=bloc_publie image=972 tables=176 kpile=96 upile=130 heap=12 buddy=1 ipc=8 utilisateur=77 processus=4 meta_octets=23712 meta_actifs=2656 tcb_octets=6656 heap_va=65536 libres=61973 cache=0 chargeur=0 restitue=6948 extra_elf=0 video=469 ram_video=469 resident=1510 retenu=1979 dma=38 elf_preparation=0",
+          "RAM phase=bloc_collecte image=972 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62296 cache=0 chargeur=0 restitue=6948 extra_elf=0 video=469 ram_video=469 resident=1187 retenu=1656 dma=31 elf_preparation=0",
+          "BLOC memoire cadres_init=62289 cadres_fin=62296 allocations=336 pic_cadres=336 buddy_init=10304 buddy_fin=10304 hz=62500000 retrait_ns=258992",
+          "NET ARM terminaison cadres_dma=0"
+        ],
+        [
+          "NET ARM tailles controle=1816 endpoint=592 vol=56 statique_controle=1848 preparation=680",
+          "NET ARM pilote collecte resultat=Exit(0) racines=0 ipc_avant=0 ipc_apres=0",
+          "NET ARM GIC INTID=38 injecte par superviseur, ISR NIC=0, purge confirmee",
+          "RAM phase=bloc_repos image=972 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62289 cache=0 chargeur=0 restitue=6948 extra_elf=0 video=469 ram_video=469 resident=1194 retenu=1663 dma=38 elf_preparation=0",
+          "NET ARM racines relais novafs pilote client [2, 2, 2, 0]",
+          "RAM phase=bloc_publie image=972 tables=179 kpile=96 upile=130 heap=12 buddy=1 ipc=9 utilisateur=93 processus=4 meta_octets=23712 meta_actifs=2656 tcb_octets=6656 heap_va=65536 libres=61953 cache=0 chargeur=0 restitue=6948 extra_elf=0 video=469 ram_video=469 resident=1530 retenu=1999 dma=38 elf_preparation=0",
+          "RAM phase=bloc_collecte image=972 tables=148 kpile=32 upile=0 heap=3 buddy=1 ipc=0 utilisateur=0 processus=0 meta_octets=23712 meta_actifs=0 tcb_octets=6656 heap_va=65536 libres=62296 cache=0 chargeur=0 restitue=6948 extra_elf=0 video=469 ram_video=469 resident=1187 retenu=1656 dma=31 elf_preparation=0",
+          "BLOC memoire cadres_init=62289 cadres_fin=62296 allocations=336 pic_cadres=336 buddy_init=10304 buddy_fin=10304 hz=62500000 retrait_ns=294000",
+          "NET ARM terminaison cadres_dma=0"
+        ]
+      ]
+    }
+  ],
+  "verrou_et_durees_par_execution": [
+    {
+      "cas": "arm-temoin-512-01",
+      "debut_attente": "2026-11-25T15:42:30.135111+00:00",
+      "acquisition": "2026-11-25T15:42:30.135383+00:00",
+      "liberation": "2026-11-25T15:42:36.608118+00:00",
+      "attente_s": 0.0018323330441489816,
+      "execution_s": 6.43162387504708
+    },
+    {
+      "cas": "coupure-4096-apres-f1-05",
+      "debut_attente": "2026-11-25T15:59:07.155158+00:00",
+      "acquisition": "2026-11-25T15:59:07.155353+00:00",
+      "liberation": "2026-11-25T15:59:13.357583+00:00",
+      "attente_s": 0.00020179199054837227,
+      "execution_s": 6.155672541004606
+    },
+    {
+      "cas": "coupure-4096-apres-f1-05",
+      "debut_attente": "2026-11-25T15:59:13.450592+00:00",
+      "acquisition": "2026-11-25T15:59:13.450673+00:00",
+      "liberation": "2026-11-25T15:59:19.385158+00:00",
+      "attente_s": 8.737493772059679e-05,
+      "execution_s": 5.881847416982055
+    },
+    {
+      "cas": "coupure-4096-apres-f1-10",
+      "debut_attente": "2026-11-25T16:16:02.785190+00:00",
+      "acquisition": "2026-11-25T16:16:02.785393+00:00",
+      "liberation": "2026-11-25T16:16:08.935821+00:00",
+      "attente_s": 0.0002133749658241868,
+      "execution_s": 6.107801500009373
+    },
+    {
+      "cas": "coupure-4096-apres-f1-10",
+      "debut_attente": "2026-11-25T16:16:09.013904+00:00",
+      "acquisition": "2026-11-25T16:16:09.013972+00:00",
+      "liberation": "2026-11-25T16:16:14.912144+00:00",
+      "attente_s": 7.225002627819777e-05,
+      "execution_s": 5.855229333974421
+    },
+    {
+      "cas": "coupure-4096-apres-f2-05",
+      "debut_attente": "2026-11-25T15:59:32.186632+00:00",
+      "acquisition": "2026-11-25T15:59:32.186861+00:00",
+      "liberation": "2026-11-25T15:59:38.303686+00:00",
+      "attente_s": 0.00023641600273549557,
+      "execution_s": 6.072539375047199
+    },
+    {
+      "cas": "coupure-4096-apres-f2-05",
+      "debut_attente": "2026-11-25T15:59:38.385851+00:00",
+      "acquisition": "2026-11-25T15:59:38.385921+00:00",
+      "liberation": "2026-11-25T15:59:44.319041+00:00",
+      "attente_s": 7.466599345207214e-05,
+      "execution_s": 5.890528582967818
+    },
+    {
+      "cas": "coupure-4096-apres-f2-10",
+      "debut_attente": "2026-11-25T16:17:25.848602+00:00",
+      "acquisition": "2026-11-25T16:18:27.966511+00:00",
+      "liberation": "2026-11-25T16:18:34.145359+00:00",
+      "attente_s": 62.117871958063915,
+      "execution_s": 6.132105916971341
+    },
+    {
+      "cas": "coupure-4096-apres-f2-10",
+      "debut_attente": "2026-11-25T16:18:34.227557+00:00",
+      "acquisition": "2026-11-25T16:18:34.227632+00:00",
+      "liberation": "2026-11-25T16:18:40.174738+00:00",
+      "attente_s": 8.050003089010715e-05,
+      "execution_s": 5.897226583911106
+    },
+    {
+      "cas": "coupure-4096-avant-f1-05",
+      "debut_attente": "2026-11-25T15:58:54.793765+00:00",
+      "acquisition": "2026-11-25T15:58:54.793977+00:00",
+      "liberation": "2026-11-25T15:59:00.857615+00:00",
+      "attente_s": 0.0002194159897044301,
+      "execution_s": 6.0204534999793395
+    },
+    {
+      "cas": "coupure-4096-avant-f1-05",
+      "debut_attente": "2026-11-25T15:59:00.939152+00:00",
+      "acquisition": "2026-11-25T15:59:00.939226+00:00",
+      "liberation": "2026-11-25T15:59:06.850857+00:00",
+      "attente_s": 7.991609163582325e-05,
+      "execution_s": 5.863941541989334
+    },
+    {
+      "cas": "coupure-4096-avant-f1-10",
+      "debut_attente": "2026-11-25T16:15:50.443338+00:00",
+      "acquisition": "2026-11-25T16:15:50.443545+00:00",
+      "liberation": "2026-11-25T16:15:56.526496+00:00",
+      "attente_s": 0.0002138749696314335,
+      "execution_s": 6.040122083039023
+    },
+    {
+      "cas": "coupure-4096-avant-f1-10",
+      "debut_attente": "2026-11-25T16:15:56.603547+00:00",
+      "acquisition": "2026-11-25T16:15:56.603629+00:00",
+      "liberation": "2026-11-25T16:16:02.489675+00:00",
+      "attente_s": 8.62909946590662e-05,
+      "execution_s": 5.843530416022986
+    },
+    {
+      "cas": "coupure-4096-avant-f2-05",
+      "debut_attente": "2026-11-25T15:59:19.676713+00:00",
+      "acquisition": "2026-11-25T15:59:19.676953+00:00",
+      "liberation": "2026-11-25T15:59:25.808965+00:00",
+      "attente_s": 0.00025033403653651476,
+      "execution_s": 6.089458875008859
+    },
+    {
+      "cas": "coupure-4096-avant-f2-05",
+      "debut_attente": "2026-11-25T15:59:25.935202+00:00",
+      "acquisition": "2026-11-25T15:59:25.935277+00:00",
+      "liberation": "2026-11-25T15:59:31.887532+00:00",
+      "attente_s": 8.062506094574928e-05,
+      "execution_s": 5.900365624926053
+    },
+    {
+      "cas": "coupure-4096-avant-f2-10",
+      "debut_attente": "2026-11-25T16:16:15.214387+00:00",
+      "acquisition": "2026-11-25T16:16:29.244424+00:00",
+      "liberation": "2026-11-25T16:16:35.367683+00:00",
+      "attente_s": 14.030036957934499,
+      "execution_s": 6.07756754104048
+    },
+    {
+      "cas": "coupure-4096-avant-f2-10",
+      "debut_attente": "2026-11-25T16:16:35.490061+00:00",
+      "acquisition": "2026-11-25T16:17:19.570133+00:00",
+      "liberation": "2026-11-25T16:17:25.546882+00:00",
+      "attente_s": 44.080048000090756,
+      "execution_s": 5.931818958022632
+    },
+    {
+      "cas": "coupure-512-apres-f1-05",
+      "debut_attente": "2026-11-25T15:58:17.011201+00:00",
+      "acquisition": "2026-11-25T15:58:17.011415+00:00",
+      "liberation": "2026-11-25T15:58:23.199764+00:00",
+      "attente_s": 0.0002211249666288495,
+      "execution_s": 6.146075792028569
+    },
+    {
+      "cas": "coupure-512-apres-f1-05",
+      "debut_attente": "2026-11-25T15:58:23.274633+00:00",
+      "acquisition": "2026-11-25T15:58:23.274699+00:00",
+      "liberation": "2026-11-25T15:58:29.218883+00:00",
+      "attente_s": 7.049995474517345e-05,
+      "execution_s": 5.901938125025481
+    },
+    {
+      "cas": "coupure-512-apres-f1-10",
+      "debut_attente": "2026-11-25T16:15:12.212024+00:00",
+      "acquisition": "2026-11-25T16:15:12.212233+00:00",
+      "liberation": "2026-11-25T16:15:18.659041+00:00",
+      "attente_s": 0.00021529197692871094,
+      "execution_s": 6.405048416927457
+    },
+    {
+      "cas": "coupure-512-apres-f1-10",
+      "debut_attente": "2026-11-25T16:15:18.735034+00:00",
+      "acquisition": "2026-11-25T16:15:18.735120+00:00",
+      "liberation": "2026-11-25T16:15:24.852479+00:00",
+      "attente_s": 9.062502067536116e-05,
+      "execution_s": 6.074756917078048
+    },
+    {
+      "cas": "coupure-512-apres-f2-05",
+      "debut_attente": "2026-11-25T15:58:42.192443+00:00",
+      "acquisition": "2026-11-25T15:58:42.192661+00:00",
+      "liberation": "2026-11-25T15:58:48.415255+00:00",
+      "attente_s": 0.00022395909763872623,
+      "execution_s": 6.179975833976641
+    },
+    {
+      "cas": "coupure-512-apres-f2-05",
+      "debut_attente": "2026-11-25T15:58:48.491791+00:00",
+      "acquisition": "2026-11-25T15:58:48.491871+00:00",
+      "liberation": "2026-11-25T15:58:54.504491+00:00",
+      "attente_s": 8.508306927978992e-05,
+      "execution_s": 5.9696934160310775
+    },
+    {
+      "cas": "coupure-512-apres-f2-10",
+      "debut_attente": "2026-11-25T16:15:37.841269+00:00",
+      "acquisition": "2026-11-25T16:15:37.841480+00:00",
+      "liberation": "2026-11-25T16:15:44.060091+00:00",
+      "attente_s": 0.00021791597828269005,
+      "execution_s": 6.176242250017822
+    },
+    {
+      "cas": "coupure-512-apres-f2-10",
+      "debut_attente": "2026-11-25T16:15:44.146063+00:00",
+      "acquisition": "2026-11-25T16:15:44.146133+00:00",
+      "liberation": "2026-11-25T16:15:50.157529+00:00",
+      "attente_s": 7.395795546472073e-05,
+      "execution_s": 5.967543083941564
+    },
+    {
+      "cas": "coupure-512-avant-f1-04",
+      "debut_attente": "2026-11-25T15:57:01.018593+00:00",
+      "acquisition": "2026-11-25T15:57:01.018826+00:00",
+      "liberation": "2026-11-25T15:57:07.265546+00:00",
+      "attente_s": 0.00025345804169774055,
+      "execution_s": 6.204458249965683
+    },
+    {
+      "cas": "coupure-512-avant-f1-05",
+      "debut_attente": "2026-11-25T15:58:04.402764+00:00",
+      "acquisition": "2026-11-25T15:58:04.402995+00:00",
+      "liberation": "2026-11-25T15:58:10.661736+00:00",
+      "attente_s": 0.00023875001352280378,
+      "execution_s": 6.213149167015217
+    },
+    {
+      "cas": "coupure-512-avant-f1-05",
+      "debut_attente": "2026-11-25T15:58:10.745463+00:00",
+      "acquisition": "2026-11-25T15:58:10.745538+00:00",
+      "liberation": "2026-11-25T15:58:16.713906+00:00",
+      "attente_s": 7.991690654307604e-05,
+      "execution_s": 5.923867208999582
+    },
+    {
+      "cas": "coupure-512-avant-f1-10",
+      "debut_attente": "2026-11-25T16:14:59.617089+00:00",
+      "acquisition": "2026-11-25T16:14:59.617326+00:00",
+      "liberation": "2026-11-25T16:15:05.864498+00:00",
+      "attente_s": 0.00024620897602289915,
+      "execution_s": 6.203706958913244
+    },
+    {
+      "cas": "coupure-512-avant-f1-10",
+      "debut_attente": "2026-11-25T16:15:05.947280+00:00",
+      "acquisition": "2026-11-25T16:15:05.947370+00:00",
+      "liberation": "2026-11-25T16:15:11.918747+00:00",
+      "attente_s": 9.545800276100636e-05,
+      "execution_s": 5.925082125002518
+    },
+    {
+      "cas": "coupure-512-avant-f2-05",
+      "debut_attente": "2026-11-25T15:58:29.519004+00:00",
+      "acquisition": "2026-11-25T15:58:29.519232+00:00",
+      "liberation": "2026-11-25T15:58:35.780418+00:00",
+      "attente_s": 0.00023737491574138403,
+      "execution_s": 6.2189032500609756
+    },
+    {
+      "cas": "coupure-512-avant-f2-05",
+      "debut_attente": "2026-11-25T15:58:35.900498+00:00",
+      "acquisition": "2026-11-25T15:58:35.900576+00:00",
+      "liberation": "2026-11-25T15:58:41.893034+00:00",
+      "attente_s": 8.224998600780964e-05,
+      "execution_s": 5.947125207982026
+    },
+    {
+      "cas": "coupure-512-avant-f2-10",
+      "debut_attente": "2026-11-25T16:15:25.187893+00:00",
+      "acquisition": "2026-11-25T16:15:25.188128+00:00",
+      "liberation": "2026-11-25T16:15:31.396476+00:00",
+      "attente_s": 0.00024312490131706,
+      "execution_s": 6.163455292000435
+    },
+    {
+      "cas": "coupure-512-avant-f2-10",
+      "debut_attente": "2026-11-25T16:15:31.520637+00:00",
+      "acquisition": "2026-11-25T16:15:31.520709+00:00",
+      "liberation": "2026-11-25T16:15:37.542205+00:00",
+      "attente_s": 7.658300455659628e-05,
+      "execution_s": 5.974607041920535
+    },
+    {
+      "cas": "diag-net-arm-lab-512",
+      "debut_attente": "2026-11-25T16:18:41.295330+00:00",
+      "acquisition": "2026-11-25T16:18:41.295556+00:00",
+      "liberation": "2026-11-25T16:18:47.508763+00:00",
+      "attente_s": 0.00023433309979736805,
+      "execution_s": 6.169718207907863
+    },
+    {
+      "cas": "diag-net-arm-mesure-512",
+      "debut_attente": "2026-11-25T16:17:57.498051+00:00",
+      "acquisition": "2026-11-25T16:18:21.548640+00:00",
+      "liberation": "2026-11-25T16:18:27.733539+00:00",
+      "attente_s": 24.050586208002642,
+      "execution_s": 6.137492917012423
+    },
+    {
+      "cas": "fichiers-net-arm-lab-4096-11",
+      "debut_attente": "2026-11-25T16:16:55.305757+00:00",
+      "acquisition": "2026-11-25T16:16:55.306016+00:00",
+      "liberation": "2026-11-25T16:17:01.383582+00:00",
+      "attente_s": 0.0002680829493328929,
+      "execution_s": 6.026448750053532
+    },
+    {
+      "cas": "fichiers-net-arm-lab-512-11",
+      "debut_attente": "2026-11-25T16:16:41.970409+00:00",
+      "acquisition": "2026-11-25T16:16:41.970639+00:00",
+      "liberation": "2026-11-25T16:16:48.362623+00:00",
+      "attente_s": 0.00023716595023870468,
+      "execution_s": 6.342858167015947
+    },
+    {
+      "cas": "fichiers-net-arm-mesure-4096-11",
+      "debut_attente": "2026-11-25T16:16:48.719691+00:00",
+      "acquisition": "2026-11-25T16:16:48.719904+00:00",
+      "liberation": "2026-11-25T16:16:54.878490+00:00",
+      "attente_s": 0.0002204589545726776,
+      "execution_s": 6.116159875062294
+    },
+    {
+      "cas": "fichiers-net-arm-mesure-512-11",
+      "debut_attente": "2026-11-25T16:15:27.269716+00:00",
+      "acquisition": "2026-11-25T16:16:35.411159+00:00",
+      "liberation": "2026-11-25T16:16:41.624897+00:00",
+      "attente_s": 68.14140029100236,
+      "execution_s": 6.169265208998695
+    },
+    {
+      "cas": "final-coupure-4096-apres-f1",
+      "debut_attente": "2026-11-25T16:19:26.217969+00:00",
+      "acquisition": "2026-11-25T16:19:26.218180+00:00",
+      "liberation": "2026-11-25T16:19:32.369061+00:00",
+      "attente_s": 0.00021845893934369087,
+      "execution_s": 6.107539709075354
+    },
+    {
+      "cas": "final-coupure-4096-apres-f1",
+      "debut_attente": "2026-11-25T16:19:32.447421+00:00",
+      "acquisition": "2026-11-25T16:19:32.447496+00:00",
+      "liberation": "2026-11-25T16:19:38.359531+00:00",
+      "attente_s": 7.800001185387373e-05,
+      "execution_s": 5.868757791933604
+    },
+    {
+      "cas": "final-coupure-4096-apres-f2",
+      "debut_attente": "2026-11-25T16:19:51.575501+00:00",
+      "acquisition": "2026-11-25T16:19:51.575692+00:00",
+      "liberation": "2026-11-25T16:19:57.693745+00:00",
+      "attente_s": 0.00019741698633879423,
+      "execution_s": 6.076024500071071
+    },
+    {
+      "cas": "final-coupure-4096-apres-f2",
+      "debut_attente": "2026-11-25T16:19:57.786963+00:00",
+      "acquisition": "2026-11-25T16:19:57.787036+00:00",
+      "liberation": "2026-11-25T16:20:03.750603+00:00",
+      "attente_s": 7.870804984122515e-05,
+      "execution_s": 5.916416291031055
+    },
+    {
+      "cas": "final-coupure-4096-avant-f1",
+      "debut_attente": "2026-11-25T16:19:13.600657+00:00",
+      "acquisition": "2026-11-25T16:19:13.600878+00:00",
+      "liberation": "2026-11-25T16:19:19.752459+00:00",
+      "attente_s": 0.00022899999748915434,
+      "execution_s": 6.106450457940809
+    },
+    {
+      "cas": "final-coupure-4096-avant-f1",
+      "debut_attente": "2026-11-25T16:19:19.834386+00:00",
+      "acquisition": "2026-11-25T16:19:19.834458+00:00",
+      "liberation": "2026-11-25T16:19:25.739493+00:00",
+      "attente_s": 7.570791058242321e-05,
+      "execution_s": 5.860458999988623
+    },
+    {
+      "cas": "final-coupure-4096-avant-f2",
+      "debut_attente": "2026-11-25T16:19:38.825498+00:00",
+      "acquisition": "2026-11-25T16:19:38.825737+00:00",
+      "liberation": "2026-11-25T16:19:45.045268+00:00",
+      "attente_s": 0.000246166018769145,
+      "execution_s": 6.176511958939955
+    },
+    {
+      "cas": "final-coupure-4096-avant-f2",
+      "debut_attente": "2026-11-25T16:19:45.169022+00:00",
+      "acquisition": "2026-11-25T16:19:45.169098+00:00",
+      "liberation": "2026-11-25T16:19:51.117697+00:00",
+      "attente_s": 8.070794865489006e-05,
+      "execution_s": 5.9021660829894245
+    },
+    {
+      "cas": "final-coupure-512-apres-f1",
+      "debut_attente": "2026-11-25T16:18:08.601480+00:00",
+      "acquisition": "2026-11-25T16:18:08.601745+00:00",
+      "liberation": "2026-11-25T16:18:14.934567+00:00",
+      "attente_s": 0.0002721670316532254,
+      "execution_s": 6.285573667031713
+    },
+    {
+      "cas": "final-coupure-512-apres-f1",
+      "debut_attente": "2026-11-25T16:18:15.028833+00:00",
+      "acquisition": "2026-11-25T16:18:15.028910+00:00",
+      "liberation": "2026-11-25T16:18:21.108381+00:00",
+      "attente_s": 8.283392526209354e-05,
+      "execution_s": 6.030931417015381
+    },
+    {
+      "cas": "final-coupure-512-apres-f2",
+      "debut_attente": "2026-11-25T16:19:00.715894+00:00",
+      "acquisition": "2026-11-25T16:19:00.716112+00:00",
+      "liberation": "2026-11-25T16:19:06.965531+00:00",
+      "attente_s": 0.00022554199676960707,
+      "execution_s": 6.20493758295197
+    },
+    {
+      "cas": "final-coupure-512-apres-f2",
+      "debut_attente": "2026-11-25T16:19:07.044066+00:00",
+      "acquisition": "2026-11-25T16:19:07.044149+00:00",
+      "liberation": "2026-11-25T16:19:13.109640+00:00",
+      "attente_s": 8.858297951519489e-05,
+      "execution_s": 6.0216401249635965
+    },
+    {
+      "cas": "final-coupure-512-avant-f1",
+      "debut_attente": "2026-11-25T16:17:55.736009+00:00",
+      "acquisition": "2026-11-25T16:17:55.736423+00:00",
+      "liberation": "2026-11-25T16:18:01.997023+00:00",
+      "attente_s": 0.00042329193092882633,
+      "execution_s": 6.210181333939545
+    },
+    {
+      "cas": "final-coupure-512-avant-f1",
+      "debut_attente": "2026-11-25T16:18:02.075445+00:00",
+      "acquisition": "2026-11-25T16:18:02.075515+00:00",
+      "liberation": "2026-11-25T16:18:08.062439+00:00",
+      "attente_s": 7.441698107868433e-05,
+      "execution_s": 5.94186708307825
+    },
+    {
+      "cas": "final-coupure-512-avant-f2",
+      "debut_attente": "2026-11-25T16:18:21.636208+00:00",
+      "acquisition": "2026-11-25T16:18:47.691347+00:00",
+      "liberation": "2026-11-25T16:18:53.988842+00:00",
+      "attente_s": 26.055144333979115,
+      "execution_s": 6.236098750028759
+    },
+    {
+      "cas": "final-coupure-512-avant-f2",
+      "debut_attente": "2026-11-25T16:18:54.121965+00:00",
+      "acquisition": "2026-11-25T16:18:54.122042+00:00",
+      "liberation": "2026-11-25T16:19:00.224931+00:00",
+      "attente_s": 8.283299393951893e-05,
+      "execution_s": 6.053833208978176
+    },
+    {
+      "cas": "final-net-arm-lab-4096-1",
+      "debut_attente": "2026-11-25T16:17:32.572002+00:00",
+      "acquisition": "2026-11-25T16:17:34.577353+00:00",
+      "liberation": "2026-11-25T16:17:40.936452+00:00",
+      "attente_s": 2.005367875099182,
+      "execution_s": 6.306933457963169
+    },
+    {
+      "cas": "final-net-arm-lab-4096-2",
+      "debut_attente": "2026-11-25T16:17:41.631372+00:00",
+      "acquisition": "2026-11-25T16:17:41.631668+00:00",
+      "liberation": "2026-11-25T16:17:48.006487+00:00",
+      "attente_s": 0.0003084589261561632,
+      "execution_s": 6.325108292046934
+    },
+    {
+      "cas": "final-net-arm-lab-512-1",
+      "debut_attente": "2026-11-25T16:16:22.236511+00:00",
+      "acquisition": "2026-11-25T16:16:22.236739+00:00",
+      "liberation": "2026-11-25T16:16:28.772370+00:00",
+      "attente_s": 0.00023774988949298859,
+      "execution_s": 6.4921567080309615
+    },
+    {
+      "cas": "final-net-arm-lab-512-2",
+      "debut_attente": "2026-11-25T16:16:29.322661+00:00",
+      "acquisition": "2026-11-25T16:17:01.384516+00:00",
+      "liberation": "2026-11-25T16:17:07.873817+00:00",
+      "attente_s": 32.061837457935326,
+      "execution_s": 6.445997333037667
+    },
+    {
+      "cas": "final-net-arm-mesure-4096-1",
+      "debut_attente": "2026-11-25T16:17:17.618536+00:00",
+      "acquisition": "2026-11-25T16:17:25.639055+00:00",
+      "liberation": "2026-11-25T16:17:31.940450+00:00",
+      "attente_s": 8.020524375024252,
+      "execution_s": 6.2570096250856295
+    },
+    {
+      "cas": "final-net-arm-mesure-4096-2",
+      "debut_attente": "2026-11-25T16:17:48.694595+00:00",
+      "acquisition": "2026-11-25T16:17:48.694858+00:00",
+      "liberation": "2026-11-25T16:17:55.116250+00:00",
+      "attente_s": 0.0002703750506043434,
+      "execution_s": 6.3721879159566015
+    },
+    {
+      "cas": "final-net-arm-mesure-512-1",
+      "debut_attente": "2026-11-25T16:16:15.214353+00:00",
+      "acquisition": "2026-11-25T16:16:15.214604+00:00",
+      "liberation": "2026-11-25T16:16:21.666579+00:00",
+      "attente_s": 0.00026245799381285906,
+      "execution_s": 6.408836624934338
+    },
+    {
+      "cas": "final-net-arm-mesure-512-2",
+      "debut_attente": "2026-11-25T16:17:08.444261+00:00",
+      "acquisition": "2026-11-25T16:17:10.449539+00:00",
+      "liberation": "2026-11-25T16:17:16.945724+00:00",
+      "attente_s": 2.0052897080313414,
+      "execution_s": 6.451435666996986
+    },
+    {
+      "cas": "final-q35-hash",
+      "debut_attente": "2026-11-25T16:17:20.308419+00:00",
+      "acquisition": "2026-11-25T16:17:32.337024+00:00",
+      "liberation": "2026-11-25T16:17:34.288397+00:00",
+      "attente_s": 12.028610917041078,
+      "execution_s": 1.9017966670216992
+    },
+    {
+      "cas": "final-q35-prepare",
+      "debut_attente": "2026-11-25T16:16:44.303626+00:00",
+      "acquisition": "2026-11-25T16:17:08.351439+00:00",
+      "liberation": "2026-11-25T16:17:10.310780+00:00",
+      "attente_s": 24.047806791961193,
+      "execution_s": 1.9117577499710023
+    },
+    {
+      "cas": "final-q35-retrait",
+      "debut_attente": "2026-11-25T16:17:11.298363+00:00",
+      "acquisition": "2026-11-25T16:17:17.308079+00:00",
+      "liberation": "2026-11-25T16:17:19.330131+00:00",
+      "attente_s": 6.009729166980833,
+      "execution_s": 1.970888499985449
+    },
+    {
+      "cas": "net-arm-lab-4096-03",
+      "debut_attente": "2026-11-25T15:45:51.074457+00:00",
+      "acquisition": "2026-11-25T15:45:51.074704+00:00",
+      "liberation": "2026-11-25T15:45:57.330592+00:00",
+      "attente_s": 0.0002542500151321292,
+      "execution_s": 6.213150249910541
+    },
+    {
+      "cas": "net-arm-lab-4096-09-1",
+      "debut_attente": "2026-11-25T16:12:51.051963+00:00",
+      "acquisition": "2026-11-25T16:12:51.052220+00:00",
+      "liberation": "2026-11-25T16:12:57.325617+00:00",
+      "attente_s": 0.0002643750049173832,
+      "execution_s": 6.230469624977559
+    },
+    {
+      "cas": "net-arm-lab-4096-09-2",
+      "debut_attente": "2026-11-25T16:12:57.922974+00:00",
+      "acquisition": "2026-11-25T16:12:57.923214+00:00",
+      "liberation": "2026-11-25T16:13:04.192734+00:00",
+      "attente_s": 0.00024691701401025057,
+      "execution_s": 6.226647790987045
+    },
+    {
+      "cas": "net-arm-lab-4096-10-1",
+      "debut_attente": "2026-11-25T16:14:39.512836+00:00",
+      "acquisition": "2026-11-25T16:14:39.513086+00:00",
+      "liberation": "2026-11-25T16:14:45.738712+00:00",
+      "attente_s": 0.0002564589958637953,
+      "execution_s": 6.1816809580195695
+    },
+    {
+      "cas": "net-arm-lab-4096-10-2",
+      "debut_attente": "2026-11-25T16:14:46.190870+00:00",
+      "acquisition": "2026-11-25T16:14:46.191079+00:00",
+      "liberation": "2026-11-25T16:14:52.518479+00:00",
+      "attente_s": 0.00021537498105317354,
+      "execution_s": 6.284536957973614
+    },
+    {
+      "cas": "net-arm-lab-512-03",
+      "debut_attente": "2026-11-25T15:45:15.817385+00:00",
+      "acquisition": "2026-11-25T15:45:15.817643+00:00",
+      "liberation": "2026-11-25T15:45:22.377716+00:00",
+      "attente_s": 0.0002687079831957817,
+      "execution_s": 6.516755499993451
+    },
+    {
+      "cas": "net-arm-lab-512-06",
+      "debut_attente": "2026-11-25T16:03:28.451961+00:00",
+      "acquisition": "2026-11-25T16:03:28.452180+00:00",
+      "liberation": "2026-11-25T16:03:34.955676+00:00",
+      "attente_s": 0.00022758403792977333,
+      "execution_s": 6.45418833300937
+    },
+    {
+      "cas": "net-arm-lab-512-08",
+      "debut_attente": "2026-11-25T16:10:16.850241+00:00",
+      "acquisition": "2026-11-25T16:10:16.850484+00:00",
+      "liberation": "2026-11-25T16:10:23.397301+00:00",
+      "attente_s": 0.0002505839802324772,
+      "execution_s": 6.497060667024925
+    },
+    {
+      "cas": "net-arm-lab-512-09-1",
+      "debut_attente": "2026-11-25T16:12:22.910776+00:00",
+      "acquisition": "2026-11-25T16:12:22.911003+00:00",
+      "liberation": "2026-11-25T16:12:29.366128+00:00",
+      "attente_s": 0.00023491703905165195,
+      "execution_s": 6.411599542014301
+    },
+    {
+      "cas": "net-arm-lab-512-09-2",
+      "debut_attente": "2026-11-25T16:12:29.916600+00:00",
+      "acquisition": "2026-11-25T16:12:29.916834+00:00",
+      "liberation": "2026-11-25T16:12:36.464855+00:00",
+      "attente_s": 0.00024208298418670893,
+      "execution_s": 6.5047430420527235
+    },
+    {
+      "cas": "net-arm-lab-512-10-1",
+      "debut_attente": "2026-11-25T16:14:12.267310+00:00",
+      "acquisition": "2026-11-25T16:14:12.267514+00:00",
+      "liberation": "2026-11-25T16:14:18.676752+00:00",
+      "attente_s": 0.00021170801483094692,
+      "execution_s": 6.367327000014484
+    },
+    {
+      "cas": "net-arm-lab-512-10-2",
+      "debut_attente": "2026-11-25T16:14:19.052714+00:00",
+      "acquisition": "2026-11-25T16:14:19.052932+00:00",
+      "liberation": "2026-11-25T16:14:25.551408+00:00",
+      "attente_s": 0.00022475002333521843,
+      "execution_s": 6.454263624968007
+    },
+    {
+      "cas": "net-arm-mesure-4096-03",
+      "debut_attente": "2026-11-25T15:45:44.216879+00:00",
+      "acquisition": "2026-11-25T15:45:44.217095+00:00",
+      "liberation": "2026-11-25T15:45:50.500854+00:00",
+      "attente_s": 0.00022737507242709398,
+      "execution_s": 6.242796167032793
+    },
+    {
+      "cas": "net-arm-mesure-4096-09-1",
+      "debut_attente": "2026-11-25T16:12:44.184945+00:00",
+      "acquisition": "2026-11-25T16:12:44.185189+00:00",
+      "liberation": "2026-11-25T16:12:50.446007+00:00",
+      "attente_s": 0.00025108305271714926,
+      "execution_s": 6.217500625061803
+    },
+    {
+      "cas": "net-arm-mesure-4096-09-2",
+      "debut_attente": "2026-11-25T16:13:04.789305+00:00",
+      "acquisition": "2026-11-25T16:13:04.789523+00:00",
+      "liberation": "2026-11-25T16:13:11.024904+00:00",
+      "attente_s": 0.00022475002333521843,
+      "execution_s": 6.191729583078995
+    },
+    {
+      "cas": "net-arm-mesure-4096-10-1",
+      "debut_attente": "2026-11-25T16:14:32.811989+00:00",
+      "acquisition": "2026-11-25T16:14:32.812205+00:00",
+      "liberation": "2026-11-25T16:14:39.085817+00:00",
+      "attente_s": 0.00022316596005111933,
+      "execution_s": 6.230475250049494
+    },
+    {
+      "cas": "net-arm-mesure-4096-10-2",
+      "debut_attente": "2026-11-25T16:14:52.949506+00:00",
+      "acquisition": "2026-11-25T16:14:52.949734+00:00",
+      "liberation": "2026-11-25T16:14:59.261663+00:00",
+      "attente_s": 0.00023508304730057716,
+      "execution_s": 6.269521999987774
+    },
+    {
+      "cas": "net-arm-mesure-512-03",
+      "debut_attente": "2026-11-25T15:45:08.953536+00:00",
+      "acquisition": "2026-11-25T15:45:08.953770+00:00",
+      "liberation": "2026-11-25T15:45:15.465419+00:00",
+      "attente_s": 0.00024058297276496887,
+      "execution_s": 6.470346292015165
+    },
+    {
+      "cas": "net-arm-mesure-512-06",
+      "debut_attente": "2026-11-25T16:03:21.233705+00:00",
+      "acquisition": "2026-11-25T16:03:21.233933+00:00",
+      "liberation": "2026-11-25T16:03:28.059791+00:00",
+      "attente_s": 0.00023416697513312101,
+      "execution_s": 6.781634417013265
+    },
+    {
+      "cas": "net-arm-mesure-512-08",
+      "debut_attente": "2026-11-25T16:10:09.864758+00:00",
+      "acquisition": "2026-11-25T16:10:09.865033+00:00",
+      "liberation": "2026-11-25T16:10:16.455764+00:00",
+      "attente_s": 0.00028437492437660694,
+      "execution_s": 6.540822291048244
+    },
+    {
+      "cas": "net-arm-mesure-512-09-1",
+      "debut_attente": "2026-11-25T16:12:15.863521+00:00",
+      "acquisition": "2026-11-25T16:12:15.863743+00:00",
+      "liberation": "2026-11-25T16:12:22.358707+00:00",
+      "attente_s": 0.0002287500537931919,
+      "execution_s": 6.454325292026624
+    },
+    {
+      "cas": "net-arm-mesure-512-09-2",
+      "debut_attente": "2026-11-25T16:12:37.021504+00:00",
+      "acquisition": "2026-11-25T16:12:37.021739+00:00",
+      "liberation": "2026-11-25T16:12:43.576327+00:00",
+      "attente_s": 0.00024191697593778372,
+      "execution_s": 6.511782749905251
+    },
+    {
+      "cas": "net-arm-mesure-512-10-1",
+      "debut_attente": "2026-11-25T16:14:05.309714+00:00",
+      "acquisition": "2026-11-25T16:14:05.309935+00:00",
+      "liberation": "2026-11-25T16:14:11.895838+00:00",
+      "attente_s": 0.00022841698955744505,
+      "execution_s": 6.545229666982777
+    },
+    {
+      "cas": "net-arm-mesure-512-10-2",
+      "debut_attente": "2026-11-25T16:14:25.934011+00:00",
+      "acquisition": "2026-11-25T16:14:25.934226+00:00",
+      "liberation": "2026-11-25T16:14:32.362751+00:00",
+      "attente_s": 0.00022195791825652122,
+      "execution_s": 6.384822708088905
+    },
+    {
+      "cas": "preparation-files-512-07",
+      "debut_attente": "2026-11-25T16:05:29.524031+00:00",
+      "acquisition": "2026-11-25T16:05:29.524249+00:00",
+      "liberation": "2026-11-25T16:05:35.399567+00:00",
+      "attente_s": 0.00022499996703118086,
+      "execution_s": 5.831239499966614
+    },
+    {
+      "cas": "preparation-files-512-08",
+      "debut_attente": "2026-11-25T16:10:02.749614+00:00",
+      "acquisition": "2026-11-25T16:10:02.750058+00:00",
+      "liberation": "2026-11-25T16:10:09.495717+00:00",
+      "attente_s": 0.0004505410324782133,
+      "execution_s": 6.70360195892863
+    },
+    {
+      "cas": "q35-01",
+      "debut_attente": "2026-11-25T15:29:43.400135+00:00",
+      "acquisition": "2026-11-25T15:29:43.400365+00:00",
+      "liberation": "2026-11-25T15:30:18.614469+00:00",
+      "attente_s": 0.00023862498346716166,
+      "execution_s": 35.174174375017174
+    },
+    {
+      "cas": "q35-02",
+      "debut_attente": "2026-11-25T15:31:11.300918+00:00",
+      "acquisition": "2026-11-25T15:31:11.301172+00:00",
+      "liberation": "2026-11-25T15:31:12.041361+00:00",
+      "attente_s": 0.0002611670643091202,
+      "execution_s": 0.6968922090018168
+    },
+    {
+      "cas": "q35-03",
+      "debut_attente": "2026-11-25T15:32:12.976494+00:00",
+      "acquisition": "2026-11-25T15:32:12.976736+00:00",
+      "liberation": "2026-11-25T15:32:14.925506+00:00",
+      "attente_s": 0.0002507079625502229,
+      "execution_s": 1.9061790829291567
+    },
+    {
+      "cas": "q35-04",
+      "debut_attente": "2026-11-25T15:33:12.507546+00:00",
+      "acquisition": "2026-11-25T15:33:12.507814+00:00",
+      "liberation": "2026-11-25T15:33:14.477407+00:00",
+      "attente_s": 0.0002760420320555568,
+      "execution_s": 1.9272155420621857
+    },
+    {
+      "cas": "q35-05",
+      "debut_attente": "2026-11-25T15:53:43.169151+00:00",
+      "acquisition": "2026-11-25T15:53:43.169670+00:00",
+      "liberation": "2026-11-25T15:53:45.224211+00:00",
+      "attente_s": 0.000528917065821588,
+      "execution_s": 2.0127509580925107
+    },
+    {
+      "cas": "q35-08",
+      "debut_attente": "2026-11-25T16:10:22.768259+00:00",
+      "acquisition": "2026-11-25T16:10:24.774213+00:00",
+      "liberation": "2026-11-25T16:10:26.882213+00:00",
+      "attente_s": 2.0059752920642495,
+      "execution_s": 2.041568125016056
+    },
+    {
+      "cas": "q35-hash-08",
+      "debut_attente": "2026-11-25T16:10:31.289986+00:00",
+      "acquisition": "2026-11-25T16:10:31.290266+00:00",
+      "liberation": "2026-11-25T16:10:33.297369+00:00",
+      "attente_s": 0.000288125011138618,
+      "execution_s": 1.9559010000666603
+    },
+    {
+      "cas": "q35-prepare-08",
+      "debut_attente": "2026-11-25T16:10:27.916736+00:00",
+      "acquisition": "2026-11-25T16:10:27.916970+00:00",
+      "liberation": "2026-11-25T16:10:30.230403+00:00",
+      "attente_s": 0.00024345796555280685,
+      "execution_s": 2.262297916924581
+    },
+    {
+      "cas": "q35-retrait-06",
+      "debut_attente": "2026-11-25T16:06:00.129674+00:00",
+      "acquisition": "2026-11-25T16:06:00.129934+00:00",
+      "liberation": "2026-11-25T16:06:02.090420+00:00",
+      "attente_s": 0.00026808399707078934,
+      "execution_s": 1.9176192909944803
+    },
+    {
+      "cas": "q35-temoin-hash-06",
+      "debut_attente": "2026-11-25T16:06:03.025867+00:00",
+      "acquisition": "2026-11-25T16:06:03.026132+00:00",
+      "liberation": "2026-11-25T16:06:38.147337+00:00",
+      "attente_s": 0.0002736670430749655,
+      "execution_s": 35.07655825000256
+    },
+    {
+      "cas": "statut-net-arm-lab-512",
+      "debut_attente": "2026-11-25T16:20:30.452669+00:00",
+      "acquisition": "2026-11-25T16:20:30.452908+00:00",
+      "liberation": "2026-11-25T16:20:36.679165+00:00",
+      "attente_s": 0.0002502909628674388,
+      "execution_s": 6.183580000069924
+    },
+    {
+      "cas": "statut-net-arm-mesure-512",
+      "debut_attente": "2026-11-25T16:20:16.158907+00:00",
+      "acquisition": "2026-11-25T16:20:16.159124+00:00",
+      "liberation": "2026-11-25T16:20:22.640337+00:00",
+      "attente_s": 0.00022466597147285938,
+      "execution_s": 6.43391779193189
+    }
+  ],
+  "execution_qemu_cumulee_s": 659.8998,
+  "attente_verrou_cumulee_bancs_s": 326.6807,
+  "non_executes": [
+    "DMA Ethernet RX/TX réel et IRQ du NIC",
+    "crash du pilote réseau avec trames en vol",
+    "saturation et endurance réelles RX/TX",
+    "mémoire totale et performances réseau en charge",
+    "qualification matérielle physique"
+  ]
+}

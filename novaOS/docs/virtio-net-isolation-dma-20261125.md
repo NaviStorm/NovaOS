@@ -1,0 +1,65 @@
+# VirtIO-net sous QEMU — confinement jusqu’à NovaOS et effets sur P9
+
+**État au 25 novembre 2026.** Les deux invités ont préparé puis retiré un domaine NIC sous protection IOMMU. Le NIC est resté sans bail de données. La livraison couvre cette étape, le stockage exercé en parallèle de la préparation et la chaîne Secure Boot Q35. Les échanges Ethernet, les interruptions de données du NIC et le redémarrage du pilote sous trafic restent à qualifier.
+
+Le code des parcours est `716a1d098a03649c4da63f32ffa95bcd1731b5aa`. La sonde facultative P9 ajoutée dans `ad6479189ad62e37e4acd52cd64318643842282a` identifie les refus du client de test. Les dossiers préfixés `final-` correspondent aux binaires de la première révision. Les deux tests `statut-` utilisent la sonde de la seconde. Les autres tentatives, y compris les échecs, ont leurs propres empreintes. [Résultats et horaires](validation/virtio-net/isolation-20261125/resultats.json) · [Binaires](validation/virtio-net/isolation-20261125/binaires.json) · [Manifeste](validation/virtio-net/isolation-20261125/SHA256SUMS)
+
+## AArch64 — superviseur unique et deux domaines
+
+La revue du contrat intégral a retrouvé les six conditions de l’arbitrage dans les sections « Identité et attribution », « Commandes, corrélation et invalidations concurrentes » et « Révocation, interruptions et panne ». La branche de qualification ajoute un seul propriétaire des files de contrôle. Il conserve le titulaire, le SID, le domaine, l’incarnation, le numéro de commande, l’opération et son étendue, le prochain indice utilisé et la longueur de réponse. La commande en vol garde ses tampons. L’index, le descripteur, le statut et les octets réservés sont vérifiés avant la transition. Le dernier résultat reste consultable par son titulaire tant que la même attribution le conserve. La réconciliation ne soumet aucun second UNMAP. Un doute conserve les cadres épinglés. [Contrat examiné](virtio-net-contrat-iommu-aarch64.md) · [Superviseur](../kernel/src/hardware/block/viommu_partage.rs)
+
+Le profil virt-10.0, GICv3, TCG, un Cortex-A72 et 256 Mio utilise un hub Ethernet QEMU interne. Le DXE détache le disque du domaine 2. Le noyau donne au disque SID 48 le domaine 1 et au NIC SID 56 le domaine 3. La relecture indépendante suit depuis le reset les routes, ATTACH, MAP, directions, plages physiques disjointes, traductions et UNMAP. Le firmware a demandé BME une fois pour le NIC, alors que sa route était déjà contrôlée, le bypass désactivé et son endpoint sans domaine. Les essais n’observent aucune traduction de données du NIC. Le noyau vérifie la topologie fixe des quatre fonctions, les rôles PCI et les deux lignes INTx distinctes.
+
+| Contrôle dans l’invité | Observation sur P9/512 et P9/4096 |
+|---|---|
+| Préparation autorisée | Processus EL0 avec une racine SEND. Une autre instance sans racine est refusée. La génération ancienne reçoit le statut natif 5, la préparation autorisée le statut 0. Deux files matérielles de 16 entrées sont installées, BME fermé et DRIVER_OK désarmé. |
+| Séparation des confirmations | UNMAP NIC numéro 34. Le collecteur disque et une demande disque incompatible reçoivent la contre-pression. La lecture disque admise auparavant se termine. Un numéro erroné est refusé. Deux consultations du bon numéro correspondent à une seule commande. |
+| Révocations indépendantes | Le disque est détaché et rattaché avec le NIC préparé. Puis 22 cadres NIC sont rendus, une lecture disque réussit et une nouvelle préparation obtient une génération supérieure. Le contrôleur partagé reste vivant jusqu’au dernier retrait. |
+| Interruptions | Une interruption injectée par le superviseur sur l’INTID 38 traverse le GIC invité. ISR NIC égale à zéro, masquage, EOI et purge vérifiés. La ligne disque 37 garde son routage. La qualification de la source matérielle RX/TX reste ouverte. |
+| Pression et incertitude | L’essai diffère la collecte d’une vraie commande du NIC. Le deuxième endpoint ne peut ni écraser la requête ni recueillir son acquittement. La perte physique d’une réponse, une panne prolongée de la file, son bouclage et le crash du pilote avec des transferts en vol restent à exercer. |
+
+La protection du stockage est établie pour les réservations et retraits de traduction exercés. Quand une commande publiée reste indéterminée, les changements de traduction du disque peuvent rester indisponibles. Une traduction déjà acquise a permis la lecture admise dans le témoin. La progression de tout le stockage en cas de panne commune reste ouverte.
+
+## NovaFS P9 — mesures et persistance
+
+Deux démarrages par cellule, ordre témoin/candidat puis candidat/témoin. Par cellule, 128 lectures contiguës de 4 Kio et 32 FLUSH. Temps du compteur invité à 62,5 MHz. Le débit porte sur la boucle de lecture, qui inclut la copie du tampon. Le service NovaFS exécute séparément ses écritures, SYNC et relectures, suivies d’une vérification hors invité. Le témoin utilise le gestionnaire disque historique. Le candidat conserve une attribution NIC préparée pendant les mesures. Les files de données réseau restent inactives.
+
+| Secteur | Gestionnaire | Lecture p50 / p95 / p99 (µs) | Lecture (Mio/s) | FLUSH p50 / p95 / p99 (µs) |
+|---|---|---:|---:|---:|
+| 512 | Disque historique | 68 / 85 / 115 | 54,79 | 66,5 / 147 / 154 |
+| 512 | Deux domaines | 71 / 86 / 116 | 53,48 | 66 / 152 / 185 |
+| 4096 | Disque historique | 71 / 85 / 122 | 53,30 | 67,5 / 146 / 212 |
+| 4096 | Deux domaines | 69 / 89 / 113 | 56,18 | 59,5 / 174 / 194 |
+
+Sur 4096, le p95 de FLUSH passe de 146 à 174 µs. Sur 512, il passe de 147 à 152 µs. Ces séries courtes permettent de chiffrer l’écart observé. Son attribution au seul superviseur et son évolution sous trafic restent à mesurer. Les cycles bruts par démarrage sont dans les journaux série.
+
+| Arrêt du processus QEMU | P9/512 | P9/4096 |
+|---|---|---|
+| Avant F1 | Ancien contenu, génération 6 | Ancien contenu, génération 6 |
+| Après F1 | Ancien contenu, génération 6 | Ancien contenu, génération 6 |
+| Avant F2 | Nouveau contenu, génération 7 | Nouveau contenu, génération 7 |
+| Après F2 | Nouveau contenu, génération 7 | Nouveau contenu, génération 7 |
+
+Pour chaque ligne et chaque géométrie, arrêt au marqueur invité, capture QMP, arrêt brutal du processus QEMU, vérification du volume extrait, puis démarrage en lecture seule sur le même disque. L’invité retrouve le contenu attendu. L’empreinte du volume est identique avant et après ce remontage. Le cache hôte reste alimenté. Avant F2, les deux issues cohérentes sont admissibles. La ligne rapporte celle observée.
+
+**Réserve du parcours historique de fichiers.** Le mode 11 échoue avec `BUSY (24)` sur les deux géométries, avec le gestionnaire disque historique comme avec le candidat. La présence préalable de `/sortie` ne corrige pas l’échec. Sur 512, la sonde des deux exécutables identifie le READ ordinaire (opcode 4, phase 0) pendant l’écriture en attente, après le refus attendu de l’écrivain concurrent. Le service P9 à politique d’atime relative refuse ce READ pendant une mutation en attente. Le mode 11 attend une lecture de l’ancienne vue. L’oracle historique a été conservé. La qualification globale NovaFS reste ouverte pour ce parcours. [Client](../user/storage/fileclient.rs) · [Contrôle du service](../user/novafs/files.rs)
+
+## Q35 x86_64 — transfert du firmware au noyau
+
+L’image expérimentale OVMF conserve le SHA-256 `e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f`. Les traces PCI des essais finaux suivent la commande du NIC à partir du reset, y compris le redémarrage interne du firmware. Toutes ses écritures gardent BME à zéro. Secure Boot authentifie le chargeur Limine enrôlé. Sa configuration scellée lie le noyau par BLAKE2b. Le témoin avec noyau altéré obtient le refus explicite de Limine avant NovaOS. La base de révocation EFI et la comparaison au firmware standard ont leurs propres preuves historiques. Le disque AHCI reste utilisé par le firmware durant son démarrage. La revendication de continuité depuis le reset porte sur le NIC. [Qualification EFI antérieure](virtio-net-ovmf-q35.md)
+
+Dans le noyau NovaOS, le témoin vérifie la topologie, le DRHD, l’arrêt des bus masters pairs et le domaine initialement vide. RTPS, QIES et TES sont relus. L’invalidation de contexte et celle de l’IOTLB avec drainage sont suivies d’un reçu WAIT distinct. Le lecteur indépendant inspecte les six pages de traduction, la file d’invalidation, la page des reçus et 22 cadres de données distincts pour SID 56, domaine 3. Douze cadres de données sont en lecture seule, dix en écriture seule pour le NIC. Au retrait, le reçu 3 confirme la barrière, la racine vide est relue, 27 cadres sont rendus et trois restent épinglés pour le contrôleur. GSTS final vaut `0xc4000000`, FSTS vaut zéro, IQH et IQT valent 144. Cette recette ne distribue pas de bail réseau et ne valide pas une IRQ de données Q35. [Témoin invité](../kernel/src/hardware/net_q35.rs) · [Inspection indépendante](../tests/virtio_net_relais_q35.py)
+
+## Ressources, anomalies du banc et étapes ouvertes
+
+- AArch64, pic épinglé observé de 38 cadres de 4 Kio, soit 152 Kio. Il comprend 9 cadres du contrôleur, 7 du disque et 22 du NIC. Il en reste 31 après fermeture du disque, puis zéro après retrait du NIC et fermeture du contrôleur. Le gestionnaire statique sous mutex mesure 1 848 octets, dont un contrôleur de 1 816 octets. Les 592 octets par attribution et les 56 octets de la commande sont inclus dans ce dernier. La structure de préparation occupe 680 octets.
+- Dans le parcours P9 candidat à la phase de publication, 4 processus, 179 cadres de tables, 96 cadres de piles noyau, 130 de piles utilisateur, 9 d’IPC et 1 530 cadres résidents pour l’invité instrumenté. Après collecte, IPC et processus reviennent à zéro. Les racines du relais, de NovaFS, du pilote disque et du client valent respectivement 2, 2, 2 et 0 au relevé. L’instance réseau a une racine pendant sa préparation et zéro après collecte. Le superviseur IOMMU est interne au noyau. Le plafond de quatre demeure applicable à l’ensemble du futur parcours.
+- Q35, 30 cadres épinglés à l’installation (120 Kio), 3 cadres permanents après retrait (12 Kio). Les mesures du sous-système en trafic, ses pics et ses performances restent indisponibles. Les 92 Kio du devis initial couvrent un sous-ensemble des buffers.
+- Les essais intermédiaires conservent notamment le démarrage Q35 sans verdict, l’erreur d’appel du lecteur de registres, le marqueur de refus Limine fragmenté par des codes de terminal, le mauvais accès au scénario après récupération de la mémoire du chargeur et une prise de mutex sous garde d’interruptions. Leurs corrections sont couvertes par les essais finaux. Le temps d’attente d’un verrou par un banc peut coïncider avec l’exécution d’un autre banc de ce mandat. Heures UTC, acquisitions, libérations, durées et échecs figurent par essai dans les résultats.
+- Les neuf contrôles ABI réussissent. Les sources du registre ABI et du moteur NovaFS sont identiques à la référence. Huit tests logiciels de files réussissent en Darwin ARM64 et huit en x86_64 sous Rosetta. Les noyaux ordinaires compilent sur les deux cibles. Les démarrages de qualification utilisent les options de laboratoire explicites.
+- La prochaine condition pour le trafic est de démontrer la compatibilité des anneaux utilisés en écriture seule avec le comportement de notification du modèle. Dans QEMU 10.0.12, un chemin de split virtqueue utilise un accès lecture-modification-écriture aux drapeaux si EVENT_IDX est absent. Le risque concerne le profil aux trois fonctionnalités négociées. Aucun accès fautif du NIC n’a été observé dans cette campagne, qui garde BME fermé. Il reste aussi à qualifier une IRQ réellement émise par le NIC, la mort du pilote avec une trame admise, l’intégrité au pair Ethernet, la saturation, le débit et la latence du stockage et du réseau sous trafic simultané. Toute extension des droits des pages requiert arbitrage. [Code VirtIO de QEMU 10.0.12](https://github.com/qemu/qemu/blob/v10.0.12/hw/virtio/virtio.c#L428-L489)
+- La portée est limitée aux machines QEMU et à leurs firmwares identifiés. Le firmware constructeur, l’isolation des périphériques physiques et la chaîne de démarrage de la distribution ordinaire requièrent leurs propres preuves. Les réserves historiques de reproductibilité et de mémoire instrumentée AArch64 restent ouvertes dans leur périmètre antérieur.
+
+## Vérification de la livraison
+
+Depuis le répertoire de validation, exécuter `shasum -a 256 -c SHA256SUMS`. L’archive contient les journaux série, les traces QEMU, les captures de registres, les entrées du banc et les rapports d’essai. Les images de disques, exécutables et variables EFI du laboratoire sont conservés dans le répertoire durable frère `archives-virtio-net/isolation-20261125`. Leurs empreintes sont consignées dans `archives-locales.sha256`. [Archive](validation/virtio-net/isolation-20261125/traces.tar.gz) · [Empreintes locales](validation/virtio-net/isolation-20261125/archives-locales.sha256)
