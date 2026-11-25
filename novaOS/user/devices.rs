@@ -10,6 +10,9 @@ mod device_inventory;
 #[allow(dead_code)]
 mod device_lifecycle;
 mod gate;
+#[cfg(virtio_net_probe)]
+#[allow(dead_code)]
+mod virtio_net;
 #[cfg(materiel_lab)]
 mod edu_manager;
 use device_inventory as wire;
@@ -62,10 +65,14 @@ fn inspect(page: &[u8]) -> bool {
         if observed.matching(catalog).is_some() {
             return false;
         }
-        if wire::virtio_net(vendor, device, r[8], r[9])
-            && !diagnostic(b"VirtIO-net PCI moderne inventorie")
-        {
-            return false;
+        if wire::virtio_net(vendor, device, r[8], r[9]) {
+            if !diagnostic(b"VirtIO-net PCI moderne inventorie") {
+                return false;
+            }
+            #[cfg(virtio_net_probe)]
+            if !virtio_net::probe::run() || !diagnostic(b"VirtIO-net files logicielles ok RX=100000 TX=100000 DMA=0") {
+                return false;
+            }
         }
         if let Some((i, name)) = wire::model(vendor, device) {
             if seen & (1 << i) == 0 && !diagnostic(name) {

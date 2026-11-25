@@ -103,7 +103,7 @@ def verify(text, roots, arch, acpi_off, granted):
     return len(found)
 
 
-def run(arch, iso, acpi_off, granted, *, network=False, directory=None):
+def run(arch, iso, acpi_off, granted, *, network=False, queue_probe=False, directory=None, kernel=None):
     name = f"{arch}-{'sans-acpi' if acpi_off else 'acpi'}"
     if not granted:
         name += "-sans-acces-pci"
@@ -150,6 +150,10 @@ def run(arch, iso, acpi_off, granted, *, network=False, directory=None):
                 marker = re.findall(r"DEBUG pid=(\d+) VirtIO-net PCI moderne inventorie", text)
                 if len(marker) != 1 or f"DEBUG pid={marker[0]} MATERIEL gestionnaire inventaire lu" not in text:
                     raise RuntimeError("La carte doit être reconnue par le gestionnaire invité")
+                if queue_probe:
+                    proof = f"DEBUG pid={marker[0]} VirtIO-net files logicielles ok RX=100000 TX=100000 DMA=0"
+                    if text.count(proof) != 1:
+                        raise RuntimeError("Preuve des files logicielles absente ou ambiguë")
             qmp(vm, "quit")
             if vm.wait(timeout=5):
                 raise RuntimeError(f"Arrêt anormal de QEMU, voir {stderr}")
@@ -161,7 +165,7 @@ def run(arch, iso, acpi_off, granted, *, network=False, directory=None):
                 vm.kill()
                 vm.wait()
     target = "aarch64-unknown-none-softfloat" if arch == "aarch64" else "x86_64-unknown-none"
-    elf = Path(os.environ.get("NOVA_KERNEL_ELF", ROOT / "target" / target / "release/novaos"))
+    elf = kernel or Path(os.environ.get("NOVA_KERNEL_ELF", ROOT / "target" / target / "release/novaos"))
     result = {
         "architecture": arch, "acpi_desactive": acpi_off, "acces_pci": granted, "qemu": version,
         "peripheriques_compares": count, "sha256_iso": hashlib.sha256(iso.read_bytes()).hexdigest(),

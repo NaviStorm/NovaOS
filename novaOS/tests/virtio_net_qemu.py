@@ -49,6 +49,7 @@ def qualification(worktrees, report):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("archive", type=Path, help="nouveau répertoire durable")
+    parser.add_argument("--files", action="store_true", help="exiger le témoin logiciel de la construction virtio-net-probe")
     args = parser.parse_args()
     archive = args.archive.resolve()
     archive.mkdir(parents=True, exist_ok=False)
@@ -72,7 +73,8 @@ def main():
                 start = time.monotonic()
                 result = report["essais"][arch] = {"reussi": False}
                 try:
-                    run(arch, iso, False, True, network=True, directory=iso.parent)
+                    run(arch, iso, False, True, network=True, queue_probe=args.files,
+                        directory=iso.parent, kernel=iso.parent / "novaos.elf")
                     result["reussi"] = True
                 finally:
                     result["execution_s"] = time.monotonic() - start

@@ -13,6 +13,7 @@ bench = false
 [features]
 novaauth-lab = []
 materiel-lab = []
+virtio-net-probe = []
 vtd-lab = ["materiel-lab"]
 nvme-lab = ["vtd-lab"]
 user-fpu = []

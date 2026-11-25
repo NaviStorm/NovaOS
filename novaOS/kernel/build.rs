@@ -91,6 +91,9 @@ fn main() {
             name,
             "instance_manager" | "instance_sample" | "devices" | "edu" | "edu_dma" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
+        if name == "devices" && env::var_os("CARGO_FEATURE_VIRTIO_NET_PROBE").is_some() {
+            rust.arg("--cfg").arg("virtio_net_probe");
+        }
         if name == "devices" && env::var_os("CARGO_FEATURE_MATERIEL_LAB").is_some() {
             rust.arg("--cfg").arg("materiel_lab");
         }
