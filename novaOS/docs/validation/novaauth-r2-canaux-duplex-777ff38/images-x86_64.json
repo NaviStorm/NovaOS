@@ -1,0 +1,19 @@
+{
+  "source": "777ff386446d70f38c17752275a6fbdd73a98377 + raccord duplex",
+  "profil": "membership_r2+administration_last_admin+selective_exec+ancien_h",
+  "commande": [
+    "sh",
+    "scripts/iso.sh",
+    "novaauth-sessions",
+    "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-duplex-777ff38/actif/images-ancien-h/x86_64.iso"
+  ],
+  "duree_hote_s": 0.38701470801606774,
+  "artefacts": {
+    "x86_64-kernel.elf": "b77ee42dcffed674a39945dd77b356679aaba58d8ddc50656ff475adecabdaef",
+    "x86_64-registre.elf": "58a7a645bd5dbcb1874b16ecfd6c39dea18788232044e11c9e7aeae0c8b1a8ed",
+    "x86_64-shell.elf": "5067088fead0ba9e66ebca5a338c48fd97c8fee6626c13f8cae87fbcd75634c2",
+    "x86_64.iso": "9be5ac16fee81ce57cd1e025c9502573c2a86e43431166fc886de5902af7c80f"
+  },
+  "profil_ISO_verifie": true,
+  "noyau_ISO_identique": true
+}

@@ -1,0 +1,201 @@
+{
+  "child": 23,
+  "shell": 11,
+  "child_instance_sha256": "3f2ab6748b8f01f1063818bb7bbe7f44ff01031cd75eab744b9c4403b93a795a",
+  "operation": "8abc9bd3a0775c6d79514778ed6778d0",
+  "ticket_observe": 1709,
+  "echeance": 2518,
+  "marge_ticks": 809,
+  "statut": 0,
+  "stdout_octets": 14,
+  "stdout_sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0",
+  "stderr_octets": 0,
+  "sessions_distinctes": true,
+  "sequence_retrait": [
+    13,
+    14,
+    18
+  ],
+  "generation": 19,
+  "acquittements": [
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      4,
+      1
+    ]
+  ],
+  "inscription": 12,
+  "admission": 19,
+  "terminal": 20,
+  "issues_vfs": [
+    {
+      "id": "7113d8ac5d3b8983dd8fb39323f2eeda",
+      "admission": 21,
+      "terminal": 22,
+      "preuve": "498c0567087db509e2d990f0215f820394173db66b707e1f615f5049e230776b"
+    },
+    {
+      "id": "230f31d67a6323cf00f3babad61381a7",
+      "admission": 23,
+      "terminal": 24,
+      "preuve": "eb45388f428445fde66e9a8ad86765597fac1d6d0432ba7a07ea5a21edf6351d"
+    },
+    {
+      "id": "866db2b1d9237c07f614f42ddd2ca698",
+      "admission": 25,
+      "terminal": 26,
+      "preuve": "2f1fe936e4f8a78ac45dcd05897e08be6512f06e00d8090e45746943a569d8c3"
+    },
+    {
+      "id": "0e17fa77982fb55a9b95a6ac87e42a19",
+      "admission": 27,
+      "terminal": 28,
+      "preuve": "298f1d48aa125955c97e807414c2a6320ead4636a3c0f021c85bb8fc47aec11c"
+    }
+  ],
+  "allocations": [
+    {
+      "phase": "sortie",
+      "racines": 1,
+      "max_racines_acteurs": 4,
+      "endpoints": 61,
+      "noeuds": 128,
+      "handles": 1,
+      "attentes": 15,
+      "cadres_ipc": 71,
+      "cadres_libres": 59062
+    },
+    {
+      "phase": "erreur",
+      "racines": 2,
+      "max_racines_acteurs": 4,
+      "endpoints": 62,
+      "noeuds": 130,
+      "handles": 2,
+      "attentes": 15,
+      "cadres_ipc": 72,
+      "cadres_libres": 59061
+    },
+    {
+      "phase": "fichier_tx",
+      "racines": 3,
+      "max_racines_acteurs": 4,
+      "endpoints": 63,
+      "noeuds": 132,
+      "handles": 3,
+      "attentes": 15,
+      "cadres_ipc": 73,
+      "cadres_libres": 59060
+    },
+    {
+      "phase": "fichier_rx",
+      "racines": 4,
+      "max_racines_acteurs": 4,
+      "endpoints": 64,
+      "noeuds": 134,
+      "handles": 4,
+      "attentes": 15,
+      "cadres_ipc": 74,
+      "cadres_libres": 59059
+    },
+    {
+      "phase": "actif",
+      "racines": 4,
+      "max_racines_acteurs": 4,
+      "endpoints": 64,
+      "noeuds": 134,
+      "handles": 4,
+      "attentes": 15,
+      "cadres_ipc": 74,
+      "cadres_libres": 59059
+    }
+  ],
+  "cadres_ipc_max_observe": 74,
+  "cadres_libres_min_observe": 59025,
+  "drainage_final": true,
+  "traces_sha256": {
+    "sessions-noyau.bin": "c1573b0bd4ad0ba5aa2976f2c24478146152d6fd3e5eedb2f2c537865417ed83",
+    "sorties-noyau.bin": "3cb4482c22cd74d86309bd8b764cc7ce3a202fa7f7afab9bd8a43bb561fdf229",
+    "invite.serial": "0af1e51991c8361dcaf6b22ab7eb59bc1337d46519e88644bfcad18e68036bea",
+    "autorite-independante.sqlite": "b7fbdb5f67a48ca7871c0c246f1e616e1afaa5942d8cfec7b1144c46d3587a4d"
+  },
+  "ressources": {
+    "avant": [
+      4,
+      6,
+      0,
+      73,
+      64,
+      31
+    ],
+    "actif": [
+      4,
+      6,
+      0,
+      73,
+      64,
+      31
+    ],
+    "apres": [
+      4,
+      6,
+      0,
+      73,
+      64,
+      31
+    ]
+  },
+  "ressources_registre": {
+    "avant": [
+      4,
+      7,
+      0,
+      169,
+      64,
+      31
+    ],
+    "apres": [
+      4,
+      7,
+      0,
+      169,
+      64,
+      31
+    ]
+  },
+  "pics_racines_par_pid": {
+    "2": 4,
+    "3": 4,
+    "4": 3,
+    "5": 2,
+    "1": 4,
+    "6": 4,
+    "7": 4,
+    "8": 4,
+    "9": 4,
+    "10": 4,
+    "11": 4,
+    "12": 4,
+    "13": 4,
+    "14": 2,
+    "15": 2,
+    "18": 2,
+    "19": 4,
+    "20": 2,
+    "21": 3,
+    "22": 3,
+    "23": 4
+  },
+  "plafond_respecte": true,
+  "cinquieme_racine_refusee": true,
+  "relais_draine": true,
+  "drainage_signataire": true,
+  "drainage_registre": true
+}

@@ -1,0 +1,129 @@
+{
+  "child": 23,
+  "shell": 11,
+  "child_instance_sha256": "a5aa2c14e0a2c8792ab0ac6eb24937ee7e9896ccc2f60417a54640cc785e2613",
+  "operation": "41491e540f47d11773ed398212a2d123",
+  "ticket_observe": 3427,
+  "echeance": 3710,
+  "marge_ticks": 283,
+  "statut": 0,
+  "stdout_octets": 14,
+  "stdout_sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0",
+  "stderr_octets": 0,
+  "sessions_distinctes": true,
+  "sequence_retrait": [
+    13,
+    14,
+    18
+  ],
+  "generation": 19,
+  "acquittements": [
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      4,
+      1
+    ]
+  ],
+  "inscription": 12,
+  "admission": 19,
+  "terminal": 20,
+  "issues_vfs": [
+    {
+      "id": "5e80b311dfc7e39fe019f3318e24f07c",
+      "admission": 21,
+      "terminal": 22,
+      "preuve": "498c0567087db509e2d990f0215f820394173db66b707e1f615f5049e230776b"
+    },
+    {
+      "id": "58beb6c28b85c5543eab1e4a67c77e0f",
+      "admission": 23,
+      "terminal": 24,
+      "preuve": "eb45388f428445fde66e9a8ad86765597fac1d6d0432ba7a07ea5a21edf6351d"
+    },
+    {
+      "id": "a8771b19a819836cdb919f8d420e4251",
+      "admission": 25,
+      "terminal": 26,
+      "preuve": "2f1fe936e4f8a78ac45dcd05897e08be6512f06e00d8090e45746943a569d8c3"
+    },
+    {
+      "id": "cfb97b475894c0be939f66707465de82",
+      "admission": 27,
+      "terminal": 28,
+      "preuve": "298f1d48aa125955c97e807414c2a6320ead4636a3c0f021c85bb8fc47aec11c"
+    }
+  ],
+  "allocations": [
+    {
+      "phase": "sortie",
+      "racines": 1,
+      "max_racines_acteurs": 4,
+      "endpoints": 61,
+      "noeuds": 128,
+      "handles": 1,
+      "attentes": 15,
+      "cadres_ipc": 71,
+      "cadres_libres": 59063
+    },
+    {
+      "phase": "erreur",
+      "racines": 2,
+      "max_racines_acteurs": 4,
+      "endpoints": 62,
+      "noeuds": 130,
+      "handles": 2,
+      "attentes": 15,
+      "cadres_ipc": 72,
+      "cadres_libres": 59062
+    },
+    {
+      "phase": "fichier_tx",
+      "racines": 3,
+      "max_racines_acteurs": 4,
+      "endpoints": 63,
+      "noeuds": 132,
+      "handles": 3,
+      "attentes": 15,
+      "cadres_ipc": 73,
+      "cadres_libres": 59061
+    },
+    {
+      "phase": "fichier_rx",
+      "racines": 4,
+      "max_racines_acteurs": 4,
+      "endpoints": 64,
+      "noeuds": 134,
+      "handles": 4,
+      "attentes": 15,
+      "cadres_ipc": 74,
+      "cadres_libres": 59060
+    },
+    {
+      "phase": "actif",
+      "racines": 4,
+      "max_racines_acteurs": 4,
+      "endpoints": 64,
+      "noeuds": 134,
+      "handles": 4,
+      "attentes": 15,
+      "cadres_ipc": 74,
+      "cadres_libres": 59060
+    }
+  ],
+  "cadres_ipc_max_observe": 74,
+  "cadres_libres_min_observe": 59026,
+  "drainage_final": true,
+  "traces_sha256": {
+    "sessions-noyau.bin": "71430412fc735305a7e9d6f9975b53de29c192abf8d8c03ff4f64f36fb61b797",
+    "sorties-noyau.bin": "572e307e309eaf8984ecce19f66242846490f215a2b59c94571015455f92b726",
+    "invite.serial": "095be8b846c18dee3c3b0fcbacfa9e2ea2357d9d8b758cd8964f1992fcc82454",
+    "autorite-independante.sqlite": "29a848ded4d4be4989e5683b7bc1d1f48a19fb0c54db8ab1af3285d113bdf364"
+  }
+}

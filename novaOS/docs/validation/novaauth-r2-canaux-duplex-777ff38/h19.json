@@ -1,0 +1,12 @@
+{
+  "operation": "1adf005daed2d272218b5cd155593925",
+  "admission": 19,
+  "descripteur": 12,
+  "empreinte_descripteur": "9140fcfda724baab7f599bcecdc9066fee122d49590f3ba4c816d4cd64e24e9a",
+  "etat": "Pending",
+  "terminal": null,
+  "enfant": null,
+  "lectures_concordantes": 2,
+  "statut_appelant": "UNCERTAIN",
+  "methode": "lecture par identifiant des deux journaux conservés, aucune mutation"
+}

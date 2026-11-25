@@ -1,0 +1,180 @@
+from pathlib import Path
+from types import SimpleNamespace
+from contextlib import ExitStack
+import hashlib,json,re,sys
+base=Path("/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees")
+tmp=Path("/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-gh-beda019")
+mode=sys.argv[3]
+assert mode in ('h','g')
+export=Path('/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-duplex-777ff38')/'export-busy'
+lab=export/'novaOS/user/novaauth/autorite_qemu'
+sys.path.insert(0,str(lab))
+sys.path.insert(0,'/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-duplex-777ff38/host')
+from recuperation_qemu import run,fixture,SERVER,DOMAIN,Refus
+from certificats import validity
+from administration_collector_qemu import Observer
+from administration_events import Events, observed_command_status_pattern
+import admission_exec as execs
+from administration_epochs import Epochs,initialize
+from reprise import transaction
+from exec_deux_vm import route,signature
+
+def main():
+    arch,sector=sys.argv[1],int(sys.argv[2])
+    assert arch in ('x86_64','aarch64') and sector in (512,4096)
+    private=base/'artefacts-prives-administration-0240-r2'
+    disk=tmp/f'fixtures-retrait/{arch}-{sector}/identites.p9'
+    if arch=='aarch64' and sector==512:
+        disk=Path('/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-consolidation-6498dd4/controle-usermod-aarch64-512/fixture/identites.p9')
+    if arch=='x86_64' and sector==512:
+        disk=Path('/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-duplex-777ff38/compact-x86_64-512-r2/fixture/identites.p9')
+    tool=base/'artefacts-prives-raccord-exec-42128c2/outils-recuperation'
+    images=Path('/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-duplex-777ff38/actif')/('images-ancien-'+mode)
+    keyring=private/'certificats-achevement-r2-20261124'
+    out=Path('/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-duplex-777ff38/actif')/f'ancien-{mode}-{arch}-{sector}'
+    args=SimpleNamespace(arch=arch,sector=sector,mode='nominal',triplet=disk.with_name('triplet.bin'),
+      genese=disk,legacy_disk=disk.with_name('autorite.raw'),iso=images/f'{arch}.iso',
+      registre=images/f'{arch}-registre.elf',sortie=out,secrets=Path('/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-duplex-777ff38/actif')/f'prive-ancien-{mode}-{arch}-{sector}',
+      cles=keyring,decision=base/'artefacts-prives-administration-0240-r1/decision',
+      detenteur=tool/'detenteur',capture=tool/'capture',activation=True,vue=True,
+      vfs=False,mutation=False,lecture_privee='autorisee',membership_r2=True,selective_exec=True,
+      exec_admission=True,administration_r2=True,collecteur_r2=True,transport_connection_limit=128)
+    validity(keyring)
+    raw=args.triplet.read_bytes()
+    users=json.loads(raw[156:156+int.from_bytes(raw[152:156],'big')])
+    subjects=tuple((bytes(u['id']),u['authentication']['epoch']) for u in users if u['status']=='Active')
+    identities=disk.with_name('identites-temoins.bin').read_bytes()
+    assert len(identities)>=48
+    bob=identities[16:32]
+    removed=identities[32:48]
+    out.mkdir(parents=True)
+    args.secrets.mkdir(mode=0o700)
+    # fixture écrit ses preuves et sa base sous un dossier préparatoire. run
+    # créera son propre dossier et sa copie P9 isolée.
+    prep=out/'autorite'
+    prep.mkdir()
+    args.sortie=prep
+    with ExitStack() as stack:
+        environment=fixture(args,stack)
+        dispatcher,_,admin=environment
+        api=execs.Admissions(dispatcher.authority.authority)
+        execs.initialize(api.path)
+        initialize(api.path)
+        admin.call('r2-subjects',subjects)
+        old=route(api)
+        api.enroll(SERVER,DOMAIN,old,signature(admin,'enroll',old))
+        api.begin_withdrawal(SERVER,DOMAIN,old,signature(admin,'withdraw',old))
+        api.drain(SERVER,DOMAIN,old)
+        enrolled=False
+        def hook(phase,operation,body,result,qmp,disk):
+            nonlocal enrolled
+            if phase=='before' and operation==62 and not enrolled:
+                with transaction(api.path) as db:
+                    state=api.authority._current(db,SERVER,DOMAIN)
+                Epochs(api.authority).enroll(state,subjects,admin.call('r2-enroll',state))
+                enrolled=True
+
+        def scenario(serial,control,disk,evidence):
+            observer=Observer(control,arch,images/f'{arch}-kernel.elf',evidence)
+            stack.callback(observer.close)
+            events=Events.before_ready(serial,rb'NAEXEC registre pret puis connexion du vrai nsh',100)
+            bob_pid=events.wait_actor(b'NAR2 Bob attente declenchement authentification', 20)
+            events.wait_from_start(rb'(?m)^nsh> ', 30)
+            serial.offset=len(serial.data)
+            cmd='usermod --remove-group base bob'
+            serial.submit(cmd+' --prepare; echo NXR2_0_$?__FIN')
+            result=serial.expect(observed_command_status_pattern('NXR2_0_'),40)
+            if result[2]!=b'0':raise Refus('préparation CLI refusée')
+            alice=int(result[1])
+            if alice==bob_pid:raise Refus('routes Alice et Bob confondues')
+            def stdout():
+                observer.check()
+                rows=[(binding,closed,data) for binding,closed,data in observer.outputs() if binding.shell==alice]
+                if not rows or any(not closed for _,closed,_ in rows):raise Refus('collecte du CLI incomplète')
+                return [data for binding,_,data in rows if binding.fd==1]
+            prepared=stdout()
+            if len(prepared)!=1:raise Refus('préparation doit rendre une seule sortie Alice')
+            intent=re.fullmatch(rb'request=([0-9a-f]{32}) confirmation=([0-9a-f]{64}) state=PREPARED\n',prepared[0])
+            if not intent:raise Refus('préparation CLI non canonique')
+            op,digest=(v.decode() for v in intent.groups())
+            serial.submit(cmd+f' --confirm {digest} --request {op}; echo NXR2_1_$?__FIN')
+            result=serial.expect(observed_command_status_pattern('NXR2_1_'),40)
+            if result[2]!=b'0' or int(result[1])!=alice:raise Refus('confirmation CLI refusée ou mauvais acteur')
+            events.expect(bob_pid,b'NAR2 Bob ticket vivant non consomme',20)
+            if b'NARM RETIREE recu durable tete P9 relue effecteurs acquittes' not in serial.data:
+                raise Refus('marqueur RETIREE invité absent')
+            if mode=='g':
+                events.expect(bob_pid,b'NAR2 Bob ancien G statut=10 aucun enfant',25)
+            else:
+                events.expect(bob_pid,b'NAR2 Bob ancien H consomme statut=0 collecte unique',25)
+            events.expect(bob_pid,b'NAR2 Bob fermeture acquittee',30)
+            confirmation=stdout()
+            if len(confirmation)!=2 or not re.fullmatch(
+                rb'request='+op.encode()+rb' generation=[0-9]+ state=COMPLETE\n',confirmation[-1]):
+                raise Refus('reçu CLI incomplet')
+            serial.submit('exit')
+            serial.expect(rb'endpoints=0 nodes=0 espaces=0 cadres_ipc=0',30)
+            trace=bytes(serial.data)
+            bob_pid=str(bob_pid).encode()
+            attempts=re.findall(rb'NAEXEC attente owner='+bob_pid+rb' ticket=\d+ maintenant=(\d+) echeance=(\d+)',trace)
+            if len(attempts)!=1 or int(attempts[0][0])>=int(attempts[0][1]):raise Refus('consommation de Bob non démontrée avant expiration')
+            children=re.findall(rb'NAEXEC enfant owner='+bob_pid+rb' child=(\d+)',trace)
+            if len(children)!=(mode=='h'):raise Refus('nombre de PID enfants Bob inattendu')
+            if not re.search(rb'NAEXEC restitue pid='+bob_pid+rb' roots=0 handles=0 waits=0 pages=0 pile=0 threads=0',trace):
+                raise Refus('ressources Bob non restituées')
+            with transaction(api.path) as db:
+                mutation=db.execute('SELECT state,p9,subject,grp,generation FROM membership_changes WHERE op=?',(bytes.fromhex(op),)).fetchone()
+                effects=db.execute('SELECT kind,acknowledged FROM membership_effectors WHERE op=? ORDER BY kind',(bytes.fromhex(op),)).fetchall()
+                descriptors=db.execute('SELECT d.op,d.packet,d.sequence,a.sequence,a.state,a.terminal_sequence FROM exec_descriptors d LEFT JOIN exec_admissions a ON a.op=d.op WHERE d.subject=?',(bob,)).fetchall()
+                retirement=db.execute("SELECT sequence,kind FROM exec_events WHERE kind IN ('membership-reserved','membership-withdrawing','membership-retired') ORDER BY sequence").fetchall()
+                reads=db.execute('SELECT grp,kind,state,sequence,terminal_sequence FROM membership_operations WHERE subject=? ORDER BY sequence',(bob,)).fetchall()
+            if mutation is None or mutation[:4]!=(2,1,bob,removed) or effects!=[(1,1),(2,1),(4,1)]:
+                raise Refus('preuve terminale ou acquittements distincts manquants')
+            if len(descriptors)!=1 or [k for _,k in retirement]!=['membership-reserved','membership-withdrawing','membership-retired']:
+                raise Refus('ordre durable du scénario incomplet')
+            _operation,packet,registration,admit,state,terminal=descriptors[0]
+            reservation,publication,withdrawal=(v[0] for v in retirement)
+            group=packet[616:632]
+            if len(packet)!=656 or not registration<reservation<publication<withdrawal or group==bytes(16) or (group==removed)!=(mode=='g'):
+                raise Refus('provenance ou inscription du ticket incohérente')
+            result={'succes':True,'ancien_ticket':mode.upper(),'statut_natif':0 if mode=='h' else 10,
+                    'presentation_ticks':int(attempts[0][0]),'expiration_ticks':int(attempts[0][1]),
+                    'enfants':list(map(int,children)),'retrait':[reservation,publication,withdrawal],
+                    'generation_retires':mutation[4],'acquittements':effects,'bob_pid':int(bob_pid),
+                    'inscription':registration,'descripteur_sha256':hashlib.sha256(packet).hexdigest()}
+            if mode=='g':
+                if admit is not None or reads or b'NXEXFS retrait ticket dormant owner='+bob_pid not in trace:
+                    raise Refus('G a demandé une admission ou effectué des lectures')
+            else:
+                data=b'T:A\tB\tC\nD\tE\tF\n'
+                child=children[0]
+                streams = observer.outputs()
+                rows = [(b,closed,value) for b,closed,value in streams if b.child == int(child)]
+                if len(rows)!=2 or any(b.shell!=int(bob_pid) or not closed for b,closed,_ in rows):
+                    raise Refus('liaison du flux au fils de Bob absente')
+                if {b.fd:value for b,_,value in rows}!={1:data,2:b''}:
+                    raise Refus('stdout ou stderr du collecteur privé non conforme')
+                if not (withdrawal<admit<terminal and state==1 and len(reads)==4 and
+                        all(g==group and k==1 and status==1 and terminal<a<f for g,k,status,a,f in reads)):
+                    raise Refus('admission ou résultat VFS H incomplets')
+                rows=re.findall(rb'NXDUPLEX phase=(\w+) child='+child+rb' roots=(\d+) max_roots=(\d+) endpoints=(\d+) nodes=(\d+) handles=(\d+) waits=(\d+) cadres_ipc=(\d+) cadres_libres=Ok\((\d+)\)',trace)
+                expected=[(b'sortie',1),(b'erreur',2),(b'fichier_tx',3),(b'fichier_rx',4),(b'actif',4)]
+                if [(row[0],int(row[1])) for row in rows]!=expected or any(int(row[2])>4 for row in rows):
+                    raise Refus('mesures de racines manquantes ou hors budget pendant l’allocation')
+                if len(re.findall(rb'NXDUPLEX phase=libre child='+child+rb' lane=[01]\r?\n',trace))!=1:
+                    raise Refus('restitution de l’emplacement par NovaFS non démontrée')
+                result['allocations']=[dict(zip(('phase','racines','max_racines_acteurs','endpoints','noeuds','handles','attentes','cadres_ipc','cadres_libres'),[row[0].decode(),*map(int,row[1:])])) for row in rows]
+                result.update(stdout_sha256=hashlib.sha256(data).hexdigest(),admission=admit,
+                              terminal=terminal,lectures_vfs=[[a,f] for _,_,_,a,f in reads])
+            return result
+        args.sortie=out/'invite'
+        status=run(args,environment=environment,scenario=scenario,rpc_hook=hook)
+    report=args.sortie/'resultat.json'
+    result=json.loads(report.read_text())
+    result.update(portee='Prototype retrait, ancien ticket de Bob',
+                  base_r2="777ff386446d70f38c17752275a6fbdd73a98377",instrumentation_sha256=hashlib.sha256((tmp/'attente-fichier/raccorder-registre.py').read_bytes()).hexdigest())
+    report.write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n')
+    return status
+
+if __name__=='__main__':
+    sys.exit(main())

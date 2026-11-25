@@ -1,0 +1,60 @@
+from pathlib import Path
+import datetime,json,os,signal,subprocess,sys,time,uuid
+b=Path("/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees")
+t=Path("/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-gh-beda019")
+lock=b/'.qualification-utilitaires-exclusive.lock'
+arg=sys.argv[1:]
+assert len(arg)==3 and arg[2] in ('h','g')
+prefix=Path('/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-duplex-777ff38/actif')/('ancien-'+arg[2]+'-'+'-'.join(arg[:2]))
+log=Path(str(prefix)+'-banc.log')
+record=Path(str(prefix)+'-verrou.json')
+assert not record.exists() and not log.exists()
+def utc():return datetime.datetime.now(datetime.timezone.utc).isoformat()
+def stop(sig,frame):raise KeyboardInterrupt
+signal.signal(signal.SIGTERM,stop)
+signal.signal(signal.SIGINT,stop)
+tag={'pid':os.getpid(),'token':str(uuid.uuid4()),'worktree':"/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-novaauth-administration-0240-phase1",
+ 'utilitaire':'NovaAuth','action':'essai de canaux enfant EXEC '+ ' '.join(arg)}
+data={'debut_attente':utc(),'conflits_evites':[]}
+begin=time.monotonic()
+owned=False
+proc=None
+code=1
+try:
+    while not owned:
+        try:
+            lock.mkdir()
+            owned=True
+        except FileExistsError:
+            try:occupant=(lock/'owner.json').read_text()
+            except FileNotFoundError:occupant='verrou acquis, propriétaire en publication'
+            if not data['conflits_evites'] or data['conflits_evites'][-1]!=occupant:
+                data['conflits_evites'].append(occupant);print('Attente verrou QEMU',flush=True)
+            time.sleep(8)
+    (lock/'owner.json').write_text(json.dumps(tag))
+    data.update(acquisition=utc(),attente_s=time.monotonic()-begin)
+    active=[row for row in subprocess.check_output(['ps','-axo','pid=,ppid=,comm='],text=True).splitlines()
+            if 'qemu-system-' in row or 'hyperfine' in row]
+    if active:raise RuntimeError('Campagne incompatible active')
+    env=dict(os.environ,NOVA_ADAPTATEUR=str(b/'artefacts-prives-administration-0240-r2/finalisation-c80bdcb/adaptateur-page512'))
+    if not Path(env['NOVA_ADAPTATEUR']).is_file():raise RuntimeError('adaptateur natif absent')
+    start=time.monotonic()
+    with log.open('xb') as output:
+        proc=subprocess.Popen([sys.executable,'-B','/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-duplex-777ff38/actif/essai-g.py',*arg],stdout=output,stderr=subprocess.STDOUT,env=env,start_new_session=True)
+        code=proc.wait(timeout=150)
+    data['execution_s']=time.monotonic()-start
+finally:
+    if proc is not None and proc.poll() is None:
+        os.killpg(proc.pid,signal.SIGINT)
+        try:proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            os.killpg(proc.pid,signal.SIGTERM)
+            proc.wait(timeout=10)
+    if owned and (lock/'owner.json').exists() and json.loads((lock/'owner.json').read_text())==tag:
+        (lock/'owner.json').unlink()
+        lock.rmdir()
+        data['liberation']=utc()
+    data['code']=code
+    record.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n')
+    print(json.dumps(data,ensure_ascii=False),flush=True)
+sys.exit(code)

@@ -1,0 +1,167 @@
+[
+  {
+    "essai": "actif/ancien-h-aarch64-4096",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:59:42.011726+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:59:42.012046+00:00",
+      "attente_s": 0.0001883750082924962,
+      "execution_s": 16.847283874987625,
+      "liberation": "2026-11-25T07:59:58.897225+00:00",
+      "code": 0
+    },
+    "journal_sha256": "b3e8a0f124671f1e17e731c94fbe0190f33b6a2fa052dd3906752433d2274a95",
+    "succes_banc": true,
+    "cause": null
+  },
+  {
+    "essai": "actif/ancien-h-aarch64-512",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:53:19.192892+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:53:19.193940+00:00",
+      "attente_s": 0.000913292053155601,
+      "execution_s": 35.108086666907184,
+      "liberation": "2026-11-25T07:53:54.340998+00:00",
+      "code": 0
+    },
+    "journal_sha256": "d668d051c7b88957ceda580d0c2fd906cb9918f432a803640558b06e4c63f686",
+    "succes_banc": true,
+    "cause": null
+  },
+  {
+    "essai": "actif/ancien-h-x86_64-4096",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:59:29.386387+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:59:29.386679+00:00",
+      "attente_s": 0.00017608399502933025,
+      "execution_s": 12.563486791099422,
+      "liberation": "2026-11-25T07:59:41.987741+00:00",
+      "code": 0
+    },
+    "journal_sha256": "56291a220a516f223cd14f179fca321974743e8f1a963ca8c7b9c430278362a5",
+    "succes_banc": true,
+    "cause": null
+  },
+  {
+    "essai": "actif/ancien-h-x86_64-512",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:59:16.871008+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:59:16.871332+00:00",
+      "attente_s": 0.0001972919562831521,
+      "execution_s": 12.4501643339172,
+      "liberation": "2026-11-25T07:59:29.361946+00:00",
+      "code": 0
+    },
+    "journal_sha256": "0af1e51991c8361dcaf6b22ab7eb59bc1337d46519e88644bfcad18e68036bea",
+    "succes_banc": true,
+    "cause": null
+  },
+  {
+    "essai": "ancien-h-x86_64-512",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:27:55.295028+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:27:55.296086+00:00",
+      "attente_s": 0.0009119169553741813,
+      "execution_s": 42.626782834064215,
+      "liberation": "2026-11-25T07:28:37.952755+00:00",
+      "code": 1
+    },
+    "journal_sha256": "adf108be34cd177b23926c4a9dce5a1c9954bff00e3f14d681ace1ef39529c08",
+    "succes_banc": false,
+    "cause": "b'DEBUG pid=11 NAR2\\\\ Bob\\\\ ancien\\\\ H\\\\ consomme\\\\ statut=0\\\\ collecte\\\\ unique\\\\r?\\\\n'"
+  },
+  {
+    "essai": "compact/ancien-h-x86_64-512",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:35:38.972486+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:35:38.973034+00:00",
+      "attente_s": 0.0004047079710289836,
+      "execution_s": 22.34612795803696,
+      "liberation": "2026-11-25T07:36:01.359642+00:00",
+      "code": 1
+    },
+    "journal_sha256": "095be8b846c18dee3c3b0fcbacfa9e2ea2357d9d8b758cd8964f1992fcc82454",
+    "succes_banc": false,
+    "cause": "sortie ELF H non conforme"
+  },
+  {
+    "essai": "fixturegh/ancien-h-aarch64-512",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:43:00.692073+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:43:00.692527+00:00",
+      "attente_s": 0.0002740409690886736,
+      "execution_s": 55.97128470800817,
+      "liberation": "2026-11-25T07:43:56.704383+00:00",
+      "code": 1
+    },
+    "journal_sha256": "f8537af943564cf6e8fdc43ee25b09ca880bde8d9c7e66012ad1240a98dfb1d9",
+    "succes_banc": false,
+    "cause": "b'DEBUG pid=11 NAR2\\\\ Bob\\\\ ancien\\\\ H\\\\ consomme\\\\ statut=0\\\\ collecte\\\\ unique\\\\r?\\\\n'"
+  },
+  {
+    "essai": "ordonnance/ancien-h-aarch64-4096",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:40:49.736264+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:40:49.736628+00:00",
+      "attente_s": 0.00023091700859367847,
+      "execution_s": 31.49173358292319,
+      "liberation": "2026-11-25T07:41:21.264279+00:00",
+      "code": 0
+    },
+    "journal_sha256": "c831d02d72083aa495218d7d9caa3d1a6f388dd69f4d33da1072a41fbd7ef1a1",
+    "succes_banc": true,
+    "cause": null
+  },
+  {
+    "essai": "ordonnance/ancien-h-aarch64-512",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:39:34.660001+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:39:34.660368+00:00",
+      "attente_s": 0.0002247079974040389,
+      "execution_s": 55.712010957999155,
+      "liberation": "2026-11-25T07:40:30.408576+00:00",
+      "code": 1
+    },
+    "journal_sha256": "8dbb0bec13866cdaa24f312c3eb1606d16f28bf223f6be7e0e1d6cb99808f5d5",
+    "succes_banc": false,
+    "cause": "b'DEBUG pid=11 NAR2\\\\ Bob\\\\ ancien\\\\ H\\\\ consomme\\\\ statut=0\\\\ collecte\\\\ unique\\\\r?\\\\n'"
+  },
+  {
+    "essai": "ordonnance/ancien-h-x86_64-4096",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:38:47.377265+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:38:47.377981+00:00",
+      "attente_s": 0.0005789159331470728,
+      "execution_s": 22.824873958015814,
+      "liberation": "2026-11-25T07:39:10.244527+00:00",
+      "code": 0
+    },
+    "journal_sha256": "02dd4a9981379054515a83ea18f076197e47aa74a7deafa3eae00bfad472e3f0",
+    "succes_banc": true,
+    "cause": null
+  },
+  {
+    "essai": "ordonnance/ancien-h-x86_64-512",
+    "verrou": {
+      "debut_attente": "2026-11-25T07:32:24.795776+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T07:32:24.796143+00:00",
+      "attente_s": 0.00023741601034998894,
+      "execution_s": 45.208387374994345,
+      "liberation": "2026-11-25T07:33:10.037640+00:00",
+      "code": 1
+    },
+    "journal_sha256": "ce62ad832e1ec0ba7a42b28e63eb16532becfce51391b3de3bd8655cab0457df",
+    "succes_banc": false,
+    "cause": "b'DEBUG pid=11 NAR2\\\\ Bob\\\\ ancien\\\\ H\\\\ consomme\\\\ statut=0\\\\ collecte\\\\ unique\\\\r?\\\\n'"
+  }
+]
