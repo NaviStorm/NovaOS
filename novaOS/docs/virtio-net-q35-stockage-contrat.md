@@ -1,0 +1,35 @@
+# Q35 — Contrat proposé de coexistence VT-d entre NovaFS et VirtIO-net
+
+**Décision demandée.** Autoriser, en laboratoire uniquement, deux domaines indépendants sous le même contrôleur VT-d. Le banc réseau actuel vérifie que seul le NIC peut armer Bus Master. La qualification du stockage NVMe isolé et celle du réseau isolé sont les références de comparaison. Le fonctionnement simultané reste à démontrer.
+
+## Identités et attribution
+
+Le superviseur reconnaît la machine Q35, la topologie DMAR, l’unité de remappage, le segment PCI 0, le bus, le périphérique, la fonction, les identifiants PCI, la classe et les BAR attendus. Le NVMe à 00:06.0 (SID 48, DID 1, ID 0010:1b36 au format registre 0x00101b36) et le NIC à 00:07.0 (SID 56, DID 3) possèdent chacun une entrée de contexte et un arbre de traduction privé. Une autre topologie, un alias DMA, une fonction supplémentaire non reconnue ou un mode de contournement impose un refus. Chaque bail est lié à son instance, à son SID, à son DID et à une génération non réutilisée. Le superviseur conserve l’accès à la configuration PCI, aux tables, à la file d’invalidation et aux registres du contrôleur. Les applications conservent leurs droits actuels.
+
+## Du reset au premier DMA
+
+La trace indépendante part du reset, avant la première instruction du firmware. Elle suit les écritures PCI de tous les maîtres potentiels et les changements de racine, de traduction et de contexte, y compris au transfert OVMF–NovaOS. Les deux périphériques restent désarmés jusqu’à la confirmation de la traduction, du contexte et des feuilles exactes du bail correspondant. Le support de démarrage et son contrôleur font partie de la vérification. Un DMA nécessaire au firmware exige une preuve de son propre confinement. Tout intervalle sans preuve bloque la qualification. Une désactivation tardive du Bus Master ne régularise pas un accès antérieur. L’adoption de cette proposition suppose une preuve spécifique au NVMe dès le reset.
+
+Le superviseur relit RTADDR et les états effectifs du contrôleur, vérifie chaque entrée présente et l’absence de feuille supplémentaire, invalide les caches et attend l’acquittement correspondant avant d’armer le périphérique. Le relais UEFI authentifie la chaîne et le noyau. Les refus du noyau altéré, de la signature invalide, de la clé révoquée et de l’absence de VT-d restent bloquants. Le firmware expérimental est réservé au banc. Un firmware constructeur devra fournir ses propres preuves.
+
+## Mémoire accessible
+
+Les 22 pages du NIC restent réparties entre six pages d’anneaux et seize pages de buffers. Descripteurs et anneaux disponibles sont lisibles par le NIC, anneaux utilisés inscriptibles, buffers TX lisibles et RX inscriptibles. Deux files de 16, EVENT_IDX et la vérification stricte de num_buffers restent requis. Le stockage peut lire ses files de soumission ASQ et IOSQ et la page source immuable d’une écriture. Il peut écrire ses files de complétion ACQ et IOCQ et la page de destination d’une lecture. Une page facultative absente demeure sans traduction. Les pages de données et de contrôle de l’autre domaine, celles du noyau, les tables VT-d et la mémoire d’une ancienne génération restent inaccessibles. Le superviseur vérifie les permissions et la disjonction des cadres physiques avant chaque publication. Les pilotes reçoivent uniquement les opérations privées de leurs baux.
+
+## Invalidations, révocation et restitution
+
+Un seul superviseur possède la file matérielle et sérialise les transactions d’invalidation. Il conserve pour l’opération en cours le SID, le DID, l’instance, la génération, le type, la portée et un identifiant de complétion inédit. Il contrôle l’ordre de publication des tables, soumet l’invalidation de contexte et d’IOTLB appropriée avec drainage des lectures et écritures lorsque nécessaire, puis attend le WAIT exact. Il relit le résultat et les tables. Un ancien WAIT, un doublon, une réponse ambiguë ou une faute non attribuable ne libère aucune page. Le journal précise la portée effectivement supportée. Une invalidation de portée plus large exige une preuve de compatibilité avec le trafic de l’autre domaine.
+
+Pour retirer un bail, fermer les admissions, identifier les commandes déjà admises, obtenir leurs issues individuelles, désarmer le périphérique et vérifier l’arrêt de son moteur DMA. Retirer ses feuilles et son contexte, confirmer les invalidations puis rendre ses cadres. L’autre contexte et la racine publiée restent en place. Une requête FLUSH conserve son statut NovaFS et son exigence de persistance. Une commande douteuse, un délai écoulé ou une interruption isolée maintiennent les pages concernées en quarantaine. L’instance suivante obtient une génération neuve après clôture démontrée de la précédente.
+
+## Pannes et disponibilité
+
+Une panne locale au NIC permet au stockage de poursuivre dans un domaine dont l’intégrité demeure démontrée. La règle symétrique vaut pour une panne du stockage. Une transaction indéterminée de la file commune bloque les nouvelles reconfigurations dépendantes. Les E/S déjà autorisées ne continuent que si la validité de leurs traductions, leur disjonction et la progression indépendante sont établies. Une incertitude sur la racine ou le contrôleur impose le désarmement des maîtres concernés et la conservation des pages en quarantaine. Le redémarrage d’un pilote ne constitue pas un acquittement matériel. Le gestionnaire ne peut allonger les échéances de NovaFS.
+
+## Coût prévu et critères de qualification
+
+Avec deux fonctions sur le bus 0, une racine et une table de contextes partagées, une plage de moins de 2 Mio par domaine et une traduction à quatre niveaux, le deuxième arbre nécessite quatre cadres de 4 Kio, soit 16 Kio supplémentaires. Ce calcul exclut les cinq ou six cadres du NVMe, les métadonnées, les piles et les éventuels arrondis. Le bilan mesuré devra distinguer contrôleur permanent, mémoire propre à chaque bail, temporaires et quarantaines, sans compter deux fois la file d’invalidation. Vérifier au plus quatre racines IPC par acteur et les 48 sélecteurs ABI.
+
+Pour chaque géométrie P9-512 et P9-4096 effectivement prise en charge, employer le même volume synthétique initial et les mêmes binaires. Comparer lectures vérifiées, écritures vérifiées et FLUSH avec réseau au repos puis sous trafic soutenu. Archiver tailles, échantillons bruts, p50/p95/p99, débit, progression des deux périphériques et relecture après redémarrage. Tester également la saturation, deux retraits concurrents, les deux ordres de révocation, une réponse tardive ou manquante dans chaque domaine, l’indisponibilité de la file commune et plusieurs redémarrages. Exiger les identités, acquittements, compteurs avant/après et preuves de non-réutilisation prématurée. Conserver séparément BUSY (24), la réserve FLUSH P9-4096 et le pic P9-512. Les sources, traces, images et manifestes SHA-256 identifient la portée QEMU de chaque résultat.
+
+**Arbitrage demandé avant implémentation.** Approuver le superviseur VT-d commun, les deux domaines et la politique de blocage en cas d’incertitude partagée. L’attribution simultanée demeure fermée jusque-là.
