@@ -37,6 +37,7 @@ fn main() {
         "devices",
         "edu",
         "edu_dma",
+        "net_preparation",
         "nvme_driver",
         "nvme_rw_driver",
         "nvme_rw_block",
@@ -54,6 +55,9 @@ fn main() {
         "storage/control",
         "storage/fileclient",
     ] {
+        if name == "net_preparation" && (target != "aarch64-unknown-none-softfloat" || env::var_os("CARGO_FEATURE_NET_ARM_LAB").is_none()) {
+            continue;
+        }
         let nvme_rw = matches!(name, "nvme_rw_driver" | "nvme_rw_block");
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
         if name == "edu_dma" && (env::var_os("CARGO_FEATURE_VTD_LAB").is_none() || target != "x86_64-unknown-none") {
@@ -89,7 +93,7 @@ fn main() {
         }
         let compact = name.starts_with("nvme_") || matches!(
             name,
-            "instance_manager" | "instance_sample" | "devices" | "edu" | "edu_dma" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
+            "instance_manager" | "instance_sample" | "devices" | "edu" | "edu_dma" | "net_preparation" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
         if name == "devices" && env::var_os("CARGO_FEATURE_VIRTIO_NET_PROBE").is_some() {
             rust.arg("--cfg").arg("virtio_net_probe");

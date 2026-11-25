@@ -1,0 +1,247 @@
+//! Témoin du superviseur Q35. Le NIC demeure désarmé pendant la construction
+//! et l'inspection de son domaine. Le noyau conserve les tables jusqu'à l'arrêt.
+use super::{
+    acpi,
+    block::io::{EMPTY, Frame, Region, barrier, wait},
+    discovery, pci_inventory as pci, pci_ports,
+};
+use crate::{
+    boot, hal,
+    memory::{self, firmware},
+};
+
+const SID: u16 = 7 << 3;
+const IOVA: u64 = 0x1000_0000;
+const ROOT: u32 = 1 << 30;
+const QI: u32 = 1 << 26;
+const TE: u32 = 1 << 31;
+const PCI: [(u8, u16, u16); 5] = [
+    (0, 0x8086, 0x29c0),
+    (56, 0x1af4, 0x1041),
+    (248, 0x8086, 0x2918),
+    (250, 0x8086, 0x2922),
+    (251, 0x8086, 0x2930),
+];
+
+fn commande(sid: u16) -> u32 {
+    pci_ports::port(sid, 4, 2, None)
+}
+fn pairs_fermes() -> bool {
+    PCI.iter().all(|(s, _, _)| commande(u16::from(*s)) & 4 == 0)
+}
+
+fn topologie() -> Option<u64> {
+    let mut functions = alloc::vec::Vec::new();
+    let mut exact = true;
+    pci::enumerate(
+        &mut discovery::Config,
+        pci::BusRange {
+            segment: 0,
+            first: 0,
+            last: 0,
+        },
+        |a, f| {
+            if let Ok(f) = f
+                && functions.len() < 5
+            {
+                functions.push((a, f));
+            } else {
+                exact = false;
+            }
+        },
+    )
+    .ok()?;
+    if !exact || functions.len() != PCI.len() {
+        return None;
+    }
+    for ((a, f), &(sid, vendor, model)) in functions.iter().zip(&PCI) {
+        if a.segment != 0
+            || a.bus != 0
+            || a.device * 8 + a.function != sid
+            || f.vendor != vendor
+            || f.device != model
+            || f.header & 127 != 0
+            || f.rom_enabled
+            || f.msi_armed
+            || (sid == 56 && (f.bus_master || f.class != 2 || f.subclass != 0 || f.msi || f.msix))
+        {
+            return None;
+        }
+    }
+    let inv = acpi::discover(boot::rsdp_physical()?, firmware::copy_acpi).ok()?;
+    let drhd = inv.q35_net?;
+    if inv.ecam.as_slice()
+        != [acpi::Ecam {
+            base: 0xe000_0000,
+            segment: 0,
+            first_bus: 0,
+            last_bus: 255,
+        }]
+        || drhd.host_bits != 48
+        || !firmware::unlisted_extent(drhd.base, memory::PAGE)
+    {
+        return None;
+    }
+    if !discovery::vtd::quiesce_peers(&functions, functions[1].0) || !pairs_fermes() {
+        return None;
+    }
+    Some(drhd.base)
+}
+
+fn publier(frames: &[Frame], line: usize) {
+    for f in frames {
+        for off in (0..4096).step_by(line) {
+            // Sûreté : cadres privés épinglés, géométrie de cache vérifiée sur le BSP.
+            unsafe {
+                core::arch::x86_64::_mm_clflush((f.mem.base() + off) as *const u8);
+            }
+        }
+    }
+    barrier()
+}
+
+fn invalider(reg: Region, frames: &[Frame], index: u64, cookie: u32) -> Result<(), &'static str> {
+    if reg.r64(0x80) != index || reg.r64(0x88) != index || reg.r32(0x34) != 0 {
+        return Err("file occupee");
+    }
+    let q = frames[6].mem;
+    q.w64(index as usize, 0x11);
+    q.w64(index as usize + 16, 0xd2);
+    q.w64(index as usize + 32, (u64::from(cookie) << 32) | 0x25);
+    q.w64(index as usize + 40, frames[7].pa);
+    barrier();
+    reg.w64(0x88, index + 48);
+    wait(|| reg.r32(0x34) != 0 || (reg.r64(0x80) == index + 48 && frames[7].mem.r32(0) == cookie))
+        .map_err(|_| "expiration QI")?;
+    if reg.r32(0x34) != 0 || reg.r64(0x88) != index + 48 {
+        return Err("faute QI");
+    }
+    Ok(())
+}
+
+pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
+    if crate::smp::index() != 0 || crate::smp::count() != 1 {
+        return Err("cpu");
+    }
+    let id = core::arch::x86_64::__cpuid(0x40000000);
+    if [id.ebx, id.ecx, id.edx]
+        != [
+            u32::from_le_bytes(*b"TCGT"),
+            u32::from_le_bytes(*b"CGTC"),
+            u32::from_le_bytes(*b"GTCG"),
+        ]
+    {
+        return Err("TCG");
+    }
+    let reg =
+        Region::map(topologie().ok_or("topologie ou pairs")?, 344, 4096).map_err(|_| "MMIO")?;
+    let cap = reg.r64(8);
+    let ext = reg.r64(16);
+    if reg.r32(0) != 0x10
+        || reg.r32(0x1c) != 0
+        || reg.r64(0x20) != 0
+        || reg.r64(0x80) != 0
+        || reg.r64(0x88) != 0
+        || reg.r64(0x90) != 0
+        || reg.r32(0x34) != 0
+        || (cap >> 16) & 63 != 47
+        || cap & (3 << 54) != 3 << 54
+        || cap & (1 << 10) == 0
+        || cap & 16 != 0
+        || ext & 2 == 0
+    {
+        return Err("etat initial");
+    }
+    let cpu = core::arch::x86_64::__cpuid(1);
+    let line = ((cpu.ebx >> 8) & 255) as usize * 8;
+    if cpu.edx & (1 << 19) == 0 || !line.is_power_of_two() || line > 4096 {
+        return Err("cache");
+    }
+    let reference = memory::pinned_dma_frames();
+    let mut frames = [EMPTY; 30];
+    for i in 0..frames.len() {
+        match Frame::allocate() {
+            Ok(f) if f.pa != 0 && f.pa < 1 << 48 && f.pa % 4096 == 0 => {
+                for off in (0..4096).step_by(8) {
+                    f.mem.w64(off, 0);
+                }
+                frames[i] = f;
+            }
+            other => {
+                // Le DRHD ne connaît encore aucun cadre.
+                for f in frames[..i].iter().copied().chain(other.ok()) {
+                    unsafe { memory::release_dma(f.pa) }
+                }
+                return Err("cadres");
+            }
+        }
+    }
+    // Après RTADDR, conserver tous les cadres en cas de retour indéterminé.
+    publier(&frames[..8], line);
+    reg.w64(0x20, frames[0].pa);
+    reg.w32(0x18, ROOT);
+    wait(|| reg.r32(0x1c) == ROOT && reg.r64(0x20) == frames[0].pa).map_err(|_| "RTPS")?;
+    reg.w64(0x90, frames[6].pa);
+    reg.w32(0x18, QI);
+    wait(|| reg.r32(0x1c) == ROOT | QI && reg.r64(0x90) == frames[6].pa).map_err(|_| "QIES")?;
+    invalider(reg, &frames, 0, 1)?;
+    reg.w32(0x18, QI | TE);
+    wait(|| reg.r32(0x1c) == ROOT | QI | TE).map_err(|_| "TES")?;
+    if !pairs_fermes() {
+        return Err("PCI");
+    }
+    // Une seule feuille de second niveau, exactement 22 cadres NIC.
+    for (idx, shift) in [39, 30, 21].into_iter().enumerate() {
+        frames[2 + idx]
+            .mem
+            .w64(8 * ((IOVA >> shift) & 511) as usize, frames[3 + idx].pa | 3);
+    }
+    for i in 0..22 {
+        let dir = if matches!(i, 2 | 5 | 6..=13) { 2 } else { 1 };
+        frames[5].mem.w64(i * 8, frames[8 + i].pa | dir);
+    }
+    frames[1].mem.w64(usize::from(SID) * 16 + 8, (3 << 8) | 2);
+    frames[1].mem.w64(usize::from(SID) * 16, frames[2].pa | 1);
+    publier(&frames[1..6], line);
+    frames[0].mem.w64(0, frames[1].pa | 1);
+    publier(&frames[..1], line);
+    invalider(reg, &frames, 48, 2)?;
+    if !pairs_fermes() || reg.r32(0x1c) != ROOT | QI | TE {
+        return Err("etat terminal");
+    }
+    hal::log(format_args!(
+        "NET Q35 domaine=3 sid=56 iova={IOVA:#x} root={:#x} qi={:#x} recu={:#x} cookie=2 blocs=22 cadres=30",
+        frames[0].pa, frames[6].pa, frames[7].pa
+    ));
+    if retrait {
+        // BME est resté coupé. Supprimer la seule racine avant CC global,
+        // IOTLB global avec DR/DW et WAIT sur un nouveau reçu de cette file.
+        if !pairs_fermes() || frames[0].mem.r64(0) != frames[1].pa | 1 {
+            return Err("retrait non admissible");
+        }
+        frames[0].mem.w64(0, 0);
+        publier(&frames[..1], line);
+        invalider(reg, &frames, 96, 3)?;
+        if !pairs_fermes()
+            || reg.r32(0x1c) != ROOT | QI | TE
+            || (0..512).any(|i| frames[0].mem.r64(i * 8) != 0)
+        {
+            return Err("retrait incertain");
+        }
+        for (i, f) in frames.iter().enumerate() {
+            if !matches!(i, 0 | 6 | 7) {
+                unsafe { memory::release_dma(f.pa) }
+            }
+        }
+        let gardes = memory::pinned_dma_frames()
+            .checked_sub(reference)
+            .ok_or("comptabilite")?;
+        if gardes != 3 {
+            return Err("restitution");
+        }
+        hal::log(format_args!(
+            "NET Q35 retrait cookie=3 racine_vide=true rendus=27 permanents={gardes}"
+        ));
+    }
+    Ok(())
+}

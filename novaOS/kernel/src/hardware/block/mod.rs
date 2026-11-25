@@ -18,7 +18,7 @@ pub(crate) use lease::{
 #[cfg(target_arch = "x86_64")]
 #[path = "vtd.rs"]
 mod domain;
-#[cfg(target_arch = "aarch64")]
+#[cfg(all(target_arch = "aarch64", not(feature = "net-arm-lab")))]
 #[path = "viommu.rs"]
 mod domain;
 
@@ -460,3 +460,10 @@ impl Drop for Witness {
         unsafe { crate::memory::release_dma(self.0.pa) };
     }
 }
+
+#[cfg(all(target_arch = "aarch64", feature = "net-arm-lab"))]
+#[path = "viommu_partage.rs"]
+mod domain;
+
+#[cfg(all(target_arch = "aarch64", feature = "net-arm-lab"))]
+pub(crate) mod net_arm;

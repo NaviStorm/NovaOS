@@ -33,7 +33,7 @@ def nom_long(nom, court):
 
 
 def construire(elf, secteur, *, scenario="systeme-gpt"):
-    if scenario not in ("systeme-gpt", "smp-test", "smp-fp", "smp-arret"):
+    if scenario not in ("systeme-gpt", "smp-test", "smp-fp", "smp-arret", "net-arm-p9"):
         raise ValueError("Scénario EFI inconnu")
     taille = (60 if secteur == 512 else 264) * 2**20 // secteur
     reserve = 32

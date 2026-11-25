@@ -1,6 +1,8 @@
 //! Timer physique non sécurisé d’EL1 de la machine virt.
 use super::gic;
 pub(crate) use super::gic::disk_line;
+#[cfg(feature = "net-arm-lab")]
+pub(crate) use super::gic::{preparer_spi_reseau, purger_spi_reseau};
 #[cfg(feature = "gicv3-lab")]
 pub(crate) fn select_disk(id: u32) -> crate::hardware::block::Result<()> {
     gic::select_disk(id)
@@ -74,6 +76,12 @@ pub(super) extern "C" fn irq(state: usize) {
     }
     #[cfg(feature = "materiel-lab")]
     if id == 37 && crate::hardware::lab_irq::interrupt() {
+        gic::end(ack);
+        return;
+    }
+    #[cfg(feature = "net-arm-lab")]
+    if id == 38 && disk_id() != 38 && crate::hardware::block::net_arm::interruption() {
+        gic::masquer_spi_reseau();
         gic::end(ack);
         return;
     }

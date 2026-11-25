@@ -443,3 +443,155 @@ pub(crate) fn installer() -> Result<()> {
     };
     publier(t, table, 43)
 }
+
+/// Recette privée sur le seul support système marqué de la fixture. La fenêtre
+/// inscriptible reste celle de la partition P9 vérifiée par les deux GPT.
+#[cfg(feature = "net-arm-mesure")]
+pub(crate) fn net_p9() -> Result<()> {
+    if profil(true)?.source != 48 || crate::smp::count() != 1 {
+        return Err(Error::Route);
+    }
+    let ouvrir = || -> Result<(super::Bail, super::gpt::Table)> {
+        let mut t = Transport::open_disk(48, false)?;
+        identite(&mut t)?;
+        let table = super::gpt::Table::open(&mut t)?;
+        autoriser_sortie(&mut t)?;
+        Ok((t, table))
+    };
+    let (mut t, table) = ouvrir()?;
+    #[cfg(feature = "net-arm-lab")]
+    let mut table = table;
+    let mode = match fichier_fw(b"opt/novaos/net-p9") {
+        Err(Error::Absent) => 25,
+        Ok(v) => match v.strip_suffix(&[0]).unwrap_or(&v) {
+            b"avant-f1" => 14,
+            b"apres-f1" => 16,
+            b"avant-f2" => 17,
+            b"apres-f2" => 19,
+            b"files-nic" => 125,
+            b"parcours-fichiers" => 11,
+            b"remonter-ro" => 13,
+            _ => return Err(Error::Geometry),
+        },
+        Err(e) => return Err(e),
+    };
+    let secteur = t.size;
+    #[cfg(feature = "net-arm-lab")]
+    let nic = {
+        let nic = super::net_arm::Preparation::ouvrir()?;
+        let pico = crate::memory::pinned_dma_frames();
+        let (controle, endpoint, vol, gardien) = super::domain::Domain::dimensions();
+        hal::log(format_args!(
+            "NET ARM tailles controle={controle} endpoint={endpoint} vol={vol} statique_controle={gardien} preparation={}",
+            core::mem::size_of_val(&nic)
+        ));
+        let generation = nic.domaine.generation();
+        if !crate::sched::process::net_preparation::tester(generation, || {
+            nic.preparer_files(mode == 125).is_ok()
+        }) {
+            nic.fermer()?;
+            return Err(Error::Route);
+        }
+        // L'IPC protège la validation et les écritures MMIO sans blocage.
+        // La file IOMMU a son propre mutex, consulté après libération de cette garde.
+        if let Err(e) = nic.domaine.faults_preparation() {
+            nic.fermer()?;
+            return Err(e);
+        }
+        if let Err(e) = nic.verifier_route_interruptions() {
+            nic.fermer()?;
+            return Err(e);
+        }
+        let lba = table.volume;
+        t.begin_read(lba)?;
+        let seq = nic.domaine.differer_nic()?;
+        t.unit.verifier_pression(seq)?;
+        t.finish_read()?;
+        if nic.domaine.reconcilier_nic(seq - 1) != Err(Error::State) {
+            return Err(Error::Fault);
+        }
+        nic.domaine.reconcilier_nic(seq)?;
+        nic.domaine.reconcilier_nic(seq)?;
+        hal::log(format_args!("NET ARM UNMAP NIC seq={seq} acquitte et relu, autre numero refuse"));
+        nic.retablir_premiere_page()?;
+        hal::log(format_args!(
+            "NET ARM attente NIC seq={seq} disque=contre-pression lecture_admise=achevee pic_dma={pico}"
+        ));
+        // Le disque ferme intégralement son domaine pendant que le NIC conserve le sien.
+        t.close()?;
+        (t, table) = ouvrir()?;
+        hal::log(format_args!(
+            "NET ARM disque retire puis rattache NIC conserve generation={generation}"
+        ));
+        let before = crate::memory::pinned_dma_frames();
+        nic.fermer()?;
+        t.begin_read(table.volume)?;
+        t.finish_read()?;
+        if before.checked_sub(crate::memory::pinned_dma_frames()) != Some(22) {
+            return Err(Error::Quarantine);
+        }
+        let suite = super::net_arm::Preparation::ouvrir()?;
+        if suite.domaine.generation() <= generation {
+            return Err(Error::State);
+        }
+        hal::log(format_args!(
+            "NET ARM NIC retire disque lisible pages_rendues=22 nouvelle_generation={}",
+            suite.domaine.generation()
+        ));
+        suite
+    };
+    let hz = hal::timer::counter_hz();
+    let mut samples = [0u64; 64];
+    let mut buf = [0; PAGE];
+    let n = PAGE / secteur;
+    for (i, sample) in samples.iter_mut().enumerate() {
+        let debut = hal::timer::counter();
+        t.begin_input(table.volume + (i * n) as u64, 0, PAGE)?;
+        t.finish(4097)?;
+        t.p.0[20].mem.read_page(&mut buf);
+        if i == 0 && &buf[..8] != b"NOVAP0FS" {
+            return Err(Error::Device);
+        }
+        *sample = hal::timer::counter() - debut;
+    }
+    hal::log(format_args!(
+        "NET ARM lectures secteur={secteur} hz={hz} octets=4096 cycles={samples:?}"
+    ));
+    let mut flushes = [0u64; 16];
+    for sample in &mut flushes {
+        let debut = hal::timer::counter();
+        t.output(0, true)?;
+        *sample = hal::timer::counter() - debut;
+    }
+    hal::log(format_args!("NET ARM flush hz={hz} cycles={flushes:?}"));
+    t.first = table.volume;
+    t.count = table.end - table.volume;
+    let droits = if mode == 13 {
+        t.ro = true;
+        1 | 8
+    } else {
+        15
+    };
+    let key = super::lease::begin_with(droits, || Ok(t))?;
+    let debut = hal::timer::counter();
+    let ok = crate::sched::process::storage::volume_detail(
+        if mode == 125 { 25 } else { mode },
+        Some((key, table.volume_id())),
+        true,
+    );
+    let cycles = hal::timer::counter() - debut;
+    hal::log(format_args!("NET ARM service_p9 cycles={cycles} hz={hz}"));
+    #[cfg(feature = "net-arm-lab")]
+    {
+        nic.fermer()?;
+        let fin = crate::memory::pinned_dma_frames();
+        hal::log(format_args!("NET ARM terminaison cadres_dma={fin}"));
+        if fin != 0 {
+            return Err(Error::Quarantine);
+        }
+    }
+    if !ok {
+        return Err(Error::Device);
+    }
+    Ok(())
+}

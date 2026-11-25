@@ -29,13 +29,15 @@ LV = bytes([0x62])*16
 IDS = (LV[:-1].hex()+"63", LV.hex())
 
 
-def image(raw, volume, elf, s, *, scenario="systeme-gpt"):
+def image(raw, volume, elf, s, *, scenario="systeme-gpt", volume_id=LV):
     esp = MIO//s
     p9 = esp * (61 if s == 512 else 265)
     fin = p9 + volume.stat().st_size//s
     dernier = fin + esp - 1
     n = 16384//s
-    ids = uuid.uuid4().bytes_le + uuid.uuid4().bytes_le + LV
+    if len(volume_id) != 16:
+        raise ValueError("Identifiant de volume GPT de taille incorrecte")
+    ids = uuid.uuid4().bytes_le + uuid.uuid4().bytes_le + volume_id
     table = bytearray(16384)
     types = ["c12a7328-f81f-11d2-ba4b-00a0c93ec93b", "3687f202-9e5a-4df6-83db-17bb308172f9"]
     for i, (nom, debut, stop) in enumerate([("EFI System", esp, p9), ("NovaFS P9", p9, fin)]):

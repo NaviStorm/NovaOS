@@ -296,7 +296,9 @@ pub(crate) fn private_frames() -> Result<[u64; 24]> {
         d.unit.witnesses(&mut f);
         return Ok(f);
     }
-    #[cfg(target_arch = "aarch64")]
+    #[cfg(all(target_arch = "aarch64", feature = "net-arm-lab"))]
+    { d.unit.temoins(f) }
+    #[cfg(all(target_arch = "aarch64", not(feature = "net-arm-lab")))]
     {
         Ok(f)
     }

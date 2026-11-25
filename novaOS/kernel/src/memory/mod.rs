@@ -468,7 +468,7 @@ pub(crate) fn pin_dma() -> Result<(u64, usize)> {
     })
 }
 
-#[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+#[cfg(any(all(target_arch = "x86_64", feature = "vtd-lab"), all(target_arch = "aarch64", feature = "net-arm-lab")))]
 pub(crate) fn pinned_dma_frames() -> u64 {
     crate::heap::with_pages(|m| Ok(m.dma_frames)).expect("compteur de cadres DMA")
 }

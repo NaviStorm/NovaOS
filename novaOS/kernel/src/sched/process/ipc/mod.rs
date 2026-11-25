@@ -21,7 +21,7 @@ mod traffic;
 mod pipe;
 mod pipe_admission;
 pub(super) use pipe_admission::{PendingReader, ReaderReceipt};
-#[cfg(feature = "materiel-lab")]
+#[cfg(any(feature="materiel-lab",all(target_arch="aarch64",feature="net-arm-lab")))]
 mod lab_command;
 pub(super) use bulk::transfer;
 pub(crate) use probes::{quiet, run};
@@ -221,6 +221,10 @@ impl Domain {
             probe_clock: None,
             metrics: metrics::Metrics::new(),
         }
+    }
+    #[cfg(all(target_arch="aarch64", feature="net-arm-mesure"))]
+    pub(super) fn racines_pilotes(&self, pid:Pid)->usize{
+        self.ends.ids().filter(|&i|self.ends.get(i).owner==pid.number).count()
     }
     pub(super) fn pages(&self) -> usize {
         (self.ends.pages()

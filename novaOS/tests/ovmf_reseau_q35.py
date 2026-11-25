@@ -17,7 +17,7 @@ from virtio_net_qemu import qualification
 CMD_WRITE = re.compile(r"^pci_cfg_write virtio-net-pci 00:07\.0 @(0x[0-9a-f]+) <- (0x[0-9a-f]+)$")
 
 
-def pci_lecture(vm, stream):
+def pci_lecture(vm, stream, offset=4, largeur=2):
     if qmp(vm, "query-status")["running"]:
         raise ValueError("Lecture CF8/CFC avec vCPU en mouvement")
 
@@ -36,8 +36,10 @@ def pci_lecture(vm, stream):
         io("outl 0xcf8 0x80003800")
         if io("inl 0xcfc", True) != 0x10411af4:
             raise ValueError("NIC absent au slot de qualification")
-        io("outl 0xcf8 0x80003804")
-        return io("inw 0xcfc", True)
+        if (offset, largeur) not in ((4,2),(0x20,4),(0x24,4),(0x3c,4)):
+            raise ValueError("Lecture PCI hors profil")
+        io(f"outl 0xcf8 {0x80003800+offset:#x}")
+        return io("inw 0xcfc" if largeur==2 else "inl 0xcfc", True)
     finally:
         io(f"outl 0xcf8 {saved:#x}")
         if io("inl 0xcf8", True) != saved:
@@ -98,8 +100,7 @@ def controle_vtd(vm, qt, journal, fin):
             "recu_qi": 1, "cadres_reserves_terminal": 3}
 
 
-def essai(nom, code, temoin, out, terminal, absent, temoin_dbx):
-    out.mkdir()
+def arguments(code, temoin, out, absent):
     args = [shutil.which("qemu-system-x86_64"), "-machine", "q35,smm=on", "-accel", "tcg",
             "-cpu", "max", "-smp", "1", "-m", "256", "-nodefaults", "-no-reboot", "-S",
             "-display", "none", "-monitor", "none", "-serial", f"file:{out}/serie.log",
@@ -116,6 +117,12 @@ def essai(nom, code, temoin, out, terminal, absent, temoin_dbx):
         args += ["-device", "intel-iommu,id=i,intremap=on,eim=on,aw-bits=48,caching-mode=on,device-iotlb=off"]
     for event in ("pci_cfg_write", "vtd_dmar_enable", "vtd_reg_write_gcmd", "vtd_reg_dmar_root"):
         args += ["-trace", event]
+    return args
+
+
+def essai(nom, code, temoin, out, terminal, absent, temoin_dbx):
+    out.mkdir()
+    args = arguments(code, temoin, out, absent)
     dump(out / "arguments.json", args)
     start = time.monotonic()
     rss = []
