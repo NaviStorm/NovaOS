@@ -25,6 +25,14 @@ pub(super) fn mesure(sens:usize,cycles:u64) {
     }
 }
 
+// La longueur du segment de données appartient à la commande dont le statut vient d'être confirmé.
+pub(super) fn completion(transfer: &super::Transport, cycles: u64) {
+    if transfer.kind < 2 {
+        octets(transfer.kind, u64::from(transfer.q.pages[0].mem.r32(16 + 8)));
+    }
+    mesure(transfer.kind, cycles);
+}
+
 fn stockage() {
     let session=SESSION.lock().take().expect("session disque réservée");
     let rx0=LOT.load(Ordering::Acquire);

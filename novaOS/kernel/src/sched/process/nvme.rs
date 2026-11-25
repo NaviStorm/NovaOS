@@ -76,6 +76,14 @@ const PERMISSION_TEST: u64 = 5;
 const READ_PERMISSION_TEST: u64 = 6;
 pub(crate) fn mode(s: &[u8]) -> Option<u64> {
     match s {
+        #[cfg(feature="net-q35-duo")]
+        b"net-q35-duo-nvme-init" => Some(profile::INIT),
+        #[cfg(feature="net-q35-duo")]
+        b"net-q35-duo-nvme-update" | b"net-q35-duo-nvme-charge" | b"net-q35-duo-nvme-charge-disque" => Some(profile::UPDATE),
+        #[cfg(feature="net-q35-duo")]
+        b"net-q35-duo-nvme-recover" => Some(profile::RECOVER),
+        #[cfg(feature="net-q35-duo")]
+        b"net-q35-duo-nvme-mesure" | b"net-q35-duo-nvme-mesure-charge" => Some(profile::MEASURE),
         b"nvme-permission" => Some(PERMISSION_TEST),
         b"nvme-permission-read" => Some(READ_PERMISSION_TEST),
         b"nvme-lecture" => Some(wire::NORMAL),
@@ -418,6 +426,35 @@ fn exercise(
     ));
     // Sûreté : le domaine conserve l'exclusivité, les pages et la BAR UC
     // pendant toute l'incarnation, y compris en cas de mise en quarantaine.
+    #[cfg(feature="net-q35-duo")]
+    let worker = if domain.network {
+        let actor = super::net_preparation::EthernetActor::reserve(1).ok_or("instance NIC")?;
+        let owner=actor.owner();
+        let network=match domain.reserve_network(owner) {
+            Ok(frames)=>frames,
+            Err(_)=>{actor.cancel(); return Err("préparation NIC");}
+        };
+        let roots_ok = actor.audit(|nic| with(|s| {
+            peers.pids.iter().chain(peers.app.iter()).chain(core::iter::once(&nic)).all(|pid| {
+                let roots = s.ipc.racines_pilotes(*pid);
+                hal::log(format_args!("DUO IPC pid={} racines={roots}", pid.number));
+                roots <= 4
+            })
+        }));
+        if !roots_ok { actor.cancel(); return Err("quota de racines IPC"); }
+        let isolated = actor.audit(|nic| with(|s| heap::with_pages(|m| {
+            Ok(peers.pids.iter().chain(peers.app.iter()).chain(core::iter::once(&nic)).all(|p| {
+                s.processes.get(*p).space.as_ref().is_some_and(|space| {
+                    space.audit_driver(m,&denied) && network.chunks(24).all(|chunk|{
+                        let mut list=[0u64;24]; list[..chunk.len()].copy_from_slice(chunk);
+                        space.audit_driver(m,&list)
+                    })
+                })
+            }))
+        }).unwrap_or(false)));
+        if !isolated {actor.cancel(); return Err("alias DMA ou tables dans un acteur");}
+        Some(domain.launch_network(actor).map_err(|_|"lancement NIC")?)
+    } else {None};
     let controller = match unsafe { Controller::prepare(resources) } {
         Ok(c) => c,
         Err(_) => {
@@ -438,6 +475,8 @@ fn exercise(
         domain.enable().map_err(|_| "ouverture PCI")?;
     }
     let mut b = Broker::new(controller, mode);
+    #[cfg(feature="net-q35-duo")]
+    if mode==profile::MEASURE {b.begin_samples();}
     hal::log(format_args!(
         "NVME acteurs pilote={pid} bloc={} client={} cpu_pilote={} cpu_bsp={} mode={mode}",
         peers.pids[1].number,
@@ -592,12 +631,18 @@ fn exercise(
         };
     }
     let proof = b.controller.drained().ok_or("absence de preuve de fin")?;
+    #[cfg(feature="net-q35-duo")]
+    if mode==profile::MEASURE {b.report_samples()?;}
     if domain.witness_pages() > 0 && mode == profile::RECOVER {
         domain
             .observe_readback(&proof)
             .map_err(|_| "observation des lectures du second bail")?;
     }
+    #[cfg(feature="net-q35-duo")]
+    if domain.network && !domain.disk_first() { domain.drain_network(worker.ok_or("worker NIC absent")?).map_err(|_|"drainage NIC avant disque")?; }
     let retirement = domain.retire(&proof);
+    #[cfg(feature="net-q35-duo")]
+    if domain.network && domain.disk_first() { retirement.as_ref().map_err(|_|"retrait disque avant NIC")?; domain.drain_network(worker.ok_or("worker NIC absent")?).map_err(|_|"drainage NIC après disque")?; }
     if matches!(mode, profile::QI_ERROR | profile::QI_DELAY) {
         domain.quarantine();
         let held = retirement.is_err()

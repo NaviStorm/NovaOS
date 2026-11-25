@@ -62,7 +62,10 @@ fn main() {
         "storage/requester",
         "storage/control",
         "storage/fileclient",
+        "storage/net_measure",
     ] {
+        let dual = nvme_lab && env::var_os("CARGO_FEATURE_NET_Q35_DUO").is_some();
+        if name == "storage/net_measure" && !(dual || coexistence) { continue; }
         let reseau_arm = target == "aarch64-unknown-none-softfloat" && env::var_os("CARGO_FEATURE_NET_ARM_LAB").is_some();
         let reseau_q35 = target == "x86_64-unknown-none" && env::var_os("CARGO_FEATURE_NET_Q35_LAB").is_some() && env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some();
         if name == "net_preparation" && !(reseau_arm || reseau_q35) {
@@ -79,7 +82,7 @@ fn main() {
         if name.starts_with("nvme_") && !nvme_lab {
             continue;
         }
-        let file_client = matches!(name, "pipe_compute" | "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "journal_service" | "service_control_test" | "cache_client_test" | "storage/managed");
+        let file_client = matches!(name, "pipe_compute" | "storage/net_measure" | "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "journal_service" | "service_control_test" | "cache_client_test" | "storage/managed");
         let linker = format!(
             "link-arg=-T{}",
             user.join(if file_client {
@@ -103,11 +106,14 @@ fn main() {
         {
             rust.args(["--cfg", "net_p9_trace"]);
         }
-        if coexistence && name == "storage/fileclient" {rust.args(["--cfg","net_p9_coexistence"]);}
+        if coexistence && name == "storage/net_measure" {rust.args(["--cfg","net_p9_coexistence"]);}
         if name == "net_preparation" && env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some() {
             rust.args(["--cfg", "net_ethernet_lab"]);
         }
-        if nvme_lab && (nvme_rw || name == "storage/fileclient") {
+        if name == "storage/net_measure" && dual {
+            rust.arg("--cfg").arg("net_q35_p9");
+        }
+        if nvme_lab && (nvme_rw || matches!(name, "storage/fileclient" | "storage/net_measure")) {
             rust.arg("--cfg").arg("nvme_rw");
         }
         let compact = name.starts_with("nvme_") || matches!(

@@ -151,7 +151,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
         if !descriptors(d.size, w) {
             return Err(abi::BAD_ARGUMENT);
         }
-        metrics::record(3, before);
+        metrics::record(3, before, #[cfg(net_p9_coexistence)] None);
         w[32..].fill(0);
     }
     match (op, w[2], phase) {
@@ -190,7 +190,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
             }
             let mark = metrics::stamp();
             d.p.0[20].mem.bytes(at, &mut w[32..32 + n]);
-            metrics::record(4, mark);
+            metrics::record(4, mark, #[cfg(net_p9_coexistence)] None);
             let next = at + n;
             s.phase = if next == d.size {
                 metrics::end(d.size);
@@ -213,7 +213,7 @@ pub(crate) fn command(pid: u64, key: u64, w: &mut wire::Wire) -> core::result::R
             }
             let mark = metrics::stamp();
             d.p.0[22].mem.put(at, &w[32..32 + n]);
-            metrics::record(5, mark);
+            metrics::record(5, mark, #[cfg(net_p9_coexistence)] None);
             w[32..].fill(0);
             s.phase = Phase::Writing(l, at + n);
         }

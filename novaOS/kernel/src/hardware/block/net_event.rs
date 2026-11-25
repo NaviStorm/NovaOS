@@ -72,7 +72,14 @@ pub(in crate::hardware) fn q35(cadres: &[super::Frame; 22]) -> Result<()> {
 
 #[cfg(all(target_arch = "x86_64", feature = "net-ethernet-lab"))]
 pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u64) -> Result<()> {
+    q35_session(cadres,generation,None)
+}
+
+#[cfg(all(target_arch = "x86_64", feature = "net-ethernet-lab"))]
+pub(in crate::hardware) fn q35_session(cadres: &[super::Frame;22], generation:u64,
+    mut actor: Option<crate::sched::process::net_preparation::EthernetActor>) -> Result<()> {
     use crate::{hardware::pci_ports, memory};
+    let dual=actor.is_some();
     let cfg = super::pci::Config::open(56)?;
     let base = u64::from(cfg.get(0x24, 4)) << 32 | u64::from(cfg.get(0x20, 4) & !15);
     if cfg.get(4, 2) & 4 != 0
@@ -88,7 +95,13 @@ pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u
     let r = super::io::Region::map(0xfed1f000, 323, 4096)?;
     let ir = r.r16(0x140);
     memory::unmap_lab_io(0xfed1f000, memory::IO_BASE + 323 * 4096).map_err(|_| Error::Route)?;
-    for sid in [0, 248, 250, 251] {
+    if dual && (pci_ports::port(48,0,4,None)!=0x00101b36 || pci_ports::port(48,4,2,None)&0x400==0 ||
+                pci_ports::port(48,0x42,2,None)&0x8000!=0 || pci_ports::port(48,0x3d,1,None)!=1) {
+        return Err(Error::Route);
+    }
+    // Sur Q35 double, 00:06.0 INTA est masquée à la source. La machine n'a pas d'AHCI.
+    let peers:&[u16]=if dual {&[0,248,251]} else {&[0,248,250,251]};
+    for &sid in peers {
         let pin = pci_ports::port(sid, 0x3d, 1, None);
         if pin > 4 || (pin != 0 && (sid == 0 || (ir >> (4 * (pin - 1))) & 7 == 7)) {
             return Err(Error::Route);
@@ -100,16 +113,22 @@ pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u
     let ligne =
         crate::hardware::lab_irq::net_intx::Ligne::ouvrir(nic.isr.base()).ok_or(Error::Route)?;
     let hz = hal::timer::counter_hz();
-    let ok = crate::sched::process::net_preparation::ethernet(generation, ||true, |tag, len, copie| {
+    let mut operation = |tag:u64, len:usize, copie:&mut [u8]| {
         if tag == 5 {
             return port.stopper().map(|()| 0).map_err(|_| crate::abi::REFUSED);
         }
+        #[cfg(feature="net-q35-duo")]
+        if dual && !crate::hardware::vtd_lab::irq_delivery_ok() { return Err(crate::abi::REVOKED); }
         if tag==6 {
             let _=nic.isr.r8(0);
             if !ligne.rearmer() {return Err(crate::abi::REFUSED);}
         }
         port.demande(tag, len, copie, ligne.cause() == 0x101)
-    });
+    };
+    let ok = if let Some(a)=actor.take() {
+        crate::sched::process::net_preparation::ethernet_actor(a,||true,&mut operation,true)
+    } else {crate::sched::process::net_preparation::ethernet(generation,||true,&mut operation)};
+
     let stop = port.stopper();
     let cause = ligne.cause();
     hal::log(format_args!(

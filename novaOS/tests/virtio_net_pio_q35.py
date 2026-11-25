@@ -1,8 +1,11 @@
 """Démarrage Q35 par PIO. Le support FAT de laboratoire et le NVMe sont distincts."""
 import argparse
+from contextlib import nullcontext
+import json
 import os
 from pathlib import Path
 import re
+import shutil
 import socket
 import struct
 import subprocess
@@ -102,12 +105,27 @@ def trace_fermee(out):
     return writes
 
 
-def essai(firmware, entree, mode, out):
+def essai(firmware, entree, mode, out, sector=None, previous=None, reader=None):
+    storage = mode.startswith("nvme-")
+    traffic = mode in ("nvme-charge", "nvme-charge-disque","nvme-mesure-charge")
+    if storage and (sector not in (512, 4096) or reader is None or (mode == "nvme-init") != (previous is None)):
+        raise ValueError("Géométrie, lecteur ou image source du cycle NovaFS absente")
     out.mkdir()
     support_pio(entree / "support.raw", out / "boot.fat")
     disk = out / "namespace.raw"
-    with disk.open("xb") as stream:
-        stream.truncate(4 << 20)
+    if storage:
+        from nvme_phase2_oracle import inspect, virgin
+        if previous is None:
+            virgin(disk)
+        else:
+            shutil.copyfile(previous, disk)
+            old = inspect(reader, disk, sector)
+            if old["etat"] != ("ancien" if mode != "nvme-recover" else "nouveau"):
+                raise ValueError("État initial NovaFS inattendu")
+    else:
+        with disk.open("xb") as stream:
+            stream.truncate(4 << 20)
+    initial_disk = digest(disk)
     absent = mode == "sans-iommu"
     args = arguments(firmware / "OVMF_CODE.fd", entree, out, absent, acpi_pio=True)
     args[args.index("q35,smm=on")] = "q35,smm=on,sata=off"
@@ -122,14 +140,32 @@ def essai(firmware, entree, mode, out):
                  "-device", "nvme-ns,bus=nv,drive=stockage,nsid=1,shared=off,eui64=0x4e4f564130313930",
                  "-trace", "fw_cfg_select", "-trace", "vtd_inv_desc_wait_sw", "-trace", "vtd_inv_desc",
                  "-trace", "vtd_inv_desc_cc_device", "-trace", "vtd_inv_desc_iotlb_domain", "-no-shutdown"])
+    if storage:
+        for event in ("vtd_reg_write","vtd_reg_ir_root","vtd_ir_enable"):
+            args.extend(["-trace",event])
+        pos = next(i for i, a in enumerate(args) if a.startswith("nvme-ns,"))
+        args[pos] += f",id=ns,logical_block_size={sector},physical_block_size={sector}"
+        if mode == "nvme-recover":
+            pos = next(i for i, a in enumerate(args) if a.startswith("if=none,id=stockage,"))
+            args[pos] += ",readonly=on"
+        for event in ("pci_nvme_admin_cmd", "pci_nvme_io_cmd", "pci_nvme_enqueue_req_completion",
+                      "pci_nvme_read", "pci_nvme_write", "pci_nvme_flush_ns", "pci_nvme_err_req_status"):
+            args += ["-trace", event]
+    if traffic:
+        # Ici le NIC est le seul périphérique à virtqueues. Les traces de complétion
+        # et celles des CQE NVMe utilisent le même ordre du processus QEMU.
+        args.extend(["-trace","virtqueue_fill","-trace","vtd_dmar_fault"])
     dump(out / "arguments.json", args)
     report = {"cas": mode, "firmware_sha256": digest(firmware / "OVMF_CODE.fd"),
               "fat_sha256": digest(out / "boot.fat"), "variables_sha256": digest(entree / "variables.fd")}
     try:
-        with qualification(ROOT.parent.parent, report), tempfile.TemporaryDirectory(dir=os.environ["NOVAOS_TMPDIR"]) as temp:
+        from virtio_net_pair import Pair
+        with qualification(ROOT.parent.parent, report), tempfile.TemporaryDirectory(dir=os.environ["NOVAOS_TMPDIR"]) as temp, (Pair(out) if traffic else nullcontext(None)) as pair:
+            fds = pair.connecter(args) if pair else ()
+            dump(out / "arguments.json", args)
             begin = time.monotonic()
             with (out / "qemu.trace").open("xb") as log, subprocess.Popen(
-                    args, cwd=temp, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log, bufsize=0) as vm:
+                    args, cwd=temp, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log, bufsize=0, pass_fds=fds) as vm:
                 try:
                     qmp(vm, "qmp_capabilities")
                     with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as sock:
@@ -154,13 +190,19 @@ def essai(firmware, entree, mode, out):
                                 if observed != expected:
                                     raise ValueError(f"État de refus non établi matériellement {observed}")
                                 report["etat_IR_avant_invite"] = observed
+                            if storage:
+                                ns = [qmp(vm, "qom-get", path="/machine/peripheral/ns", property=k)
+                                      for k in ("logical_block_size", "physical_block_size")]
+                                drive, = [d["inserted"] for d in qmp(vm,"query-block") if d.get("device")=="stockage"]
+                                if ns != [sector,sector] or drive["ro"] != (mode=="nvme-recover") or drive["cache"] != {"writeback":True,"direct":False,"no-flush":False}:
+                                    raise ValueError("Droits, cache ou géométrie NVMe imprévus")
                             qmp(vm, "cont")
-                            until = time.monotonic() + 35
+                            until = time.monotonic() + (300 if traffic or mode=="nvme-mesure" else 35)
                             while time.monotonic() < until:
                                 debug = (out / "efi.log").read_text(errors="replace")
                                 serial = (out / "serie.log").read_bytes()
                                 if ("NOVA PIO terminal=" in debug or "NET VTD terminal " in debug or
-                                    b"NET Q35 etat=" in serial or b"NET DUO etat=" in serial or refus_liminer(serial) or refus_liminer(debug.encode())):
+                                    b"NET Q35 etat=" in serial or b"NET DUO etat=" in serial or b"NVME bilan ok=" in serial or refus_liminer(serial) or refus_liminer(debug.encode())):
                                     break
                                 time.sleep(0.04)
                             qmp(vm, "stop")
@@ -196,6 +238,11 @@ def essai(firmware, entree, mode, out):
                                 if mode == "refus-ir" and b"DUO temoin IRES=1 IRTA=0 BME=0 avant verification" not in serial:
                                     raise ValueError("IRES non observé à la frontière du superviseur")
                                 report["refus_avant_attribution"] = True
+                            elif storage:
+                                if (final["vtd_gsts"] != 0xc4000000 or reg(vm,0xfed90034) != 0 or
+                                    reg(vm,0xfed900b8) != 0 or reg(vm,0xfed900bc) != 0 or
+                                    b"NVME bilan ok=true" not in serial or b" BME=0 contexte=0 IOTLB=drain WAIT=confirme " not in serial):
+                                    raise ValueError("Issue du stockage ou retrait incompatible : " + serial[-900:].decode(errors="replace"))
                             elif mode == "topologie":
                                 if b'NET Q35 etat=Err("topologie ou pairs")' not in serial or final["vtd_gsts"] != 0:
                                     raise ValueError("Témoin de refus par le noyau historique absent")
@@ -210,8 +257,14 @@ def essai(firmware, entree, mode, out):
                         vm.kill()
                     vm.wait()
                     report["execution_s"] = time.monotonic() - begin
-            report["ecritures_pci"] = trace_fermee(out)
-            report["reussi"] = True
+            if storage:
+                from virtio_net_duo_stockage import verifier
+                report["stockage"] = verifier(out, mode, sector, reader, initial_disk, old if previous else None)
+            else:
+                report["ecritures_pci"] = trace_fermee(out)
+        if traffic and not json.loads((out / "pair.json").read_text())["succes"]:
+            raise ValueError("Chronologie ou intégrité Ethernet incomplète sur le pair")
+        report["reussi"] = True
     finally:
         dump(out / "campagne.json", report)
 
@@ -221,7 +274,10 @@ if __name__ == "__main__":
     p.add_argument("firmware", type=Path)
     p.add_argument("entree", type=Path, help="FAT de référence et banque de variables UEFI enrôlée")
     p.add_argument("mode", choices=("signature", "dbx", "avant-dbx", "noyau-altere", "topologie", "sans-iommu",
-                                   "domaines", "retrait-nic", "retrait-disque", "perte-wait", "total-nic", "total-disque", "refus-ir", "refus-irta"))
+                                   "domaines", "ir-retrait", "retrait-nic", "retrait-disque", "perte-wait", "total-nic", "total-disque", "refus-ir", "refus-irta", "nvme-init", "nvme-update", "nvme-recover", "nvme-charge", "nvme-charge-disque","nvme-mesure","nvme-mesure-charge"))
     p.add_argument("sortie", type=Path)
+    p.add_argument("--secteur",type=int,choices=(512,4096))
+    p.add_argument("--volume",type=Path)
+    p.add_argument("--lecteur",type=Path)
     a = p.parse_args()
-    essai(a.firmware.resolve(), a.entree.resolve(), a.mode, a.sortie.resolve())
+    essai(a.firmware.resolve(), a.entree.resolve(), a.mode, a.sortie.resolve(), a.secteur, a.volume, a.lecteur)

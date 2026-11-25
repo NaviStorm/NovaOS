@@ -17,38 +17,6 @@ fn log(s: &[u8]) {
 fn ensure(v: bool) -> rt::Result<()> {
     if v { Ok(()) } else { Err(rt::REFUSED) }
 }
-#[cfg(net_p9_coexistence)]
-fn coexistence(mut c: Client) -> rt::Result<()> {
-    c.mount()?;
-    let f = c.open(b"/sortie", w::READABLE | w::WRITABLE)?;
-    let mut data=[0u8;512];
-    let mut observation=[0u8;512];
-    let debut=w::word(&c.info()?,w::PAYLOAD+72);
-    let mut generation=debut;
-    let mut lectures=0;
-    for tour in 0u16..256 {
-        for (i,b) in data.iter_mut().enumerate() {
-            *b=(i as u8).wrapping_mul(73) ^ (tour as u8);
-        }
-        c.write(f,0,&data)?;
-        let recu=c.sync(f)?;
-        if recu!=generation+1 {log(b"NET P9 generation SYNC divergente");return Err(rt::REFUSED);}
-        ensure(c.read_grouped(f,0,&mut observation)?==data.len() && observation==data)?;
-        generation=w::word(&c.info()?,w::PAYLOAD+72);
-        if generation!=recu && generation!=recu+1 {log(b"NET P9 generation READ groupee divergente");return Err(rt::REFUSED);}
-        lectures+=generation-recu;
-    }
-    c.close(f)?;
-    c.close(0)?;
-    let mut texte=*b"NET P9 generations 0000000000000000 0000000000000000 0000000000000000";
-    for (i,val) in [debut,generation,lectures].into_iter().enumerate() {
-        for j in 0..16 {texte[19+i*17+j]=b"0123456789abcdef"[((val>>(60-j*4))&15) as usize];}
-    }
-    log(&texte);
-    log(b"NET P9 256 transactions WRITE SYNC READ octets conformes");
-    Ok(())
-}
-
 fn perf(mut c: Client) -> rt::Result<()> {
     log(b"ech debut");
     c.mount()?;
@@ -142,8 +110,6 @@ fn probe() -> rt::Result<()> {
     if (29..=40).contains(&mode) {
         return names::probe(c, mode);
     }
-    #[cfg(net_p9_coexistence)]
-    if mode == 25 {return coexistence(c);}
     if mode == 25 {
         return perf(c);
     }

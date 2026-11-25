@@ -34,8 +34,34 @@ pub(super) struct Broker {
     mode: u64,
     pub(super) writes: usize,
     pub(super) flushes: usize,
+    #[cfg(feature="net-q35-duo")]
+    samples: Samples,
 }
 type Status<T> = Result<T, u64>;
+
+#[cfg(feature="net-q35-duo")]
+#[derive(Default)]
+struct Samples {
+    hz:u64, begin:u64, command:u64, bytes:[u64;2], cycles:[u64;3], flush:Vec<u64>,
+}
+
+#[cfg(feature="net-q35-duo")]
+impl Broker {
+    pub(super) fn begin_samples(&mut self) {
+        self.samples.hz=hal::timer::counter_hz();
+        self.samples.begin=hal::timer::counter();
+    }
+    pub(super) fn report_samples(&self)->Result<(),&'static str> {
+        let s=&self.samples;
+        if s.hz==0 || s.bytes.contains(&0) || s.flush.len()!=self.flushes || !(256..=1024).contains(&s.flush.len()) {
+            return Err("échantillons NVMe incomplets");
+        }
+        let elapsed=hal::timer::counter()-s.begin;
+        for group in s.flush.chunks(32) {hal::log(format_args!("DUO FLUSH cycles={group:?}"));}
+        hal::log(format_args!("DUO mesures hz={} duree={} octets={:?} service={:?} flush={}",s.hz,elapsed,s.bytes,s.cycles,s.flush.len()));
+        Ok(())
+    }
+}
 
 impl Broker {
     pub(super) fn new(controller: Controller, mode: u64) -> Self {
@@ -54,6 +80,8 @@ impl Broker {
             mode,
             writes: 0,
             flushes: 0,
+            #[cfg(feature="net-q35-duo")]
+            samples:Samples::default(),
         }
     }
     fn apply<T>(&mut self, r: Result<T, DeviceError>) -> Status<T> {
@@ -379,6 +407,14 @@ impl Broker {
                         } else {
                             info.bytes
                         };
+                        #[cfg(feature="net-q35-duo")]
+                        if self.mode==profile::MEASURE {
+                            let elapsed=hal::timer::counter()-self.samples.command;
+                            let k=match cmd {Command::Read{..}=>0,Command::Write{..}=>1,_=>2};
+                            self.samples.cycles[k]+=elapsed;
+                            if k<2 {self.samples.bytes[k]+=bytes as u64;}
+                            else if self.samples.flush.len()<1024 {self.samples.flush.push(elapsed);}
+                        }
                         put(reply, 3, bytes as u64);
                     }
                     _ => {}
@@ -426,6 +462,8 @@ impl Broker {
                     }
                     _ => return Err(DENIED),
                 };
+                #[cfg(feature="net-q35-duo")]
+                if self.mode==profile::MEASURE {self.samples.command=hal::timer::counter();}
                 let r = if matches!(cmd, Command::Write { .. }) {
                     let src = self
                         .ticket

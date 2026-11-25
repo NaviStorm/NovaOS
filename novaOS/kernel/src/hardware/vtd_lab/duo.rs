@@ -2,6 +2,26 @@
 //! Le scénario fermé ne donne aucun handle ni adresse physique aux pilotes.
 use super::*;
 
+/// Le choix appartient au ticket d'admission, copié avant le retrait des réponses Limine.
+#[derive(Clone, Copy, PartialEq, Eq)]
+pub(in crate::hardware) enum Profile { Ordinary, Dual, RefuseIr }
+
+static IRQ_REGS: core::sync::atomic::AtomicUsize = core::sync::atomic::AtomicUsize::new(0);
+static DELIVERY_LOST: AtomicBool = AtomicBool::new(false);
+
+pub(in crate::hardware) fn irq_delivery_ok() -> bool {
+    let base = IRQ_REGS.load(Ordering::Acquire);
+    if base == 0 { return true; }
+    // L'unique superviseur a publié cette fenêtre UC permanente avant d'armer les IRQ.
+    let (status, irta) = unsafe {
+        (((base + 0x1c) as *const u32).read_volatile(), ((base + 0xb8) as *const u64).read_volatile())
+    };
+    if status != SRTP | RUN || !format::interrupt_state(status, irta) {
+        DELIVERY_LOST.store(true, Ordering::Release);
+    }
+    !DELIVERY_LOST.load(Ordering::Acquire)
+}
+
 const NIC: u16 = 56;
 const NIC_DID: u16 = 3;
 const NIC_IOVA: u64 = 0x1000_0000;
@@ -29,17 +49,22 @@ pub(super) struct Supervisor {
     generation: u64,
     owner: u64,
     published: bool,
+    delegated: bool,
     requested: Option<Operation>,
     pending: Option<Receipt>,
 }
 
 impl Supervisor {
-    pub(super) fn new() -> Self {
+    pub(super) fn new(profile: Profile) -> Self {
         Self {
-            enabled: crate::boot::scenario().starts_with(b"net-q35-duo-"),
-            frames: [EMPTY; FRAMES], generation: 0, owner: 0, published: false,
+            enabled: profile != Profile::Ordinary,
+            frames: [EMPTY; FRAMES], generation: 0, owner: 0, published: false, delegated: false,
             requested: None, pending: None,
         }
+    }
+
+    pub(super) fn arm_irq_guard(&self, regs: Region) {
+        if self.enabled { IRQ_REGS.store(regs.base(), Ordering::Release); }
     }
 
     pub(super) fn delivery_ok(&self, regs:Region)->bool {
@@ -47,10 +72,12 @@ impl Supervisor {
         let port=super::super::pci_ports::port;
         // NVMe reste en polling, INTx masquée et MSI-X désactivée. Le NIC sans MSI/MSI-X
         // est identifié avant admission ; le chemin INTx contrôle la broche et la route IOAPIC.
-        format::interrupt_state(regs.r32(0x1c), regs.r64(0xb8)) &&
+        let ok = irq_delivery_ok() && format::interrupt_state(regs.r32(0x1c), regs.r64(0xb8)) &&
             port(SID,0,4,None)==0x0010_1b36 && port(SID,4,2,None)&0x400!=0 &&
             port(SID,0x40,2,None)==0x8011 && port(SID,0x42,2,None)&0x8000==0 &&
-            port(NIC,0,4,None)==0x1041_1af4 && port(NIC,0x3d,1,None)==1
+            port(NIC,0,4,None)==0x1041_1af4 && port(NIC,0x3d,1,None)==1;
+        if !ok { DELIVERY_LOST.store(true, Ordering::Release); }
+        ok && !DELIVERY_LOST.load(Ordering::Acquire)
     }
 
     pub(super) fn descriptors(&mut self, original: (u64,u64), mode: Invalidation,
@@ -178,6 +205,46 @@ impl Engine {
 
     // Uniquement pour le témoin fermé. L'API de cet essai n'expose aucun moyen d'armer le NIC.
     pub(in crate::hardware) fn remove_unstarted_nic(&mut self, lost:bool)->Result<()> {
+        if self.duo.delegated {return Err(Error::Quarantine);}
+        self.release_fenced_nic(lost)
+    }
+
+    /// Témoin sans pilote ni délégation. Les deux maîtres restent désarmés.
+    pub(in crate::hardware) fn qualify_lost_delivery(&mut self) -> Result<()> {
+        if !self.duo.published || self.duo.delegated || !self.closed_nic() ||
+            super::super::pci_ports::port(SID, 4, 2, None) & 4 != 0 {
+            return Err(Error::Denied);
+        }
+        self.regs.w64(0xb8, 0x1000);
+        if self.regs.r64(0xb8) != 0x1000 || self.regs.r32(0x1c) != SRTP | RUN ||
+            self.remove_unstarted_nic(false) != Err(Error::Quarantine) {
+            return Err(Error::Quarantine);
+        }
+        self.regs.w64(0xb8, 0);
+        if self.regs.r64(0xb8) != 0 || self.remove_unstarted_nic(false) != Err(Error::Quarantine) {
+            return Err(Error::Quarantine);
+        }
+        hal::log(format_args!("DUO IRTA retrait 0x1000 puis 0 refus=Quarantine,Quarantine"));
+        Ok(())
+    }
+
+    pub(in crate::hardware) fn network_frames(&self) -> [u64;26] {self.duo.frames.map(|f| f.pa)}
+
+    pub(in crate::hardware) fn start_network(&mut self, owner:u64) -> Result<([Frame;22],u64)> {
+        if self.duo.owner!=owner || self.duo.delegated || !self.duo.published || !self.closed_nic() ||
+            !self.duo.verify_nic(&self.service,&self.pages) {return Err(Error::Quarantine);}
+        self.duo.delegated=true;
+        Ok((self.duo.frames[4..].try_into().unwrap(),self.duo.generation))
+    }
+
+    pub(in crate::hardware) fn retire_network(&mut self, proof: crate::hardware::nvme_domain::traffic::Drain) -> Result<()> {
+        if !self.duo.delegated || !proof.matches(self.duo.owner,self.duo.generation) {return Err(Error::Quarantine);}
+        self.release_fenced_nic(false)?;
+        self.duo.delegated=false;
+        Ok(())
+    }
+
+    fn release_fenced_nic(&mut self,lost:bool)->Result<()> {
         if !self.duo.published || !self.closed_nic() || self.in_queue ||
             !self.duo.verify_nic(&self.service,&self.pages) {return Err(Error::Quarantine);}
         self.service[1].mem.w64(NIC_CTX,0);

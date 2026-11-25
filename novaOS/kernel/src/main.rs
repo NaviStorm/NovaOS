@@ -59,15 +59,9 @@ pub extern "C" fn nova_start() -> ! {
 
 fn main_thread() {
     boot_id::init();
-    #[cfg(all(target_arch="x86_64", feature="net-q35-duo"))]
-    if boot::scenario().starts_with(b"net-q35-duo-") {
-        let resultat = hardware::nvme_domain::qualifier_duo(boot::scenario());
-        log(format_args!("NET DUO etat={resultat:?}"));
-        hal::cpu::halt()
-    }
     // Le diagnostic capture les tables tant que le chargeur les possède, sur le BSP seul.
     #[cfg(all(target_arch = "x86_64", feature = "net-q35-lab"))]
-    if matches!(boot::scenario(), b"net-q35-relais" | b"net-q35-retrait") || (cfg!(feature="net-ethernet-lab") && boot::scenario()==b"net-q35-ethernet") {
+    if scenario_relais_q35(boot::scenario()) {
         let resultat = hardware::net_q35::executer(boot::scenario() != b"net-q35-relais");
         log(format_args!("NET Q35 etat={resultat:?} bail=false"));
         hal::cpu::halt()
@@ -400,6 +394,18 @@ fn interactive(
     loop {
         let _line = input::read_line(&mut next_char, &mut console)?;
     }
+}
+
+#[cfg(all(target_arch = "x86_64", feature = "net-q35-lab"))]
+fn scenario_relais_q35(scenario: &[u8]) -> bool {
+    #[cfg(feature = "net-q35-duo")]
+    if scenario.starts_with(b"net-q35-duo-") && !scenario.starts_with(b"net-q35-duo-nvme-") {
+        let resultat = hardware::nvme_domain::qualifier_duo(scenario);
+        log(format_args!("NET DUO etat={resultat:?}"));
+        hal::cpu::halt()
+    }
+    matches!(scenario, b"net-q35-relais" | b"net-q35-retrait")
+        || (cfg!(feature = "net-ethernet-lab") && scenario == b"net-q35-ethernet")
 }
 
 #[panic_handler]

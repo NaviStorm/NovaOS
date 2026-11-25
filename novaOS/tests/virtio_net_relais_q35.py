@@ -29,7 +29,7 @@ def refus_liminer(serie):
 
 
 def support(elf, firmware, out, limine, retrait=False, temoin_hash=False, ethernet=False, duo=None):
-    if duo is not None and duo not in ("domaines", "retrait-nic", "retrait-disque", "perte-wait", "total-nic", "total-disque", "refus-ir"):
+    if duo is not None and duo not in ("domaines", "ir-retrait", "retrait-nic", "retrait-disque", "perte-wait", "total-nic", "total-disque", "refus-ir", "nvme-init", "nvme-update", "nvme-recover", "nvme-charge", "nvme-charge-disque","nvme-mesure","nvme-mesure-charge"):
         raise ValueError("Scénario des deux domaines inconnu")
     scenario = ("net-q35-duo-" + duo if duo else "net-q35-ethernet" if ethernet else
                 "net-q35-retrait" if retrait else "net-q35-relais")

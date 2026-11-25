@@ -139,13 +139,48 @@ pub(crate) fn mesurer(phase:&str) { measure(phase); }
 pub(crate) fn ethernet(
     generation: u64,
     pendant: impl FnOnce() -> bool,
-    mut operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
+    operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
 ) -> bool {
-    measure("net_avant_pilote");
-    let initial = with(|s| s.ipc.pages());
-    let Some((actif, handle)) = creer(3, None, generation) else {
-        return false;
-    };
+    let Some(actor) = EthernetActor::reserve(generation) else { return false; };
+    ethernet_actor(actor, pendant, operation, false)
+}
+
+#[cfg(feature = "net-ethernet-lab")]
+pub(crate) struct EthernetActor {
+    child: Child,
+    handle: u64,
+    generation: u64,
+    initial_pages: usize,
+}
+
+#[cfg(feature = "net-ethernet-lab")]
+impl EthernetActor {
+    pub(crate) fn reserve(generation: u64) -> Option<Self> {
+        measure("net_avant_pilote");
+        let initial_pages = with(|s| s.ipc.pages());
+        let (child, handle) = creer(3, None, generation)?;
+        Some(Self { child, handle, generation, initial_pages })
+    }
+    #[cfg(feature="net-q35-duo")]
+    pub(crate) fn owner(&self) -> u64 { self.child.0.number }
+
+    #[cfg(feature="net-q35-duo")]
+    pub(super) fn audit(&self, mode: impl FnOnce(Pid) -> bool) -> bool {
+        mode(self.child.0)
+    }
+    #[cfg(feature="net-q35-duo")]
+    pub(crate) fn cancel(self) {
+        with(|s| s.ipc.lab_close_sender(self.child.0, self.handle));
+    }
+}
+
+#[cfg(feature = "net-ethernet-lab")]
+pub(crate) fn ethernet_actor(
+    actor: EthernetActor, pendant: impl FnOnce() -> bool,
+    mut operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
+    shared_storage: bool,
+) -> bool {
+    let EthernetActor {child: actif, handle, generation, initial_pages: initial} = actor;
     let pid = actif.0;
     let mut copie = [0u8; 1526];
     let mut ok = true;
@@ -273,5 +308,5 @@ pub(crate) fn ethernet(
     hal::log(format_args!(
         "NET L2 pilote fin={fin:?} racines={racines} ipc_avant={initial} ipc_apres={pages}"
     ));
-    ok && fin == Outcome::Exit(0) && racines == 0 && pages == initial
+    ok && fin == Outcome::Exit(0) && racines == 0 && (pages == initial || (cfg!(feature="net-q35-duo") && shared_storage && pages < initial))
 }

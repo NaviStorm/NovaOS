@@ -102,9 +102,14 @@ pub(in crate::sched::process) fn nvme_group(
             *slot = Some(create_image(image, &[], None, None).map_err(launch_error)?);
         }
         if rw {
+            let app_image = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fileclient.bin")).as_slice();
+            #[cfg(feature="net-q35-duo")]
+            let app_image = if mode == profile::MEASURE {
+                include_bytes!(concat!(env!("OUT_DIR"), "/storage-net_measure.bin")).as_slice()
+            } else {app_image};
             application = Some(
                 create_image(
-                    include_bytes!(concat!(env!("OUT_DIR"), "/storage-fileclient.bin")),
+                    app_image,
                     &[],
                     None,
                     None,
@@ -167,6 +172,9 @@ pub(in crate::sched::process) fn nvme_group(
                     if matches!(mode, profile::CLIENT_DEATH | profile::RACE) {
                         mode
                     } else {
+                        #[cfg(feature="net-q35-duo")]
+                        if mode == profile::MEASURE {mode} else {profile::file_mode(mode)}
+                        #[cfg(not(feature="net-q35-duo"))]
                         profile::file_mode(mode)
                     },
                     profile::cut(mode),

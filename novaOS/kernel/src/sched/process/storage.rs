@@ -325,7 +325,7 @@ pub(crate) fn volume_detail(mode: u64, session: Option<(u64, [u8; 16])>, _profil
             } else if matches!(mode, 41 | 42) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/nsh.elf"))
             } else if mode >= 11 && !matches!(mode, 43 | 44) {
-                FILE_CLIENT
+                self::file_client!(mode)
             } else {
                 CONTROL
             },
@@ -675,3 +675,19 @@ pub(super) fn time_marker(msg: &str) -> bool {
     }
     false
 }
+
+#[cfg(net_p9_coexistence)]
+macro_rules! file_client {
+    ($mode:expr) => {
+        if $mode == 25 {
+            include_bytes!(concat!(env!("OUT_DIR"), "/storage-net_measure.bin")).as_slice()
+        } else {
+            FILE_CLIENT
+        }
+    };
+}
+#[cfg(not(net_p9_coexistence))]
+macro_rules! file_client {
+    ($mode:expr) => { FILE_CLIENT };
+}
+use file_client;

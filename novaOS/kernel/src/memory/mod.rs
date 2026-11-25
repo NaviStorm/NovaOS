@@ -531,6 +531,8 @@ pub(crate) fn unmap_lab_io(pa: u64, va: u64) -> Result<()> {
     let lab_page = (323..=326).any(|i| va == IO_BASE + i * PAGE)
         || (cfg!(all(target_arch = "x86_64", feature = "vtd-lab"))
             && [328, 329].iter().any(|i| va == IO_BASE + i * PAGE));
+    #[cfg(all(target_arch="x86_64",feature="net-q35-duo"))]
+    let lab_page = lab_page || (0..2).any(|i| va == IO_BASE + (336+i)*PAGE && pa == 0xc0_0000_4000+i*PAGE);
     if !lab_page || pa & (PAGE - 1) != 0 {
         return Err(Error::Geometry);
     }

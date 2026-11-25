@@ -11,6 +11,8 @@ use core::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 
 #[cfg(feature="net-q35-duo")]
 mod duo;
+#[cfg(feature="net-q35-duo")]
+pub(super) use duo::{Profile as DuoProfile, irq_delivery_ok};
 mod format;
 use format::{DID, PAGE, SID, STRIDE};
 pub(crate) const IOVA: u64 = format::BASE;
@@ -219,6 +221,10 @@ impl Drop for Windows {
 
 impl Engine {
     pub(crate) fn initialize(drhd: Drhd) -> Result<Self> {
+        Self::initialize_profile(drhd, #[cfg(feature="net-q35-duo")] duo::Profile::Ordinary)
+    }
+
+    pub(super) fn initialize_profile(drhd: Drhd, #[cfg(feature="net-q35-duo")] profile: DuoProfile) -> Result<Self> {
         if drhd.base() != 0xfed9_0000 || drhd.sid() != SID || crate::smp::index() != 0 {
             return Err(Error::Denied);
         }
@@ -228,7 +234,7 @@ impl Engine {
         let regs = Region::map(drhd.base(), MMIO_SLOT, PAGE as usize).map_err(|_| Error::Memory)?;
         let mut windows = Windows::new(drhd.base());
         #[cfg(feature="net-q35-duo")]
-        if crate::boot::scenario()==b"net-q35-duo-refus-ir" {
+        if profile == DuoProfile::RefuseIr {
             // Fixture terminale : le firmware réinitialise IRE au handoff. Injecter seulement
             // après inventaire et avant toute allocation DMA, les deux Bus Masters fermés.
             if regs.r32(0x1c)!=0 || regs.r64(0x20)!=0 || regs.r64(0xb8)!=0 ||
@@ -246,7 +252,7 @@ impl Engine {
         ));
         let record = format::capabilities(version, cap, ecap, drhd.host_bits());
         #[cfg(feature="net-q35-duo")]
-        let record = if crate::boot::scenario().starts_with(b"net-q35-duo-") {
+        let record = if profile != DuoProfile::Ordinary {
             format::dual_capabilities(version, cap, ecap, drhd.host_bits(), regs.r32(0x1c), regs.r64(0xb8))
         } else {record};
         let record = record.ok_or(Error::Feature)?;
@@ -317,7 +323,7 @@ impl Engine {
             consumed_irqs: 0,
             records: 0,
             #[cfg(feature="net-q35-duo")]
-            duo: duo::Supervisor::new(),
+            duo: duo::Supervisor::new(profile),
         };
         windows.permanent = true;
         if let Err(err) = unit.activate(apic) {
@@ -365,6 +371,8 @@ impl Engine {
         if regs.r32(0x40) != 0xfee0_0000 || regs.r32(0x44) != 0 || regs.r32(0x3c) != VECTOR {
             return Err(Error::Quarantine);
         }
+        #[cfg(feature="net-q35-duo")]
+        self.duo.arm_irq_guard(regs);
         IRQ_READY.store(true, Ordering::Release);
         regs.w32(0x38, 0);
         if regs.r32(0x38) != 0 || !self.parked() {
@@ -1163,6 +1171,10 @@ pub(crate) extern "C" fn fault_irq() {
     // Sûreté : les deux fenêtres UC sont permanentes avant publication de IRQ_READY.
     unsafe {
         let control = (regs + 0x38) as *mut u32;
+        #[cfg(feature="net-q35-duo")]
+        if !irq_delivery_ok() {
+            control.write_volatile(FAULT_MASK);
+        }
         if ((regs + 0x34) as *const u32).read_volatile() != 0
             && control.read_volatile() & FAULT_MASK == 0
         {

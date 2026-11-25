@@ -55,8 +55,12 @@ def verifier(vm, qt, serial, final, mode):
             raise ValueError("Portée ou permissions intermédiaires invalides")
         return table[index]&~4095
     ctx = entries(sole(entries(root),0,1))
-    disk = mode in ("domaines","retrait-nic","perte-wait")
-    nic = mode in ("domaines","retrait-disque")
+    disk = mode in ("domaines","ir-retrait","retrait-nic","perte-wait")
+    nic = mode in ("domaines","ir-retrait","retrait-disque")
+    if mode == "ir-retrait":
+        if (serial.count(b"DUO IRTA retrait 0x1000 puis 0 refus=Quarantine,Quarantine") != 1 or
+            reg64(base+0xb8) != 0 or matches[-1][3:] != matches[0][3:]):
+            raise ValueError("Retour de IRTA à zéro ou maintien de la quarantaine non démontré")
     held = mode=="perte-wait"
     rights = {}
     for sid,did,addr,perms in [(48,1,0x02000000,[1,2,1,2,2,1]),(56,3,0x10000000,[1,1,2,1,1,2]+[2]*8+[1]*8)]:

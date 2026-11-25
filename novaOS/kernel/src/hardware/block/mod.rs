@@ -8,8 +8,6 @@ mod ownership;
 mod pci;
 #[cfg(all(target_arch = "aarch64", feature = "dma-sequentiel"))]
 pub(crate) mod qualification;
-#[cfg(net_p9_coexistence)]
-mod net_stockage;
 mod queue;
 pub(crate) use lease::publication_unique;
 pub(crate) use lease::wire;
@@ -205,9 +203,7 @@ impl Transport {
             ));
             return Err(Error::Device);
         }
-        #[cfg(net_p9_coexistence)]
-        if self.kind==0 && expected>1 {net_stockage::octets(0, u64::from(expected-1));}
-        metrics::record(self.kind, self.started);
+        metrics::record(self.kind, self.started, #[cfg(net_p9_coexistence)] Some(self));
         self.pending = None;
         Ok(())
     }
@@ -284,13 +280,6 @@ impl Transport {
         KICKS.fetch_add(1, Ordering::Release);
         self.pending = Some(seen);
         drop(irq);
-        #[cfg(net_p9_coexistence)]
-        {
-            self.finish(1)?;
-            if !flush {net_stockage::octets(1,bytes as u64);}
-            Ok(())
-        }
-        #[cfg(not(net_p9_coexistence))]
         self.finish(1)
     }
 }
@@ -499,3 +488,6 @@ mod net_files;
 
 #[cfg(all(feature="net-ethernet-lab",any(all(target_arch="aarch64",feature="net-arm-lab"),all(target_arch="x86_64",feature="net-q35-lab"))))]
 pub(super) mod net_trames;
+
+#[cfg(net_p9_coexistence)]
+mod net_stockage;

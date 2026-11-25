@@ -395,6 +395,12 @@ pub(super) mod net_intx {
         let base=ISR.load(Ordering::Acquire);
         if base==0 {return false}
         // Registre ISR protégé au superviseur. Le BSP conserve le mapping jusqu'au drainage.
+        #[cfg(feature="net-q35-duo")]
+        if !super::super::vtd_lab::irq_delivery_ok() {
+            platform::Route::<23>::masquer_nic();
+            CAUSE.store(0x200, Ordering::Release);
+            return true;
+        }
         let raison=unsafe{(base as *const u8).read_volatile()};
         let masque=platform::Route::<23>::masquer_nic();
         CAUSE.fetch_or((if masque {0x100} else {0x200})|usize::from(raison),Ordering::Release);

@@ -1,6 +1,8 @@
 //! Admission du seul NVMe Q35 sur 00:06.0, avant restitution des pages firmware.
 //! Les adresses physiques, pages de tables, descripteurs et fenêtres UC restent au superviseur.
 mod reuse;
+#[cfg(feature="net-q35-duo")]
+pub(in crate::hardware) mod traffic;
 pub(crate) use super::vtd_lab::Error;
 use super::{
     discovery::{Config, Drhd, vtd},
@@ -20,7 +22,9 @@ const SID: u16 = 6 << 3;
 const ID: u32 = 0x0010_1b36;
 const PAGE: usize = 4096;
 // Les slots UC du banc sont exclusifs entre les profils. 323 sert à l'AHCI.
-const BAR_SLOT: usize = 324;
+// Le profil double utilise aussi les fenêtres 324–325 pour l'IOAPIC/LAPIC du NIC.
+// Deux pages UC pour le NVMe, sans changement de BAR physique ni de permissions.
+const BAR_SLOT: usize = if cfg!(feature="net-q35-duo") {336} else {324};
 
 static DISCOVERED: AtomicBool = AtomicBool::new(false);
 
@@ -166,6 +170,12 @@ impl DataPage {
 }
 
 pub(crate) struct Admission {
+    #[cfg(feature="net-q35-duo")]
+    profile: super::vtd_lab::DuoProfile,
+    #[cfg(feature="net-q35-duo")]
+    network: bool,
+    #[cfg(feature="net-q35-duo")]
+    disk_first: bool,
     source: Option<bool>,
     phase2_media: bool,
     retirement: Invalidation,
@@ -264,6 +274,13 @@ pub(crate) fn discover() -> Option<Admission> {
     bar.unmap().ok()?;
     let scenario = crate::boot::scenario();
     Some(Admission {
+        #[cfg(feature="net-q35-duo")]
+        disk_first: scenario == b"net-q35-duo-nvme-charge-disque",
+        #[cfg(feature="net-q35-duo")]
+        network: matches!(scenario,b"net-q35-duo-nvme-charge" | b"net-q35-duo-nvme-charge-disque" | b"net-q35-duo-nvme-mesure-charge"),
+        #[cfg(feature="net-q35-duo")]
+        profile: if scenario == b"net-q35-duo-refus-ir" {super::vtd_lab::DuoProfile::RefuseIr}
+                 else if duo {super::vtd_lab::DuoProfile::Dual} else {super::vtd_lab::DuoProfile::Ordinary},
         bar,
         drhd,
         phase2_media: duo || scenario.starts_with(b"nvme-rw-"),
@@ -273,6 +290,8 @@ pub(crate) fn discover() -> Option<Admission> {
             _ => Invalidation::Global,
         },
         source: match scenario {
+            #[cfg(feature="net-q35-duo")]
+            b"net-q35-duo-nvme-recover" => None,
             _ if duo => Some(true),
             b"nvme-rw-dma-fault" => Some(false),
             b"nvme-rw-recover" | b"nvme-rw-rights" => None,
@@ -290,7 +309,7 @@ pub(crate) fn discover() -> Option<Admission> {
 #[cfg(feature="net-q35-duo")]
 pub(crate) fn qualifier_duo(mode: &[u8]) -> Result<()> {
     static OBSERVATION: crate::sched::sync::Mutex<Option<Domain>> = crate::sched::sync::Mutex::new(None);
-    if !matches!(mode,b"net-q35-duo-domaines"|b"net-q35-duo-refus-ir"|b"net-q35-duo-retrait-nic"|b"net-q35-duo-retrait-disque"|b"net-q35-duo-perte-wait"|b"net-q35-duo-total-nic"|b"net-q35-duo-total-disque") || crate::smp::count()!=1 {return Err(Error::Denied);}
+    if !matches!(mode,b"net-q35-duo-domaines"|b"net-q35-duo-ir-retrait"|b"net-q35-duo-refus-ir"|b"net-q35-duo-retrait-nic"|b"net-q35-duo-retrait-disque"|b"net-q35-duo-perte-wait"|b"net-q35-duo-total-nic"|b"net-q35-duo-total-disque") || crate::smp::count()!=1 {return Err(Error::Denied);}
     let before=memory::pinned_dma_frames();
     let mut domain=Domain::new(discover().ok_or(Error::Denied)?)?;
     let result=(|| {
@@ -302,6 +321,9 @@ pub(crate) fn qualifier_duo(mode: &[u8]) -> Result<()> {
         if mode.ends_with(b"retrait-disque") || mode.ends_with(b"total-disque") {domain.cancel_prepared()?;}
         if mode.ends_with(b"retrait-nic") || mode.ends_with(b"total-nic") || mode.ends_with(b"total-disque") {domain.engine.remove_unstarted_nic(false)?;}
         if mode.ends_with(b"total-nic") {domain.cancel_prepared()?;}
+        if mode.ends_with(b"ir-retrait") {
+            domain.engine.qualify_lost_delivery()?;
+        }
         if mode.ends_with(b"perte-wait") {
             if domain.engine.remove_unstarted_nic(true)!=Err(Error::Quarantine) || domain.engine.remove_unstarted_nic(false)!=Err(Error::Quarantine) {return Err(Error::Denied);}
         }
@@ -332,6 +354,10 @@ impl Unstarted<'_> {
     }
 }
 pub(crate) struct Domain {
+    #[cfg(feature="net-q35-duo")]
+    pub(crate) network:bool,
+    #[cfg(feature="net-q35-duo")]
+    disk_first:bool,
     source: Option<bool>,
     phase2_media: bool,
     retirement: Invalidation,
@@ -356,10 +382,14 @@ impl Domain {
             admission.bar.unmap()?;
             return Err(Error::Denied);
         }
-        let engine = Engine::initialize(admission.drhd).inspect_err(|_| {
+        let engine = Engine::initialize_profile(admission.drhd, #[cfg(feature="net-q35-duo")] admission.profile).inspect_err(|_| {
             let _ = admission.bar.unmap();
         })?;
         Ok(Self {
+            #[cfg(feature="net-q35-duo")]
+            network:admission.network,
+            #[cfg(feature="net-q35-duo")]
+            disk_first:admission.disk_first,
             data_page: admission.data_page,
             source: admission.source,
             phase2_media: admission.phase2_media,
