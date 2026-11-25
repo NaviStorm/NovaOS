@@ -75,3 +75,9 @@ La stabilité d’IR/IRTA est établie sur les trajectoires enregistrées. Le t�
 Les profils, binaires, acquisitions et libérations du verrou, échantillons bruts, états des registres et reçus se trouvent dans les pièces ci-dessous. Les captures DMA archivées sont celles des fixtures synthétiques. Les supports et clés de signature restent conservés localement.
 
 [Mesures consolidées](validation/virtio-net/finale-20261125/bilan.json) · [Segments ordinaires](validation/virtio-net/finale-20261125/noyaux-ordinaires.json) · [Manifeste SHA-256](validation/virtio-net/finale-20261125/SHA256SUMS) · [Contrat des deux domaines](virtio-net-q35-stockage-contrat.md)
+
+## Vérifications sur le code livré
+
+Les deux noyaux ordinaires ont retrouvé, sur chaque architecture, l’entrée de référence et les octets, adresses, tailles, alignements et permissions des quatre segments PT_LOAD. L’empreinte de l’ELF entier diffère dans les deux cas. Le client de mesure est construit séparément pour le laboratoire. Les neuf tests du registre ABI ont été rejoués sur cette source. Les suites de modèles ont réussi 67 contrôles sur Darwin ARM64 et 67 sous Rosetta x86_64.
+
+Sur le commit `a2709fb`, le parcours Q35/P9-512 F01 a vérifié 100 000 trames dans chaque sens et le bilan NVMe complet. Les valeurs de performance du tableau restent attachées aux campagnes M02 et AArch64 série 03, identifiées par leurs binaires. Les deux répétitions M03 sur Q35 et repos-04 sur AArch64/P9-4096 ont été arrêtées pendant l’attente du verrou. Leurs rapports partiels sont conservés. L’annexe identifie individuellement les témoins terminaux, leurs binaires, les statuts observés et leurs temps d’exécution. [Confirmations terminales](validation/virtio-net/finale-20261125/confirmations.json)

@@ -1,0 +1,93 @@
+{
+  "q35-duo-ir-retrait-F01": {
+    "reussi": true,
+    "acquisition": "2026-11-25T23:14:45.398584+00:00",
+    "liberation": "2026-11-25T23:14:47.573994+00:00",
+    "execution_s": 2.1262147090164945,
+    "attente_s": 152.47847116703633,
+    "fin_pci": {
+      "0": 0,
+      "48": 1026,
+      "56": 0,
+      "248": 0,
+      "251": 0
+    },
+    "entrees": {
+      "novaos.elf": "321f9516d34e11c566fa2220da13789fc5036e0be4674d66a35abd7d21e8d5a0",
+      "BOOTX64.EFI": "ab1534ed13eb174850c161baf6366c014098dc6ace56fb63d6fb88012e5e9cae",
+      "limine.conf": "64118e2c972c783c68fdadc33bab4ebd6806c49c221883d2d346f93a7b9c9c1a",
+      "support.raw": "d0124d6d24efef58b2cac193d60bd6e5b847503eee4545d51732ba426f896a48",
+      "variables.fd": "9c594b5f1e69c80efe0a2a617b81b5c74f135b7b1e9b3062f68bca4c6db4a60b",
+      "OVMF_CODE.fd": "8664d02804a125496c28b5a155c6f86517bc80d266462665240f305ff96ddc6c"
+    }
+  },
+  "q35-duo-refus-ir-F01": {
+    "reussi": true,
+    "acquisition": "2026-11-25T23:14:48.762653+00:00",
+    "liberation": "2026-11-25T23:14:50.876964+00:00",
+    "execution_s": 2.0652172920526937,
+    "attente_s": 0.0003364169970154762,
+    "fin_pci": {
+      "0": 0,
+      "48": 1026,
+      "56": 0,
+      "248": 0,
+      "251": 0
+    },
+    "entrees": {
+      "novaos.elf": "321f9516d34e11c566fa2220da13789fc5036e0be4674d66a35abd7d21e8d5a0",
+      "BOOTX64.EFI": "fd4c133f870f1dfafbff2227b44f99ce18084a4f3a9c7ba290eb086b974811bf",
+      "limine.conf": "fdc02b3c8f9abc9bf9090feeff7829162c60a670f8faca502aac628ea6d1d4cc",
+      "support.raw": "ac2a94f610de15b0e2557cdad7d8f1e8689d70b0388f428d77cdac1a2d31b34b",
+      "variables.fd": "35770c0fd8c9b0cd78884bc2ece69889e731d18a890653615c083390d90b5ed1",
+      "OVMF_CODE.fd": "8664d02804a125496c28b5a155c6f86517bc80d266462665240f305ff96ddc6c"
+    }
+  },
+  "arm-coexistence-4096-avec-05": {
+    "succes": true,
+    "acquisition": "2026-11-25T23:12:11.903397+00:00",
+    "liberation": "2026-11-25T23:14:44.391878+00:00",
+    "execution_s": 152.43916345899925,
+    "attente_s": 202.65174645895604,
+    "elf_sha256": "2c991785639bcd4fb551412a7cf0856a251401bd616de795c868896b7d90c576",
+    "n_flush": 653,
+    "rx_pendant_p9": 314096
+  },
+  "q35-duo-nvme-mesure-charge-512-M03": {
+    "etat": "interrompu avant démarrage de QEMU",
+    "entrees": {
+      "novaos.elf": "3b6ff1ad696a9932c61000e587fa59fc0841809f924f27bcaab3111a1a33023c",
+      "BOOTX64.EFI": "506012f71226352557d18ed811c985a0d5469b383e2940a44cc0d2e0293200be",
+      "limine.conf": "e8c124e36426c6b7dac9ce99f3674849877e006d2e7781426a07579119fb2f43",
+      "support.raw": "3943ab6903c9f178b90c98a4ebb6d7cefa805ebdc5c83dd2ce968f9e5c6422cf",
+      "variables.fd": "7f3a58d39367960ff687211eca3293972e57a13d7a56594af01444c8b7db7a16",
+      "OVMF_CODE.fd": "8664d02804a125496c28b5a155c6f86517bc80d266462665240f305ff96ddc6c"
+    }
+  },
+  "arm-coexistence-4096-repos-04": {
+    "elf_sha256": "0ada865e224bb94613bd8e712110c3b14a59135948ecbbe4b004a18ac412176e",
+    "etat": "interrompu avant démarrage de QEMU"
+  },
+  "q35-duo-nvme-charge-512-F01": {
+    "reussi": true,
+    "acquisition": "2026-11-25T23:12:01.210370+00:00",
+    "liberation": "2026-11-25T23:12:11.694828+00:00",
+    "execution_s": 10.19130033289548,
+    "attente_s": 60.18914625002071,
+    "fin_pci": {
+      "0": 0,
+      "48": 1026,
+      "56": 1026,
+      "248": 0,
+      "251": 0
+    },
+    "entrees": {
+      "novaos.elf": "321f9516d34e11c566fa2220da13789fc5036e0be4674d66a35abd7d21e8d5a0",
+      "BOOTX64.EFI": "1c6d45cb3e30f0a0e910ca3b603d33437596b099b5f73ddb4285ff533e3d1888",
+      "limine.conf": "40338d77e6821d7e99ede46b799b1aabbde77fe01d3a15ab4c0dde392c70b8c7",
+      "support.raw": "3f375f70526aa3b909b07addeea922e6d206f43ca8d09b265ac3879d0428b3e3",
+      "variables.fd": "9cf163c7f260223409f76a2aa2fc08b5f8b715414e2190f84fcd357bcf9c8af7",
+      "OVMF_CODE.fd": "8664d02804a125496c28b5a155c6f86517bc80d266462665240f305ff96ddc6c"
+    }
+  }
+}
