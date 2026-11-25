@@ -1,5 +1,9 @@
 # VirtIO-net sous QEMU
 
+## État du confinement DMA
+
+Le prototype OVMF Q35 et son témoin Secure Boot ont été exercés jusqu’à l’activation de VT-d avec une racine vide. Sur AArch64, le contrat de propriété du contrôleur partagé entre disque et NIC est soumis à arbitrage. Le NIC reste sans bail sur les deux architectures. [Résultats Q35 et portabilité](virtio-net-ovmf-q35.md) · [Contrat AArch64 pour revue](virtio-net-contrat-iommu-aarch64.md)
+
 ## Premier lot et attribution matérielle
 
 Base de développement `5c7f1bfa313a3859ccc0830660438e76d598acb1`. Le premier lot porte sur Ethernet non tagué dans deux machines de laboratoire, Q35 x86_64 et virt AArch64. Le gestionnaire matériel peut déjà recevoir un inventaire PCI en lecture seule. Il reconnaît la fonction Ethernet moderne de type VirtIO 1 (1af4:1041, classe 0200). Une correspondance de l'inventaire ne permet aucun transfert.

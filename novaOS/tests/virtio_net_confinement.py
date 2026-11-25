@@ -37,7 +37,7 @@ def reg(vm, address, *, optional=False):
     return int(match[2], 16)
 
 
-def capture(vm, directory, phase, arm):
+def capture(vm, directory, phase, arm, *, vtd=True):
     state = {"vm": qmp(vm, "query-status"), "pci": qmp(vm, "query-pci")}
     if state["vm"]["running"]:
         raise RuntimeError("Capture demandée sur une VM en mouvement")
@@ -46,7 +46,7 @@ def capture(vm, directory, phase, arm):
     state["iommu_platform"] = qmp(vm, "qom-get", path=path, property="iommu_platform")
     if arm:
         state["boot_bypass"] = qmp(vm, "qom-get", path="/machine/peripheral/i", property="boot-bypass")
-    else:
+    elif vtd:
         state["vtd_version"] = reg(vm, 0xfed90000)
         state["vtd_gsts"] = reg(vm, 0xfed9001c)
     # ECAM Q35 est configuré par le firmware. Un identifiant absent rend BME inconnu.
