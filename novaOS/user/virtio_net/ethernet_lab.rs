@@ -45,11 +45,12 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
     let mut trame = [0u8; 1514];
     let mut seq = 1;
     commande(handle, generation, seq, 1, 0)?;
+    let origine=config(8) as usize;
     let lots = config(7) as usize;
     if !(1..=6250).contains(&lots) {return Err(REFUSED);}
     for lot in 0..lots {
     for i in 0..COMPTE {
-        let n = lot * COMPTE + i;
+        let n = origine + lot * COMPTE + i;
         let len = if n % 2 == 0 { 60 } else { 1514 };
         trame[..6].copy_from_slice(&PAIR);
         trame[6..12].copy_from_slice(&NIC);
@@ -81,7 +82,7 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
             return Err(REFUSED);
         }
         let n = if lots==1 {usize::from(data[14])} else {u32::from_be_bytes(data[14..18].try_into().map_err(|_|REFUSED)?) as usize};
-        let index=n.checked_sub(lot * COMPTE).ok_or(REFUSED)?;
+        let index=n.checked_sub(origine + lot * COMPTE).ok_or(REFUSED)?;
         if index >= COMPTE
             || recus & (1 << index) != 0
             || data.len() != if n % 2 == 0 { 60 } else { 1514 }

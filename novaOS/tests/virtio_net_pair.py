@@ -2,6 +2,7 @@
 from functools import lru_cache
 import errno
 import os
+import re
 import hashlib
 import json
 import socket
@@ -40,6 +41,24 @@ def lire(sock, n):
     return bytes(data)
 
 
+def verifier_redemarrages(serie, pair):
+    cycles = pair["cycles"]
+    instances = re.findall(r"NET (?:ARM|Q35) pilote pid=(\d+) mode=3 racines=1 generation=(\d+)", serie)
+    if (len(instances)!=cycles or len({pid for pid,_ in instances})!=cycles
+            or [int(g) for _,g in instances]!=pair["generations"]
+            or serie.count("NET L2 pilote fin=Exit(0) racines=0 ipc_avant=0 ipc_apres=0")!=cycles):
+        raise ValueError("Instances, racines ou générations non confirmées")
+    def cadres(phase):
+        lignes = re.findall(r"RAM phase="+phase+r" ([^\r\n]+)",serie)
+        return [dict((k,int(v)) for k,v in re.findall(r"(\w+)=(\d+)",ligne)) for ligne in lignes]
+    avant,apres = cadres("net_avant_pilote"),cadres("net_apres_pilote")
+    compteurs=("resident","tables","kpile","upile","ipc","processus","dma","utilisateur")
+    if len(avant)!=cycles or len(apres)!=cycles or any(
+        a[k]!=b[k] or a[k]!=avant[0][k] for a,b in zip(avant,apres) for k in compteurs
+    ):
+        raise ValueError("Croissance des ressources entre incarnations")
+
+
 class Pair:
     def __init__(self, sortie):
         self.sortie = sortie
@@ -49,7 +68,9 @@ class Pair:
                 endpoint.setsockopt(socket.SOL_SOCKET, option, 32768)
         self.sock.settimeout(90)
         self.trames = []
-        self.lots = {"rearmement":3, "endurance":6250}.get(os.environ.get("NOVAOS_NET_SERIE"),1)
+        self.lots = {"rearmement":3, "redemarrage":3, "endurance":6250}.get(os.environ.get("NOVAOS_NET_SERIE"),1)
+        self.cycles = 4 if os.environ.get("NOVAOS_NET_SERIE")=="redemarrage" else 1
+        self.generations = []
         self.tx_comptes = 0
         self.empreinte_tx = hashlib.sha256()
         self.empreinte_rx = hashlib.sha256()
@@ -73,16 +94,22 @@ class Pair:
         return (fd,)
 
     def serie(self):
-        for batch in range(self.lots):
+        for batch in range(self.lots*self.cycles):
             reponses = bytearray()
             for slot in range(16):
-                numero = batch * 16 + slot
-                attendu = trame_longue(numero, False)
+                numero = (batch % self.lots) * 16 + slot
                 n = int.from_bytes(lire(self.sock, 4), "big")
-                if n != len(attendu):
+                if n != (1514 if numero % 2 else 60):
                     raise ValueError(f"Longueur TX de la trame {numero}: {n}")
                 recu = lire(self.sock, n)
-                if recu != attendu:
+                if self.cycles>1:
+                    if numero==0:
+                        generation=int.from_bytes(recu[14:16], "big")
+                        if generation == 0 or (self.generations and generation<=self.generations[-1]):
+                            raise ValueError("Génération non renouvelée")
+                        self.generations.append(generation)
+                    numero += self.generations[-1] * 65536
+                if recu != trame_longue(numero, False):
                     raise ValueError(f"Contenu ou séquence TX de la trame {numero}")
                 self.empreinte_tx.update(recu)
                 self.tx_comptes += 1
@@ -141,8 +168,8 @@ class Pair:
         bilan = dict(trames=self.trames, erreur=self.erreur, stockage_avant_derniere_reponse=self.stockage, reponses_envoyees=self.envoyees, perte=self.perte,
                      succes=self.envoyees==16 and len(self.trames)==16 and not self.thread.is_alive() and self.erreur is None)
         if self.lots > 1:
-            total = self.lots*16
-            bilan.update(trames_tx=self.tx_comptes, trames_rx=self.envoyees, lots=self.lots,
+            total = self.lots*self.cycles*16
+            bilan.update(trames_tx=self.tx_comptes, trames_rx=self.envoyees, lots=self.lots, cycles=self.cycles, generations=self.generations,
                          tx_sha256=self.empreinte_tx.hexdigest(),rx_sha256=self.empreinte_rx.hexdigest(),
                          succes=self.tx_comptes==self.envoyees==total and not self.thread.is_alive() and self.erreur is None)
         (self.sortie / "pair.json").write_text(json.dumps(bilan, indent=2) + "\n")

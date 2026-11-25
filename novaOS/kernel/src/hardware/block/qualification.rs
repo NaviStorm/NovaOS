@@ -577,6 +577,19 @@ pub(crate) fn net_p9() -> Result<()> {
                 hal::log(format_args!("NET ARM flush hz={hz} cycles={flushes:?}"));
                 true
             })?;
+            if option_env!("NOVAOS_NET_SERIE")==Some("redemarrage") {
+                let reference=crate::memory::pinned_dma_frames();
+                let mut precedente=generation+1;
+                for _ in 1..4 {
+                    let nouvelle=super::net_arm::Preparation::ouvrir()?;
+                    let generation=nouvelle.domaine.generation();
+                    if generation<=precedente {nouvelle.fermer()?;return Err(Error::State);}
+                    nouvelle.trames(||true)?;
+                    if crate::memory::pinned_dma_frames()!=reference {return Err(Error::Quarantine);}
+                    precedente=generation;
+                    crate::sched::process::net_preparation::mesurer("net_cycle_restitue");
+                }
+            }
             t.begin_read(table.volume)?;
             t.finish_read()?;
             t.close()?;

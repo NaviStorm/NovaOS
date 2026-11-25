@@ -119,6 +119,33 @@ fn invalider(reg: Region, frames: &[Frame], index: u64, cookie: u32) -> Result<(
     Ok(())
 }
 
+fn permanent(i: usize) -> bool { matches!(i, 0 | 6 | 7) }
+
+fn reserver_cadres(frames: &mut [Frame;30], reprise: bool) -> Result<(), &'static str> {
+    for i in 0..frames.len() {
+        if reprise && permanent(i) { continue; }
+        if frames[i].pa != 0 { return Err("cadre deja occupe"); }
+        match Frame::allocate() {
+            Ok(f) if f.pa != 0 && f.pa < 1 << 48 && f.pa % 4096 == 0 => {
+                for off in (0..4096).step_by(8) { f.mem.w64(off, 0); }
+                frames[i] = f;
+            }
+            other => {
+                // Aucun cadre de ce lot n'a été publié dans le contexte matériel.
+                for (j, f) in frames[..i].iter_mut().enumerate() {
+                    if !reprise || !permanent(j) {
+                        unsafe { memory::release_dma(f.pa) }
+                        *f = EMPTY;
+                    }
+                }
+                if let Ok(f)=other { unsafe {memory::release_dma(f.pa)} }
+                return Err("cadres");
+            }
+        }
+    }
+    Ok(())
+}
+
 pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     if crate::smp::index() != 0 || crate::smp::count() != 1 {
         return Err("cpu");
@@ -161,23 +188,7 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     crate::sched::process::net_preparation::mesurer("net_initial");
     let reference = memory::pinned_dma_frames();
     let mut frames = [EMPTY; 30];
-    for i in 0..frames.len() {
-        match Frame::allocate() {
-            Ok(f) if f.pa != 0 && f.pa < 1 << 48 && f.pa % 4096 == 0 => {
-                for off in (0..4096).step_by(8) {
-                    f.mem.w64(off, 0);
-                }
-                frames[i] = f;
-            }
-            other => {
-                // Le DRHD ne connaît encore aucun cadre.
-                for f in frames[..i].iter().copied().chain(other.ok()) {
-                    unsafe { memory::release_dma(f.pa) }
-                }
-                return Err("cadres");
-            }
-        }
-    }
+    reserver_cadres(&mut frames, false)?;
     // Après RTADDR, conserver tous les cadres en cas de retour indéterminé.
     publier(&frames[..8], line);
     reg.w64(0x20, frames[0].pa);
@@ -192,6 +203,14 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     if !pairs_fermes() {
         return Err("PCI");
     }
+    let cycles = if cfg!(feature="net-ethernet-lab") && option_env!("NOVAOS_NET_SERIE")==Some("redemarrage") && boot::scenario()==b"net-q35-ethernet" {4u32} else {1};
+    for cycle in 0..cycles {
+    if cycle!=0 {
+        if !pairs_fermes() || reg.r32(0x1c) != ROOT | QI | TE || frames[0].mem.r64(0)!=0 { return Err("controleur non retire"); }
+        reserver_cadres(&mut frames,true)?;
+    }
+    let cookie=2+2*cycle;
+    let offset=48+96*u64::from(cycle);
     // Une seule feuille de second niveau, exactement 22 cadres NIC.
     for (idx, shift) in [39, 30, 21].into_iter().enumerate() {
         frames[2 + idx]
@@ -207,12 +226,12 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     publier(&frames[1..6], line);
     frames[0].mem.w64(0, frames[1].pa | 1);
     publier(&frames[..1], line);
-    invalider(reg, &frames, 48, 2)?;
+    invalider(reg, &frames, offset, cookie)?;
     if !pairs_fermes() || reg.r32(0x1c) != ROOT | QI | TE {
         return Err("etat terminal");
     }
     hal::log(format_args!(
-        "NET Q35 domaine=3 sid=56 iova={IOVA:#x} root={:#x} qi={:#x} recu={:#x} cookie=2 blocs=22 cadres=30",
+        "NET Q35 domaine=3 sid=56 iova={IOVA:#x} root={:#x} qi={:#x} recu={:#x} cookie={cookie} blocs=22 cadres=30",
         frames[0].pa, frames[6].pa, frames[7].pa
     ));
     #[cfg(feature = "net-event-idx")]
@@ -221,7 +240,7 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
         b"net-q35-ethernet" => {
             // Le domaine appartient exclusivement au titulaire. Une issue incertaine
             // conserve tous ses cadres épinglés jusqu'à arrêt de la VM.
-            super::block::net_event::trafic_q35(frames[8..].try_into().unwrap(),1).map_err(|e|{hal::log(format_args!("NET Q35 L2 quarantaine={e:?}")); "trafic non confirme"})?;
+            super::block::net_event::trafic_q35(frames[8..].try_into().unwrap(),u64::from(cycle)+1).map_err(|e|{hal::log(format_args!("NET Q35 L2 quarantaine={e:?}")); "trafic non confirme"})?;
             if reg.r32(0x34)!=0 {return Err("faute VT-d")}
             Ok(())
         }
@@ -237,16 +256,17 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
         }
         frames[0].mem.w64(0, 0);
         publier(&frames[..1], line);
-        invalider(reg, &frames, 96, 3)?;
+        invalider(reg, &frames, offset+48, cookie+1)?;
         if !pairs_fermes()
             || reg.r32(0x1c) != ROOT | QI | TE
             || (0..512).any(|i| frames[0].mem.r64(i * 8) != 0)
         {
             return Err("retrait incertain");
         }
-        for (i, f) in frames.iter().enumerate() {
-            if !matches!(i, 0 | 6 | 7) {
+        for (i, f) in frames.iter_mut().enumerate() {
+            if !permanent(i) {
                 unsafe { memory::release_dma(f.pa) }
+                *f=EMPTY;
             }
         }
         #[cfg(feature="net-ethernet-lab")]
@@ -258,10 +278,11 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
             return Err("restitution");
         }
         hal::log(format_args!(
-            "NET Q35 retrait cookie=3 racine_vide=true rendus=27 permanents={gardes}"
+            "NET Q35 retrait cookie={} racine_vide=true rendus=27 permanents={gardes}",cookie+1
         ));
     }
     #[cfg(feature = "net-event-idx")]
     negotiation.map_err(|_| "negociation EVENT_IDX")?;
+    }
     Ok(())
 }

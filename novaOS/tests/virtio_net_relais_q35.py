@@ -55,7 +55,7 @@ def support(elf, firmware, out, limine, retrait=False, temoin_hash=False, ethern
     dump(out/"entrees.json",{p.name:digest(p) for p in (esp/"novaos.elf",efi,conf,out/"support.raw",out/"variables.fd",firmware/"OVMF_CODE.fd")})
 
 
-def verifier_tables(vm,qt,journal,out,retrait=False):
+def verifier_tables(vm,qt,journal,out,retrait=False,cycles=1):
     m=re.search(rb"NET Q35 domaine=3 sid=56 iova=0x10000000 root=(0x[0-9a-f]+) qi=(0x[0-9a-f]+) recu=(0x[0-9a-f]+) cookie=2 blocs=22 cadres=30", journal)
     if not m:
         raise ValueError("Confirmation du noyau absente : "+repr(journal[-300:]))
@@ -64,7 +64,7 @@ def verifier_tables(vm,qt,journal,out,retrait=False):
         return reg(vm,off) | reg(vm,off+4)<<32
     base=0xfed90000
     assert reg64(base+0x20)==root and reg(vm,base+0x1c)==0xc4000000 and reg(vm,base+0x34)==0
-    fin, cookie = (144, 3) if retrait else (96, 2)
+    fin, cookie = (48+96*cycles, 1+2*cycles) if retrait else (96, 2)
     assert reg64(base+0x90)==qi and reg64(base+0x80)==reg64(base+0x88)==fin and reg(vm,recu)==cookie
     pages=set()
     def unique(pa):
@@ -83,7 +83,8 @@ def verifier_tables(vm,qt,journal,out,retrait=False):
     unique(qi); unique(recu)
     racine = page(root)
     if retrait:
-        if racine or b"NET Q35 retrait cookie=3 racine_vide=true rendus=27 permanents=3" not in journal:
+        retraits=re.findall(rb"NET Q35 retrait cookie=(\d+) racine_vide=true rendus=27 permanents=3",journal)
+        if racine or [int(v) for v in retraits]!=list(range(3,cookie+1,2)):
             raise ValueError("Racine ou compteurs incohérents après le retrait")
         dump(out/"tables.json", dict(racine=root, entrees=racine, iqa=qi, recu=recu, cookie=cookie,
                                       iqt=fin, iqh=fin, gsts=0xc4000000, cadres_rendus=27, cadres_permanents=3))
@@ -155,7 +156,7 @@ def run(a,out):
                                     total=pair.lots*16
                                     if f"NET L2 total TX={total} RX={total} index={total%65536} rearmements={pair.lots-1}".encode() not in serial:
                                         raise ValueError("Indices terminaux ou réarmements incomplets")
-                                    report["cadres_verifies"]=verifier_tables(vm,qt,serial,out,True)
+                                    report["cadres_verifies"]=verifier_tables(vm,qt,serial,out,True,pair.cycles)
                                 elif a.event_idx is not None:
                                     from virtio_net_event_idx import verifier_negociation
                                     report["negociation"] = verifier_negociation(out, a.event_idx, "Q35")
@@ -178,18 +179,40 @@ def run(a,out):
                 import json
                 if not json.loads((out/"pair.json").read_text())["succes"] or not any(w["valeur"]&4 for w in writes):
                     raise ValueError("Preuve bidirectionnelle du pair ou BME absente")
-                trace=(out/"qemu.trace").read_text()
-                feuilles=re.findall(r"vtd_iotlb_page_(?:update|hit) .*?sid 0x38 iova (0x[0-9a-f]+) slpte (0x[0-9a-f]+) domain 0x3$",trace,re.M)
-                pages={}
-                for adresse,entree in feuilles:
-                    i=(int(adresse,16)-0x10000000)//4096
-                    valeur=int(entree,16)
-                    if not 0<=i<22 or valeur&3!=(2 if i in (2,5,*range(6,14)) else 1) or pages.setdefault(i,valeur)!=valeur:
-                        raise ValueError("Traduction VT-d hors du domaine attendu")
-                if len(pages)!=22 or len({v>>12 for v in pages.values()})!=22 or "vtd_dmar_fault " in trace:
-                    raise ValueError("Feuilles actives ou absence de faute non démontrées")
-                report["pages_actives_3"]=len(pages)
-                report["trames_par_sens"]=pair.lots*16
+                import bisect
+                attributions=[]
+                bme=False
+                for w in writes:
+                    actif=bool(w["valeur"] & 4)
+                    if actif and not bme:
+                        attributions.append(w["ligne"])
+                    bme=actif
+                if len(attributions)!=pair.cycles or bme:
+                    raise ValueError("Nombre de fenêtres Bus Master incorrect")
+                pages=[{} for _ in attributions]
+                feuille=re.compile(r"vtd_iotlb_page_(?:update|hit) .*?sid 0x38 iova (0x[0-9a-f]+) slpte (0x[0-9a-f]+) domain 0x3$")
+                with (out/"qemu.trace").open() as journal:
+                    for numero,ligne in enumerate(journal,1):
+                        if ligne.startswith("vtd_dmar_fault "):
+                            raise ValueError("Faute VT-d")
+                        if not ligne.startswith("vtd_iotlb_page_") or "sid 0x38 " not in ligne:
+                            continue
+                        m=feuille.fullmatch(ligne.rstrip())
+                        epoch=bisect.bisect_right(attributions,numero)-1
+                        if not m or epoch<0:
+                            raise ValueError("Traduction hors du domaine ou du bail")
+                        adresse,valeur=(int(v,16) for v in m.groups())
+                        i=(adresse-0x10000000)//4096
+                        if not 0<=i<22 or valeur&3!=(2 if i in (2,5,*range(6,14)) else 1) or pages[epoch].setdefault(i,valeur)!=valeur:
+                            raise ValueError("Traduction VT-d hors du domaine attendu")
+                if any(len(p)!=22 or len({v>>12 for v in p.values()})!=22 for p in pages):
+                    raise ValueError("Feuilles actives incomplètes ou partagées")
+                report["pages_actives_3"]=22
+                report["attributions_verifiees"]=len(pages)
+                if pair.cycles>1:
+                    from virtio_net_pair import verifier_redemarrages
+                    verifier_redemarrages(serial.decode(),json.loads((out/"pair.json").read_text()))
+                report["trames_par_sens"]=pair.lots*pair.cycles*16
             else:
                 assert not any(w["valeur"]&4 for w in writes)
             report.update(bilan=True,bail=False,retrait=a.retrait,ecritures_commande=writes)

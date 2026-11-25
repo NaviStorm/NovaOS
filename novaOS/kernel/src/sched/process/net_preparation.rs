@@ -6,7 +6,7 @@ const IMAGE: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/net_preparation.b
 fn lots() -> u64 {
     match option_env!("NOVAOS_NET_SERIE") {
         Some("endurance") => 6250,
-        Some("rearmement") => 3,
+        Some("rearmement" | "redemarrage") => 3,
         _ => 1,
     }
 }
@@ -27,7 +27,10 @@ fn creer(mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child,
             space.write_data(m, 1, handle);
             space.write_data(m, 2, generation);
             #[cfg(feature = "net-ethernet-lab")]
-            if mode == 3 { space.write_data(m, 7, lots()); }
+            if mode == 3 {
+                space.write_data(m, 7, lots());
+                if option_env!("NOVAOS_NET_SERIE")==Some("redemarrage") {space.write_data(m,8,generation.checked_mul(65536).ok_or(crate::memory::Error::Geometry)?);}
+            }
             Ok(())
         })
         .map_err(|_| crate::abi::NO_MEMORY)?;
