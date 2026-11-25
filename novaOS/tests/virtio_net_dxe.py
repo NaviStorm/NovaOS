@@ -13,6 +13,7 @@ import time
 from installation_utm import FIRMWARE, UTM, lanceurs
 from profils_utm import disque_sequentiel
 from prototype_uefi import pflash, tpm
+from virtio_net_modele_prive import executable
 from virtio_net_confinement import ROOT, capture, digest, dump, qmp
 from virtio_net_qemu import qualification
 
@@ -45,7 +46,7 @@ def firmware_files(tmp):
 
 def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=None):
     serial = out / "serie.log"
-    args = [tmp / "qemu-aarch64-softmmu", "-L", FIRMWARE, "-machine", "virt-10.0,gic-version=3,its=off",
+    args = [executable("aarch64", tmp / "qemu-aarch64-softmmu", out), "-L", FIRMWARE, "-machine", "virt-10.0,gic-version=3,its=off",
             "-accel", "tcg", "-cpu", "cortex-a72", "-m", "256", "-smp", "1", "-display", "none",
             "-monitor", "none", "-serial", f"file:{serial}", "-qmp", "stdio", "-S", "-no-reboot",
             "-drive", f"if=pflash,unit=0,file={tmp}/code.fd,format=raw,readonly=on",

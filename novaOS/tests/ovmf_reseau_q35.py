@@ -11,6 +11,7 @@ import subprocess
 import tempfile
 import time
 
+from virtio_net_modele_prive import executable
 from virtio_net_confinement import ROOT, capture, digest, dump, qmp, reg
 from virtio_net_qemu import qualification
 
@@ -101,7 +102,7 @@ def controle_vtd(vm, qt, journal, fin):
 
 
 def arguments(code, temoin, out, absent):
-    args = [shutil.which("qemu-system-x86_64"), "-machine", "q35,smm=on", "-accel", "tcg",
+    args = [executable("x86_64", shutil.which("qemu-system-x86_64"), out), "-machine", "q35,smm=on", "-accel", "tcg",
             "-cpu", "max", "-smp", "1", "-m", "256", "-nodefaults", "-no-reboot", "-S",
             "-display", "none", "-monitor", "none", "-serial", f"file:{out}/serie.log",
             "-debugcon", f"file:{out}/efi.log", "-global", "isa-debugcon.iobase=0xe9",
