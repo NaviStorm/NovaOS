@@ -1,0 +1,570 @@
+{
+  "portee": "Annulation EXEC instrumentée après admission durable, sans portée VFS",
+  "reference": "9303e45ccf23e8687d1a30588c8bc3ba83c10fba",
+  "code_invite": "4028b32b96a9447f2d21392261b2c6151a93a2f8",
+  "contrat": "5665ba580772c4d6423b389d452eec3c6048c37e",
+  "essais_final": [
+    {
+      "profil": "x86_64-512",
+      "code": "4028b32b96a9447f2d21392261b2c6151a93a2f8",
+      "iso_sha256": "2073893bdf4e546ce8620a7dd8d99027b3be28f733d5a56957286d339523b675",
+      "registre_sha256": "9d0f180592ad37640ff44c0ed586dbad9d2194cc66f32c21cc607a3c9c91b346",
+      "p9_fixture_sha256": "ff6c43cb70d1765f8069e8290dc4cb08e4b68e4221b07276b0a7892052fde9d3",
+      "scenario": {
+        "succes": true,
+        "statut_natif": 10,
+        "marge_ticks": 1053,
+        "admission": 7,
+        "terminal": 8,
+        "enfants": 0,
+        "appel_tombe": 1,
+        "appel_finish": 1,
+        "pertes": {
+          "pending": 1,
+          "finish": 1
+        },
+        "ressources_ticket": {
+          "avant_ticket": [
+            1,
+            8,
+            56,
+            117,
+            16,
+            17,
+            1,
+            0,
+            65,
+            59354
+          ],
+          "consommation": [
+            2,
+            9,
+            57,
+            119,
+            16,
+            17,
+            1,
+            0,
+            66,
+            59353
+          ],
+          "fermeture": [
+            1,
+            8,
+            56,
+            117,
+            14,
+            17,
+            1,
+            0,
+            66,
+            59370
+          ]
+        },
+        "cadres_apres_collecte": 65
+      },
+      "marge_ms": 4212,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 3,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          164,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          164,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "verrou": {
+        "debut_attente": "2026-11-25T00:16:02.016086+00:00",
+        "conflits_evites": [],
+        "acquisition": "2026-11-25T00:16:02.016601+00:00",
+        "attente_s": 0.00036508298944681883,
+        "execution_s": 10.521849166951142,
+        "liberation": "2026-11-25T00:16:12.599377+00:00",
+        "code": 0
+      },
+      "E2": "non executee",
+      "E3": "non executee",
+      "concurrence_EXEC_G": "non executee"
+    },
+    {
+      "profil": "x86_64-4096",
+      "code": "4028b32b96a9447f2d21392261b2c6151a93a2f8",
+      "iso_sha256": "2073893bdf4e546ce8620a7dd8d99027b3be28f733d5a56957286d339523b675",
+      "registre_sha256": "9d0f180592ad37640ff44c0ed586dbad9d2194cc66f32c21cc607a3c9c91b346",
+      "p9_fixture_sha256": "bc6a76ed2614289790ec0c2b112d9e4be7dd3ef353a43f7b565265bf7c19f5a4",
+      "scenario": {
+        "succes": true,
+        "statut_natif": 10,
+        "marge_ticks": 1053,
+        "admission": 7,
+        "terminal": 8,
+        "enfants": 0,
+        "appel_tombe": 1,
+        "appel_finish": 1,
+        "pertes": {
+          "pending": 1,
+          "finish": 1
+        },
+        "ressources_ticket": {
+          "avant_ticket": [
+            1,
+            8,
+            56,
+            117,
+            16,
+            17,
+            1,
+            0,
+            65,
+            59354
+          ],
+          "consommation": [
+            2,
+            9,
+            57,
+            119,
+            16,
+            17,
+            1,
+            0,
+            66,
+            59353
+          ],
+          "fermeture": [
+            1,
+            8,
+            56,
+            117,
+            15,
+            17,
+            1,
+            0,
+            66,
+            59370
+          ]
+        },
+        "cadres_apres_collecte": 65
+      },
+      "marge_ms": 4212,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 3,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          164,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          164,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "verrou": {
+        "debut_attente": "2026-11-25T00:16:12.625589+00:00",
+        "conflits_evites": [],
+        "acquisition": "2026-11-25T00:16:12.625952+00:00",
+        "attente_s": 0.0002246249932795763,
+        "execution_s": 10.515073166927323,
+        "liberation": "2026-11-25T00:16:23.182204+00:00",
+        "code": 0
+      },
+      "E2": "non executee",
+      "E3": "non executee",
+      "concurrence_EXEC_G": "non executee"
+    },
+    {
+      "profil": "aarch64-512",
+      "code": "4028b32b96a9447f2d21392261b2c6151a93a2f8",
+      "iso_sha256": "0fd6aa6fb51917fe8e2e7fa089bd7bfd6f14c02c14192ef58fbb07905ba555a7",
+      "registre_sha256": "0309387108a70ab156c3dc35022140dccf53fa4b6a022d3039b4c1902a77e29f",
+      "p9_fixture_sha256": "6be7fd49a56f0da9c32ff8748700e2e181d40559afb31fcb2308ae1cd1ca80d4",
+      "scenario": {
+        "succes": true,
+        "statut_natif": 10,
+        "marge_ticks": 956,
+        "admission": 7,
+        "terminal": 8,
+        "enfants": 0,
+        "appel_tombe": 1,
+        "appel_finish": 1,
+        "pertes": {
+          "pending": 1,
+          "finish": 1
+        },
+        "ressources_ticket": {
+          "avant_ticket": [
+            1,
+            8,
+            56,
+            117,
+            16,
+            17,
+            1,
+            0,
+            65,
+            58844
+          ],
+          "consommation": [
+            2,
+            9,
+            57,
+            119,
+            16,
+            17,
+            1,
+            0,
+            66,
+            58843
+          ],
+          "fermeture": [
+            1,
+            8,
+            56,
+            117,
+            15,
+            17,
+            1,
+            0,
+            66,
+            58861
+          ]
+        },
+        "cadres_apres_collecte": 65
+      },
+      "marge_ms": 3824,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 3,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          162,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          162,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ]
+      },
+      "verrou": {
+        "debut_attente": "2026-11-25T00:16:26.856064+00:00",
+        "conflits_evites": [],
+        "acquisition": "2026-11-25T00:16:26.856415+00:00",
+        "attente_s": 0.00022195803467184305,
+        "execution_s": 19.322571583092213,
+        "liberation": "2026-11-25T00:16:46.221117+00:00",
+        "code": 0
+      },
+      "E2": "non executee",
+      "E3": "non executee",
+      "concurrence_EXEC_G": "non executee"
+    },
+    {
+      "profil": "aarch64-4096",
+      "code": "4028b32b96a9447f2d21392261b2c6151a93a2f8",
+      "iso_sha256": "0fd6aa6fb51917fe8e2e7fa089bd7bfd6f14c02c14192ef58fbb07905ba555a7",
+      "registre_sha256": "0309387108a70ab156c3dc35022140dccf53fa4b6a022d3039b4c1902a77e29f",
+      "p9_fixture_sha256": "f8cc554c6a99d4537424dffc4313a4c98146e3216507fb7c50ccc8a48b5a1158",
+      "scenario": {
+        "succes": true,
+        "statut_natif": 10,
+        "marge_ticks": 1058,
+        "admission": 7,
+        "terminal": 8,
+        "enfants": 0,
+        "appel_tombe": 1,
+        "appel_finish": 1,
+        "pertes": {
+          "pending": 1,
+          "finish": 1
+        },
+        "ressources_ticket": {
+          "avant_ticket": [
+            1,
+            8,
+            56,
+            117,
+            16,
+            17,
+            1,
+            0,
+            65,
+            58844
+          ],
+          "consommation": [
+            2,
+            9,
+            57,
+            119,
+            16,
+            17,
+            1,
+            0,
+            66,
+            58843
+          ],
+          "fermeture": [
+            1,
+            8,
+            56,
+            117,
+            15,
+            17,
+            1,
+            0,
+            66,
+            58861
+          ]
+        },
+        "cadres_apres_collecte": 65
+      },
+      "marge_ms": 4232,
+      "racines_par_pid": {
+        "2": 4,
+        "3": 4,
+        "4": 3,
+        "5": 2,
+        "1": 4,
+        "6": 4,
+        "7": 4,
+        "8": 4,
+        "9": 4,
+        "10": 4,
+        "11": 3,
+        "12": 4,
+        "13": 4,
+        "14": 2,
+        "15": 2,
+        "18": 2,
+        "19": 4,
+        "20": 2
+      },
+      "registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          162,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          162,
+          64,
+          31
+        ]
+      },
+      "signataire": {
+        "avant": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          65,
+          64,
+          31
+        ]
+      },
+      "verrou": {
+        "debut_attente": "2026-11-25T00:16:46.246921+00:00",
+        "conflits_evites": [],
+        "acquisition": "2026-11-25T00:16:46.247310+00:00",
+        "attente_s": 0.0002234999556094408,
+        "execution_s": 16.241865916992538,
+        "liberation": "2026-11-25T00:17:02.531747+00:00",
+        "code": 0
+      },
+      "E2": "non executee",
+      "E3": "non executee",
+      "concurrence_EXEC_G": "non executee"
+    }
+  ],
+  "chronometrage": {
+    "attente_verrou_s": 0.003708583884872496,
+    "banc_total_s": 180.59039237489924,
+    "banc_avec_qemu_s": 179.89843229192775,
+    "banc_final_s": 56.601359833963215,
+    "conflits_evites": 0
+  },
+  "tests_hotes_autorite": 19,
+  "tests_nat_layout_par_cible": 19,
+  "controles_abi": 9,
+  "budget_statique": [
+    4026,
+    4096
+  ]
+}
