@@ -1,6 +1,7 @@
 """Construire une copie privée du modèle QEMU avec le seul diff RX approuvé."""
 import argparse
 import hashlib
+import gzip
 import json
 import os
 from pathlib import Path
@@ -22,7 +23,7 @@ def sha(path):
         return hashlib.file_digest(f, "sha256").hexdigest()
 
 
-def construire(root, version, python, jobs, essai, dtc):
+def construire(root, version, python, jobs, essai, dtc, faute=False):
     arch, expected = VERSIONS[version]
     (root / "compilation").mkdir(exist_ok=True)
     (root / "modeles").mkdir(exist_ok=True)
@@ -30,7 +31,8 @@ def construire(root, version, python, jobs, essai, dtc):
     patch = BASELINE / "proposition-num-buffers.diff"
     if sha(archive) != expected or sha(patch) != "64bba00421bea605521de0514a5639730fa61fee2e1de2ee55480608bec832ef":
         raise ValueError("Source ou diff différent de la référence de revue")
-    work = Path(os.environ["NOVAOS_TMPDIR"]) / f"net-modele-rx-{version}-{essai}"
+    famille = "rx-faute" if faute else "rx"
+    work = Path(os.environ["NOVAOS_TMPDIR"]) / f"net-modele-{famille}-{version}-{essai}"
     work.mkdir()
     subprocess.run(["tar", "-xf", archive, "-C", work], check=True)
     src = work / f"qemu-{version}"
@@ -47,6 +49,13 @@ def construire(root, version, python, jobs, essai, dtc):
     with patch.open("rb") as f:
         subprocess.run(["patch", "-p1", "-F", "0"], cwd=src, stdin=f, check=True)
     shutil.copyfile(source, out / "virtio-net-corrige.c")
+    base_corrige = sha(source)
+    if faute:
+        with gzip.open(ROOT / "tests/virtio_net_faute_rx.diff.gz", "rb") as f:
+            injection = f.read()
+        subprocess.run(["patch", "-p1", "-F", "0"], cwd=src, input=injection, check=True)
+        shutil.copyfile(source, out / "virtio-net-faute.c")
+        (out / "virtio_net_faute_rx.diff").write_bytes(injection)
     build = work / "build-prive"
     build.mkdir()
     opts = [str(src / "configure"), f"--target-list={arch}-softmmu",
@@ -62,6 +71,8 @@ def construire(root, version, python, jobs, essai, dtc):
     ninja = ["ninja", f"-j{jobs}", "qemu-system-" + arch]
     info = dict(version=tag, distribution=version, cible=arch, archive=expected, original=sha(out / "virtio-net-original.c"), corrige=sha(source),
                 diff=sha(patch), configure=opts, ninja=ninja)
+    if faute:
+        info.update(diff_faute=hashlib.sha256(injection).hexdigest(), base_corrige=base_corrige)
     dest = root / "modeles" / ("qemu-system-" + arch)
     if version.endswith("-utm"):
         dest = dest.parent / "utm" / dest.name
@@ -90,5 +101,6 @@ if __name__ == "__main__":
     p.add_argument("--jobs", default=4, type=int, choices=range(1, 17))
     p.add_argument("--dtc", required=True, type=Path)
     p.add_argument("--essai", required=True, type=int, choices=range(1, 100))
+    p.add_argument("--faute", action="store_true", help="copie expérimentale pour une complétion RX manquante")
     a = p.parse_args()
-    construire(a.archive.resolve(), a.version, a.python, a.jobs, a.essai, a.dtc.resolve(strict=True))
+    construire(a.archive.resolve(), a.version, a.python, a.jobs, a.essai, a.dtc.resolve(strict=True), a.faute)
