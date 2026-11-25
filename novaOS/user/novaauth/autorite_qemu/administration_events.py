@@ -42,6 +42,19 @@ class Events:
             raise Refus('acteur de l’événement absent ou ambigu')
         return int(matches[0][1])
 
+    def wait_from_start(self, pattern, seconds):
+        """Observer depuis la borne de ce démarrage, sans déplacer le curseur des commandes."""
+        saved = self.serial.offset
+        try:
+            self.serial.offset = self.start
+            return self.serial.expect(pattern, seconds)
+        finally:
+            self.serial.offset = saved
+
+    def wait_actor(self, message, seconds):
+        self.wait_from_start(self.pattern(message), seconds)
+        return self.actor(message)
+
     def expect(self, pid, message, seconds):
         key = (pid, message)
         if key in self.used:

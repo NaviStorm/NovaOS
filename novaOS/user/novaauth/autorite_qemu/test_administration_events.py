@@ -28,6 +28,49 @@ class EventTests(unittest.TestCase):
         self.assertTrue(e.records[0]['deja_recu'])
         with self.assertRaises(Refus):e.expect(11,message,1)
 
+    def test_wait_actor_reads_late_announcement_and_preserves_prompt(self):
+        message = b'NAR2 Bob attente declenchement authentification'
+        serial = Serial(b'DEBUG pid=8 ' + message + b'\n')
+        serial.pending = b'DEBUG pid=1 registre pret\r\n'
+        events = Events.before_ready(serial, rb'registre pret', 1)
+        cursor = serial.offset
+        serial.pending = b'nsh> DEBUG pid=11 ' + message + b'\r\n'
+        self.assertEqual(events.wait_actor(message, 1), 11)
+        self.assertEqual(serial.offset, cursor)
+        self.assertIsNotNone(serial.expect(rb'nsh>', 1))
+
+    def test_startup_prompt_before_registry_ready_then_bob(self):
+        serial = Serial(b'nsh> ancienne instance\n')
+        serial.pending = b'nsh> DEBUG pid=1 registre pret\r\n'
+        events = Events.before_ready(serial, rb'registre pret', 1)
+        cursor = serial.offset
+        serial.pending = b'DEBUG pid=11 Bob pret\r\n'
+        self.assertEqual(events.wait_actor(b'Bob pret', 1), 11)
+        events.wait_from_start(rb'(?m)^nsh> ', 1)
+        self.assertEqual(serial.offset, cursor)
+
+    def test_previous_boot_prompt_alone_is_refused(self):
+        serial = Serial(b'nsh> ancienne instance\n')
+        serial.pending = b'DEBUG pid=1 registre pret\r\n'
+        events = Events.before_ready(serial, rb'registre pret', 1)
+        cursor = serial.offset
+        with self.assertRaises(TimeoutError):
+            events.wait_from_start(rb'(?m)^nsh> ', 1)
+        self.assertEqual(serial.offset, cursor)
+
+    def test_wait_actor_failure_restores_cursor(self):
+        message = b'Bob pret'
+        for pending, error in [(b'DEBUG pid=11 Bob pre', TimeoutError),
+                               (b'DEBUG pid=11 Bob pret\nDEBUG pid=5 Bob pret\n', Refus)]:
+            with self.subTest(pending=pending):
+                serial = Serial(b'DEBUG pid=7 Bob pret\n')
+                events = Events(serial, serial.offset)
+                serial.pending = pending
+                cursor = serial.offset
+                with self.assertRaises(error):
+                    events.wait_actor(message, 1)
+                self.assertEqual(serial.offset, cursor)
+
     def test_absent_announcement_is_not_success(self):
         s=Serial(b'');s.pending=b'NAEXEC registre pret puis connexion du vrai nsh\n'
         e=Events.before_ready(s, rb'NAEXEC registre pret puis connexion du vrai nsh', 1)

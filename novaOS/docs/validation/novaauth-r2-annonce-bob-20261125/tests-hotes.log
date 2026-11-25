@@ -1,0 +1,22 @@
+test_atomic_status_survives_interleaved_prompt (test_administration_events.CommandStatusTests.test_atomic_status_survives_interleaved_prompt) ... ok
+test_echo_incomplete_other_step_and_absence_do_not_pass (test_administration_events.CommandStatusTests.test_echo_incomplete_other_step_and_absence_do_not_pass) ... ok
+test_invalid_step_refused (test_administration_events.CommandStatusTests.test_invalid_step_refused) ... ok
+test_normal_status_and_native_failure_are_preserved (test_administration_events.CommandStatusTests.test_normal_status_and_native_failure_are_preserved) ... ok
+test_previous_command_not_reused (test_administration_events.CommandStatusTests.test_previous_command_not_reused) ... ok
+test_real_aarch64_interleaving_after_complete_status (test_administration_events.CommandStatusTests.test_real_aarch64_interleaving_after_complete_status) ... ok
+test_absent_announcement_is_not_success (test_administration_events.EventTests.test_absent_announcement_is_not_success) ... ok
+test_actor_requires_unique_event (test_administration_events.EventTests.test_actor_requires_unique_event) ... ok
+test_bob_announcement_before_registry_ready (test_administration_events.EventTests.test_bob_announcement_before_registry_ready) ... ok
+test_duplicate_marker_refused (test_administration_events.EventTests.test_duplicate_marker_refused) ... ok
+test_event_already_consumed_by_command_is_observed_once (test_administration_events.EventTests.test_event_already_consumed_by_command_is_observed_once) ... ok
+test_new_event_preserves_command_cursor_and_bytes (test_administration_events.EventTests.test_new_event_preserves_command_cursor_and_bytes) ... ok
+test_other_pid_or_previous_scenario_does_not_match (test_administration_events.EventTests.test_other_pid_or_previous_scenario_does_not_match) ... ok
+test_previous_boot_prompt_alone_is_refused (test_administration_events.EventTests.test_previous_boot_prompt_alone_is_refused) ... ok
+test_startup_prompt_before_registry_ready_then_bob (test_administration_events.EventTests.test_startup_prompt_before_registry_ready_then_bob) ... ok
+test_wait_actor_failure_restores_cursor (test_administration_events.EventTests.test_wait_actor_failure_restores_cursor) ... ok
+test_wait_actor_reads_late_announcement_and_preserves_prompt (test_administration_events.EventTests.test_wait_actor_reads_late_announcement_and_preserves_prompt) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.001s
+
+OK

@@ -1,0 +1,14 @@
+--- a/essai-ancien.py
++++ b/essai-ancien.py
+@@ -73,8 +73,9 @@
+             observer=Observer(control,arch,images/f'{arch}-kernel.elf',evidence)
+             stack.callback(observer.close)
+             events=Events.before_ready(serial,rb'NAEXEC registre pret puis connexion du vrai nsh',100)
+-            bob_pid=events.actor(b'NAR2 Bob attente declenchement authentification')
+-            serial.expect(rb'nsh>',30)
++            bob_pid=events.wait_actor(b'NAR2 Bob attente declenchement authentification', 20)
++            events.wait_from_start(rb'(?m)^nsh> ', 30)
++            serial.offset=len(serial.data)
+             cmd='usermod --remove-group base bob'
+             serial.submit(cmd+' --prepare; echo NXR2_0_$?__FIN')
+             result=serial.expect(observed_command_status_pattern('NXR2_0_'),40)

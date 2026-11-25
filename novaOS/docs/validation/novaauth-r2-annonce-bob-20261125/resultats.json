@@ -1,0 +1,337 @@
+[
+  {
+    "essai": "original",
+    "rapport": {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "code_invite": "5361ff40c7f6546ddad777d7d5286a370dcd46e5",
+      "iso_sha256": "f0fa837acf5036f3de48e646f825873bd2c07621571b3a26dba398188fea1f04",
+      "p9_initial_sha256": "334590fd06947c4f9aaf4e18c9c9b3fedcb5887b9b6aafba59b53eebc1d07048",
+      "statut": "échec",
+      "erreur_invite": "acteur de l’événement absent ou ambigu",
+      "succes": false,
+      "debut_ms": 648,
+      "echeance_ms": 10648,
+      "fin_ms": 3108,
+      "relais_draine": true,
+      "plafond_respecte": true,
+      "cinquieme_racine_refusee": true,
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          169,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          169,
+          64,
+          31
+        ]
+      },
+      "duree_hote_ns": 5380068042
+    },
+    "observations_serie": {
+      "invite": [
+        {
+          "octet": 5935,
+          "ligne": 80
+        }
+      ],
+      "registre_pret": [
+        {
+          "octet": 10959,
+          "ligne": 154
+        }
+      ],
+      "annonce_Bob": [],
+      "arret_QEMU": [
+        {
+          "octet": 11020,
+          "ligne": 155
+        }
+      ]
+    },
+    "sha256_serie": "7032b2c057d6722bf38787b8d32a2a0e27b2ec7f6a584562043c1f413e4bef2d",
+    "sha256_resultat": "efa89e34e97e72719b5eb23028bb76160dc1129b6008eb2d85b6c77c593d8153",
+    "verrou": {
+      "debut_attente": "2026-11-25T01:15:52.612409+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T01:15:52.612818+00:00",
+      "attente_s": 0.0002562080044299364,
+      "execution_s": 6.251204041996971,
+      "liberation": "2026-11-25T01:15:58.909619+00:00",
+      "code": 1
+    },
+    "collecteur": {
+      "erreur": "BrokenPipeError: [Errno 32] Broken pipe",
+      "dernier_pc": null,
+      "sessions": 0,
+      "evenements": 0,
+      "succession_explicite": false,
+      "arret_demande": false
+    }
+  },
+  {
+    "essai": "attente-annonce",
+    "rapport": {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "code_invite": "5361ff40c7f6546ddad777d7d5286a370dcd46e5",
+      "iso_sha256": "f0fa837acf5036f3de48e646f825873bd2c07621571b3a26dba398188fea1f04",
+      "p9_initial_sha256": "334590fd06947c4f9aaf4e18c9c9b3fedcb5887b9b6aafba59b53eebc1d07048",
+      "statut": "échec",
+      "erreur_invite": "b'nsh>'",
+      "succes": false,
+      "debut_ms": 592,
+      "echeance_ms": 10592,
+      "fin_ms": 3108,
+      "relais_draine": true,
+      "plafond_respecte": true,
+      "cinquieme_racine_refusee": true,
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          169,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          169,
+          64,
+          31
+        ]
+      },
+      "duree_hote_ns": 35188305208
+    },
+    "observations_serie": {
+      "invite": [
+        {
+          "octet": 5935,
+          "ligne": 80
+        }
+      ],
+      "registre_pret": [
+        {
+          "octet": 10898,
+          "ligne": 153
+        }
+      ],
+      "annonce_Bob": [
+        {
+          "octet": 10959,
+          "ligne": 154,
+          "pid": 11
+        }
+      ],
+      "arret_QEMU": [
+        {
+          "octet": 16249,
+          "ligne": 218
+        }
+      ]
+    },
+    "sha256_serie": "88b604bdddbb31b7dd3a3bd376e2868b930b5a832f73997af66c8cdfa55828fa",
+    "sha256_resultat": "a21f228735006eaf29709dc135694b13d615b57b7c9bf644b54120d9460093e1",
+    "verrou": {
+      "debut_attente": "2026-11-25T01:30:31.634390+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T01:30:31.634759+00:00",
+      "attente_s": 0.00023379200138151646,
+      "execution_s": 35.9695043329848,
+      "liberation": "2026-11-25T01:31:07.633083+00:00",
+      "code": 1
+    },
+    "collecteur": {
+      "erreur": "BrokenPipeError: [Errno 32] Broken pipe",
+      "dernier_pc": null,
+      "sessions": 0,
+      "evenements": 0,
+      "succession_explicite": false,
+      "arret_demande": false
+    }
+  },
+  {
+    "essai": "attente-annonce-et-invite",
+    "rapport": {
+      "architecture": "x86_64",
+      "secteur": 512,
+      "code_invite": "5361ff40c7f6546ddad777d7d5286a370dcd46e5",
+      "iso_sha256": "f0fa837acf5036f3de48e646f825873bd2c07621571b3a26dba398188fea1f04",
+      "p9_initial_sha256": "334590fd06947c4f9aaf4e18c9c9b3fedcb5887b9b6aafba59b53eebc1d07048",
+      "statut": "diagnostic terminé ; consulter succes et scenario_admissions",
+      "succes": true,
+      "debut_ms": 592,
+      "echeance_ms": 10592,
+      "fin_ms": 3036,
+      "relais_draine": true,
+      "plafond_respecte": true,
+      "cinquieme_racine_refusee": true,
+      "ressources": {
+        "avant": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "actif": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          6,
+          0,
+          73,
+          64,
+          31
+        ]
+      },
+      "ressources_registre": {
+        "avant": [
+          4,
+          7,
+          0,
+          169,
+          64,
+          31
+        ],
+        "apres": [
+          4,
+          7,
+          0,
+          169,
+          64,
+          31
+        ]
+      },
+      "duree_hote_ns": 5122403792,
+      "scenario_admissions": {
+        "succes": true,
+        "objet": "annonce Bob et invite nsh uniquement",
+        "annonce_deja_presente": false,
+        "debut_observation": 0,
+        "curseur_pret": 11018,
+        "octets_recus_au_pret": 11020,
+        "position_annonce": 11020,
+        "pid_annonce": 11,
+        "curseur_apres_prompt": 11018,
+        "position_prompt": 5935
+      }
+    },
+    "observations_serie": {
+      "invite": [
+        {
+          "octet": 5935,
+          "ligne": 80
+        }
+      ],
+      "registre_pret": [
+        {
+          "octet": 10959,
+          "ligne": 154
+        }
+      ],
+      "annonce_Bob": [
+        {
+          "octet": 11020,
+          "ligne": 155,
+          "pid": 11
+        }
+      ],
+      "arret_QEMU": [
+        {
+          "octet": 11082,
+          "ligne": 156
+        }
+      ]
+    },
+    "sha256_serie": "9909b53f2fc0dba74e3023fa04a1cf0773a351754ce9cb2dc6ed953fcc2f1d91",
+    "sha256_resultat": "ec19966e3735df702363978b25da45dc213f38a502a078af833ffb55acf2265b",
+    "verrou": {
+      "debut_attente": "2026-11-25T01:32:41.136024+00:00",
+      "conflits_evites": [],
+      "acquisition": "2026-11-25T01:32:41.136413+00:00",
+      "attente_s": 0.000255958060733974,
+      "execution_s": 5.890427291044034,
+      "liberation": "2026-11-25T01:32:47.056196+00:00",
+      "code": 0
+    },
+    "collecteur": {
+      "erreur": null,
+      "dernier_pc": null,
+      "sessions": 0,
+      "evenements": 0,
+      "succession_explicite": false,
+      "arret_demande": true
+    }
+  }
+]
