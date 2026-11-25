@@ -99,11 +99,13 @@ Les images de développement se construisent aujourd’hui depuis le workspace N
 
 ## Feuille de route
 
+NovaAuth v0.24.0 R2 est temporairement suspendu. La proposition de réorganisation place le réseau virtuel isolé en premier et conserve les exigences NovaAuth de la première stable. Le durcissement avancé est inscrit en post-stable. [Ordre des chantiers soumis à arbitrage](novaOS/docs/reconciliation-v0300/proposition.md#séquencement-proposé-pendant-la-suspension-de-novaauth-r2) · [État et preuves de R2](novaOS/docs/novaauth-r2-suspension-20261125.md)
+
 Le serveur devra prendre en charge les usages déclarés de bout en bout sur **QEMU x86_64**, référence principale, et **QEMU AArch64**, seconde référence obligatoire. Les critères couvrent l’installation autonome, les comptes et ACL, les données surprotégées, les threads utilisateur, la CLI/TUI, le réseau double pile et son pare-feu, les services, le serveur SSH, le client SSH, les transferts SFTP et la reprise après incident. L’équivalence avec un serveur Linux s’évalue sur ces usages. Le Tecra A50-J reste une cible physique expérimentale. [Décisions MOA](novaOS/docs/reconciliation-v0300/decisions.md) · [Parcours serveur bloquants](novaOS/docs/reconciliation-v0300/acceptation-serveur.md)
 
 La distribution vise une base système immuable et des données utilisateur modifiables. Les garanties de mise à jour signée, de rollback et de restauration avec les droits en vigueur restent à réaliser. Les catalogues de pools et volumes chiffrés natifs restent ouverts. Pour v0.30.0, les compilateurs Rust, C et C++, l’éditeur de liens, les bibliothèques et les outils de construction, dont Cargo, devront s’exécuter sur NovaOS. Depuis `nsh`, chaque programme de référence devra être compilé, lié puis exécuté sur place. NovaWM et NovaUI sont conservés pour l’après-stable, sans numéro attribué. [Plan de livraison proposé](novaOS/docs/reconciliation-v0300/proposition.md)
 
-La qualification du service natif de sauvegarde et de restauration doit précéder la livraison des compilateurs Rust, C et C++. La récupération du registre NovaAuth fait d’abord l’objet d’une proposition 2-sur-2 pour QEMU, soumise à arbitrage. [Contrat de récupération et critères de passage à la production](novaOS/docs/novaauth-recuperation-2-sur-2-v0.24.0.md)
+La qualification du service natif de sauvegarde et de restauration doit précéder la livraison des compilateurs Rust, C et C++. La récupération 2-sur-2 du registre dispose de preuves en laboratoire QEMU. La qualification du service natif de production reste ouverte. [Contrat de récupération et critères de passage à la production](novaOS/docs/novaauth-recuperation-2-sur-2-v0.24.0.md)
 
 ## Contribuer
 
