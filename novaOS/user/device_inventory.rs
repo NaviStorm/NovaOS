@@ -5,6 +5,11 @@ pub const RECORD: usize = 16;
 pub const MAX_DEVICES: usize = 128;
 pub const PRIVATE_PAGE: usize = 4096;
 
+/// Identifiant PCI moderne du type VirtIO 1, classe contrôleur Ethernet.
+pub fn virtio_net(vendor: u16, device: u16, class: u8, subclass: u8) -> bool {
+    (vendor, device, class, subclass) == (0x1af4, 0x1041, 0x02, 0)
+}
+
 // segment LE, bus, devfn, constructeur LE, modèle LE, classe, sous-classe,
 // interface, masque BAR, pin INTx, flags MSI/MSI-X/PCIe, ligne IRQ, en-tête.
 pub fn model(vendor: u16, device: u16) -> Option<(usize, &'static [u8])> {

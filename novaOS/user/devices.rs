@@ -62,6 +62,11 @@ fn inspect(page: &[u8]) -> bool {
         if observed.matching(catalog).is_some() {
             return false;
         }
+        if wire::virtio_net(vendor, device, r[8], r[9])
+            && !diagnostic(b"VirtIO-net PCI moderne inventorie")
+        {
+            return false;
+        }
         if let Some((i, name)) = wire::model(vendor, device) {
             if seen & (1 << i) == 0 && !diagnostic(name) {
                 return false;

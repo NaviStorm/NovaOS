@@ -103,11 +103,12 @@ def verify(text, roots, arch, acpi_off, granted):
     return len(found)
 
 
-def run(arch, iso, acpi_off, granted):
+def run(arch, iso, acpi_off, granted, *, network=False, directory=None):
     name = f"{arch}-{'sans-acpi' if acpi_off else 'acpi'}"
     if not granted:
         name += "-sans-acces-pci"
-    directory = Path(tempfile.mkdtemp(prefix=f"materiel-{name}-", dir=BUILD))
+    if directory is None:
+        directory = Path(tempfile.mkdtemp(prefix=f"materiel-{name}-", dir=BUILD))
     serial, stderr = directory / "serie.log", directory / "qemu.log"
     args = [
         "sh", str(ROOT / "scripts/qemu.sh"), "-display", "none", "-monitor", "none",
@@ -115,6 +116,10 @@ def run(arch, iso, acpi_off, granted):
         "-device", "pcie-root-port,id=inventaire-pont,bus=pcie.0,addr=0a.0,chassis=1",
         "-device", "virtio-rng-pci,id=inventaire-enfant,bus=inventaire-pont,disable-legacy=on",
     ]
+    if network:
+        # Hub interne sans autre port, sans TAP, SLIRP ni interface hôte.
+        args.extend(["-netdev", "hubport,id=netlab,hubid=17", "-device",
+                     "virtio-net-pci,id=nic,netdev=netlab,addr=07.0,disable-legacy=on,romfile="])
     if acpi_off:
         args.extend(["-machine", "acpi=off"])
     env = {**os.environ, "NOVA_ARCH": arch, "NOVA_ISO": str(iso)}
@@ -137,6 +142,14 @@ def run(arch, iso, acpi_off, granted):
             roots = qmp(vm, "query-pci")
             (directory / "qmp.json").write_text(json.dumps(roots, indent=2) + "\n")
             count = verify(text, roots, arch, acpi_off, granted)
+            if network:
+                nic = [dev for bus in roots for dev in bus["devices"] if dev["qdev_id"] == "nic"]
+                if (len(nic) != 1 or nic[0]["slot"] != 7 or nic[0]["id"]["device"] != 0x1041
+                        or nic[0]["id"]["vendor"] != 0x1af4 or nic[0]["class_info"]["class"] != 0x0200):
+                    raise RuntimeError("Identité ou classe Ethernet inattendue dans QMP")
+                marker = re.findall(r"DEBUG pid=(\d+) VirtIO-net PCI moderne inventorie", text)
+                if len(marker) != 1 or f"DEBUG pid={marker[0]} MATERIEL gestionnaire inventaire lu" not in text:
+                    raise RuntimeError("La carte doit être reconnue par le gestionnaire invité")
             qmp(vm, "quit")
             if vm.wait(timeout=5):
                 raise RuntimeError(f"Arrêt anormal de QEMU, voir {stderr}")
