@@ -21,7 +21,12 @@ fn creer(mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child,
         })
         .map_err(|_| crate::abi::NO_MEMORY)?;
         hal::log(format_args!(
-            "NET ARM pilote pid={} mode={mode} racines={count} generation={generation}",
+            "NET {} pilote pid={} mode={mode} racines={count} generation={generation}",
+            if cfg!(target_arch = "aarch64") {
+                "ARM"
+            } else {
+                "Q35"
+            },
             pid.number
         ));
         Ok::<_, u64>(handle)
@@ -98,4 +103,126 @@ pub(crate) fn tester(generation: u64, preparer: impl FnOnce() -> bool) -> bool {
         "NET ARM pilote collecte resultat={fin:?} racines={racines} ipc_avant={initial} ipc_apres={pages}"
     ));
     ok && fin == Outcome::Exit(0) && pages == initial && racines == 0
+}
+
+#[cfg(feature = "net-ethernet-lab")]
+pub(crate) fn ethernet(
+    generation: u64,
+    mut operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
+) -> bool {
+    measure("net_avant_pilote");
+    let initial = with(|s| s.ipc.pages());
+    let Some((actif, handle)) = creer(3, None, generation) else {
+        return false;
+    };
+    let pid = actif.0;
+    let mut copie = [0u8; 1526];
+    let mut ok = true;
+    for seq in 1..=35u64 {
+        if seq == 19 {
+            measure("net_files_pleines");
+        }
+        let tag = match seq {
+            1 => 1,
+            2..=18 => 2,
+            19..=34 => 3,
+            _ => 4,
+        };
+        if demande(pid, handle) != Some((tag, generation, seq)) {
+            ok = false;
+            break;
+        }
+        let debut = ticks();
+        loop {
+            // Le contrôle d'instance, l'accès à la copie et la publication de descripteur
+            // sont indivisibles sur le BSP. Relâcher la garde avant l'attente d'une IRQ.
+            let gate = Guard::new();
+            let res = with_guard(&gate, |s| {
+                if !s.ipc.lab_can_submit(pid, handle) || s.processes.get(pid).outcome.is_some() {
+                    return Err(crate::abi::REVOKED);
+                }
+                let space = s
+                    .processes
+                    .get(pid)
+                    .space
+                    .as_ref()
+                    .ok_or(crate::abi::REVOKED)?;
+                let len = heap::with_pages(|m| Ok(space.read_data(m, 6)))
+                    .map_err(|_| crate::abi::NO_MEMORY)? as usize;
+                if (tag == 2
+                    && (!(26..=1526).contains(&len)
+                        || !heap::with_pages(|m| {
+                            Ok(space.copy_from_user(m, 0x401100, &mut copie[..len]))
+                        })
+                        .unwrap_or(false)))
+                    || (tag != 2 && len != 0)
+                {
+                    return Err(crate::abi::BAD_ARGUMENT);
+                }
+                let n = operation(tag, len, &mut copie)?;
+                if tag == 3
+                    && (n > copie.len()
+                        || !heap::with_pages(|m| Ok(space.copy_to_user(m, 0x401100, &copie[..n])))
+                            .unwrap_or(false))
+                {
+                    return Err(crate::abi::BAD_ARGUMENT);
+                }
+                Ok(n)
+            });
+            let res = if tag == 3
+                && res == Err(crate::abi::WOULD_BLOCK)
+                && ticks().wrapping_sub(debut) >= u64::from(HZ) * 3
+            {
+                Err(crate::abi::TIMED_OUT)
+            } else {
+                res
+            };
+            if tag == 3 && res == Err(crate::abi::WOULD_BLOCK) {
+                drop(gate);
+                sleep(1);
+                continue;
+            }
+            with_guard(&gate, |s| {
+                if let Some(space) = s.processes.get(pid).space.as_ref() {
+                    heap::with_pages(|m| {
+                        space.write_data(m, 5, res.unwrap_or(0) as u64);
+                        space.write_data(m, 4, res.err().unwrap_or(crate::abi::OK));
+                        space.write_data(m, 3, seq);
+                        Ok(())
+                    })
+                    .unwrap();
+                }
+            });
+            if seq == 18 && res == Err(crate::abi::WOULD_BLOCK) {
+                hal::log(format_args!(
+                    "NET L2 saturation TX=16 statut={}",
+                    crate::abi::WOULD_BLOCK
+                ));
+                break;
+            }
+            if seq == 18 {
+                ok = false;
+            }
+            if let Err(reason) = res {
+                hal::log(format_args!(
+                    "NET L2 refus seq={seq} tag={tag} statut={reason}"
+                ));
+                ok = false;
+            }
+            break;
+        }
+        if !ok {
+            break;
+        }
+    }
+    // Fermer l'endpoint avant la collecte. L'appelant retire le domaine et les pages.
+    ok &= operation(5, 0, &mut copie).is_ok();
+    with(|s| s.ipc.lab_close_sender(pid, handle));
+    let fin = actif.join();
+    let (pages, racines) = with(|s| (s.ipc.pages(), s.ipc.racines_pilotes(pid)));
+    measure("net_apres_pilote");
+    hal::log(format_args!(
+        "NET L2 pilote fin={fin:?} racines={racines} ipc_avant={initial} ipc_apres={pages}"
+    ));
+    ok && fin == Outcome::Exit(0) && racines == 0 && pages == initial
 }

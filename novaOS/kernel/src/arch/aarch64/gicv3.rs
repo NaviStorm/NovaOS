@@ -150,6 +150,11 @@ pub(super) fn select_disk(id: u32) -> crate::hardware::block::Result<()> {
 /// Témoin de la route réservée. Le NIC demeure masqué côté PCI.
 #[cfg(feature = "net-arm-lab")]
 pub(crate) fn preparer_spi_reseau() -> crate::hardware::block::Result<()> {
+    armer_spi_reseau(true)
+}
+
+#[cfg(feature="net-arm-lab")]
+pub(crate) fn armer_spi_reseau(injection: bool) -> crate::hardware::block::Result<()> {
     use crate::hardware::block::Error;
     let _garde = crate::hal::interrupts::Guard::new();
     let bit = 1 << (38 - 32);
@@ -162,7 +167,7 @@ pub(crate) fn preparer_spi_reseau() -> crate::hardware::block::Result<()> {
         return Err(Error::Route);
     }
     // GICD_ISPENDR, injection logicielle sans transaction DMA.
-    write(DIST, 0x204, bit);
+    if injection {write(DIST, 0x204, bit);}
     Ok(())
 }
 

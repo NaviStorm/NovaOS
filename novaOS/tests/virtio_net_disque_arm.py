@@ -59,9 +59,9 @@ def mesures(serial, prefix, count):
     return result
 
 
-def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_idx=None):
+def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_idx=None, ethernet=False):
     dossier.mkdir(parents=True, exist_ok=False)
-    report = {"elf_sha256": digest(elf), "bail_nic": False, "secteur": secteur}
+    report = {"elf_sha256": digest(elf), "trafic_demande": ethernet, "bail_nic": False, "secteur": secteur}
     try:
         src = source / str(secteur)
         if not src.exists():
@@ -89,7 +89,7 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_id
                 start = time.monotonic()
                 try:
                     with tpm(tmp, dossier, "labo") as sock:
-                        report["bilan_invite"] = observe(tmp, dossier, sock, disque=disque, secteur=secteur, phase="files-nic" if installer else "parcours-fichiers" if fichiers else None, event_idx=event_idx)
+                        report["bilan_invite"] = observe(tmp, dossier, sock, disque=disque, secteur=secteur, phase="ethernet-prive" if ethernet else "files-nic" if installer else "parcours-fichiers" if fichiers else None, event_idx=event_idx)
                 finally:
                     report["execution_s"] = time.monotonic() - start
         if not report["bilan_invite"]:
@@ -99,6 +99,19 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_id
         with disque.open("rb") as fp, extrait.open("xb") as dst:
             fp.seek(map_gpt["p9"] * secteur)
             dst.write(fp.read(vol.stat().st_size))
+        if ethernet:
+            from virtio_net_domaines_arm import verifier
+            report["domaines"]=verifier(dossier, True, ethernet=True)
+            serial=(dossier/"serie.log").read_text()
+            pair=json.loads((dossier/"pair.json").read_text())
+            if not (pair["succes"] and digest(extrait)==digest(vol) and
+                    "NET ARM L2 retrait disque_lisible=true cadres_fin=0" in serial and
+                    "NET L2 pilote fin=Exit(0) racines=0" in serial and
+                    "NET ARM L2 INTID=38 isr=0x101" in serial and
+                    "NET L2 completions TX=16 RX=16 identifiants_uniques=true" in serial):
+                raise ValueError("Ethernet, IRQ, ressources ou contenu P9 non confirmés")
+            report.update(succes=True, bail_nic=True, trames_par_sens=16)
+            return
         if event_idx is not None:
             from virtio_net_event_idx import verifier_negociation
             from virtio_net_domaines_arm import verifier as domaines
@@ -132,8 +145,11 @@ if __name__ == "__main__":
     profils = p.add_mutually_exclusive_group()
     profils.add_argument("--installer-files", action="store_true")
     profils.add_argument("--parcours-fichiers", action="store_true")
+    profils.add_argument("--ethernet", action="store_true")
     p.add_argument("--event-idx", choices=("on", "off"))
     a = p.parse_args()
-    if a.event_idx and not a.installer_files:
+    if a.ethernet and (a.event_idx!="on" or not os.environ.get("NOVAOS_QEMU_RX_ARM")):
+        p.error("Le parcours Ethernet exige le modèle corrigé et EVENT_IDX")
+    if a.event_idx and not (a.installer_files or a.ethernet):
         p.error("--event-idx exige --installer-files")
-    run(a.elf.resolve(), a.sources.resolve(), a.secteur, a.sortie.resolve(), a.installer_files, a.parcours_fichiers, a.event_idx)
+    run(a.elf.resolve(), a.sources.resolve(), a.secteur, a.sortie.resolve(), a.installer_files, a.parcours_fichiers, a.event_idx, a.ethernet)

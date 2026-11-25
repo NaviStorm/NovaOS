@@ -145,3 +145,6 @@ pub fn start_secondary() {
         asm!("dsb sy", "msr cntp_ctl_el0,{}", "isb",in(reg) 1u64,options(nostack));
     }
 }
+
+#[cfg(all(feature="net-arm-lab",feature="net-ethernet-lab"))]
+pub(crate) use super::gic::armer_spi_reseau;

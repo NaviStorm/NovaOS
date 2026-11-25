@@ -5,6 +5,12 @@
 #[path = "storage/runtime.rs"]
 mod runtime;
 use runtime::*;
+#[cfg(net_ethernet_lab)]
+#[allow(dead_code)]
+mod virtio_net;
+#[cfg(net_ethernet_lab)]
+#[path = "virtio_net/ethernet_lab.rs"]
+mod ethernet_lab;
 
 fn demande(handle: u64, generation: u64) -> u64 {
     let mut msg = SendV1 {
@@ -23,6 +29,10 @@ fn demande(handle: u64, generation: u64) -> u64 {
 fn essai() -> Result<()> {
     let handle = config(1);
     let generation = config(2);
+    #[cfg(net_ethernet_lab)]
+    if config(0) == 3 {
+        return ethernet_lab::executer(handle, generation);
+    }
     if config(0) == 2 {
         return if demande(handle, generation) == DENIED {
             Ok(())

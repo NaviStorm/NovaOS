@@ -222,7 +222,7 @@ impl Domain {
             metrics: metrics::Metrics::new(),
         }
     }
-    #[cfg(all(target_arch="aarch64", feature="net-arm-mesure"))]
+    #[cfg(any(all(target_arch="aarch64",feature="net-arm-mesure"),all(target_arch="x86_64",feature="net-q35-lab",feature="net-ethernet-lab")))]
     pub(super) fn racines_pilotes(&self, pid:Pid)->usize{
         self.ends.ids().filter(|&i|self.ends.get(i).owner==pid.number).count()
     }

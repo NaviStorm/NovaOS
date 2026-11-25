@@ -22,6 +22,7 @@ fn main() {
     let target = env::var("TARGET").unwrap();
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
     let nvme_lab = target == "x86_64-unknown-none" && env::var_os("CARGO_FEATURE_NVME_LAB").is_some();
+    println!("cargo:rerun-if-changed=../user/virtio_net");
     for name in [
         "demo",
         "pipe_compute",
@@ -55,7 +56,9 @@ fn main() {
         "storage/control",
         "storage/fileclient",
     ] {
-        if name == "net_preparation" && (target != "aarch64-unknown-none-softfloat" || env::var_os("CARGO_FEATURE_NET_ARM_LAB").is_none()) {
+        let reseau_arm = target == "aarch64-unknown-none-softfloat" && env::var_os("CARGO_FEATURE_NET_ARM_LAB").is_some();
+        let reseau_q35 = target == "x86_64-unknown-none" && env::var_os("CARGO_FEATURE_NET_Q35_LAB").is_some() && env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some();
+        if name == "net_preparation" && !(reseau_arm || reseau_q35) {
             continue;
         }
         let nvme_rw = matches!(name, "nvme_rw_driver" | "nvme_rw_block");
@@ -92,6 +95,9 @@ fn main() {
             && env::var_os("CARGO_FEATURE_NET_P9_TRACE").is_some()
         {
             rust.args(["--cfg", "net_p9_trace"]);
+        }
+        if name == "net_preparation" && env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some() {
+            rust.args(["--cfg", "net_ethernet_lab"]);
         }
         if nvme_lab && (nvme_rw || name == "storage/fileclient") {
             rust.arg("--cfg").arg("nvme_rw");

@@ -61,8 +61,8 @@ fn main_thread() {
     boot_id::init();
     // Le diagnostic capture les tables tant que le chargeur les possède, sur le BSP seul.
     #[cfg(all(target_arch = "x86_64", feature = "net-q35-lab"))]
-    if matches!(boot::scenario(), b"net-q35-relais" | b"net-q35-retrait") {
-        let resultat = hardware::net_q35::executer(boot::scenario() == b"net-q35-retrait");
+    if matches!(boot::scenario(), b"net-q35-relais" | b"net-q35-retrait") || (cfg!(feature="net-ethernet-lab") && boot::scenario()==b"net-q35-ethernet") {
+        let resultat = hardware::net_q35::executer(boot::scenario() != b"net-q35-relais");
         log(format_args!("NET Q35 etat={resultat:?} bail=false"));
         hal::cpu::halt()
     }

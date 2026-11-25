@@ -214,8 +214,17 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
         frames[0].pa, frames[6].pa, frames[7].pa
     ));
     #[cfg(feature = "net-event-idx")]
-    let negotiation =
-        super::block::net_event::q35(frames[8..].try_into().expect("22 cadres du NIC"));
+    let negotiation = match boot::scenario() {
+        #[cfg(feature="net-ethernet-lab")]
+        b"net-q35-ethernet" => {
+            // Le domaine appartient exclusivement au titulaire. Une issue incertaine
+            // conserve tous ses cadres épinglés jusqu'à arrêt de la VM.
+            super::block::net_event::trafic_q35(frames[8..].try_into().unwrap(),1).map_err(|e|{hal::log(format_args!("NET Q35 L2 quarantaine={e:?}")); "trafic non confirme"})?;
+            if reg.r32(0x34)!=0 {return Err("faute VT-d")}
+            Ok(())
+        }
+        _ => super::block::net_event::q35(frames[8..].try_into().expect("22 cadres du NIC")),
+    };
     #[cfg(feature = "net-event-idx")]
     let retrait = retrait || negotiation.is_err();
     if retrait {

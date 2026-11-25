@@ -469,6 +469,8 @@ pub(crate) fn net_p9() -> Result<()> {
             b"avant-f2" => 17,
             b"apres-f2" => 19,
             b"files-nic" => 125,
+            #[cfg(all(feature="net-arm-lab",feature="net-ethernet-lab"))]
+            b"ethernet-prive" => 126,
             b"parcours-fichiers" => 11,
             b"remonter-ro" => 13,
             _ => return Err(Error::Geometry),
@@ -545,6 +547,17 @@ pub(crate) fn net_p9() -> Result<()> {
             "NET ARM NIC retire disque lisible pages_rendues=22 nouvelle_generation={}",
             suite.domaine.generation()
         ));
+        #[cfg(feature="net-ethernet-lab")]
+        if mode==126 {
+            suite.trames()?;
+            t.begin_read(table.volume)?;
+            t.finish_read()?;
+            t.close()?;
+            let fin=crate::memory::pinned_dma_frames();
+            hal::log(format_args!("NET ARM L2 retrait disque_lisible=true cadres_fin={fin}"));
+            if fin!=0 {return Err(Error::Quarantine)}
+            return Ok(())
+        }
         suite
     };
     let hz = hal::timer::counter_hz();

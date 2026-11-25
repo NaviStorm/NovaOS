@@ -44,6 +44,10 @@ def firmware_files(tmp):
     return digest(archive)
 
 
+from contextlib import nullcontext
+from virtio_net_pair import Pair
+
+
 def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=None):
     serial = out / "serie.log"
     args = [executable("aarch64", tmp / "qemu-aarch64-softmmu", out), "-L", FIRMWARE, "-machine", "virt-10.0,gic-version=3,its=off",
@@ -73,7 +77,7 @@ def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=
                      "avant-f2": b"COUPURE avant F2", "apres-f2": b"COUPURE apres F2"}
             if phase == "remonter-ro":
                 args[debut+1] += ",readonly=on"
-            elif phase not in ("files-nic", "parcours-fichiers"):
+            elif phase not in ("files-nic", "parcours-fichiers", "ethernet-prive"):
                 attendu = termine = choix[phase]
             args += ["-fw_cfg", f"name=opt/novaos/net-p9,string={phase}"]
     if event_idx is not None:
@@ -87,33 +91,35 @@ def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=
                   "virtio_iommu_map", "virtio_iommu_unmap_done", "virtio_iommu_translate",
                   "virtio_iommu_report_fault"):
         args += ["-trace", event]
-    dump(out / "arguments.json", list(map(str, args)))
-    with (out / "qemu.trace").open("xb") as log, subprocess.Popen(
-            args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log, bufsize=0) as vm:
-        try:
-            qmp(vm, "qmp_capabilities")
-            dump(out / "version.json", qmp(vm, "query-version"))
-            capture(vm, out, "reset", True)
-            qmp(vm, "cont")
-            until = time.monotonic() + (90 if disque else 40)
-            while time.monotonic() < until:
-                data = serial.read_bytes()
-                if any(s in data for s in (termine, b"NET ARM bilan", b"NOVA DXE QUARANTAINE", b"Panique du noyau")):
-                    break
-                time.sleep(0.05)
-            qmp(vm, "stop")
-            capture(vm, out, "fin", True)
-            if phase in ("avant-f1", "apres-f1", "avant-f2", "apres-f2") and attendu in data:
-                vm.kill()
-                vm.wait(timeout=5)
-                return True
-            qmp(vm, "quit")
-            if vm.wait(timeout=5):
-                raise RuntimeError("Sortie anormale du moteur QEMU")
-        finally:
-            if vm.poll() is None:
-                vm.kill()
-            vm.wait()
+    with Pair(out) if phase=="ethernet-prive" else nullcontext(None) as pair:
+        fds = pair.connecter(args) if pair else ()
+        dump(out / "arguments.json", list(map(str, args)))
+        with (out / "qemu.trace").open("xb") as log, subprocess.Popen(
+                args, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=log, bufsize=0, pass_fds=fds) as vm:
+            try:
+                qmp(vm, "qmp_capabilities")
+                dump(out / "version.json", qmp(vm, "query-version"))
+                capture(vm, out, "reset", True)
+                qmp(vm, "cont")
+                until = time.monotonic() + (90 if disque else 40)
+                while time.monotonic() < until:
+                    data = serial.read_bytes()
+                    if any(s in data for s in (termine, b"NET ARM bilan", b"NOVA DXE QUARANTAINE", b"Panique du noyau")):
+                        break
+                    time.sleep(0.05)
+                qmp(vm, "stop")
+                capture(vm, out, "fin", True)
+                if phase in ("avant-f1", "apres-f1", "avant-f2", "apres-f2") and attendu in data:
+                    vm.kill()
+                    vm.wait(timeout=5)
+                    return True
+                qmp(vm, "quit")
+                if vm.wait(timeout=5):
+                    raise RuntimeError("Sortie anormale du moteur QEMU")
+            finally:
+                if vm.poll() is None:
+                    vm.kill()
+                vm.wait()
     return attendu in serial.read_bytes()
 
 

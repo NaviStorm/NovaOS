@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 
 
-def verifier(out, candidat):
+def verifier(out, candidat, *, ethernet=False):
     counts = Counter()
     routes = set()
     domaines = {}
@@ -38,8 +38,12 @@ def verifier(out, candidat):
                 m = re.fullmatch(r".* 00:07\.0 @(0x[0-9a-f]+) <- (0x[0-9a-f]+)", line)
                 exiger(m and 56 in routes and int(m[1], 16) >= 4)
                 if int(m[1], 16) == 4 and int(m[2], 16) & 4:
-                    exiger(not fin_dxe and 56 not in domaines)
-                    counts["bme_firmware_sans_domaine"] += 1
+                    if fin_dxe:
+                        exiger(ethernet and domaines.get(56)==3 and len(ranges[3])==22)
+                        counts["bme_nic_confine"]+=1
+                    else:
+                        exiger(56 not in domaines)
+                        counts["bme_firmware_sans_domaine"] += 1
             elif line.startswith(("virtio_iommu_attach ", "virtio_iommu_detach ")):
                 m = re.fullmatch(r"virtio_iommu_(attach|detach) domain=(\d+) endpoint=(\d+)", line)
                 exiger(m)
@@ -77,7 +81,7 @@ def verifier(out, candidat):
                 exiger(m and m[1] == m[2])
                 sid, adresse, sens = int(m[2]), int(m[3], 16), int(m[4])
                 d = domaines.get(sid)
-                exiger(d in (1, 2) and any(a <= adresse <= b and perm & sens
+                exiger((d in (1, 2) or (ethernet and d==3 and len(ranges[3])==22)) and any(a <= adresse <= b and perm & sens
                                            for (a, b), (_, perm) in ranges[d].items()))
                 counts[f"traductions_{d}"] += 1
             elif line.startswith(("virtio_iommu_report_fault", "virtio_iommu_set_config")):
@@ -86,6 +90,8 @@ def verifier(out, candidat):
         raise ValueError("Suivi incomplet des traductions ou restitutions")
     if candidat and counts["pic_pages_3"] != 22 or not candidat and counts["attach_3"]:
         raise ValueError("Domaines incompatibles avec le candidat annoncé")
+    if ethernet and not (counts['traductions_3'] and counts['bme_nic_confine']):
+        raise ValueError('Trafic sans traduction confirmée du NIC')
     return dict(counts)
 
 

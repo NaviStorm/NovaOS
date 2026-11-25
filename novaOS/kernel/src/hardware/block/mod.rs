@@ -485,3 +485,6 @@ pub(super) mod net_event;
     )
 ))]
 mod net_files;
+
+#[cfg(all(feature="net-ethernet-lab",any(all(target_arch="aarch64",feature="net-arm-lab"),all(target_arch="x86_64",feature="net-q35-lab"))))]
+pub(super) mod net_trames;

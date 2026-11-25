@@ -165,3 +165,67 @@ impl Preparation {
         Ok(())
     }
 }
+
+#[cfg(feature = "net-ethernet-lab")]
+impl Preparation {
+    pub(super) fn trames(self) -> Result<()> {
+        // Les 22 mappings sont acquittés avant publication d'un premier descripteur.
+        let resultat = (|| {
+            self.domaine.faults_preparation()?;
+            let mut port = super::net_trames::Port::nouveau(&self.nic, &self.cadres)?;
+            {
+                let _garde = hal::interrupts::Guard::new();
+                if ISR_PREPARATION
+                    .compare_exchange(
+                        0,
+                        self.nic.isr.base() as u64,
+                        Ordering::AcqRel,
+                        Ordering::Acquire,
+                    )
+                    .is_err()
+                {
+                    return Err(Error::Quarantine);
+                }
+                ETAT_IRQ.store(0, Ordering::Release);
+                hal::timer::armer_spi_reseau(false)?;
+            }
+            let debut = hal::timer::counter();
+            let ok = crate::sched::process::net_preparation::ethernet(
+                self.domaine.generation(),
+                |tag, len, copie| {
+                    if tag == 5 {
+                        return port.stopper().map(|()| 0).map_err(|_| crate::abi::REFUSED);
+                    }
+                    port.demande(tag, len, copie, ETAT_IRQ.load(Ordering::Acquire) == 0x101)
+                },
+            );
+            let irq = ETAT_IRQ.load(Ordering::Acquire);
+            let cycles = hal::timer::counter() - debut;
+            hal::log(format_args!(
+                "NET ARM L2 INTID=38 isr={irq:#x} cycles={cycles} hz={} dma={}",
+                hal::timer::counter_hz(),
+                memory::pinned_dma_frames()
+            ));
+            port.stopper()?;
+            self.domaine.faults_preparation()?;
+            if !ok || irq != 0x101 {
+                return Err(Error::Fault);
+            }
+            Ok(())
+        })();
+        if resultat.is_err() {
+            self.nic.cfg.intx(false);
+            self.nic.cfg.master(false);
+            if ISR_PREPARATION.load(Ordering::Acquire) == self.nic.isr.base() as u64
+                && hal::timer::purger_spi_reseau().is_ok()
+            {
+                ISR_PREPARATION.store(0, Ordering::Release);
+            }
+            let mut q = QUARANTAINE.lock();
+            assert!(q.is_none());
+            *q = Some(self);
+            return resultat;
+        }
+        self.fermer()
+    }
+}
