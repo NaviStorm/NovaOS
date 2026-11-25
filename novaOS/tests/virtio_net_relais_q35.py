@@ -14,6 +14,7 @@ import struct
 import subprocess
 import tempfile
 import time
+import resource
 
 from contextlib import nullcontext
 from virtio_net_pair import Pair
@@ -106,6 +107,10 @@ def verifier_tables(vm,qt,journal,out,retrait=False,cycles=1):
 
 
 def run(a,out):
+    faute=os.environ.get("NOVAOS_NET_MODELE_FAUTE")=="injecter"
+    if a.ethernet:
+        from virtio_net_completion_absente import prerequis
+        prerequis("Q35",a.elf)
     args=arguments(a.firmware/"OVMF_CODE.fd",out,out,False)
     args.remove("-no-reboot")
     if a.event_idx is not None:
@@ -119,6 +124,7 @@ def run(a,out):
     try:
         with qualification(ROOT.parent.parent,report), tempfile.TemporaryDirectory(dir=os.environ["NOVAOS_TMPDIR"]) as temp:
             start=time.monotonic()
+            usage=resource.getrusage(resource.RUSAGE_CHILDREN)
             with Pair(out) if a.ethernet else nullcontext(None) as pair:
                 fds = pair.connecter(args) if pair else ()
                 dump(out/"arguments.json",args)
@@ -132,8 +138,9 @@ def run(a,out):
                                 init=capture(vm,out,"reset",False)
                                 assert init["iommu_platform"] is True and init["vtd_gsts"]==0 and pci_lecture(vm,qt)&4==0
                                 qmp(vm,"cont")
-                                end=time.monotonic()+(1800 if pair and pair.lots==6250 else 35)
+                                end=time.monotonic()+(1800 if pair and pair.lots>=6250 else 35)
                                 while time.monotonic()<end:
+                                    if pair: pair.observer_pression(vm)
                                     serial=(out/"serie.log").read_bytes()
                                     if b"NET Q35 etat=" in serial or (a.temoin_hash and refus_liminer(serial)) or b"Panique du noyau" in serial or not qmp(vm,"query-status")["running"]: break
                                     time.sleep(0.05)
@@ -149,12 +156,18 @@ def run(a,out):
                                     if not refus_liminer(serial) or b"NET Q35" in serial or fin["vtd_gsts"]!=0:
                                         raise ValueError("Refus explicite du noyau altéré absent : "+repr(serial[-480:]))
                                     report["noyau_altere_refuse"]=True
+                                elif a.ethernet and faute:
+                                    from virtio_net_completion_absente import constater
+                                    report["cadres_quarantaine_controle_compris"]=verifier_tables(vm,qt,serial,out,retrait=False)
+                                    constater(vm,out,"Q35")
                                 elif a.ethernet:
                                     for motif in [b"NET L2 completions TX=16 RX=16 identifiants_uniques=true", b"NET Q35 L2 GSI=23 ISR=0x101", b"NET L2 pilote fin=Exit(0) racines=0", b"NET Q35 etat=Ok(()) bail=false"]:
                                         if motif not in serial:
                                             raise ValueError(f"Preuve invitée absente {motif!r}: {serial[-450:]!r}")
                                     total=pair.lots*16
-                                    if f"NET L2 total TX={total} RX={total} index={total%65536} rearmements={pair.lots-1}".encode() not in serial:
+                                    tx=32 if pair.performance=="rx" else total
+                                    rx=32 if pair.performance=="tx" else total
+                                    if f"NET L2 total TX={tx} RX={rx} index={rx%65536} rearmements={pair.lots-1}".encode() not in serial:
                                         raise ValueError("Indices terminaux ou réarmements incomplets")
                                     report["cadres_verifies"]=verifier_tables(vm,qt,serial,out,True,pair.cycles)
                                 elif a.event_idx is not None:
@@ -174,7 +187,11 @@ def run(a,out):
                         if vm.poll() is None: vm.kill()
                         vm.wait()
                         report["execution_s"]=time.monotonic()-start
-            writes=commandes_pci((out/"qemu.trace").read_text())
+                        fin_cpu=resource.getrusage(resource.RUSAGE_CHILDREN)
+                        dump(out/"cpu-qemu.json",dict(reel_s=report["execution_s"],
+                             utilisateur_s=fin_cpu.ru_utime-usage.ru_utime,systeme_s=fin_cpu.ru_stime-usage.ru_stime))
+            with (out/"qemu.trace").open() as journal:
+                writes=commandes_pci(journal)
             if a.ethernet:
                 import json
                 if not json.loads((out/"pair.json").read_text())["succes"] or not any(w["valeur"]&4 for w in writes):
@@ -212,7 +229,11 @@ def run(a,out):
                 if pair.cycles>1:
                     from virtio_net_pair import verifier_redemarrages
                     verifier_redemarrages(serial.decode(),json.loads((out/"pair.json").read_text()))
-                report["trames_par_sens"]=pair.lots*pair.cycles*16
+                if faute:
+                    report.update(trames_tx=16, trames_copiees_rx=16, completions_rx=15, quarantaine=True)
+                else:
+                    report.update(trames_tx=tx*pair.cycles,trames_rx=rx*pair.cycles)
+                    if tx==rx: report["trames_par_sens"]=tx*pair.cycles
             else:
                 assert not any(w["valeur"]&4 for w in writes)
             report.update(bilan=True,bail=False,retrait=a.retrait,ecritures_commande=writes)

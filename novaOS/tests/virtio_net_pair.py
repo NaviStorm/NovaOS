@@ -68,7 +68,18 @@ class Pair:
                 endpoint.setsockopt(socket.SOL_SOCKET, option, 32768)
         self.sock.settimeout(90)
         self.trames = []
-        self.lots = {"rearmement":3, "redemarrage":3, "endurance":6250}.get(os.environ.get("NOVAOS_NET_SERIE"),1)
+        self.lots = {"rearmement":3, "redemarrage":3, "endurance":6250,"stockage":62500,"pression-rx":3}.get(os.environ.get("NOVAOS_NET_SERIE"),1)
+        serie=os.environ.get("NOVAOS_NET_SERIE","")
+        self.performance=serie.split("-",1)[1] if serie.startswith(("court-","perf-")) else ""
+        if serie=="perf-long-rx":
+            self.performance="rx"
+        self.pression=serie=="pression-rx"
+        self.capture_pression=False
+        if self.performance:
+            if self.performance not in ("tx","rx","duplex","rtt"):
+                raise ValueError("Profil de performance inconnu")
+            self.lots=6 if serie.startswith("court-") else 62500 if serie=="perf-long-rx" else 31250
+        self.fenetres=[]
         self.cycles = 4 if os.environ.get("NOVAOS_NET_SERIE")=="redemarrage" else 1
         self.generations = []
         self.tx_comptes = 0
@@ -91,7 +102,14 @@ class Pair:
         pos = next(i for i,v in enumerate(args) if v in ("hubport,id=l2,hubid=17","hubport,id=prive,hubid=17"))
         identifiant = args[pos].split(",")[1]
         args[pos] = f"socket,{identifiant},fd={fd}"
+        if self.pression:
+            args.extend(["-object",f"filter-dump,id=tracepression,netdev={identifiant[3:]},file={self.sortie}/pression.pcap"])
         return (fd,)
+
+    def observer_pression(self,vm):
+        if self.pression and not self.capture_pression and self.envoyees>=17:
+            from virtio_net_pression import observer
+            self.capture_pression=observer(vm,self.sortie)
 
     def serie(self):
         for batch in range(self.lots*self.cycles):
@@ -114,13 +132,26 @@ class Pair:
                 self.empreinte_tx.update(recu)
                 self.tx_comptes += 1
                 retour = trame_longue(numero, True)
+                if not (self.pression and numero==16):
+                    self.empreinte_rx.update(retour)
+                    reponses += len(retour).to_bytes(4,"big") + retour
+            nombre=16
+            if self.pression and batch==0:
+                retour=trame_longue(16,True)
                 self.empreinte_rx.update(retour)
-                reponses += len(retour).to_bytes(4,"big") + retour
+                reponses += len(retour).to_bytes(4,"big")+retour
+                nombre=17
+            elif self.pression and batch==1:
+                nombre=15
             self.sock.sendall(reponses)
-            self.envoyees += 16
+            self.envoyees += nombre
 
     def echanger(self):
         try:
+            if self.performance:
+                from virtio_net_fenetres import mesurer
+                mesurer(self,self.performance)
+                return
             if self.lots > 1:
                 self.serie()
                 return
@@ -165,6 +196,8 @@ class Pair:
                 raise
         self.thread.join(timeout=3)
         self.sock.close()
+        if self.pression and not self.capture_pression:
+            self.erreur="Saturation du RX non observée dans le modèle"
         bilan = dict(trames=self.trames, erreur=self.erreur, stockage_avant_derniere_reponse=self.stockage, reponses_envoyees=self.envoyees, perte=self.perte,
                      succes=self.envoyees==16 and len(self.trames)==16 and not self.thread.is_alive() and self.erreur is None)
         if self.lots > 1:
@@ -172,4 +205,9 @@ class Pair:
             bilan.update(trames_tx=self.tx_comptes, trames_rx=self.envoyees, lots=self.lots, cycles=self.cycles, generations=self.generations,
                          tx_sha256=self.empreinte_tx.hexdigest(),rx_sha256=self.empreinte_rx.hexdigest(),
                          succes=self.tx_comptes==self.envoyees==total and not self.thread.is_alive() and self.erreur is None)
+        if self.performance:
+            tx=32 if self.performance=="rx" else self.lots*16
+            rx=32 if self.performance=="tx" else self.lots*16
+            complet = self.tx_comptes==tx and self.envoyees==rx and self.erreur is None and not self.thread.is_alive()
+            bilan.update(succes=complet,profil=self.performance,fenetres=self.fenetres)
         (self.sortie / "pair.json").write_text(json.dumps(bilan, indent=2) + "\n")

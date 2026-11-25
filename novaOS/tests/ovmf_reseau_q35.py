@@ -49,7 +49,9 @@ def pci_lecture(vm, stream, offset=4, largeur=2):
 
 def commandes_pci(trace):
     writes = []
-    for index, line in enumerate(trace.splitlines(), 1):
+    lignes = trace.splitlines() if isinstance(trace, str) else trace
+    for index, line in enumerate(lignes, 1):
+        line=line.rstrip("\r\n")
         if not line.startswith("pci_cfg_write virtio-net-pci "):
             continue
         m = CMD_WRITE.fullmatch(line)

@@ -9,7 +9,7 @@ from pathlib import Path
 import re
 
 
-def verifier(out, candidat, *, ethernet=False):
+def verifier(out, candidat, *, ethernet=False, quarantaine=False):
     counts = Counter()
     routes = set()
     domaines = {}
@@ -86,7 +86,13 @@ def verifier(out, candidat, *, ethernet=False):
                 counts[f"traductions_{d}"] += 1
             elif line.startswith(("virtio_iommu_report_fault", "virtio_iommu_set_config")):
                 exiger(False)
-    if domaines or any(ranges.values()) or not fin_dxe or not counts["traductions_1"] or not counts["traductions_2"]:
+    if quarantaine:
+        if not ethernet or domaines!={56:3} or len(ranges[3])!=22 or ranges[1] or ranges[2]:
+            raise ValueError("La quarantaine doit conserver exclusivement les 22 pages du NIC")
+        counts["pages_nic_en_quarantaine"]=22
+    elif domaines or any(ranges.values()):
+        raise ValueError("Restitution des domaines incomplète")
+    if not fin_dxe or not counts["traductions_1"] or not counts["traductions_2"]:
         raise ValueError("Suivi incomplet des traductions ou restitutions")
     if candidat and counts["pic_pages_3"] != 22 or not candidat and counts["attach_3"]:
         raise ValueError("Domaines incompatibles avec le candidat annoncé")

@@ -10,8 +10,9 @@ pub(super) struct Port<'a> {
     nic: &'a Device,
     cadres: &'a [Frame; 22],
     kicks: [Region; 2],
-    base: u16,
-    total: u32,
+    total_rx: u32,
+    total_tx: u32,
+    tours: u32,
     postes: usize,
     rx: u16,
     tx: u16,
@@ -45,8 +46,9 @@ impl<'a> Port<'a> {
             nic,
             cadres,
             kicks,
-            base: 0,
-            total: 0,
+            total_rx: 0,
+            total_tx: 0,
+            tours: 0,
             postes: 0,
             rx: 0,
             tx: 0,
@@ -108,84 +110,87 @@ impl<'a> Port<'a> {
                 self.cadres[4].mem.w16(4 + i * 2, i as u16);
                 self.postes += 1;
                 if self.postes == N {
-                    if self.total == 0 {
+                    if self.total_tx == 0 {
                         hal::log(format_args!("NET L2 TX soumis=16 longueurs alternées 72/1526"));
                     }
                     self.depart = hal::timer::counter();
                     barrier();
-                    self.cadres[4].mem.w16(2, self.base.wrapping_add(N as u16));
+                    self.cadres[4].mem.w16(2, (self.total_tx as u16).wrapping_add(N as u16));
                     barrier();
                     self.kicks[1].w16(0, 1);
                 }
                 Ok(0)
             }
             2 if self.ouvert && self.postes == N && self.livres == 0 => Err(abi::WOULD_BLOCK),
-            3 if self.postes == N && self.livres < N => {
+            3 | 7 | 8 if self.ouvert && self.livres < N => {
+                let prendre_rx = tag != 7;
+                let prendre_tx = tag != 8;
+                if prendre_tx && self.postes != N { return Err(abi::DENIED); }
+                let (rx,tx)=(self.cadres[2].mem,self.cadres[5].mem);
+                let r=rx.r16(2).wrapping_sub(self.total_rx as u16);
+                let t=tx.r16(2).wrapping_sub(self.total_tx as u16);
+                if r>16 || usize::from(t)>self.postes {return Err(abi::REFUSED);}
+                let i=self.livres;
+                if !irq || (prendre_rx && usize::from(r)<=i) || (prendre_tx && usize::from(t)<=i) {return Err(abi::WOULD_BLOCK);}
                 barrier();
-                let (rx, tx) = (self.cadres[2].mem, self.cadres[5].mem);
-                let (r, t) = (rx.r16(2).wrapping_sub(self.base), tx.r16(2).wrapping_sub(self.base));
-                if r > 16 || t > 16 {
-                    return Err(abi::REFUSED);
+                let pos=4+8*i;
+                let mut n=0;
+                if prendre_rx {
+                    let id=rx.r32(pos) as usize;
+                    n=rx.r32(pos+4) as usize;
+                    if id>=N || self.rx & (1<<id)!=0 || !(26..=1526).contains(&n) {return Err(abi::REFUSED);}
+                    self.cadres[6+id/2].mem.bytes(id%2*2048,&mut copie[..n]);
+                    self.rx |= 1<<id;
                 }
-                if !irq || usize::from(r) <= self.livres || usize::from(t) <= self.livres {
-                    return Err(abi::WOULD_BLOCK);
+                if prendre_tx {
+                    let id=tx.r32(pos) as usize;
+                    if id>=N || self.tx & (1<<id)!=0 || tx.r32(pos+4)!=0 {return Err(abi::REFUSED);}
+                    self.tx |= 1<<id;
                 }
-                barrier();
-                let i = self.livres;
-                let pos = 4 + 8 * i;
-                let (ri, ti) = (rx.r32(pos), tx.r32(pos));
-                let n = rx.r32(pos + 4) as usize;
-                if ri >= 16
-                    || ti >= 16
-                    || !(26..=1526).contains(&n)
-                    || tx.r32(pos + 4) != 0
-                    || self.rx & (1 << ri) != 0
-                    || self.tx & (1 << ti) != 0
-                {
-                    return Err(abi::REFUSED);
-                }
-                self.collectes[i] = hal::timer::counter().wrapping_sub(self.depart);
-                self.rx |= 1 << ri;
-                self.tx |= 1 << ti;
-                self.livres += 1;
-                self.cadres[6 + ri as usize / 2]
-                    .mem
-                    .bytes((ri as usize % 2) * 2048, &mut copie[..n]);
+                self.collectes[i]=hal::timer::counter().wrapping_sub(self.depart);
+                self.livres+=1;
                 Ok(n)
             }
-            6 if self.ouvert && self.livres == N && self.rx == u16::MAX && self.tx == u16::MAX => {
-                let nouvelle_base = self.base.wrapping_add(N as u16);
-                if self.cadres[2].mem.r16(2) != nouvelle_base || self.cadres[5].mem.r16(2) != nouvelle_base {
+            6 if self.ouvert && self.livres==N => {
+                if !matches!(self.rx, 0 | u16::MAX) || !matches!(self.tx, 0 | u16::MAX) || self.rx|self.tx!=u16::MAX {
                     return Err(abi::REFUSED);
                 }
-                self.total += N as u32;
-                if nouvelle_base < self.base || self.total % 8192 == 0 {
-                    hal::log(format_args!("NET L2 progression={} index={} precedent={}", self.total,nouvelle_base,self.base));
+                let rx_plein=self.rx==u16::MAX;
+                let tx_plein=self.tx==u16::MAX;
+                if self.postes!=if tx_plein {N} else {0} {return Err(abi::REFUSED);}
+                let precedent=self.total_rx as u16;
+                if tx_plein {self.total_tx+=N as u32;}
+                if rx_plein {self.total_rx+=N as u32;}
+                if self.cadres[5].mem.r16(2)!=self.total_tx as u16 || self.cadres[2].mem.r16(2).wrapping_sub(self.total_rx as u16)>if rx_plein {0} else {16} {
+                    return Err(abi::REFUSED);
                 }
-                self.base = nouvelle_base;
-                self.postes = 0;
-                self.livres = 0;
-                self.rx = 0;
-                self.tx = 0;
-                let avail = self.cadres[1].mem;
-                for i in 0..N {
-                    self.cadres[6+i/2].mem.w16((i%2)*2048+10,0x5a5a);
+                self.tours+=1;
+                #[cfg(net_p9_coexistence)]
+                super::net_stockage::progression(self.total_rx);
+                if rx_plein && ((self.total_rx as u16)<precedent || self.total_rx%8192==0) {
+                    hal::log(format_args!("NET L2 progression={} index={} precedent={}",self.total_rx,self.total_rx as u16,precedent));
                 }
-                // Les deux files recyclent un lot entier. Les entrées RX de l'anneau
-                // disponible sont inchangées et restent détenues par le superviseur.
-                avail.w16(36, self.base);
-                self.cadres[4].mem.w16(36, self.base);
-                barrier();
-                avail.w16(2, self.base.wrapping_add(N as u16));
-                barrier();
-                self.kicks[0].w16(0, 0);
+                self.postes=0;
+                self.livres=0;
+                self.rx=0;
+                self.tx=0;
+                let avail=self.cadres[1].mem;
+                self.cadres[4].mem.w16(36,self.total_tx as u16);
+                avail.w16(36,self.total_rx as u16);
+                if rx_plein {
+                    for i in 0..N {self.cadres[6+i/2].mem.w16(i%2*2048+10,0x5a5a);}
+                    barrier();
+                    avail.w16(2,(self.total_rx as u16).wrapping_add(N as u16));
+                    barrier();
+                    self.kicks[0].w16(0,0);
+                }
                 Ok(0)
             }
             4 if self.livres == N && self.rx == u16::MAX && self.tx == u16::MAX => {
-                let fin = self.base.wrapping_add(N as u16);
-                if self.cadres[2].mem.r16(2) != fin || self.cadres[5].mem.r16(2) != fin {return Err(abi::REFUSED);}
+                let fin=(self.total_rx as u16).wrapping_add(N as u16);
+                if self.cadres[2].mem.r16(2)!=fin || self.cadres[5].mem.r16(2)!=(self.total_tx as u16).wrapping_add(N as u16) {return Err(abi::REFUSED);}
                 self.draine = true;
-                hal::log(format_args!("NET L2 total TX={} RX={} index={} rearmements={}",self.total+16,self.total+16,fin,self.total/16));
+                hal::log(format_args!("NET L2 total TX={} RX={} index={} rearmements={}",self.total_tx+16,self.total_rx+16,fin,self.tours));
                 hal::log(format_args!(
                     "NET L2 kick_vers_collecte_cycles={:?}",
                     self.collectes

@@ -48,6 +48,8 @@ pub(super) fn record(idx: usize, begin: u64) {
         return;
     }
     let d = hal::timer::counter().wrapping_sub(begin).max(1);
+    #[cfg(net_p9_coexistence)]
+    if idx<=2 {super::net_stockage::mesure(idx,d);}
     let p = d.ilog2() as usize;
     let n = (p * 8 + (((d - (1 << p)) as u128 * 8) >> p) as usize).min(255);
     let mut s = STATS.lock();

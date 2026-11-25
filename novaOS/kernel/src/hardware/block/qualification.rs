@@ -475,6 +475,10 @@ pub(crate) fn net_p9() -> Result<()> {
             b"ethernet-prive" => 126,
             #[cfg(all(feature="net-arm-lab",feature="net-ethernet-lab"))]
             b"ethernet-p9" => 127,
+            #[cfg(net_p9_coexistence)]
+            b"charge-p9-repos" => 128,
+            #[cfg(net_p9_coexistence)]
+            b"charge-p9-avec" => 129,
             b"parcours-fichiers" => 11,
             b"remonter-ro" => 13,
             _ => return Err(Error::Geometry),
@@ -552,8 +556,16 @@ pub(crate) fn net_p9() -> Result<()> {
             suite.domaine.generation()
         ));
         #[cfg(feature="net-ethernet-lab")]
+        #[cfg(net_p9_coexistence)]
+        if matches!(mode,128|129) {
+            t.first=table.volume;
+            t.count=table.end-table.volume;
+            let key=super::lease::begin_with(15,||Ok(t))?;
+            return super::net_stockage::essai(suite,key,table.volume_id(),mode==129);
+        }
+        #[cfg(feature="net-ethernet-lab")]
         if matches!(mode,126|127) {
-            suite.trames(||{
+            let transfert=suite.trames(||{
                 if mode==126 {return true}
                 let mut reads=[0u64;64];
                 let mut flushes=[0u64;16];
@@ -576,7 +588,22 @@ pub(crate) fn net_p9() -> Result<()> {
                 hal::log(format_args!("NET ARM lectures secteur={secteur} hz={hz} octets=4096 cycles={reads:?}"));
                 hal::log(format_args!("NET ARM flush hz={hz} cycles={flushes:?}"));
                 true
-            })?;
+            });
+            if option_env!("NOVAOS_NET_SERIE")==Some("faute-completion")
+                && transfert==Err(Error::Quarantine)
+            {
+                let avant=crate::memory::pinned_dma_frames();
+                t.begin_input(table.volume,0,PAGE)?;
+                t.finish(4097)?;
+                let mut magic=[0u8;8];
+                t.p.0[20].mem.bytes(0,&mut magic);
+                if &magic!=b"NOVAP0FS" {return Err(Error::Device);}
+                t.close()?;
+                let apres=crate::memory::pinned_dma_frames();
+                hal::log(format_args!("NET ARM faute disque_P9_relu=true disque_ferme=true cadres_avant={avant} cadres_apres={apres}"));
+                return transfert;
+            }
+            transfert?;
             if option_env!("NOVAOS_NET_SERIE")==Some("redemarrage") {
                 let reference=crate::memory::pinned_dma_frames();
                 let mut precedente=generation+1;

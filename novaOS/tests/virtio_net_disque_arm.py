@@ -59,7 +59,10 @@ def mesures(serial, prefix, count):
     return result
 
 
-def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_idx=None, ethernet=False):
+def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_idx=None, ethernet=False, charge_p9=None):
+    if ethernet:
+        from virtio_net_completion_absente import prerequis
+        prerequis("ARM",elf)
     dossier.mkdir(parents=True, exist_ok=False)
     report = {"elf_sha256": digest(elf), "trafic_demande": ethernet, "bail_nic": False, "secteur": secteur}
     try:
@@ -81,6 +84,9 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_id
         disque = dossier / "systeme.raw"
         gpt = image(disque, vol, elf, secteur, scenario="net-arm-p9", volume_id=lv)
         report["gpt_initial_sha256"] = digest(disque)
+        phase = ("charge-p9-"+charge_p9 if charge_p9 else
+                 ("ethernet-p9" if os.environ.get("NOVAOS_NET_PAIR_P9")=="lectures-flush" else "ethernet-prive") if ethernet else
+                 "files-nic" if installer else "parcours-fichiers" if fichiers else None)
         with tempfile.TemporaryDirectory(dir=os.environ["NOVAOS_TMPDIR"], prefix="net") as td:
             tmp = Path(td)
             lanceurs(tmp)
@@ -89,7 +95,7 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_id
                 start = time.monotonic()
                 try:
                     with tpm(tmp, dossier, "labo") as sock:
-                        report["bilan_invite"] = observe(tmp, dossier, sock, disque=disque, secteur=secteur, phase=("ethernet-p9" if os.environ.get("NOVAOS_NET_PAIR_P9")=="lectures-flush" else "ethernet-prive") if ethernet else "files-nic" if installer else "parcours-fichiers" if fichiers else None, event_idx=event_idx)
+                        report["bilan_invite"] = observe(tmp, dossier, sock, disque=disque, secteur=secteur, phase=phase, event_idx=event_idx)
                 finally:
                     report["execution_s"] = time.monotonic() - start
         if not report["bilan_invite"]:
@@ -99,11 +105,21 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_id
         with disque.open("rb") as fp, extrait.open("xb") as dst:
             fp.seek(map_gpt["p9"] * secteur)
             dst.write(fp.read(vol.stat().st_size))
+        if charge_p9:
+            from virtio_net_charge_p9 import verifier_charge
+            report.update(verifier_charge(dossier,extrait,vol,secteur,charge_p9=="avec"))
+            return
         if ethernet:
             from virtio_net_domaines_arm import verifier
-            report["domaines"]=verifier(dossier, True, ethernet=True)
+            faute=os.environ.get("NOVAOS_NET_MODELE_FAUTE")=="injecter"
+            report["domaines"]=verifier(dossier, True, ethernet=True, quarantaine=faute)
             serial=(dossier/"serie.log").read_text()
             pair=json.loads((dossier/"pair.json").read_text())
+            if faute:
+                if not (pair["succes"] and not pair["perte"] and pair["reponses_envoyees"]==16 and digest(extrait)==digest(vol)):
+                    raise ValueError("Réponses du pair ou persistance du volume incorrectes")
+                report.update(succes=True,quarantaine=True,completions_rx=15,trames_copiees_rx=16,trames_tx=16)
+                return
             if not (pair["succes"] and digest(extrait)==digest(vol) and
                     "NET ARM L2 retrait disque_lisible=true cadres_fin=0" in serial and
                     "NET L2 pilote fin=Exit(0) racines=0" in serial and
@@ -116,13 +132,16 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_id
                 if not pair.get("stockage_avant_derniere_reponse"):
                     raise ValueError("Chevauchement stockage/réseau non établi")
             total=pair.get("lots",1)*16
-            if f"NET L2 total TX={total} RX={total} index={total%65536} rearmements={total//16-1}" not in serial:
+            tx=32 if pair.get("profil")=="rx" else total
+            rx=32 if pair.get("profil")=="tx" else total
+            if f"NET L2 total TX={tx} RX={rx} index={rx%65536} rearmements={total//16-1}" not in serial:
                 raise ValueError("Indices terminaux ou réarmements incomplets")
             cycles=pair.get("cycles",1)
             if cycles>1:
                 from virtio_net_pair import verifier_redemarrages
                 verifier_redemarrages(serial,pair)
-            report.update(succes=True, bail_nic=True, trames_par_sens=total*cycles)
+            report.update(succes=True,bail_nic=True,trames_tx=tx*cycles,trames_rx=rx*cycles)
+            if tx==rx: report["trames_par_sens"]=tx*cycles
             return
         if event_idx is not None:
             from virtio_net_event_idx import verifier_negociation
@@ -158,10 +177,13 @@ if __name__ == "__main__":
     profils.add_argument("--installer-files", action="store_true")
     profils.add_argument("--parcours-fichiers", action="store_true")
     profils.add_argument("--ethernet", action="store_true")
+    profils.add_argument("--charge-p9", choices=("repos","avec"))
     p.add_argument("--event-idx", choices=("on", "off"))
     a = p.parse_args()
     if a.ethernet and (a.event_idx!="on" or not os.environ.get("NOVAOS_QEMU_RX_ARM")):
         p.error("Le parcours Ethernet exige le modèle corrigé et EVENT_IDX")
-    if a.event_idx and not (a.installer_files or a.ethernet):
+    if a.charge_p9 and (a.event_idx != 'on' or os.environ.get('NOVAOS_NET_SERIE')!='stockage' or not os.environ.get('NOVAOS_QEMU_RX_ARM')):
+        p.error('La coexistence requiert le modèle nominal et l’invité dédié')
+    if a.event_idx and not (a.installer_files or a.ethernet or a.charge_p9):
         p.error("--event-idx exige --installer-files")
-    run(a.elf.resolve(), a.sources.resolve(), a.secteur, a.sortie.resolve(), a.installer_files, a.parcours_fichiers, a.event_idx, a.ethernet)
+    run(a.elf.resolve(), a.sources.resolve(), a.secteur, a.sortie.resolve(), a.installer_files, a.parcours_fichiers, a.event_idx, a.ethernet, a.charge_p9)

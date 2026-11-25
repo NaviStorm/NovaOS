@@ -47,11 +47,17 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
     commande(handle, generation, seq, 1, 0)?;
     let origine=config(8) as usize;
     let lots = config(7) as usize;
-    if !(1..=6250).contains(&lots) {return Err(REFUSED);}
+    let profil=config(9);
+    let mut echos=[[0u8;8];COMPTE];
+    if profil>4 || !(1..=62500).contains(&lots) {return Err(REFUSED);}
     for lot in 0..lots {
+    let milieu=lot!=0 && lot+1!=lots;
+    let rx_seul=milieu && profil==2;
+    let tx_seul=milieu && profil==1;
+    if !rx_seul {
     for i in 0..COMPTE {
         let n = origine + lot * COMPTE + i;
-        let len = if n % 2 == 0 { 60 } else { 1514 };
+        let len = if profil==4 {64} else if profil>0 {1514} else if n%2==0 {60} else {1514};
         trame[..6].copy_from_slice(&PAIR);
         trame[6..12].copy_from_slice(&NIC);
         trame[12..14].copy_from_slice(&[0x88, 0xb5]);
@@ -60,6 +66,7 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
             *b = octet(n, i);
         }
         if lots > 1 {trame[14..18].copy_from_slice(&(n as u32).to_be_bytes());}
+        if profil==4 {trame[18..26].copy_from_slice(&echos[i]);}
         let len = virtio_net::encode_tx(&trame[..len], slot).map_err(|_| REFUSED)?;
         seq += 1;
         commande(handle, generation, seq, 2, len)?;
@@ -68,10 +75,12 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
     if commande(handle, generation, seq, 2, 1526) != Err(WOULD_BLOCK) {
         return Err(REFUSED);
     }
+    }
     let mut recus = 0u16;
     for _ in 0..COMPTE {
         seq += 1;
-        let taille = commande(handle, generation, seq, 3, 0)?;
+        let taille = commande(handle,generation,seq,if tx_seul {7} else if rx_seul {8} else {3},0)?;
+        if tx_seul {if taille!=0 {return Err(REFUSED);} continue;}
         let data =
             virtio_net::decode_rx(slot.get(..taille).ok_or(REFUSED)?).map_err(|_| REFUSED)?;
         if data.len() < 60
@@ -83,19 +92,21 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
         }
         let n = if lots==1 {usize::from(data[14])} else {u32::from_be_bytes(data[14..18].try_into().map_err(|_|REFUSED)?) as usize};
         let index=n.checked_sub(origine + lot * COMPTE).ok_or(REFUSED)?;
+        let prefixe=if profil==4 {26} else if lots>1 {18} else {15};
         if index >= COMPTE
             || recus & (1 << index) != 0
-            || data.len() != if n % 2 == 0 { 60 } else { 1514 }
-            || data[if lots>1 {18} else {15}..]
+            || data.len() != if profil==4 {64} else if profil>0 {1514} else if n%2==0 {60} else {1514}
+            || data[prefixe..]
                 .iter()
                 .enumerate()
-                .any(|(i, &b)| b != (octet(n, i+if lots>1 {3} else {0}) ^ 0xa5))
+                .any(|(i, &b)| b != (octet(n, i+prefixe-15) ^ 0xa5))
         {
             return Err(REFUSED);
         }
+        if profil==4 {echos[index].copy_from_slice(&data[18..26]);}
         recus |= 1 << index;
     }
-    if recus != u16::MAX {
+    if !tx_seul && recus != u16::MAX {
         return Err(REFUSED);
     }
     seq+=1;

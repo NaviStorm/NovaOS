@@ -21,6 +21,13 @@ fn main() {
     println!("cargo::rerun-if-changed=../abi");
     let target = env::var("TARGET").unwrap();
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    println!("cargo::rustc-check-cfg=cfg(net_p9_coexistence)");
+    println!("cargo::rerun-if-env-changed=NOVAOS_NET_SERIE");
+    let coexistence = target == "aarch64-unknown-none-softfloat"
+        && env::var_os("CARGO_FEATURE_NET_ARM_LAB").is_some()
+        && env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some()
+        && env::var("NOVAOS_NET_SERIE").as_deref()==Ok("stockage");
+    if coexistence { println!("cargo::rustc-cfg=net_p9_coexistence"); }
     let nvme_lab = target == "x86_64-unknown-none" && env::var_os("CARGO_FEATURE_NVME_LAB").is_some();
     println!("cargo:rerun-if-changed=../user/virtio_net");
     for name in [
@@ -96,6 +103,7 @@ fn main() {
         {
             rust.args(["--cfg", "net_p9_trace"]);
         }
+        if coexistence && name == "storage/fileclient" {rust.args(["--cfg","net_p9_coexistence"]);}
         if name == "net_preparation" && env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some() {
             rust.args(["--cfg", "net_ethernet_lab"]);
         }

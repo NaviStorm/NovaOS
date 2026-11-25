@@ -6,8 +6,20 @@ const IMAGE: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/net_preparation.b
 fn lots() -> u64 {
     match option_env!("NOVAOS_NET_SERIE") {
         Some("endurance") => 6250,
-        Some("rearmement" | "redemarrage") => 3,
+        Some("perf-long-rx" | "stockage") => 62500,
+        Some("perf-tx" | "perf-rx" | "perf-duplex" | "perf-rtt") => 31250,
+        Some("court-tx" | "court-rx" | "court-duplex" | "court-rtt") => 6,
+        Some("rearmement" | "redemarrage" | "pression-rx") => 3,
         _ => 1,
+    }
+}
+
+#[cfg(feature = "net-ethernet-lab")]
+fn profil() -> u64 {
+    match option_env!("NOVAOS_NET_SERIE") {
+        Some("perf-tx" | "court-tx")=>1, Some("perf-rx" | "perf-long-rx" | "court-rx")=>2,
+        Some("perf-duplex" | "court-duplex")=>3, Some("perf-rtt" | "court-rtt")=>4,
+        _=>0,
     }
 }
 
@@ -29,6 +41,7 @@ fn creer(mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child,
             #[cfg(feature = "net-ethernet-lab")]
             if mode == 3 {
                 space.write_data(m, 7, lots());
+                space.write_data(m, 9, profil());
                 if option_env!("NOVAOS_NET_SERIE")==Some("redemarrage") {space.write_data(m,8,generation.checked_mul(65536).ok_or(crate::memory::Error::Geometry)?);}
             }
             Ok(())
@@ -137,20 +150,29 @@ pub(crate) fn ethernet(
     let mut copie = [0u8; 1526];
     let mut ok = true;
     let mut pendant=Some(pendant);
-    let fin_sequence=1+34*lots();
-    for seq in 1..=fin_sequence {
+    let initial_ticks=ticks();
+    let initial_idle=with(|s|s.stats.idle_ticks);
+    let ops=core::iter::once((1,false)).chain((0..lots()).flat_map(|lot|{
+        let milieu=lot!=0 && lot+1!=lots();
+        let rx_seul=milieu && profil()==2;
+        let collecte=if rx_seul {8} else if milieu && profil()==1 {7} else {3};
+        (0..34).filter_map(move |i|match i {
+            0..=16 if rx_seul => None,
+            0..=16 =>Some((2,i==16)),
+            17..=32 =>Some((collecte,false)),
+            _=>Some((if lot+1==lots() {4} else {6},false)),
+        })
+    }));
+    for (indice,(tag,pression)) in ops.enumerate() {
+        let seq=indice as u64+1;
         if seq == 19 {
             measure("net_files_pleines");
             if !pendant.take().is_some_and(|f|f()) {ok=false;break}
         }
-        let rang = if seq==1 {0} else {(seq-2)%34+1};
-        let tag = match rang {
-            0 => 1,
-            1..=17 => 2,
-            18..=33 => 3,
-            _ if seq == fin_sequence => 4,
-            _ => 6,
-        };
+        if option_env!("NOVAOS_NET_SERIE")==Some("pression-rx") && tag==6 && seq==35 {
+            hal::log(format_args!("NET RX fenetre 16 completions avant rearmement"));
+            sleep(u64::from(HZ)/8);
+        }
         if demande(pid, handle, lots()>1) != Some((tag, generation, seq)) {
             ok = false;
             break;
@@ -183,7 +205,7 @@ pub(crate) fn ethernet(
                     return Err(crate::abi::BAD_ARGUMENT);
                 }
                 let n = operation(tag, len, &mut copie)?;
-                if tag == 3
+                if matches!(tag,3|8)
                     && (n > copie.len()
                         || !heap::with_pages(|m| Ok(space.copy_to_user(m, 0x401100, &copie[..n])))
                             .unwrap_or(false))
@@ -192,7 +214,7 @@ pub(crate) fn ethernet(
                 }
                 Ok(n)
             });
-            let res = if tag == 3
+            let res = if matches!(tag,3|7|8)
                 && res == Err(crate::abi::WOULD_BLOCK)
                 && ticks().wrapping_sub(debut) >= u64::from(HZ) * 3
             {
@@ -200,7 +222,7 @@ pub(crate) fn ethernet(
             } else {
                 res
             };
-            if tag == 3 && res == Err(crate::abi::WOULD_BLOCK) {
+            if matches!(tag,3|7|8) && res == Err(crate::abi::WOULD_BLOCK) {
                 drop(gate);
                 sleep(1);
                 continue;
@@ -216,7 +238,7 @@ pub(crate) fn ethernet(
                     .unwrap();
                 }
             });
-            if rang == 17 && res == Err(crate::abi::WOULD_BLOCK) {
+            if pression && res == Err(crate::abi::WOULD_BLOCK) {
                 if seq!=18 {break}
                 hal::log(format_args!(
                     "NET L2 saturation TX=16 statut={}",
@@ -224,7 +246,7 @@ pub(crate) fn ethernet(
                 ));
                 break;
             }
-            if rang == 17 {
+            if pression {
                 ok = false;
             }
             if let Err(reason) = res {
@@ -240,6 +262,9 @@ pub(crate) fn ethernet(
         }
     }
     // Fermer l'endpoint avant la collecte. L'appelant retire le domaine et les pages.
+    let total_ticks=ticks().wrapping_sub(initial_ticks);
+    let idle=with(|s|s.stats.idle_ticks).wrapping_sub(initial_idle);
+    hal::log(format_args!("NET L2 CPU ticks={total_ticks} idle={idle} hz={HZ}"));
     ok &= operation(5, 0, &mut copie).is_ok();
     with(|s| s.ipc.lab_close_sender(pid, handle));
     let fin = actif.join();

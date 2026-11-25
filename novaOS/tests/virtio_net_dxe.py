@@ -9,6 +9,7 @@ import subprocess
 import tarfile
 import tempfile
 import time
+import resource
 
 from installation_utm import FIRMWARE, UTM, lanceurs
 from profils_utm import disque_sequentiel
@@ -77,7 +78,7 @@ def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=
                      "avant-f2": b"COUPURE avant F2", "apres-f2": b"COUPURE apres F2"}
             if phase == "remonter-ro":
                 args[debut+1] += ",readonly=on"
-            elif phase not in ("files-nic", "parcours-fichiers", "ethernet-prive", "ethernet-p9"):
+            elif phase not in ("files-nic", "parcours-fichiers", "ethernet-prive", "ethernet-p9", "charge-p9-avec", "charge-p9-repos"):
                 attendu = termine = choix[phase]
             args += ["-fw_cfg", f"name=opt/novaos/net-p9,string={phase}"]
     if event_idx is not None:
@@ -91,7 +92,9 @@ def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=
                   "virtio_iommu_map", "virtio_iommu_unmap_done", "virtio_iommu_translate",
                   "virtio_iommu_report_fault"):
         args += ["-trace", event]
-    with Pair(out) if phase in ("ethernet-prive","ethernet-p9") else nullcontext(None) as pair:
+    usage=resource.getrusage(resource.RUSAGE_CHILDREN)
+    debut_cpu=time.monotonic()
+    with Pair(out) if phase in ("ethernet-prive","ethernet-p9","charge-p9-avec") else nullcontext(None) as pair:
         fds = pair.connecter(args) if pair else ()
         dump(out / "arguments.json", list(map(str, args)))
         with (out / "qemu.trace").open("xb") as log, subprocess.Popen(
@@ -101,14 +104,19 @@ def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=
                 dump(out / "version.json", qmp(vm, "query-version"))
                 capture(vm, out, "reset", True)
                 qmp(vm, "cont")
-                until = time.monotonic() + (1800 if pair and pair.lots==6250 else 90 if disque else 40)
+                until = time.monotonic() + (1800 if (pair and pair.lots>=6250) or phase=='charge-p9-repos' else 90 if disque else 40)
                 while time.monotonic() < until:
+                    if pair: pair.observer_pression(vm)
                     data = serial.read_bytes()
                     if any(s in data for s in (termine, b"NET ARM bilan", b"NOVA DXE QUARANTAINE", b"Panique du noyau")):
                         break
                     time.sleep(0.05)
                 qmp(vm, "stop")
                 capture(vm, out, "fin", True)
+                if pair and os.environ.get("NOVAOS_NET_MODELE_FAUTE")=="injecter":
+                    from virtio_net_completion_absente import constater
+                    constater(vm,out,"ARM")
+                    attendu=b"NET ARM bilan Err(Quarantine)"
                 if phase in ("avant-f1", "apres-f1", "avant-f2", "apres-f2") and attendu in data:
                     vm.kill()
                     vm.wait(timeout=5)
@@ -120,6 +128,9 @@ def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=
                 if vm.poll() is None:
                     vm.kill()
                 vm.wait()
+                fin=resource.getrusage(resource.RUSAGE_CHILDREN)
+                dump(out/"cpu-qemu.json",dict(reel_s=time.monotonic()-debut_cpu,
+                     utilisateur_s=fin.ru_utime-usage.ru_utime,systeme_s=fin.ru_stime-usage.ru_stime))
     return attendu in serial.read_bytes()
 
 
