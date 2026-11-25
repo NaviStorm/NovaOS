@@ -1,5 +1,6 @@
 """Pair Ethernet réservé à un socketpair Unix anonyme du moteur de qualification."""
 import errno
+import os
 import hashlib
 import json
 import socket
@@ -38,6 +39,9 @@ class Pair:
         self.sock.settimeout(90)
         self.trames = []
         self.erreur = None
+        self.perte = os.environ.get('NOVAOS_NET_PAIR_PERTE') == 'derniere-reponse'
+        self.envoyees = 0
+        self.stockage = False
         self.thread = threading.Thread(target=self.echanger, daemon=True)
 
     def __enter__(self):
@@ -67,11 +71,23 @@ class Pair:
                     (self.sortie / "tx-divergent.bin").write_bytes(obs)
                     raise ValueError(f"TX position={i} longueur={n}/{len(attendu)} premier_ecart={premier} prefixe={obs[:16].hex()}")
                 retour = trame(i, True)
-                reponses.extend(len(retour).to_bytes(4, "big") + retour)
+                if not (self.perte and i == 15):
+                    reponses.extend(len(retour).to_bytes(4, "big") + retour)
                 self.trames.append(dict(sequence=i, horloge_hote_ns=time.monotonic_ns(),
                                         octets=n, tx_sha256=hashlib.sha256(obs).hexdigest(),
                                         rx_sha256=hashlib.sha256(retour).hexdigest()))
+            if os.environ.get("NOVAOS_NET_PAIR_P9")=="lectures-flush":
+                # La dernière réponse réseau demeure en vol durant les opérations disque.
+                stop=time.monotonic()+6
+                while time.monotonic()<stop:
+                    if b"NET ARM flush hz=" in (self.sortie / "serie.log").read_bytes():
+                        self.stockage=True
+                        break
+                    time.sleep(.001)
+                if not self.stockage:
+                    raise ValueError("FLUSH invité absent")
             self.sock.sendall(reponses)
+            self.envoyees = 15 if self.perte else 16
         except (OSError, EOFError, ValueError) as exc:
             self.erreur = str(exc)
 
@@ -84,6 +100,6 @@ class Pair:
                 raise
         self.thread.join(timeout=3)
         self.sock.close()
-        bilan = dict(trames=self.trames, erreur=self.erreur,
-                     succes=len(self.trames)==16 and not self.thread.is_alive() and self.erreur is None)
+        bilan = dict(trames=self.trames, erreur=self.erreur, stockage_avant_derniere_reponse=self.stockage, reponses_envoyees=self.envoyees, perte=self.perte,
+                     succes=self.envoyees==16 and len(self.trames)==16 and not self.thread.is_alive() and self.erreur is None)
         (self.sortie / "pair.json").write_text(json.dumps(bilan, indent=2) + "\n")

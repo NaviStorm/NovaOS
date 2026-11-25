@@ -458,6 +458,8 @@ pub(crate) fn net_p9() -> Result<()> {
         autoriser_sortie(&mut t)?;
         Ok((t, table))
     };
+    #[cfg(all(feature="net-ethernet-lab",feature="net-arm-lab"))]
+    crate::sched::process::net_preparation::mesurer("net_initial");
     let (mut t, table) = ouvrir()?;
     #[cfg(feature = "net-arm-lab")]
     let mut table = table;
@@ -471,6 +473,8 @@ pub(crate) fn net_p9() -> Result<()> {
             b"files-nic" => 125,
             #[cfg(all(feature="net-arm-lab",feature="net-ethernet-lab"))]
             b"ethernet-prive" => 126,
+            #[cfg(all(feature="net-arm-lab",feature="net-ethernet-lab"))]
+            b"ethernet-p9" => 127,
             b"parcours-fichiers" => 11,
             b"remonter-ro" => 13,
             _ => return Err(Error::Geometry),
@@ -548,13 +552,37 @@ pub(crate) fn net_p9() -> Result<()> {
             suite.domaine.generation()
         ));
         #[cfg(feature="net-ethernet-lab")]
-        if mode==126 {
-            suite.trames()?;
+        if matches!(mode,126|127) {
+            suite.trames(||{
+                if mode==126 {return true}
+                let mut reads=[0u64;64];
+                let mut flushes=[0u64;16];
+                let hz=hal::timer::counter_hz();
+                let mut bloc=[0u8;PAGE];
+                for (i,mesure) in reads.iter_mut().enumerate(){
+                    let debut=hal::timer::counter();
+                    if t.begin_input(table.volume + (i*(PAGE/secteur)) as u64, 0, PAGE).is_err() || t.finish(4097).is_err() {return false}
+                    *mesure=hal::timer::counter()-debut;
+                    if i==0 {
+                        t.p.0[20].mem.read_page(&mut bloc);
+                        if &bloc[..8]!=b"NOVAP0FS" {return false}
+                    }
+                }
+                for mesure in &mut flushes{
+                    let debut=hal::timer::counter();
+                    if t.output(0,true).is_err(){return false}
+                    *mesure=hal::timer::counter()-debut;
+                }
+                hal::log(format_args!("NET ARM lectures secteur={secteur} hz={hz} octets=4096 cycles={reads:?}"));
+                hal::log(format_args!("NET ARM flush hz={hz} cycles={flushes:?}"));
+                true
+            })?;
             t.begin_read(table.volume)?;
             t.finish_read()?;
             t.close()?;
             let fin=crate::memory::pinned_dma_frames();
             hal::log(format_args!("NET ARM L2 retrait disque_lisible=true cadres_fin={fin}"));
+            crate::sched::process::net_preparation::mesurer("net_final");
             if fin!=0 {return Err(Error::Quarantine)}
             return Ok(())
         }

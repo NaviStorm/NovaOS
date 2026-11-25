@@ -77,7 +77,7 @@ def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=
                      "avant-f2": b"COUPURE avant F2", "apres-f2": b"COUPURE apres F2"}
             if phase == "remonter-ro":
                 args[debut+1] += ",readonly=on"
-            elif phase not in ("files-nic", "parcours-fichiers", "ethernet-prive"):
+            elif phase not in ("files-nic", "parcours-fichiers", "ethernet-prive", "ethernet-p9"):
                 attendu = termine = choix[phase]
             args += ["-fw_cfg", f"name=opt/novaos/net-p9,string={phase}"]
     if event_idx is not None:
@@ -91,7 +91,7 @@ def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=
                   "virtio_iommu_map", "virtio_iommu_unmap_done", "virtio_iommu_translate",
                   "virtio_iommu_report_fault"):
         args += ["-trace", event]
-    with Pair(out) if phase=="ethernet-prive" else nullcontext(None) as pair:
+    with Pair(out) if phase in ("ethernet-prive","ethernet-p9") else nullcontext(None) as pair:
         fds = pair.connecter(args) if pair else ()
         dump(out / "arguments.json", list(map(str, args)))
         with (out / "qemu.trace").open("xb") as log, subprocess.Popen(

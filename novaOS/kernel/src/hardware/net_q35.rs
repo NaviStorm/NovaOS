@@ -157,6 +157,8 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     if cpu.edx & (1 << 19) == 0 || !line.is_power_of_two() || line > 4096 {
         return Err("cache");
     }
+    #[cfg(feature="net-ethernet-lab")]
+    crate::sched::process::net_preparation::mesurer("net_initial");
     let reference = memory::pinned_dma_frames();
     let mut frames = [EMPTY; 30];
     for i in 0..frames.len() {
@@ -247,6 +249,8 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
                 unsafe { memory::release_dma(f.pa) }
             }
         }
+        #[cfg(feature="net-ethernet-lab")]
+        crate::sched::process::net_preparation::mesurer("net_final");
         let gardes = memory::pinned_dma_frames()
             .checked_sub(reference)
             .ok_or("comptabilite")?;

@@ -100,7 +100,7 @@ pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u
     let ligne =
         crate::hardware::lab_irq::net_intx::Ligne::ouvrir(nic.isr.base()).ok_or(Error::Route)?;
     let hz = hal::timer::counter_hz();
-    let ok = crate::sched::process::net_preparation::ethernet(generation, |tag, len, copie| {
+    let ok = crate::sched::process::net_preparation::ethernet(generation, ||true, |tag, len, copie| {
         if tag == 5 {
             return port.stopper().map(|()| 0).map_err(|_| crate::abi::REFUSED);
         }

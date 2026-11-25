@@ -168,7 +168,7 @@ impl Preparation {
 
 #[cfg(feature = "net-ethernet-lab")]
 impl Preparation {
-    pub(super) fn trames(self) -> Result<()> {
+    pub(super) fn trames(self, pendant:impl FnOnce()->bool) -> Result<()> {
         // Les 22 mappings sont acquittés avant publication d'un premier descripteur.
         let resultat = (|| {
             self.domaine.faults_preparation()?;
@@ -192,6 +192,7 @@ impl Preparation {
             let debut = hal::timer::counter();
             let ok = crate::sched::process::net_preparation::ethernet(
                 self.domaine.generation(),
+                pendant,
                 |tag, len, copie| {
                     if tag == 5 {
                         return port.stopper().map(|()| 0).map_err(|_| crate::abi::REFUSED);

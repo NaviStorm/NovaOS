@@ -89,7 +89,7 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_id
                 start = time.monotonic()
                 try:
                     with tpm(tmp, dossier, "labo") as sock:
-                        report["bilan_invite"] = observe(tmp, dossier, sock, disque=disque, secteur=secteur, phase="ethernet-prive" if ethernet else "files-nic" if installer else "parcours-fichiers" if fichiers else None, event_idx=event_idx)
+                        report["bilan_invite"] = observe(tmp, dossier, sock, disque=disque, secteur=secteur, phase=("ethernet-p9" if os.environ.get("NOVAOS_NET_PAIR_P9")=="lectures-flush" else "ethernet-prive") if ethernet else "files-nic" if installer else "parcours-fichiers" if fichiers else None, event_idx=event_idx)
                 finally:
                     report["execution_s"] = time.monotonic() - start
         if not report["bilan_invite"]:
@@ -110,6 +110,11 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_id
                     "NET ARM L2 INTID=38 isr=0x101" in serial and
                     "NET L2 completions TX=16 RX=16 identifiants_uniques=true" in serial):
                 raise ValueError("Ethernet, IRQ, ressources ou contenu P9 non confirmés")
+            if os.environ.get("NOVAOS_NET_PAIR_P9")=="lectures-flush":
+                report["lectures"]=mesures(serial,"lectures",64)
+                report["flush"]=mesures(serial,"flush",16)
+                if not pair.get("stockage_avant_derniere_reponse"):
+                    raise ValueError("Chevauchement stockage/réseau non établi")
             report.update(succes=True, bail_nic=True, trames_par_sens=16)
             return
         if event_idx is not None:

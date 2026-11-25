@@ -106,8 +106,12 @@ pub(crate) fn tester(generation: u64, preparer: impl FnOnce() -> bool) -> bool {
 }
 
 #[cfg(feature = "net-ethernet-lab")]
+pub(crate) fn mesurer(phase:&str) { measure(phase); }
+
+#[cfg(feature = "net-ethernet-lab")]
 pub(crate) fn ethernet(
     generation: u64,
+    pendant: impl FnOnce() -> bool,
     mut operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
 ) -> bool {
     measure("net_avant_pilote");
@@ -118,9 +122,11 @@ pub(crate) fn ethernet(
     let pid = actif.0;
     let mut copie = [0u8; 1526];
     let mut ok = true;
+    let mut pendant=Some(pendant);
     for seq in 1..=35u64 {
         if seq == 19 {
             measure("net_files_pleines");
+            if !pendant.take().is_some_and(|f|f()) {ok=false;break}
         }
         let tag = match seq {
             1 => 1,
