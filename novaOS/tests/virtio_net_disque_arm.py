@@ -59,7 +59,7 @@ def mesures(serial, prefix, count):
     return result
 
 
-def run(elf, source, secteur, dossier, installer=False, fichiers=False):
+def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_idx=None):
     dossier.mkdir(parents=True, exist_ok=False)
     report = {"elf_sha256": digest(elf), "bail_nic": False, "secteur": secteur}
     try:
@@ -89,7 +89,7 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False):
                 start = time.monotonic()
                 try:
                     with tpm(tmp, dossier, "labo") as sock:
-                        report["bilan_invite"] = observe(tmp, dossier, sock, disque=disque, secteur=secteur, phase="files-nic" if installer else "parcours-fichiers" if fichiers else None)
+                        report["bilan_invite"] = observe(tmp, dossier, sock, disque=disque, secteur=secteur, phase="files-nic" if installer else "parcours-fichiers" if fichiers else None, event_idx=event_idx)
                 finally:
                     report["execution_s"] = time.monotonic() - start
         if not report["bilan_invite"]:
@@ -99,6 +99,17 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False):
         with disque.open("rb") as fp, extrait.open("xb") as dst:
             fp.seek(map_gpt["p9"] * secteur)
             dst.write(fp.read(vol.stat().st_size))
+        if event_idx is not None:
+            from virtio_net_event_idx import verifier_negociation
+            from virtio_net_domaines_arm import verifier as domaines
+            report["negociation"] = verifier_negociation(dossier, event_idx, "ARM")
+            report["domaines"] = domaines(dossier, event_idx == "on")
+            if event_idx == "off":
+                serial = (dossier / "serie.log").read_text()
+                if "NET ARM refus preparation=Feature cadres_dma=0" not in serial or digest(extrait) != digest(vol):
+                    raise ValueError("Refus sans restitution ou volume initial différent")
+                report["succes"] = True
+                return
         attendu = bytearray(PATTERN)
         if fichiers:
             attendu[4091:4106] = b"NovaFS-partiel!"
@@ -121,5 +132,8 @@ if __name__ == "__main__":
     profils = p.add_mutually_exclusive_group()
     profils.add_argument("--installer-files", action="store_true")
     profils.add_argument("--parcours-fichiers", action="store_true")
+    p.add_argument("--event-idx", choices=("on", "off"))
     a = p.parse_args()
-    run(a.elf.resolve(), a.sources.resolve(), a.secteur, a.sortie.resolve(), a.installer_files, a.parcours_fichiers)
+    if a.event_idx and not a.installer_files:
+        p.error("--event-idx exige --installer-files")
+    run(a.elf.resolve(), a.sources.resolve(), a.secteur, a.sortie.resolve(), a.installer_files, a.parcours_fichiers, a.event_idx)

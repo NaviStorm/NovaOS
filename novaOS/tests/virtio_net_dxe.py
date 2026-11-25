@@ -43,7 +43,7 @@ def firmware_files(tmp):
     return digest(archive)
 
 
-def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None):
+def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=None):
     serial = out / "serie.log"
     args = [tmp / "qemu-aarch64-softmmu", "-L", FIRMWARE, "-machine", "virt-10.0,gic-version=3,its=off",
             "-accel", "tcg", "-cpu", "cortex-a72", "-m", "256", "-smp", "1", "-display", "none",
@@ -75,6 +75,12 @@ def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None):
             elif phase not in ("files-nic", "parcours-fichiers"):
                 attendu = termine = choix[phase]
             args += ["-fw_cfg", f"name=opt/novaos/net-p9,string={phase}"]
+    if event_idx is not None:
+        if event_idx not in ("on", "off") or disque is None:
+            raise ValueError("Profil EVENT_IDX inconnu")
+        args.extend(["-global", "virtio-net-pci.event_idx=" + event_idx])
+        if event_idx == "off":
+            attendu = b"NET ARM bilan Err(Feature)"
     for event in ("pci_cfg_write", "virtio_iommu_system_reset", "virtio_iommu_switch_address_space",
                   "virtio_iommu_set_config", "virtio_iommu_attach", "virtio_iommu_detach",
                   "virtio_iommu_map", "virtio_iommu_unmap_done", "virtio_iommu_translate",

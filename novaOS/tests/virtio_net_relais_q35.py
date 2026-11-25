@@ -105,6 +105,8 @@ def verifier_tables(vm,qt,journal,out,retrait=False):
 def run(a,out):
     args=arguments(a.firmware/"OVMF_CODE.fd",out,out,False)
     args.remove("-no-reboot")
+    if a.event_idx is not None:
+        args.extend(["-global", "virtio-net-pci.event_idx=" + a.event_idx])
     args+=["-device","ramfb","-no-shutdown","-d","guest_errors,cpu_reset"]
     dump(out/"arguments.json",args)
     report={}
@@ -138,6 +140,13 @@ def run(a,out):
                                 if not refus_liminer(serial) or b"NET Q35" in serial or fin["vtd_gsts"]!=0:
                                     raise ValueError("Refus explicite du noyau altéré absent : "+repr(serial[-480:]))
                                 report["noyau_altere_refuse"]=True
+                            elif a.event_idx is not None:
+                                from virtio_net_event_idx import verifier_negociation
+                                report["negociation"] = verifier_negociation(out, a.event_idx, "Q35")
+                                status = b'Err("negociation EVENT_IDX")' if a.event_idx == "off" else b"Ok(())"
+                                if b"NET Q35 etat=" + status + b" bail=false" not in serial:
+                                    raise ValueError("Statut terminal EVENT_IDX absent")
+                                report["cadres_verifies"] = verifier_tables(vm, qt, serial, out, retrait=True)
                             elif b"NET Q35 etat=Ok(()) bail=false" not in serial:
                                 raise ValueError("Verdict invité absent : "+repr(serial[-600:]))
                             else:
@@ -161,7 +170,10 @@ if __name__=="__main__":
         p.add_argument(key,type=lambda s:Path(s).resolve())
     p.add_argument("--retrait",action="store_true")
     p.add_argument("--temoin-hash",action="store_true")
+    p.add_argument("--event-idx", choices=("on", "off"))
     a=p.parse_args()
+    if a.event_idx and (not a.retrait or a.temoin_hash):
+        p.error("--event-idx exige --retrait et un noyau authentifié")
     a.sortie.mkdir()
     support(a.elf,a.firmware,a.sortie,a.limine,a.retrait,a.temoin_hash)
     run(a,a.sortie)

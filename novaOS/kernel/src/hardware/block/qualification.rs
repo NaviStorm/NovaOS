@@ -478,7 +478,14 @@ pub(crate) fn net_p9() -> Result<()> {
     let secteur = t.size;
     #[cfg(feature = "net-arm-lab")]
     let nic = {
-        let nic = super::net_arm::Preparation::ouvrir()?;
+        let nic = match super::net_arm::Preparation::ouvrir() {
+            Ok(nic) => nic,
+            Err(e) => {
+                t.close()?;
+                hal::log(format_args!("NET ARM refus preparation={e:?} cadres_dma={}", crate::memory::pinned_dma_frames()));
+                return Err(e);
+            }
+        };
         let pico = crate::memory::pinned_dma_frames();
         let (controle, endpoint, vol, gardien) = super::domain::Domain::dimensions();
         hal::log(format_args!(

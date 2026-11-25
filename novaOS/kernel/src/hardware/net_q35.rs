@@ -213,6 +213,11 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
         "NET Q35 domaine=3 sid=56 iova={IOVA:#x} root={:#x} qi={:#x} recu={:#x} cookie=2 blocs=22 cadres=30",
         frames[0].pa, frames[6].pa, frames[7].pa
     ));
+    #[cfg(feature = "net-event-idx")]
+    let negotiation =
+        super::block::net_event::q35(frames[8..].try_into().expect("22 cadres du NIC"));
+    #[cfg(feature = "net-event-idx")]
+    let retrait = retrait || negotiation.is_err();
     if retrait {
         // BME est resté coupé. Supprimer la seule racine avant CC global,
         // IOTLB global avec DR/DW et WAIT sur un nouveau reçu de cette file.
@@ -243,5 +248,7 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
             "NET Q35 retrait cookie=3 racine_vide=true rendus=27 permanents={gardes}"
         ));
     }
+    #[cfg(feature = "net-event-idx")]
+    negotiation.map_err(|_| "negociation EVENT_IDX")?;
     Ok(())
 }
