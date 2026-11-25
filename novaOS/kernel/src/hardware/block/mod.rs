@@ -4,23 +4,6 @@ mod gpt;
 pub(super) mod io;
 mod lease;
 pub(crate) mod metrics;
-#[cfg(all(
-    feature = "net-event-idx",
-    any(
-        all(target_arch = "aarch64", feature = "net-arm-lab"),
-        all(target_arch = "x86_64", feature = "net-q35-lab")
-    )
-))]
-pub(super) mod net_event;
-#[cfg(any(
-    all(target_arch = "aarch64", feature = "net-arm-lab"),
-    all(
-        target_arch = "x86_64",
-        feature = "net-q35-lab",
-        feature = "net-event-idx"
-    )
-))]
-mod net_files;
 mod ownership;
 mod pci;
 #[cfg(all(target_arch = "aarch64", feature = "dma-sequentiel"))]
@@ -484,3 +467,21 @@ mod domain;
 
 #[cfg(all(target_arch = "aarch64", feature = "net-arm-lab"))]
 pub(crate) mod net_arm;
+
+#[cfg(all(
+    feature = "net-event-idx",
+    any(
+        all(target_arch = "aarch64", feature = "net-arm-lab"),
+        all(target_arch = "x86_64", feature = "net-q35-lab")
+    )
+))]
+pub(super) mod net_event;
+#[cfg(any(
+    all(target_arch = "aarch64", feature = "net-arm-lab"),
+    all(
+        target_arch = "x86_64",
+        feature = "net-q35-lab",
+        feature = "net-event-idx"
+    )
+))]
+mod net_files;
