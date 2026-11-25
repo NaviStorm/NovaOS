@@ -33,6 +33,8 @@ fn profile_bar(a: Address, f: &Function, index: usize) -> Option<(BarKind, bool,
     match (a.device, a.function, f.vendor, f.device, index) {
         #[cfg(any(test, feature = "nvme-lab"))]
         (6, 0, 0x1b36, 0x0010, 0) => Some((Memory64, false, NVME_SIZE)),
+        #[cfg(feature = "net-q35-duo")]
+        (7, 0, 0x1af4, 0x1041, 4) => Some((Memory64, true, 16384)),
         (6, 0, 0x1234, 0x11e8, 0) => Some((Memory32, false, EDU_SIZE)),
         (31, 2, 0x8086, 0x2922, 4) => Some((Io, false, 32)),
         (31, 2, 0x8086, 0x2922, 5) => Some((Memory32, false, 4096)),
@@ -211,6 +213,21 @@ pub const NVME_SIZE: u64 = 16 * 1024;
 pub fn qualify_nvme(functions: &[(Address, Function)]) -> Result<(u64, u16), Error> {
     let profile = [Q35[0], (6, 0, 0x1b36, 0x0010, 1), Q35[2], Q35[3], Q35[4]];
     check_slots(&profile, functions)?;
+    nvme_at(functions, 0xc0_0000_0000, true)
+}
+
+#[cfg(feature = "net-q35-duo")]
+pub fn qualify_duo(functions: &[(Address, Function)]) -> Result<(u64, u16), Error> {
+    check_slots(&[Q35[0], (6,0,0x1b36,0x0010,1), (7,0,0x1af4,0x1041,1), Q35[2], Q35[4]], functions)?;
+    if functions.iter().any(|(_, f)| f.bus_master || f.msi_armed) {return Err(Error::Identity);}
+    let nic = &functions.iter().find(|(a,_)| a.device == 7).ok_or(Error::Identity)?.1;
+    if (nic.class, nic.subclass, nic.interface) != (2,0,0) || nic.msix || nic.msi
+        || nic.bars[4].ok_or(Error::Bar)?.base != 0xc0_0000_0000 {return Err(Error::Bar);}
+    nvme_at(functions, 0xc0_0000_4000, false)
+}
+
+#[cfg(any(test, feature = "nvme-lab"))]
+fn nvme_at(functions: &[(Address, Function)], base: u64, decoded: bool) -> Result<(u64,u16), Error> {
     check_bars(functions)?;
     let f = &functions
         .iter()
@@ -221,13 +238,13 @@ pub fn qualify_nvme(functions: &[(Address, Function)]) -> Result<(u64, u16), Err
         || !f.pcie
         || !f.msix
         || f.msi
-        || f.command & 2 == 0
+        || (decoded && f.command & 2 == 0)
         || f.bars[1..].iter().any(Option::is_some)
     {
         return Err(Error::Bar);
     }
     let span = extent(f.bars[0].ok_or(Error::Bar)?, NVME_SIZE)?;
-    if span.base != 0xc0_0000_0000 {
+    if span.base != base {
         return Err(Error::Range);
     }
     Ok((span.base, f.command))

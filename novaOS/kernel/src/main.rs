@@ -59,6 +59,12 @@ pub extern "C" fn nova_start() -> ! {
 
 fn main_thread() {
     boot_id::init();
+    #[cfg(all(target_arch="x86_64", feature="net-q35-duo"))]
+    if boot::scenario().starts_with(b"net-q35-duo-") {
+        let resultat = hardware::nvme_domain::qualifier_duo(boot::scenario());
+        log(format_args!("NET DUO etat={resultat:?}"));
+        hal::cpu::halt()
+    }
     // Le diagnostic capture les tables tant que le chargeur les possède, sur le BSP seul.
     #[cfg(all(target_arch = "x86_64", feature = "net-q35-lab"))]
     if matches!(boot::scenario(), b"net-q35-relais" | b"net-q35-retrait") || (cfg!(feature="net-ethernet-lab") && boot::scenario()==b"net-q35-ethernet") {

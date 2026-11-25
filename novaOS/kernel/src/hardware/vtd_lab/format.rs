@@ -11,11 +11,33 @@ pub(super) fn next_epoch(previous: u64) -> Option<u64> {
 }
 
 pub(super) fn capabilities(version: u32, cap: u64, ecap: u64, host: u8) -> Option<usize> {
+    if ecap & (1 << 3) != 0 { return None; }
+    common_capabilities(version, cap, ecap, host)
+}
+
+#[cfg(any(test, feature="net-q35-duo"))]
+pub(super) fn interrupt_state(gsts:u32, irta:u64)->bool {
+    // Aucun mode d'interruption actif, ni table en attente ou déjà publiée.
+    gsts & !((1<<31)|(1<<30)|(1<<26)) == 0 && irta == 0
+}
+
+#[cfg(any(test, feature="net-q35-duo"))]
+pub(super) fn dual_capabilities(version:u32, cap:u64, ecap:u64, host:u8, gsts:u32, irta:u64)->Option<usize> {
+    const IR: u64 = 1<<3;
+    const EIM: u64 = 1<<4;
+    const MHMV: u64 = 15<<20;
+    const KNOWN: u64 = 2 | IR | EIM | (1<<6) | 0x3ff00 | MHMV;
+    if !interrupt_state(gsts,irta) || ecap & !KNOWN != 0 ||
+        (ecap & IR == 0 && ecap & (EIM|MHMV) != 0) {return None;}
+    common_capabilities(version,cap,ecap,host)
+}
+
+fn common_capabilities(version:u32, cap:u64, ecap:u64, host:u8)->Option<usize> {
     let width = ((cap >> 16) & 63) + 1;
     let record = (((cap >> 24) & 1023) * 16) as usize;
     // Le banc vérifie le profil exact : quatre niveaux, invalidations en file,
     // drainage lecture/écriture, une seule entrée FRCD, sans ATS, IR ni scalable.
-    let unsupported = (1 << 2) | (1 << 3) | (1 << 29) | (1 << 40) | (1 << 43);
+    let unsupported = (1 << 2) | (1 << 29) | (1 << 40) | (1 << 43);
     if version != 0x10
         || width != 48
         || host != 48
@@ -77,6 +99,21 @@ mod tests {
         assert_eq!(capabilities(0x10, CAP, ECAP, 39), None);
         assert_eq!(capabilities(0x10, CAP | (1023 << 24), ECAP, 48), None);
         assert_eq!(capabilities(0x10, CAP & !(1023 << 24), ECAP, 48), None);
+    }
+
+    #[test]
+    fn profil_double_capacites_et_etat_effectif() {
+        let extended=ECAP | (1<<3) | (1<<4) | (15<<20);
+        for flags in [ECAP, ECAP|8, extended] {
+            assert_eq!(dual_capabilities(0x10,CAP,flags,48,0,0),Some(0x220));
+            for bit in [7,10,54,55] {assert!(dual_capabilities(0x10,CAP & !(1<<bit),flags,48,0,0).is_none());}
+            for bad in [1<<25,1<<24,1<<23,1] {assert!(dual_capabilities(0x10,CAP,flags,48,bad,0).is_none());}
+            for table in [1,0x1000,1<<11] {assert!(dual_capabilities(0x10,CAP,flags,48,0,table).is_none());}
+        }
+        for bad in [ECAP|16,ECAP|(1<<20),extended|4,extended|(1<<43),extended|(1<<63)] {
+            assert!(dual_capabilities(0x10,CAP,bad,48,0,0).is_none());
+        }
+        assert!(capabilities(0x10,CAP,extended,48).is_none());
     }
 
     #[test]

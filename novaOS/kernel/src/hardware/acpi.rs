@@ -248,6 +248,10 @@ pub fn discover(rsdp_phys: u64, mut read: impl FnMut(u64, &mut [u8]) -> bool) ->
         #[cfg(any(test, all(target_arch = "x86_64", feature = "vtd-lab")))]
         if &sig == b"DMAR" {
             inventory.q35_dmar = q35_dmar::recognize(&table);
+            #[cfg(all(target_arch = "x86_64", feature = "net-q35-duo"))]
+            if crate::boot::scenario().starts_with(b"net-q35-duo-") {
+                inventory.q35_dmar = q35_dmar::recognize_endpoints(&table, &[(0,0),(6,0),(7,0),(31,0),(31,3)]);
+            }
             #[cfg(feature = "net-q35-lab")]
             { inventory.q35_net = q35_dmar::recognize_slot(&table, 7); }
         }

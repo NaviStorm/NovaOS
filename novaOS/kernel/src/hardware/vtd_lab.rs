@@ -9,6 +9,8 @@ use super::{
 use crate::{hal, memory};
 use core::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 
+#[cfg(feature="net-q35-duo")]
+mod duo;
 mod format;
 use format::{DID, PAGE, SID, STRIDE};
 pub(crate) const IOVA: u64 = format::BASE;
@@ -174,6 +176,8 @@ pub(crate) struct Engine {
     in_queue: bool,
     consumed_irqs: u64,
     records: usize,
+    #[cfg(feature="net-q35-duo")]
+    duo: duo::Supervisor,
 }
 
 fn free(frame: Frame) {
@@ -223,6 +227,16 @@ impl Engine {
         }
         let regs = Region::map(drhd.base(), MMIO_SLOT, PAGE as usize).map_err(|_| Error::Memory)?;
         let mut windows = Windows::new(drhd.base());
+        #[cfg(feature="net-q35-duo")]
+        if crate::boot::scenario()==b"net-q35-duo-refus-ir" {
+            // Fixture terminale : le firmware réinitialise IRE au handoff. Injecter seulement
+            // après inventaire et avant toute allocation DMA, les deux Bus Masters fermés.
+            if regs.r32(0x1c)!=0 || regs.r64(0x20)!=0 || regs.r64(0xb8)!=0 ||
+                [48,56].iter().any(|sid| super::pci_ports::port(*sid,4,2,None)&4!=0) {return Err(Error::Denied);}
+            regs.w32(0x18,1<<25);
+            if regs.r32(0x1c) != 1<<25 {return Err(Error::Quarantine);}
+            hal::log(format_args!("DUO temoin IRES=1 IRTA=0 BME=0 avant verification"));
+        }
         let version = regs.r32(0);
         let cap = regs.r64(8);
         let ecap = regs.r64(16);
@@ -230,8 +244,12 @@ impl Engine {
             "VTD registre version={version:#x} CAP={cap:#x} ECAP={ecap:#x} GSTS={:#x}",
             regs.r32(0x1c)
         ));
-        let record =
-            format::capabilities(version, cap, ecap, drhd.host_bits()).ok_or(Error::Feature)?;
+        let record = format::capabilities(version, cap, ecap, drhd.host_bits());
+        #[cfg(feature="net-q35-duo")]
+        let record = if crate::boot::scenario().starts_with(b"net-q35-duo-") {
+            format::dual_capabilities(version, cap, ecap, drhd.host_bits(), regs.r32(0x1c), regs.r64(0xb8))
+        } else {record};
+        let record = record.ok_or(Error::Feature)?;
         if regs.r32(0x1c) != 0
             || regs.r64(0x20) != 0
             || regs.r64(0x80) != 0
@@ -298,6 +316,8 @@ impl Engine {
             in_queue: false,
             consumed_irqs: 0,
             records: 0,
+            #[cfg(feature="net-q35-duo")]
+            duo: duo::Supervisor::new(),
         };
         windows.permanent = true;
         if let Err(err) = unit.activate(apic) {
@@ -357,6 +377,8 @@ impl Engine {
         Ok(())
     }
     fn running(&self) -> bool {
+        #[cfg(feature="net-q35-duo")]
+        if !self.duo.delivery_ok(self.regs) {return false;}
         self.regs.r32(0x1c) == SRTP | RUN
             && self.regs.r64(0x20) == self.service[0].pa
             && self.regs.r64(0x90) == self.service[6].pa
@@ -391,6 +413,8 @@ impl Engine {
         barrier();
     }
     fn submit_invalidation(&mut self, mode: Invalidation) -> Result<()> {
+        #[cfg(feature="net-q35-duo")]
+        if !self.duo.delivery_ok(self.regs) {return Err(Error::Quarantine);}
         if self.in_queue
             || self.regs.r64(0x80) != u64::from(self.tail)
             || self.regs.r32(0x34) & !2 != 0
@@ -408,9 +432,12 @@ impl Engine {
         } else {
             0x11
         };
+        let descriptors = (context, 0xd2);
+        #[cfg(feature="net-q35-duo")]
+        let descriptors = self.duo.descriptors(descriptors, mode, self.lease, self.state, self.cookie, self.tail)?;
         for (lo, hi) in [
-            (context, 0),
-            (0xd2, 0),
+            (descriptors.0, 0),
+            (descriptors.1, 0),
             ((u64::from(self.cookie) << 32) | 0x25, receipt.pa),
         ] {
             let off = usize::from(self.tail);
@@ -438,6 +465,11 @@ impl Engine {
             || self.service[7].mem.r32(0) != self.cookie
         {
             return Err(Error::Quarantine);
+        }
+        #[cfg(feature="net-q35-duo")]
+        {
+            if !self.duo.delivery_ok(self.regs) {return Err(Error::Quarantine);}
+            self.duo.completed(self.cookie, self.tail, self.regs.r64(0x88))?;
         }
         self.in_queue = false;
         Ok(())
@@ -503,12 +535,16 @@ impl Engine {
         if !self.active(lease) || self.pinned() != layout.pages() {
             return false;
         }
+        #[cfg(feature="net-q35-duo")]
+        if !self.duo.verify_nic(&self.service, &self.pages) {return false;}
         for (level, frame) in self.service[..6].iter().enumerate() {
             for index in 0..512 {
                 let expected = match level {
                     0 if index == 0 => self.service[1].pa | 1,
                     1 if index == CTX / 8 => self.service[2].pa | 1,
                     1 if index == CTX / 8 + 1 => (u64::from(DID) << 8) | 2,
+                    #[cfg(feature="net-q35-duo")]
+                    1 => self.duo.nic_context(index),
                     2..=4
                         if index == ((lease.iova(0) >> [39, 30, 21][level - 2]) & 511) as usize =>
                     {
@@ -720,6 +756,8 @@ impl Engine {
         self.service[1].mem.w64(CTX + 8, (u64::from(DID) << 8) | 2);
         barrier();
         self.service[1].mem.w64(CTX, self.service[2].pa | 1);
+        #[cfg(feature="net-q35-duo")]
+        self.request_disk(lease,true)?;
         self.submit_invalidation(Invalidation::Global)?;
         self.confirm()?;
         if !self.context() || !self.running() || self.fault_pending() {
@@ -978,6 +1016,8 @@ impl Engine {
             // Les quatre niveaux sont privés de l'ancienne incarnation. Éliminer aussi
             // les pointeurs des chemins intermédiaires avant la prochaine fenêtre IOVA.
             self.clear_tables();
+            #[cfg(feature="net-q35-duo")]
+            self.request_disk(lease,false)?;
             self.submit_invalidation(mode)?;
             self.state = State::Invalidating;
         }

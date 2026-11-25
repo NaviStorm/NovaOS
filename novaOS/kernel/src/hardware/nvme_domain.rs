@@ -210,13 +210,19 @@ pub(crate) fn discover() -> Option<Admission> {
     if !complete {
         return None;
     }
-    let (physical, old) = lab::qualify_nvme(&functions)
+    let duo = cfg!(feature="net-q35-duo") && crate::boot::scenario().starts_with(b"net-q35-duo-");
+    #[cfg(feature="net-q35-duo")]
+    let result = if duo { lab::qualify_duo(&functions) } else { lab::qualify_nvme(&functions) };
+    #[cfg(not(feature="net-q35-duo"))]
+    let result = lab::qualify_nvme(&functions);
+    let (physical, old) = result
         .map_err(|e| log(format_args!("NVME admission PCI refusee {e:?}")))
         .ok()?;
     let drhd = vtd::q35_drhd(lab::Q35_LAB_SLOT)?;
     if drhd.sid() != SID || !memory::firmware::unlisted_extent(physical, lab::NVME_SIZE) {
         return None;
     }
+    if !duo {
     let ahci = functions
         .iter()
         .find(|(a, _)| (a.device, a.function) == (31, 2))?
@@ -228,6 +234,7 @@ pub(crate) fn discover() -> Option<Admission> {
     {
         return None;
     }
+    }
     let mut bar = Bar {
         physical,
         mapped: 0,
@@ -237,7 +244,9 @@ pub(crate) fn discover() -> Option<Admission> {
         return None;
     }
     // Si le BAR ou le domaine est incertain, aucune autre adoption dans ce boot.
-    let ok = bar.map().is_ok() && bar.virgin() && bar.snapshot(old);
+    let observed = if duo { (old & !4) | 0x402 } else { old };
+    if duo { write_command(observed); bar.command = observed; }
+    let ok = bar.snapshot(observed) && bar.map().is_ok() && bar.virgin() && bar.snapshot(observed);
     if !ok {
         let _ = bar.unmap();
         return None;
@@ -257,13 +266,14 @@ pub(crate) fn discover() -> Option<Admission> {
     Some(Admission {
         bar,
         drhd,
-        phase2_media: scenario.starts_with(b"nvme-rw-"),
+        phase2_media: duo || scenario.starts_with(b"nvme-rw-"),
         retirement: match scenario {
             b"nvme-rw-qi-error" => Invalidation::InvalidContext,
             b"nvme-rw-qi-delay" => Invalidation::ReceiptDelayed,
             _ => Invalidation::Global,
         },
         source: match scenario {
+            _ if duo => Some(true),
             b"nvme-rw-dma-fault" => Some(false),
             b"nvme-rw-recover" | b"nvme-rw-rights" => None,
             name if name.starts_with(b"nvme-rw-") => Some(true),
@@ -275,6 +285,33 @@ pub(crate) fn discover() -> Option<Admission> {
             _ => DataPage::Mapped,
         },
     })
+}
+
+#[cfg(feature="net-q35-duo")]
+pub(crate) fn qualifier_duo(mode: &[u8]) -> Result<()> {
+    static OBSERVATION: crate::sched::sync::Mutex<Option<Domain>> = crate::sched::sync::Mutex::new(None);
+    if !matches!(mode,b"net-q35-duo-domaines"|b"net-q35-duo-refus-ir"|b"net-q35-duo-retrait-nic"|b"net-q35-duo-retrait-disque"|b"net-q35-duo-perte-wait"|b"net-q35-duo-total-nic"|b"net-q35-duo-total-disque") || crate::smp::count()!=1 {return Err(Error::Denied);}
+    let before=memory::pinned_dma_frames();
+    let mut domain=Domain::new(discover().ok_or(Error::Denied)?)?;
+    let result=(|| {
+        domain.prepare(1)?;
+        let lease=domain.lease.ok_or(Error::Denied)?;
+        let layout=domain.layout();
+        domain.engine.prepare_nic(2,lease,layout)?;
+        domain.engine.trace_duo();
+        if mode.ends_with(b"retrait-disque") || mode.ends_with(b"total-disque") {domain.cancel_prepared()?;}
+        if mode.ends_with(b"retrait-nic") || mode.ends_with(b"total-nic") || mode.ends_with(b"total-disque") {domain.engine.remove_unstarted_nic(false)?;}
+        if mode.ends_with(b"total-nic") {domain.cancel_prepared()?;}
+        if mode.ends_with(b"perte-wait") {
+            if domain.engine.remove_unstarted_nic(true)!=Err(Error::Quarantine) || domain.engine.remove_unstarted_nic(false)!=Err(Error::Quarantine) {return Err(Error::Denied);}
+        }
+        domain.engine.trace_duo();
+        log(format_args!("DUO epingles avant={before} apres={} BME_nvme={} BME_nic={}",memory::pinned_dma_frames(),cfg(4,2)&4,super::pci_ports::port(56,4,2,None)&4));
+        Ok(())
+    })();
+    // Conserver le propriétaire des tables encore pointées, y compris lors d'un arrêt indéterminé.
+    *OBSERVATION.lock()=Some(domain);
+    result
 }
 
 enum State {
