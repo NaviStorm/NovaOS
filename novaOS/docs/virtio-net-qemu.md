@@ -35,3 +35,34 @@ python3 -B novaOS/tests/virtio_net_qemu.py ../archives-virtio-net/inventaire-01
 ## Jalons proposés
 
 Conserver v0.25.0 comme proposition de jalon réseau. Soumettre successivement le lot Ethernet VirtIO et son isolation DMA, le service de trames et ses droits clients, puis la pile IPv4/IPv6 et les transports avec leurs mandats propres. Le premier critère de passage est un échange réel avec le pair isolé sur les deux invités, avec restitution prouvée. La qualification sur matériel physique exigera des preuves propres au matériel et à son IOMMU. [Feuille de route](reconciliation-v0300/proposition.md)
+
+## Résultats du 25 novembre 2026
+
+| Contrôle exécuté | x86_64 | AArch64 |
+|---|---|---|
+| Inventaire invité et QMP, commit `0c96925babdbfa367d3f3be2383feb1aea576771` | 8 fonctions concordantes, NIC au 00:07.0, 1,962 s | 5 fonctions concordantes, même BDF, 5,698 s |
+| Inventaire et témoin logiciel invité, commit `2bef4d84c073122342f8af777d1c2492808ffa16` | Ring 3, succès en 1,789 s | EL0, succès en 5,694 s |
+| Files logicielles par invité, sans DMA | 100 000 réservations/complétions RX et 100 000 TX, saturation, bouclage, restitution et refus du doublon | Mêmes contrôles réussis |
+| Protocole d'initialisation, format de trame et erreurs sur dispositif simulé, huit tests Darwin par cible | 8/8 sous Rosetta | 8/8 natifs |
+| Taille des structures Rust mesurée sur Darwin | `Queue` 6 octets, `Link` 18 octets | `Queue` 6 octets, `Link` 18 octets |
+| Échange Ethernet avec un pair, IRQ réelle du NIC, mémoire DMA au repos/en charge, débit et latence | Non exécutés, bail soumis à arbitrage | Même état |
+
+Les durées du tableau englobent le démarrage et la collecte. QEMU 11.1.3 utilisait TCG, un vCPU, 256 Mio et un hub privé sans autre port. Dans les deux invités, le processus d'inventaire est sorti avec le code 0. Le scénario vérifie également le refus de son accès au bootstrap IPC et aux portails bloc. L'état logiciel des files est restitué après chaque lot de seize slots. Aucun transfert réseau n'intervient dans le témoin.
+
+Sur Q35, les deux traces relèvent `master=true` dans l'inventaire PCI du NIC. Sur virt AArch64 elles relèvent `master=false`. Ces captures décrivent le bit au moment de l'inventaire. Elles n'établissent ni l'origine de sa valeur ni la protection DMA depuis le firmware. Cette condition devra être vérifiée avant l'attribution. Les 92 Kio du contrat sont un budget partiel proposé. La mémoire réelle du futur pilote actif et de son domaine reste à mesurer. [Contrat intégral soumis à arbitrage](virtio-net-bail-dma.md)
+
+Le verrou commun a été détenu de 10:39:30,234 à 10:39:37,938 UTC pour l'inventaire (attente 0,351 ms) et de 10:46:00,591 à 10:46:08,118 UTC pour les témoins de files (attente 0,301 ms). Les deux campagnes se sont terminées avec libération du verrou. Le contrôle `make -C novaOS abi-check` a réussi.
+
+Pour reproduire la deuxième campagne, depuis `novaOS/`, construire les deux cibles comme suit puis exécuter le banc. Le noyau ordinaire ne sélectionne pas la sonde.
+
+```sh
+for NOVA_ARCH in x86_64 aarch64; do
+    export NOVA_ARCH
+    . scripts/target.sh
+    RUSTC="$(rustup which --toolchain stable rustc)" rustup run stable cargo build \
+        --release --locked --offline --target "$rust_target" --features virtio-net-probe || exit 1
+done
+python3 -B tests/virtio_net_qemu.py --files ../../archives-virtio-net/files-reproduction
+```
+
+Les séries brutes, relevés QMP, résultats Darwin et horaires sont publiés dans [l'archive de traces](validation/virtio-net/traces.tar.gz). Les ISO et ELF exacts sont conservés dans `OS-worktrees/archives-virtio-net/{inventaire-01,files-01}/`. Leurs octets ont été relus et comparés aux empreintes du banc. Vérifier l'archive publiée avec `shasum -a 256 -c SHA256SUMS` depuis le répertoire de validation. Vérifier les pièces locales depuis la racine de l'archive durable avec le manifeste des artefacts. [Empreintes publiées](validation/virtio-net/SHA256SUMS) · [Manifeste des artefacts](validation/virtio-net/artefacts.sha256)
