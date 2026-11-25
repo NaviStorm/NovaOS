@@ -99,6 +99,40 @@ class Selective(unittest.TestCase):
   with self.assertRaises(r.Refus):self.admit(d)
   with self.assertRaises(r.Refus):self.api.cancel(q,digest,proof)
   with r.transaction(self.f.path) as db:self.assertEqual(db.execute('SELECT state,child FROM exec_admissions').fetchone(),(2,bytes(32)))
+ def test_tombstone_refusal_and_lost_queries_do_not_consume_the_first_finish(self):
+  descriptor=self.descriptor(groups=(b'G'*16,))
+  self.register(descriptor)
+  request=self.request(descriptor)
+  self.admit(descriptor,request)
+  self.m.reserve()
+  self.m.publish()
+  for kind,instance in self.m.expected[:2]:self.m.ack(kind,instance)
+  proof=self.f.server.sign(ex.FINISH+request.finish(2,bytes(32)))
+  with self.assertRaises(r.Refus):
+   self.api.cancel(request,sha256(descriptor.body).digest(),proof)
+  with self.assertRaisesRegex(r.Refus,'UNCERTAIN'):self.m.ack(4,b'E'*32)
+
+  def query(challenge):
+   reply,signature=self.f.exec.query(request,challenge,self.f.server.sign(ex.QUERY+request.packet()+challenge))
+   self.f.key.public_key().verify(signature,ex.QUERY+reply)
+   self.assertEqual(reply[:len(request.packet())],request.packet())
+   return reply[-49:]
+
+  unused_lost_reply = query(b'A'*32)
+  self.assertEqual(unused_lost_reply[8],0)
+  pending = query(b'B'*32)
+  self.assertEqual(pending,unused_lost_reply)
+  self.finish(descriptor,2)
+  # Même en l'absence de réponse FINISH, les consultations seules suffisent.
+  terminal = query(b'C'*32)
+  self.assertEqual(terminal,query(b'D'*32))
+  self.assertEqual(terminal[8:41],bytes([2])+bytes(32))
+  self.m.ack(4,b'E'*32)
+  self.assertEqual(self.m.query()[208:211],bytes((2,7,7)))
+  with r.transaction(self.f.path) as db:
+   self.assertEqual(db.execute("SELECT count(*) FROM exec_events WHERE kind='cancelled'").fetchone(),(1,))
+   self.assertEqual(db.execute("SELECT count(*) FROM exec_events WHERE kind='created'").fetchone(),(0,))
+
  def test_two_consumers_one_admission(self):
   d=self.descriptor();self.register(d);barrier=Barrier(2)
   def run():

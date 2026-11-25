@@ -9,6 +9,9 @@ const WORDS:usize=48;
 #[path="selective_exec_guest.rs"]
 mod selective;
 use crate::recovery_store::Storage;
+#[path="selective_exec_finish.rs"]
+mod finish;
+use finish::{Action,Submission};
 pub(crate) fn register(state:&novaos_identity::recuperation_view::View,storage:&mut Storage,q:&[u8;128])->rt::Result<()> {
     selective::register(state,storage,q)
 }
@@ -16,7 +19,7 @@ use ed25519_dalek::{VerifyingKey,Signature};
 const LIST:u64=0x4e58474154454c53;
 const READ:u64=0x4e58474154450000;
 const UNCERTAIN:u64=22;
-struct Pending {leaf:u64,request:Request,sent:bool,finish_sent:bool,descriptor:[u8;32]}
+struct Pending {leaf:u64,request:Request,sent:bool,terminal:Submission,descriptor:[u8;32]}
 pub struct Pump {pending:Option<Pending>}
 fn notify(port:u64,operation:u64)->rt::Result<u64> {
     let r=rt::call(rt::IPC_NOTIFY,port,operation,0);
@@ -80,7 +83,7 @@ impl Pump {
             // Le noyau atteste Cancelled ; le reçu historique donne le lien exact.
             let q=request(&m,m[39],&bytes::<32>(&m[18..22]),bytes::<16>(&m[26..28]))?;
             let descriptor=selective::cancelled_digest(&m,&q)?;
-            self.pending=Some(Pending{leaf,request:q,sent:false,finish_sent:false,descriptor});
+            self.pending=Some(Pending{leaf,request:q,sent:false,terminal:Submission::Fresh,descriptor});
         }
         if self.pending.as_ref().is_some_and(|p|p.leaf!=leaf) {return Err(UNCERTAIN);}
         if m[0]==0 {
@@ -104,7 +107,7 @@ impl Pump {
             let generation=u64::from_be_bytes(head[72..80].try_into().unwrap());
             let op:[u8;16]=if bound!=[0;16]{bound}else{common::random()?[..16].try_into().unwrap()};
             command(leaf,0,op,generation,[0;32])?;
-            self.pending=Some(Pending {leaf,request:request(&m,generation,&head[80..112].try_into().unwrap(),op)?,sent:false,finish_sent:false,descriptor});
+            self.pending=Some(Pending {leaf,request:request(&m,generation,&head[80..112].try_into().unwrap(),op)?,sent:false,terminal:Submission::Fresh,descriptor});
         }
         let p=match self.pending.as_mut() {
             Some(p)=>p,
@@ -134,29 +137,39 @@ impl Pump {
         if matches!(m[0],2|3) {return Ok(());}
         if !matches!(m[0],4|5) {return Err(rt::DENIED);}
         let state=if m[0]==4 {1}else{2};let child=bytes::<32>(&m[22..26]);
-        if !p.finish_sent {
-            p.finish_sent=true;
-            let mut q=[0;SIZE+33];q[..SIZE].copy_from_slice(p.request.bytes());q[SIZE]=state;q[SIZE+1..].copy_from_slice(&child);
-            let n=if state==2 && p.descriptor!=[0;32] {
-                let mut cancellation=[0;SIZE+32];cancellation[..SIZE].copy_from_slice(p.request.bytes());cancellation[SIZE..].copy_from_slice(&p.descriptor);
+        let action=p.terminal.next(state==2 && p.descriptor!=[0;32]);
+        let result=match action {
+            Action::Tombstone=>{
+                let mut cancellation=[0;SIZE+32];
+                cancellation[..SIZE].copy_from_slice(p.request.bytes());
+                cancellation[SIZE..].copy_from_slice(&p.descriptor);
                 match exchange(65,&cancellation,&mut answer) {
-                    Ok(n)=>n,
-                    Err(rt::DENIED)=>{
-                        // La tombe pré-admission peut être refusée si l'admission
-                        // existe. Sa consultation signée précède alors FINISH.
-                        let out=p.query(&mut answer)?;
-                        if out.state!=0{return Err(UNCERTAIN);}
-                        exchange(41,&q,&mut answer)?
-                    },
+                    Ok(n)=>Some(n),
+                    Err(rt::DENIED)=>None,
                     Err(e)=>return Err(e),
                 }
-            }else{exchange(41,&q,&mut answer)?};let b=&answer[HEADER+8..HEADER+8+n];
+            }
+            Action::Finish=>Some(p.finish(state,&child,&mut answer)?),
+            Action::Observe=>None,
+        };
+        let result=match result {
+            Some(n)=>Some(n),
+            None=>{
+                let out=p.query(&mut answer)?;
+                if out.state==state && out.child==child {
+                    None
+                }else if state==2 && out.state==0 && p.terminal.finish_after_tombstone() {
+                    Some(p.finish(state,&child,&mut answer)?)
+                }else{
+                    return Err(UNCERTAIN);
+                }
+            }
+        };
+        if let Some(n)=result {
+            let b=&answer[HEADER+8..HEADER+8+n];
             let expected=p.request.finish(state,&child).map_err(|_|rt::REFUSED)?;
             if n!=137 || b[8..73]!=expected || b[..8]==[0;8] {return Err(rt::REFUSED);}
             receipt(RECEIPT,&b[..73],&b[73..])?;
-        } else {
-            let out=p.query(&mut answer)?;
-            if out.state!=state || out.child!=child {return Err(UNCERTAIN);}
         }
         command(leaf,3,op,state as u64,child)?;
         self.pending=None;Ok(())
@@ -167,6 +180,13 @@ impl Pending {
         if self.descriptor==[0;32]{return exchange(40,self.request.bytes(),answer);}
         let mut q=[0;SIZE+32];q[..SIZE].copy_from_slice(self.request.bytes());q[SIZE..].copy_from_slice(&self.descriptor);
         exchange(64,&q,answer)
+    }
+    fn finish(&self,state:u8,child:&[u8;32],answer:&mut[u8;MAX])->rt::Result<usize>{
+        let mut q=[0;SIZE+33];
+        q[..SIZE].copy_from_slice(self.request.bytes());
+        q[SIZE]=state;
+        q[SIZE+1..].copy_from_slice(child);
+        exchange(41,&q,answer)
     }
     fn query(&self,answer:&mut [u8;MAX])->rt::Result<novaos_recovery::exec_admission::Outcome> {
         let fresh=*common::random()?;let mut q=[0;SIZE+32];q[..SIZE].copy_from_slice(self.request.bytes());q[SIZE..].copy_from_slice(&fresh);
