@@ -75,22 +75,41 @@ impl Storage {
     pub fn exec_seal(&mut self, operation: [u8; 16], volume: [[u8; 16]; 2],
         owner: [u8; 16], directory: u64, file: u64) -> rt::Result<[u8; 32]> {
         use novaos_identity::exec_file_scope::Probe;
+        let (request, reply) = self.exec_scope_query(operation, volume, owner, directory, Some(file))?;
+        Probe::parse(&request).and_then(|probe| probe.verify(&reply)).map_err(|_| rt::REFUSED)
+    }
+
+    #[cfg(feature="selective-exec-guest")]
+    pub fn select_exec_file(&mut self, operation: [u8; 16], volume: [[u8; 16]; 2],
+        owner: [u8; 16], directory: u64, expected: [u8; 32])
+        -> rt::Result<novaos_identity::exec_file_scope::ScopedFile> {
+        use novaos_identity::exec_file_scope::Probe;
+        let (request, reply) = self.exec_scope_query(operation, volume, owner, directory, None)?;
+        Probe::parse(&request).and_then(|probe| probe.verify_selection(&reply, expected))
+            .map_err(|_| rt::REFUSED)
+    }
+
+    #[cfg(feature="selective-exec-guest")]
+    fn exec_scope_query(&mut self, operation: [u8; 16], volume: [[u8; 16]; 2],
+        owner: [u8; 16], directory: u64, file: Option<u64>)
+        -> rt::Result<([u8; 128], [u8; 128])> {
+        use novaos_identity::exec_file_scope::Probe;
         let mut request = [0; 128];
-        request[..8].copy_from_slice(Probe::TAG);
+        request[..8].copy_from_slice(if file.is_some() { Probe::TAG } else { Probe::SELECT });
         request[8..24].copy_from_slice(&operation);
         request[24..40].copy_from_slice(&volume[0]);
         request[40..56].copy_from_slice(&volume[1]);
         request[56..72].copy_from_slice(&owner);
         request[72..80].copy_from_slice(&directory.to_le_bytes());
-        request[80..88].copy_from_slice(&file.to_le_bytes());
+        request[80..88].copy_from_slice(&file.unwrap_or(0).to_le_bytes());
         request[88..120].copy_from_slice(&self.membership_instance()?);
-        let probe = Probe::parse(&request).map_err(|_| rt::DENIED)?;
+        Probe::parse(&request).map_err(|_| rt::DENIED)?;
         self.sequence = self.sequence.checked_add(1).ok_or(rt::LIMIT)?;
         let reply = common::rpc(self.port, self.port, self.sequence, &request)?;
         if common::number(&reply) != rt::OK {
             return Err(common::number(&reply));
         }
-        probe.verify(&reply).map_err(|_| rt::REFUSED)
+        Ok((request, reply))
     }
 
     pub fn membership_io(&mut self,q:&[u8;128])->rt::Result<[u8;128]> {

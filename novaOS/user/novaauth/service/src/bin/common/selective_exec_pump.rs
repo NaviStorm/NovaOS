@@ -15,6 +15,10 @@ use finish::{Action,Submission};
 pub(crate) fn register(state:&novaos_identity::recuperation_view::View,storage:&mut Storage,q:&[u8;128])->rt::Result<()> {
     selective::register(state,storage,q)
 }
+pub(crate) fn resolve_file(state: &novaos_identity::recuperation_view::View, storage: &mut Storage,
+    grant: novaos_identity::Grant, descriptor: &mut [u8; 240], with_file: bool) -> rt::Result<()> {
+    selective::resolve_file(state, storage, grant, descriptor, with_file)
+}
 use ed25519_dalek::{VerifyingKey,Signature};
 const LIST:u64=0x4e58474154454c53;
 const READ:u64=0x4e58474154450000;

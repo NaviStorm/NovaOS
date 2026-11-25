@@ -37,7 +37,7 @@ def install(root):
  (root/(service+'src/bin/common/exec_admission_guest.rs')).write_text((root/(service+'src/bin/common/selective_exec_pump.rs')).read_text())
  edit(service+'src/bin/common/recovery_view.rs','admissions.poll().err()','admissions.poll(&state,&mut recovered.storage).err()')
  edit(service+'triplet_effecteur.rs','const TAG:u64=', 'include!("selective_exec_scope_vfs.rs");\nconst TAG:u64=')
- edit(service+'triplet_effecteur.rs','        session.mount_volume()?;', '''        if &msg.payload[..8]==novaos_identity::exec_file_scope::Probe::TAG {
+ edit(service+'triplet_effecteur.rs','        session.mount_volume()?;', '''        if novaos_identity::exec_file_scope::Probe::supports(&msg.payload) {
             response=scope_seal(session,&msg.payload)?;
             return Ok(());
         }
@@ -56,4 +56,44 @@ def install(root):
                 self.store_seq=self.store_seq.checked_add(1).ok_or(rt::LIMIT)?;
                 let registry=administrative::port()?;let result=rpc(registry,registry,self.store_seq,&bind)?;
                 if number(&result)!=0{return Err(number(&result));}''')
+
  edit('novaOS/kernel/build.rs','"--features","membership-r2-guest","--bins"','"--features","selective-exec-guest","--bins"')
+
+def install_file_preflight(root):
+ """Raccord de préparation R/NovaFS. Tant que la voie fichier de l'enfant
+ n'est pas raccordée, NXRES002 s'arrête avant émission du ticket."""
+ root=Path(root)
+ def edit(name,old,new):
+  p=root/name
+  source=p.read_text()
+  if source.count(old)!=1:raise ValueError('ancrage portée EXEC '+name+': '+old[:64])
+  p.write_text(source.replace(old,new))
+ service='novaOS/user/novaauth/service/'
+ edit(service+'src/bin/common/recovery_view.rs',
+   'let descriptor=state.executable(grant,&key,machine,leaf).map_err(|_|rt::DENIED)?;',
+   '''let mut descriptor=state.executable(grant,&key,machine,leaf).map_err(|_|rt::DENIED)?;
+                crate::exec_admission_guest::resolve_file(&state,&mut recovered.storage,grant,&mut descriptor,part==1)?;''')
+ edit(service+'src/bin/common/shell_verifier.rs',
+   '&descriptor[..8]!=b"NXRES001"',
+   '!matches!(&descriptor[..8],b"NXRES001"|b"NXRES002")')
+ edit(service+'exec_package_read.rs',
+   '        if &d[..8]!=b"NXRES001"',
+   '''        if &d[..8]==b"NXRES002" {
+            // La portée provient de R sur la même conversation que l'image.
+            // La phase actuelle observe sa liaison terrain sans octroyer.
+            if d[8..40]!=q[56..88] || d[40..56]!=q[8..24] || d[208..232]!=[0;24]
+                || d[232..234]!=machine_id() || d[234..]!=[0;6] {
+                return Err(rt::DENIED);
+            }
+            self.mount_volume()?;
+            let seal=self.exec_seal()?.ok_or(rt::REVOKED)?;
+            let fs=self.fs.as_ref().ok_or(rt::CLOSED)?;
+            if d[80..96]!=fs.ids().fs || d[96..112]!=fs.ids().lv || d[184..192]!=d[200..208]
+                || seal[8..24]!=d[40..56] || seal[24..40]!=d[184..200] {
+                return Err(rt::REVOKED);
+            }
+            return Err(rt::REFUSED); // aucune capacité fichier sur ce raccord de préparation
+        }
+        if &d[..8]!=b"NXRES001"''')
+ edit(service+'exec_package_read.rs','fn word(b:&[u8])->u64',
+   'fn machine_id()->[u8;2] { if cfg!(target_arch="aarch64"){183u16}else{62u16}.to_le_bytes() }\nfn word(b:&[u8])->u64')

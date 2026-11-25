@@ -489,11 +489,23 @@ fn selective_exec_revalidates_own_state_and_actual_required_permissions() {
   let loaded=r.load_package(r.grant_attested(holder).unwrap(),&key,machine,"alpha").unwrap();
   let image=Image{installation:loaded.principal.unwrap(),digest:loaded.digest};
   r.bind_folder(installed_head,holder,17,b"scope reel requis par le producteur",[7;16]).unwrap();
-  for (op,origin) in [(8,Origin::Direct),(9,Origin::Group(groups[0])),(10,Origin::Group(groups[1]))] {
+  r.set_permission(r.grant_attested(holder).unwrap(),holder,17,image.installation,Origin::Group(groups[0]),READ,[8;16]).unwrap();
+  drop(r);
+  let one_source=view(&Triplet::capture(&fs,&authority,domain).unwrap());
+  let factor=one_source.resolve_verified_factor([4;16]).unwrap();
+  let required=one_source.required_exec_read(factor,image).unwrap().unwrap();
+  assert_eq!((required.owner,required.object,required.origin,required.rights),(holder,17,Origin::Group(groups[0]),READ));
+  assert_eq!(required.seal,one_source.folder(factor,17).unwrap());
+  let revoked=view(&one_source.prepare_membership_removal(factor,[11;16],holder,groups[0]).unwrap().triplet);
+  let factor=revoked.resolve_verified_factor([4;16]).unwrap();
+  assert!(matches!(revoked.required_exec_read(factor,image),Err(Fault::Denied)));
+  let mut r=Registry::open(&mut fs,&mut authority,domain).unwrap();
+  for (op,origin) in [(9,Origin::Direct),(10,Origin::Group(groups[1]))] {
    r.set_permission(r.grant_attested(holder).unwrap(),holder,17,image.installation,origin,READ,[op;16]).unwrap();
   }
   drop(r);let before=view(&Triplet::capture(&fs,&authority,domain).unwrap());let grant=before.resolve_verified_factor([4;16]).unwrap();
   let epoch=before.authentication_epoch(grant).unwrap();let own=before.execution_identity(grant,image,&key,machine).unwrap();
+  assert!(matches!(before.required_exec_read(grant,image),Err(Fault::Conflict)));
   let needs:[RequiredPermission;3]=[Origin::Direct,Origin::Group(groups[0]),Origin::Group(groups[1])].map(|origin|{
    let p=before.permission(grant,image,holder,17,origin).unwrap();RequiredPermission{owner:holder,object:17,origin,rights:READ,
     membership_revision:p.membership_revision,rule_revision:p.rule_revision,image_revision:p.image_revision,
