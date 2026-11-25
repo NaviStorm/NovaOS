@@ -1,0 +1,71 @@
+from pathlib import Path
+import runpy
+import subprocess
+import sys
+
+t = Path(__file__).resolve().parent
+w = Path(sys.argv[1])
+mode = sys.argv[2]
+assert mode in ('h', 'g')
+root = t / ('export-ancien-' + mode)
+service = Path('novaOS/user/novaauth/service')
+origin = w / service
+sys.path.insert(0, str(origin))
+
+
+bootstrap = runpy.run_path(str(origin / 'profile.py'))
+bootstrap['prepare'](root, source_ref='e471f369bf185988be8624cb422764701bd41a30',
+                     membership_r2=True, administration_ticket_vivant=True)
+profile = runpy.run_path(str(root / service / 'selective_exec_profile.py'))
+profile['install'](root)
+profile['install_file_preflight'](root)
+
+def edit(path, previous, revised):
+    path = root / path
+    original = path.read_text()
+    if original.count(previous) != 1:
+        raise ValueError((str(path.relative_to(root)), previous[:70], original.count(previous)))
+    path.write_text(original.replace(previous, revised))
+
+edit(service / 'exec_package_read.rs',
+     '            return Err(rt::REFUSED); // aucune capacité fichier sur ce raccord de préparation',
+     '            let message=b"NXEXFS chargeur portee P9";\n            let _=message;\n            return Err(rt::REFUSED);')
+old = runpy.run_path(str(root / service / 'selective_old_ticket_profile.py'))
+old['install'](root)
+channel = service / 'src/bin/common/administration_channel.rs'
+# L'ELF de confirmation a déjà été chargé. Attendre uniquement l'offre
+# corrélée de Bob avant de faire passer la confirmation sur le chemin réel.
+edit(channel, old['AFTER_EFFECTORS'], '')
+anchor = '                    let mut pre:[u8;128]=request.try_into().unwrap();'
+edit(channel, anchor, old['AFTER_EFFECTORS'].replace('if selective && login.slot',
+                                                     'if login.slot') + anchor)
+for name in ('raccorder-effecteur', 'raccorder-registre', 'raccorder-retrait', 'lier-enfant'):
+    subprocess.run([sys.executable, '-B', str(t / 'attente-fichier' / (name + '.py')), str(root)],
+                   check=True)
+
+# Réutiliser, mot pour mot, la préparation, la vérification et les ACK
+# du chemin normal, en reprenant la même session et requête.
+current = (root / channel).read_text()
+start = current.index(anchor)
+end = current.index('\n                }\n                let trace_confirm', start)
+confirm = current[start:end].replace('request.try_into().unwrap()', 'request')
+confirm = confirm.replace('inspect_membership(login,peer,&selected,request)?;',
+                          'inspect_membership(login,peer,&selected,&request)?;')
+edit(channel, '                    r2_probe(21);\n                    answer=exchange(login,&request)?;',
+     '                    r2_probe(21);\n' + confirm + '\n                    answer=exchange(login,&request)?;')
+
+bob = service / 'administration_bob_shell.rs'
+edit(bob, 'login.ticket("admin-sonde", &["--self"],5000,1,0)?',
+     f'login.ticket("lecture-{mode}", &["/travail/donnees.tsv"],5000,1,0)?')
+if mode == 'g':
+    edit(bob, '    let code=login.consume_existing(key)?;\n    if code!=0 {return Err(code);}\n'
+              '    mark(b"NAR2 Bob ancien Direct consomme statut=0 collecte unique")?;',
+         '''    match login.consume_existing(key) {
+        Err(rt::REVOKED) => mark(b"NAR2 Bob ancien G statut=10 aucun enfant")?,
+        Err(code) => return Err(code),
+        Ok(_) => return Err(rt::REFUSED),
+    }''')
+else:
+    edit(bob, 'NAR2 Bob ancien Direct consomme statut=0 collecte unique',
+         'NAR2 Bob ancien H consomme statut=0 collecte unique')
+print(root)

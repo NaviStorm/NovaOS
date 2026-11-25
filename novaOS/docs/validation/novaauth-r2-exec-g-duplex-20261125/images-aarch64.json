@@ -1,0 +1,11 @@
+{
+  "base": "e471f369bf185988be8624cb422764701bd41a30",
+  "artefacts": {
+    "aarch64-kernel.elf": "2efae51adb6bc6ea688cdbdb3119a8fb77c696fa450b95b8f554444acc0c4a38",
+    "aarch64-shell.elf": "ea7b021d6cd400dcaf6e588dc3d690295cee68c3d1b8321f0f22bbcdf203fda4",
+    "aarch64-registre.elf": "d0059e051d2ca6da663752a79942f4440feaa2c85654f055436aebb3abedd5cc",
+    "aarch64.iso": "0ad58b0ca9756caf2dc561435b2c71aa28d270b209ec089a2fda6f0ad2c3fa8a"
+  },
+  "profil_verifie": true,
+  "noyau_extrait_verifie": true
+}

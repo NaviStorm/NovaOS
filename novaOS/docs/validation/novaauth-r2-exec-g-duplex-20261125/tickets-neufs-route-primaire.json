@@ -1,0 +1,346 @@
+{
+  "enfant-x86_64-4096": {
+    "code_invite": "5361ff40c7f6546ddad777d7d5286a370dcd46e5",
+    "iso_sha256": "ece5fdf16b075b7e48e7c898abdfe81460b319260c0d169374f0027485a31f24",
+    "scenario_admissions": {
+      "succes": true,
+      "lectures": [
+        {
+          "installation": "lecture-h",
+          "pid": 21,
+          "statut": 0,
+          "octets": 14,
+          "sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0"
+        },
+        {
+          "installation": "lecture-g",
+          "pid": 22,
+          "statut": 0,
+          "octets": 14,
+          "sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0"
+        }
+      ],
+      "admissions_exec": [
+        [
+          1,
+          7,
+          8
+        ],
+        [
+          1,
+          18,
+          19
+        ]
+      ],
+      "vfs": [
+        [
+          1,
+          1,
+          9,
+          10
+        ],
+        [
+          1,
+          1,
+          11,
+          12
+        ],
+        [
+          1,
+          1,
+          13,
+          14
+        ],
+        [
+          1,
+          1,
+          15,
+          16
+        ],
+        [
+          1,
+          1,
+          20,
+          21
+        ],
+        [
+          1,
+          1,
+          22,
+          23
+        ],
+        [
+          1,
+          1,
+          24,
+          25
+        ],
+        [
+          1,
+          1,
+          26,
+          27
+        ]
+      ]
+    },
+    "sha256_original": "c8686803bceec41e7868b3e669db20a7cb464492149885477bdbb1b7d16ecd94"
+  },
+  "enfant-x86_64-512": {
+    "code_invite": "5361ff40c7f6546ddad777d7d5286a370dcd46e5",
+    "iso_sha256": "ece5fdf16b075b7e48e7c898abdfe81460b319260c0d169374f0027485a31f24",
+    "scenario_admissions": {
+      "succes": true,
+      "lectures": [
+        {
+          "installation": "lecture-h",
+          "pid": 21,
+          "statut": 0,
+          "octets": 14,
+          "sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0"
+        },
+        {
+          "installation": "lecture-g",
+          "pid": 22,
+          "statut": 0,
+          "octets": 14,
+          "sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0"
+        }
+      ],
+      "admissions_exec": [
+        [
+          1,
+          7,
+          8
+        ],
+        [
+          1,
+          18,
+          19
+        ]
+      ],
+      "vfs": [
+        [
+          1,
+          1,
+          9,
+          10
+        ],
+        [
+          1,
+          1,
+          11,
+          12
+        ],
+        [
+          1,
+          1,
+          13,
+          14
+        ],
+        [
+          1,
+          1,
+          15,
+          16
+        ],
+        [
+          1,
+          1,
+          20,
+          21
+        ],
+        [
+          1,
+          1,
+          22,
+          23
+        ],
+        [
+          1,
+          1,
+          24,
+          25
+        ],
+        [
+          1,
+          1,
+          26,
+          27
+        ]
+      ]
+    },
+    "sha256_original": "b335dab14d79cba3fa4fe52dd402012b422a0bbf85d9a18d85638d0c6d2e0dc5"
+  },
+  "enfant-aarch64-4096": {
+    "code_invite": "5361ff40c7f6546ddad777d7d5286a370dcd46e5",
+    "iso_sha256": "e2f21516776651549a1895bda10859c9d02314b46ac2e3679b219e7583a722b0",
+    "scenario_admissions": {
+      "succes": true,
+      "lectures": [
+        {
+          "installation": "lecture-h",
+          "pid": 21,
+          "statut": 0,
+          "octets": 14,
+          "sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0"
+        },
+        {
+          "installation": "lecture-g",
+          "pid": 22,
+          "statut": 0,
+          "octets": 14,
+          "sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0"
+        }
+      ],
+      "admissions_exec": [
+        [
+          1,
+          7,
+          8
+        ],
+        [
+          1,
+          18,
+          19
+        ]
+      ],
+      "vfs": [
+        [
+          1,
+          1,
+          9,
+          10
+        ],
+        [
+          1,
+          1,
+          11,
+          12
+        ],
+        [
+          1,
+          1,
+          13,
+          14
+        ],
+        [
+          1,
+          1,
+          15,
+          16
+        ],
+        [
+          1,
+          1,
+          20,
+          21
+        ],
+        [
+          1,
+          1,
+          22,
+          23
+        ],
+        [
+          1,
+          1,
+          24,
+          25
+        ],
+        [
+          1,
+          1,
+          26,
+          27
+        ]
+      ]
+    },
+    "sha256_original": "13f6a08fe9fdb3f257efc62891fa9128e6b9b4d2205907c59cc6e0d180c07ee2"
+  },
+  "enfant-aarch64-512": {
+    "code_invite": "5361ff40c7f6546ddad777d7d5286a370dcd46e5",
+    "iso_sha256": "e2f21516776651549a1895bda10859c9d02314b46ac2e3679b219e7583a722b0",
+    "scenario_admissions": {
+      "succes": true,
+      "lectures": [
+        {
+          "installation": "lecture-h",
+          "pid": 21,
+          "statut": 0,
+          "octets": 14,
+          "sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0"
+        },
+        {
+          "installation": "lecture-g",
+          "pid": 22,
+          "statut": 0,
+          "octets": 14,
+          "sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0"
+        }
+      ],
+      "admissions_exec": [
+        [
+          1,
+          7,
+          8
+        ],
+        [
+          1,
+          18,
+          19
+        ]
+      ],
+      "vfs": [
+        [
+          1,
+          1,
+          9,
+          10
+        ],
+        [
+          1,
+          1,
+          11,
+          12
+        ],
+        [
+          1,
+          1,
+          13,
+          14
+        ],
+        [
+          1,
+          1,
+          15,
+          16
+        ],
+        [
+          1,
+          1,
+          20,
+          21
+        ],
+        [
+          1,
+          1,
+          22,
+          23
+        ],
+        [
+          1,
+          1,
+          24,
+          25
+        ],
+        [
+          1,
+          1,
+          26,
+          27
+        ]
+      ]
+    },
+    "sha256_original": "3098c5422b3eb330b3e24c94b54eb2029f0aae28b683b6b2b17a5fd8f213407d"
+  }
+}

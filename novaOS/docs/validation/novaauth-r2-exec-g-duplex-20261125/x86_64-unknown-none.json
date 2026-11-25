@@ -1,0 +1,13 @@
+{
+  "cible": "x86_64-unknown-none",
+  "definitions_extraites_des_deux_exports": true,
+  "octets": [
+    40,
+    48,
+    224,
+    272
+  ],
+  "base_historique": 4026,
+  "emplacements": 2,
+  "sous_total": 4090
+}

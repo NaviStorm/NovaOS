@@ -1,0 +1,138 @@
+{
+  "iso_sha256": "59022602e061ef34a04e25a98b3ac3a2a31fc5ea8a73bc0c433433fc920f49eb",
+  "registre_sha256": "b5343c4f417542620c9e5cefe5ae6db5575c13613523039639fe27a6764e3930",
+  "p9_initial_sha256": "334590fd06947c4f9aaf4e18c9c9b3fedcb5887b9b6aafba59b53eebc1d07048",
+  "p9_final_sha256": "366f95bc2ba0acc980280d8d0cc5c63292a371a827c46e8a6bda63f7c2602c34",
+  "ancienne_autorite_initiale_sha256": "890c091ef6c33f6e067f3af6a72d9e31dbe5d3cc19cdcd3afc27cb3c7dcaad4a",
+  "architecture": "x86_64",
+  "secteur": 512,
+  "duree_hote_ns": 16602061667,
+  "echanges_tls_horodates": [
+    {
+      "debut_ms": 604,
+      "echeance_ms": 10604,
+      "fin_ms": 3036
+    }
+  ],
+  "plafond_respecte": true,
+  "drainage_registre": true,
+  "drainage_signataire": true,
+  "relais_draine": true,
+  "ressources": {
+    "avant": [
+      4,
+      6,
+      0,
+      73,
+      64,
+      31
+    ],
+    "actif": [
+      4,
+      6,
+      0,
+      73,
+      64,
+      31
+    ],
+    "apres": [
+      4,
+      6,
+      0,
+      73,
+      64,
+      31
+    ]
+  },
+  "ressources_registre": {
+    "avant": [
+      4,
+      7,
+      0,
+      169,
+      64,
+      31
+    ],
+    "apres": [
+      4,
+      7,
+      0,
+      169,
+      64,
+      31
+    ]
+  },
+  "pics_racines_par_pid": {
+    "2": 4,
+    "3": 4,
+    "4": 3,
+    "5": 2,
+    "1": 4,
+    "6": 4,
+    "7": 4,
+    "8": 4,
+    "9": 4,
+    "10": 4,
+    "11": 4,
+    "12": 4,
+    "13": 4,
+    "14": 2,
+    "15": 2,
+    "18": 2,
+    "19": 4,
+    "20": 2,
+    "21": 3,
+    "22": 3
+  },
+  "succes": true,
+  "scenario_admissions": {
+    "succes": true,
+    "ancien_ticket": "G",
+    "statut_natif": 10,
+    "presentation_ticks": 3538,
+    "expiration_ticks": 3868,
+    "enfants": [],
+    "retrait": [
+      13,
+      14,
+      18
+    ],
+    "generation_retires": 19,
+    "acquittements": [
+      [
+        1,
+        1
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        4,
+        1
+      ]
+    ],
+    "bob_pid": 11,
+    "inscription": 12,
+    "descripteur_sha256": "c579f802a0d3004bb8d4b84a747169421bccdffd9b3b7bc1c9d282ac669b3a1f"
+  },
+  "version_qemu": "QEMU emulator version 11.1.3",
+  "vcpu": 2,
+  "ram_mio": 256,
+  "acceleration": "tcg",
+  "sha256_originaux": {
+    "invite.serial": "f7b2e405669002e5f484165d34a88507dc1170429e0f7c7551a7e8703ba6d132",
+    "resultat.json": "2fc526a68ff9b3797f0644b141f1d0d02e03afd2da13efa11a7664da932dd428",
+    "rpc-public.log": "b949d4662ec0fa9e3da50d93cf51524f19cb38cb09680ed267fccfd6ba7f7641",
+    "tls-attentes.log": "da125dc90b2f314b4384fa52974a3f2edfd66ca0519cf1014c9c32a3feeb5a97",
+    "sessions-noyau.bin": "c4398707ab827d6965fb3ae842071d9c53d99cba8dd84f2d0b26d4033d58c93f",
+    "sorties-noyau.bin": "e64c17d95ae1096fe68cca9a496a17cea6b4fbf1965c282300f2dea4ae1ee666"
+  },
+  "presentation": 3538,
+  "echeance": 3868,
+  "marge": 330,
+  "pic_cadres_ipc_observe": 74,
+  "pic_endpoints_observe": 64,
+  "minimum_cadres_libres_observe": 59029,
+  "drainage_final_observe": true
+}

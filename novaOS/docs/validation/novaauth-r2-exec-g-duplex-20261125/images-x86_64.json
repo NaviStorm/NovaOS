@@ -1,0 +1,11 @@
+{
+  "base": "e471f369bf185988be8624cb422764701bd41a30",
+  "artefacts": {
+    "x86_64-kernel.elf": "d45c7de27afe457f6c088c114d965d59e09421f25dc42720a2331045ca317440",
+    "x86_64-registre.elf": "b5343c4f417542620c9e5cefe5ae6db5575c13613523039639fe27a6764e3930",
+    "x86_64-shell.elf": "853c19a79b09caa2f087f459719c9a9c36154ed7573b272b7ec55c977b319c70",
+    "x86_64.iso": "59022602e061ef34a04e25a98b3ac3a2a31fc5ea8a73bc0c433433fc920f49eb"
+  },
+  "profil_verifie": true,
+  "noyau_extrait_verifie": true
+}

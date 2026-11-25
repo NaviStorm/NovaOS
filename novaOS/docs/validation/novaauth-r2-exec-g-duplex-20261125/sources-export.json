@@ -1,0 +1,91 @@
+{
+  "base": "e471f369bf185988be8624cb422764701bd41a30",
+  "type": "delta sur export QEMU préparé, hors noyau ordinaire",
+  "sha256_patch_decomprime": "3a6df1be5077328ec54600817965b766f2f15f6d0a2f1779577cc020d47ee4d2",
+  "fichiers_avant_apres": {
+    "novaOS/kernel/src/sched/process/ipc/exec.rs": [
+      "28b2f4c89c5fbe583f0df4a0415604e79355838a9be89329e94cbc38d6189edc",
+      "a1255e28a39689c8485bcce57c921c4e8d5055699dfac947db82d0e15a3a309a"
+    ],
+    "novaOS/kernel/src/sched/process/ipc/exec_authority_lab.rs": [
+      "bd8a04ff172b86df3c6510ea537c110289f3f6ea1edbbcca65908962fc9dcecf",
+      "9eb1062d41fe9f3d99a02ad9a521d448f4e4848a41844c4771a7819b0371f3ec"
+    ],
+    "novaOS/kernel/src/sched/process/ipc/exec_snapshot_lab.rs": [
+      "ba540ee8785939809fcf34eab626b24be1fc7974ec38fc47a5386171e2a3a246",
+      "06c6e9dc8f0e2cffcf74702606ca1bee0ceaa4c1302afb67710e3ed3727d07e4"
+    ],
+    "novaOS/kernel/src/sched/process/ipc/session_display_lab.rs": [
+      "1d49d2112475323cb81ad1b1c0e0163bbe858e6e705e5a831ce80a1bd4be4f9a",
+      "2224c131948658bbec4c19147aad0bcb641ffab5304001d569d5b68026db7b10"
+    ],
+    "novaOS/kernel/src/sched/process/ipc/session_relay.rs": [
+      "26bd74640334d46ec15ca4ffd3df99de30e4de0b1390d06b9fdabf708cf99430",
+      "9b4f38d9173e65e22fb44a9a48f135f524edaded288c2b60250789bfa0eb24ed"
+    ],
+    "novaOS/user/novaauth/service/administration_bob_shell.rs": [
+      "61429107f4d6ef892d4aa3a53d08b4bf7c751f8cf6d609a22c8ad7106821ef34",
+      "07d6ecb5bb7bef40e4bee35871c74650c9d24fb8abd2fc1b785b0420ea0e065c"
+    ],
+    "novaOS/user/novaauth/service/exec_child_context.rs": [
+      null,
+      "7b54c9e71cc9c26e7ec6ef7749d4d6c39be204c89b90435599b934de72cc9e89"
+    ],
+    "novaOS/user/novaauth/service/exec_package_read.rs": [
+      "1742662f5fb139465cd6e3e11c833cbf1412e418b50df8815de4ccc1828d9397",
+      "7dfdf9bfd93bec375926a087342f2af6dcec37ed47949b3d66e418590b8d8b65"
+    ],
+    "novaOS/user/novaauth/service/membership_io_vfs.rs": [
+      "b0df448938cd0ceff80b9085848a8d2e3f8b9e5e083d10f27b291e80d4cec6f0",
+      "7d2cd77ef1bac0035a3406b34c17ffd7511c335516d685b34e1db82f4b67c452"
+    ],
+    "novaOS/user/novaauth/service/selective_exec_child_vfs.rs": [
+      null,
+      "7fb6379e6dcce4cb828c538c0ff46b20c9173a70f06db96fd94853d4698c0763"
+    ],
+    "novaOS/user/novaauth/service/src/bin/common/administration_channel.rs": [
+      "7e6c4200e1372c74493f5634ef24301807e6c0ce042301432ac05fb7ee0bfd1a",
+      "6b0c96ca22d26db01018c1a389f62885d5505386424978545a60e34d24ac30c6"
+    ],
+    "novaOS/user/novaauth/service/src/bin/common/administration_mutations.rs": [
+      "806d696aa1b885c77c798b685bbaf06086433a126390243c4e8aa9e56904969a",
+      "9bb3c4760c77db54963501c2d20439f6faaf1369d93814309addbf4d4c39ac31"
+    ],
+    "novaOS/user/novaauth/service/src/bin/common/exec_admission_guest.rs": [
+      "822598e3cab575de5eed1b8d31d3ef5c62bfa89a649f00ab7a958baf86ae1425",
+      "42fbb8c5db8437a5521a7fc9088e4e44c84b72d4d594f3e00ecbe624b75cf9e5"
+    ],
+    "novaOS/user/novaauth/service/src/bin/common/membership_exec.rs": [
+      "0673e63699b1ae89ac48c64ad3abea86cebf8d74ee42620c2c49f0435039882e",
+      "2ec40da796f7b38cea95ef811d28dcaa6b5795f4995d0d79e2b89433c0bb014a"
+    ],
+    "novaOS/user/novaauth/service/src/bin/common/membership_io.rs": [
+      "3d041dbdd4335c2dc59c27c8cf78a08ef0c8e066ea616a3678a3a91ebf16dd08",
+      "23306106024f58b2e69ac9fdf100497c801fe362111f86e6e74f70d47b217d43"
+    ],
+    "novaOS/user/novaauth/service/src/bin/common/recovery_store.rs": [
+      "757f94ac71f8d5a62b4e6a9e4553bec15829cbb00fc9c826dd6b8ebe7f79449f",
+      "77ec2b767f0a8b5e143beddfed3373628b48442678ad31ebcfd7e9e1f4990c14"
+    ],
+    "novaOS/user/novaauth/service/src/bin/common/recovery_view.rs": [
+      "3a90894f9e01b9011417a6cfce53a4d48c3a402d275b5c8ddfebcd64d20c6118",
+      "f0528a85782385edf50fed9ee3689eb1fa84f70ee7f802c68124033bd542213c"
+    ],
+    "novaOS/user/novaauth/service/src/bin/common/selective_exec_child_io.rs": [
+      null,
+      "f1379498c941d3a55cbfacea583c63fdda7585bca35201fe21f5d7a40372ac27"
+    ],
+    "novaOS/user/novaauth/service/src/bin/common/selective_exec_guest.rs": [
+      "29bdc2987b364587d4a06a354c3a65d03046a4239af991a9d3296c3c76ff4cd7",
+      "263152e1541b6541af8e4d0ccd66739b1b682652dd8ec086d1163c5875b48808"
+    ],
+    "novaOS/user/novaauth/service/triplet_effecteur.rs": [
+      "3e943a89bae0bf7d02f5e142e7b2d9b6c5624c9b79360d24a44e827a7dc7d383",
+      "26b5df7bfa987c1a8c457fb773d6b30e9795b15827eb5fdd54a1a36fa1187b56"
+    ],
+    "novaOS/user/novafs/files/exec_files_lab.rs": [
+      "34039ad1b71ebe8df01b390f84af775def8f245dfceb594205579024b43cf147",
+      "323f42f3f76ac551dda679d51c09229ea39af2f35cc7658ded79c33dfb15df26"
+    ]
+  }
+}

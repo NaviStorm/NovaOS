@@ -1,0 +1,16 @@
+#![no_std]
+mod favant { pub(super) struct OpenFile {
+    pid: u64,
+    next: u64,
+    active: Option<(u64, u64)>,
+} }
+mod fapres { pub(super) struct OpenFile {
+    pid: u64,
+    next: u64,
+    last_tag: u64,
+    active: Option<(u64, u64)>,
+} }
+mod eavant { pub(super) struct Exchange {pub pending:Option<(u64,[u8;80])>,context:Option<[u8;120]>} }
+mod eapres { pub(super) struct Exchange {pub pending:Option<(u64,[u8;128])>,context:Option<[u8;120]>} }
+#[no_mangle]
+pub static LAYOUT:[usize;4]=[core::mem::size_of::<favant::OpenFile>(),core::mem::size_of::<fapres::OpenFile>(),core::mem::size_of::<eavant::Exchange>(),core::mem::size_of::<eapres::Exchange>()];

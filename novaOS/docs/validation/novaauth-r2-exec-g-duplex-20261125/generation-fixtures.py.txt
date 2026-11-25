@@ -1,0 +1,50 @@
+from pathlib import Path
+import os
+import json
+import time
+import sys
+import struct
+import hashlib
+import runpy
+import subprocess
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+t=Path.cwd()
+b=t.parent.parent
+identity=b/'artefacts-prives-administration-0240-r1'
+fixture=b/'artefacts-prives-administration-0240-r2/finalisation-cddbaaf-09'
+packages=runpy.run_path(str(t/'source/novaOS/user/novaauth/service/paquet_lab.py'))
+image=b/'preuves-lancement-generique-elf/adaptateurs'
+compiler=Path('/Users/thierry/.rustup/toolchains/stable-aarch64-apple-darwin/bin')
+env={**os.environ,'RUSTC':str(compiler/'rustc'),'NOVAOS_TMPDIR':str(b/'tmp'),'TMPDIR':str(b/'tmp')+'/',
+   'CARGO_TARGET_DIR':str(t/'cible-natif')}
+runner=[str(compiler/'cargo'),'build','--offline','--locked','--manifest-path',
+ str(t/'source/novaOS/user/novaauth/Cargo.toml'),'--features','administration-lab','--example','administration_r2_volume']
+subprocess.run(runner,check=True,env=env)
+key=Ed25519PrivateKey.from_private_bytes((identity/'distribution').read_bytes())
+hash_file=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+out=t/'fixtures-retrait'
+out.mkdir(mode=0o700)
+records=[]
+for arch,cpu in [('x86_64','x86_64-unknown-none'),('aarch64','aarch64-unknown-none-softfloat')]:
+    elf=image/f'{arch}-prefixe-temoin.elf'
+    expected={'x86_64':'4f27c0e6b4c105f4aab0a6ff1c0b43586d76f54ea1ed29e88c98ba25a77f5ef3',
+              'aarch64':'7c512210930aca9f27900ec65ce2009325101a8ad85176ca51797a5559c388e1'}
+    assert hash_file(elf)==expected[arch]
+    manifest,body=packages['build'](hashlib.sha256(('R2-scope-witness-'+arch).encode()).digest()[:16],1,
+                                   arch,[(n,elf) for n in ('lecture-g','lecture-h')])
+    pack=out/(arch+'-scopes.paquet')
+    pack.write_bytes(struct.pack('<I',len(manifest))+manifest+key.sign(manifest)+body)
+    for sector in (512,4096):
+        root=out/f'{arch}-{sector}'
+        local={**env,'NOVA_MEMBERSHIP_SHELL':str(t/'images-temoin'/f'{arch}-shell.elf'),
+               'NOVA_R2_SCOPE_FIXTURE':str(pack),'NOVA_R2_SCOPE_BOB':'1','NOVA_R2_DIRECT_ONLY':'1'}
+        argv=[str(t/'cible-natif/debug/examples/administration_r2_volume'),str(root),str(sector),arch,
+              str(identity/'alice.pub'),str(identity/'distribution.pub'),str(fixture/f'{arch}-sonde.paquet'),
+              str(identity/'bob.pub'),'--sans-alias',
+              str(b/'artefacts-prives-administration-0240-r2/commandes-2f86d1c-02'/f'{arch}-commandes.paquet')]
+        with(out/f'{arch}-{sector}.log').open('xb')as log:
+            subprocess.run(argv,check=True,env=local,stdout=log,stderr=subprocess.STDOUT)
+        records.append({'profil':root.name,'elf_reutilise_sha256':hash_file(elf),'paquet_sha256':hash_file(pack),
+                        'volume_sha256':hash_file(root/'identites.p9'),'triplet_sha256':hash_file(root/'triplet.bin')})
+(out/'preuves.json').write_text(json.dumps(records,indent=2)+'\n')

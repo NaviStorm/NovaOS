@@ -1,0 +1,78 @@
+   Compiling typenum v1.20.1
+   Compiling zeroize v1.9.1
+   Compiling cmov v0.5.4
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling cfg-if v1.0.5
+   Compiling cpufeatures v0.3.1
+   Compiling cpufeatures v0.2.17
+   Compiling libc v0.2.191
+   Compiling serde_core v1.0.229
+   Compiling zmij v1.0.23
+   Compiling getrandom v0.4.3
+   Compiling rustix v1.1.6
+   Compiling bitflags v2.13.2
+   Compiling generic-array v0.14.7
+   Compiling serde_json v1.0.154
+   Compiling curve25519-dalek v4.1.3
+   Compiling once_cell v1.21.4
+   Compiling fastrand v2.5.0
+   Compiling memchr v2.8.3
+   Compiling itoa v1.0.19
+   Compiling base64ct v1.8.3
+   Compiling signature v2.2.0
+   Compiling ctutils v0.4.8
+   Compiling subtle v2.6.1
+   Compiling ed25519 v2.2.3
+   Compiling novafs v0.9.13 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-r2-diagnostic-bob-beda019/novaFS)
+   Compiling serde v1.0.229
+   Compiling hybrid-array v0.4.15
+   Compiling errno v0.3.14
+   Compiling crypto-common v0.1.7
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.2.2
+   Compiling block-buffer v0.12.1
+   Compiling inout v0.2.6
+   Compiling digest v0.10.7
+   Compiling sha2 v0.10.9
+   Compiling syn v2.0.119
+   Compiling syn v3.0.10
+   Compiling digest v0.11.3
+   Compiling universal-hash v0.6.1
+   Compiling cipher v0.5.2
+   Compiling aead v0.6.1
+   Compiling tempfile v3.27.0
+   Compiling poly1305 v0.9.1
+   Compiling hmac v0.13.0
+   Compiling blake2 v0.11.0
+   Compiling sha2 v0.11.1
+   Compiling chacha20 v0.10.2
+   Compiling hkdf v0.13.0
+   Compiling argon2 v0.6.0
+   Compiling chacha20poly1305 v0.11.0
+   Compiling serde_derive v1.0.229
+   Compiling curve25519-dalek-derive v0.1.1
+   Compiling ed25519-dalek v2.2.0
+   Compiling novaos-identity v0.1.0 (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/novaos-r2-diagnostic-bob-beda019/novaOS/user/novaauth)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 3.61s
+     Running tests/distribution.rs (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-consolidation-6498dd4/target-tests/x86_64-apple-darwin/debug/deps/distribution-dbfd98d94386f571)
+
+running 6 tests
+test paquet_entier_atteste_avant_publication ... ok
+test resolution_isolee_lie_titulaire_installation_tete_et_architecture ... ok
+test installation_retrait_reinstallation_et_relecture_p9 ... ok
+test provisionnement_explicite_bob_sans_promotion_ni_heritage ... ok
+test installation_interrompue_reprise_par_recu_sans_rejeu ... ok
+test selective_exec_revalidates_own_state_and_actual_required_permissions ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.06s
+
+     Running tests/exec_file_scope.rs (/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/r2-consolidation-6498dd4/target-tests/x86_64-apple-darwin/debug/deps/exec_file_scope-6c80589a0b4f2448)
+
+running 4 tests
+test malformed_scope_cannot_reach_the_file_effecter ... ok
+test selection_requires_the_authenticated_seal_and_remains_distinct_from_exact_readback ... ok
+test scope_facts_bind_the_exact_request_and_mounted_instance ... ok
+test mounted_p9_read_scope_requires_the_sealed_parent ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s

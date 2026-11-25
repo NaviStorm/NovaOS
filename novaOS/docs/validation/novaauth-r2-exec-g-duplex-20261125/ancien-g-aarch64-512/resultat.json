@@ -1,0 +1,108 @@
+{
+  "iso_sha256": "0ad58b0ca9756caf2dc561435b2c71aa28d270b209ec089a2fda6f0ad2c3fa8a",
+  "registre_sha256": "d0059e051d2ca6da663752a79942f4440feaa2c85654f055436aebb3abedd5cc",
+  "p9_initial_sha256": "a91fc5050f438b62c3a929435e32b8bd5cc8f15824885121fd9c317ca8cf7772",
+  "p9_final_sha256": "6663370295ba22e4bea366cb2a4b98fa91dfe273a335eb85f73d2f2c6324d39d",
+  "ancienne_autorite_initiale_sha256": "38a30496ab31b87256bfddfea60395a6153d18f7be50f8d1b64aded4058e3bda",
+  "architecture": "aarch64",
+  "secteur": 512,
+  "duree_hote_ns": 31846567625,
+  "echanges_tls_horodates": [
+    {
+      "debut_ms": 300,
+      "echeance_ms": 10300,
+      "fin_ms": 3212
+    }
+  ],
+  "plafond_respecte": true,
+  "drainage_registre": true,
+  "drainage_signataire": true,
+  "relais_draine": true,
+  "ressources": {
+    "avant": [
+      4,
+      6,
+      0,
+      65,
+      64,
+      31
+    ],
+    "actif": [
+      4,
+      6,
+      0,
+      65,
+      64,
+      31
+    ],
+    "apres": [
+      4,
+      6,
+      0,
+      65,
+      64,
+      31
+    ]
+  },
+  "ressources_registre": {
+    "avant": [
+      4,
+      7,
+      0,
+      167,
+      64,
+      31
+    ],
+    "apres": [
+      4,
+      7,
+      0,
+      167,
+      64,
+      31
+    ]
+  },
+  "pics_racines_par_pid": {
+    "2": 4,
+    "3": 4,
+    "4": 3,
+    "5": 2,
+    "1": 4,
+    "6": 4,
+    "7": 4,
+    "8": 4,
+    "9": 4,
+    "10": 4,
+    "11": 4,
+    "12": 4,
+    "13": 4,
+    "14": 2,
+    "15": 2,
+    "18": 2,
+    "19": 4,
+    "20": 2,
+    "21": 3,
+    "22": 3
+  },
+  "succes": false,
+  "erreur_invite": "consommation de Bob non démontrée avant expiration",
+  "version_qemu": "QEMU emulator version 11.1.3",
+  "vcpu": 2,
+  "ram_mio": 256,
+  "acceleration": "tcg",
+  "sha256_originaux": {
+    "invite.serial": "596ec6bdcc862347e141fdd679a8f59be24f156d44db85f6e1c2c08080520e89",
+    "resultat.json": "e70a8914ad272b5a705b81efaa7ac136d4404940b26001a66f4103d660e256ee",
+    "rpc-public.log": "1798f536c0c97c973690f9669c373311930497415ff42f508df04342ce28e0de",
+    "tls-attentes.log": "e338ce10e86aadd7626d806138ce81aeff2049dbcd09a67e3237d10b92fe7314",
+    "sessions-noyau.bin": "bc66148fa0753900f3501bf9a7daf17f925de08c538b80d9a02f149b28b060a9",
+    "sorties-noyau.bin": "2f6aa34f13f05c500e38c2bef9a3fe1b81ba609628ab33da9936d2ab68388501"
+  },
+  "presentation": 4785,
+  "echeance": 4744,
+  "marge": -41,
+  "pic_cadres_ipc_observe": 74,
+  "pic_endpoints_observe": 64,
+  "minimum_cadres_libres_observe": 58538,
+  "drainage_final_observe": true
+}
