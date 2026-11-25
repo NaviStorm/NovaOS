@@ -1,0 +1,16 @@
+{
+  "arm-reponse-absente": {
+    "controle_reussi": true,
+    "elf": "ddc80c14da5f13e599c97a7eedd896221a0f35dada1eb7b81b1ef6ff0deb2b32",
+    "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+    "correctif": "64bba00421bea605521de0514a5639730fa61fee2e1de2ee55480608bec832ef",
+    "controle_discriminant": "La substitution de la trace nominale au cas de perte est refusée."
+  },
+  "q35-reponse-absente": {
+    "controle_reussi": true,
+    "elf": "86433c7adbb4b34c855d261f115f4b3d887d4e3d54cbc296c2628431381a58d7",
+    "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+    "correctif": "64bba00421bea605521de0514a5639730fa61fee2e1de2ee55480608bec832ef",
+    "controle_discriminant": "La substitution de la trace nominale au cas de perte est refusée."
+  }
+}
