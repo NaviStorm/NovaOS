@@ -131,7 +131,7 @@ def run(a,out):
                                 init=capture(vm,out,"reset",False)
                                 assert init["iommu_platform"] is True and init["vtd_gsts"]==0 and pci_lecture(vm,qt)&4==0
                                 qmp(vm,"cont")
-                                end=time.monotonic()+35
+                                end=time.monotonic()+(1800 if pair and pair.lots==6250 else 35)
                                 while time.monotonic()<end:
                                     serial=(out/"serie.log").read_bytes()
                                     if b"NET Q35 etat=" in serial or (a.temoin_hash and refus_liminer(serial)) or b"Panique du noyau" in serial or not qmp(vm,"query-status")["running"]: break
@@ -152,6 +152,9 @@ def run(a,out):
                                     for motif in [b"NET L2 completions TX=16 RX=16 identifiants_uniques=true", b"NET Q35 L2 GSI=23 ISR=0x101", b"NET L2 pilote fin=Exit(0) racines=0", b"NET Q35 etat=Ok(()) bail=false"]:
                                         if motif not in serial:
                                             raise ValueError(f"Preuve invitée absente {motif!r}: {serial[-450:]!r}")
+                                    total=pair.lots*16
+                                    if f"NET L2 total TX={total} RX={total} index={total%65536} rearmements={pair.lots-1}".encode() not in serial:
+                                        raise ValueError("Indices terminaux ou réarmements incomplets")
                                     report["cadres_verifies"]=verifier_tables(vm,qt,serial,out,True)
                                 elif a.event_idx is not None:
                                     from virtio_net_event_idx import verifier_negociation
@@ -186,7 +189,7 @@ def run(a,out):
                 if len(pages)!=22 or len({v>>12 for v in pages.values()})!=22 or "vtd_dmar_fault " in trace:
                     raise ValueError("Feuilles actives ou absence de faute non démontrées")
                 report["pages_actives_3"]=len(pages)
-                report["trames_par_sens"]=16
+                report["trames_par_sens"]=pair.lots*16
             else:
                 assert not any(w["valeur"]&4 for w in writes)
             report.update(bilan=True,bail=False,retrait=a.retrait,ecritures_commande=writes)

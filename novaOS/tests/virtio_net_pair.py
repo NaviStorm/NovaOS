@@ -1,4 +1,5 @@
 """Pair Ethernet réservé à un socketpair Unix anonyme du moteur de qualification."""
+from functools import lru_cache
 import errno
 import os
 import hashlib
@@ -17,6 +18,16 @@ def trame(numero, retour):
     charge = bytes(((29 * numero + 17 * i) & 255) ^ (165 if retour else 0)
                    for i in range(n - 15))
     return (NIC + PAIR if retour else PAIR + NIC) + TYPE + bytes([numero]) + charge
+
+
+@lru_cache(maxsize=512)
+def motif(numero_bas, retour):
+    return trame(numero_bas, retour)[18:]
+
+
+def trame_longue(numero, retour):
+    adresses = NIC + PAIR if retour else PAIR + NIC
+    return adresses + TYPE + numero.to_bytes(4, "big") + motif(numero % 256, retour)
 
 
 def lire(sock, n):
@@ -38,6 +49,10 @@ class Pair:
                 endpoint.setsockopt(socket.SOL_SOCKET, option, 32768)
         self.sock.settimeout(90)
         self.trames = []
+        self.lots = {"rearmement":3, "endurance":6250}.get(os.environ.get("NOVAOS_NET_SERIE"),1)
+        self.tx_comptes = 0
+        self.empreinte_tx = hashlib.sha256()
+        self.empreinte_rx = hashlib.sha256()
         self.erreur = None
         self.perte = os.environ.get('NOVAOS_NET_PAIR_PERTE') == 'derniere-reponse'
         self.envoyees = 0
@@ -57,8 +72,31 @@ class Pair:
         args[pos] = f"socket,{identifiant},fd={fd}"
         return (fd,)
 
+    def serie(self):
+        for batch in range(self.lots):
+            reponses = bytearray()
+            for slot in range(16):
+                numero = batch * 16 + slot
+                attendu = trame_longue(numero, False)
+                n = int.from_bytes(lire(self.sock, 4), "big")
+                if n != len(attendu):
+                    raise ValueError(f"Longueur TX de la trame {numero}: {n}")
+                recu = lire(self.sock, n)
+                if recu != attendu:
+                    raise ValueError(f"Contenu ou séquence TX de la trame {numero}")
+                self.empreinte_tx.update(recu)
+                self.tx_comptes += 1
+                retour = trame_longue(numero, True)
+                self.empreinte_rx.update(retour)
+                reponses += len(retour).to_bytes(4,"big") + retour
+            self.sock.sendall(reponses)
+            self.envoyees += 16
+
     def echanger(self):
         try:
+            if self.lots > 1:
+                self.serie()
+                return
             reponses = bytearray()
             for i in range(16):
                 n = int.from_bytes(lire(self.sock, 4), "big")
@@ -102,4 +140,9 @@ class Pair:
         self.sock.close()
         bilan = dict(trames=self.trames, erreur=self.erreur, stockage_avant_derniere_reponse=self.stockage, reponses_envoyees=self.envoyees, perte=self.perte,
                      succes=self.envoyees==16 and len(self.trames)==16 and not self.thread.is_alive() and self.erreur is None)
+        if self.lots > 1:
+            total = self.lots*16
+            bilan.update(trames_tx=self.tx_comptes, trames_rx=self.envoyees, lots=self.lots,
+                         tx_sha256=self.empreinte_tx.hexdigest(),rx_sha256=self.empreinte_rx.hexdigest(),
+                         succes=self.tx_comptes==self.envoyees==total and not self.thread.is_alive() and self.erreur is None)
         (self.sortie / "pair.json").write_text(json.dumps(bilan, indent=2) + "\n")

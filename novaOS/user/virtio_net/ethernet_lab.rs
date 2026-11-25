@@ -45,7 +45,11 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
     let mut trame = [0u8; 1514];
     let mut seq = 1;
     commande(handle, generation, seq, 1, 0)?;
-    for n in 0..COMPTE {
+    let lots = config(7) as usize;
+    if !(1..=6250).contains(&lots) {return Err(REFUSED);}
+    for lot in 0..lots {
+    for i in 0..COMPTE {
+        let n = lot * COMPTE + i;
         let len = if n % 2 == 0 { 60 } else { 1514 };
         trame[..6].copy_from_slice(&PAIR);
         trame[6..12].copy_from_slice(&NIC);
@@ -54,6 +58,7 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
         for (i, b) in trame[15..len].iter_mut().enumerate() {
             *b = octet(n, i);
         }
+        if lots > 1 {trame[14..18].copy_from_slice(&(n as u32).to_be_bytes());}
         let len = virtio_net::encode_tx(&trame[..len], slot).map_err(|_| REFUSED)?;
         seq += 1;
         commande(handle, generation, seq, 2, len)?;
@@ -75,22 +80,25 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
         {
             return Err(REFUSED);
         }
-        let n = usize::from(data[14]);
-        if n >= COMPTE
-            || recus & (1 << n) != 0
+        let n = if lots==1 {usize::from(data[14])} else {u32::from_be_bytes(data[14..18].try_into().map_err(|_|REFUSED)?) as usize};
+        let index=n.checked_sub(lot * COMPTE).ok_or(REFUSED)?;
+        if index >= COMPTE
+            || recus & (1 << index) != 0
             || data.len() != if n % 2 == 0 { 60 } else { 1514 }
-            || data[15..]
+            || data[if lots>1 {18} else {15}..]
                 .iter()
                 .enumerate()
-                .any(|(i, &b)| b != (octet(n, i) ^ 0xa5))
+                .any(|(i, &b)| b != (octet(n, i+if lots>1 {3} else {0}) ^ 0xa5))
         {
             return Err(REFUSED);
         }
-        recus |= 1 << n;
+        recus |= 1 << index;
     }
     if recus != u16::MAX {
         return Err(REFUSED);
     }
-    commande(handle, generation, seq + 1, 4, 0)?;
+    seq+=1;
+    commande(handle, generation, seq, if lot+1==lots {4} else {6}, 0)?;
+    }
     Ok(())
 }

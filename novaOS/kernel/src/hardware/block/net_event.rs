@@ -104,6 +104,10 @@ pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u
         if tag == 5 {
             return port.stopper().map(|()| 0).map_err(|_| crate::abi::REFUSED);
         }
+        if tag==6 {
+            let _=nic.isr.r8(0);
+            if !ligne.rearmer() {return Err(crate::abi::REFUSED);}
+        }
         port.demande(tag, len, copie, ligne.cause() == 0x101)
     });
     let stop = port.stopper();

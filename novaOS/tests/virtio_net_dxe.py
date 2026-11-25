@@ -101,7 +101,7 @@ def observe(tmp, out, sock, *, disque=None, secteur=None, phase=None, event_idx=
                 dump(out / "version.json", qmp(vm, "query-version"))
                 capture(vm, out, "reset", True)
                 qmp(vm, "cont")
-                until = time.monotonic() + (90 if disque else 40)
+                until = time.monotonic() + (1800 if pair and pair.lots==6250 else 90 if disque else 40)
                 while time.monotonic() < until:
                     data = serial.read_bytes()
                     if any(s in data for s in (termine, b"NET ARM bilan", b"NOVA DXE QUARANTAINE", b"Panique du noyau")):

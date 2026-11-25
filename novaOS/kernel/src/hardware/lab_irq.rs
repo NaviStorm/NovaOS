@@ -414,6 +414,10 @@ pub(super) mod net_intx {
             Some(Self(ligne))
         }
         pub(in crate::hardware) fn cause(&self)->usize{CAUSE.load(Ordering::Acquire)}
+        pub(in crate::hardware) fn rearmer(&self)->bool{
+            let _g=Guard::new();
+            CAUSE.swap(0,Ordering::AcqRel)==0x101 && self.0.mask(false)
+        }
         pub(in crate::hardware) fn fermer(self)->bool{
             let _g=Guard::new();
             if !self.0.mask(true) || !self.0.drained() {return false}

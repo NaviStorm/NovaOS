@@ -115,7 +115,10 @@ def run(elf, source, secteur, dossier, installer=False, fichiers=False, event_id
                 report["flush"]=mesures(serial,"flush",16)
                 if not pair.get("stockage_avant_derniere_reponse"):
                     raise ValueError("Chevauchement stockage/réseau non établi")
-            report.update(succes=True, bail_nic=True, trames_par_sens=16)
+            total=pair.get("lots",1)*16
+            if f"NET L2 total TX={total} RX={total} index={total%65536} rearmements={total//16-1}" not in serial:
+                raise ValueError("Indices terminaux ou réarmements incomplets")
+            report.update(succes=True, bail_nic=True, trames_par_sens=total)
             return
         if event_idx is not None:
             from virtio_net_event_idx import verifier_negociation

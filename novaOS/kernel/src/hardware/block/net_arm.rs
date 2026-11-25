@@ -197,6 +197,12 @@ impl Preparation {
                     if tag == 5 {
                         return port.stopper().map(|()| 0).map_err(|_| crate::abi::REFUSED);
                     }
+                    if tag==6 {
+                        let _garde=hal::interrupts::Guard::new();
+                        if ETAT_IRQ.swap(0,Ordering::AcqRel)!=0x101 {return Err(crate::abi::REFUSED);}
+                        let _=self.nic.isr.r8(0);
+                        hal::timer::purger_spi_reseau().and_then(|()|hal::timer::armer_spi_reseau(false)).map_err(|_|crate::abi::REFUSED)?;
+                    }
                     port.demande(tag, len, copie, ETAT_IRQ.load(Ordering::Acquire) == 0x101)
                 },
             );

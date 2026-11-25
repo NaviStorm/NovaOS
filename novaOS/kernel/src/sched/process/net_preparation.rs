@@ -2,6 +2,15 @@
 use super::*;
 const IMAGE: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/net_preparation.bin"));
 
+#[cfg(feature = "net-ethernet-lab")]
+fn lots() -> u64 {
+    match option_env!("NOVAOS_NET_SERIE") {
+        Some("endurance") => 6250,
+        Some("rearmement") => 3,
+        _ => 1,
+    }
+}
+
 fn creer(mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child, u64)> {
     let _guard = Guard::new();
     let child = create_image(IMAGE, &mode.to_le_bytes(), None, None).ok()?;
@@ -17,6 +26,8 @@ fn creer(mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child,
             let space = s.processes.get(pid).space.as_ref().unwrap();
             space.write_data(m, 1, handle);
             space.write_data(m, 2, generation);
+            #[cfg(feature = "net-ethernet-lab")]
+            if mode == 3 { space.write_data(m, 7, lots()); }
             Ok(())
         })
         .map_err(|_| crate::abi::NO_MEMORY)?;
@@ -43,12 +54,12 @@ fn creer(mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child,
         }
     }
 }
-fn demande(pid: Pid, handle: u64) -> Option<(u64, u64, u64)> {
+fn demande(pid: Pid, handle: u64, immediat: bool) -> Option<(u64, u64, u64)> {
     let debut = ticks();
     loop {
         match with(|s| s.ipc.lab_pop(pid, handle)) {
             Ok(Some(v)) => return Some(v),
-            Ok(None) if ticks().wrapping_sub(debut) < u64::from(HZ) * 3 => sleep(1),
+            Ok(None) if ticks().wrapping_sub(debut) < u64::from(HZ) * 3 => if immediat {yield_now()} else {sleep(1)},
             _ => return None,
         }
     }
@@ -63,7 +74,7 @@ pub(crate) fn tester(generation: u64, preparer: impl FnOnce() -> bool) -> bool {
     let mut ok =
         creer(2, Some(handle), generation).is_some_and(|(p, _)| p.join() == Outcome::Exit(0));
     for phase in 1..=2 {
-        let requete = demande(pid, handle);
+        let requete = demande(pid, handle, false);
         let _gate = Guard::new();
         let vivant = with_guard(&_gate, |s| {
             s.processes.get(pid).outcome.is_none() && s.ipc.lab_can_submit(pid, handle)
@@ -123,18 +134,21 @@ pub(crate) fn ethernet(
     let mut copie = [0u8; 1526];
     let mut ok = true;
     let mut pendant=Some(pendant);
-    for seq in 1..=35u64 {
+    let fin_sequence=1+34*lots();
+    for seq in 1..=fin_sequence {
         if seq == 19 {
             measure("net_files_pleines");
             if !pendant.take().is_some_and(|f|f()) {ok=false;break}
         }
-        let tag = match seq {
-            1 => 1,
-            2..=18 => 2,
-            19..=34 => 3,
-            _ => 4,
+        let rang = if seq==1 {0} else {(seq-2)%34+1};
+        let tag = match rang {
+            0 => 1,
+            1..=17 => 2,
+            18..=33 => 3,
+            _ if seq == fin_sequence => 4,
+            _ => 6,
         };
-        if demande(pid, handle) != Some((tag, generation, seq)) {
+        if demande(pid, handle, lots()>1) != Some((tag, generation, seq)) {
             ok = false;
             break;
         }
@@ -199,14 +213,15 @@ pub(crate) fn ethernet(
                     .unwrap();
                 }
             });
-            if seq == 18 && res == Err(crate::abi::WOULD_BLOCK) {
+            if rang == 17 && res == Err(crate::abi::WOULD_BLOCK) {
+                if seq!=18 {break}
                 hal::log(format_args!(
                     "NET L2 saturation TX=16 statut={}",
                     crate::abi::WOULD_BLOCK
                 ));
                 break;
             }
-            if seq == 18 {
+            if rang == 17 {
                 ok = false;
             }
             if let Err(reason) = res {
