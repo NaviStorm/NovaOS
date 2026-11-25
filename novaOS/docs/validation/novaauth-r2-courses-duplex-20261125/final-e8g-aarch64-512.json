@@ -1,0 +1,231 @@
+{
+  "scenario": "final-e8g",
+  "architecture": "aarch64",
+  "secteur": 512,
+  "statut": 10,
+  "enfants": [],
+  "presentation": 2935,
+  "echeance": 4038,
+  "refus_avant_echeance": [
+    [
+      3388,
+      4038
+    ]
+  ],
+  "evenements": [
+    [
+      1,
+      "enrollment"
+    ],
+    [
+      2,
+      "RETRAIT_EN_COURS"
+    ],
+    [
+      3,
+      "RETIREE"
+    ],
+    [
+      4,
+      "activation"
+    ],
+    [
+      5,
+      "admin-enrollment"
+    ],
+    [
+      6,
+      "exec-descriptor"
+    ],
+    [
+      7,
+      "exec-selective-admission"
+    ],
+    [
+      8,
+      "created"
+    ],
+    [
+      9,
+      "exec-descriptor"
+    ],
+    [
+      10,
+      "exec-selective-admission"
+    ],
+    [
+      11,
+      "created"
+    ],
+    [
+      12,
+      "exec-descriptor"
+    ],
+    [
+      13,
+      "exec-selective-admission"
+    ],
+    [
+      14,
+      "membership-reserved"
+    ],
+    [
+      15,
+      "cancelled"
+    ],
+    [
+      16,
+      "membership-withdrawing"
+    ],
+    [
+      17,
+      "membership-effector-ack"
+    ],
+    [
+      18,
+      "membership-effector-ack"
+    ],
+    [
+      19,
+      "membership-effector-ack"
+    ],
+    [
+      20,
+      "membership-retired"
+    ]
+  ],
+  "admissions": [
+    [
+      "617fc9774052d9268bc70ae469652ac8",
+      7,
+      1,
+      8,
+      "8423843666a1374507613fe9173da38d0d5ab5cab987a13c2eadc3c3543621a9"
+    ],
+    [
+      "11b041beda59f270840061e797f306c5",
+      10,
+      1,
+      11,
+      "6699b8e7d32046a5e6f411c7ab30239dea3365b6959ff2a5d0f69fc9744e54e3"
+    ],
+    [
+      "60b5e72ee760abc4a4eadd40ed49f994",
+      13,
+      2,
+      15,
+      null
+    ]
+  ],
+  "operations_vfs": [],
+  "acquittements": [
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      4,
+      1
+    ]
+  ],
+  "retrait": [
+    14,
+    16,
+    20
+  ],
+  "octets_stdout": 0,
+  "stdout_sha256": null,
+  "cadres_libres_avant": 58503,
+  "cadres_libres_min": 58502,
+  "pic_cadres_ipc": 74,
+  "pic_racines_par_pid": {
+    "2": 4,
+    "3": 4,
+    "4": 3,
+    "5": 2,
+    "1": 4,
+    "6": 4,
+    "7": 4,
+    "8": 4,
+    "9": 4,
+    "10": 4,
+    "11": 4,
+    "12": 4,
+    "13": 4,
+    "14": 2,
+    "15": 2,
+    "18": 2,
+    "19": 4,
+    "20": 2,
+    "21": 3,
+    "22": 3
+  },
+  "registre": {
+    "avant": [
+      4,
+      7,
+      0,
+      167,
+      64,
+      31
+    ],
+    "apres": [
+      4,
+      7,
+      0,
+      167,
+      64,
+      31
+    ]
+  },
+  "signataire": {
+    "avant": [
+      4,
+      6,
+      0,
+      65,
+      64,
+      31
+    ],
+    "actif": [
+      4,
+      6,
+      0,
+      65,
+      64,
+      31
+    ],
+    "apres": [
+      4,
+      6,
+      0,
+      65,
+      64,
+      31
+    ]
+  },
+  "allocations": [],
+  "drainage_final": true,
+  "iso_sha256": "b35aec8755df6d78944b7d0cd3ca274ce29713664b896d95eeb4f1ff89612eed",
+  "p9_initial_sha256": "b6faeade7c6e95b44b69c95aabae5d4a23793998215249ebf94d25767b6986cd",
+  "verrou": {
+    "debut_attente": "2026-11-25T08:27:49.956434+00:00",
+    "conflits_evites": 0,
+    "acquisition": "2026-11-25T08:27:49.956823+00:00",
+    "attente_s": 0.0002216249704360962,
+    "execution_s": 30.577542833983898,
+    "liberation": "2026-11-25T08:28:20.583076+00:00",
+    "code": 0
+  },
+  "empreintes_locales": {
+    "invite.serial": "16bad3627ba4b43f57f2e1c67e5ce9d642c13f8589fa906ab867751ca232a983",
+    "resultat.json": "5aa7c0312a1fbac74fb9b8d302cc9658af55f3ea5eb5fa041ad892d2615e8bee",
+    "sessions-noyau.bin": "fd6f609917456a294c2bf89bd23c03205cfa4e7633c755c5ce7e70d736d4ef6c",
+    "sorties-noyau.bin": "75d828ca7b51c075bd7c2bc1bc082fb42b8fa7c44279defbf844c8b2f5057eaf",
+    "autorite-independante.sqlite": "b89c1659007539d422f823d27427f196a9e73be9d664efa67fb32b05c949ad3d"
+  }
+}

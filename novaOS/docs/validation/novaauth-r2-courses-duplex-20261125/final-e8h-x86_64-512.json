@@ -1,0 +1,346 @@
+{
+  "scenario": "final-e8h",
+  "architecture": "x86_64",
+  "secteur": 512,
+  "statut": 0,
+  "enfants": [
+    23
+  ],
+  "presentation": 1336,
+  "echeance": 2538,
+  "refus_avant_echeance": [],
+  "evenements": [
+    [
+      1,
+      "enrollment"
+    ],
+    [
+      2,
+      "RETRAIT_EN_COURS"
+    ],
+    [
+      3,
+      "RETIREE"
+    ],
+    [
+      4,
+      "activation"
+    ],
+    [
+      5,
+      "admin-enrollment"
+    ],
+    [
+      6,
+      "exec-descriptor"
+    ],
+    [
+      7,
+      "exec-selective-admission"
+    ],
+    [
+      8,
+      "created"
+    ],
+    [
+      9,
+      "exec-descriptor"
+    ],
+    [
+      10,
+      "exec-selective-admission"
+    ],
+    [
+      11,
+      "created"
+    ],
+    [
+      12,
+      "exec-descriptor"
+    ],
+    [
+      13,
+      "exec-selective-admission"
+    ],
+    [
+      14,
+      "membership-reserved"
+    ],
+    [
+      15,
+      "membership-withdrawing"
+    ],
+    [
+      16,
+      "membership-effector-ack"
+    ],
+    [
+      17,
+      "membership-effector-ack"
+    ],
+    [
+      18,
+      "membership-effector-ack"
+    ],
+    [
+      19,
+      "membership-retired"
+    ],
+    [
+      20,
+      "created"
+    ],
+    [
+      21,
+      "membership-admitted"
+    ],
+    [
+      22,
+      "membership-operation-finished"
+    ],
+    [
+      23,
+      "membership-admitted"
+    ],
+    [
+      24,
+      "membership-operation-finished"
+    ],
+    [
+      25,
+      "membership-admitted"
+    ],
+    [
+      26,
+      "membership-operation-finished"
+    ],
+    [
+      27,
+      "membership-admitted"
+    ],
+    [
+      28,
+      "membership-operation-finished"
+    ]
+  ],
+  "admissions": [
+    [
+      "959234eff4b2f680fc169d803b03d187",
+      7,
+      1,
+      8,
+      "5e0e8ca85dd2c399bb63ab2ea174209654000b475a7b4abd303accfb44e7d2c2"
+    ],
+    [
+      "ab328a87e7e656a09895e5e9059a1d0f",
+      10,
+      1,
+      11,
+      "8ea488016139e82d5bce7d46f180dc3054d0244237c946b0176e1bea2efcb329"
+    ],
+    [
+      "1d26840ca5d758eb0064b4e6edb1dc26",
+      13,
+      1,
+      20,
+      "74767e090b06c1c17eb7d27a27fa85e3beee17974861f8b0b95315fac218ab37"
+    ]
+  ],
+  "operations_vfs": [
+    [
+      "151DACEE9BAFA9CA683E51D750A9EA87",
+      21,
+      1,
+      22,
+      "498C0567087DB509E2D990F0215F820394173DB66B707E1F615F5049E230776B"
+    ],
+    [
+      "A2EA984879BD584FE07B14BE124D4BE8",
+      23,
+      1,
+      24,
+      "EB45388F428445FDE66E9A8AD86765597FAC1D6D0432BA7A07EA5A21EDF6351D"
+    ],
+    [
+      "57A6544F490EFBB4A30588EFFA5AC6F0",
+      25,
+      1,
+      26,
+      "2F1FE936E4F8A78AC45DCD05897E08BE6512F06E00D8090E45746943A569D8C3"
+    ],
+    [
+      "3EB32B5B96251DF8485A49E51BB08A0F",
+      27,
+      1,
+      28,
+      "298F1D48AA125955C97E807414C2A6320EAD4636A3C0F021C85BB8FC47AEC11C"
+    ]
+  ],
+  "acquittements": [
+    [
+      1,
+      1
+    ],
+    [
+      2,
+      1
+    ],
+    [
+      4,
+      1
+    ]
+  ],
+  "retrait": [
+    14,
+    15,
+    19
+  ],
+  "octets_stdout": 14,
+  "stdout_sha256": "d8c1ad0cf8e1fd1250f0c1dce236deff55abc9802c483280bd00f626e0fdd3c0",
+  "cadres_libres_avant": 59026,
+  "cadres_libres_min": 59025,
+  "pic_cadres_ipc": 74,
+  "pic_racines_par_pid": {
+    "2": 4,
+    "3": 4,
+    "4": 3,
+    "5": 2,
+    "1": 4,
+    "6": 4,
+    "7": 4,
+    "8": 4,
+    "9": 4,
+    "10": 4,
+    "11": 4,
+    "12": 4,
+    "13": 4,
+    "14": 2,
+    "15": 2,
+    "18": 2,
+    "19": 4,
+    "20": 2,
+    "21": 3,
+    "22": 3,
+    "23": 4
+  },
+  "registre": {
+    "avant": [
+      4,
+      7,
+      0,
+      170,
+      64,
+      31
+    ],
+    "apres": [
+      4,
+      7,
+      0,
+      170,
+      64,
+      31
+    ]
+  },
+  "signataire": {
+    "avant": [
+      4,
+      6,
+      0,
+      73,
+      64,
+      31
+    ],
+    "actif": [
+      4,
+      6,
+      0,
+      73,
+      64,
+      31
+    ],
+    "apres": [
+      4,
+      6,
+      0,
+      73,
+      64,
+      31
+    ]
+  },
+  "allocations": [
+    {
+      "phase": "sortie",
+      "racines": 1,
+      "max_racines_acteurs": 4,
+      "endpoints": 61,
+      "noeuds": 128,
+      "handles": 1,
+      "attentes": 15,
+      "cadres_ipc": 71,
+      "cadres_libres": 59063
+    },
+    {
+      "phase": "erreur",
+      "racines": 2,
+      "max_racines_acteurs": 4,
+      "endpoints": 62,
+      "noeuds": 130,
+      "handles": 2,
+      "attentes": 15,
+      "cadres_ipc": 72,
+      "cadres_libres": 59062
+    },
+    {
+      "phase": "fichier_tx",
+      "racines": 3,
+      "max_racines_acteurs": 4,
+      "endpoints": 63,
+      "noeuds": 132,
+      "handles": 3,
+      "attentes": 15,
+      "cadres_ipc": 73,
+      "cadres_libres": 59061
+    },
+    {
+      "phase": "fichier_rx",
+      "racines": 4,
+      "max_racines_acteurs": 4,
+      "endpoints": 64,
+      "noeuds": 134,
+      "handles": 4,
+      "attentes": 15,
+      "cadres_ipc": 74,
+      "cadres_libres": 59060
+    },
+    {
+      "phase": "actif",
+      "racines": 4,
+      "max_racines_acteurs": 4,
+      "endpoints": 64,
+      "noeuds": 134,
+      "handles": 4,
+      "attentes": 15,
+      "cadres_ipc": 74,
+      "cadres_libres": 59060
+    }
+  ],
+  "drainage_final": true,
+  "iso_sha256": "6d155cc499f69cd4d355f94795bea6cac2950991d7713e7ea7965d7276d2b7c8",
+  "p9_initial_sha256": "f79a77077e63eb247e1e7370bebfde523c88811f068064ef274979bfd9db3dad",
+  "verrou": {
+    "debut_attente": "2026-11-25T08:30:59.497432+00:00",
+    "conflits_evites": 1,
+    "acquisition": "2026-11-25T08:31:23.512984+00:00",
+    "attente_s": 24.01538216706831,
+    "execution_s": 12.546276584034786,
+    "liberation": "2026-11-25T08:31:36.111652+00:00",
+    "code": 0
+  },
+  "empreintes_locales": {
+    "invite.serial": "02ac8456d36865023a1366e3ae7e66984d9b6c399b1d8414aa13d3a15238c3da",
+    "resultat.json": "ee2bd831f81c2c16dde39288b98d50a63eb563f2b1a73f1c0136e23a8956b563",
+    "sessions-noyau.bin": "8b0a021a4f7c8399b22eabf4bfd044be42179a19b2af52adbf266d0404a7dac6",
+    "sorties-noyau.bin": "5d4969cca08aa637617a3173b20b945a724339677de8cfaf5da10009994953d6",
+    "autorite-independante.sqlite": "1277ff33c567b28602210b74b0776487aa10a94769e46875ef7132747ab60950"
+  }
+}

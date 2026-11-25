@@ -1,0 +1,266 @@
+[
+  {
+    "scenario": "final-h",
+    "architecture": "aarch64",
+    "secteur": 512,
+    "statut": 0,
+    "enfants": [
+      23
+    ],
+    "presentation": 3829,
+    "echeance": 3981,
+    "refus_avant_echeance": [],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 58502,
+    "cadres_libres_avant": 58503
+  },
+  {
+    "scenario": "final-h",
+    "architecture": "aarch64",
+    "secteur": 4096,
+    "statut": 0,
+    "enfants": [
+      23
+    ],
+    "presentation": 1538,
+    "echeance": 2379,
+    "refus_avant_echeance": [],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 58502,
+    "cadres_libres_avant": 58503
+  },
+  {
+    "scenario": "final-h",
+    "architecture": "x86_64",
+    "secteur": 512,
+    "statut": 0,
+    "enfants": [
+      23
+    ],
+    "presentation": 1788,
+    "echeance": 2560,
+    "refus_avant_echeance": [],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 59027,
+    "cadres_libres_avant": 59028
+  },
+  {
+    "scenario": "final-h",
+    "architecture": "x86_64",
+    "secteur": 4096,
+    "statut": 0,
+    "enfants": [
+      23
+    ],
+    "presentation": 1824,
+    "echeance": 2621,
+    "refus_avant_echeance": [],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 59027,
+    "cadres_libres_avant": 59028
+  },
+  {
+    "scenario": "final-e7g",
+    "architecture": "aarch64",
+    "secteur": 512,
+    "statut": 10,
+    "enfants": [],
+    "presentation": 2774,
+    "echeance": 3891,
+    "refus_avant_echeance": [
+      [
+        3128,
+        3891
+      ]
+    ],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 58502,
+    "cadres_libres_avant": 58503
+  },
+  {
+    "scenario": "final-e7g",
+    "architecture": "aarch64",
+    "secteur": 4096,
+    "statut": 10,
+    "enfants": [],
+    "presentation": 1212,
+    "echeance": 2416,
+    "refus_avant_echeance": [
+      [
+        1326,
+        2416
+      ]
+    ],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 58502,
+    "cadres_libres_avant": 58503
+  },
+  {
+    "scenario": "final-e7g",
+    "architecture": "x86_64",
+    "secteur": 512,
+    "statut": 10,
+    "enfants": [],
+    "presentation": 1376,
+    "echeance": 2572,
+    "refus_avant_echeance": [
+      [
+        1505,
+        2572
+      ]
+    ],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 59025,
+    "cadres_libres_avant": 59026
+  },
+  {
+    "scenario": "final-e7g",
+    "architecture": "x86_64",
+    "secteur": 4096,
+    "statut": 10,
+    "enfants": [],
+    "presentation": 1399,
+    "echeance": 2601,
+    "refus_avant_echeance": [
+      [
+        1525,
+        2601
+      ]
+    ],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 59025,
+    "cadres_libres_avant": 59026
+  },
+  {
+    "scenario": "final-e8g",
+    "architecture": "aarch64",
+    "secteur": 512,
+    "statut": 10,
+    "enfants": [],
+    "presentation": 2935,
+    "echeance": 4038,
+    "refus_avant_echeance": [
+      [
+        3388,
+        4038
+      ]
+    ],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 58502,
+    "cadres_libres_avant": 58503
+  },
+  {
+    "scenario": "final-e8g",
+    "architecture": "aarch64",
+    "secteur": 4096,
+    "statut": 10,
+    "enfants": [],
+    "presentation": 1151,
+    "echeance": 2357,
+    "refus_avant_echeance": [
+      [
+        1284,
+        2357
+      ]
+    ],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 58502,
+    "cadres_libres_avant": 58503
+  },
+  {
+    "scenario": "final-e8g",
+    "architecture": "x86_64",
+    "secteur": 512,
+    "statut": 10,
+    "enfants": [],
+    "presentation": 1378,
+    "echeance": 2577,
+    "refus_avant_echeance": [
+      [
+        1529,
+        2577
+      ]
+    ],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 59025,
+    "cadres_libres_avant": 59026
+  },
+  {
+    "scenario": "final-e8g",
+    "architecture": "x86_64",
+    "secteur": 4096,
+    "statut": 10,
+    "enfants": [],
+    "presentation": 1395,
+    "echeance": 2597,
+    "refus_avant_echeance": [
+      [
+        1546,
+        2597
+      ]
+    ],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 59025,
+    "cadres_libres_avant": 59026
+  },
+  {
+    "scenario": "final-e8h",
+    "architecture": "aarch64",
+    "secteur": 512,
+    "statut": 0,
+    "enfants": [
+      23
+    ],
+    "presentation": 2782,
+    "echeance": 3896,
+    "refus_avant_echeance": [],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 58506,
+    "cadres_libres_avant": 58507
+  },
+  {
+    "scenario": "final-e8h",
+    "architecture": "aarch64",
+    "secteur": 4096,
+    "statut": 0,
+    "enfants": [
+      23
+    ],
+    "presentation": 1183,
+    "echeance": 2388,
+    "refus_avant_echeance": [],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 58506,
+    "cadres_libres_avant": 58507
+  },
+  {
+    "scenario": "final-e8h",
+    "architecture": "x86_64",
+    "secteur": 512,
+    "statut": 0,
+    "enfants": [
+      23
+    ],
+    "presentation": 1336,
+    "echeance": 2538,
+    "refus_avant_echeance": [],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 59025,
+    "cadres_libres_avant": 59026
+  },
+  {
+    "scenario": "final-e8h",
+    "architecture": "x86_64",
+    "secteur": 4096,
+    "statut": 0,
+    "enfants": [
+      23
+    ],
+    "presentation": 1362,
+    "echeance": 2564,
+    "refus_avant_echeance": [],
+    "pic_cadres_ipc": 74,
+    "cadres_libres_min": 59025,
+    "cadres_libres_avant": 59026
+  }
+]

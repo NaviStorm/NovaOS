@@ -1,0 +1,18 @@
+{
+  "novaOS/user/novaauth/service/administration_bob_shell.rs": [
+    "502be34420c7fa96b59d64ef38817fe5e5e18a3c6adcde006f4627532092eca4",
+    "3b5497b9001dbbc66675cedf2bf0066377e860ae990ea9fb9fc6613330ce61fc"
+  ],
+  "novaOS/kernel/src/sched/process/ipc/exec_authority_lab.rs": [
+    "2a0dd321e1369d1536016ad2170306ca3604c32ebd9b6ae29a28688ccae6c364",
+    "0f85612d88e781dbaedce69779494c2c21de9a14095524b9030c0ccd859f42a3"
+  ],
+  "novaOS/user/novaauth/service/src/bin/common/recovery_view.rs": [
+    "5b8c1aee2e4422a4951099c212640ec72dbd039936179818c6be3530eb2cb63a",
+    "8a4ab6fbb3b01a023216ae6feec011154856e5d7c1d6dc2f89931abc9e8a16e7"
+  ],
+  "novaOS/user/novaauth/service/src/bin/common/exec_admission_guest.rs": [
+    "03fb4d20419a2e71d2fd486aa5ca8d163a641c1b4f66a35eb4eece61a24c241a",
+    "6502aeb66691d4bdb53b8332f591c93ebcc4a310409cbee771c89be5679b4f1b"
+  ]
+}

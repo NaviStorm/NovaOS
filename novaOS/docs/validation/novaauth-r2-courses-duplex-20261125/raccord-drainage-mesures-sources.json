@@ -1,0 +1,46 @@
+{
+  "components/shell/session_auth_lab.rs": [
+    "2b1357aa7b40a43c8fd9076e6dcf0b3a8fe8b1349cb841e7bd64c7ecee26a3c3",
+    "a645d899c3a4be1c7192afa77f55aa8942272bcf4b89bd8be767f5a45b0448d0"
+  ],
+  "novaOS/kernel/src/main.rs": [
+    "9296e5336025e4c0654a662ae0f00cd86ba6575a85a2ec37ed2d268063f50fae",
+    "d103fc3c7f028186ad09a62ab7cf5510922c45f355f9ccd57ed19f2640ace622"
+  ],
+  "novaOS/kernel/src/memory/frames.rs": [
+    "a106e1fe4da1d1afa1a0e35d44f091e7f279c37e4625bd2cca0bdab5ca629215",
+    "d1bff467362899ea0df43fa758f5a29ebaf6e79244d0ae87984a0a011be4b390"
+  ],
+  "novaOS/kernel/src/pics_duplex.rs": [
+    null,
+    "360dde9359a78b513097a7f41588f30ef6b40ea041cf5fda3d732489b9ad5739"
+  ],
+  "novaOS/kernel/src/sched/process/ipc/pool.rs": [
+    "7812ccfd951566ceb14fc74da1006c76c18c1aab8f3b49e3a99de4895ce8a98c",
+    "f72a4aba9d3ecfaab2f50891d38475f3e06daf1ff8b5ac924af2935987d93861"
+  ],
+  "novaOS/kernel/src/sched/process/ipc/exec_authority_lab.rs": [
+    "9eb1062d41fe9f3d99a02ad9a521d448f4e4848a41844c4771a7819b0371f3ec",
+    "2a0dd321e1369d1536016ad2170306ca3604c32ebd9b6ae29a28688ccae6c364"
+  ],
+  "novaOS/user/novaauth/service/src/bin/common/recovery_view.rs": [
+    "f0528a85782385edf50fed9ee3689eb1fa84f70ee7f802c68124033bd542213c",
+    "5b8c1aee2e4422a4951099c212640ec72dbd039936179818c6be3530eb2cb63a"
+  ],
+  "novaOS/user/novaauth/service/src/bin/common/administration_registry.rs": [
+    "f6e21314a7bbbd43bbb8d4459edb5bcd305c9080724d6d654902ad6d2abce827",
+    "f27235fe06e646d41092f1ba705a4a275a6833b8cf7d851a545f27f0081d5385"
+  ],
+  "novaOS/user/novaauth/service/src/bin/common/administration_mutations.rs": [
+    "9bb3c4760c77db54963501c2d20439f6faaf1369d93814309addbf4d4c39ac31",
+    "aa3b25dabf9b6636e975c8fc78fe7f644824a1498c785fe8113d2b4708142208"
+  ],
+  "novaOS/user/novaauth/service/src/bin/common/exec_admission_guest.rs": [
+    "42fbb8c5db8437a5521a7fc9088e4e44c84b72d4d594f3e00ecbe624b75cf9e5",
+    "03fb4d20419a2e71d2fd486aa5ca8d163a641c1b4f66a35eb4eece61a24c241a"
+  ],
+  "novaOS/user/novaauth/service/src/bin/common/selective_exec_guest.rs": [
+    "263152e1541b6541af8e4d0ccd66739b1b682652dd8ec086d1163c5875b48808",
+    "9ae972bcc69bdd057dcdf4a74a1631984896f81d3c9a78e3c3abec788b2d37dd"
+  ]
+}
