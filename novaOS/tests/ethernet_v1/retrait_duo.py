@@ -1,4 +1,5 @@
 """Oracles indépendants de la phase 3D pour la QI commune et les deux baux."""
+from ast import literal_eval
 import re
 import struct
 
@@ -32,13 +33,57 @@ def commandes(sid, cookie, adresse):
     return [(cc, 0), (tlb, 0), (cookie << 32 | 0x25, adresse)]
 
 
+def lire_page(qt, pa):
+    qt.write(f"read {pa:#x} 4096\n".encode())
+    ligne = qt.readline().strip()
+    exiger(re.fullmatch(rb"OK 0x[0-9a-fA-F]{8192}", ligne), "Lecture QTest de page")
+    return struct.unpack("<512Q", bytes.fromhex(ligne[5:].decode()))
+
+
+def temoin_actif(vm, qt, journal):
+    from virtio_net_confinement import reg
+    from virtio_net_pio_q35 import qt_command
+    inventaire = re.findall(rb"DUO inventaire controleur=(\[.*?\]) disque=(\[.*?\]) reseau=(\[.*?\])", journal)
+    exiger(len(inventaire) == 1, "Inventaire des baux avant armement")
+    ctl, disque, nic = [literal_eval(v.decode()) for v in inventaire[0]]
+    cadres = ctl + disque + nic
+    exiger([len(ctl), len(disque), len(nic)] == [8, 6, 26] and len(set(cadres)) == 40
+           and all(0 < pa <= 256*1024**2-4096 and pa % 4096 == 0 for pa in cadres), "Disjonction physique")
+
+    def table(pa):
+        return {i:v for i,v in enumerate(lire_page(qt, pa)) if v}
+
+    def arbre(pages, iova):
+        for i, decalage in enumerate((39, 30, 21)):
+            exiger(table(pages[i]) == {(iova >> decalage) & 511:pages[i+1]|3}, "Table intermédiaire")
+        return table(pages[3])
+
+    cf8 = qt_command(qt, "inl 0xcf8")
+    bme = {}
+    try:
+        for sid in (48, 56):
+            qt_command(qt, f"outl 0xcf8 {0x80000004 | (sid << 8):#x}")
+            bme[sid] = bool(qt_command(qt, "inw 0xcfc") & 4)
+    finally:
+        qt_command(qt, f"outl 0xcf8 {cf8:#x}")
+    exiger(bme == {48:True,56:False} and reg(vm, 0xfed9001c) == 0xc4000000
+           and reg(vm, 0xfed90034) == 0 and reg(vm, ctl[7]) == 4
+           and reg(vm, 0xfed90080) == reg(vm, 0xfed90088) == 192, "Barrière sélective ou BME")
+    exiger(table(ctl[0]) == {0:ctl[1]|1} and table(ctl[1]) == {96:ctl[2]|1,97:0x102},
+           "Contexte NVMe seul dans la racine active")
+    feuilles = arbre(ctl[2:6], 0x02000000)
+    permis = [1,2,1,2,2,1]
+    exiger(set(range(4)) <= set(feuilles) <= set(range(6))
+           and all(v == disque[i] | permis[i] for i,v in feuilles.items()), "Feuilles NVMe actives")
+    droits_nic = [1,1,2,1,1,2] + [2]*8 + [1]*8
+    exiger(arbre(nic[:4], 0x10000000) == {i:p|d for i,(p,d) in enumerate(zip(nic[4:],droits_nic))},
+           "Propriété des 26 cadres retenus avant livraison")
+    return dict(bme=bme, controleur=ctl, disque=disque, nic=nic,
+                feuilles_disque=feuilles, permissions_nic=droits_nic, cookie=4, iqh=192, iqt=192)
+
+
 def materiel(vm, qt, journal, cas):
     from virtio_net_confinement import reg
-    def page(pa):
-        qt.write(f"read {pa:#x} 4096\n".encode())
-        ligne = qt.readline().strip()
-        exiger(re.fullmatch(rb"OK 0x[0-9a-fA-F]{8192}", ligne), "Lecture QTest de page")
-        return struct.unpack("<512Q", bytes.fromhex(ligne[5:].decode()))
 
     def registre(offset):
         return reg(vm, 0xfed90000 + offset) | (reg(vm, 0xfed90004 + offset) << 32)
@@ -50,7 +95,7 @@ def materiel(vm, qt, journal, cas):
     serielles = [0] + sequence(cas)
     cookie = len(serielles)
     queue = (cookie * 48) % 4096
-    racine = page(root)
+    racine = lire_page(qt, root)
     ctx = racine[0] & ~4095
     exiger(len({root, qi, statut, ctx}) == 4 and all(0 < a <= 256*1024**2-4096 and a % 4096 == 0
            for a in (root, qi, statut, ctx)), "Ancres distinctes en RAM")
@@ -63,8 +108,8 @@ def materiel(vm, qt, journal, cas):
         for j, (bas, haut) in enumerate(commandes(sid, i+1, statut)):
             n = (i*3 + j) % 256
             attendus[2*n:2*n+2] = bas, haut
-    exiger(tuple(attendus) == page(qi), "Descripteurs réellement présents dans la file QI")
-    contexte = {i: v for i, v in enumerate(page(ctx)) if v}
+    exiger(tuple(attendus) == lire_page(qt, qi), "Descripteurs réellement présents dans la file QI")
+    contexte = {i: v for i, v in enumerate(lire_page(qt, ctx)) if v}
     if cas == "duo-sans-reset":
         exiger(set(contexte) == {112, 113} and contexte[113] == 0x302 and contexte[112] & 4095 == 1,
                "Contexte NIC conservé sans preuve")

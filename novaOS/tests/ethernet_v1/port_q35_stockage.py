@@ -66,7 +66,10 @@ def main():
     p.add_argument("cas", choices=("port", "deces", *retrait_duo.CAS))
     for nom in ("elf", "sortie", "temoin", "archive", "limine", "lecteur"):
         p.add_argument(nom, type=lambda s: Path(s).resolve())
+    p.add_argument("--instantane", action="store_true", help="Relire sous QTest le domaine NVMe pendant la conservation des 26 cadres NIC")
     a = p.parse_args()
+    if a.instantane and a.cas not in ("duo-differe", "duo-absent"):
+        p.error("L’instantané nécessite un reçu de retrait en attente de livraison")
     if subprocess.check_output(["git", "-C", a.temoin, "rev-parse", "HEAD"], text=True).strip() != AUDIT:
         raise ValueError("Source du profil")
     sys.path[:0] = [str(a.temoin / "novaOS/tests"), str(a.temoin / "novaOS/scripts")]
@@ -138,9 +141,13 @@ def main():
                                 echeance = time.monotonic() + (1200 if a.cas == "duo-cycles" else 65)
                                 while time.monotonic() < echeance and vm.poll() is None:
                                     serie = (out/"serie.log").read_bytes()
+                                    if a.instantane and "nvme_actif" not in rapport and b"E3D WAIT NIC" in serie:
+                                        qmp(vm, "stop")
+                                        rapport["nvme_actif"] = retrait_duo.temoin_actif(vm, stream, serie)
+                                        qmp(vm, "cont")
                                     if any(s in serie for s in (b"NVME bilan", b"NVME admission refusee", b"SMP arret motif=", b"Panique du noyau", b"Exception noyau")) or pair.error:
                                         break
-                                    time.sleep(.1)
+                                    time.sleep(.002 if a.instantane else .1)
                                 qmp(vm, "stop")
                                 rapport["pci_final"] = pci_etat(stream, capture(vm,out,"fin",False))
                                 if a.cas in retrait_duo.CAS and b"NVME bilan ok=true" in serie:
@@ -158,6 +165,8 @@ def main():
             oracle = retrait_duo.verifier if a.cas in retrait_duo.CAS else verifier
             rapport["stockage"] = oracle(out, a.cas, a.lecteur, avant, pair)
             rapport["p9_final"] = digest(out/"namespace.raw")
+            if a.instantane and "nvme_actif" not in rapport:
+                raise ValueError("Instantané des domaines en cours de retrait absent")
             rapport["succes"] = True
     finally:
         dump(out/"campagne.json", rapport)
