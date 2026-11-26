@@ -35,7 +35,8 @@ def compiler(dest, modes, revision, detail):
             # et le client exécutés sont ceux de la référence instrumentée.
             for name in ("build.rs", "src/sched/process/syscall.rs", "src/sched/process/ipc/bulk.rs",
                          "src/sched/process/ipc/traffic.rs", "src/sched/process/net_preparation/profil_3b.rs",
-                         "src/sched/process/net_preparation/profil_detail.rs"):
+                         "src/sched/process/net_preparation/profil_detail.rs",
+                         "src/sched/process/net_preparation/profil_notifications.rs"):
                 rel = Path("novaOS/kernel") / name
                 (root/rel).write_bytes(git("show", f"{instrumentation}:{rel}"))
                 sources[str(rel)] = git("hash-object", root/rel).decode().strip()

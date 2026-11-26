@@ -55,11 +55,13 @@ pub(super) fn entrer(idx: usize, classe: usize) {
     }
 }
 pub(crate) fn sortir(pid: u64) {
+    super::notifications::retour(pid);
     if ACTIF && let Some(i) = acteur(pid) {
         APPELS[i].fermer();
     }
 }
 pub(crate) fn reprise(pid: u64) {
+    super::notifications::reprendre(pid);
     if ACTIF && let Some(i) = acteur(pid) {
         BLOQUES[i].fermer();
     }

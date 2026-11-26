@@ -2,6 +2,8 @@
 use super::*;
 #[path = "profil_detail.rs"]
 pub(crate) mod detail;
+#[path = "profil_notifications.rs"]
+mod notifications;
 const ZERO: AtomicU64 = AtomicU64::new(0);
 static CASE: AtomicU64 = ZERO;
 static CELL: AtomicU64 = ZERO;
@@ -15,6 +17,7 @@ static COST: [[AtomicU64; COLS]; 3] = [const { [const { ZERO }; COLS] }; 3];
 pub(super) fn initialiser(case: u64, front: [u64; 2], hw: u64) {
     detail::reset();
     CASE.store(case, Relaxed);
+    notifications::reset();
     CELL.store(0, Relaxed);
     for (n, v) in FRONT.iter().zip(front) {
         n.store(v, Relaxed);
@@ -54,6 +57,7 @@ pub(super) fn debut(b: u64, wakes: u64) {
     }
 }
 pub(super) fn appel(pid: u64, id: u64, args: [u64; 3], wakes: u64) {
+    notifications::notifier(pid, id, args[1]);
     if CELL.load(Relaxed) == 0 {
         return;
     }
@@ -108,6 +112,7 @@ pub(crate) fn copie(pid: u64, len: u64) {
     }
 }
 pub(crate) fn controle(pid: u64, tag: u64, payload: &[u8]) {
+    notifications::controle(pid, tag, payload);
     detail::message(pid, tag, payload);
     if CELL.load(Relaxed) == 0
         || pid != CLIENT_PID.load(Relaxed)
@@ -126,6 +131,7 @@ pub(crate) fn controle(pid: u64, tag: u64, payload: &[u8]) {
     }
 }
 pub(super) fn courtier(op: u64, ticks: u64, result: Option<usize>) {
+    notifications::rearmement(op, ticks);
     let col = match op {
         2 => 16,
         7 => 18,
@@ -146,6 +152,7 @@ pub(super) fn courtier(op: u64, ticks: u64, result: Option<usize>) {
     }
 }
 pub(super) fn bilan() {
+    notifications::bilan();
     if !actif() {
         return;
     }
