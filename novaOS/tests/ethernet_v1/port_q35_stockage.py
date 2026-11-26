@@ -68,6 +68,7 @@ def main():
         p.add_argument(nom, type=lambda s: Path(s).resolve())
     p.add_argument("--instantane", action="store_true", help="Relire sous QTest le domaine NVMe pendant la conservation des 26 cadres NIC")
     a = p.parse_args()
+    panne_qi = {"duo-wait-absent": "absent", "duo-wait-tardif": "tardif"}.get(a.cas)
     if a.instantane and a.cas not in ("duo-differe", "duo-absent"):
         p.error("L’instantané nécessite un reçu de retrait en attente de livraison")
     if subprocess.check_output(["git", "-C", a.temoin, "rev-parse", "HEAD"], text=True).strip() != AUDIT:
@@ -85,6 +86,11 @@ def main():
     ref = a.archive / "cloture-20261126/panne-nic-512-12"
     seed = a.archive / "finale-20261125/q35-duo-nvme-init-512-S01/qemu/namespace.raw"
     firmware = a.archive / "finale-20261125/q35-pio-firmware-02"
+    if panne_qi:
+        cloture = a.archive / "cloture-20261126"
+        ref = cloture / f"attente-{panne_qi}-nic-512-12"
+        os.environ.update(NOVAOS_Q35_WAIT=panne_qi, NOVAOS_Q35_PREUVES_WAIT=str(cloture),
+                          NOVAOS_QEMU_RX_Q35=str(cloture / "modele-wait/compilation/11.1.3-1/construction.json"))
     args = json.loads((ref / "arguments.json").read_text())
     mode = retrait_duo.CAS.get(a.cas, "nvme-panne-nic" if a.cas == "deces" else "nvme-charge")
     rapport = dict(succes=False, cas=a.cas, audit=AUDIT, modele=digest(Path(args[0])),
@@ -108,6 +114,12 @@ def main():
             tmp = Path(stack.enter_context(tempfile.TemporaryDirectory(dir=tmpbase, prefix="e3duo")))
             support(a.elf, firmware, tmp, a.limine, duo=mode)
             rapport["entrees"] = json.loads((tmp / "entrees.json").read_text())
+            if panne_qi:
+                from virtio_net_duo_attente import verifier_preconditions
+                verifier_preconditions(firmware, tmp, mode)
+                if digest(Path(args[0])) != json.loads(Path(os.environ["NOVAOS_QEMU_RX_Q35"]).read_text())["sha256"]:
+                    raise ValueError("Modèle QEMU de WAIT différent du manifeste vérifié")
+                rapport["faute_qi"] = panne_qi
             support_pio(tmp / "support.raw", out / "boot.fat")
             h, g = socket.socketpair()
             stack.callback(h.close)
@@ -150,7 +162,10 @@ def main():
                                     time.sleep(.002 if a.instantane else .1)
                                 qmp(vm, "stop")
                                 rapport["pci_final"] = pci_etat(stream, capture(vm,out,"fin",False))
-                                if a.cas in retrait_duo.CAS and b"NVME bilan ok=true" in serie:
+                                if panne_qi:
+                                    from virtio_net_duo_attente import registres
+                                    rapport["qi_incertaine"] = registres(vm, stream, serie, panne_qi, mode)
+                                elif a.cas in retrait_duo.CAS and b"NVME bilan ok=true" in serie:
                                     rapport["qi_finale"] = retrait_duo.materiel(vm, stream, serie, a.cas)
                                 if a.cas in ("deces", "duo-sans-reset") and b"NVME bilan ok=true" in serie:
                                     rapport["tables_finales"] = tables_finales(vm, stream, serie, mode)
@@ -163,6 +178,8 @@ def main():
                         pair.thread.join(3)
             rapport["trames_par_sens"] = pair.frames
             oracle = retrait_duo.verifier if a.cas in retrait_duo.CAS else verifier
+            if panne_qi:
+                oracle = retrait_duo.attente_commune
             rapport["stockage"] = oracle(out, a.cas, a.lecteur, avant, pair)
             rapport["p9_final"] = digest(out/"namespace.raw")
             if a.instantane and "nvme_actif" not in rapport:

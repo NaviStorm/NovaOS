@@ -6,7 +6,8 @@ import struct
 CAS = {"duo-retrait": "nvme-panne-nic", "duo-differe": "nvme-panne-nic",
        "duo-absent": "nvme-panne-nic", "duo-sans-reset": "nvme-panne-nic",
        "duo-reouverture": "nvme-panne-nic", "duo-cycles": "nvme-cycles", "duo-concurrence": "nvme-contention-nic",
-       "duo-disque": "nvme-contention-disque"}
+       "duo-disque": "nvme-contention-disque", "duo-wait-absent": "nvme-contention-wait-absent-nic",
+       "duo-wait-tardif": "nvme-contention-wait-tardif-nic"}
 
 
 def exiger(valeur, raison):
@@ -191,6 +192,32 @@ def verifier(chemin, cas, lecteur, avant, pair):
         exiger("DUO contention demandes=2" in serie and "DUO réponse NIC collectée" in serie, "Retraits concurrents")
     return bilan_cycles(serie, ops, avant, final, cycles, mort, retenus, application_order, chronology, resources) | {
         "attentes": len(waits), "E_S_apres_BME_NIC": len(fenetres), "E_S_apres_WAIT_NIC": len(apres)}
+
+
+def attente_commune(chemin, cas, lecteur, avant, pair):
+    from nvme_phase2 import application_order
+    from nvme_phase2_oracle import inspect, io_trace, chronology, verify_transition
+    serie = (chemin/"serie.log").read_text()
+    trace = (chemin/"qemu.trace").read_text()
+    etat = "4 iqh=192" if cas == "duo-wait-tardif" else "0 iqh=176"
+    demandes = dict(re.findall(r"DUO demande (NIC|NVMe) pid=(\d+) generation=1 doublon=refuse avant_WAIT=refuse", serie))
+    exiger(set(demandes)=={"NIC","NVMe"} and demandes["NIC"]!=demandes["NVMe"]
+           and f"DUO contention deux_retraits_refuses PID={demandes['NVMe']}/{demandes['NIC']} nouvelles_demandes=refusees cookie={etat} iqt=192 dma=40" in serie,
+           "Deux retraits refusés par le superviseur")
+    exiger("DUO contention WAIT incertain cookie=0 iqh=176 iqt=192 dma=40" in serie
+           and "NVME bilan ok=false" in serie and "NVME echec retrait non confirme" in serie
+           and "DUO restitution " not in serie and "publication=false" not in serie
+           and "NVME ressources initial=0 final=40" in serie, "Aucun reçu émis après perte de la file commune")
+    exiger("materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)]" in serie
+           and pair.frames==144 and not pair.error and "vtd_dmar_fault " not in trace, "Trafic et clôture Ethernet")
+    final = inspect(lecteur, chemin/"namespace.raw", 512)
+    verify_transition(avant, final, {"nouveau"})
+    io = io_trace(chemin/"qemu.trace",512)
+    ordre = application_order(chronology(io,avant,512),serie)
+    racines = {int(p):int(n) for p,n in re.findall(r"DUO IPC pid=(\d+) racines=(\d+)",serie)}
+    exiger(len(racines)==7 and max(racines.values())<=4 and all(o.get("cqe")==0 for o in io),
+           "Capacités ou CQE avant la demande de retrait")
+    return dict(p9=final,ordre=ordre,operations=len(io),racines=racines,controleur=8,nic=26,nvme=6)
 
 
 def bilan_cycles(serie, ops, avant, final, cycles, mort, retenus, application_order, chronology, resources):

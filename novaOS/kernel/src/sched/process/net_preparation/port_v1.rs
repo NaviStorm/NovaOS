@@ -221,6 +221,8 @@ pub(crate) fn admettre(scenario: &[u8]) -> bool {
         b"net-q35-duo-nvme-charge" => 0,
         b"net-q35-duo-nvme-cycles" if option_env!("NOVAOS_ETH3_CASE") == Some("duo-cycles") => 0,
         b"net-q35-duo-nvme-contention-nic" if option_env!("NOVAOS_ETH3_CASE") == Some("duo-concurrence") => 0,
+        b"net-q35-duo-nvme-contention-wait-absent-nic" if option_env!("NOVAOS_ETH3_CASE") == Some("duo-wait-absent") => 0,
+        b"net-q35-duo-nvme-contention-wait-tardif-nic" if option_env!("NOVAOS_ETH3_CASE") == Some("duo-wait-tardif") => 0,
         b"net-q35-duo-nvme-contention-disque" if option_env!("NOVAOS_ETH3_CASE") == Some("duo-disque") => 0,
         b"net-q35-duo-nvme-panne-nic" => 3,
         _ => return false,

@@ -42,7 +42,7 @@ def main():
     p.add_argument("--revision", default="HEAD")
     p.add_argument("--phase3d", action="store_true", help="Appliquer le raccord de retrait individuel après vérification des modules audités")
     p.add_argument("--cas", nargs="+", choices=("port", "deces", "duo-retrait", "duo-differe", "duo-absent",
-                   "duo-sans-reset", "duo-cycles", "duo-reouverture", "duo-concurrence", "duo-disque"))
+                   "duo-sans-reset", "duo-cycles", "duo-reouverture", "duo-concurrence", "duo-disque", "duo-wait-absent", "duo-wait-tardif"))
     a = p.parse_args()
     if a.cas and not a.phase3d:
         p.error("--cas nécessite --phase3d")
