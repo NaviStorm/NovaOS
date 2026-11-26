@@ -21,6 +21,8 @@ fn main() {
     println!("cargo::rerun-if-changed=../abi");
     let target = env::var("TARGET").unwrap();
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    // Le banc Q35 double assemble les modules historiques dans une copie isolée.
+    println!("cargo::rustc-check-cfg=cfg(feature, values(\"net-q35-duo\"))");
     println!("cargo::rerun-if-env-changed=NOVAOS_NET_SERIE");
     println!("cargo::rustc-check-cfg=cfg(net_p9_coexistence)");
     println!("cargo::rerun-if-env-changed=NOVAOS_ETH3_CASE");

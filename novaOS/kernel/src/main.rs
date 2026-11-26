@@ -41,6 +41,11 @@ pub extern "C" fn nova_start() -> ! {
         .unwrap_or_else(|error| panic!("Initialisation mémoire : {error:?}"));
     log(format_args!("{BANNER}"));
     let scenario = boot::scenario();
+    #[cfg(feature = "net-q35-duo")]
+    if !sched::process::net_preparation::port_v1::admettre(scenario) {
+        log(format_args!("ETH3 Q35 double : scénario hors profil"));
+        hal::cpu::halt()
+    }
     if scenario.starts_with(b"mem-") {
         memory
             .test(scenario)

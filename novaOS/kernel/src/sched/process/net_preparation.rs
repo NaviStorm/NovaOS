@@ -140,6 +140,8 @@ pub(crate) fn mesurer(phase:&str) { measure(phase); }
 pub(crate) mod port_v1;
 #[cfg(feature = "ethernet-v1-port")]
 pub(crate) use port_v1::ethernet;
+#[cfg(feature = "net-q35-duo")]
+pub(crate) use port_v1::{EthernetActor, ethernet_actor, nic_exited, disk_isolated, await_first_batch, permit_next_batch};
 #[cfg(all(feature = "net-ethernet-lab",not(feature="ethernet-v1-port")))]
 pub(crate) fn ethernet(
     generation: u64,

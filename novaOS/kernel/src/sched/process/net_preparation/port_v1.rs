@@ -203,42 +203,153 @@ fn setup(
     let [d, s, c] = group.map(Option::unwrap);
     Some((d, s, c, hw, racines))
 }
+#[cfg(feature = "net-q35-duo")]
+static CAS_ADMIS: core::sync::atomic::AtomicU8 = core::sync::atomic::AtomicU8::new(u8::MAX);
+
+// Le chargeur restitue sa mémoire après handoff. Seul ce discriminant validé demeure.
+#[cfg(feature = "net-q35-duo")]
+pub(crate) fn admettre(scenario: &[u8]) -> bool {
+    let mode = match scenario {
+        b"net-q35-duo-nvme-charge" => 0,
+        b"net-q35-duo-nvme-panne-nic" => 3,
+        _ => return false,
+    };
+    CAS_ADMIS.store(mode, core::sync::atomic::Ordering::Release);
+    true
+}
+type Groupe = (Child, Child, Child, u64, [[u64; 2]; 2]);
+
+pub(crate) struct EthernetActor {
+    groupe: Option<Groupe>,
+    generation: u64,
+    case: u64,
+    base: u64,
+}
+
+impl EthernetActor {
+    pub(crate) fn reserve(generation: u64) -> Option<Self> {
+        let case = match option_env!("NOVAOS_ETH3_CASE") {
+            Some("data") => 2,
+            Some("veille") => 7,
+            Some("court") => 8,
+            Some("revocation") => 6,
+            Some("deces") => 3,
+            Some("endurance") => 5,
+            Some("incertain") => 4,
+            Some("boite") => 1,
+            Some("plein") => 9,
+            Some("mesure60") => 10,
+            Some("mesure1514") => 11,
+            _ => 0,
+        };
+        let total = match case {
+            5 => 65552,
+            10 | 11 => 4608,
+            7 => 16,
+            8 => 1,
+            _ => 144,
+        };
+        #[cfg(feature = "net-q35-duo")]
+        if u64::from(CAS_ADMIS.load(core::sync::atomic::Ordering::Acquire)) != case {
+            return None;
+        }
+        measure("eth3_initial");
+        let base = heap::audit(false).free_pages;
+        let groupe = setup(generation, case, total)?;
+        Some(Self {
+            groupe: Some(groupe),
+            generation,
+            case,
+            base,
+        })
+    }
+    #[cfg(feature = "net-q35-duo")]
+    pub(crate) fn owner(&self) -> u64 {
+        let (pilote, _, _, _, _) = self.groupe.as_ref().unwrap();
+        pilote.0.number
+    }
+    #[cfg(feature = "net-q35-duo")]
+    pub(in crate::sched::process) fn audit(&self, verifier: impl Fn(Pid) -> bool) -> bool {
+        let (d, s, c, _, _) = self.groupe.as_ref().unwrap();
+        [d.0, s.0, c.0].into_iter().all(verifier)
+    }
+    #[cfg(feature = "net-q35-duo")]
+    pub(crate) fn prepare_local_fault(&mut self, nic: bool) -> bool {
+        nic && self.case == 3
+    }
+    #[cfg(feature = "net-q35-duo")]
+    pub(crate) fn publish_clock(&self, hz: u64) -> bool {
+        hz != 0 && matches!(self.case, 0 | 3)
+    }
+    #[cfg(feature = "net-q35-duo")]
+    pub(crate) fn cancel(self) {
+        drop(self);
+    }
+}
+
+impl Drop for EthernetActor {
+    fn drop(&mut self) {
+        let Some((d, s, c, _, _)) = self.groupe.take() else {
+            return;
+        };
+        for child in [c, s, d] {
+            with(|k| {
+                if k.processes.get(child.0).outcome.is_none() {
+                    stop_process(k, child.0, Outcome::Exit(125), hal::timer::counter());
+                }
+            });
+            child.join();
+        }
+    }
+}
+
+#[cfg(feature = "net-q35-duo")]
+static PILOTE_COLLECTE: AtomicU64 = AtomicU64::new(0);
+
+#[cfg(feature = "net-q35-duo")]
+pub(crate) fn nic_exited(pid: u64) -> bool {
+    pid != 0 && PILOTE_COLLECTE.load(core::sync::atomic::Ordering::Acquire) == pid
+}
+
+// Le profil signé autorise uniquement le disque sain. Si une autre trajectoire
+// atteignait le superviseur, ses rendez-vous seraient refusés et sa clôture exigée.
+#[cfg(feature = "net-q35-duo")]
+pub(crate) fn disk_isolated() -> bool {
+    true
+}
+#[cfg(feature = "net-q35-duo")]
+pub(crate) fn await_first_batch() -> bool {
+    false
+}
+#[cfg(feature = "net-q35-duo")]
+pub(crate) fn permit_next_batch() -> bool {
+    false
+}
+
 pub(crate) fn ethernet(
     generation: u64,
     pendant: impl FnOnce() -> bool,
-    mut operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
+    operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
 ) -> bool {
-    let case = match option_env!("NOVAOS_ETH3_CASE") {
-        Some("data") => 2,
-        Some("veille") => 7,
-        Some("court") => 8,
-        Some("revocation") => 6,
-        Some("deces") => 3,
-        Some("endurance") => 5,
-        Some("incertain") => 4,
-        Some("boite") => 1,
-        Some("plein") => 9,
-        Some("mesure60") => 10,
-        Some("mesure1514") => 11,
-        _ => 0,
-    };
-    let total = match case {
-        5 => 65552,
-        10 | 11 => 4608,
-        7 => 16,
-        8 => 1,
-        _ => 144,
-    };
-    measure("eth3_initial");
-    let base = heap::audit(false).free_pages;
-    let Some((driver, service, client, hw, [front, backend])) = setup(generation, case, total)
-    else {
+    let Some(a) = EthernetActor::reserve(generation) else {
         hal::log(format_args!(
-            "ETH3 refus ouverture bootid={} cadres={base}",
-            crate::boot_id::current().is_some()
+            "ETH3 refus ouverture bootid={} cadres={}",
+            crate::boot_id::current().is_some(),
+            heap::audit(false).free_pages
         ));
         return false;
     };
+    ethernet_actor(a, pendant, operation, false)
+}
+
+pub(crate) fn ethernet_actor(
+    mut acteur: EthernetActor,
+    pendant: impl FnOnce() -> bool,
+    mut operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
+    stockage_partage: bool,
+) -> bool {
+    let (base, case, generation) = (acteur.base, acteur.case, acteur.generation);
+    let (driver, service, client, hw, [front, backend]) = acteur.groupe.take().unwrap();
     let (pid, sp, cp) = (driver.0, service.0, client.0);
     let mut frame = [0u8; 1526];
     let mut sequence = 0u64;
@@ -355,7 +466,9 @@ pub(crate) fn ethernet(
             }
         };
         if case == 1 && op == 2 && res == Err(abi::WOULD_BLOCK) {
-            hal::log(format_args!("ETH3 préparation supplémentaire refusée par le courtier"));
+            hal::log(format_args!(
+                "ETH3 préparation supplémentaire refusée par le courtier"
+            ));
         }
         if op >= 32
             && res.is_ok()
@@ -400,6 +513,10 @@ pub(crate) fn ethernet(
         }
     });
     let outcomes = [driver.join(), service.join(), client.join()];
+    #[cfg(feature = "net-q35-duo")]
+    if case == 3 && outcomes == [Outcome::Exit(9), Outcome::Exit(0), Outcome::Exit(0)] {
+        PILOTE_COLLECTE.store(pid.number, core::sync::atomic::Ordering::Release);
+    }
     let ipc = IPC
         .each_ref()
         .map(|row| row.each_ref().map(|n| n.load(Relaxed)));
@@ -432,8 +549,8 @@ pub(crate) fn ethernet(
         with(|s| s.stats.wakes) - wakes,
         ticks() - initial,
         with(|s| s.stats.idle_ticks) - idle,
-        base - free_open,
-        base - peak
+        base.saturating_sub(free_open),
+        base.saturating_sub(peak)
     ));
     crate::sched::profile::ACTIVE.store(profil, Relaxed);
     measure("eth3_retrait");
@@ -444,5 +561,6 @@ pub(crate) fn ethernet(
         && outcomes.iter().all(|r| *r == Outcome::Exit(0))
         && (count > 0 || case == 7)
         && count <= N
-        && base == fin
+        && (base == fin || stockage_partage)
+        && with(|s| [pid, sp, cp].iter().all(|p| s.ipc.racines_pilotes(*p) == 0))
 }
