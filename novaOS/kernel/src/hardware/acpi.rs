@@ -64,6 +64,8 @@ pub struct Inventory {
     pub ecam: Vec<Ecam>,
     #[cfg(any(test, all(target_arch = "x86_64", feature = "vtd-lab")))]
     pub(crate) q35_dmar: Option<Q35Dmar>,
+    #[cfg(all(target_arch = "x86_64", feature = "net-q35-lab"))]
+    pub(crate) q35_net: Option<Q35Dmar>,
 }
 
 type Result<T> = core::result::Result<T, Error>;
@@ -215,6 +217,8 @@ pub fn discover(rsdp_phys: u64, mut read: impl FnMut(u64, &mut [u8]) -> bool) ->
         ecam: Vec::new(),
         #[cfg(any(test, all(target_arch = "x86_64", feature = "vtd-lab")))]
         q35_dmar: None,
+    #[cfg(all(target_arch = "x86_64", feature = "net-q35-lab"))]
+    q35_net: None,
     };
     inventory
         .tables
@@ -244,6 +248,8 @@ pub fn discover(rsdp_phys: u64, mut read: impl FnMut(u64, &mut [u8]) -> bool) ->
         #[cfg(any(test, all(target_arch = "x86_64", feature = "vtd-lab")))]
         if &sig == b"DMAR" {
             inventory.q35_dmar = q35_dmar::recognize(&table);
+            #[cfg(feature = "net-q35-lab")]
+            { inventory.q35_net = q35_dmar::recognize_slot(&table, 7); }
         }
         inventory.tables.push(sig);
     }

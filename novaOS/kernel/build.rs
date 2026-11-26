@@ -21,6 +21,8 @@ fn main() {
     println!("cargo::rerun-if-changed=../abi");
     let target = env::var("TARGET").unwrap();
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    println!("cargo::rerun-if-env-changed=NOVAOS_NET_SERIE");
+    let net = env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some();
     let nvme_lab = target == "x86_64-unknown-none" && env::var_os("CARGO_FEATURE_NVME_LAB").is_some();
     for name in [
         "demo",
@@ -46,6 +48,7 @@ fn main() {
         "fp_probe",
         "ipc",
         "ethernet_2b",
+        "net_preparation",
         "storage/service",
         "storage/client",
         "storage/failure",
@@ -55,6 +58,7 @@ fn main() {
         "storage/control",
         "storage/fileclient",
     ] {
+        if name == "net_preparation" && !net && env::var_os("CARGO_FEATURE_NET_ARM_LAB").is_none() { continue; }
         let nvme_rw = matches!(name, "nvme_rw_driver" | "nvme_rw_block");
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
         if name == "edu_dma" && (env::var_os("CARGO_FEATURE_VTD_LAB").is_none() || target != "x86_64-unknown-none") {
@@ -92,9 +96,10 @@ fn main() {
         if nvme_lab && (nvme_rw || name == "storage/fileclient") {
             rust.arg("--cfg").arg("nvme_rw");
         }
+        if name == "net_preparation" && net { rust.args(["--cfg","net_ethernet_lab"]); }
         let compact = name.starts_with("nvme_") || matches!(
             name,
-            "instance_manager" | "instance_sample" | "devices" | "edu" | "edu_dma" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
+            "instance_manager" | "instance_sample" | "devices" | "net_preparation" | "edu" | "edu_dma" | "storage/relay" | "storage/disk" | "storage/requester" | "storage/control"
         );
         if name == "devices" && env::var_os("CARGO_FEATURE_MATERIEL_LAB").is_some() {
             rust.arg("--cfg").arg("materiel_lab");

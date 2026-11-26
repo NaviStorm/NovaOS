@@ -139,7 +139,7 @@ impl Pages {
     pub fn new() -> Result<Self> {
         let mut pages = Self([EMPTY; 24]);
         for i in 0..pages.0.len() {
-            if !(16..23).contains(&i) && !(cfg!(target_arch = "aarch64") && i < 9) {
+            if !(16..23).contains(&i) && !(cfg!(all(target_arch = "aarch64", not(feature = "net-arm-lab"))) && i < 9) {
                 continue;
             }
             match Frame::allocate() {

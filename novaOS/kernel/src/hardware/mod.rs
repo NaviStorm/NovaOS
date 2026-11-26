@@ -1,4 +1,6 @@
 mod acpi;
+#[cfg(all(target_arch = "x86_64", feature = "net-q35-lab"))]
+pub(crate) mod net_q35;
 #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
 pub(crate) mod vtd_lab;
 #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]

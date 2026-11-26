@@ -10,7 +10,7 @@ impl Domain {
         Ok(key)
     }
 
-    #[cfg(all(target_arch = "x86_64", feature = "vtd-lab"))]
+    #[cfg(any(all(target_arch="x86_64",feature="vtd-lab"),all(target_arch="aarch64",feature="net-arm-lab")))]
     pub(in crate::sched::process) fn lab_can_submit(&self, pid: Pid, key: u64) -> bool {
         self.lookup(pid, key, SEND).is_ok_and(|n| {
             let endpoint = self.ends.get(n.endpoint.slot());

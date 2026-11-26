@@ -56,7 +56,7 @@ pub(super) fn init() {
     wait_clear(DIST, 0, 1 << 31);
     // Sûreté : le cadre IROUTER est mappé Device. Le BSP utilise les registres
     // système EL1, groupe 1, EOI combiné à la désactivation.
-    configure_disk(disk_id());
+    configure_intx(disk_id());
     write(DIST, 0, routed | 2);
     wait_clear(DIST, 0, 1 << 31);
     secondary();
@@ -118,7 +118,7 @@ pub(crate) fn disk_line(enable: bool) {
     assert_eq!(read(DIST, 0x104) & bit != 0, enable);
 }
 
-fn configure_disk(id: u32) {
+fn configure_intx(id: u32) {
     let bit = 1 << (id - 32);
     write(DIST, 0x84, read(DIST, 0x84) | bit);
     write(DIST, 0xc08, read(DIST, 0xc08) & !(2 << ((id % 16) * 2)));
@@ -142,9 +142,52 @@ pub(super) fn select_disk(id: u32) -> crate::hardware::block::Result<()> {
     if (read(DIST, 0x104) | read(DIST, 0x204) | read(DIST, 0x304)) & bits != 0 {
         return Err(crate::hardware::block::Error::Route);
     }
-    configure_disk(id);
+    configure_intx(id);
     DISK.store(id, Ordering::Release);
     Ok(())
+}
+
+/// Témoin de la route réservée. Le NIC demeure masqué côté PCI.
+#[cfg(feature = "net-arm-lab")]
+pub(crate) fn preparer_spi_reseau() -> crate::hardware::block::Result<()> {
+    armer_spi_reseau(true)
+}
+
+#[cfg(feature="net-arm-lab")]
+pub(crate) fn armer_spi_reseau(injection: bool) -> crate::hardware::block::Result<()> {
+    use crate::hardware::block::Error;
+    let _garde = crate::hal::interrupts::Guard::new();
+    let bit = 1 << (38 - 32);
+    if disk_id() != 37 || (read(DIST, 0x104) | read(DIST, 0x204) | read(DIST, 0x304)) & bit != 0 {
+        return Err(Error::Route);
+    }
+    configure_intx(38);
+    write(DIST, 0x104, bit);
+    if read(DIST, 0x104) & bit == 0 {
+        return Err(Error::Route);
+    }
+    // GICD_ISPENDR, injection logicielle sans transaction DMA.
+    if injection {write(DIST, 0x204, bit);}
+    Ok(())
+}
+
+#[cfg(feature = "net-arm-lab")]
+pub(crate) fn masquer_spi_reseau() {
+    write(DIST, 0x184, 1 << (38 - 32));
+}
+
+#[cfg(feature = "net-arm-lab")]
+pub(crate) fn purger_spi_reseau() -> crate::hardware::block::Result<()> {
+    let _garde = crate::hal::interrupts::Guard::new();
+    let bit = 1 << (38 - 32);
+    masquer_spi_reseau();
+    write(DIST, 0x284, bit);
+    wait_clear(DIST, 0, 1 << 31);
+    if (read(DIST, 0x104) | read(DIST, 0x204) | read(DIST, 0x304)) & bit == 0 {
+        Ok(())
+    } else {
+        Err(crate::hardware::block::Error::Quarantine)
+    }
 }
 
 fn redistributor(frame: usize) -> (u64, u64) {

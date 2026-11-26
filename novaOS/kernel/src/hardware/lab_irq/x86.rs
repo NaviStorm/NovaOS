@@ -7,8 +7,6 @@ const LAPIC: u64 = IO_BASE + 325 * PAGE;
 const LAPIC_PA: u64 = 0xfee0_0000;
 const IOAPIC_PA: u64 = 0xfec0_0000;
 const VECTOR: u32 = 0x52;
-const GSI: u32 = 22;
-const LOW: u32 = 0x10 + 2 * GSI;
 const MASK: u32 = 1 << 16;
 const ROUTE: u32 = VECTOR | (1 << 15) | (1 << 13); // niveau, actif bas
 const BUSY: u32 = (1 << 14) | (1 << 12); // remote IRR ou delivery status
@@ -26,11 +24,12 @@ fn write(reg: u32, value: u32) {
     io_write(IOAPIC, 0x10, value);
 }
 
-pub(super) struct Route {
+pub(super) struct Route<const GSI: u32 = 22> {
     previous: (u32, u32),
     spurious: u32,
 }
-impl Route {
+impl<const GSI: u32> Route<GSI> {
+    const LOW: u32 = 0x10 + 2 * GSI;
     pub(super) fn new() -> Option<Self> {
         let lo: u32;
         let hi: u32;
@@ -46,7 +45,7 @@ impl Route {
             memory::unmap_lab_io(IOAPIC_PA, IOAPIC).expect("retrait fenêtre IOAPIC");
             return None;
         }
-        let old = (read(LOW), read(LOW + 1));
+        let old = (read(Self::LOW), read(Self::LOW + 1));
         let destination = io_read(LAPIC, 0x20);
         let spurious = io_read(LAPIC, 0xf0);
         let route = Self {
@@ -67,24 +66,29 @@ impl Route {
             assert!(route.restore(), "restauration initiale IOAPIC/LAPIC EDU");
             return None;
         }
-        write(LOW + 1, destination & 0xff00_0000);
-        write(LOW, ROUTE | MASK);
-        if read(LOW) != ROUTE | MASK || read(LOW + 1) != destination & 0xff00_0000 {
+        write(Self::LOW + 1, destination & 0xff00_0000);
+        write(Self::LOW, ROUTE | MASK);
+        if read(Self::LOW) != ROUTE | MASK || read(Self::LOW + 1) != destination & 0xff00_0000 {
             assert!(route.restore(), "restauration initiale IOAPIC/LAPIC EDU");
             return None;
         }
         Some(route)
     }
 
+    #[cfg(all(feature = "net-q35-lab", feature = "net-ethernet-lab"))]
+    pub(super) fn masquer_nic() -> bool {
+        write(Self::LOW, ROUTE | MASK);
+        read(Self::LOW) & !BUSY == ROUTE | MASK
+    }
     pub(super) fn mask(&self, masked: bool) -> bool {
         let value = ROUTE | if masked { MASK } else { 0 };
-        write(LOW, value);
-        read(LOW) & !BUSY == value
+        write(Self::LOW, value);
+        read(Self::LOW) & !BUSY == value
     }
     pub(super) fn drained(&self) -> bool {
         // Remote IRR couvre le message de niveau jusqu'à l'EOI du BSP, même
         // si la retraite s'exécute sur un AP. Le BSP vérifie aussi son IRR/ISR.
-        let entry = read(LOW);
+        let entry = read(Self::LOW);
         let bit = 1 << (VECTOR % 32);
         let bank = u64::from(VECTOR / 32) * 0x10;
         entry & (MASK | BUSY) == MASK
@@ -92,10 +96,12 @@ impl Route {
                 || (io_read(LAPIC, 0x100 + bank) | io_read(LAPIC, 0x200 + bank)) & bit == 0)
     }
     pub(super) fn restore(&self) -> bool {
-        write(LOW + 1, self.previous.1);
-        write(LOW, self.previous.0);
+        write(Self::LOW + 1, self.previous.1);
+        write(Self::LOW, self.previous.0);
         io_write(LAPIC, 0xf0, self.spurious);
-        if (read(LOW), read(LOW + 1)) != self.previous || io_read(LAPIC, 0xf0) != self.spurious {
+        if (read(Self::LOW), read(Self::LOW + 1)) != self.previous
+            || io_read(LAPIC, 0xf0) != self.spurious
+        {
             return false;
         }
         release_windows();

@@ -60,6 +60,12 @@ pub extern "C" fn nova_start() -> ! {
 fn main_thread() {
     boot_id::init();
     // Le diagnostic capture les tables tant que le chargeur les possède, sur le BSP seul.
+    #[cfg(all(target_arch = "x86_64", feature = "net-q35-lab"))]
+    if matches!(boot::scenario(), b"net-q35-relais" | b"net-q35-retrait") || (cfg!(feature="net-ethernet-lab") && boot::scenario()==b"net-q35-ethernet") {
+        let resultat = hardware::net_q35::executer(boot::scenario() != b"net-q35-relais");
+        log(format_args!("NET Q35 etat={resultat:?} bail=false"));
+        hal::cpu::halt()
+    }
     let inventory = match boot::scenario() {
         b"materiel-inventaire" => Some(hardware::discovery::capture(false)),
         b"materiel-inventaire-qemu" => Some(hardware::discovery::capture(true)),
@@ -118,6 +124,12 @@ fn main_thread() {
         }
     }
     let scenario = args.as_slice();
+    #[cfg(all(target_arch = "aarch64", feature = "net-arm-mesure"))]
+    if scenario==b"net-arm-p9" {
+        let r=hardware::block::qualification::net_p9();
+        hal::log(format_args!("NET ARM bilan {r:?}"));
+        hal::cpu::halt()
+    }
     #[cfg(feature = "materiel-lab")]
     if let Some(bar) = lab {
         let ok = match bar {

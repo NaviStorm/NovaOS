@@ -258,6 +258,11 @@ impl Device {
 
 #[cfg(target_arch = "aarch64")]
 pub(super) fn exclusive_intx(sid: u8) -> Result<()> {
+    crate::hal::timer::select_disk(intx_id(sid)?)
+}
+
+#[cfg(target_arch = "aarch64")]
+pub(super) fn intx_id(sid: u8) -> Result<u32> {
     if Config::open(sid)?.get(0x3d, 1) != 1 {
         return Err(Error::Route);
     }
@@ -283,5 +288,5 @@ pub(super) fn exclusive_intx(sid: u8) -> Result<()> {
             }
         }
     }
-    crate::hal::timer::select_disk(35 + route)
+    Ok(35 + route)
 }

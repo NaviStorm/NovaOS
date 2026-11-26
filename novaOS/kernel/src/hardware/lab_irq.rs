@@ -371,10 +371,58 @@ pub(crate) fn shutdown() -> bool {
 #[cfg(target_arch = "x86_64")]
 pub(crate) fn x86_entry() -> bool {
     let guard = Guard::new();
+    #[cfg(all(feature="net-q35-lab",feature="net-ethernet-lab"))]
+    if net_intx::interrompre() {
+        platform::eoi();
+        return true;
+    }
     if !interrupt() {
         return false;
     }
     platform::eoi();
     drop(guard);
     true
+}
+
+#[cfg(all(target_arch="x86_64",feature="net-q35-lab",feature="net-ethernet-lab"))]
+pub(super) mod net_intx {
+    use super::{platform,Guard,state};
+    use core::sync::atomic::{AtomicUsize,Ordering};
+    static ISR:AtomicUsize=AtomicUsize::new(0);
+    static CAUSE:AtomicUsize=AtomicUsize::new(0);
+    pub(in crate::hardware) struct Ligne(platform::Route<23>);
+    pub(super) fn interrompre()->bool{
+        let base=ISR.load(Ordering::Acquire);
+        if base==0 {return false}
+        // Registre ISR protégé au superviseur. Le BSP conserve le mapping jusqu'au drainage.
+        let raison=unsafe{(base as *const u8).read_volatile()};
+        let masque=platform::Route::<23>::masquer_nic();
+        CAUSE.fetch_or((if masque {0x100} else {0x200})|usize::from(raison),Ordering::Release);
+        true
+    }
+    impl Ligne {
+        pub(in crate::hardware) fn ouvrir(isr:usize)->Option<Self>{
+            let g=Guard::new();
+            if state(&g,|slot|slot.is_some()) || ISR.load(Ordering::Acquire)!=0 {return None}
+            let ligne=platform::Route::<23>::new()?;
+            CAUSE.store(0,Ordering::Release);
+            ISR.store(isr,Ordering::Release);
+            if !ligne.mask(false) {
+                if ligne.mask(true) && ligne.drained() && ligne.restore() {ISR.store(0,Ordering::Release);}
+                return None
+            }
+            Some(Self(ligne))
+        }
+        pub(in crate::hardware) fn cause(&self)->usize{CAUSE.load(Ordering::Acquire)}
+        pub(in crate::hardware) fn rearmer(&self)->bool{
+            let _g=Guard::new();
+            CAUSE.swap(0,Ordering::AcqRel)==0x101 && self.0.mask(false)
+        }
+        pub(in crate::hardware) fn fermer(self)->bool{
+            let _g=Guard::new();
+            if !self.0.mask(true) || !self.0.drained() {return false}
+            ISR.store(0,Ordering::Release);
+            self.0.restore()
+        }
+    }
 }

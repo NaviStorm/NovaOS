@@ -29,6 +29,8 @@ pub(crate) mod ipc;
 pub(crate) mod storage;
 pub(super) use abi_probe::idle_sample;
 pub(crate) use abi_probe::test as abi_test;
+#[cfg(any(all(target_arch="aarch64",feature="net-arm-lab"),all(target_arch="x86_64",feature="net-q35-lab",feature="net-ethernet-lab")))]
+pub(crate) mod net_preparation;
 pub(crate) mod syscall;
 pub(super) use demo::before_reap_probe;
 pub(crate) use demo::{boot_demo, test};

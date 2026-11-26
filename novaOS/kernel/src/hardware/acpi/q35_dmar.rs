@@ -10,6 +10,10 @@ pub(crate) struct Q35Dmar {
 }
 
 pub(super) fn recognize(table: &[u8]) -> Option<Q35Dmar> {
+    recognize_slot(table, 6)
+}
+
+pub(super) fn recognize_slot(table: &[u8], slot: u8) -> Option<Q35Dmar> {
     // discover() a déjà figé les octets, vérifié le checksum et l'unicité de DMAR.
     let record = table.get(48..)?;
     if table[8] != 1
@@ -38,7 +42,7 @@ pub(super) fn recognize(table: &[u8]) -> Option<Q35Dmar> {
         match s {
             [3, 8, 0, 0, 0, 255, 0, 0] if !ioapic => ioapic = true,
             [1, 8, 0, 0, 0, 0, dev, fun] if !include_all => {
-                let index = [(0, 0), (6, 0), (31, 0), (31, 2), (31, 3)]
+                let index = [(0, 0), (slot, 0), (31, 0), (31, 2), (31, 3)]
                     .iter()
                     .position(|pair| pair == &(*dev, *fun))?;
                 if endpoints & (1 << index) != 0 {

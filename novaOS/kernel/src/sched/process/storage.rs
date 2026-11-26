@@ -268,6 +268,10 @@ pub(crate) fn volume(mode: u64) -> bool {
     volume_avec(mode, None)
 }
 pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
+    volume_detail(mode,session,false)
+}
+
+pub(crate) fn volume_detail(mode: u64, session: Option<(u64, [u8; 16])>, _profil_reseau:bool) -> bool {
     use crate::hardware::block;
     // Deux jalons bornés avant l'exécution du gestionnaire et du service P9.
     let start_ms = ticks().saturating_mul(1000) / u64::from(HZ);
@@ -352,6 +356,12 @@ pub(crate) fn volume_avec(mode: u64, session: Option<(u64, [u8; 16])>) -> bool {
         "BLOC chaine novaFS={} bloc={} pilote={} client={} generation={key}",
         service.0.number, relay.0.number, driver.0.number, app.0.number
     ));
+    #[cfg(all(target_arch="aarch64", feature="net-arm-mesure"))]
+    if _profil_reseau {
+        let racines=with(|s|[relay.0,service.0,driver.0,app.0].map(|p|s.ipc.racines_pilotes(p)));
+        hal::log(format_args!("NET ARM racines relais novafs pilote client {racines:?}"));
+        assert!(racines.into_iter().all(|n|n<=4));
+    }
     if measure_session {
         measure("bloc_publie")
     }
