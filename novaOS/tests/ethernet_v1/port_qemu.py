@@ -126,6 +126,8 @@ class Pair:
     def oracle(self, numero, retour):
         if self.cas in ("cycles", "cycles-256", "recu-arm-differe"):
             numero %= 144
+        elif self.cas == "duo-reouverture":
+            numero %= 4
         elif self.cas in ("cycles-court", "recu-vtd-differe"):
             numero = 0
         if self.cas in ("mixte100k", "historique100k"):

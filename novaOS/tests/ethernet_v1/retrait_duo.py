@@ -4,7 +4,7 @@ import struct
 
 CAS = {"duo-retrait": "nvme-panne-nic", "duo-differe": "nvme-panne-nic",
        "duo-absent": "nvme-panne-nic", "duo-sans-reset": "nvme-panne-nic",
-       "duo-cycles": "nvme-cycles", "duo-concurrence": "nvme-contention-nic",
+       "duo-reouverture": "nvme-panne-nic", "duo-cycles": "nvme-cycles", "duo-concurrence": "nvme-contention-nic",
        "duo-disque": "nvme-contention-disque"}
 
 
@@ -13,12 +13,16 @@ def exiger(valeur, raison):
         raise ValueError(raison)
 
 
+def nombre_cycles(cas):
+    return {"duo-cycles": 256, "duo-reouverture": 8}.get(cas, 1)
+
+
 def sequence(cas):
     if cas in ("duo-sans-reset", "deces"):
         return [48, 56, 48]
     if cas == "duo-disque":
         return [48, 56, 48, 56]
-    return [48, 56, 56, 48] * (256 if cas == "duo-cycles" else 1)
+    return [48, 56, 56, 48] * nombre_cycles(cas)
 
 
 def commandes(sid, cookie, adresse):
@@ -76,7 +80,7 @@ def verifier(chemin, cas, lecteur, avant, pair):
     from virtio_net_duo_cycles import resources
     serie = (chemin / "serie.log").read_text()
     trace = (chemin / "qemu.trace").read_text().splitlines()
-    cycles = 256 if cas == "duo-cycles" else 1
+    cycles = nombre_cycles(cas)
     mort = CAS[cas] == "nvme-panne-nic"
     retenus = 26 if cas in ("duo-sans-reset", "duo-absent") else 0
     exiger("NVME bilan ok=true" in serie and not pair.error
@@ -118,14 +122,14 @@ def verifier(chemin, cas, lecteur, avant, pair):
             batch = commandes(attendus[cookie-1],cookie,adresse)
             exiger(commandes_qi == [f"{nom} high {haut:#x} low {bas:#x}" for nom,(bas,haut) in
                    zip(("context-cache","iotlb","wait"),batch)], "Portée matérielle des invalidations")
-            if mort and cookie==4 and cas!="duo-sans-reset":
+            if mort and cookie%4==0 and cas!="duo-sans-reset":
                 exiger(active=={48:True,56:False}, "BME NVMe pendant le retrait individuel")
             commandes_qi.clear()
             waits.append(index)
             adresses.add(adresse)
         if ligne.startswith("pci_nvme_io_cmd ") and active[48] and not active[56] and len(waits)>=3:
             fenetres.append(ligne.split(" opc ")[1].split()[0])
-            if len(waits)==4:
+            if len(waits)%4==0:
                 apres.append(fenetres[-1])
     exiger(len(waits)==len(attendus) and len(adresses)==1 and not commandes_qi
            and gcmd==[0x40000000,0x04000000,0x84000000], "Maintien de la racine et des traductions")
@@ -135,7 +139,7 @@ def verifier(chemin, cas, lecteur, avant, pair):
             exiger(set(apres)==set(fenetres) and "retenus=26 anciennes=refusees admission=refusee" in serie,
                    "E/S après WAIT ciblé et refus d'admission")
             collecte=re.findall(r"E3D collecte NIC .*? terminees=(\d+) liberes=26 doublon=refuse NVMe_actif=true",serie)
-            exiger(collecte==([] if retenus else ["30" if cas=="duo-differe" else "1"]), "Collecte unique")
+            exiger(collecte==([] if retenus else ["30" if cas=="duo-differe" else "1"]*cycles), "Collecte unique")
         else:
             exiger("DMA_retenu=26 NVMe_verifie=true" in serie and "E3D WAIT NIC" not in serie, "Absence du jeton")
     if cas in ("duo-concurrence","duo-disque"):

@@ -5,7 +5,7 @@
      }
 
 +    let individuel = dual && matches!(option_env!("NOVAOS_ETH3_CASE"),
-+        Some("duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset"));
++        Some("duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset" | "duo-reouverture"));
 +    let titulaire = actor.as_ref().map(|a| a.owner());
 +    let mut scelle = false;
      let mut operation = |tag:u64, len:usize, copie:&mut [u8]| {
@@ -74,7 +74,7 @@
                  break id;
              }
              if expired(start) {
-@@ -122,12 +126,47 @@
+@@ -122,12 +126,56 @@
          {
              return Err(Error::Quarantine);
          }
@@ -117,12 +117,21 @@
 +        Ok(())
 +    }
 +
++    pub(crate) fn rearmer_panne_nic(&mut self) -> Result<()> {
++        if !self.restitution_nic() || !matches!(self.state, State::Parked) || !self.bar.fenced()
++            || !self.engine.parked() || DRAIN.lock().is_some() || FAILED_NIC.lock().is_some() {
++            return Err(Error::Denied);
++        }
++        self.fault = LocalFault::Nic;
++        Ok(())
++    }
++
 +    pub(crate) fn restitution_nic(&self) -> bool {
 +        matches!(self.fault, LocalFault::NicRetired(..)) && self.engine.network_frames() == [0;26]
      }
 
      pub(super) fn disk_survivor_ok(&self) -> bool {
-@@ -136,6 +175,8 @@
+@@ -136,6 +184,8 @@
                  self.engine
                      .failed_nic_fenced((pid, epoch), lease, self.layout())
              }),
@@ -239,13 +248,22 @@
          if !domain.kept_network_frames() {return Err("cadres de quarantaine NIC");}
          expected + 26
      } else {expected};
-@@ -806,7 +810,8 @@
+@@ -805,8 +809,16 @@
+                 .map_err(|_| "armement du temoin de reattribution")?;
          }
          #[cfg(feature="net-q35-duo")]
-         if domain.repeat_sessions {
+-        if domain.repeat_sessions {
 -            for round in 1..=4 {
-+            let cycles = if option_env!("NOVAOS_ETH3_CASE") == Some("duo-cycles") { 256 } else { 4 };
++        if domain.repeat_sessions || option_env!("NOVAOS_ETH3_CASE") == Some("duo-reouverture") {
++            let cycles = match option_env!("NOVAOS_ETH3_CASE") {
++                Some("duo-cycles") => 256,
++                Some("duo-reouverture") => 8,
++                _ => 4,
++            };
 +            for round in 1..=cycles {
++                if round > 1 && option_env!("NOVAOS_ETH3_CASE") == Some("duo-reouverture") {
++                    domain.rearmer_panne_nic().map_err(|_| "précédent retrait incomplet")?;
++                }
                  hal::log(format_args!("DUO debut cycle={round}"));
                  measure("duo_avant_cycle");
                  session(&mut domain, mode)?;

@@ -121,7 +121,7 @@ def main():
                 elif v == "-fw_cfg" and "opt/novaos/boot.fat" in args[i+1]:
                     args[i+1] = f"name=opt/novaos/boot.fat,file={out}/boot.fat"
             dump(out / "arguments.json", args)
-            pair = Pair(h, out, virtio_net_pair, "cycles" if a.cas == "duo-cycles" else "deces" if mode == "nvme-panne-nic" else "port")
+            pair = Pair(h, out, virtio_net_pair, "duo-reouverture" if a.cas == "duo-reouverture" else "cycles" if a.cas == "duo-cycles" else "deces" if mode == "nvme-panne-nic" else "port")
             with (out/"qemu.trace").open("xb") as log:
                 with subprocess.Popen(args, cwd=tmp, pass_fds=(g.fileno(),), stdin=subprocess.PIPE,
                                       stdout=subprocess.PIPE, stderr=log, bufsize=0) as vm:

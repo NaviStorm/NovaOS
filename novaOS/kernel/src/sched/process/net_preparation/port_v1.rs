@@ -251,7 +251,7 @@ impl EthernetActor {
             Some("veille") => 7,
             Some("court" | "cycles-court" | "preuve-absente" | "recu-vtd-absent" | "recu-vtd-differe") => 8,
             Some("revocation") => 6,
-            Some("deces" | "deces-recu-tx-absent" | "duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset") => 3,
+            Some("deces" | "deces-recu-tx-absent" | "duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset" | "duo-reouverture") => 3,
             Some("endurance") => 5,
             Some("incertain") => 4,
             Some("boite") => 1,
@@ -288,7 +288,7 @@ impl EthernetActor {
         }
         // Une incarnation refusée ou abandonnée ne peut jamais rouvrir un numéro consommé.
         let precedente = reserver_generation(generation)?;
-        if precedente != 0 && matches!(option_env!("NOVAOS_ETH3_CASE"), Some("cycles" | "cycles-256" | "duo-cycles" | "cycles-court" | "rattrapage" | "recu-arm-differe" | "recu-vtd-differe"))
+        if precedente != 0 && matches!(option_env!("NOVAOS_ETH3_CASE"), Some("cycles" | "cycles-256" | "duo-cycles" | "duo-reouverture" | "cycles-court" | "rattrapage" | "recu-arm-differe" | "recu-vtd-differe"))
             && (reserver_generation(precedente).is_some() || reserver_generation(generation).is_some()) {
             return None;
         }

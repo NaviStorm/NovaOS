@@ -62,6 +62,17 @@ fn nvme_transaction(c: &mut Client, mode: u64) -> rt::Result<()> {
         _ => w::READABLE,
     };
     let f = c.open(b"/sortie", rights)?;
+    // Une écriture identique est idempotente dans le service de fichiers. Le banc
+    // alterne deux contenus pour exiger une transaction durable à chaque génération.
+    let mut next = next;
+    if matches!(option_env!("NOVAOS_ETH3_CASE"), Some("duo-cycles" | "duo-reouverture")) && mode == 1001 {
+        let mut prefixe = [0; 1];
+        ensure(c.read(f, 0, &mut prefixe)? == 1)?;
+        if prefixe[0] != (next[0] ^ 0xa5) {
+            ensure(prefixe[0] == b'a' || prefixe[0] == next[0])?;
+            next[0] ^= 0xa5;
+        }
+    }
     if mode != 1002 {
         let competing = if mode == 1019 { Some(c.open(b"/sortie", w::READABLE | w::WRITABLE)?) } else { None };
         c.write(f, 0, if mode == 1000 { b"ancien" } else { &next })?;
