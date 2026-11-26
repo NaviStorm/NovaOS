@@ -1,0 +1,347 @@
+{
+  "lecteur_sha256": "51693929c4a36c43ef2b8ae7d4816fbca802535b43f2f19d9c2a15ad7cbda6aa",
+  "volumes": {
+    "P9-512": {
+      "sha256_volume": "5739dd06a8dc6a495484f2346f417386b99e9c3442987bc6772d9438a7146dd5",
+      "etat": "ancien",
+      "generation": 3,
+      "ancres": {
+        "0": {
+          "generation": 2,
+          "manifeste_bloc": 7,
+          "sha256": "7143576da5b62be870d8660e5448fdd974ca19b436c262b760a1bb84937925c8"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+        }
+      },
+      "sha256_fichier": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "secteur": 512
+    },
+    "P9-4096": {
+      "sha256_volume": "7881e984dff86601fc97da5b40b9f1b96f7644a7192923affa33a5f63a06d887",
+      "etat": "ancien",
+      "generation": 3,
+      "ancres": {
+        "0": {
+          "generation": 2,
+          "manifeste_bloc": 7,
+          "sha256": "7a02cb4fd3d0ab64e7c16eb1f8d66e46df548ac1361bbaceb6b9c4b723c9ca2b"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "47fb6cab01c589e79a73b436da6a2a82b17855a0dc5d6380f5bca5d59d6659ca"
+        }
+      },
+      "sha256_fichier": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "secteur": 4096
+    },
+    "attente-absent-disque-4096-12": {
+      "sha256_volume": "7ce196f16a7724eaeecd6c785a825e5ca340451d841a9ee41920e7a21aa85306",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "15000aa887235c71eee51141e57a15d5f93db26259ee7052a8b45e374c4202eb"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "47fb6cab01c589e79a73b436da6a2a82b17855a0dc5d6380f5bca5d59d6659ca"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 4096
+    },
+    "attente-absent-nic-512-12": {
+      "sha256_volume": "508a3074e56b2d2d29afbd8bf90a69f8da8a813f4d2556d6b3a4efd313dcc601",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "9fcf539e9709eeb5a0815e1aa13f842cf5edf49645ecede68888f2e5c47fe71d"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 512
+    },
+    "attente-court-disque-4096-12": {
+      "sha256_volume": "2cc08a05a9ecc661a2ee9f04bf09a0d54573570e7ba63821fc7b21d6cf79b63b",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "dd78445b57b810c2fbc0f88950e79a89b6b4cf6450ffadbe546f1fea1e6ce988"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "47fb6cab01c589e79a73b436da6a2a82b17855a0dc5d6380f5bca5d59d6659ca"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 4096
+    },
+    "attente-court-nic-512-12": {
+      "sha256_volume": "d8b57d3cf2529854bbe202eef0837822f0c2ac401a48df27bf6653acf85d71a6",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "e21a036272da59a53c33713d75b6e3522017bc5ef98cd7d1e1e0edbd002c87e9"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 512
+    },
+    "attente-tardif-disque-4096-12": {
+      "sha256_volume": "5e687d21b85fbb94c24135bae5926252ed84ed55071ea85e8e729666218d1ed4",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "9a8e688b42e823c1cbb3c5d36ee0f09ef87551a3100b94357993826b4dd392f5"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "47fb6cab01c589e79a73b436da6a2a82b17855a0dc5d6380f5bca5d59d6659ca"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 4096
+    },
+    "attente-tardif-nic-512-12": {
+      "sha256_volume": "279ebccc143283cdbeefe104815eff3d5db74c67ba06725cd7efd9724eaa7db7",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "2aaa794d932c276580f0e21c52fc005ebf0e3dec60b7cb37dd2c011ab64f0b80"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 512
+    },
+    "contention-disque-4096-12": {
+      "sha256_volume": "9ddf76451b83382a85a151103eb999c7751295945172dcaad4e4469791f1b8bd",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "7f81cd620829b17f49dca0a0dd38ca0f4fe2bdf607847f87c43df645df4bc553"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "47fb6cab01c589e79a73b436da6a2a82b17855a0dc5d6380f5bca5d59d6659ca"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 4096
+    },
+    "contention-disque-512-12": {
+      "sha256_volume": "4ac15f955afd063ef6ffefc0ed39f120f7cc5efb05c5f1e7de2abfbf7b4230d7",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "a0b83415c27386316e9a129149aa8b2e1284c01f48794d28f2d1f70251a8c28f"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 512
+    },
+    "contention-nic-4096-12": {
+      "sha256_volume": "a0e07a16f5f4439637cc41e8738dbaa613f3fd9046416e46aaa6ed2f3efb505f",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "de6f5d6f666d244ad6b4cf0381c9c3cc1c666e921d6cc1ee2bb955262b48ebf6"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "47fb6cab01c589e79a73b436da6a2a82b17855a0dc5d6380f5bca5d59d6659ca"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 4096
+    },
+    "contention-nic-512-12": {
+      "sha256_volume": "e13b1feea2845d9c8ac0ea91b2e8721746e54878185de0c451ebab9723b5e7e8",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "666ba5b42f13208d0783a5089997f36fa5ecee401008754e5add67a088d0b93c"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 512
+    },
+    "cycles-4096-12": {
+      "sha256_volume": "53e137f2bcf5a63d2a2dd045d5485551f7ad8d42c5becb4c68fbd856d448bd61",
+      "etat": "nouveau",
+      "generation": 7,
+      "ancres": {
+        "0": {
+          "generation": 6,
+          "manifeste_bloc": 13,
+          "sha256": "2fee4c2b0b077b67d1f377de45e19b7946f6bf29616b9bdcd82207ac9b2c652b"
+        },
+        "1": {
+          "generation": 7,
+          "manifeste_bloc": 15,
+          "sha256": "018ba4aad5043521df87ebab5fb46a65f2fb7bcd131767c97f0c02e4c765bfbb"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 4096
+    },
+    "cycles-512-12": {
+      "sha256_volume": "75a8fdf153597077485237c886d8e244db327c246c0e7a25297e4051db417d62",
+      "etat": "nouveau",
+      "generation": 7,
+      "ancres": {
+        "0": {
+          "generation": 6,
+          "manifeste_bloc": 13,
+          "sha256": "3a3327e205396f46c7e38e0d6c2c456fe46a329ea1beec13445501b35209dc2b"
+        },
+        "1": {
+          "generation": 7,
+          "manifeste_bloc": 15,
+          "sha256": "8ec23199e40896d30620c570a2543080429749e9d0316c8adedc0f76e8f514f9"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 512
+    },
+    "panne-disque-4096-12": {
+      "sha256_volume": "dacea55457dc0b792ea20025f9703161d5753770b14742afa78ce321e1d006c6",
+      "etat": "ancien",
+      "generation": 3,
+      "ancres": {
+        "0": {
+          "generation": 2,
+          "manifeste_bloc": 7,
+          "sha256": "7a02cb4fd3d0ab64e7c16eb1f8d66e46df548ac1361bbaceb6b9c4b723c9ca2b"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "47fb6cab01c589e79a73b436da6a2a82b17855a0dc5d6380f5bca5d59d6659ca"
+        }
+      },
+      "sha256_fichier": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "secteur": 4096
+    },
+    "panne-disque-512-12": {
+      "sha256_volume": "7bb6920ce11bdb0051647813baa8e858a3ff0c7ad507a28259e4e3a1b424ed6c",
+      "etat": "ancien",
+      "generation": 3,
+      "ancres": {
+        "0": {
+          "generation": 2,
+          "manifeste_bloc": 7,
+          "sha256": "7143576da5b62be870d8660e5448fdd974ca19b436c262b760a1bb84937925c8"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+        }
+      },
+      "sha256_fichier": "d2f92d9b73585f972a9329c913400cbca3e530962039d90950e8d35f983b399c",
+      "secteur": 512
+    },
+    "panne-nic-4096-12": {
+      "sha256_volume": "cabd2176a435c7beee125995688d2a260b046157c3f44c46ceffbb46133af6e8",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "23dc9139b51ead4d730da1b32e16a5dbebb40c4edc059bb419afedc38311d787"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "47fb6cab01c589e79a73b436da6a2a82b17855a0dc5d6380f5bca5d59d6659ca"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 4096
+    },
+    "panne-nic-512-12": {
+      "sha256_volume": "4b4bbbff72b9d22dce1d3b56935208343baff053cfdcbf013f91b10feb3323bb",
+      "etat": "nouveau",
+      "generation": 4,
+      "ancres": {
+        "0": {
+          "generation": 4,
+          "manifeste_bloc": 15,
+          "sha256": "d4c4846d03bb207bba2d91cfae4e53a91d2fc753acf0a357ebd460d1dac24608"
+        },
+        "1": {
+          "generation": 3,
+          "manifeste_bloc": 12,
+          "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+        }
+      },
+      "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+      "secteur": 512
+    }
+  }
+}

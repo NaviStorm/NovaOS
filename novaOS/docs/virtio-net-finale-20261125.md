@@ -25,7 +25,7 @@ Le démarrage de laboratoire utilise un support de 34 Mio fourni en PIO. La desc
 |---|---:|---:|
 | Endurance TX et RX vérifiés au pair et dans l’invité | 100 000 par sens | 100 000 par sens |
 | Indice final modulo 65 536, réarmements | 34 464, 6 249 | 34 464, 6 249 |
-| Pression RX au-delà des 16 buffers, progression après réarmement | Réussie | Réussie |
+| Pression RX au-delà des 16 buffers, progression après réarmement | Réussie | 17 entrées pour 16 buffers, puis expiration dans cet essai. [Rectification et témoin corrigé du 26 novembre](virtio-net-cloture-q35-20261126.md) |
 | Incarnations du pilote dans le même invité | 4, PID et générations distincts | 4, PID et générations distincts |
 | RX soutenu, Mbit/s et trames/s | 254,096 et 20 979 | 63,461 et 5 240 |
 | TX soutenu, Mbit/s et trames/s | 121,559 et 10 036 | 60,792 et 5 019 |

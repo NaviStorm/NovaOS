@@ -1,0 +1,74 @@
+{
+  "arm-512": {
+    "mesures": {
+      "repos": {
+        "essai": "arm-coexistence-512-repos-03",
+        "trace_sha256": "a87ae950b9154211947d44cc6afdbbe4002ae8611b3bc288861cb40fd9b9109a",
+        "parcours_s": 42.22487,
+        "net_rx_pendant": 0,
+        "lectures_s": 3.711601664,
+        "ecritures_s": 1.278977248,
+        "flush_s": 0.125888816,
+        "autre_temps_parcours_s": 37.108402272,
+        "part_temps_lectures_ecritures_flush": 0.12117190006742472,
+        "flush_n": 599,
+        "octets_lus": 7585792,
+        "octets_ecrits": 6995968
+      },
+      "avec": {
+        "essai": "arm-coexistence-512-avec-03",
+        "trace_sha256": "ec6b50b89f33f05ead268506106de28ff8e2a626df40275e15b0a3dfdefb5f10",
+        "parcours_s": 104.409082992,
+        "net_rx_pendant": 467904,
+        "lectures_s": 7.464776912,
+        "ecritures_s": 1.755460912,
+        "flush_s": 0.165215072,
+        "autre_temps_parcours_s": 95.023630096,
+        "part_temps_lectures_ecritures_flush": 0.08989115340395365,
+        "flush_n": 723,
+        "octets_lus": 7839744,
+        "octets_ecrits": 8011776
+      }
+    },
+    "baisse_debit_parcours_pourcent": [
+      58.204358939826406,
+      53.68613516815223
+    ]
+  },
+  "arm-4096": {
+    "mesures": {
+      "repos": {
+        "essai": "arm-coexistence-4096-repos-03",
+        "trace_sha256": "8d2b216ff9b274386c3b44b156d5d98c787afea85d4aabfdd92835ac1fc7964b",
+        "parcours_s": 27.55393,
+        "net_rx_pendant": 0,
+        "lectures_s": 0.485849072,
+        "ecritures_s": 0.187591648,
+        "flush_s": 0.119833968,
+        "autre_temps_parcours_s": 26.760655312,
+        "part_temps_lectures_ecritures_flush": 0.028789892694073043,
+        "flush_n": 569,
+        "octets_lus": 7524352,
+        "octets_ecrits": 6750208
+      },
+      "avec": {
+        "essai": "arm-coexistence-4096-avec-03",
+        "trace_sha256": "30bd90574e9cc7dbcacd7761f663bbdd911bd3476289eea8e3341848238cfb66",
+        "parcours_s": 69.940987008,
+        "net_rx_pendant": 318608,
+        "lectures_s": 0.973647888,
+        "ecritures_s": 0.2477748,
+        "flush_s": 0.148161152,
+        "autre_temps_parcours_s": 68.571403168,
+        "part_temps_lectures_ecritures_flush": 0.01958199188472053,
+        "flush_n": 653,
+        "octets_lus": 7696384,
+        "octets_ecrits": 7438336
+      }
+    },
+    "baisse_debit_parcours_pourcent": [
+      59.70330596996496,
+      56.58793637952797
+    ]
+  }
+}

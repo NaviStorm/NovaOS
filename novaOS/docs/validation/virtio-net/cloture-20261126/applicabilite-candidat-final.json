@@ -1,0 +1,1388 @@
+{
+  "reference_executions": "c4bf40ce468046585c462caf7085ca9564db7ef2",
+  "revision_finale": "1863ff413db0c9c47a52d3e1a1592e718aae22e6",
+  "comparaisons": {
+    "q35-rearmement": {
+      "ancien": {
+        "sha256": "635d60aca7cb7e46d116e947e12523531bc8bcda8fb59ce5544dd5094be270cc",
+        "entree": 18446744071562767808,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            488,
+            488,
+            4096,
+            "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            1216548,
+            1216548,
+            4096,
+            "13e1dff766b04a63f605f8b5ed318dd1c553cedab86b1c67faa3914bdf6d9b68"
+          ],
+          [
+            18446744071563292672,
+            18446744071563292672,
+            4,
+            5805803,
+            5805803,
+            4096,
+            "9f068e089ca0d71bda408c538bedfba4c2ddf8849b4b69b528f01acfde13a9a0"
+          ],
+          [
+            18446744071569100800,
+            18446744071569100800,
+            6,
+            40216,
+            76920,
+            4096,
+            "22ffa6c52742c657830aa3cfcdb74fc3b082449327801696c22148c938689243"
+          ]
+        ]
+      },
+      "candidat": {
+        "sha256": "98971c52bfd179e68ec9af9922a6940e2390bd117b5aa8c8b13f3c07292f6f7e",
+        "entree": 18446744071562767808,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            488,
+            488,
+            4096,
+            "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            1216548,
+            1216548,
+            4096,
+            "13e1dff766b04a63f605f8b5ed318dd1c553cedab86b1c67faa3914bdf6d9b68"
+          ],
+          [
+            18446744071563292672,
+            18446744071563292672,
+            4,
+            5805803,
+            5805803,
+            4096,
+            "fcac615e8b3fc27056a2598b5d3bdf4ba5c89eeff408657620a505d0062297d5"
+          ],
+          [
+            18446744071569100800,
+            18446744071569100800,
+            6,
+            40216,
+            76920,
+            4096,
+            "22ffa6c52742c657830aa3cfcdb74fc3b082449327801696c22148c938689243"
+          ]
+        ]
+      },
+      "octets_distincts_en_lecture_seule": 19,
+      "emplacements_source_modifies": [
+        {
+          "offset_PT_LOAD_R": 17616,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 311,
+          "ligne_apres": 333,
+          "colonne": 22,
+          "source": ".unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 19784,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 36,
+          "ligne_apres": 38,
+          "colonne": 9,
+          "source": "assert_eq!(count, usize::from(observateur.is_none()));"
+        },
+        {
+          "offset_PT_LOAD_R": 31352,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 273,
+          "ligne_apres": 295,
+          "colonne": 76,
+          "source": "Ok(space.copy_from_user(m, 0x401100, &mut copie[..len]))"
+        },
+        {
+          "offset_PT_LOAD_R": 31376,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 283,
+          "ligne_apres": 305,
+          "colonne": 91,
+          "source": "|| !heap::with_pages(|m| Ok(space.copy_to_user(m, 0x401100, &copie[..n])))"
+        },
+        {
+          "offset_PT_LOAD_R": 31800,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 38,
+          "ligne_apres": 40,
+          "colonne": 61,
+          "source": "let space = s.processes.get(pid).space.as_ref().unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 4370568,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 213,
+          "ligne_apres": 220,
+          "colonne": 22,
+          "source": "let initial_idle=with(|s|s.stats.idle_ticks);"
+        },
+        {
+          "offset_PT_LOAD_R": 4370592,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 234,
+          "ligne_apres": 241,
+          "colonne": 26,
+          "source": "let released=with(|s|heap::with_pages(|m|{"
+        },
+        {
+          "offset_PT_LOAD_R": 4370640,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 257,
+          "ligne_apres": 279,
+          "colonne": 24,
+          "source": "let gate = Guard::new();"
+        },
+        {
+          "offset_PT_LOAD_R": 4370664,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 339,
+          "ligne_apres": 361,
+          "colonne": 14,
+          "source": "let idle=with(|s|s.stats.idle_ticks).wrapping_sub(initial_idle);"
+        },
+        {
+          "offset_PT_LOAD_R": 4370688,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 342,
+          "ligne_apres": 364,
+          "colonne": 5,
+          "source": "with(|s| s.ipc.lab_close_sender(pid, handle));"
+        },
+        {
+          "offset_PT_LOAD_R": 4370712,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 344,
+          "ligne_apres": 366,
+          "colonne": 28,
+          "source": "let (pages, racines) = with(|s| (s.ipc.pages(), s.ipc.racines_pilotes(pid)));"
+        },
+        {
+          "offset_PT_LOAD_R": 4371488,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 180,
+          "ligne_apres": 187,
+          "colonne": 9,
+          "source": "with(|s|heap::with_pages(|m|{"
+        },
+        {
+          "offset_PT_LOAD_R": 4371512,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 169,
+          "ligne_apres": 176,
+          "colonne": 9,
+          "source": "with(|s| heap::with_pages(|m| {"
+        },
+        {
+          "offset_PT_LOAD_R": 4371536,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 195,
+          "ligne_apres": 202,
+          "colonne": 9,
+          "source": "with(|s| s.ipc.lab_close_sender(self.child.0, self.handle));"
+        },
+        {
+          "offset_PT_LOAD_R": 4371560,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 162,
+          "ligne_apres": 169,
+          "colonne": 29,
+          "source": "let initial_pages = with(|s| s.ipc.pages());"
+        },
+        {
+          "offset_PT_LOAD_R": 4375960,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 27,
+          "ligne_apres": 29,
+          "colonne": 18,
+          "source": "let _guard = Guard::new();"
+        },
+        {
+          "offset_PT_LOAD_R": 4379240,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 30,
+          "ligne_apres": 32,
+          "colonne": 18,
+          "source": "let handle = with(|s| {"
+        },
+        {
+          "offset_PT_LOAD_R": 4379264,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 64,
+          "ligne_apres": 71,
+          "colonne": 13,
+          "source": "with(|s| {"
+        },
+        {
+          "offset_PT_LOAD_R": 4379288,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 76,
+          "ligne_apres": 83,
+          "colonne": 15,
+          "source": "match with(|s| s.ipc.lab_pop(pid, handle)) {"
+        }
+      ],
+      "elf_identique": false
+    },
+    "q35-redemarrage": {
+      "ancien": {
+        "sha256": "26b94a2253b64ac49d75f673317da74197a7f6229f12fa0f7588fb48bb9a0c0a",
+        "entree": 18446744071562768464,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            488,
+            488,
+            4096,
+            "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            1217204,
+            1217204,
+            4096,
+            "390f2d6b380db0606a038c36e605ecc5dc34603ac7c6be066685fd48e21e5683"
+          ],
+          [
+            18446744071563292672,
+            18446744071563292672,
+            4,
+            5805827,
+            5805827,
+            4096,
+            "a23f390e3b7ce84d578ad82bb2b3a00680b79b9074532e8ffe37e6db543eb5a5"
+          ],
+          [
+            18446744071569100800,
+            18446744071569100800,
+            6,
+            40216,
+            76920,
+            4096,
+            "17f9e86e64623123b5e97d26a5a811705a0c3c0c5423cf827b15495de6798b53"
+          ]
+        ]
+      },
+      "candidat": {
+        "sha256": "ffaa52967b8a16c85e8dab064d641f68b86f4a88a1147ab77541d3d2ddbbd9d7",
+        "entree": 18446744071562768464,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            488,
+            488,
+            4096,
+            "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            1217204,
+            1217204,
+            4096,
+            "390f2d6b380db0606a038c36e605ecc5dc34603ac7c6be066685fd48e21e5683"
+          ],
+          [
+            18446744071563292672,
+            18446744071563292672,
+            4,
+            5805827,
+            5805827,
+            4096,
+            "77318bb97208049f3e712eec9d2e8cbcfe59faa6a2e5b70ad7d0ee98795160e3"
+          ],
+          [
+            18446744071569100800,
+            18446744071569100800,
+            6,
+            40216,
+            76920,
+            4096,
+            "17f9e86e64623123b5e97d26a5a811705a0c3c0c5423cf827b15495de6798b53"
+          ]
+        ]
+      },
+      "octets_distincts_en_lecture_seule": 19,
+      "emplacements_source_modifies": [
+        {
+          "offset_PT_LOAD_R": 17616,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 311,
+          "ligne_apres": 333,
+          "colonne": 22,
+          "source": ".unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 19784,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 36,
+          "ligne_apres": 38,
+          "colonne": 9,
+          "source": "assert_eq!(count, usize::from(observateur.is_none()));"
+        },
+        {
+          "offset_PT_LOAD_R": 31352,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 273,
+          "ligne_apres": 295,
+          "colonne": 76,
+          "source": "Ok(space.copy_from_user(m, 0x401100, &mut copie[..len]))"
+        },
+        {
+          "offset_PT_LOAD_R": 31376,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 283,
+          "ligne_apres": 305,
+          "colonne": 91,
+          "source": "|| !heap::with_pages(|m| Ok(space.copy_to_user(m, 0x401100, &copie[..n])))"
+        },
+        {
+          "offset_PT_LOAD_R": 31800,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 38,
+          "ligne_apres": 40,
+          "colonne": 61,
+          "source": "let space = s.processes.get(pid).space.as_ref().unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 4370592,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 213,
+          "ligne_apres": 220,
+          "colonne": 22,
+          "source": "let initial_idle=with(|s|s.stats.idle_ticks);"
+        },
+        {
+          "offset_PT_LOAD_R": 4370616,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 234,
+          "ligne_apres": 241,
+          "colonne": 26,
+          "source": "let released=with(|s|heap::with_pages(|m|{"
+        },
+        {
+          "offset_PT_LOAD_R": 4370664,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 257,
+          "ligne_apres": 279,
+          "colonne": 24,
+          "source": "let gate = Guard::new();"
+        },
+        {
+          "offset_PT_LOAD_R": 4370688,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 339,
+          "ligne_apres": 361,
+          "colonne": 14,
+          "source": "let idle=with(|s|s.stats.idle_ticks).wrapping_sub(initial_idle);"
+        },
+        {
+          "offset_PT_LOAD_R": 4370712,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 342,
+          "ligne_apres": 364,
+          "colonne": 5,
+          "source": "with(|s| s.ipc.lab_close_sender(pid, handle));"
+        },
+        {
+          "offset_PT_LOAD_R": 4370736,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 344,
+          "ligne_apres": 366,
+          "colonne": 28,
+          "source": "let (pages, racines) = with(|s| (s.ipc.pages(), s.ipc.racines_pilotes(pid)));"
+        },
+        {
+          "offset_PT_LOAD_R": 4371512,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 180,
+          "ligne_apres": 187,
+          "colonne": 9,
+          "source": "with(|s|heap::with_pages(|m|{"
+        },
+        {
+          "offset_PT_LOAD_R": 4371536,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 169,
+          "ligne_apres": 176,
+          "colonne": 9,
+          "source": "with(|s| heap::with_pages(|m| {"
+        },
+        {
+          "offset_PT_LOAD_R": 4371560,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 195,
+          "ligne_apres": 202,
+          "colonne": 9,
+          "source": "with(|s| s.ipc.lab_close_sender(self.child.0, self.handle));"
+        },
+        {
+          "offset_PT_LOAD_R": 4371584,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 162,
+          "ligne_apres": 169,
+          "colonne": 29,
+          "source": "let initial_pages = with(|s| s.ipc.pages());"
+        },
+        {
+          "offset_PT_LOAD_R": 4375984,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 27,
+          "ligne_apres": 29,
+          "colonne": 18,
+          "source": "let _guard = Guard::new();"
+        },
+        {
+          "offset_PT_LOAD_R": 4379264,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 30,
+          "ligne_apres": 32,
+          "colonne": 18,
+          "source": "let handle = with(|s| {"
+        },
+        {
+          "offset_PT_LOAD_R": 4379288,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 64,
+          "ligne_apres": 71,
+          "colonne": 13,
+          "source": "with(|s| {"
+        },
+        {
+          "offset_PT_LOAD_R": 4379312,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 76,
+          "ligne_apres": 83,
+          "colonne": 15,
+          "source": "match with(|s| s.ipc.lab_pop(pid, handle)) {"
+        }
+      ],
+      "elf_identique": false
+    },
+    "q35-endurance": {
+      "ancien": {
+        "sha256": "10830fd33f52321e0b287794df6627ffa194b4e4ca48b21918bba5cae068b155",
+        "entree": 18446744071562826288,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            488,
+            488,
+            4096,
+            "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            986724,
+            986724,
+            4096,
+            "c56fcddd984051771f91a67ad7b0a4c05610ad58c9944747cc023f62ed313ad7"
+          ],
+          [
+            18446744071563059200,
+            18446744071563059200,
+            4,
+            3895451,
+            3895451,
+            4096,
+            "10a1f7d4c8753f9c9536c51e7095e45614a6af485151b758b6d7ec29cda38039"
+          ],
+          [
+            18446744071566958592,
+            18446744071566958592,
+            6,
+            34680,
+            71168,
+            4096,
+            "64b68d7ae93fe653c9abf5c99b5db791d9ae01fcdacea8dc84d60fc349735827"
+          ]
+        ]
+      },
+      "candidat": {
+        "sha256": "ece014c95dde47ed7b093415ac19160c129f457d64497ecb9a5a8ed277695459",
+        "entree": 18446744071562826288,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            488,
+            488,
+            4096,
+            "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            986724,
+            986724,
+            4096,
+            "c56fcddd984051771f91a67ad7b0a4c05610ad58c9944747cc023f62ed313ad7"
+          ],
+          [
+            18446744071563059200,
+            18446744071563059200,
+            4,
+            3895451,
+            3895451,
+            4096,
+            "0e333865070acc45188ea116cc244ae927a7326be8625ffbe9254342da16aa5d"
+          ],
+          [
+            18446744071566958592,
+            18446744071566958592,
+            6,
+            34680,
+            71168,
+            4096,
+            "64b68d7ae93fe653c9abf5c99b5db791d9ae01fcdacea8dc84d60fc349735827"
+          ]
+        ]
+      },
+      "octets_distincts_en_lecture_seule": 15,
+      "emplacements_source_modifies": [
+        {
+          "offset_PT_LOAD_R": 14608,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 311,
+          "ligne_apres": 333,
+          "colonne": 22,
+          "source": ".unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 16560,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 36,
+          "ligne_apres": 38,
+          "colonne": 9,
+          "source": "assert_eq!(count, usize::from(observateur.is_none()));"
+        },
+        {
+          "offset_PT_LOAD_R": 27832,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 273,
+          "ligne_apres": 295,
+          "colonne": 76,
+          "source": "Ok(space.copy_from_user(m, 0x401100, &mut copie[..len]))"
+        },
+        {
+          "offset_PT_LOAD_R": 27856,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 283,
+          "ligne_apres": 305,
+          "colonne": 91,
+          "source": "|| !heap::with_pages(|m| Ok(space.copy_to_user(m, 0x401100, &copie[..n])))"
+        },
+        {
+          "offset_PT_LOAD_R": 28232,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 38,
+          "ligne_apres": 40,
+          "colonne": 61,
+          "source": "let space = s.processes.get(pid).space.as_ref().unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 2357864,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 213,
+          "ligne_apres": 220,
+          "colonne": 22,
+          "source": "let initial_idle=with(|s|s.stats.idle_ticks);"
+        },
+        {
+          "offset_PT_LOAD_R": 2357912,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 257,
+          "ligne_apres": 279,
+          "colonne": 24,
+          "source": "let gate = Guard::new();"
+        },
+        {
+          "offset_PT_LOAD_R": 2357936,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 339,
+          "ligne_apres": 361,
+          "colonne": 14,
+          "source": "let idle=with(|s|s.stats.idle_ticks).wrapping_sub(initial_idle);"
+        },
+        {
+          "offset_PT_LOAD_R": 2357960,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 342,
+          "ligne_apres": 364,
+          "colonne": 5,
+          "source": "with(|s| s.ipc.lab_close_sender(pid, handle));"
+        },
+        {
+          "offset_PT_LOAD_R": 2357984,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 344,
+          "ligne_apres": 366,
+          "colonne": 28,
+          "source": "let (pages, racines) = with(|s| (s.ipc.pages(), s.ipc.racines_pilotes(pid)));"
+        },
+        {
+          "offset_PT_LOAD_R": 2358264,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 162,
+          "ligne_apres": 169,
+          "colonne": 29,
+          "source": "let initial_pages = with(|s| s.ipc.pages());"
+        },
+        {
+          "offset_PT_LOAD_R": 2361264,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 27,
+          "ligne_apres": 29,
+          "colonne": 18,
+          "source": "let _guard = Guard::new();"
+        },
+        {
+          "offset_PT_LOAD_R": 2364368,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 30,
+          "ligne_apres": 32,
+          "colonne": 18,
+          "source": "let handle = with(|s| {"
+        },
+        {
+          "offset_PT_LOAD_R": 2364392,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 64,
+          "ligne_apres": 71,
+          "colonne": 13,
+          "source": "with(|s| {"
+        },
+        {
+          "offset_PT_LOAD_R": 2364416,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 76,
+          "ligne_apres": 83,
+          "colonne": 15,
+          "source": "match with(|s| s.ipc.lab_pop(pid, handle)) {"
+        }
+      ],
+      "elf_identique": false
+    },
+    "arm-endurance": {
+      "ancien": {
+        "sha256": "f00417ba06b9031a54aa5864ddab3bc8131e676ad6dd3e9cb7cd2ef36ade21ce",
+        "entree": 18446744071562350892,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            680,
+            680,
+            4096,
+            "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            494336,
+            494336,
+            4096,
+            "fb8002f0a5801c0615c237238ef0ebf611eaac2ec8ba7344e0035fd9644e24ec"
+          ],
+          [
+            18446744071562567680,
+            18446744071562567680,
+            4,
+            3439771,
+            3439771,
+            4096,
+            "0d9d028481b022beb1a93da8e9138dd6823b2e2eb753d7394b6523c427157505"
+          ],
+          [
+            18446744071566008320,
+            18446744071566008320,
+            6,
+            30624,
+            50168,
+            4096,
+            "b6eff234b6b0611a27a744a3a16c5c34736fdfb413961bb930d53041519b81fc"
+          ]
+        ]
+      },
+      "candidat": {
+        "sha256": "632c87c8cddd9577c6606f5b142734d0b3b4ee27202ba76611a46e4a6ccf0514",
+        "entree": 18446744071562350892,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            680,
+            680,
+            4096,
+            "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            494336,
+            494336,
+            4096,
+            "fb8002f0a5801c0615c237238ef0ebf611eaac2ec8ba7344e0035fd9644e24ec"
+          ],
+          [
+            18446744071562567680,
+            18446744071562567680,
+            4,
+            3439771,
+            3439771,
+            4096,
+            "70c4161d933c8b3d420d1f55e538bda690bdf5d7051798c3e6ac0241b28583bc"
+          ],
+          [
+            18446744071566008320,
+            18446744071566008320,
+            6,
+            30624,
+            50168,
+            4096,
+            "b6eff234b6b0611a27a744a3a16c5c34736fdfb413961bb930d53041519b81fc"
+          ]
+        ]
+      },
+      "octets_distincts_en_lecture_seule": 10,
+      "emplacements_source_modifies": [
+        {
+          "offset_PT_LOAD_R": 7808,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 311,
+          "ligne_apres": 333,
+          "colonne": 22,
+          "source": ".unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 7832,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 121,
+          "ligne_apres": 128,
+          "colonne": 14,
+          "source": ".unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 9192,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 36,
+          "ligne_apres": 38,
+          "colonne": 9,
+          "source": "assert_eq!(count, usize::from(observateur.is_none()));"
+        },
+        {
+          "offset_PT_LOAD_R": 14816,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 273,
+          "ligne_apres": 295,
+          "colonne": 76,
+          "source": "Ok(space.copy_from_user(m, 0x401100, &mut copie[..len]))"
+        },
+        {
+          "offset_PT_LOAD_R": 14840,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 283,
+          "ligne_apres": 305,
+          "colonne": 91,
+          "source": "|| !heap::with_pages(|m| Ok(space.copy_to_user(m, 0x401100, &copie[..n])))"
+        },
+        {
+          "offset_PT_LOAD_R": 14864,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 116,
+          "ligne_apres": 123,
+          "colonne": 65,
+          "source": "let space = s.processes.get(pid).space.as_ref().unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 15120,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 38,
+          "ligne_apres": 40,
+          "colonne": 61,
+          "source": "let space = s.processes.get(pid).space.as_ref().unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 27472,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 344,
+          "ligne_apres": 366,
+          "colonne": 28,
+          "source": "let (pages, racines) = with(|s| (s.ipc.pages(), s.ipc.racines_pilotes(pid)));"
+        },
+        {
+          "offset_PT_LOAD_R": 27560,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 128,
+          "ligne_apres": 135,
+          "colonne": 28,
+          "source": "let (pages, racines) = with(|s| (s.ipc.pages(), s.ipc.racines_pilotes(pid)));"
+        },
+        {
+          "offset_PT_LOAD_R": 279000,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 30,
+          "ligne_apres": 32,
+          "colonne": 18,
+          "source": "let handle = with(|s| {"
+        }
+      ],
+      "elf_identique": false
+    },
+    "arm-stockage": {
+      "ancien": {
+        "sha256": "b39e317b05a5a54f9c4a2e0bf4064890eb4d29bbfde82393cc0cb63295cc771a",
+        "entree": 18446744071562313456,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            680,
+            680,
+            4096,
+            "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            490068,
+            490068,
+            4096,
+            "314215e3ebe6915ef8f2c18e5e7f60df2217e64d6922c1e9cd220fc4e078708f"
+          ],
+          [
+            18446744071562563584,
+            18446744071562563584,
+            4,
+            3458467,
+            3458467,
+            4096,
+            "e7799686dc6755c1ddf6c78f91e5ef0473cbf3ff29ce1c54a7536371c1b34d9b"
+          ],
+          [
+            18446744071566024704,
+            18446744071566024704,
+            6,
+            30680,
+            50432,
+            4096,
+            "138325fde11ca215cb5bc021a9dff273eb6ff0947ad8cd3ae56f93a4218ea358"
+          ]
+        ]
+      },
+      "candidat": {
+        "sha256": "22c258a4a80a575b6d2d486d8bf9161d2c71275ed5efc8e9f6329a478a164826",
+        "entree": 18446744071562313456,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            680,
+            680,
+            4096,
+            "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            490068,
+            490068,
+            4096,
+            "314215e3ebe6915ef8f2c18e5e7f60df2217e64d6922c1e9cd220fc4e078708f"
+          ],
+          [
+            18446744071562563584,
+            18446744071562563584,
+            4,
+            3458467,
+            3458467,
+            4096,
+            "72793490c792dcf5f7544b090b6c8fee92387ec686f6fc41d6543bb992a7bf76"
+          ],
+          [
+            18446744071566024704,
+            18446744071566024704,
+            6,
+            30680,
+            50432,
+            4096,
+            "138325fde11ca215cb5bc021a9dff273eb6ff0947ad8cd3ae56f93a4218ea358"
+          ]
+        ]
+      },
+      "octets_distincts_en_lecture_seule": 20,
+      "emplacements_source_modifies": [
+        {
+          "offset_PT_LOAD_R": 8000,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 311,
+          "ligne_apres": 333,
+          "colonne": 22,
+          "source": ".unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 8024,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 121,
+          "ligne_apres": 128,
+          "colonne": 14,
+          "source": ".unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 9408,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 36,
+          "ligne_apres": 38,
+          "colonne": 9,
+          "source": "assert_eq!(count, usize::from(observateur.is_none()));"
+        },
+        {
+          "offset_PT_LOAD_R": 15104,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 273,
+          "ligne_apres": 295,
+          "colonne": 76,
+          "source": "Ok(space.copy_from_user(m, 0x401100, &mut copie[..len]))"
+        },
+        {
+          "offset_PT_LOAD_R": 15128,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 283,
+          "ligne_apres": 305,
+          "colonne": 91,
+          "source": "|| !heap::with_pages(|m| Ok(space.copy_to_user(m, 0x401100, &copie[..n])))"
+        },
+        {
+          "offset_PT_LOAD_R": 15152,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 116,
+          "ligne_apres": 123,
+          "colonne": 65,
+          "source": "let space = s.processes.get(pid).space.as_ref().unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 15408,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 38,
+          "ligne_apres": 40,
+          "colonne": 61,
+          "source": "let space = s.processes.get(pid).space.as_ref().unwrap();"
+        },
+        {
+          "offset_PT_LOAD_R": 1863304,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 213,
+          "ligne_apres": 220,
+          "colonne": 22,
+          "source": "let initial_idle=with(|s|s.stats.idle_ticks);"
+        },
+        {
+          "offset_PT_LOAD_R": 1863352,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 257,
+          "ligne_apres": 279,
+          "colonne": 24,
+          "source": "let gate = Guard::new();"
+        },
+        {
+          "offset_PT_LOAD_R": 1863376,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 339,
+          "ligne_apres": 361,
+          "colonne": 14,
+          "source": "let idle=with(|s|s.stats.idle_ticks).wrapping_sub(initial_idle);"
+        },
+        {
+          "offset_PT_LOAD_R": 1863400,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 342,
+          "ligne_apres": 364,
+          "colonne": 5,
+          "source": "with(|s| s.ipc.lab_close_sender(pid, handle));"
+        },
+        {
+          "offset_PT_LOAD_R": 1863424,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 344,
+          "ligne_apres": 366,
+          "colonne": 28,
+          "source": "let (pages, racines) = with(|s| (s.ipc.pages(), s.ipc.racines_pilotes(pid)));"
+        },
+        {
+          "offset_PT_LOAD_R": 1863512,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 84,
+          "ligne_apres": 91,
+          "colonne": 19,
+          "source": "let initial = with(|s| s.ipc.pages());"
+        },
+        {
+          "offset_PT_LOAD_R": 1863536,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 94,
+          "ligne_apres": 101,
+          "colonne": 21,
+          "source": "let _gate = Guard::new();"
+        },
+        {
+          "offset_PT_LOAD_R": 1863560,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 128,
+          "ligne_apres": 135,
+          "colonne": 28,
+          "source": "let (pages, racines) = with(|s| (s.ipc.pages(), s.ipc.racines_pilotes(pid)));"
+        },
+        {
+          "offset_PT_LOAD_R": 2110928,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 162,
+          "ligne_apres": 169,
+          "colonne": 29,
+          "source": "let initial_pages = with(|s| s.ipc.pages());"
+        },
+        {
+          "offset_PT_LOAD_R": 2112000,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 27,
+          "ligne_apres": 29,
+          "colonne": 18,
+          "source": "let _guard = Guard::new();"
+        },
+        {
+          "offset_PT_LOAD_R": 2115600,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 30,
+          "ligne_apres": 32,
+          "colonne": 18,
+          "source": "let handle = with(|s| {"
+        },
+        {
+          "offset_PT_LOAD_R": 2115624,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 64,
+          "ligne_apres": 71,
+          "colonne": 13,
+          "source": "with(|s| {"
+        },
+        {
+          "offset_PT_LOAD_R": 2115648,
+          "fichier": "kernel/src/sched/process/net_preparation.rs",
+          "ligne_avant": 76,
+          "ligne_apres": 83,
+          "colonne": 15,
+          "source": "match with(|s| s.ipc.lab_pop(pid, handle)) {"
+        }
+      ],
+      "elf_identique": false
+    },
+    "q35-ordinaire": {
+      "ancien": {
+        "sha256": "0e4c703c9af95a6d347bfb6c45a5266dfeb2094822458db92e754f9e02f45c47",
+        "entree": 18446744071562563424,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            488,
+            488,
+            4096,
+            "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            932548,
+            932548,
+            4096,
+            "c24f2e4f3a197bf7f2ef7e110af7c95897ce6089040a0c87bddd40433f339fa6"
+          ],
+          [
+            18446744071563005952,
+            18446744071563005952,
+            4,
+            3868763,
+            3868763,
+            4096,
+            "02d7079edff32758393b117a01a72b48c423ab3890424abfce05f7c20fb8cf6e"
+          ],
+          [
+            18446744071566876672,
+            18446744071566876672,
+            6,
+            33488,
+            69920,
+            4096,
+            "e63578b69580dd815956d7fe6210aefc455d3adb3a3463d056a573f9bcf9a226"
+          ]
+        ]
+      },
+      "candidat": {
+        "sha256": "0e4c703c9af95a6d347bfb6c45a5266dfeb2094822458db92e754f9e02f45c47",
+        "entree": 18446744071562563424,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            488,
+            488,
+            4096,
+            "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            932548,
+            932548,
+            4096,
+            "c24f2e4f3a197bf7f2ef7e110af7c95897ce6089040a0c87bddd40433f339fa6"
+          ],
+          [
+            18446744071563005952,
+            18446744071563005952,
+            4,
+            3868763,
+            3868763,
+            4096,
+            "02d7079edff32758393b117a01a72b48c423ab3890424abfce05f7c20fb8cf6e"
+          ],
+          [
+            18446744071566876672,
+            18446744071566876672,
+            6,
+            33488,
+            69920,
+            4096,
+            "e63578b69580dd815956d7fe6210aefc455d3adb3a3463d056a573f9bcf9a226"
+          ]
+        ]
+      },
+      "octets_distincts_en_lecture_seule": 0,
+      "emplacements_source_modifies": [],
+      "elf_identique": true
+    },
+    "arm-ordinaire": {
+      "ancien": {
+        "sha256": "2427d79c61355b83cd402ca4699ec0a1945c6cc257333d2668466f7c766d917e",
+        "entree": 18446744071562700988,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            680,
+            680,
+            4096,
+            "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            749584,
+            749584,
+            4096,
+            "d732f1af7a4a9277070cd742abc2797b06e914bb564a186966f4ecff92c82136"
+          ],
+          [
+            18446744071562825728,
+            18446744071562825728,
+            4,
+            3750771,
+            3750771,
+            4096,
+            "678b717479239488eef7c4c21fb6d712470f5b4ba769b9903668ebee066b5c21"
+          ],
+          [
+            18446744071566577664,
+            18446744071566577664,
+            6,
+            28768,
+            48728,
+            4096,
+            "d82412e7e39c686b6fd4fe40c2b3ab9bceafa0769b38a4cb88da912c5266a602"
+          ]
+        ]
+      },
+      "candidat": {
+        "sha256": "2427d79c61355b83cd402ca4699ec0a1945c6cc257333d2668466f7c766d917e",
+        "entree": 18446744071562700988,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            680,
+            680,
+            4096,
+            "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            749584,
+            749584,
+            4096,
+            "d732f1af7a4a9277070cd742abc2797b06e914bb564a186966f4ecff92c82136"
+          ],
+          [
+            18446744071562825728,
+            18446744071562825728,
+            4,
+            3750771,
+            3750771,
+            4096,
+            "678b717479239488eef7c4c21fb6d712470f5b4ba769b9903668ebee066b5c21"
+          ],
+          [
+            18446744071566577664,
+            18446744071566577664,
+            6,
+            28768,
+            48728,
+            4096,
+            "d82412e7e39c686b6fd4fe40c2b3ab9bceafa0769b38a4cb88da912c5266a602"
+          ]
+        ]
+      },
+      "octets_distincts_en_lecture_seule": 0,
+      "emplacements_source_modifies": [],
+      "elf_identique": true
+    },
+    "q35-pression-rx": {
+      "ancien": {
+        "sha256": "15b6b529907e328e96522b26b60f52555ffb19a6ff77951ca399c0b1f4633af1",
+        "entree": 18446744071562740304,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            488,
+            488,
+            4096,
+            "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            988468,
+            988468,
+            4096,
+            "4001b9baab818e7fe4666d0844ec38309b137818fd540986f825b24c91a69fa5"
+          ],
+          [
+            18446744071563063296,
+            18446744071563063296,
+            4,
+            3895651,
+            3895651,
+            4096,
+            "788a611cfd88ac6fd4e711619df3e67912db7d644b2f6a2989f7089226113a5a"
+          ],
+          [
+            18446744071566962688,
+            18446744071566962688,
+            6,
+            34672,
+            71176,
+            4096,
+            "883bce754fbf87ae990e03b23052825e8db3e9ee5e74fdd133ed4b8a494337ed"
+          ]
+        ]
+      },
+      "candidat": {
+        "sha256": "15b6b529907e328e96522b26b60f52555ffb19a6ff77951ca399c0b1f4633af1",
+        "entree": 18446744071562740304,
+        "PT_LOAD": [
+          [
+            18446744071562067968,
+            18446744071562067968,
+            6,
+            488,
+            488,
+            4096,
+            "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          ],
+          [
+            18446744071562072064,
+            18446744071562072064,
+            5,
+            988468,
+            988468,
+            4096,
+            "4001b9baab818e7fe4666d0844ec38309b137818fd540986f825b24c91a69fa5"
+          ],
+          [
+            18446744071563063296,
+            18446744071563063296,
+            4,
+            3895651,
+            3895651,
+            4096,
+            "788a611cfd88ac6fd4e711619df3e67912db7d644b2f6a2989f7089226113a5a"
+          ],
+          [
+            18446744071566962688,
+            18446744071566962688,
+            6,
+            34672,
+            71176,
+            4096,
+            "883bce754fbf87ae990e03b23052825e8db3e9ee5e74fdd133ed4b8a494337ed"
+          ]
+        ]
+      },
+      "octets_distincts_en_lecture_seule": 0,
+      "emplacements_source_modifies": [],
+      "elf_identique": true
+    }
+  },
+  "precision": "Le témoin q35-pression-rx a été exécuté avec le correctif de 1863ff4. Les autres comparaisons utilisent les binaires de c4bf40c."
+}

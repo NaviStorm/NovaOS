@@ -1,0 +1,533 @@
+{
+  "attente-absent-disque-4096-10": {
+    "cas": "nvme-contention-wait-absent-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:50:03.106517+00:00",
+    "acquisition": "2026-11-26T07:50:03.106568+00:00",
+    "attente_s": 5.254207644611597e-05,
+    "execution_s": 10.133762500016019,
+    "liberation": "2026-11-26T07:50:13.715304+00:00"
+  },
+  "attente-absent-disque-4096-12": {
+    "cas": "nvme-contention-wait-absent-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:59:07.090572+00:00",
+    "acquisition": "2026-11-26T07:59:07.090612+00:00",
+    "attente_s": 4.283408634364605e-05,
+    "execution_s": 10.194420124986209,
+    "liberation": "2026-11-26T07:59:17.816906+00:00"
+  },
+  "attente-absent-nic-512-10": {
+    "cas": "nvme-contention-wait-absent-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:49:45.210420+00:00",
+    "acquisition": "2026-11-26T07:49:45.210459+00:00",
+    "attente_s": 4.1500083170831203e-05,
+    "execution_s": 10.006887207971886,
+    "liberation": "2026-11-26T07:49:55.700947+00:00"
+  },
+  "attente-absent-nic-512-12": {
+    "cas": "nvme-contention-wait-absent-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:45.748801+00:00",
+    "acquisition": "2026-11-26T07:58:45.748840+00:00",
+    "attente_s": 4.116701893508434e-05,
+    "execution_s": 10.022212542011403,
+    "liberation": "2026-11-26T07:58:56.269795+00:00"
+  },
+  "attente-court-disque-4096-10": {
+    "cas": "nvme-contention-wait-court-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:50:13.715631+00:00",
+    "acquisition": "2026-11-26T07:50:13.715676+00:00",
+    "attente_s": 4.708406049758196e-05,
+    "execution_s": 2.945396542083472,
+    "liberation": "2026-11-26T07:50:17.141589+00:00"
+  },
+  "attente-court-disque-4096-12": {
+    "cas": "nvme-contention-wait-court-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:59:03.629707+00:00",
+    "acquisition": "2026-11-26T07:59:03.629750+00:00",
+    "attente_s": 4.600000102072954e-05,
+    "execution_s": 2.986026208032854,
+    "liberation": "2026-11-26T07:59:07.090200+00:00"
+  },
+  "attente-court-nic-512-10": {
+    "cas": "nvme-contention-wait-court-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:48:01.390490+00:00",
+    "acquisition": "2026-11-26T07:48:01.390707+00:00",
+    "attente_s": 0.00022033299319446087,
+    "execution_s": 2.977598958997987,
+    "liberation": "2026-11-26T07:48:04.873655+00:00"
+  },
+  "attente-court-nic-512-12": {
+    "cas": "nvme-contention-wait-court-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:42.358871+00:00",
+    "acquisition": "2026-11-26T07:58:42.358910+00:00",
+    "attente_s": 4.083407111465931e-05,
+    "execution_s": 2.9100021669873968,
+    "liberation": "2026-11-26T07:58:45.748453+00:00"
+  },
+  "attente-tardif-disque-4096-10": {
+    "cas": "nvme-contention-wait-tardif-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:49:37.723625+00:00",
+    "acquisition": "2026-11-26T07:49:37.723871+00:00",
+    "attente_s": 0.0002501669805496931,
+    "execution_s": 6.949054833035916,
+    "liberation": "2026-11-26T07:49:45.210113+00:00"
+  },
+  "attente-tardif-disque-4096-12": {
+    "cas": "nvme-contention-wait-tardif-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:59:17.817267+00:00",
+    "acquisition": "2026-11-26T07:59:17.817309+00:00",
+    "attente_s": 4.395900759845972e-05,
+    "execution_s": 6.963946208008565,
+    "liberation": "2026-11-26T07:59:25.248424+00:00"
+  },
+  "attente-tardif-nic-512-10": {
+    "cas": "nvme-contention-wait-tardif-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:49:55.701286+00:00",
+    "acquisition": "2026-11-26T07:49:55.701334+00:00",
+    "attente_s": 4.9875001423060894e-05,
+    "execution_s": 6.917241874965839,
+    "liberation": "2026-11-26T07:50:03.106181+00:00"
+  },
+  "attente-tardif-nic-512-12": {
+    "cas": "nvme-contention-wait-tardif-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:56.270104+00:00",
+    "acquisition": "2026-11-26T07:58:56.270145+00:00",
+    "attente_s": 4.283396992832422e-05,
+    "execution_s": 6.896307582966983,
+    "liberation": "2026-11-26T07:59:03.629354+00:00"
+  },
+  "contention-disque-4096-05": {
+    "cas": "nvme-contention-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:23:40.188132+00:00",
+    "acquisition": "2026-11-26T07:23:40.188407+00:00",
+    "attente_s": 0.00027837499510496855,
+    "execution_s": 2.9654852090170607,
+    "liberation": "2026-11-26T07:23:43.432441+00:00"
+  },
+  "contention-disque-4096-12": {
+    "cas": "nvme-contention-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:32.716154+00:00",
+    "acquisition": "2026-11-26T07:58:32.716194+00:00",
+    "attente_s": 4.225003067404032e-05,
+    "execution_s": 2.938268124940805,
+    "liberation": "2026-11-26T07:58:35.914844+00:00"
+  },
+  "contention-disque-512-10": {
+    "cas": "nvme-contention-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:48:51.309401+00:00",
+    "acquisition": "2026-11-26T07:48:51.309448+00:00",
+    "attente_s": 4.941609222441912e-05,
+    "execution_s": 2.9436931250384077,
+    "liberation": "2026-11-26T07:48:54.561584+00:00"
+  },
+  "contention-disque-512-12": {
+    "cas": "nvme-contention-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:39.139140+00:00",
+    "acquisition": "2026-11-26T07:58:39.139181+00:00",
+    "attente_s": 4.2625004425644875e-05,
+    "execution_s": 2.9274236250203103,
+    "liberation": "2026-11-26T07:58:42.358486+00:00"
+  },
+  "contention-nic-4096-10": {
+    "cas": "nvme-contention-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:48:48.023532+00:00",
+    "acquisition": "2026-11-26T07:48:48.023578+00:00",
+    "attente_s": 4.804192576557398e-05,
+    "execution_s": 2.9997034159023315,
+    "liberation": "2026-11-26T07:48:51.309081+00:00"
+  },
+  "contention-nic-4096-12": {
+    "cas": "nvme-contention-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:35.915199+00:00",
+    "acquisition": "2026-11-26T07:58:35.915248+00:00",
+    "attente_s": 5.158304702490568e-05,
+    "execution_s": 2.929755875025876,
+    "liberation": "2026-11-26T07:58:39.138818+00:00"
+  },
+  "contention-nic-512-04": {
+    "cas": "nvme-contention-nic",
+    "reussi": false,
+    "debut_attente": "2026-11-26T07:21:01.872752+00:00",
+    "acquisition": "2026-11-26T07:21:01.872981+00:00",
+    "attente_s": 0.00023254205007106066,
+    "execution_s": 2.9359498750418425,
+    "liberation": "2026-11-26T07:21:05.095539+00:00"
+  },
+  "contention-nic-512-05": {
+    "cas": "nvme-contention-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:22:59.828829+00:00",
+    "acquisition": "2026-11-26T07:22:59.829069+00:00",
+    "attente_s": 0.00024395796936005354,
+    "execution_s": 2.9666127500822768,
+    "liberation": "2026-11-26T07:23:03.078411+00:00"
+  },
+  "contention-nic-512-12": {
+    "cas": "nvme-contention-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:29.552519+00:00",
+    "acquisition": "2026-11-26T07:58:29.552565+00:00",
+    "attente_s": 4.7749956138432026e-05,
+    "execution_s": 2.9131505420664325,
+    "liberation": "2026-11-26T07:58:32.715829+00:00"
+  },
+  "cycles-4096-03": {
+    "cas": "nvme-cycles",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:19:04.180865+00:00",
+    "acquisition": "2026-11-26T07:19:04.181072+00:00",
+    "attente_s": 0.00020958296954631805,
+    "execution_s": 6.268584499950521,
+    "liberation": "2026-11-26T07:19:10.752147+00:00"
+  },
+  "cycles-4096-11": {
+    "cas": "nvme-cycles",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:55:57.557231+00:00",
+    "acquisition": "2026-11-26T07:55:57.557276+00:00",
+    "attente_s": 4.737498238682747e-05,
+    "execution_s": 6.278911832952872,
+    "liberation": "2026-11-26T07:56:04.114231+00:00"
+  },
+  "cycles-4096-12": {
+    "cas": "nvme-cycles",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:59:35.847157+00:00",
+    "acquisition": "2026-11-26T07:59:35.847199+00:00",
+    "attente_s": 4.383292980492115e-05,
+    "execution_s": 6.252091416041367,
+    "liberation": "2026-11-26T07:59:42.365269+00:00"
+  },
+  "cycles-512-01": {
+    "cas": "nvme-cycles",
+    "reussi": false,
+    "debut_attente": "2026-11-26T07:11:42.618816+00:00",
+    "acquisition": "2026-11-26T07:11:42.619048+00:00",
+    "attente_s": 0.00023600005079060793,
+    "execution_s": 73.78840145806316,
+    "liberation": "2026-11-26T07:12:56.612888+00:00"
+  },
+  "cycles-512-02": {
+    "cas": "nvme-cycles",
+    "reussi": false,
+    "debut_attente": "2026-11-26T07:15:08.912585+00:00",
+    "acquisition": "2026-11-26T07:15:08.913751+00:00",
+    "attente_s": 0.0011705000652000308,
+    "execution_s": 3.808777999947779,
+    "liberation": "2026-11-26T07:15:12.930400+00:00"
+  },
+  "cycles-512-03": {
+    "cas": "nvme-cycles",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:18:11.220921+00:00",
+    "acquisition": "2026-11-26T07:18:11.221170+00:00",
+    "attente_s": 0.0002535840030759573,
+    "execution_s": 6.268449750030413,
+    "liberation": "2026-11-26T07:18:17.774463+00:00"
+  },
+  "cycles-512-11": {
+    "cas": "nvme-cycles",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:55:51.039004+00:00",
+    "acquisition": "2026-11-26T07:55:51.039235+00:00",
+    "attente_s": 0.00023512495681643486,
+    "execution_s": 6.228757541044615,
+    "liberation": "2026-11-26T07:55:57.556768+00:00"
+  },
+  "cycles-512-12": {
+    "cas": "nvme-cycles",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:59:29.334736+00:00",
+    "acquisition": "2026-11-26T07:59:29.334971+00:00",
+    "attente_s": 0.00023908389266580343,
+    "execution_s": 6.225782916066237,
+    "liberation": "2026-11-26T07:59:35.846731+00:00"
+  },
+  "panne-disque-4096-07": {
+    "cas": "nvme-panne-disque",
+    "reussi": false,
+    "debut_attente": "2026-11-26T07:39:31.637285+00:00",
+    "acquisition": "2026-11-26T07:39:31.637526+00:00",
+    "attente_s": 0.00024500000290572643,
+    "execution_s": 2.7168743340298533,
+    "liberation": "2026-11-26T07:39:34.550554+00:00"
+  },
+  "panne-disque-4096-08": {
+    "cas": "nvme-panne-disque",
+    "reussi": false,
+    "debut_attente": "2026-11-26T07:41:58.039458+00:00",
+    "acquisition": "2026-11-26T07:41:58.039692+00:00",
+    "attente_s": 0.00023870798759162426,
+    "execution_s": 300.06774545891676,
+    "liberation": "2026-11-26T07:46:58.319003+00:00"
+  },
+  "panne-disque-4096-09": {
+    "cas": "nvme-panne-disque",
+    "reussi": false,
+    "debut_attente": "2026-11-26T07:43:43.026734+00:00",
+    "acquisition": "2026-11-26T07:46:59.646347+00:00",
+    "attente_s": 196.61937274993397,
+    "execution_s": 2.75039758393541,
+    "liberation": "2026-11-26T07:47:02.691177+00:00"
+  },
+  "panne-disque-4096-10": {
+    "cas": "nvme-panne-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:48:35.264447+00:00",
+    "acquisition": "2026-11-26T07:48:35.264704+00:00",
+    "attente_s": 0.00026187498588114977,
+    "execution_s": 2.778572582989,
+    "liberation": "2026-11-26T07:48:38.327924+00:00"
+  },
+  "panne-disque-4096-11": {
+    "cas": "nvme-panne-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:54:20.568299+00:00",
+    "acquisition": "2026-11-26T07:54:20.568334+00:00",
+    "attente_s": 3.650004509836435e-05,
+    "execution_s": 2.7779249160084873,
+    "liberation": "2026-11-26T07:54:23.631506+00:00"
+  },
+  "panne-disque-4096-12": {
+    "cas": "nvme-panne-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:20.316863+00:00",
+    "acquisition": "2026-11-26T07:58:20.316915+00:00",
+    "attente_s": 5.4042087867856026e-05,
+    "execution_s": 2.723632208071649,
+    "liberation": "2026-11-26T07:58:23.297066+00:00"
+  },
+  "panne-disque-512-10": {
+    "cas": "nvme-panne-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:48:41.665493+00:00",
+    "acquisition": "2026-11-26T07:48:41.665540+00:00",
+    "attente_s": 4.900002386420965e-05,
+    "execution_s": 2.761211375007406,
+    "liberation": "2026-11-26T07:48:44.695056+00:00"
+  },
+  "panne-disque-512-11": {
+    "cas": "nvme-panne-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:54:23.631854+00:00",
+    "acquisition": "2026-11-26T07:54:23.631905+00:00",
+    "attente_s": 5.312496796250343e-05,
+    "execution_s": 2.908744000014849,
+    "liberation": "2026-11-26T07:54:26.816953+00:00"
+  },
+  "panne-disque-512-12": {
+    "cas": "nvme-panne-disque",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:23.297353+00:00",
+    "acquisition": "2026-11-26T07:58:23.297400+00:00",
+    "attente_s": 4.879094194620848e-05,
+    "execution_s": 2.7378770420327783,
+    "liberation": "2026-11-26T07:58:26.292085+00:00"
+  },
+  "panne-nic-4096-10": {
+    "cas": "nvme-panne-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:48:38.328228+00:00",
+    "acquisition": "2026-11-26T07:48:38.328272+00:00",
+    "attente_s": 4.633399657905102e-05,
+    "execution_s": 3.0615995839470997,
+    "liberation": "2026-11-26T07:48:41.665102+00:00"
+  },
+  "panne-nic-4096-11": {
+    "cas": "nvme-panne-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:54:26.817263+00:00",
+    "acquisition": "2026-11-26T07:54:26.817304+00:00",
+    "attente_s": 4.441698547452688e-05,
+    "execution_s": 3.0737108329776675,
+    "liberation": "2026-11-26T07:54:30.199253+00:00"
+  },
+  "panne-nic-4096-12": {
+    "cas": "nvme-panne-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:26.292383+00:00",
+    "acquisition": "2026-11-26T07:58:26.292424+00:00",
+    "attente_s": 4.291697405278683e-05,
+    "execution_s": 3.00353458407335,
+    "liberation": "2026-11-26T07:58:29.552114+00:00"
+  },
+  "panne-nic-512-07": {
+    "cas": "nvme-panne-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:39:09.816096+00:00",
+    "acquisition": "2026-11-26T07:39:09.816347+00:00",
+    "attente_s": 0.0002556249964982271,
+    "execution_s": 3.0492261659819633,
+    "liberation": "2026-11-26T07:39:13.148184+00:00"
+  },
+  "panne-nic-512-10": {
+    "cas": "nvme-panne-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:48:44.695363+00:00",
+    "acquisition": "2026-11-26T07:48:44.695404+00:00",
+    "attente_s": 4.3625012040138245e-05,
+    "execution_s": 3.057939499965869,
+    "liberation": "2026-11-26T07:48:48.023126+00:00"
+  },
+  "panne-nic-512-11": {
+    "cas": "nvme-panne-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:54:17.168843+00:00",
+    "acquisition": "2026-11-26T07:54:17.169663+00:00",
+    "attente_s": 0.0008260420290753245,
+    "execution_s": 3.111227457993664,
+    "liberation": "2026-11-26T07:54:20.567922+00:00"
+  },
+  "panne-nic-512-12": {
+    "cas": "nvme-panne-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:58:17.032224+00:00",
+    "acquisition": "2026-11-26T07:58:17.032433+00:00",
+    "attente_s": 0.000212125014513731,
+    "execution_s": 3.016167249996215,
+    "liberation": "2026-11-26T07:58:20.316488+00:00"
+  },
+  "revue-avant-dbx-01": {
+    "cas": "avant-dbx",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:09:51.593468+00:00",
+    "acquisition": "2026-11-26T07:09:51.593713+00:00",
+    "attente_s": 0.0002485410077497363,
+    "execution_s": 1.8679663749644533,
+    "liberation": "2026-11-26T07:09:53.568334+00:00"
+  },
+  "revue-dbx-01": {
+    "cas": "dbx",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:09:53.568549+00:00",
+    "acquisition": "2026-11-26T07:09:53.568587+00:00",
+    "attente_s": 3.9790989831089973e-05,
+    "execution_s": 1.8498833749908954,
+    "liberation": "2026-11-26T07:09:55.522755+00:00"
+  },
+  "revue-domaines-01": {
+    "cas": "domaines",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:09:59.474651+00:00",
+    "acquisition": "2026-11-26T07:09:59.474695+00:00",
+    "attente_s": 4.583294503390789e-05,
+    "execution_s": 2.0906327919801697,
+    "liberation": "2026-11-26T07:10:01.679413+00:00"
+  },
+  "revue-noyau-altere-01": {
+    "cas": "noyau-altere",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:09:55.522980+00:00",
+    "acquisition": "2026-11-26T07:09:55.523018+00:00",
+    "attente_s": 4.041590727865696e-05,
+    "execution_s": 1.9174183330032974,
+    "liberation": "2026-11-26T07:09:57.547964+00:00"
+  },
+  "revue-sans-iommu-01": {
+    "cas": "sans-iommu",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:09:57.548195+00:00",
+    "acquisition": "2026-11-26T07:09:57.548234+00:00",
+    "attente_s": 4.1291932575404644e-05,
+    "execution_s": 1.8166197499958798,
+    "liberation": "2026-11-26T07:09:59.474427+00:00"
+  },
+  "revue-signature-01": {
+    "cas": "signature",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:08:12.093465+00:00",
+    "acquisition": "2026-11-26T07:08:12.093848+00:00",
+    "attente_s": 0.00038820900954306126,
+    "execution_s": 1.8215828329557553,
+    "liberation": "2026-11-26T07:08:14.022439+00:00"
+  },
+  "revue-total-nic-01": {
+    "cas": "total-nic",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:10:01.679635+00:00",
+    "acquisition": "2026-11-26T07:10:01.679672+00:00",
+    "attente_s": 3.899994771927595e-05,
+    "execution_s": 2.022479375009425,
+    "liberation": "2026-11-26T07:10:03.809973+00:00"
+  },
+  "wait-absent-01/qemu": {
+    "cas": "wait-absent",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:10:59.818458+00:00",
+    "acquisition": "2026-11-26T07:10:59.818506+00:00",
+    "attente_s": 5.012494511902332e-05,
+    "execution_s": 3.11702200002037,
+    "liberation": "2026-11-26T07:11:03.047354+00:00"
+  },
+  "wait-court-01/qemu": {
+    "cas": "wait-court",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:10:57.636690+00:00",
+    "acquisition": "2026-11-26T07:10:57.636943+00:00",
+    "attente_s": 0.0002568749478086829,
+    "execution_s": 2.0785584590630606,
+    "liberation": "2026-11-26T07:10:59.818206+00:00"
+  },
+  "wait-tardif-01/qemu": {
+    "cas": "wait-tardif",
+    "reussi": true,
+    "debut_attente": "2026-11-26T07:11:03.047619+00:00",
+    "acquisition": "2026-11-26T07:11:03.047661+00:00",
+    "attente_s": 4.39169816672802e-05,
+    "execution_s": 6.039456833037548,
+    "liberation": "2026-11-26T07:11:09.199079+00:00"
+  },
+  "confirmation-arm-endurance": {
+    "debut_attente": "2026-11-26T08:14:11.771570+00:00",
+    "acquisition": "2026-11-26T08:14:11.773213+00:00",
+    "attente_s": 0.0016522499499842525,
+    "execution_s": 16.201141665922478,
+    "liberation": "2026-11-26T08:14:28.013398+00:00",
+    "reussi": true,
+    "cas": "endurance"
+  },
+  "confirmation-q35-endurance": {
+    "debut_attente": "2026-11-26T08:14:31.022853+00:00",
+    "acquisition": "2026-11-26T08:14:31.023083+00:00",
+    "attente_s": 0.0002359999343752861,
+    "execution_s": 13.874812832917087,
+    "liberation": "2026-11-26T08:14:46.475215+00:00",
+    "reussi": true,
+    "cas": "endurance"
+  },
+  "confirmation-q35-pression-01": {
+    "debut_attente": "2026-11-26T08:20:51.766346+00:00",
+    "acquisition": "2026-11-26T08:20:51.766571+00:00",
+    "attente_s": 0.00023104192223399878,
+    "execution_s": 2.2299893340095878,
+    "liberation": "2026-11-26T08:20:54.035374+00:00",
+    "reussi": false,
+    "cas": "pression-rx"
+  },
+  "confirmation-q35-pression-02": {
+    "debut_attente": "2026-11-26T08:23:42.700871+00:00",
+    "acquisition": "2026-11-26T08:23:42.701238+00:00",
+    "attente_s": 0.00037291599437594414,
+    "execution_s": 2.5085548750357702,
+    "liberation": "2026-11-26T08:23:45.249782+00:00",
+    "reussi": true,
+    "cas": "pression-rx"
+  }
+}
