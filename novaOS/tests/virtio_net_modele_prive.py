@@ -36,6 +36,16 @@ def executable(arch, habituel, sortie, *, acpi_pio=False):
             raise ValueError("Modèle de faute hors du parcours expérimental")
     elif mode or injection:
         raise ValueError("Le parcours expérimental exige un modèle distinct")
+    wait = os.environ.get("NOVAOS_Q35_WAIT")
+    revue = os.environ.get("NOVAOS_Q35_REVUE_WAIT")
+    if "diff_wait" in info:
+        with gzip.open(Path(__file__).with_name("virtio_net_vtd_wait.diff.gz"),"rb") as stream:
+            expected_wait=hashlib.file_digest(stream,"sha256").hexdigest()
+        if (not acpi_pio or info["diff_wait"] != expected_wait or
+            (revue, wait) not in (("1", None), (None, "court"), (None, "absent"), (None, "tardif"))):
+            raise ValueError("Modèle WAIT hors du parcours Q35 expérimental")
+    elif wait is not None or revue is not None:
+        raise ValueError("L'injection WAIT exige un binaire dédié")
     empreinte = digest(binaire)
     version = subprocess.check_output([binaire, "--version"], text=True).strip()
     if (empreinte != info["sha256"] or version != info["version_executee"]
@@ -43,5 +53,5 @@ def executable(arch, habituel, sortie, *, acpi_pio=False):
         raise ValueError("Identité du modèle RX incorrecte")
     dump(sortie / "modele-rx.json", dict(executable=str(binaire), version=version, sha256=empreinte,
                                        construction_sha256=digest(dossier), correctif=info["diff"],
-                                       correctif_faute=info.get("diff_faute"), mode_faute=mode, correctif_acpi_pio=patch_pio))
+                                       correctif_faute=info.get("diff_faute"), mode_faute=mode, correctif_acpi_pio=patch_pio, correctif_wait=info.get("diff_wait"), mode_wait=wait))
     return str(binaire)

@@ -23,7 +23,7 @@ def sha(path):
         return hashlib.file_digest(f, "sha256").hexdigest()
 
 
-def construire(root, version, python, jobs, essai, dtc, faute=False, acpi_pio=False):
+def construire(root, version, python, jobs, essai, dtc, faute=False, acpi_pio=False, wait=False):
     arch, expected = VERSIONS[version]
     (root / "compilation").mkdir(exist_ok=True)
     (root / "modeles").mkdir(exist_ok=True)
@@ -34,6 +34,10 @@ def construire(root, version, python, jobs, essai, dtc, faute=False, acpi_pio=Fa
     if acpi_pio and (version != "11.1.3" or faute):
         raise ValueError("Le report ACPI est réservé au Q35 nominal de laboratoire")
     famille = "rx-pio" if acpi_pio else "rx-faute" if faute else "rx"
+    if wait:
+        if not acpi_pio or faute:
+            raise ValueError("Le modèle WAIT exige le Q35 PIO dédié")
+        famille = "vtd-wait"
     work = Path(os.environ["NOVAOS_TMPDIR"]) / f"net-modele-{famille}-{version}-{essai}"
     work.mkdir()
     subprocess.run(["tar", "-xf", archive, "-C", work], check=True)
@@ -61,6 +65,14 @@ def construire(root, version, python, jobs, essai, dtc, faute=False, acpi_pio=Fa
     if acpi_pio:
         from virtio_net_acpi_pio_modele import modifier
         diff_pio = modifier(src, out, root / "amont")
+    if wait:
+        model = src / "hw/i386/intel_iommu.c"
+        with gzip.open(ROOT / "tests/virtio_net_vtd_wait.diff.gz", "rb") as stream:
+            delta = stream.read()
+        shutil.copyfile(model, out / "intel_iommu-original.c")
+        subprocess.run(["patch", "-p1", "-F", "0"], cwd=src, input=delta, check=True)
+        shutil.copyfile(model, out / "intel_iommu-wait.c")
+        (out / "virtio_net_vtd_wait.diff").write_bytes(delta)
     build = work / "build-prive"
     build.mkdir()
     opts = [str(src / "configure"), f"--target-list={arch}-softmmu",
@@ -81,6 +93,9 @@ def construire(root, version, python, jobs, essai, dtc, faute=False, acpi_pio=Fa
     if acpi_pio:
         info.update(diff_acpi_pio=diff_pio, fw_cfg_original=sha(out / "fw_cfg-original.c"),
                     fw_cfg_corrige=sha(out / "fw_cfg-pio.c"), reference_pio=sha(out / "fw_cfg-reference-10.0.12.c"))
+    if wait:
+        info.update(diff_wait=hashlib.sha256(delta).hexdigest(), vtd_original=sha(out / "intel_iommu-original.c"),
+                    vtd_experimental=sha(model))
     dest = root / "modeles" / ("qemu-system-" + arch)
     if version.endswith("-utm"):
         dest = dest.parent / "utm" / dest.name
@@ -111,5 +126,6 @@ if __name__ == "__main__":
     p.add_argument("--essai", required=True, type=int, choices=range(1, 100))
     p.add_argument("--faute", action="store_true", help="copie expérimentale pour une complétion RX manquante")
     p.add_argument("--acpi-pio", action="store_true", help="copie Q35 distincte avec description ACPI PIO")
+    p.add_argument("--wait", action="store_true", help="binaire distinct de faute VT-d WAIT")
     a = p.parse_args()
-    construire(a.archive.resolve(), a.version, a.python, a.jobs, a.essai, a.dtc.resolve(strict=True), a.faute, a.acpi_pio)
+    construire(a.archive.resolve(), a.version, a.python, a.jobs, a.essai, a.dtc.resolve(strict=True), a.faute, a.acpi_pio, a.wait)
