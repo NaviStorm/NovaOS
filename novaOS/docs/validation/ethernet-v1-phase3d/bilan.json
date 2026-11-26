@@ -1,0 +1,2579 @@
+{
+  "phase3c": "0169c75148c8359c9235f3f19359133a0e002115",
+  "image_duo": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+  "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+  "lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+  "graine": "5739dd06a8dc6a495484f2346f417386b99e9c3442987bc6772d9438a7146dd5",
+  "duo": {
+    "duo-retrait": {
+      "elf": "a0e50f5cc83dc8a060ea2a4adb153f299a3e2ee45d9c257ebe1f00db7a44a385",
+      "captures": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ]
+      },
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "edca0cef51d8ca780ec9fda860c3acb3683e253a6d4bf36b673f5a84960f9588"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "e83ae69557f808a92864a435ce5dec4dfd27386d021a1b991ccbb4c2b41bcf8c",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "racine": 1118208,
+        "contexte": 1122304,
+        "queue": 1142784,
+        "page_recu": 1146880,
+        "cookie": 5,
+        "iqt": 240,
+        "bouclages": 0,
+        "contextes_finaux": {}
+      },
+      "source_banc": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "cycles": 1,
+      "operations": 32,
+      "processus_distincts": 7,
+      "quarantaine_nic": 0,
+      "ressources": {
+        "libres": [
+          24518,
+          24518
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          8,
+          8
+        ],
+        "tables": [
+          107,
+          107
+        ],
+        "heap": [
+          6,
+          6
+        ]
+      },
+      "apres_desarmement": 31,
+      "apres_wait": 31,
+      "attentes": 5
+    },
+    "duo-differe": {
+      "elf": "63b04ec740c31ed51378e57cfb259ed2d3ca3c8442d443912f774ba084c5383a",
+      "captures": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ]
+      },
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "38b5bfd43e966c96caf73a925db01fdb50fbdaad60bfd1631e9447c1d1c579f0"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "3f54b70f1366fcc5b87905dc1964f1e9180a892eacf4f2a18e5c8dffee1b16c7",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "racine": 1118208,
+        "contexte": 1122304,
+        "queue": 1142784,
+        "page_recu": 1146880,
+        "cookie": 5,
+        "iqt": 240,
+        "bouclages": 0,
+        "contextes_finaux": {}
+      },
+      "source_banc": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "cycles": 1,
+      "operations": 32,
+      "processus_distincts": 7,
+      "quarantaine_nic": 0,
+      "ressources": {
+        "libres": [
+          24518,
+          24518
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          8,
+          8
+        ],
+        "tables": [
+          107,
+          107
+        ],
+        "heap": [
+          6,
+          6
+        ]
+      },
+      "apres_desarmement": 31,
+      "apres_wait": 31,
+      "attentes": 5
+    },
+    "duo-absent": {
+      "elf": "b6cd9b5a1a871bbac9322eef8f4fbdcf4432d9c0d76b7e1975d663f71c091811",
+      "captures": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ]
+      },
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "d1bea770ebb947fbf87a656dc443197e0eb0234974220ff2018220e766686486"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "04fc95776a451ccc1b3733e82591f078926a986f629d31587440201d5d4417f5",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "racine": 1118208,
+        "contexte": 1122304,
+        "queue": 1142784,
+        "page_recu": 1146880,
+        "cookie": 5,
+        "iqt": 240,
+        "bouclages": 0,
+        "contextes_finaux": {}
+      },
+      "source_banc": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "cycles": 1,
+      "operations": 32,
+      "processus_distincts": 7,
+      "quarantaine_nic": 26,
+      "ressources": {
+        "libres": [
+          24492,
+          24492
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          34,
+          34
+        ],
+        "tables": [
+          107,
+          107
+        ],
+        "heap": [
+          6,
+          6
+        ]
+      },
+      "apres_desarmement": 31,
+      "apres_wait": 31,
+      "attentes": 5
+    },
+    "duo-sans-reset": {
+      "elf": "22ef2a9d2e82264e34bf906adbeb30ccb8a64dee0d45f07457e9eb07f3db697c",
+      "captures": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ]
+      },
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "3697c2bb03762f20d7ec92b95bed02f96744f6be0b9418cb4a20283ff4dd3893"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "7c08a89ca65dc8520fbfc6d11d27003014cd77331795910ce34bd9999a8bde64",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "racine": 1118208,
+        "contexte": 1122304,
+        "queue": 1142784,
+        "page_recu": 1146880,
+        "cookie": 4,
+        "iqt": 192,
+        "bouclages": 0,
+        "contextes_finaux": {
+          "112": 4341761,
+          "113": 770
+        }
+      },
+      "source_banc": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "cycles": 1,
+      "operations": 32,
+      "processus_distincts": 7,
+      "quarantaine_nic": 26,
+      "ressources": {
+        "libres": [
+          24492,
+          24492
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          34,
+          34
+        ],
+        "tables": [
+          107,
+          107
+        ],
+        "heap": [
+          6,
+          6
+        ]
+      },
+      "apres_desarmement": 31,
+      "apres_wait": 0,
+      "attentes": 4
+    },
+    "duo-postdisque": {
+      "elf": "6c52677035f66c23d000de12bcfc9579f04f5b01607f865a191f379ae0d9e425",
+      "captures": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ]
+      },
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "29eff7533d7a279a75f311e59ff688604fb7871fc2984a61632e68d813263f98"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "ed4218a19b4a83199b331a5a1dbcfea6d95c9aef56916c133ae32e5d7afacd38",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "racine": 1118208,
+        "contexte": 1122304,
+        "queue": 1142784,
+        "page_recu": 1146880,
+        "cookie": 5,
+        "iqt": 240,
+        "bouclages": 0,
+        "contextes_finaux": {}
+      },
+      "source_banc": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "cycles": 1,
+      "operations": 32,
+      "processus_distincts": 7,
+      "quarantaine_nic": 0,
+      "ressources": {
+        "libres": [
+          24518,
+          24518
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          8,
+          8
+        ],
+        "tables": [
+          107,
+          107
+        ],
+        "heap": [
+          6,
+          6
+        ]
+      },
+      "apres_desarmement": 31,
+      "apres_wait": 31,
+      "attentes": 5
+    },
+    "duo-reouverture": {
+      "elf": "0895f4cd84668b4b52ed7b9ab50afd48dd8dc1e8afa0ade82266245e016c9d9b",
+      "captures": {
+        "trames": [
+          32,
+          32
+        ],
+        "octets": [
+          25184,
+          25184
+        ]
+      },
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 1,
+        "generation": 11,
+        "ancres": {
+          "0": {
+            "generation": 10,
+            "manifeste_bloc": 15,
+            "sha256": "2ddf5bcbd4c54e15f0dde0e68685a25e38a864d79535a1f8f41079dc91924d81"
+          },
+          "1": {
+            "generation": 11,
+            "manifeste_bloc": 18,
+            "sha256": "811f5fb643dfe09303f1a89a7021e676e871622fa2c5d331659808f59e0d9344"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "0a5809cdf45c34c4375a4b815e97870e3c7a2e8d940781601245dd986354811f",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "racine": 1118208,
+        "contexte": 1122304,
+        "queue": 1142784,
+        "page_recu": 1146880,
+        "cookie": 33,
+        "iqt": 1584,
+        "bouclages": 0,
+        "contextes_finaux": {}
+      },
+      "source_banc": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "cycles": 8,
+      "operations": 319,
+      "processus_distincts": 56,
+      "quarantaine_nic": 0,
+      "ressources": {
+        "libres": [
+          24516,
+          24516
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          8,
+          8
+        ],
+        "tables": [
+          107,
+          107
+        ],
+        "heap": [
+          6,
+          6
+        ]
+      },
+      "apres_desarmement": 311,
+      "apres_wait": 311,
+      "attentes": 33
+    },
+    "duo-cycles": {
+      "elf": "dda1b699b1b0bd72343d354b7b82456eab9cee2ae81a1dc158ef558a140d61ab",
+      "captures": {
+        "trames": [
+          36864,
+          36864
+        ],
+        "octets": [
+          29011968,
+          29011968
+        ]
+      },
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 1,
+        "generation": 259,
+        "ancres": {
+          "0": {
+            "generation": 258,
+            "manifeste_bloc": 13,
+            "sha256": "d75dd56f18bf4a56f4e489a03d289fcbb9e292a0fea1e0f097c316027ef06f30"
+          },
+          "1": {
+            "generation": 259,
+            "manifeste_bloc": 15,
+            "sha256": "34c144e8fac7b9dee46d877453fa701188eaf2ee7a71c290e01d21349a7ddbeb"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "711e06ff7f0e74d16de05274805b5d338bc65e971b330a784fcbe08affd12197",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "racine": 1118208,
+        "contexte": 1122304,
+        "queue": 1142784,
+        "page_recu": 1146880,
+        "cookie": 1025,
+        "iqt": 48,
+        "bouclages": 12,
+        "contextes_finaux": {}
+      },
+      "source_banc": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "cycles": 256,
+      "operations": 10487,
+      "processus_distincts": 1792,
+      "quarantaine_nic": 0,
+      "ressources": {
+        "libres": [
+          24518,
+          24518
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          8,
+          8
+        ],
+        "tables": [
+          107,
+          107
+        ],
+        "heap": [
+          6,
+          6
+        ]
+      },
+      "apres_desarmement": 8950,
+      "apres_wait": 0,
+      "attentes": 1025
+    },
+    "duo-concurrence": {
+      "elf": "9dbe1a50c3a8fd104d32578acc82fb80d394bcc48cc74973090b57ee45347716",
+      "captures": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      },
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "d9389cf8f8ed51e97c77a31efb5e52b214ce48b1d1af099ffc97816c09defcdd"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "a597efdfd20ba35ea74dea31053fca44f242c5a60fa7495a5f4c09feb692b991",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "racine": 1118208,
+        "contexte": 1122304,
+        "queue": 1142784,
+        "page_recu": 1146880,
+        "cookie": 5,
+        "iqt": 240,
+        "bouclages": 0,
+        "contextes_finaux": {}
+      },
+      "source_banc": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "cycles": 1,
+      "operations": 32,
+      "processus_distincts": 7,
+      "quarantaine_nic": 0,
+      "ressources": {
+        "libres": [
+          24518,
+          24518
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          8,
+          8
+        ],
+        "tables": [
+          107,
+          107
+        ],
+        "heap": [
+          6,
+          6
+        ]
+      },
+      "apres_desarmement": 26,
+      "apres_wait": 0,
+      "attentes": 5
+    },
+    "duo-disque": {
+      "elf": "bcd938b1b4edc513dbd28da790bf80992651c243993c64adbb16a626c82c7553",
+      "captures": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      },
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "9af3f7787f01d66a6928d47a8e4434c7af84e785c6b9f007f61fc73f1be7b05c"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "8df0a022f6a1896ca22fbec4a44dd61763d5f72218bf53e839465be5eddd71c8",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "racine": 1118208,
+        "contexte": 1122304,
+        "queue": 1142784,
+        "page_recu": 1146880,
+        "cookie": 5,
+        "iqt": 240,
+        "bouclages": 0,
+        "contextes_finaux": {}
+      },
+      "source_banc": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "cycles": 1,
+      "operations": 32,
+      "processus_distincts": 7,
+      "quarantaine_nic": 0,
+      "ressources": {
+        "libres": [
+          24518,
+          24518
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          8,
+          8
+        ],
+        "tables": [
+          107,
+          107
+        ],
+        "heap": [
+          6,
+          6
+        ]
+      },
+      "apres_desarmement": 26,
+      "apres_wait": 0,
+      "attentes": 5
+    },
+    "duo-wait-absent": {
+      "elf": "b40bfc940efa33e1b0cbb02b17890dc6aa3b1563d848cac693b15ee50dc60881",
+      "captures": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      },
+      "modele": "e19eefd4e4bd662fafb85a2093fdbb12723c1cdec4cb960bfe0b68723d6dac67",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "902a96dc38dc50fd73ac2b1f94f8dba589d51498bd117914544e57fd1db778c5"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "c1160e375ff4ba4ddca6c2fc91592aef9fa13b149f0c5d11cd968a6647d1eaa7",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "cookie": 0,
+        "iqh": 176,
+        "iqt": 192,
+        "root": 1118208,
+        "qi": 1142784,
+        "wait": 1146880,
+        "domaines": [
+          0,
+          48,
+          56,
+          56
+        ],
+        "contexte": {
+          "96": 1126401,
+          "97": 258
+        }
+      },
+      "source_banc": "938b9ab445f0e1cfa5bbf3e6871bf0d4e9a8b471",
+      "operations": 32,
+      "quarantaine_nic": 26
+    },
+    "duo-wait-tardif": {
+      "elf": "dab62c717fead3225715e5755e0163f0afa78d710cc947f6cab76eb3a9d6d96c",
+      "captures": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      },
+      "modele": "e19eefd4e4bd662fafb85a2093fdbb12723c1cdec4cb960bfe0b68723d6dac67",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "38982d3b041ba9a39e91e447b78fe54da1bb4224eadd4a1afbc3e1cde3467052"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "eadc8d28415271f94b8d1e4b738d282d343b5e9d76e3d9f8a6d677faf57f7ab4",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {
+        "cookie": 4,
+        "iqh": 192,
+        "iqt": 192,
+        "root": 1118208,
+        "qi": 1142784,
+        "wait": 1146880,
+        "domaines": [
+          0,
+          48,
+          56,
+          56
+        ],
+        "contexte": {
+          "96": 1126401,
+          "97": 258
+        }
+      },
+      "source_banc": "938b9ab445f0e1cfa5bbf3e6871bf0d4e9a8b471",
+      "operations": 32,
+      "quarantaine_nic": 26
+    },
+    "deces": {
+      "elf": "df9e1840b46e67785ba4631908cf10120a400ce5eacdc3d5cc0f07e7b9f113a1",
+      "captures": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ]
+      },
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "6622985a7e5cf0dddd5426f472c4cfa8961ecb8774adfe35dbe59676b9f850df"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "b4062244e46c9c5bf061afd55e881370f1b0a06d28ab99340d374580494e587b",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "qi": {},
+      "source_banc": "938b9ab445f0e1cfa5bbf3e6871bf0d4e9a8b471",
+      "operations": 32,
+      "quarantaine_nic": 26
+    }
+  },
+  "arm": {
+    "cycles-256": {
+      "cycles": 256,
+      "generations": [
+        4,
+        259
+      ],
+      "ressources_acteurs": {
+        "libres": [
+          61858,
+          61858
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ],
+        "heap": [
+          16,
+          16
+        ]
+      },
+      "dma_apres_cycle": [
+        16
+      ],
+      "fin": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "E_S_reconciliation": [],
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 800,
+          "traductions_2": 6256,
+          "unmap_done_2": 800,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 346746,
+          "attach_3": 257,
+          "map_3": 5655,
+          "unmap_done_3": 5655,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 257,
+          "traductions_3": 532224
+        },
+        "slots_retenus": [],
+        "domaines_finaux": {}
+      },
+      "fil": {
+        "trames": [
+          36864,
+          36864
+        ],
+        "octets": [
+          29011968,
+          29011968
+        ]
+      },
+      "source": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "elf": "1436f787b3017fbfbd0a48bdae7a97d491d661b71def117a698407a4aca78c9e",
+      "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5"
+    },
+    "court": {
+      "cycles": 1,
+      "generations": [
+        4,
+        4
+      ],
+      "ressources_acteurs": {
+        "libres": [
+          61858,
+          61858
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ],
+        "heap": [
+          16,
+          16
+        ]
+      },
+      "dma_apres_cycle": [],
+      "fin": {
+        "nic": 14,
+        "controleur": 9,
+        "permanent": 0
+      },
+      "E_S_reconciliation": [],
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 800,
+          "traductions_2": 6256,
+          "unmap_done_2": 800,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3771,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 31,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "traductions_3": 22
+        },
+        "slots_retenus": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "domaines_finaux": {
+          "56": 3
+        }
+      },
+      "fil": {
+        "trames": [
+          1,
+          1
+        ],
+        "octets": [
+          60,
+          60
+        ]
+      },
+      "source": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "elf": "0777c4d3da5bb5261e035e0000cb14b0faea2154525247170b4a95ee83dcb06c",
+      "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5"
+    },
+    "rattrapage": {
+      "cycles": 2,
+      "generations": [
+        4,
+        5
+      ],
+      "ressources_acteurs": {
+        "libres": [
+          61856,
+          61856
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ],
+        "heap": [
+          16,
+          16
+        ]
+      },
+      "dma_apres_cycle": [
+        16
+      ],
+      "fin": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "E_S_reconciliation": [],
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 800,
+          "traductions_2": 6256,
+          "unmap_done_2": 800,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 2460,
+          "attach_3": 3,
+          "map_3": 67,
+          "unmap_done_3": 67,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 3,
+          "traductions_3": 234
+        },
+        "slots_retenus": [],
+        "domaines_finaux": {}
+      },
+      "fil": {
+        "trames": [
+          0,
+          32
+        ],
+        "octets": [
+          0,
+          25184
+        ]
+      },
+      "source": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "elf": "cd04b250690fe2f55de8d38ef662c706a31086580a0f0e172d963b0c2cdbc641",
+      "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5"
+    },
+    "recu-arm-differe": {
+      "cycles": 2,
+      "generations": [
+        4,
+        5
+      ],
+      "ressources_acteurs": {
+        "libres": [
+          61858,
+          61858
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ],
+        "heap": [
+          16,
+          16
+        ]
+      },
+      "dma_apres_cycle": [
+        16
+      ],
+      "fin": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "E_S_reconciliation": [
+        {
+          "lectures": 21,
+          "ecritures": 11
+        },
+        {
+          "lectures": 21,
+          "ecritures": 11
+        }
+      ],
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 800,
+          "traductions_2": 6256,
+          "unmap_done_2": 800,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 5185,
+          "attach_3": 3,
+          "map_3": 67,
+          "unmap_done_3": 67,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 3,
+          "traductions_3": 4158
+        },
+        "slots_retenus": [],
+        "domaines_finaux": {}
+      },
+      "fil": {
+        "trames": [
+          288,
+          288
+        ],
+        "octets": [
+          226656,
+          226656
+        ]
+      },
+      "source": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "elf": "d48d006ff3586927981ef9c8a97fe35e6fe113247b19c0b4ae6ba6bb1b1978df",
+      "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5"
+    },
+    "recu-arm-absent": {
+      "cycles": 1,
+      "generations": [
+        4,
+        4
+      ],
+      "ressources_acteurs": {
+        "libres": [
+          61858,
+          61858
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ],
+        "heap": [
+          16,
+          16
+        ]
+      },
+      "dma_apres_cycle": [],
+      "fin": {
+        "nic": 22,
+        "controleur": 9,
+        "permanent": 0
+      },
+      "E_S_reconciliation": [
+        {
+          "lectures": 32,
+          "ecritures": 17
+        }
+      ],
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 800,
+          "traductions_2": 6256,
+          "unmap_done_2": 800,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3803,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 25,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "traductions_3": 2079
+        },
+        "slots_retenus": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "domaines_finaux": {
+          "56": 3
+        }
+      },
+      "fil": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      },
+      "source": "58e387267ea900f18e4c0620a4b737721ac3eb39",
+      "elf": "c303e436c0e9e0494876f6c8de0c0a3b39979a575837e8e2e802ec2abe68cd04",
+      "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5"
+    }
+  },
+  "latences": {
+    "deces": {
+      "boots": [
+        {
+          "READ": {
+            "n": 22,
+            "p50": 3427.107483904273,
+            "p95": 5071.756951524903,
+            "max": 6561.497539626526
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3755.0314756133407,
+            "p95": 4886.671017554141,
+            "max": 4886.671017554141
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3362.72976774053,
+            "p95": 3742.960653832639,
+            "max": 3742.960653832639
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 4558.140630741281,
+            "p95": 4889.532216584996,
+            "max": 6277.3600094214025
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3712.589978376408,
+            "p95": 4962.840052241333,
+            "max": 4962.840052241333
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3148.220065515293,
+            "p95": 3726.6490153515956,
+            "max": 3726.6490153515956
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 4184.298975999093,
+            "p95": 5143.326615279309,
+            "max": 6635.706456887451
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3725.414817015066,
+            "p95": 5016.52967661267,
+            "max": 5016.52967661267
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 2253.1614736079773,
+            "p95": 3638.8708747505343,
+            "max": 3638.8708747505343
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 4662.36283338817,
+            "p95": 5040.202641682955,
+            "max": 6626.728945477769
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3399.5560470448568,
+            "p95": 4551.115568876973,
+            "max": 4551.115568876973
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3889.645347459047,
+            "p95": 4180.2913538396515,
+            "max": 4180.2913538396515
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 4442.449586074168,
+            "p95": 5106.171208860291,
+            "max": 6503.1615948611525
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3669.8715695736914,
+            "p95": 5289.6143908604045,
+            "max": 5289.6143908604045
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3032.8600804304415,
+            "p95": 3903.711230145264,
+            "max": 3903.711230145264
+          }
+        }
+      ],
+      "mediane_us": {
+        "READ": {
+          "p50": 4442.449586074168,
+          "p95": 5071.756951524903
+        },
+        "WRITE": {
+          "p50": 3712.589978376408,
+          "p95": 4962.840052241333
+        },
+        "FLUSH": {
+          "p50": 3148.220065515293,
+          "p95": 3742.960653832639
+        }
+      }
+    },
+    "duo-retrait": {
+      "boots": [
+        {
+          "READ": {
+            "n": 22,
+            "p50": 3595.97517311753,
+            "p95": 5040.004408135884,
+            "max": 5068.200236992588
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3839.667693950474,
+            "p95": 5352.172513335109,
+            "max": 5352.172513335109
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3468.086949374622,
+            "p95": 3627.191983637453,
+            "max": 3627.191983637453
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 4397.1432714847615,
+            "p95": 5077.629713134656,
+            "max": 5316.800683067487
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3839.744818545068,
+            "p95": 5456.900832818936,
+            "max": 5456.900832818936
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 4290.06672846044,
+            "p95": 5152.683364787218,
+            "max": 5152.683364787218
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 3723.224111670865,
+            "p95": 4927.341258986553,
+            "max": 5319.8904409816305
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3636.8233375167324,
+            "p95": 5141.095775390997,
+            "max": 5141.095775390997
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3557.913959965559,
+            "p95": 5457.732138476085,
+            "max": 5457.732138476085
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 4628.884340895207,
+            "p95": 5047.232476477792,
+            "max": 5061.260916952418
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3685.471718976637,
+            "p95": 4597.320349827301,
+            "max": 4597.320349827301
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3532.160905218229,
+            "p95": 3535.1669996056485,
+            "max": 3535.1669996056485
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 4047.0889695500746,
+            "p95": 6195.370785752258,
+            "max": 6298.360325928578
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3752.6188765216625,
+            "p95": 4794.513059664634,
+            "max": 4794.513059664634
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3455.6490373724664,
+            "p95": 3911.6027298035556,
+            "max": 3911.6027298035556
+          }
+        }
+      ],
+      "mediane_us": {
+        "READ": {
+          "p50": 4047.0889695500746,
+          "p95": 5047.232476477792
+        },
+        "WRITE": {
+          "p50": 3752.6188765216625,
+          "p95": 5141.095775390997
+        },
+        "FLUSH": {
+          "p50": 3532.160905218229,
+          "p95": 3911.6027298035556
+        }
+      }
+    },
+    "duo-differe": {
+      "boots": [
+        {
+          "READ": {
+            "n": 22,
+            "p50": 3601.511036183697,
+            "p95": 5028.12900003122,
+            "max": 5205.956729418376
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 2829.2591551934065,
+            "p95": 5315.850270050888,
+            "max": 5315.850270050888
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 4494.645811869751,
+            "p95": 5290.87446536168,
+            "max": 5290.87446536168
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 3543.837831115533,
+            "p95": 4597.438129585872,
+            "max": 4708.867056336277
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3424.4496953115286,
+            "p95": 3761.721178957841,
+            "max": 3761.721178957841
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3099.1170252456163,
+            "p95": 3649.297351075737,
+            "max": 3649.297351075737
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 3959.047798505119,
+            "p95": 5301.174549337353,
+            "max": 5406.695559324163
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3785.6918535267887,
+            "p95": 5275.045537340619,
+            "max": 5275.045537340619
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 2975.6924816280384,
+            "p95": 3721.3742855348282,
+            "max": 3721.3742855348282
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 4535.071594616847,
+            "p95": 5096.499309449931,
+            "max": 6259.492556083614
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3289.2941004876698,
+            "p95": 4779.410555406581,
+            "max": 4779.410555406581
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3059.5050983486594,
+            "p95": 4124.160693411935,
+            "max": 4124.160693411935
+          }
+        },
+        {
+          "READ": {
+            "n": 22,
+            "p50": 3539.1566518656746,
+            "p95": 5181.942761298652,
+            "max": 6182.248153131544
+          },
+          "WRITE": {
+            "n": 7,
+            "p50": 3534.145101806392,
+            "p95": 5591.887556148004,
+            "max": 5591.887556148004
+          },
+          "FLUSH": {
+            "n": 3,
+            "p50": 3667.4523333833204,
+            "p95": 3791.73877485354,
+            "max": 3791.73877485354
+          }
+        }
+      ],
+      "mediane_us": {
+        "READ": {
+          "p50": 3601.511036183697,
+          "p95": 5096.499309449931
+        },
+        "WRITE": {
+          "p50": 3424.4496953115286,
+          "p95": 5275.045537340619
+        },
+        "FLUSH": {
+          "p50": 3099.1170252456163,
+          "p95": 3791.73877485354
+        }
+      }
+    }
+  },
+  "ethernet": {
+    "ancien3b": {
+      "boots": [
+        {
+          "elf": "0b19640f4474fa246754c88371280d3d109c3eb3bdd6256d5084ff64edde1901",
+          "source": "ff864f5bec14315e7374375a92ca47912a0abdc5",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:02:59.524100+00:00",
+          "tx_mbps": 37.1627532634142,
+          "p99_ms": 2.895826288460515,
+          "ipc_par_trame": 14.9554443359375,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.029296875,
+            "changements_contexte": 131.833984375,
+            "reveils": 44.029296875,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "0b19640f4474fa246754c88371280d3d109c3eb3bdd6256d5084ff64edde1901",
+          "source": "ff864f5bec14315e7374375a92ca47912a0abdc5",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:12:11.957130+00:00",
+          "tx_mbps": 38.400974262325676,
+          "p99_ms": 2.862599131820381,
+          "ipc_par_trame": 14.9805908203125,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.2734375,
+            "changements_contexte": 132.29296875,
+            "reveils": 44.2734375,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "0b19640f4474fa246754c88371280d3d109c3eb3bdd6256d5084ff64edde1901",
+          "source": "ff864f5bec14315e7374375a92ca47912a0abdc5",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:12:21.042892+00:00",
+          "tx_mbps": 37.37569976771133,
+          "p99_ms": 2.946118743625289,
+          "ipc_par_trame": 14.98486328125,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.3134765625,
+            "changements_contexte": 132.40234375,
+            "reveils": 44.3134765625,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "0b19640f4474fa246754c88371280d3d109c3eb3bdd6256d5084ff64edde1901",
+          "source": "ff864f5bec14315e7374375a92ca47912a0abdc5",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:13:30.932174+00:00",
+          "tx_mbps": 37.74744918401409,
+          "p99_ms": 2.8202468315342393,
+          "ipc_par_trame": 14.9500732421875,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.052734375,
+            "changements_contexte": 131.912109375,
+            "reveils": 44.052734375,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "0b19640f4474fa246754c88371280d3d109c3eb3bdd6256d5084ff64edde1901",
+          "source": "ff864f5bec14315e7374375a92ca47912a0abdc5",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:13:40.218154+00:00",
+          "tx_mbps": 37.26966646631742,
+          "p99_ms": 3.0705997280446837,
+          "ipc_par_trame": 14.9564208984375,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.0966796875,
+            "changements_contexte": 131.994140625,
+            "reveils": 44.0966796875,
+            "publications": 1.0
+          }
+        }
+      ],
+      "disposition": {
+        "text_sha256": "4a0b602bb5c1dbccc176bcbb6f6570b1dbe9c683feda2dda9c173a4569ce856a",
+        "text_octets": 1081556,
+        "demande": {
+          "adresse": "0xffffffff80078620",
+          "octets": 3348,
+          "sha256": "99f5a0b7f1999fed69a28079a139f7bcc2d05cdd6c91621d6533e973f670291e"
+        }
+      },
+      "mediane": {
+        "tx_mbps": 37.37569976771133,
+        "p99_ms": 2.895826288460515,
+        "ipc_par_trame": 14.9564208984375
+      }
+    },
+    "ancien3c": {
+      "boots": [
+        {
+          "elf": "282ed4ebd1e77e40a7e2f42db290218646a83e838f3079b2b30fb49f265554ae",
+          "source": "0ba527c879f4d1c9349885bf3038425a2233d233",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:03:08.932519+00:00",
+          "tx_mbps": 34.77635239988032,
+          "p99_ms": 3.384127531312897,
+          "ipc_par_trame": 14.969970703125,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.1669921875,
+            "changements_contexte": 132.2138671875,
+            "reveils": 44.1669921875,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "282ed4ebd1e77e40a7e2f42db290218646a83e838f3079b2b30fb49f265554ae",
+          "source": "0ba527c879f4d1c9349885bf3038425a2233d233",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:05:55.289607+00:00",
+          "tx_mbps": 36.2532302694052,
+          "p99_ms": 3.0696543771620908,
+          "ipc_par_trame": 15.0068359375,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.37109375,
+            "changements_contexte": 132.55078125,
+            "reveils": 44.37109375,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "282ed4ebd1e77e40a7e2f42db290218646a83e838f3079b2b30fb49f265554ae",
+          "source": "0ba527c879f4d1c9349885bf3038425a2233d233",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:12:34.205184+00:00",
+          "tx_mbps": 35.25717227346361,
+          "p99_ms": 3.1045447446509447,
+          "ipc_par_trame": 14.9697265625,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.2392578125,
+            "changements_contexte": 132.2880859375,
+            "reveils": 44.2392578125,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "282ed4ebd1e77e40a7e2f42db290218646a83e838f3079b2b30fb49f265554ae",
+          "source": "0ba527c879f4d1c9349885bf3038425a2233d233",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:13:21.630949+00:00",
+          "tx_mbps": 37.19388346681991,
+          "p99_ms": 2.87496330350844,
+          "ipc_par_trame": 14.9552001953125,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.080078125,
+            "changements_contexte": 131.958984375,
+            "reveils": 44.080078125,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "282ed4ebd1e77e40a7e2f42db290218646a83e838f3079b2b30fb49f265554ae",
+          "source": "0ba527c879f4d1c9349885bf3038425a2233d233",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:13:49.508157+00:00",
+          "tx_mbps": 35.83311783522652,
+          "p99_ms": 3.033751138360369,
+          "ipc_par_trame": 14.9737548828125,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.2880859375,
+            "changements_contexte": 132.365234375,
+            "reveils": 44.2880859375,
+            "publications": 1.0
+          }
+        }
+      ],
+      "disposition": {
+        "text_sha256": "a650965bf81afd06ba619c730d809cc5e8d918c5d332da259fb82b305257bec7",
+        "text_octets": 1039988,
+        "demande": {
+          "adresse": "0xffffffff8004c8b0",
+          "octets": 3304,
+          "sha256": "485df193d18ee8b0d90e9567b9d515cdbc31a929b646a7ad14b5f9fbf4a21e20"
+        }
+      },
+      "mediane": {
+        "tx_mbps": 35.83311783522652,
+        "p99_ms": 3.0696543771620908,
+        "ipc_par_trame": 14.969970703125
+      }
+    },
+    "temoin": {
+      "boots": [
+        {
+          "elf": "2749ed56347a31080b3d206ebaf433428495cd6639d5ad15783e2bfd076ed6a2",
+          "source": "0169c75148c8359c9235f3f19359133a0e002115",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:03:18.594296+00:00",
+          "tx_mbps": 35.125322461307015,
+          "p99_ms": 3.119267202300935,
+          "ipc_par_trame": 14.9478759765625,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.052734375,
+            "changements_contexte": 131.9501953125,
+            "reveils": 44.052734375,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "2749ed56347a31080b3d206ebaf433428495cd6639d5ad15783e2bfd076ed6a2",
+          "source": "0169c75148c8359c9235f3f19359133a0e002115",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:05:45.757166+00:00",
+          "tx_mbps": 36.235924082767546,
+          "p99_ms": 3.1137091294005583,
+          "ipc_par_trame": 14.9532470703125,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.025390625,
+            "changements_contexte": 131.9189453125,
+            "reveils": 44.0263671875,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "2749ed56347a31080b3d206ebaf433428495cd6639d5ad15783e2bfd076ed6a2",
+          "source": "0169c75148c8359c9235f3f19359133a0e002115",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:12:43.924545+00:00",
+          "tx_mbps": 34.90756419298501,
+          "p99_ms": 3.074427445840919,
+          "ipc_par_trame": 14.9632568359375,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.19921875,
+            "changements_contexte": 132.224609375,
+            "reveils": 44.201171875,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "2749ed56347a31080b3d206ebaf433428495cd6639d5ad15783e2bfd076ed6a2",
+          "source": "0169c75148c8359c9235f3f19359133a0e002115",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:13:12.164337+00:00",
+          "tx_mbps": 36.21152591100943,
+          "p99_ms": 3.1157752913409595,
+          "ipc_par_trame": 14.9471435546875,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.0986328125,
+            "changements_contexte": 132.0234375,
+            "reveils": 44.0986328125,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "2749ed56347a31080b3d206ebaf433428495cd6639d5ad15783e2bfd076ed6a2",
+          "source": "0169c75148c8359c9235f3f19359133a0e002115",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:13:59.001907+00:00",
+          "tx_mbps": 36.475686133071136,
+          "p99_ms": 3.0574235159995626,
+          "ipc_par_trame": 14.9627685546875,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.1279296875,
+            "changements_contexte": 132.0478515625,
+            "reveils": 44.1279296875,
+            "publications": 1.0
+          }
+        }
+      ],
+      "disposition": {
+        "text_sha256": "a650965bf81afd06ba619c730d809cc5e8d918c5d332da259fb82b305257bec7",
+        "text_octets": 1039988,
+        "demande": {
+          "adresse": "0xffffffff8004c8b0",
+          "octets": 3304,
+          "sha256": "485df193d18ee8b0d90e9567b9d515cdbc31a929b646a7ad14b5f9fbf4a21e20"
+        }
+      },
+      "mediane": {
+        "tx_mbps": 36.21152591100943,
+        "p99_ms": 3.1137091294005583,
+        "ipc_par_trame": 14.9532470703125
+      }
+    },
+    "froid": {
+      "boots": [
+        {
+          "elf": "3718e2f7bb0ac8e155b181bde4bf409143cbdd9ef98d0f7b12ce616a473898b6",
+          "source": "0169c75148c8359c9235f3f19359133a0e002115",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:03:28.344435+00:00",
+          "tx_mbps": 36.248351454216674,
+          "p99_ms": 3.15669533457162,
+          "ipc_par_trame": 14.953369140625,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.0830078125,
+            "changements_contexte": 131.9931640625,
+            "reveils": 44.0830078125,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "3718e2f7bb0ac8e155b181bde4bf409143cbdd9ef98d0f7b12ce616a473898b6",
+          "source": "0169c75148c8359c9235f3f19359133a0e002115",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:03:37.863368+00:00",
+          "tx_mbps": 36.51861127194797,
+          "p99_ms": 3.0456160117678355,
+          "ipc_par_trame": 15.001953125,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.3056640625,
+            "changements_contexte": 132.400390625,
+            "reveils": 44.3056640625,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "3718e2f7bb0ac8e155b181bde4bf409143cbdd9ef98d0f7b12ce616a473898b6",
+          "source": "0169c75148c8359c9235f3f19359133a0e002115",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:12:53.680769+00:00",
+          "tx_mbps": 37.37850528792184,
+          "p99_ms": 3.0572249087161354,
+          "ipc_par_trame": 14.953369140625,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.0947265625,
+            "changements_contexte": 132.0068359375,
+            "reveils": 44.0947265625,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "3718e2f7bb0ac8e155b181bde4bf409143cbdd9ef98d0f7b12ce616a473898b6",
+          "source": "0169c75148c8359c9235f3f19359133a0e002115",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:13:02.986689+00:00",
+          "tx_mbps": 37.645113557290586,
+          "p99_ms": 2.873034162747968,
+          "ipc_par_trame": 14.95751953125,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.0986328125,
+            "changements_contexte": 131.9951171875,
+            "reveils": 44.0986328125,
+            "publications": 1.0
+          }
+        },
+        {
+          "elf": "3718e2f7bb0ac8e155b181bde4bf409143cbdd9ef98d0f7b12ce616a473898b6",
+          "source": "0169c75148c8359c9235f3f19359133a0e002115",
+          "n": 1024,
+          "acquisition": "2026-11-26T23:16:57.049162+00:00",
+          "tx_mbps": 37.22989875985064,
+          "p99_ms": 2.911788774568876,
+          "ipc_par_trame": 14.9595947265625,
+          "cout_par_lot": {
+            "attentes_bloquees": 44.03125,
+            "changements_contexte": 131.8408203125,
+            "reveils": 44.03125,
+            "publications": 1.0
+          }
+        }
+      ],
+      "disposition": {
+        "text_sha256": "51fdd20d7fa08e8413f6732591ad094179315682f3a246a00dd176dc44073b68",
+        "text_octets": 1040148,
+        "demande": {
+          "adresse": "0xffffffff8004c8b0",
+          "octets": 2864,
+          "sha256": "fd0449302ba2f6f5b73e3c5d6654a8bfffff7b76d3d22bd741132899e90d8bb8"
+        },
+        "clore_v1": {
+          "adresse": "0xffffffff8004eac0",
+          "octets": 601,
+          "sha256": "93a0f3de29d75b220523be4d6c8ad79442793b912531c08073810fdaf80b8cdd"
+        }
+      },
+      "mediane": {
+        "tx_mbps": 37.22989875985064,
+        "p99_ms": 3.0456160117678355,
+        "ipc_par_trame": 14.95751953125
+      }
+    }
+  },
+  "instantanes": {
+    "duo-differe": {
+      "qtest": {
+        "bme": {
+          "48": true,
+          "56": false
+        },
+        "controleur": [
+          1118208,
+          1122304,
+          1126400,
+          1130496,
+          1134592,
+          1138688,
+          1142784,
+          1146880
+        ],
+        "disque": [
+          3104768,
+          3108864,
+          3112960,
+          3117056,
+          3121152,
+          3125248
+        ],
+        "nic": [
+          4341760,
+          4345856,
+          4349952,
+          4354048,
+          4358144,
+          4362240,
+          4366336,
+          4370432,
+          4374528,
+          4378624,
+          4382720,
+          4386816,
+          4390912,
+          4395008,
+          4399104,
+          4403200,
+          4407296,
+          4411392,
+          4415488,
+          4419584,
+          4423680,
+          4427776,
+          4431872,
+          4435968,
+          4440064,
+          4444160
+        ],
+        "feuilles_disque": {
+          "0": 3104769,
+          "1": 3108866,
+          "2": 3112961,
+          "3": 3117058,
+          "4": 3121154,
+          "5": 3125249
+        },
+        "permissions_nic": [
+          1,
+          1,
+          2,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "cookie": 4,
+        "iqh": 192,
+        "iqt": 192
+      },
+      "source": "58e387267ea900f18e4c0620a4b737721ac3eb39"
+    },
+    "duo-absent": {
+      "qtest": {
+        "bme": {
+          "48": true,
+          "56": false
+        },
+        "controleur": [
+          1118208,
+          1122304,
+          1126400,
+          1130496,
+          1134592,
+          1138688,
+          1142784,
+          1146880
+        ],
+        "disque": [
+          3026944,
+          3031040,
+          3035136,
+          3039232,
+          3043328,
+          3047424
+        ],
+        "nic": [
+          4341760,
+          4345856,
+          4349952,
+          4354048,
+          4358144,
+          4362240,
+          4366336,
+          4370432,
+          4374528,
+          4378624,
+          4382720,
+          4386816,
+          4390912,
+          4395008,
+          4399104,
+          4403200,
+          4407296,
+          4411392,
+          4415488,
+          4419584,
+          4423680,
+          4427776,
+          4431872,
+          4435968,
+          4440064,
+          4444160
+        ],
+        "feuilles_disque": {
+          "0": 3026945,
+          "1": 3031042,
+          "2": 3035137,
+          "3": 3039234,
+          "4": 3043330,
+          "5": 3047425
+        },
+        "permissions_nic": [
+          1,
+          1,
+          2,
+          1,
+          1,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          2,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "cookie": 4,
+        "iqh": 192,
+        "iqt": 192
+      },
+      "source": "58e387267ea900f18e4c0620a4b737721ac3eb39"
+    }
+  },
+  "capacite_pci_arm": {
+    "bar": 4,
+    "offset": 0,
+    "octets": 4096,
+    "champ_queue_reset_dans_capacite": true,
+    "bit_40_offert": true,
+    "bit_40_negocie": false
+  },
+  "transports": {
+    "arm/choix-data": {
+      "fil": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      },
+      "ressources_montage": [
+        2,
+        5,
+        9
+      ],
+      "transport": "DATA"
+    },
+    "arm/plein": {
+      "fil": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      },
+      "ressources_montage": [
+        8,
+        13,
+        23
+      ],
+      "transport": "DATA"
+    },
+    "q35/choix-data": {
+      "fil": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      },
+      "ressources_montage": [
+        2,
+        5,
+        9
+      ],
+      "transport": "DATA"
+    },
+    "q35/plein": {
+      "fil": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      },
+      "ressources_montage": [
+        8,
+        13,
+        23
+      ],
+      "transport": "DATA"
+    }
+  },
+  "machine_echo": {
+    "q35": {
+      "-machine": [
+        "q35,smm=on"
+      ],
+      "-accel": [
+        "tcg"
+      ],
+      "-cpu": [
+        "max"
+      ],
+      "-smp": [
+        "1"
+      ],
+      "-m": [
+        "256"
+      ],
+      "-device": [
+        "ide-hd,id=support,drive=source,bus=ide.0,bootindex=1",
+        "virtio-net-pci,id=nic,addr=7,netdev=prive,iommu_platform=on,ats=off,disable-legacy=on,vectors=0,romfile=",
+        "intel-iommu,id=i,intremap=on,eim=on,aw-bits=48,caching-mode=on,device-iotlb=off",
+        "ramfb"
+      ],
+      "-global": [
+        "isa-debugcon.iobase=0xe9",
+        "driver=cfi.pflash01,property=secure,value=on",
+        "virtio-net-pci.event_idx=on"
+      ],
+      "-trace": [
+        "pci_cfg_write",
+        "vtd_dmar_enable",
+        "vtd_reg_write_gcmd",
+        "vtd_reg_dmar_root",
+        "vtd_iotlb_page_update",
+        "vtd_iotlb_page_hit",
+        "vtd_dmar_fault",
+        "vtd_dmar_translate",
+        "vtd_inv_desc_iotlb_global"
+      ],
+      "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+      "version": {
+        "qemu": {
+          "micro": 3,
+          "minor": 1,
+          "major": 11
+        },
+        "package": ""
+      },
+      "firmware": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+    }
+  },
+  "effet_cloture": {
+    "tx_mbps": 5,
+    "p99_ms": 4
+  },
+  "hote": {
+    "revision": "d964b65992804ce63ac18a0dd8b3cda26c47b6e9",
+    "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+    "essais": [
+      {
+        "jeu": "ethernet",
+        "execution": [
+          "arch",
+          "-arm64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/ethernet-arm64",
+          "--test-threads=1",
+          "credits_and_journal_saturation_recovery",
+          "publication_incertaine_conserve_credit_et_recu",
+          "revoke_during_lot_scrubs_and_preserves_unknown",
+          "lost_response_and_partial_publication",
+          "atomic_batch_and_generations",
+          "identities_ports_and_incarnations",
+          "armed_wait_wakes_once_including_revoke",
+          "versions_features_and_initial_denial",
+          "snapshot_padding_and_remote_delivery_oracle",
+          "retrait_dma::"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "aarch64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/architecture-ethernet/novaOS/tests/ethernet_v1/lib.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/ethernet-arm64"
+        ],
+        "architecture": "arm64",
+        "rosetta": false,
+        "tests": 12,
+        "elf_sha256": "4c7f2faf290024479a75f5aeb62df996f6582e94a5f0dc74e0611a88bc4734b2"
+      },
+      {
+        "jeu": "ethernet",
+        "execution": [
+          "arch",
+          "-x86_64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/ethernet-x86_64",
+          "--test-threads=1",
+          "credits_and_journal_saturation_recovery",
+          "publication_incertaine_conserve_credit_et_recu",
+          "revoke_during_lot_scrubs_and_preserves_unknown",
+          "lost_response_and_partial_publication",
+          "atomic_batch_and_generations",
+          "identities_ports_and_incarnations",
+          "armed_wait_wakes_once_including_revoke",
+          "versions_features_and_initial_denial",
+          "snapshot_padding_and_remote_delivery_oracle",
+          "retrait_dma::"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "x86_64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/architecture-ethernet/novaOS/tests/ethernet_v1/lib.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/ethernet-x86_64"
+        ],
+        "architecture": "x86_64",
+        "rosetta": true,
+        "tests": 12,
+        "elf_sha256": "1aa1a6548c108fdb0e75536b0c8d365b352643afee1a63f6c69ceaa0a8821de3"
+      },
+      {
+        "jeu": "demandes",
+        "execution": [
+          "arch",
+          "-arm64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/demandes-arm64",
+          "--test-threads=1"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "aarch64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp99utf16y/tests/virtio_net_retraits.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/demandes-arm64"
+        ],
+        "architecture": "arm64",
+        "rosetta": false,
+        "tests": 3,
+        "elf_sha256": "9b8d25c7a8a6919a8662c428960231937c1aedbb7ed0e0b8f662518c7d7742e7"
+      },
+      {
+        "jeu": "demandes",
+        "execution": [
+          "arch",
+          "-x86_64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/demandes-x86_64",
+          "--test-threads=1"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "x86_64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp99utf16y/tests/virtio_net_retraits.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/demandes-x86_64"
+        ],
+        "architecture": "x86_64",
+        "rosetta": true,
+        "tests": 3,
+        "elf_sha256": "3885beb5399e7ad6a8c27c7229c1c9cfc735f025b61304176f793b87b896fbc7"
+      },
+      {
+        "jeu": "vtd",
+        "execution": [
+          "arch",
+          "-arm64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/vtd-arm64",
+          "--test-threads=1"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "aarch64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp99utf16y/vtd.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/vtd-arm64"
+        ],
+        "architecture": "arm64",
+        "rosetta": false,
+        "tests": 5,
+        "elf_sha256": "06b062b71e3a0a48fc1563a806ba5e5627da90ec03c6e04894e528dece0ae49d"
+      },
+      {
+        "jeu": "vtd",
+        "execution": [
+          "arch",
+          "-x86_64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/vtd-x86_64",
+          "--test-threads=1"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "x86_64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp99utf16y/vtd.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3d/hote/vtd-x86_64"
+        ],
+        "architecture": "x86_64",
+        "rosetta": true,
+        "tests": 5,
+        "elf_sha256": "45adf39dde09197d769df4c8bc92fdf4653ea6813790a8fc096d0c282df47ff7"
+      }
+    ],
+    "debut_attente": "2026-11-26T23:11:54.039653+00:00",
+    "acquisition": "2026-11-26T23:12:30.099433+00:00",
+    "attente_s": 36.05981408292428,
+    "selecteurs": 48,
+    "liberation": "2026-11-26T23:12:33.952112+00:00"
+  },
+  "objets_conserves": {
+    "novaOS/abi": "2a547403a796377c339dcc2d18b746ad5e2f2750",
+    "novaOS/Cargo.toml": "5b912a2e90d4ff8ccbc671c03ed79fa37144b9dc",
+    "novaOS/kernel/Cargo.toml": "940e164a80e6e5d3f0cdf7540d07dd58e966d2d9",
+    "novaFS": "3379ccd023e821e912130c7413113fe7546070cc",
+    "components": "e34ae8749238014eee657ae4eed950062a03e46c",
+    "distribution": "65ca3e806f8b60d9c24de0a7855e64e3de5d7649"
+  }
+}

@@ -72,7 +72,7 @@ def disposition(elf):
 
 
 def paquet(dest, archive, inventaire):
-    with (dest/"preuves.tar.gz").open("xb") as fichier, gzip.GzipFile(fileobj=fichier,filename="",mtime=0) as flux:
+    with (dest/"preuves.tar.gz").open("xb") as fichier, gzip.GzipFile(fileobj=fichier,mode="wb",filename="",mtime=0) as flux:
         with tarfile.open(mode="w",fileobj=flux) as tar:
             for nom in sorted(inventaire):
                 rel = Path(nom)
