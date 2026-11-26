@@ -168,8 +168,9 @@ def bilan_cycles(serie, ops, avant, final, cycles, mort, retenus, application_or
         ram = resources(log,"nvme_apres_retrait")
         exiger(ram["dma"]==8+retenus and all(ram[k]==0 for k in ("ipc","processus","utilisateur","upile","meta_actifs")),
                f"Ressources génération {g}")
-        mesures = [(op,int(cid),int(t)*1e6/int(h)) for op,cid,t,h in
-                   re.findall(r"E3D CQE op=(READ|WRITE|FLUSH) cid=(\d+) ticks=(\d+) hz=(\d+)",log)]
+        hz = int(re.search(r"NET Q35 L2 GSI=23 .*? hz=(\d+)", log)[1])
+        mesures = [(op,int(cid),int(t)*1e6/hz) for op,cid,t in
+                   re.findall(r"E3D CQE op=(READ|WRITE|FLUSH) cid=(\d+) ticks=(\d+)",log)]
         exiger([(op,cid) for op,cid,_ in mesures]==[(o["op"],o["cid"]) for o in io], "Correspondance des mesures de service")
         lignes.append(dict(generation=g,ram=ram,racines=racines,ordre=ordre,
                            latences_us=mesures,operations=len(io)))

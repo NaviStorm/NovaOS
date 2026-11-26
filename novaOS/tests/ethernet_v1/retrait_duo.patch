@@ -202,8 +202,8 @@
 +                        {
 +                            let fin = hal::timer::counter();
 +                            let op = match cmd { Command::Read { .. } => "READ", Command::Write { .. } => "WRITE", _ => "FLUSH" };
-+                            hal::log(format_args!("E3D CQE op={op} cid={} ticks={} hz={}", info.cid,
-+                                fin - self.samples.command, hal::timer::counter_hz()));
++                            hal::log(format_args!("E3D CQE op={op} cid={} ticks={}", info.cid,
++                                fin - self.samples.command));
 +                        }
                          t.stage = Stage::Completed;
                          self.completed += 1;
