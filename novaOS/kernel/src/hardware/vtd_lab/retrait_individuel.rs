@@ -1,4 +1,4 @@
-//! Collecte privée d'un WAIT de retrait du NIC, lorsque le domaine NVMe reste actif.
+//! Reçu privé du retrait NIC sur la file partagée avec le domaine NVMe.
 use super::*;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -26,7 +26,8 @@ impl Engine {
             && if let Some(recu) = d.retrait {
                 d.delegated
                     && (recu.titulaire, recu.generation) == id
-                    && (self.cookie, self.tail) == (recu.cookie, recu.queue)
+                    && recu.cookie <= self.cookie
+                    && u64::from(recu.queue) == (48 * u64::from(recu.cookie)) % 4096
             } else {
                 !d.delegated && d.frames.iter().all(|f| f.pa == 0)
             }
@@ -65,11 +66,46 @@ impl Engine {
         bail: Lease,
         plan: NvmeLayout,
     ) -> Result<()> {
+        let disque_confirme = self.retrait_verifie(id, bail, plan);
+        self.consommer_recu(id, cookie, disque_confirme)
+    }
+
+    pub(in crate::hardware) fn collecter_disque_retire(
+        &mut self,
+        id: (u64, u64),
+        cookie: u32,
+    ) -> Result<()> {
+        let disque_confirme =
+            self.parked() && super::super::super::pci_ports::port(SID, 4, 2, None) & 4 == 0;
+        self.consommer_recu(id, cookie, disque_confirme)
+    }
+
+    fn consommer_recu(&mut self, id: (u64, u64), cookie: u32, disque_confirme: bool) -> Result<()> {
         let recu = self.duo.retrait.ok_or(Error::Denied)?;
         if (recu.titulaire, recu.generation, recu.cookie) != (id.0, id.1, cookie) {
             return Err(Error::Denied);
         }
-        if !self.retrait_verifie(id, bail, plan) {
+        // Le WAIT suivant peut appartenir au NVMe. Le reçu déjà vérifié reste
+        // lié au bail NIC. La file commune doit être saine à son dernier indice.
+        let d = &self.duo;
+        if !disque_confirme
+            || (d.owner, d.generation) != id
+            || !d.delegated
+            || d.published
+            || d.pending.is_some()
+            || d.requested.is_some()
+            || d.uncertain()
+            || self.in_queue
+            || recu.cookie > self.cookie
+            || u64::from(recu.queue) != (48 * u64::from(recu.cookie)) % 4096
+            || !self.closed_nic()
+            || !d.verify_nic(&self.service, &self.pages)
+            || !d.delivery_ok(self.regs)
+            || self.regs.r32(0x34) != 0
+            || self.regs.r32(0x38) != 0
+            || FAULT_IRQS.load(Ordering::Acquire) != 0
+            || self.wait_snapshot() != (self.cookie, u64::from(self.tail), u64::from(self.tail))
+        {
             return Err(Error::Quarantine);
         }
         self.duo.retrait = None;

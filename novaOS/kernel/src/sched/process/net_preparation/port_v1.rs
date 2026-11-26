@@ -253,7 +253,7 @@ impl EthernetActor {
             Some("veille") => 7,
             Some("court" | "cycles-court" | "preuve-absente" | "recu-vtd-absent" | "recu-vtd-differe") => 8,
             Some("revocation") => 6,
-            Some("deces" | "deces-recu-tx-absent" | "duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset" | "duo-reouverture") => 3,
+            Some("deces" | "deces-recu-tx-absent" | "duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset" | "duo-reouverture" | "duo-postdisque") => 3,
             Some("endurance") => 5,
             Some("incertain") => 4,
             Some("boite") => 1,

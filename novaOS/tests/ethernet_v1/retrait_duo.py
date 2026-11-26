@@ -5,7 +5,7 @@ import struct
 
 CAS = {"duo-retrait": "nvme-panne-nic", "duo-differe": "nvme-panne-nic",
        "duo-absent": "nvme-panne-nic", "duo-sans-reset": "nvme-panne-nic",
-       "duo-reouverture": "nvme-panne-nic", "duo-cycles": "nvme-cycles", "duo-concurrence": "nvme-contention-nic",
+       "duo-postdisque": "nvme-panne-nic", "duo-reouverture": "nvme-panne-nic", "duo-cycles": "nvme-cycles", "duo-concurrence": "nvme-contention-nic",
        "duo-disque": "nvme-contention-disque", "duo-wait-absent": "nvme-contention-wait-absent-nic",
        "duo-wait-tardif": "nvme-contention-wait-tardif-nic"}
 
@@ -185,7 +185,15 @@ def verifier(chemin, cas, lecteur, avant, pair):
             exiger(set(apres)==set(fenetres) and "retenus=26 anciennes=refusees admission=refusee" in serie,
                    "E/S après WAIT ciblé et refus d'admission")
             collecte=re.findall(r"E3D collecte NIC .*? terminees=(\d+) liberes=26 doublon=refuse NVMe_actif=true",serie)
-            exiger(collecte==([] if retenus else ["30" if cas=="duo-differe" else "1"]*cycles), "Collecte unique")
+            if cas == "duo-postdisque":
+                exiger(not collecte and re.search(r"E3D collecte apres NVMe pid=\d+ generation=1 attendu=4 dernier=5 recu_disque=refuse liberes=26 doublon=refuse",serie),
+                       "Attribution distincte du reçu NIC après WAIT disque")
+            else:
+                exiger(collecte==([] if retenus else ["30" if cas=="duo-differe" else "1"]*cycles), "Collecte unique")
+            if cas in ("duo-differe","duo-postdisque","duo-absent"):
+                periode = serie.split("retenus=26 anciennes=refusees admission=refusee",1)[1].split("E3D collecte",1)[0]
+                exiger(set(re.findall(r"E3D CQE op=(\w+)", periode)) == {"READ","WRITE","FLUSH"},
+                       "READ/WRITE/FLUSH pendant la réconciliation différée")
         else:
             exiger("DMA_retenu=26 NVMe_verifie=true" in serie and "E3D WAIT NIC" not in serie, "Absence du jeton")
     if cas in ("duo-concurrence","duo-disque"):
@@ -250,4 +258,6 @@ def bilan_cycles(serie, ops, avant, final, cycles, mort, retenus, application_or
         exiger([(op,cid) for op,cid,_ in mesures]==[(o["op"],o["cid"]) for o in io], "Correspondance des mesures de service")
         lignes.append(dict(generation=g,ram=ram,racines=racines,ordre=ordre,
                            latences_us=mesures,operations=len(io)))
+    for k in ("libres","tables","kpile","upile","heap","cache","ipc","utilisateur","processus","dma"):
+        exiger(len({ligne["ram"][k] for ligne in lignes}) == 1, f"Dérive de {k} entre cycles")
     return dict(cycles=lignes,p9=final,cadres_nic_retenus=retenus,processus_distincts=len(pids))

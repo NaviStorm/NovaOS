@@ -5,7 +5,7 @@
      }
 
 +    let individuel = dual && matches!(option_env!("NOVAOS_ETH3_CASE"),
-+        Some("duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset" | "duo-reouverture"));
++        Some("duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset" | "duo-reouverture" | "duo-postdisque"));
 +    let titulaire = actor.as_ref().map(|a| a.owner());
 +    let mut scelle = false;
      let mut operation = |tag:u64, len:usize, copie:&mut [u8]| {
@@ -74,7 +74,7 @@
                  break id;
              }
              if expired(start) {
-@@ -122,12 +126,56 @@
+@@ -122,12 +126,73 @@
          {
              return Err(Error::Quarantine);
          }
@@ -106,7 +106,9 @@
 +
 +    pub(crate) fn reconcilier_nic(&mut self, terminees: u64) -> Result<()> {
 +        let LocalFault::NicRetired(pid, epoch, cookie) = self.fault else {return Ok(())};
-+        if !self.kept_network_frames() || option_env!("NOVAOS_ETH3_CASE") == Some("duo-absent")
++        if self.restitution_nic() { return Ok(()); }
++        if !self.kept_network_frames() { return Err(Error::Quarantine); }
++        if matches!(option_env!("NOVAOS_ETH3_CASE"), Some("duo-absent" | "duo-postdisque"))
 +            || (option_env!("NOVAOS_ETH3_CASE") == Some("duo-differe") && terminees < 30) { return Ok(()); }
 +        let bail = self.lease.ok_or(Error::Denied)?;
 +        let plan = self.layout();
@@ -114,6 +116,21 @@
 +        if self.engine.collecter_individuel((pid,epoch),cookie,bail,plan) != Err(Error::Denied)
 +            || !self.engine.retrait_verifie((pid,epoch),bail,plan) {return Err(Error::Quarantine);}
 +        crate::hal::log(format_args!("E3D collecte NIC pid={pid} generation={epoch} cookie={cookie} terminees={terminees} liberes=26 doublon=refuse NVMe_actif=true"));
++        Ok(())
++    }
++
++    pub(crate) fn livraison_apres_disque(&mut self) -> Result<()> {
++        let LocalFault::NicRetired(pid, epoch, cookie) = self.fault else {return Err(Error::Denied)};
++        let (disque, _, _) = self.engine.wait_snapshot();
++        if !matches!(self.state, State::Parked) || !self.bar.fenced() || self.lease.is_some()
++            || disque != cookie.checked_add(1).ok_or(Error::Denied)?
++            || self.engine.collecter_disque_retire((pid, epoch), disque) != Err(Error::Denied)
++            || !self.kept_network_frames() {return Err(Error::Quarantine);}
++        self.engine.collecter_disque_retire((pid, epoch), cookie)?;
++        if !self.restitution_nic() || self.engine.collecter_disque_retire((pid, epoch), cookie) != Err(Error::Denied) {
++            return Err(Error::Quarantine);
++        }
++        crate::hal::log(format_args!("E3D collecte apres NVMe pid={pid} generation={epoch} attendu={cookie} dernier={disque} recu_disque=refuse liberes=26 doublon=refuse"));
 +        Ok(())
 +    }
 +
@@ -131,7 +148,7 @@
      }
 
      pub(super) fn disk_survivor_ok(&self) -> bool {
-@@ -136,6 +184,8 @@
+@@ -136,6 +201,8 @@
                  self.engine
                      .failed_nic_fenced((pid, epoch), lease, self.layout())
              }),
@@ -239,7 +256,18 @@
          }
          let mut progress = false;
          let admitted = with(|s| {
-@@ -739,7 +743,7 @@
+@@ -711,6 +715,10 @@
+         };
+     }
+     retirement.map_err(|_| "retrait non confirme")?;
++    #[cfg(feature="net-q35-duo")]
++    if option_env!("NOVAOS_ETH3_CASE") == Some("duo-postdisque") {
++        domain.livraison_apres_disque().map_err(|_| "reçu NIC après retrait NVMe")?;
++    }
+     if !actors.wait(u64::from(HZ) * 5)
+         || actors
+             .all()
+@@ -739,7 +747,7 @@
          .checked_add(domain.witness_pages() as u64)
          .ok_or("bilan des temoins")?;
      #[cfg(feature="net-q35-duo")]
@@ -248,7 +276,7 @@
          if !domain.kept_network_frames() {return Err("cadres de quarantaine NIC");}
          expected + 26
      } else {expected};
-@@ -805,8 +809,16 @@
+@@ -805,8 +813,16 @@
                  .map_err(|_| "armement du temoin de reattribution")?;
          }
          #[cfg(feature="net-q35-duo")]
