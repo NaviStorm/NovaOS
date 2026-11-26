@@ -7,6 +7,7 @@ import json
 from pathlib import Path
 import re
 from statistics import median
+import subprocess
 import sys
 import tarfile
 from types import SimpleNamespace
@@ -52,6 +53,22 @@ def mesures_stockage(path):
         duo.exiger(t, f"Echantillons {op}")
         retour[op] = dict(n=len(t), p50=median(t), p95=t[(95*len(t)+99)//100-1], max=t[-1])
     return retour
+
+
+def disposition(elf):
+    sections = subprocess.check_output(["llvm-readelf","-SW",elf],text=True)
+    m = re.search(r"\[\s*\d+\]\s+\.text\s+PROGBITS\s+([0-9a-f]+)\s+([0-9a-f]+)\s+([0-9a-f]+)",sections,re.I)
+    duo.exiger(m, "Section .text ELF64")
+    base,offset,taille=(int(v,16) for v in m.groups())
+    code = elf.read_bytes()[offset:offset+taille]
+    symboles = subprocess.check_output(["llvm-nm","-S","--demangle",elf],text=True)
+    resultat = dict(text_sha256=hashlib.sha256(code).hexdigest(),text_octets=taille)
+    for adresse,longueur,nom in re.findall(r"^([a-f0-9]+) ([a-f0-9]+) t <novaos::hardware::block::net_trames::Port>::(demande|clore_v1)$",symboles,re.M):
+        va,n=int(adresse,16),int(longueur,16)
+        duo.exiger(base<=va and va+n<=base+taille,nom)
+        resultat[nom]=dict(adresse=hex(va),octets=n,sha256=hashlib.sha256(code[va-base:va-base+n]).hexdigest())
+    duo.exiger("demande" in resultat,"Courtier dans le code invité")
+    return resultat
 
 
 def paquet(dest, archive, inventaire):
@@ -102,7 +119,14 @@ def main():
         else:
             verifier = duo.attente_commune if cas.startswith("duo-wait-") else duo.verifier
         obtenu = verifier(path,cas,lecteur,avant,SimpleNamespace(error=None,frames=frames))
-        duo.exiger(json.loads(json.dumps(obtenu))==c["stockage"], f"Relecture stockage {cas}")
+        brut = dict(c["stockage"])
+        relu = json.loads(json.dumps(obtenu))
+        # Les premiers lanceurs englobaient le créneau suivant la publication,
+        # avant le premier armement PCI. La trace brute décide du décompte publié.
+        if "E_S_apres_BME_NIC" in relu:
+            duo.exiger(relu["E_S_apres_BME_NIC"] <= brut["E_S_apres_BME_NIC"], "Fenêtre de désarmement")
+            brut["E_S_apres_BME_NIC"] = relu["E_S_apres_BME_NIC"]
+        duo.exiger(relu==brut, f"Relecture stockage {cas}")
         mode = {"duo-cycles":"cycles","duo-reouverture":"duo-reouverture"}.get(cas,"port")
         fil = trames(path,mode,[frames,frames])
         ligne = dict(elf=c["elf"],captures=fil,modele=c["modele"],p9=obtenu["p9"],
@@ -112,7 +136,7 @@ def main():
             ligne.update(cycles=len(series),operations=sum(e["operations"] for e in series),
                          processus_distincts=obtenu["processus_distincts"],quarantaine_nic=obtenu["cadres_nic_retenus"],
                          ressources=capacites_libres([e["ram"] for e in series],("libres","ipc","processus","dma","tables","heap")),
-                         apres_wait=obtenu["E_S_apres_WAIT_NIC"],attentes=obtenu["attentes"])
+                         apres_desarmement=obtenu["E_S_apres_BME_NIC"],apres_wait=obtenu["E_S_apres_WAIT_NIC"],attentes=obtenu["attentes"])
         else:
             ligne.update(operations=obtenu["operations"],quarantaine_nic=26)
         bilan["duo"][cas]=ligne
@@ -168,12 +192,19 @@ def main():
                 tx_mbps=cell["tx_mbps"],p99_ms=cell["p99_ms"],ipc_par_trame=cell["ipc_par_trame"],
                 cout_par_lot={k:cell["cout"][COUTS.index(k)]/cell["n"] for k in
                               ("attentes_bloquees","changements_contexte","reveils","publications")}))
-        bilan["ethernet"][variante]=dict(boots=boots,mediane={k:median(m[k] for m in boots)
+        disposition_elf = disposition(archive/("echo-"+variante)/"echo1514/q35/1/novaos.elf")
+        bilan["ethernet"][variante]=dict(boots=boots,disposition=disposition_elf,mediane={k:median(m[k] for m in boots)
                                           for k in ("tx_mbps","p99_ms","ipc_par_trame")})
     for numero in range(5):
         ordre = sorted(("temoin","froid"),key=lambda v:bilan["ethernet"][v]["boots"][numero]["acquisition"])
         duo.exiger(ordre==(["temoin","froid"] if numero%2==0 else ["froid","temoin"]), "Ordre A/B")
     bilan["machine_echo"]=machines
+    controles=bilan["ethernet"]["temoin"]["boots"]
+    essais=bilan["ethernet"]["froid"]["boots"]
+    bilan["effet_cloture"]={k:sum((b[k]>a[k] if k=="tx_mbps" else b[k]<a[k]) for a,b in zip(controles,essais))
+                            for k in ("tx_mbps","p99_ms")}
+    for boot in controles+essais:
+        duo.exiger(boot["n"]==1024, "Taille de la cellule de mesure")
     bilan["hote"]=json.loads((archive/"hote/bilan.json").read_text())
     for p in (archive/"hote").iterdir():
         inventaire[str(p.relative_to(archive))]=digest(p)

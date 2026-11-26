@@ -152,6 +152,7 @@ def verifier(chemin, cas, lecteur, avant, pair):
     active = {48:False, 56:False}
     fenetres = []
     apres = []
+    nic_desarme = False
     for index, ligne in enumerate(trace):
         if ligne.startswith(("vtd_dmar_fault", "vtd_reg_ir_root", "vtd_ir_enable enable 1")):
             raise ValueError("Faute VT-d ou modification IRTA")
@@ -159,12 +160,18 @@ def verifier(chemin, cas, lecteur, avant, pair):
             gcmd.append(int(ligne.split(" value ")[1],16))
         mm = re.fullmatch(r"pci_cfg_write \S+ 00:0([67])\.0 @0x4 <- (0x\w+)",ligne)
         if mm:
-            active[int(mm[1])*8] = bool(int(mm[2],16)&4)
+            sid = int(mm[1])*8
+            arme = bool(int(mm[2],16)&4)
+            if sid == 56 and active[sid] != arme:
+                nic_desarme = not arme
+            active[sid] = arme
         if ligne.startswith("vtd_inv_desc invalidate desc type "):
             commandes_qi.append(ligne.split(" type ")[1])
         if ligne.startswith("vtd_inv_desc_wait_sw "):
             adresse, cookie = [int(ligne.split()[k],16) for k in (-3,-1)]
             exiger(cookie==len(waits)+1 and cookie<=len(attendus), "Séquence matérielle QI")
+            if attendus[cookie-1] == 56 and cookie % 4 == 3:
+                nic_desarme = False
             batch = commandes(attendus[cookie-1],cookie,adresse)
             exiger(commandes_qi == [f"{nom} high {haut:#x} low {bas:#x}" for nom,(bas,haut) in
                    zip(("context-cache","iotlb","wait"),batch)], "Portée matérielle des invalidations")
@@ -173,7 +180,7 @@ def verifier(chemin, cas, lecteur, avant, pair):
             commandes_qi.clear()
             waits.append(index)
             adresses.add(adresse)
-        if ligne.startswith("pci_nvme_io_cmd ") and active[48] and not active[56] and len(waits)>=3:
+        if ligne.startswith("pci_nvme_io_cmd ") and active[48] and nic_desarme and not active[56]:
             fenetres.append(ligne.split(" opc ")[1].split()[0])
             if len(waits)%4==0:
                 apres.append(fenetres[-1])
