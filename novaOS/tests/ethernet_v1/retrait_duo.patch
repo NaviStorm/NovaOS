@@ -65,6 +65,15 @@
      }
      pub(crate) fn local_disk(&self) -> bool {
          self.fault == LocalFault::Disk
+@@ -107,7 +111,7 @@
+     pub(crate) fn observe_nic_failure(&mut self) -> Result<()> {
+         let start = sched::ticks();
+         let id = loop {
+-            if let Some(id) = *FAILED_NIC.lock() {
++            if let Some(id) = FAILED_NIC.lock().take() {
+                 break id;
+             }
+             if expired(start) {
 @@ -122,12 +126,47 @@
          {
              return Err(Error::Quarantine);
@@ -204,7 +213,7 @@
                  };
                  #[cfg(feature="net-q35-duo")]
 -                if self.mode==profile::MEASURE {self.samples.command=hal::timer::counter();}
-+                self.samples.command=hal::timer::counter();
++                { self.samples.command = hal::timer::counter(); }
                  let r = if matches!(cmd, Command::Write { .. }) {
                      let src = self
                          .ticket
