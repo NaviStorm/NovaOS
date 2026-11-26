@@ -10,6 +10,8 @@ Le premier port Ethernet v1 échange des trames avec le pair VirtIO-net sous QEM
 
 La phase 3B compare le coût du port avant et après regroupement, ainsi que le débit au pair du pilote historique. [Performances et non-régression](phase3b.md) · [Critères de mesure](criteres-phase3b.md)
 
+La phase 3C qualifie la restitution DMA, les réouvertures et la continuité de NovaFS sous QEMU. La récupération après un RX partiel dépend du contrôleur. Le rapport chiffre également la régression de débit et de p99 du Q35. [Cycle de vie, mesures et preuves](phase3c.md)
+
 ## Pièces soumises à décision
 
 | Livrable du mandat | Pièce et décision préparée |
