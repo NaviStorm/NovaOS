@@ -381,6 +381,8 @@ def main():
                             time.sleep(.1)
                         qmp(vm,"stop")
                         final=capture(vm,out,"fin",a.arch=="arm")
+                        if a.arch=="arm" and a.cas=="court" and a.cycle_vie:
+                            report["capacite_pci_arm"]=cycle_vie.capacite_pci_arm(vm, serial)
                         if final["pci_command"] & 4:
                             raise ValueError("BME du NIC toujours actif à la fin")
                         if a.arch=="q35" and "NET Q35 etat=" in serial:

@@ -36,6 +36,8 @@ def trames(p, cas, attendues):
             numero = comptes[sens]
             if cas in ("cycles", "recu-arm-differe"):
                 numero %= 144
+            elif cas == "duo-reouverture":
+                numero %= 4
             elif cas in ("cycles-court", "recu-vtd-differe"):
                 numero = 0
             elif cas == "rattrapage":

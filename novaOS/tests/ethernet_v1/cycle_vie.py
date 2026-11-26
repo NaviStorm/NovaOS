@@ -101,6 +101,31 @@ def domaines_arm(out, retenues):
     return dict(compteurs=dict(compte), slots_retenus=sorted(finales), domaines_finaux=domaines)
 
 
+def capacite_pci_arm(vm, serie):
+    """Relit en ECAM la capacité PCI commune du seul NIC identifié, sans écrire le BAR."""
+    from virtio_net_confinement import reg
+    cfg = 0x4010000000 + (7 << 15)
+    exiger(reg(vm, cfg) == 0x10411af4, "Identité PCI ARM")
+    pos = reg(vm, cfg+0x34) & 255
+    vus = set()
+    commune = []
+    while pos:
+        exiger(0x40 <= pos <= 0xfc and pos % 4 == 0 and pos not in vus, "Chaîne des capacités PCI")
+        vus.add(pos)
+        debut = reg(vm,cfg+pos)
+        if debut & 255 == 9 and debut >> 24 == 1:
+            exiger(pos+16 <= 256 and (debut >> 16) & 255 >= 16, "Étendue de la capacité commune")
+            commune.append((reg(vm,cfg+pos+4)&255, reg(vm,cfg+pos+8), reg(vm,cfg+pos+12)))
+        pos = (debut >> 8) & 255
+    exiger(len(commune)==1, "Capacité commune unique")
+    bar,offset,taille = commune[0]
+    features = re.findall(r"NET EVENT_IDX offre=(0x\w+) relu=(0x\w+)",serie)
+    exiger(features and len(set(features))==1, "Négociation du NIC")
+    offre,negocie = (int(v,16) for v in features[0])
+    return dict(bar=bar,offset=offset,octets=taille,champ_queue_reset_dans_capacite=taille>=60,
+                bit_40_offert=bool(offre & 1<<40),bit_40_negocie=bool(negocie & 1<<40))
+
+
 def preuve_qi(vm, qt, serie, retire):
     """Relit les commandes QI en RAM et leur reçu pendant que le vCPU est arrêté."""
     from virtio_net_confinement import reg

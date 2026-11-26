@@ -207,7 +207,13 @@ def attente_commune(chemin, cas, lecteur, avant, pair):
     from nvme_phase2_oracle import inspect, io_trace, chronology, verify_transition
     serie = (chemin/"serie.log").read_text()
     trace = (chemin/"qemu.trace").read_text()
-    etat = "4 iqh=192" if cas == "duo-wait-tardif" else "0 iqh=176"
+    faute = "tardif" if cas == "duo-wait-tardif" else "absent"
+    retenues = re.findall(r"NOVA WAIT hold mode=(\w+) cookie=4 head=11 addr=(0x\w+)",trace)
+    cookies = re.findall(r"vtd_inv_desc_wait_sw wait invalidate status write addr (0x\w+) data (0x\w+)",trace)
+    exiger(len(retenues)==1 and retenues[0][0]==faute and {a for a,_ in cookies}=={retenues[0][1]}
+           and [int(c,16) for _,c in cookies] == list(range(1,5 if faute=="tardif" else 4))
+           and trace.count("NOVA WAIT release cookie=4 head=11")==int(faute=="tardif"), "Modèle de panne du WAIT")
+    etat = "4 iqh=192" if faute=="tardif" else "0 iqh=176"
     demandes = dict(re.findall(r"DUO demande (NIC|NVMe) pid=(\d+) generation=1 doublon=refuse avant_WAIT=refuse", serie))
     exiger(set(demandes)=={"NIC","NVMe"} and demandes["NIC"]!=demandes["NVMe"]
            and f"DUO contention deux_retraits_refuses PID={demandes['NVMe']}/{demandes['NIC']} nouvelles_demandes=refusees cookie={etat} iqt=192 dma=40" in serie,
