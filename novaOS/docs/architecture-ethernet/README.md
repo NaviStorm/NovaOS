@@ -4,6 +4,8 @@
 
 La phase 2 dispose de son [contrat binaire exécutable](contrat-v1-phase2.md), de ses [mesures inter-ISA](mesures-phase2.md) et de sa [décision sur les transports](phase2.md).
 
+La phase 2B recommande la boîte IPC pour le premier port expérimental et précise les géométries qui bénéficient des fenêtres multipages. [Décision et conditions d’emploi](phase2b.md) · [Mesures des acteurs autonomes](mesures-phase2b.md)
+
 ## Pièces soumises à décision
 
 | Livrable du mandat | Pièce et décision préparée |

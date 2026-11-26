@@ -1,0 +1,400 @@
+{
+  "date": "2026-11-26",
+  "reference": "a8405f92473ba1400249f12aef93bd9d09c2eb53",
+  "criteres": "fe83b48d1b5d753abed27118ffffaa498a46164a",
+  "systeme": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "cargo": "cargo 1.99.1 (5f94df478 2026-08-27)",
+  "clang": "Apple clang version 21.0.0 (clang-2100.4.1.1)",
+  "xorriso": "GNU xorriso 1.5.8.pl02 : RockRidge filesystem manipulator, libburnia project.",
+  "python": "3.15.2",
+  "sources": {
+    "defc086ba1901d7b038523b1378953ac6a942b89": {
+      "arbre_git": "b0768de8dbedd2a2abd49631ce6be1bc0eb0ce61",
+      "sha256": {
+        "novaOS/abi/syscalls.toml": "c8136f19642fc100961a727255e778593da8996768262d5ad830df523d351a2e",
+        "novaOS/kernel/Cargo.toml": "5bd2046903e3207aa08ab85b089bfd05f45711cc7ae249ac4b5f326508ac2a4c",
+        "novaOS/kernel/build.rs": "ddba093fa47109227adb7b1062d5df21b2b567460205742b95de9d3d055f31b7",
+        "novaOS/user/ipc.rs": "ad5d4599742f1361a4f57e8a226d21d1f83ab28f6880c3536e00bb25a584931f",
+        "novaOS/tests/ethernet_v1/phase2b/acteur.rs": "08d4649cba844de0a44297f5e94b1b0e970618370026e2a7fd7d818bc726be3c",
+        "novaOS/tests/ethernet_v1/phase2b/invite.rs": "0f7b7199b8a34d8ab384a8f95b65784d32a9c475967ca5d3d58c55eb120946e3",
+        "novaOS/tests/ethernet_v1/wire.rs": "81f77397e5b23f9da72e41b28e0c0bc251fcc98f04fb34c85bed7c6933ffcaf2",
+        "novaOS/tests/ethernet_v1/invite.py": "9fff873d057db14c216806075861ebee0a8aba07369bff700500883a63746a59",
+        "novaOS/scripts/iso.sh": "5eeca6751eb51d86f0f8070cc83102adcd4da4394aed64f2b863aa044b7189ec",
+        "novaOS/scripts/qemu.sh": "05269a6a3439cfffba80ec70df87b3f3c6308841550e7cbee2f42c11b5ff3f40",
+        "novaOS/kernel/src/memory/user.rs": "b7e4e7561785898a2fbba2c34834c6dd61976c9a7283875dd2dc31880e082df9",
+        "novaOS/kernel/src/sched/gate.rs": "431cea186deeab84defa274b825382f76e3f54f9f74b2e64f36bc077a0ac5615",
+        "novaOS/kernel/src/sched/process/ipc/bulk.rs": "fe9ed64d58e8fc191db0827d7bcf24f563599f12022a17eab86bc88da69ede5f",
+        "novaOS/kernel/src/sched/process/ipc/mod.rs": "86d8bb6befa4b6732f4f2a615ad3d04afe8d59aa5154388081cbc5539167e772",
+        "novaOS/kernel/src/sched/process/ipc/probes.rs": "fbdcb12ca15ea223406ce8f210f31c14a535936afcc18f7191cb4a316a75442c",
+        "novaOS/kernel/src/sched/process/ipc/traffic.rs": "e1d693d32dcbc6525480d28df10a9d3329707cee41567e813a4522c97645f5b4",
+        "novaOS/kernel/src/sched/process/syscall.rs": "035e06de17ccb5ed252b85fddb58e1a372e2204ff8b7d589c99940a77d585c78"
+      }
+    },
+    "b6bd9bfcc7e23499629f49561533c53929d0d849": {
+      "arbre_git": "b3e68a38b421329660d93777a5c6b9a163d3cc92",
+      "sha256": {
+        "novaOS/abi/syscalls.toml": "c8136f19642fc100961a727255e778593da8996768262d5ad830df523d351a2e",
+        "novaOS/kernel/Cargo.toml": "74f6ac85426301499522550862708c119257a208c4a5b7d7ee3f637cea0f4318",
+        "novaOS/kernel/build.rs": "ddba093fa47109227adb7b1062d5df21b2b567460205742b95de9d3d055f31b7",
+        "novaOS/user/ipc.rs": "ad5d4599742f1361a4f57e8a226d21d1f83ab28f6880c3536e00bb25a584931f",
+        "novaOS/tests/ethernet_v1/phase2b/acteur.rs": "08d4649cba844de0a44297f5e94b1b0e970618370026e2a7fd7d818bc726be3c",
+        "novaOS/tests/ethernet_v1/phase2b/invite.rs": "cceebdf7a4d0793c6fa3d34f9ece6685b48e1e0d6e8619e9be4d889d1406d873",
+        "novaOS/tests/ethernet_v1/wire.rs": "81f77397e5b23f9da72e41b28e0c0bc251fcc98f04fb34c85bed7c6933ffcaf2",
+        "novaOS/tests/ethernet_v1/invite.py": "00c9d019f8f1ed7118da4fb1b8ba8652ae04dd39c9ad7cf24735b14158e68d68",
+        "novaOS/scripts/iso.sh": "2edbef0ecfb7a1d71df51d2e80b97d0cf4a887a277c432fc55ddbbdd81ee3272",
+        "novaOS/scripts/qemu.sh": "05269a6a3439cfffba80ec70df87b3f3c6308841550e7cbee2f42c11b5ff3f40",
+        "novaOS/kernel/src/memory/user.rs": "dddac131dc7744b43f853a6fdd47a0949336bbaf0bfba60f34a51cd7ec26a3b7",
+        "novaOS/kernel/src/sched/gate.rs": "b158c0c591552e0332b0170a57412abe609baf2a3cc48e8e9babc80a69405847",
+        "novaOS/kernel/src/sched/process/ipc/bulk.rs": "fe9ed64d58e8fc191db0827d7bcf24f563599f12022a17eab86bc88da69ede5f",
+        "novaOS/kernel/src/sched/process/ipc/mod.rs": "feb04acd1c467fdbb26aed9ec8ccf1a62deb5632cb8638c71b2e198d1d097903",
+        "novaOS/kernel/src/sched/process/ipc/probes.rs": "5da254c55113749bf25d7bc39060e7ae00894823e10bbdbdf9eefa36083133b5",
+        "novaOS/kernel/src/sched/process/ipc/traffic.rs": "e1d693d32dcbc6525480d28df10a9d3329707cee41567e813a4522c97645f5b4",
+        "novaOS/kernel/src/sched/process/syscall.rs": "a8b555807bf593fd1a1edf197e112c8cc9de31faaf7969c658d896746eff233c",
+        "novaOS/tests/ethernet_v1/phase2b/course.rs": "2e96998fdf776868f2782e5046b0c887bb5e16d26849a2f4a1fd9187c5f9ae08"
+      }
+    }
+  },
+  "abi_selecteurs": 48,
+  "limine": {
+    "BOOTAA64.EFI": "bdf0c089d40ea7de9879a43c2a3ea648f1ea0b2eb297e8b1a750511db872b2fb",
+    "BOOTX64.EFI": "91ef81c1f95c4ac8bf77c4393a0b2fcd2628550827d7abf89a43194400e17a85",
+    "limine-uefi-cd.bin": "c25328b0e58f188d6b1a588827596d1c19a9e1d0d5e9dbc16a3aab238deb4aa4"
+  },
+  "architectures": {
+    "aarch64": {
+      "qemu": "QEMU emulator version 11.1.3",
+      "machine": "virt,gic-version=2",
+      "cpu": "cortex-a72",
+      "acceleration": "tcg",
+      "Mio": 256,
+      "NIC": "none",
+      "firmware": {
+        "edk2-aarch64-code.fd": "47765fe344818cbc464b1c14ae658fb4b854f5c2ceffa982411731eb4865594d",
+        "edk2-arm-vars.fd": "b3b855c5a80310168051164986855692d1bdb06e67619856177965cd87c6774f"
+      },
+      "acteur_utilisateur_sha256": "8430ec3328ba97408a69f01ceb262cb0505f777727439b2ea396fb02c0fa09a9",
+      "acteur_utilisateur_octets": 756680,
+      "ordinaire": {
+        "reference": "72c4c376e4a4f60366146ee8b08cf2819fb3e74dcf2ec87dde4ce4483febc4f1",
+        "candidat": "008d799975b1e26db6786c9edff93b21afb0b2bda1b068f6dbdd39996ab7d34a",
+        "pages_image": 1110,
+        "segments_chargeables": [
+          {
+            "flags": 6,
+            "va": "0xffffffff80000000",
+            "taille_fichier": 680,
+            "taille_memoire": 680,
+            "octets_differents": 0,
+            "emplacements_ligne_rust": 0
+          },
+          {
+            "flags": 5,
+            "va": "0xffffffff80001000",
+            "taille_fichier": 737664,
+            "taille_memoire": 737664,
+            "octets_differents": 0,
+            "emplacements_ligne_rust": 0
+          },
+          {
+            "flags": 4,
+            "va": "0xffffffff800b6000",
+            "taille_fichier": 3750627,
+            "taille_memoire": 3750627,
+            "octets_differents": 168,
+            "emplacements_ligne_rust": 163
+          },
+          {
+            "flags": 6,
+            "va": "0xffffffff8044a000",
+            "taille_fichier": 28768,
+            "taille_memoire": 48776,
+            "octets_differents": 0,
+            "emplacements_ligne_rust": 0
+          }
+        ]
+      },
+      "essais": {
+        "qemu-aarch64-1": {
+          "commit": "defc086ba1901d7b038523b1378953ac6a942b89",
+          "pages_image": 1319,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-mesure",
+          "archive_locale": "serie-1/aarch64",
+          "sha256": {
+            "construction-iso.log": "fae922d919f66d090a8fbaed6602115f75e3d0a03583a8aa56f36bf93b19b5ab",
+            "novaos.elf": "edcce3e4705e5c93dc95eb0f1ed4309bbbfeb8c0ff3efea3ccf9f23fc1b92267",
+            "ethernet.iso": "82c069a3321ee595f90f00c301874c3502912da61dbeee1c1494b20670971c95",
+            "serie.log": "57697971b3fb22f32684803caf419c6a7fb3a1efca55af54074747fc9d730f1e"
+          }
+        },
+        "rare-aarch64-1": {
+          "commit": "b6bd9bfcc7e23499629f49561533c53929d0d849",
+          "pages_image": 1319,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-rare",
+          "archive_locale": "rare-1/aarch64",
+          "sha256": {
+            "construction-iso.log": "865b65a9e5c2d7a18bfdc801cb543dcb8e75b1c8f2ab3e8d46304171b91acee6",
+            "novaos.elf": "9307992dcd78322807ed304aacc6c18c37168b4e46709687ca22e6b0edb78437",
+            "ethernet.iso": "28c5f1e60921c65560b9449a16e71a40722db78b8cee3e6b16c0066222be7ff4",
+            "serie.log": "e95a2203f55a0c11a05310c026a1a8886cf12b3e5fb4babef5332bdfc7086152"
+          }
+        },
+        "qemu-aarch64-2": {
+          "commit": "defc086ba1901d7b038523b1378953ac6a942b89",
+          "pages_image": 1319,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-mesure-1",
+          "archive_locale": "serie-2/aarch64",
+          "sha256": {
+            "construction-iso.log": "a85f4881af37b7a0f10fab8a3cd3cf9f3bf374550e674e5de71492ea2dfe21a2",
+            "novaos.elf": "edcce3e4705e5c93dc95eb0f1ed4309bbbfeb8c0ff3efea3ccf9f23fc1b92267",
+            "ethernet.iso": "c20fc9f03152a2f202a3a7fd57de96ce0a03a8c56814f83c40c76dcd1be6c844",
+            "serie.log": "f405020f98f82d6ca295ac91b398e28ae5033a43c7da06562d53c4d1a86b9865"
+          }
+        },
+        "rare-aarch64-2": {
+          "commit": "b6bd9bfcc7e23499629f49561533c53929d0d849",
+          "pages_image": 1319,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-rare-1",
+          "archive_locale": "rare-2/aarch64",
+          "sha256": {
+            "construction-iso.log": "bb654aed70dbbbf4815b96cadde2976d5b54a13ddfa9a2c38524561e19ec9a1c",
+            "novaos.elf": "9307992dcd78322807ed304aacc6c18c37168b4e46709687ca22e6b0edb78437",
+            "ethernet.iso": "4e16dd0025b9a6dc5cfa6d0e96e7729a0a936f565769c6a7a6064a817b7f90d8",
+            "serie.log": "8d27ee506693ce2e0d8488c656f538b135bfa28c76329cf473cebf42975c8c9b"
+          }
+        },
+        "qemu-aarch64-3": {
+          "commit": "defc086ba1901d7b038523b1378953ac6a942b89",
+          "pages_image": 1319,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-mesure-2",
+          "archive_locale": "serie-3/aarch64",
+          "sha256": {
+            "construction-iso.log": "4a3f3a000c1f4c5ff6e6778ad45abae0145269076d033f4b81a6aabc18a396c3",
+            "novaos.elf": "edcce3e4705e5c93dc95eb0f1ed4309bbbfeb8c0ff3efea3ccf9f23fc1b92267",
+            "ethernet.iso": "bb23fb9e361cc683ff9b866dae145f96daa2944ff0ae9e09cbd8dcb5bc18a023",
+            "serie.log": "13f43d4657765b21117c7b6be790c3e16c43d074b9c0d25e7a988b2b8101d761"
+          }
+        },
+        "rare-aarch64-3": {
+          "commit": "b6bd9bfcc7e23499629f49561533c53929d0d849",
+          "pages_image": 1319,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-rare-2",
+          "archive_locale": "rare-3/aarch64",
+          "sha256": {
+            "construction-iso.log": "bed5e4de103b62fabbbe7c1ce9fd131c608d26b71fca6921a25c34d1a29e38ea",
+            "novaos.elf": "9307992dcd78322807ed304aacc6c18c37168b4e46709687ca22e6b0edb78437",
+            "ethernet.iso": "c4e8014e4a8b38e780a2abc41f553b6f54b5697988692185d1a40cdf753c8b76",
+            "serie.log": "11172c2032ff9baf8445710c14b693cee3b77305ce4a9ee3cea4328ff5ca915c"
+          }
+        },
+        "surete-aarch64": {
+          "commit": "defc086ba1901d7b038523b1378953ac6a942b89",
+          "pages_image": 1319,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-surete",
+          "archive_locale": "retrait-candidat/aarch64",
+          "sha256": {
+            "construction-iso.log": "5ac373ca2dec574318dffc121c1745604bde35f680eb400b0e088cb9191781a3",
+            "novaos.elf": "edcce3e4705e5c93dc95eb0f1ed4309bbbfeb8c0ff3efea3ccf9f23fc1b92267",
+            "ethernet.iso": "35ac2a581eda633419e68555a3e5c77c93b285dc1e2882ff02485b00185c84da",
+            "serie.log": "fee2a2d1c53ce1540ec6edbe10097defb8a0a5232c9d1cebc6a758672205452a"
+          }
+        },
+        "course-aarch64": {
+          "commit": "b6bd9bfcc7e23499629f49561533c53929d0d849",
+          "pages_image": 1336,
+          "vCPU": 2,
+          "feature": "ethernet-2b-course",
+          "cmdline": "ipc-eth2b-course",
+          "archive_locale": "course-finale/aarch64",
+          "sha256": {
+            "construction-iso.log": "644cca78297f46e4995dc47f7552128148814807e8f4642c3b0ce2c03dd6841f",
+            "novaos.elf": "596fa90f6422e7da883d5acfa23453dd5d96fccb754ab0c55c4b64bd11e7b4b6",
+            "ethernet.iso": "659226be19018f855a5f3731189a7f8fb80058f93b2618493bffd2bc85daf1a7",
+            "serie.log": "2d265f7734dac20faf1c476dbc1df09a3c19f940a52f88a7bd16ae99ea82fe02"
+          }
+        }
+      }
+    },
+    "x86_64": {
+      "qemu": "QEMU emulator version 11.1.3",
+      "machine": "q35,i8042=on,pic=on",
+      "cpu": "max",
+      "acceleration": "tcg",
+      "Mio": 256,
+      "NIC": "none",
+      "firmware": {
+        "edk2-x86_64-code.fd": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "edk2-i386-vars.fd": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+      },
+      "acteur_utilisateur_sha256": "ce99d62855b20a13d83cd996beb6216a95cc75e66954815d66c60894db9d9c51",
+      "acteur_utilisateur_octets": 762480,
+      "ordinaire": {
+        "reference": "560a457e1957929caa014eace35893fa272c90c3341f83fd06a3863fad8a2083",
+        "candidat": "84810542c85b456ab3903a668739a6638c231a6eef711141d455e9b2adb44d38",
+        "pages_image": 1192,
+        "segments_chargeables": [
+          {
+            "flags": 6,
+            "va": "0xffffffff80000000",
+            "taille_fichier": 488,
+            "taille_memoire": 488,
+            "octets_differents": 0,
+            "emplacements_ligne_rust": 0
+          },
+          {
+            "flags": 5,
+            "va": "0xffffffff80001000",
+            "taille_fichier": 932932,
+            "taille_memoire": 932932,
+            "octets_differents": 0,
+            "emplacements_ligne_rust": 0
+          },
+          {
+            "flags": 4,
+            "va": "0xffffffff800e5000",
+            "taille_fichier": 3868643,
+            "taille_memoire": 3868643,
+            "octets_differents": 169,
+            "emplacements_ligne_rust": 164
+          },
+          {
+            "flags": 6,
+            "va": "0xffffffff80496000",
+            "taille_fichier": 33488,
+            "taille_memoire": 69962,
+            "octets_differents": 0,
+            "emplacements_ligne_rust": 0
+          }
+        ]
+      },
+      "essais": {
+        "qemu-x86_64-1": {
+          "commit": "defc086ba1901d7b038523b1378953ac6a942b89",
+          "pages_image": 1567,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-mesure",
+          "archive_locale": "serie-1/x86_64",
+          "sha256": {
+            "construction-iso.log": "0447e218ce02a2d059e818f632a095acdd067aed2094d79a752dd3f6299c1d49",
+            "novaos.elf": "8ee715fb0d69e07942c91d8aac0362fa43d7ef9b6f5e345c55a7f2d756d329d9",
+            "ethernet.iso": "da41e53829ca44ae81378bd5cb8e7673bcb6084b8b92903d360d2139afc7e7ca",
+            "serie.log": "8f71ca72122d7ffd62e3aa1ceddcbf3c5334217d1a2550376ae95800f1b78011"
+          }
+        },
+        "rare-x86_64-1": {
+          "commit": "b6bd9bfcc7e23499629f49561533c53929d0d849",
+          "pages_image": 1593,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-rare",
+          "archive_locale": "rare-1/x86_64",
+          "sha256": {
+            "construction-iso.log": "2baf9c24e4dfe09b2bb6eadbd7f7282cfcc0270cd42f5a3bd888cb0df4df1d84",
+            "novaos.elf": "07bf77537b1340f746877ffb4c053ca3b81e3b746fbe8721024171e48c7035bd",
+            "ethernet.iso": "895b664fc9891ad4c1665910c574b4fb4143d5081809d94b31ab32437b048b99",
+            "serie.log": "e620c127202b18b7a3c43efc9ac3bc5680d9c0ce80baf20e206978cc21ceadd5"
+          }
+        },
+        "qemu-x86_64-2": {
+          "commit": "defc086ba1901d7b038523b1378953ac6a942b89",
+          "pages_image": 1567,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-mesure-1",
+          "archive_locale": "serie-2/x86_64",
+          "sha256": {
+            "construction-iso.log": "05693cbd15ef219026748b9826a458b8c0c0d338c2115f261a95cf468728ec1e",
+            "novaos.elf": "8ee715fb0d69e07942c91d8aac0362fa43d7ef9b6f5e345c55a7f2d756d329d9",
+            "ethernet.iso": "3c678f5b017e6a351ac3c8ccf29858da0576edeafedc015e6ebf216bbec9d396",
+            "serie.log": "ee697c23ffc3b1d89ae37f2eb2f873d3b930c017cc8031347f775dea6f4e88e7"
+          }
+        },
+        "rare-x86_64-2": {
+          "commit": "b6bd9bfcc7e23499629f49561533c53929d0d849",
+          "pages_image": 1593,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-rare-1",
+          "archive_locale": "rare-2/x86_64",
+          "sha256": {
+            "construction-iso.log": "e901590c40e975b37580b5866615f44233f9a3de00dcfec21d27f9615d44e0fa",
+            "novaos.elf": "07bf77537b1340f746877ffb4c053ca3b81e3b746fbe8721024171e48c7035bd",
+            "ethernet.iso": "2aac20bd1332276d5fae34e94317ac3bdaf98f3137b8e92ff540132aeb5cc1a0",
+            "serie.log": "74d7225826a50f113ef07622bb1fbd3e99560d82dde38767af1aa5d740fbaa93"
+          }
+        },
+        "qemu-x86_64-3": {
+          "commit": "defc086ba1901d7b038523b1378953ac6a942b89",
+          "pages_image": 1567,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-mesure-2",
+          "archive_locale": "serie-3/x86_64",
+          "sha256": {
+            "construction-iso.log": "5eaddba27c2f89e8995023fc5678e3093a0923e419d8ab630c3d345b25713a6c",
+            "novaos.elf": "8ee715fb0d69e07942c91d8aac0362fa43d7ef9b6f5e345c55a7f2d756d329d9",
+            "ethernet.iso": "a7f8d00bf43bbbab6098d35abe0221abc8e344088dd05f9f12ff947a6e0c5dff",
+            "serie.log": "0d3068fdfb8388198d00fab8e8dfac0a33fc16e0cf2573e1c35d26e07a54cb3e"
+          }
+        },
+        "rare-x86_64-3": {
+          "commit": "b6bd9bfcc7e23499629f49561533c53929d0d849",
+          "pages_image": 1593,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-rare-2",
+          "archive_locale": "rare-3/x86_64",
+          "sha256": {
+            "construction-iso.log": "71a6a1e5b9941a811cb5a71f37ece44c262f83543c6c1f3dff67122b361a90e2",
+            "novaos.elf": "07bf77537b1340f746877ffb4c053ca3b81e3b746fbe8721024171e48c7035bd",
+            "ethernet.iso": "a1efc01a94a6e61d2e209a38176d2fc346b97531ceee7cb5e27f7e565d6bce9d",
+            "serie.log": "3b078eff52d24ee0d303dc5947a27a3d89f999b6f79479fbb01697b00357d8d7"
+          }
+        },
+        "surete-x86_64": {
+          "commit": "defc086ba1901d7b038523b1378953ac6a942b89",
+          "pages_image": 1567,
+          "vCPU": 1,
+          "feature": "ethernet-2b-lab",
+          "cmdline": "ipc-eth2b-surete",
+          "archive_locale": "retrait-candidat/x86_64",
+          "sha256": {
+            "construction-iso.log": "4f536aec2f4f134979759a4c1b7574c75b54dc5e951cb4f7ffff22d84ed3358e",
+            "novaos.elf": "8ee715fb0d69e07942c91d8aac0362fa43d7ef9b6f5e345c55a7f2d756d329d9",
+            "ethernet.iso": "8d6a08f33a15aae182ae1f27f7410257445a79aa495c31ca7f4c307519d9af92",
+            "serie.log": "d2f90c53e5f5f206396b5392d784a16356ff46994be0c46996fb1c442ed676f3"
+          }
+        },
+        "course-x86_64": {
+          "commit": "b6bd9bfcc7e23499629f49561533c53929d0d849",
+          "pages_image": 1416,
+          "vCPU": 2,
+          "feature": "ethernet-2b-course",
+          "cmdline": "ipc-eth2b-course",
+          "archive_locale": "course-finale/x86_64",
+          "sha256": {
+            "construction-iso.log": "78ba57e892c5d16b903c9f151157b56a5f62de8dd6f8eac64554db86c379a856",
+            "novaos.elf": "bed3aaa3964364bbcd2e1c23c924f0f5472676d6fc06a84c4c1111cd9fd4c12f",
+            "ethernet.iso": "175fc75105e20205764a658216eda9be6b1bc207852089afd0e02fb93707b2b1",
+            "serie.log": "c90b67c283e97c4507b5f6a54b58de1f2700469953972519bbc8d9f1a7778d33"
+          }
+        }
+      }
+    }
+  }
+}
