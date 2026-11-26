@@ -654,6 +654,27 @@ fn armed_wait_wakes_once_including_revoke() {
     assert_eq!(p.take_notification(k), Err(Error::Closed));
 }
 #[test]
+fn publication_incertaine_conserve_credit_et_recu() {
+    let k = key(1);
+    let mut p = opened(k, TX_RIGHT);
+    let t = submit(&mut p, k, 1, 0);
+    assert_eq!(p.backend().incertain(t), Err(Error::State));
+    p.backend()
+        .transition(t, Stage::Admitted, Stage::Publishing)
+        .unwrap();
+    let restant = p.credit;
+    p.backend().incertain(t).unwrap();
+    assert_eq!(p.status(k, t), Ok(Stage::Unknown));
+    assert_eq!(p.credit, restant);
+    assert_eq!(p.backend().incertain(t), Err(Error::State));
+    assert_eq!(p.ack(k, 1), Err(Error::State));
+    let bilan = p.revoke();
+    assert_eq!((bilan.uncertain, bilan.cancelled), (1, 0));
+    assert_eq!(p.backend().retired_status(t), Ok(Stage::Unknown));
+    assert_eq!(p.backend().incertain(t), Err(Error::Closed));
+}
+
+#[test]
 fn edge_counters_fail_closed() {
     let k = key(1);
     let mut p = opened(k, 15);

@@ -5,8 +5,12 @@ use super::{
 };
 use crate::{abi, hal};
 const N: usize = 16;
+#[cfg(feature="ethernet-v1-port")]
+mod v1;
 
 pub(super) struct Port<'a> {
+    #[cfg(feature="ethernet-v1-port")]
+    flux: v1::Flux,
     nic: &'a Device,
     cadres: &'a [Frame; 22],
     kicks: [Region; 2],
@@ -43,6 +47,8 @@ impl<'a> Port<'a> {
             }
         }
         Ok(Self {
+            #[cfg(feature="ethernet-v1-port")]
+            flux: v1::Flux::default(),
             nic,
             cadres,
             kicks,
@@ -66,6 +72,11 @@ impl<'a> Port<'a> {
         copie: &mut [u8],
         irq: bool,
     ) -> core::result::Result<usize, u64> {
+        #[cfg(feature="ethernet-v1-port")]
+        if tag != 1 {
+            if matches!(tag, 7 | 8) && !irq { return Err(abi::WOULD_BLOCK); }
+            return self.v1(tag, len, copie);
+        }
         match tag {
             1 if !self.ouvert => {
                 // Le filtre du laboratoire est fixe et sans offload.

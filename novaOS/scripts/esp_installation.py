@@ -32,8 +32,8 @@ def nom_long(nom, court):
     return entree
 
 
-def construire(elf, secteur, *, scenario="systeme-gpt"):
-    if scenario not in ("systeme-gpt", "smp-test", "smp-fp", "smp-arret"):
+def construire(elf, secteur, *, scenario="systeme-gpt", relais_boot=None, chargeur_labo=None):
+    if scenario not in ("systeme-gpt", "smp-test", "smp-fp", "smp-arret", "net-arm-p9"):
         raise ValueError("Scénario EFI inconnu")
     taille = (60 if secteur == 512 else 264) * 2**20 // secteur
     reserve = 32
@@ -42,7 +42,9 @@ def construire(elf, secteur, *, scenario="systeme-gpt"):
     clusters = taille - debut
     assert clusters >= 65525 and fat * secteur >= 4 * (clusters + 2)
     kernel = elf.read_bytes()
-    loader = (ROOT / "third_party/limine/BOOTAA64.EFI").read_bytes()
+    if chargeur_labo is not None and scenario != "net-arm-p9":
+        raise ValueError("Chargeur de laboratoire hors profil")
+    loader = (chargeur_labo or ROOT / "third_party/limine/BOOTAA64.EFI").read_bytes()
     config = (ROOT / "boot/limine.conf").read_bytes() + f"    cmdline: {scenario}\n".encode("ascii")
     if kernel[:6] != b"\x7fELF\x02\x01" or kernel[18:20] != b"\xb7\0" or loader[:2] != b"MZ":
         raise ValueError("composant AArch64 invalide")
@@ -72,7 +74,13 @@ def construire(elf, secteur, *, scenario="systeme-gpt"):
     secteurs[debut] = (dossier(b"EFI        ", 3) + dossier(b"BOOT       ", 5) +
                         nom_long("limine.conf", conf) + fichier(conf, config) + fichier(b"LICENCES TXT", licences))
     secteurs[debut+1] = liens(3, 0) + dossier(b"BOOT       ", 4)
-    secteurs[debut+2] = liens(4, 3) + fichier(b"BOOTAA64EFI", loader)
+    if relais_boot is None:
+        secteurs[debut+2] = liens(4, 3) + fichier(b"BOOTAA64EFI", loader)
+    else:
+        if scenario != "net-arm-p9" or relais_boot.read_bytes()[:2] != b"MZ":
+            raise ValueError("Relais EFI du profil réseau attendu")
+        secteurs[debut+2] = (liens(4, 3) + fichier(b"BOOTAA64EFI", relais_boot.read_bytes())
+                             + fichier(b"LIMINE  EFI", loader))
     secteurs[debut+3] = liens(5, 0) + fichier(b"NOVAOS  ELF", kernel)
     if len(chaines) - 2 > clusters:
         raise ValueError("ESP trop petite")

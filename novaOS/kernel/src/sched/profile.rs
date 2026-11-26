@@ -122,9 +122,15 @@ pub(super) fn ipc_woke(cpu: usize, since: u64) {
             .fetch_add(hal::timer::counter().saturating_sub(since), Relaxed);
     }
 }
-#[cfg(feature = "ethernet-ipc-lab")]
+#[cfg(any(feature = "ethernet-ipc-lab", feature = "ethernet-v1-port"))]
 pub(super) fn switches_bsp() -> u64 {
     CPU[0].switches.load(Relaxed)
+}
+
+#[cfg(feature="ethernet-v1-port")]
+pub(super) fn temps_bsp()->[u64;3]{
+    let c=&CPU[0];
+    [c.user_ticks.load(Relaxed),c.kernel_ticks.load(Relaxed),c.idle_ticks.load(Relaxed)]
 }
 
 pub(super) fn report() {

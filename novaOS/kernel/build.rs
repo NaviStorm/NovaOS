@@ -22,6 +22,10 @@ fn main() {
     let target = env::var("TARGET").unwrap();
     let out = PathBuf::from(env::var_os("OUT_DIR").unwrap());
     println!("cargo::rerun-if-env-changed=NOVAOS_NET_SERIE");
+    println!("cargo::rustc-check-cfg=cfg(net_p9_coexistence)");
+    println!("cargo::rerun-if-env-changed=NOVAOS_ETH3_CASE");
+    println!("cargo::rerun-if-changed=../tests/ethernet_v1");
+    let port = env::var_os("CARGO_FEATURE_ETHERNET_V1_PORT").is_some();
     let net = env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some();
     let nvme_lab = target == "x86_64-unknown-none" && env::var_os("CARGO_FEATURE_NVME_LAB").is_some();
     for name in [
@@ -49,6 +53,8 @@ fn main() {
         "ipc",
         "ethernet_2b",
         "net_preparation",
+        "ethernet_port",
+        "ethernet_client",
         "storage/service",
         "storage/client",
         "storage/failure",
@@ -59,6 +65,7 @@ fn main() {
         "storage/fileclient",
     ] {
         if name == "net_preparation" && !net && env::var_os("CARGO_FEATURE_NET_ARM_LAB").is_none() { continue; }
+        if matches!(name, "ethernet_port" | "ethernet_client") && !port { continue; }
         let nvme_rw = matches!(name, "nvme_rw_driver" | "nvme_rw_block");
         let output = out.join(format!("{}.bin", name.replace('/', "-")));
         if name == "edu_dma" && (env::var_os("CARGO_FEATURE_VTD_LAB").is_none() || target != "x86_64-unknown-none") {
@@ -74,7 +81,7 @@ fn main() {
             if env::var_os("CARGO_FEATURE_ETHERNET_2B_LAB").is_none() { continue; }
             println!("cargo::rerun-if-changed=../tests/ethernet_v1/phase2b");
         }
-        let file_client = name == "ethernet_2b" || matches!(name, "pipe_compute" | "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "journal_service" | "service_control_test" | "cache_client_test" | "storage/managed");
+        let file_client = (port && matches!(name,"ethernet_port" | "ethernet_client" | "net_preparation")) || name == "ethernet_2b" || matches!(name, "pipe_compute" | "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "journal_service" | "service_control_test" | "cache_client_test" | "storage/managed");
         let linker = format!(
             "link-arg=-T{}",
             user.join(if file_client {
@@ -96,6 +103,7 @@ fn main() {
         if nvme_lab && (nvme_rw || name == "storage/fileclient") {
             rust.arg("--cfg").arg("nvme_rw");
         }
+        if port && name=="net_preparation" { rust.args(["--cfg","ethernet_v1_port"]); }
         if name == "net_preparation" && net { rust.args(["--cfg","net_ethernet_lab"]); }
         let compact = name.starts_with("nvme_") || matches!(
             name,
@@ -137,6 +145,8 @@ fn main() {
         }
         let source = match name {
             "ethernet_2b" => "ipc",
+            "ethernet_port" => "ethernet/service",
+            "ethernet_client" => "ethernet/client",
             "pipe_compute" => "demo",
             "nvme_rw_driver" => "nvme_driver",
             "storage/managed" => {

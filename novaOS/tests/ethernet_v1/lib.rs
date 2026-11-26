@@ -587,6 +587,21 @@ impl Backend<'_> {
         p.changed(EV_TX);
         Ok(())
     }
+    /// Le périphérique a pu recevoir la trame. Aucun crédit n'est rendu
+    /// sur cette notification de perte. QUERY reste disponible avant révocation.
+    pub fn incertain(&mut self, ticket: Ticket) -> Result<()> {
+        if self.0.closed {
+            return Err(Error::Closed);
+        }
+        let (b, i) = self.0.index(ticket)?;
+        let stage = &mut self.0.journal[b].frames[i].stage;
+        if !matches!(stage, Stage::Publishing | Stage::Published) {
+            return Err(Error::State);
+        }
+        *stage = Stage::Unknown;
+        self.0.changed(EV_TX);
+        Ok(())
+    }
     /// Le backend atteste que le descripteur n'a jamais été rendu visible.
     pub fn cancel_unpublished(&mut self, t: Ticket) -> Result<()> {
         let p = &mut self.0;

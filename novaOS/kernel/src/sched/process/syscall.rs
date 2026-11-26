@@ -107,6 +107,8 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
     ipc::course::entry(id, args[0]);
     threads::stop_if_dying();
     let (exec, stack, secondary) = with(|s| {
+        #[cfg(all(feature="ethernet-v1-port",any(all(target_arch="x86_64",feature="net-q35-lab"),all(target_arch="aarch64",feature="net-arm-lab"))))]
+        net_preparation::port_v1::compter(caller(s).number,id);
         let space = s.processes.get(caller(s)).space.as_ref().unwrap();
         let exec = space.executable(pc);
         let member = s.thread(s.current()).user.as_ref().unwrap();

@@ -12,6 +12,10 @@ mod virtio_net;
 #[path = "virtio_net/ethernet_lab.rs"]
 mod ethernet_lab;
 
+#[cfg(ethernet_v1_port)]
+#[path="ethernet/adaptateur.rs"]
+mod adaptateur;
+
 fn demande(handle: u64, generation: u64) -> u64 {
     let mut msg = SendV1 {
         version: VERSION,
@@ -31,6 +35,9 @@ fn essai() -> Result<()> {
     let generation = config(2);
     #[cfg(net_ethernet_lab)]
     if config(0) == 3 {
+        #[cfg(ethernet_v1_port)]
+        return adaptateur::executer(handle, generation);
+        #[cfg(not(ethernet_v1_port))]
         return ethernet_lab::executer(handle, generation);
     }
     if config(0) == 2 {

@@ -18,6 +18,8 @@ use pool::{Bits, Pool};
 mod bulk;
 mod probes;
 mod traffic;
+#[cfg(feature="ethernet-v1-port")]
+pub(super) mod liaison_ethernet;
 mod pipe;
 mod pipe_admission;
 pub(super) use pipe_admission::{PendingReader, ReaderReceipt};
@@ -230,6 +232,10 @@ impl Domain {
     pub(super) fn racines_pilotes(&self, pid: Pid) -> usize {
         self.ends.ids().filter(|&i| self.ends.get(i).owner == pid.number).count()
     }
+    #[cfg(feature="ethernet-v1-port")]
+    pub(super) fn pages_bulk_count(&self)->usize{self.pages_bulk.ids().count()}
+    #[cfg(feature="ethernet-v1-port")]
+    pub(super) fn endpoint_count(&self)->usize{self.ends.ids().count()}
     pub(super) fn pages(&self) -> usize {
         (self.ends.pages()
             + self.nodes.pages()

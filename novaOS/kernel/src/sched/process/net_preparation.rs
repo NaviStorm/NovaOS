@@ -135,7 +135,12 @@ pub(crate) fn tester(generation: u64, preparer: impl FnOnce() -> bool) -> bool {
 #[cfg(feature = "net-ethernet-lab")]
 pub(crate) fn mesurer(phase:&str) { measure(phase); }
 
-#[cfg(feature = "net-ethernet-lab")]
+#[cfg(feature = "ethernet-v1-port")]
+#[path="net_preparation/port_v1.rs"]
+pub(crate) mod port_v1;
+#[cfg(feature = "ethernet-v1-port")]
+pub(crate) use port_v1::ethernet;
+#[cfg(all(feature = "net-ethernet-lab",not(feature="ethernet-v1-port")))]
 pub(crate) fn ethernet(
     generation: u64,
     pendant: impl FnOnce() -> bool,

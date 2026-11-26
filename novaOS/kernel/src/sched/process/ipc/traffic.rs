@@ -593,6 +593,8 @@ pub(super) fn invoke(id: u64, args: [u64; 3]) -> Res<u64> {
             let resuming = s.ipc.waits.has(tid.slot);
             #[cfg(feature = "ethernet-2b-lab")]
             if !resuming { probes::phase2b::start_sample(p.number, id, args[1], s.stats.wakes); }
+            #[cfg(all(feature="ethernet-v1-port",any(all(target_arch="x86_64",feature="net-q35-lab"),all(target_arch="aarch64",feature="net-arm-lab"))))]
+            if !resuming {crate::sched::process::net_preparation::port_v1::timing(p.number,id,args[1],false);}
             s.ipc.metrics.entry = entry;
             if resuming && s.ipc.metrics.includes(p) {
                 let w = core::mem::take(&mut s.ipc.metrics.woken[tid.slot]);
@@ -613,6 +615,8 @@ pub(super) fn invoke(id: u64, args: [u64; 3]) -> Res<u64> {
                 s.ipc.step(p, tid, space, id, args, ticks())
             };
             s.flush_ipc();
+            #[cfg(all(feature="ethernet-v1-port",any(all(target_arch="x86_64",feature="net-q35-lab"),all(target_arch="aarch64",feature="net-arm-lab"))))]
+            if r==Ok(None) {crate::sched::process::net_preparation::port_v1::bloque(p.number,id,args[1]);}
             let cookie = if r == Ok(None) {
                 s.ipc.waits.get(tid.slot).cookie
             } else {
@@ -628,6 +632,8 @@ pub(super) fn invoke(id: u64, args: [u64; 3]) -> Res<u64> {
             }
             #[cfg(feature = "ethernet-2b-lab")]
             if r.is_ok_and(|v| v.is_some()) { probes::phase2b::end_sample(p.number, id, args[1], s.stats.wakes); }
+            #[cfg(all(feature="ethernet-v1-port",any(all(target_arch="x86_64",feature="net-q35-lab"),all(target_arch="aarch64",feature="net-arm-lab"))))]
+            if r==Ok(Some(1)) {crate::sched::process::net_preparation::port_v1::timing(p.number,id,args[1],true);}
             s.ipc.metrics.section(begin, end, id, entry, r);
             (r, cookie, p.number)
         });

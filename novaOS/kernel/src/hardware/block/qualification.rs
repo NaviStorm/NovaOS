@@ -553,7 +553,7 @@ pub(crate) fn net_p9() -> Result<()> {
         ));
         #[cfg(feature="net-ethernet-lab")]
         if matches!(mode,126|127) {
-            suite.trames(||{
+            let trafic=suite.trames(||{
                 if mode==126 {return true}
                 let mut reads=[0u64;64];
                 let mut flushes=[0u64;16];
@@ -576,7 +576,16 @@ pub(crate) fn net_p9() -> Result<()> {
                 hal::log(format_args!("NET ARM lectures secteur={secteur} hz={hz} octets=4096 cycles={reads:?}"));
                 hal::log(format_args!("NET ARM flush hz={hz} cycles={flushes:?}"));
                 true
-            })?;
+            });
+            #[cfg(feature="ethernet-v1-port")]
+            if let Err(e)=trafic {
+                t.begin_read(table.volume)?;
+                t.finish_read()?;
+                t.close()?;
+                hal::log(format_args!("ETH3 quarantaine disque_lisible=true cadres_retenus={}",crate::memory::pinned_dma_frames()));
+                return Err(e);
+            }
+            trafic?;
             t.begin_read(table.volume)?;
             t.finish_read()?;
             t.close()?;
