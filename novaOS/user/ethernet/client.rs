@@ -18,8 +18,8 @@ struct Client {
 }
 fn paquet(n: u32, rx: bool, data: &mut [u8]) -> usize {
     let size = match cfg(11) {
-        10 => 60,
-        11 => 1514,
+        10 | 12 | 14 | 16 | 18 => 60,
+        11 | 13 | 15 | 17 | 19 => 1514,
         _ if n % 2 == 0 => 60,
         _ => 1514,
     };
@@ -48,8 +48,15 @@ impl Client {
         };
         let mut pkt = [0; 128];
         let n = h.encode(&mut pkt, body).map_err(|_| BAD_ARGUMENT)?;
-        if op == wire::TX && cfg(58) == 1 {
-            let addr = 0x401a00 + 8 * u64::from(count - 1);
+        let marque = cfg(58);
+        if marque != 0 && (op == wire::TX || (op == wire::RX && matches!(cfg(11), 16 | 17))) {
+            let taille = if cfg(11) >= 12 {
+                mark(58, 0);
+                marque
+            } else {
+                u64::from(count)
+            };
+            let addr = 0x401a00 + 8 * (taille - 1);
             let msg = unsafe { &mut *(addr as *mut SendV1) };
             *msg = SendV1 {
                 version: VERSION,
@@ -196,6 +203,85 @@ impl Client {
         require(self.ctrl(wire::CLOSE, 0, &[])?.len == 32)?;
         self.c.envoyer(EVENT, &self.corr.to_le_bytes())
     }
+    fn lire_lot(&mut self, first: u32, b: usize) -> Result<()> {
+        let mut lus = 0;
+        while lus < b {
+            let list = self.ctrl(wire::RX, 0, &[])?;
+            require(list.payload[6] == 1)?;
+            let entries = &list.payload[32..list.len as usize];
+            if entries.is_empty() {
+                continue;
+            }
+            require(entries.len() / 12 <= b - lus)?;
+            let mut release = [0; 96];
+            for (i, d) in entries.chunks_exact(12).enumerate() {
+                let mut data = [0; FRAME];
+                let mut expected = [0; FRAME];
+                let n = paquet(first + lus as u32, true, &mut expected);
+                require(wire::word(d, 2) as usize == n)?;
+                self.c
+                    .donnees(false, u64::from(wire::word(d, 0)) + 1, &mut data[..n])?;
+                require(data[..n] == expected[..n])?;
+                release[12 * i..12 * i + 12].copy_from_slice(d);
+                release[12 * i + 2..12 * i + 4].fill(0);
+                lus += 1;
+            }
+            require(
+                self.ctrl(
+                    wire::RELEASE,
+                    (entries.len() / 12) as u16,
+                    &release[..entries.len()],
+                )?
+                .len == 32,
+            )?;
+        }
+        Ok(())
+    }
+    fn performance(&mut self) -> Result<()> {
+        let mode = cfg(11);
+        let tx = !matches!(mode, 16 | 17);
+        let rx = !matches!(mode, 14 | 15);
+        let mut first = 0;
+        let mut ticket = 0u64;
+        for b in [1, 4, 8] {
+            for _ in 0..1024 {
+                ticket += 1;
+                mark(58, b as u64);
+                if tx {
+                    self.tx(ticket, b, first, None)?;
+                    let r = self.recu(wire::TX, ticket)?;
+                    require(r.payload[6] == 1 && r.payload[34..36] == [0, 0])?;
+                    for g in &mut self.generations[..b] {
+                        *g += 1;
+                    }
+                    loop {
+                        let q = self.ctrl(wire::QUERY, 0, &ticket.to_le_bytes())?;
+                        require(q.payload[6] == 1 && q.len as usize == 32 + 12 * b)?;
+                        if q.payload[32..q.len as usize]
+                            .chunks_exact(12)
+                            .all(|d| d[2] == 3)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if rx {
+                    self.lire_lot(first, b)?;
+                }
+                if tx {
+                    require(self.ctrl(wire::ACK, 0, &ticket.to_le_bytes())?.len == 32)?;
+                }
+                // Borne de fin après vérification de la réponse, même si une notification l'a précédée.
+                require(value(call(IPC_FEATURES, self.c.tx, u64::from(SEND), 1))? == 1)?;
+                first += b as u32;
+            }
+        }
+        if !rx {
+            self.lire_lot(0, 16)?;
+        }
+        require(self.ctrl(wire::CLOSE, 0, &[])?.len == 32)?;
+        self.c.envoyer(EVENT, &self.corr.to_le_bytes())
+    }
     fn exercer(&mut self) -> Result<()> {
         let annonce = self.c.recevoir(CATALOGUE)?;
         let desc = &annonce.payload[..annonce.len as usize];
@@ -240,6 +326,9 @@ impl Client {
             self.tx(1, 1, 0, None)?;
             require(self.recu(wire::TX, 1)?.payload[32] == 1)?;
             return self.veille();
+        }
+        if cfg(11) >= 12 {
+            return self.performance();
         }
         for invalid in [0, 6, 13] {
             self.tx(1, 2, 0, Some(invalid))?;

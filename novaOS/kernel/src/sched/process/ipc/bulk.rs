@@ -131,6 +131,8 @@ pub(in crate::sched::process) fn transfer(
                 buf.fill(0);
                 lane.len = 0;
             }
+            #[cfg(all(feature="ethernet-v1-port",any(all(target_arch="x86_64",feature="net-q35-lab"),all(target_arch="aarch64",feature="net-arm-lab"))))]
+            crate::sched::process::net_preparation::port_v1::profil_3b::copie(pid.number,len);
             Ok(Ok(len))
         })
         .unwrap()

@@ -5,9 +5,12 @@ use crate::abi;
 use core::sync::atomic::{AtomicU64, Ordering::Relaxed};
 const SERVICE: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/ethernet_port.bin"));
 const CLIENT: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/ethernet_client.bin"));
+#[path = "profil_3b.rs"]
+pub(crate) mod profil_3b;
 const N: usize = 16384;
 static VEILLE: core::sync::atomic::AtomicBool = core::sync::atomic::AtomicBool::new(false);
 pub(crate) fn bloque(pid: u64, id: u64, ptr: u64) {
+    profil_3b::attente(pid);
     if pid == CLIENT_PID.load(Relaxed)
         && id == abi::IPC_RECEIVE
         && ptr == user::DATA + 3072
@@ -23,7 +26,8 @@ static SAMPLES: [AtomicU64; N] = [const { AtomicU64::new(0) }; N];
 static COUNT: AtomicU64 = AtomicU64::new(0);
 static ACTEURS: [AtomicU64; 3] = [const { AtomicU64::new(0) }; 3];
 static IPC: [[AtomicU64; 6]; 3] = [const { [const { AtomicU64::new(0) }; 6] }; 3];
-pub(crate) fn compter(pid: u64, id: u64) {
+pub(crate) fn compter(pid: u64, id: u64, args: [u64; 3], wakes: u64) {
+    profil_3b::appel(pid, id, args, wakes);
     let colonne = match id {
         abi::IPC_SEND => 0,
         abi::IPC_RECEIVE => 1,
@@ -39,7 +43,7 @@ pub(crate) fn compter(pid: u64, id: u64) {
 }
 static FIRST: AtomicU64 = AtomicU64::new(0);
 static LAST: AtomicU64 = AtomicU64::new(0);
-pub(crate) fn timing(pid: u64, id: u64, ptr: u64, end: bool) {
+pub(crate) fn timing(pid: u64, id: u64, ptr: u64, end: bool, wakes: u64) {
     if pid != CLIENT_PID.load(Relaxed) || pid == 0 {
         return;
     }
@@ -49,21 +53,25 @@ pub(crate) fn timing(pid: u64, id: u64, ptr: u64, end: bool) {
         && ptr % 8 == 0
     {
         LOT.store((ptr - user::DATA - 2560) / 8, Relaxed);
+        profil_3b::debut(LOT.load(Relaxed) + 1, wakes);
         let t = hal::timer::counter();
         START.store(t, Relaxed);
         let _ = FIRST.compare_exchange(0, t, Relaxed, Relaxed);
-    } else if end && id == abi::IPC_RECEIVE && ptr == user::DATA + 2816 {
-        let start = START.swap(0, Relaxed);
-        if start != 0 {
-            let t = hal::timer::counter();
-            let i = COUNT.fetch_add(1, Relaxed) as usize;
-            if i < N {
-                if let Some(v) = (t - start).checked_mul(8) {
-                    SAMPLES[i].store(v | LOT.load(Relaxed), Relaxed);
-                }
+    } else if end && id == abi::IPC_RECEIVE && ptr == user::DATA + 2816 && !profil_3b::actif() {
+        fin_lot();
+    }
+}
+fn fin_lot() {
+    let start = START.swap(0, Relaxed);
+    if start != 0 {
+        let t = hal::timer::counter();
+        let i = COUNT.fetch_add(1, Relaxed) as usize;
+        if i < N {
+            if let Some(v) = (t - start).checked_mul(8) {
+                SAMPLES[i].store(v | LOT.load(Relaxed), Relaxed);
             }
-            LAST.store(t, Relaxed);
         }
+        LAST.store(t, Relaxed);
     }
 }
 /// Les trois bits bas identifient la taille du lot. Le calcul de rang
@@ -238,6 +246,14 @@ impl EthernetActor {
             Some("incertain") => 4,
             Some("boite") => 1,
             Some("plein") => 9,
+            Some("echo60") => 12,
+            Some("echo1514") => 13,
+            Some("tx60") => 14,
+            Some("tx1514") => 15,
+            Some("rx60") => 16,
+            Some("rx1514") => 17,
+            Some("duplex60") => 18,
+            Some("duplex1514") => 19,
             Some("mesure60") => 10,
             Some("mesure1514") => 11,
             _ => 0,
@@ -245,6 +261,7 @@ impl EthernetActor {
         let total = match case {
             5 => 65552,
             10 | 11 => 4608,
+            12..=19 => 13 * 1024,
             7 => 16,
             8 => 1,
             _ => 144,
@@ -353,6 +370,7 @@ pub(crate) fn ethernet_actor(
     let (pid, sp, cp) = (driver.0, service.0, client.0);
     let mut frame = [0u8; 1526];
     let mut sequence = 0u64;
+    profil_3b::initialiser(case, front, hw);
     COUNT.store(0, Relaxed);
     for (i, p) in [cp, sp, pid].into_iter().enumerate() {
         for c in &IPC[i] {
@@ -457,7 +475,13 @@ pub(crate) fn ethernet_actor(
             }
             Ok(ret)
         });
-        mediation_ticks = mediation_ticks.saturating_add(hal::timer::counter() - debut_mediation);
+        let duree = hal::timer::counter() - debut_mediation;
+        profil_3b::courtier(
+            op,
+            duree,
+            outcome.as_ref().ok().and_then(|r| r.as_ref().ok()).copied(),
+        );
+        mediation_ticks = mediation_ticks.saturating_add(duree);
         let res = match outcome {
             Ok(r) => r,
             Err(e) => {
@@ -517,6 +541,7 @@ pub(crate) fn ethernet_actor(
     if case == 3 && outcomes == [Outcome::Exit(9), Outcome::Exit(0), Outcome::Exit(0)] {
         PILOTE_COLLECTE.store(pid.number, core::sync::atomic::Ordering::Release);
     }
+    profil_3b::bilan();
     let ipc = IPC
         .each_ref()
         .map(|row| row.each_ref().map(|n| n.load(Relaxed)));
