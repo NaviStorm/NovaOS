@@ -5,9 +5,9 @@ import re
 import struct
 
 NOUVEAUX = ("cycles", "cycles-court", "rattrapage", "preuve-absente", "recu-vtd-absent",
-            "recu-vtd-differe", "recu-arm-differe", "recu-arm-absent")
+            "recu-vtd-differe", "recu-arm-differe", "recu-arm-absent", "deces-recu-tx-absent")
 CAS = {"port": 0, "cycles": 0, "court": 8, "cycles-court": 8, "preuve-absente": 8,
-       "recu-vtd-absent": 8, "recu-vtd-differe": 8, "recu-arm-differe": 0, "recu-arm-absent": 0, "deces": 3, "incertain": 4, "revocation": 6,
+       "recu-vtd-absent": 8, "recu-vtd-differe": 8, "recu-arm-differe": 0, "recu-arm-absent": 0, "deces": 3, "deces-recu-tx-absent": 3, "incertain": 4, "revocation": 6,
        "segment-interrompu": 23, "rattrapage": 23, "recu-collecte": 24, "echo1514": 13}
 
 
@@ -158,6 +158,8 @@ def verifier(out, c, serie):
                all((d[0], int(d[3]))==(("VirtIO-IOMMU",22) if arch=="arm" else ("VT-d",30)) for d in differes), differes)
     if cas in ("recu-arm-differe", "recu-arm-absent"):
         exiger(serie.count("epingles_nic=22 lecture_flush=true") == cycles, "E/S pendant la quarantaine")
+    if cas=="deces-recu-tx-absent":
+        exiger("E3C recu TX retenu" in serie and arrets[0][2:4]==("0","4") and int(arrets[0][5],16)==15, arrets)
     if cas=="rattrapage":
         exiger(c["rx_injectees_perf"]==16*cycles and all(int(a[4],16)==65535 and int(a[1])==0 for a in arrets), arrets)
     for b in bilans:

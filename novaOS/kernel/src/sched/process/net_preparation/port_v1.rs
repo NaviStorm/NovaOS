@@ -229,6 +229,11 @@ type Groupe = (Child, Child, Child, u64, [[u64; 2]; 2]);
 static DERNIERE_GENERATION: AtomicU64 = AtomicU64::new(0);
 static DERNIERE_CLE: AtomicU64 = AtomicU64::new(0);
 
+fn reserver_generation(generation: u64) -> Option<u64> {
+    let precedente = DERNIERE_GENERATION.fetch_max(generation, core::sync::atomic::Ordering::AcqRel);
+    (generation > precedente).then_some(precedente)
+}
+
 pub(crate) struct EthernetActor {
     groupe: Option<Groupe>,
     generation: u64,
@@ -243,7 +248,7 @@ impl EthernetActor {
             Some("veille") => 7,
             Some("court" | "cycles-court" | "preuve-absente" | "recu-vtd-absent" | "recu-vtd-differe") => 8,
             Some("revocation") => 6,
-            Some("deces") => 3,
+            Some("deces" | "deces-recu-tx-absent") => 3,
             Some("endurance") => 5,
             Some("incertain") => 4,
             Some("boite") => 1,
@@ -278,17 +283,22 @@ impl EthernetActor {
         if u64::from(CAS_ADMIS.load(core::sync::atomic::Ordering::Acquire)) != case {
             return None;
         }
+        // Une incarnation refusée ou abandonnée ne peut jamais rouvrir un numéro consommé.
+        let precedente = reserver_generation(generation)?;
+        if precedente != 0 && matches!(option_env!("NOVAOS_ETH3_CASE"), Some("cycles" | "cycles-court" | "rattrapage" | "recu-arm-differe" | "recu-vtd-differe"))
+            && (reserver_generation(precedente).is_some() || reserver_generation(generation).is_some()) {
+            return None;
+        }
         measure("eth3_initial");
         let base = heap::audit(false).free_pages;
         let groupe = setup(generation, case, total)?;
-        let precedente = DERNIERE_GENERATION.swap(generation, Relaxed);
         let ancienne_cle = DERNIERE_CLE.swap(groupe.3, Relaxed);
         let ancienne_valide = with(|k| k.ipc.lab_can_submit(groupe.0.0, ancienne_cle));
         let acteur = Self { groupe: Some(groupe), generation, case, base };
-        if generation <= precedente || ancienne_valide {
+        if ancienne_valide {
             return None;
         }
-        hal::log(format_args!("E3C admission generation={generation} precedente={precedente} ancienne_capacite_valide={ancienne_valide}"));
+        hal::log(format_args!("E3C admission generation={generation} precedente={precedente} ancienne_capacite_valide={ancienne_valide} generation_verrouillee=true"));
         Some(acteur)
     }
     #[cfg(feature = "net-q35-duo")]

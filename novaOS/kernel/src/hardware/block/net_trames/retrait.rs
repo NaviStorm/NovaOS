@@ -70,9 +70,16 @@ impl Port<'_> {
             {
                 return Err(Error::Quarantine);
             }
+            let mut tx_en_vol = rendus(self.cadres[5].mem, s.completees, s.en_vol, false)?;
+            if option_env!("NOVAOS_ETH3_CASE") == Some("deces-recu-tx-absent") {
+                // Le banc retient la livraison du dernier masque TX à la politique
+                // de restitution. Seule la connaissance du superviseur est réduite.
+                tx_en_vol = s.en_vol;
+                hal::log(format_args!("E3C recu TX retenu generation={generation} masque={tx_en_vol:#06x}"));
+            }
             Arret {
                 rx_rendus: !rendus(self.cadres[2].mem, s.rx_lues, !s.rx_rendues, true)?,
-                tx_en_vol: rendus(self.cadres[5].mem, s.completees, s.en_vol, false)?,
+                tx_en_vol,
             }
         } else {
             Arret {
