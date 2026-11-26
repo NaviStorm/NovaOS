@@ -12,6 +12,7 @@ import sys
 import tempfile
 import time
 
+import retrait_duo
 from port_qemu import AUDIT, Pair, digest, dump, qualification
 
 
@@ -62,7 +63,7 @@ def verifier(chemin, cas, lecteur, avant, pair):
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("cas", choices=("port", "deces"))
+    p.add_argument("cas", choices=("port", "deces", *retrait_duo.CAS))
     for nom in ("elf", "sortie", "temoin", "archive", "limine", "lecteur"):
         p.add_argument(nom, type=lambda s: Path(s).resolve())
     a = p.parse_args()
@@ -82,7 +83,7 @@ def main():
     seed = a.archive / "finale-20261125/q35-duo-nvme-init-512-S01/qemu/namespace.raw"
     firmware = a.archive / "finale-20261125/q35-pio-firmware-02"
     args = json.loads((ref / "arguments.json").read_text())
-    mode = "nvme-panne-nic" if a.cas == "deces" else "nvme-charge"
+    mode = retrait_duo.CAS.get(a.cas, "nvme-panne-nic" if a.cas == "deces" else "nvme-charge")
     rapport = dict(succes=False, cas=a.cas, audit=AUDIT, modele=digest(Path(args[0])),
                    elf=digest(a.elf), graine=digest(seed), lecteur=digest(a.lecteur))
     construction = json.loads((a.elf.parent / "sources.json").read_text())
@@ -120,7 +121,7 @@ def main():
                 elif v == "-fw_cfg" and "opt/novaos/boot.fat" in args[i+1]:
                     args[i+1] = f"name=opt/novaos/boot.fat,file={out}/boot.fat"
             dump(out / "arguments.json", args)
-            pair = Pair(h, out, virtio_net_pair, a.cas)
+            pair = Pair(h, out, virtio_net_pair, "cycles" if a.cas == "duo-cycles" else "deces" if mode == "nvme-panne-nic" else "port")
             with (out/"qemu.trace").open("xb") as log:
                 with subprocess.Popen(args, cwd=tmp, pass_fds=(g.fileno(),), stdin=subprocess.PIPE,
                                       stdout=subprocess.PIPE, stderr=log, bufsize=0) as vm:
@@ -134,7 +135,7 @@ def main():
                             with qt.makefile("rwb", buffering=0) as stream:
                                 rapport["pci_initial"] = pci_etat(stream, capture(vm,out,"reset",False))
                                 qmp(vm, "cont")
-                                echeance = time.monotonic() + 65
+                                echeance = time.monotonic() + (1200 if a.cas == "duo-cycles" else 65)
                                 while time.monotonic() < echeance and vm.poll() is None:
                                     serie = (out/"serie.log").read_bytes()
                                     if any(s in serie for s in (b"NVME bilan", b"NVME admission refusee", b"SMP arret motif=", b"Panique du noyau", b"Exception noyau")) or pair.error:
@@ -142,7 +143,9 @@ def main():
                                     time.sleep(.1)
                                 qmp(vm, "stop")
                                 rapport["pci_final"] = pci_etat(stream, capture(vm,out,"fin",False))
-                                if a.cas == "deces" and b"NVME bilan ok=true" in serie:
+                                if a.cas in retrait_duo.CAS and b"NVME bilan ok=true" in serie:
+                                    rapport["qi_finale"] = retrait_duo.materiel(vm, stream, serie, a.cas)
+                                if a.cas in ("deces", "duo-sans-reset") and b"NVME bilan ok=true" in serie:
                                     rapport["tables_finales"] = tables_finales(vm, stream, serie, mode)
                         qmp(vm,"quit")
                         vm.wait(timeout=5)
@@ -152,7 +155,8 @@ def main():
                             vm.wait()
                         pair.thread.join(3)
             rapport["trames_par_sens"] = pair.frames
-            rapport["stockage"] = verifier(out, a.cas, a.lecteur, avant, pair)
+            oracle = retrait_duo.verifier if a.cas in retrait_duo.CAS else verifier
+            rapport["stockage"] = oracle(out, a.cas, a.lecteur, avant, pair)
             rapport["p9_final"] = digest(out/"namespace.raw")
             rapport["succes"] = True
     finally:
