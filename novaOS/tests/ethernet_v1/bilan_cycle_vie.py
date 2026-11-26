@@ -51,6 +51,33 @@ def trames(p, cas, attendues):
     return dict(trames=comptes,octets=octets)
 
 
+def trafic_disque_pendant_retrait(p, cas, cycles):
+    # Le couple UNMAP des pages 21 puis 0 identifie la commande mise en attente.
+    # Vérifier les accès réels du SID disque avant le premier retrait suivant.
+    precedent = None
+    traductions = None
+    intervalles = []
+    with (p/"qemu.trace").open() as trace:
+        for ligne in trace:
+            if ligne.startswith("virtio_iommu_unmap_done "):
+                op = re.search(r"domain=(\d+) virt_start=(0x\w+)",ligne)
+                domaine, iova = int(op[1]), int(op[2],16)
+                if traductions is not None:
+                    attendu = (1,0x8006000) if cas=="recu-arm-absent" else (3,0x10014000)
+                    exiger((domaine,iova)==attendu and min(traductions)>0,(p,domaine,iova,traductions))
+                    intervalles.append(dict(lectures=traductions[0],ecritures=traductions[1]))
+                    traductions=None
+                if precedent==(3,0x10015000) and (domaine,iova)==(3,0x10000000):
+                    traductions=[0,0]
+                precedent=domaine,iova
+            elif traductions is not None and ligne.startswith("virtio_iommu_translate ") and " rid=48 " in ligne:
+                droit=int(ligne.split("flag=")[1])
+                exiger(droit in (1,2),p)
+                traductions[droit-1]+=1
+    exiger(traductions is None and len(intervalles)==cycles,p)
+    return intervalles
+
+
 def verifier_cycle(p, revision, machines):
     c = lire(p/"campagne.json")
     cas, arch = c["cas"], c["arch"]
@@ -77,7 +104,9 @@ def verifier_cycle(p, revision, machines):
     for debut,fin in zip(bilans["eth3_initial"],bilans["eth3_retrait"],strict=True):
         for champ in ("libres","tables","kpile","upile","ipc","utilisateur","processus","dma"):
             exiger(debut[champ]==fin[champ],(p,champ))
+    intervalles = trafic_disque_pendant_retrait(p,cas,len(preuve["generations"])) if cas in ("recu-arm-differe","recu-arm-absent") else []
     return dict(fil=fil,generations=preuve["generations"],cadres_cpu=preuve["cadres_cpu"],
+                dma_disque_pendant_retrait=intervalles,
                 memoire_finale=preuve["memoire_finale"],ram=bilans,arrets=preuve["arrets"],
                 iommu=preuve.get("iommu",c.get("preuve_qi")),bilans=preuve["bilans"])
 
