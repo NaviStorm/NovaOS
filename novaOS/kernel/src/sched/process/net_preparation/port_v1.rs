@@ -130,13 +130,20 @@ fn setup(
             let (front, client) = ipc::liaison_ethernet::installer(k, s, c, case != 2, true)?;
             let (back, adapter) = ipc::liaison_ethernet::installer(k, s, d, case != 2, false)?;
             racines = [front, back];
+            let identite = k
+                .processes
+                .get(c)
+                .instance
+                .identity(Some(boot))
+                .ok_or(abi::DENIED)?;
+            let epoch = k.processes.get(s).instance.serial;
             ecrire(
                 k,
                 c,
                 &[
                     (1, client[0]),
                     (2, client[1]),
-                    (6, generation),
+                    (6, epoch),
                     (10, hw),
                     (11, case),
                     (12, total),
@@ -151,7 +158,8 @@ fn setup(
                     (3, back[0]),
                     (4, back[1]),
                     (5, c.number),
-                    (6, generation),
+                    (6, epoch),
+                    (18, identite.instance),
                     (7, u64::from_le_bytes(boot[..8].try_into().unwrap())),
                     (8, u64::from_le_bytes(boot[8..].try_into().unwrap())),
                     (9, front[0]),
@@ -165,10 +173,12 @@ fn setup(
                 return Err(abi::LIMIT);
             }
             hal::log(format_args!(
-                "ETH3 session client={} service={} pilote={} incarnation={generation} mode={case} racines={roots:?} boites_globales={} endpoints_globaux={} ipc_pages={}",
+                "ETH3 session client={} service={} pilote={} incarnation={} generation_instance={} epoque={epoch} generation_materiel={generation} mode={case} racines={roots:?} boites_globales={} endpoints_globaux={} ipc_pages={}",
                 c.number,
                 s.number,
                 d.number,
+                identite.instance,
+                identite.generation,
                 k.ipc.pages_bulk_count(),
                 k.ipc.endpoint_count(),
                 k.ipc.pages()

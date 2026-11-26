@@ -197,6 +197,21 @@ impl Client {
         self.c.envoyer(EVENT, &self.corr.to_le_bytes())
     }
     fn exercer(&mut self) -> Result<()> {
+        let annonce = self.c.recevoir(CATALOGUE)?;
+        let desc = &annonce.payload[..annonce.len as usize];
+        require(
+            desc.len() == 32
+                && desc[..8] == 1u64.to_le_bytes()
+                && desc[8..16] == self.epoch.to_le_bytes()
+                && desc[16..18] == 1u16.to_le_bytes()
+                && desc[18..20] == 1500u16.to_le_bytes()
+                && desc[20] == if cfg(11) == 7 { 6 } else { 7 }
+                && desc[21] == 8
+                && desc[22] == if self.c.boite { 3 } else { 1 }
+                && desc[23] == 0
+                && desc[24..30] == [0x52, 0x54, 0, 0x12, 0x34, 0x56]
+                && desc[30..] == [0, 0],
+        )?;
         self.c
             .envoyer(EVENT, &pair(1, if self.c.boite { 3 } else { 1 }))?;
         let (_, t) = fields(&self.c.recevoir(EVENT)?)?;

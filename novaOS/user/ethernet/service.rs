@@ -170,6 +170,18 @@ impl Service {
         Ok(())
     }
     fn servir(&mut self) -> Result<()> {
+        // Répertoire privé du profil statique. Le client reçoit une description
+        // Ethernet portable. Le bail matériel et les coordonnées PCI restent au pilote.
+        let mut desc = [0u8; 32];
+        desc[..8].copy_from_slice(&self.peer.port.to_le_bytes());
+        desc[8..16].copy_from_slice(&self.peer.epoch.to_le_bytes());
+        desc[16..18].copy_from_slice(&1u16.to_le_bytes());
+        desc[18..20].copy_from_slice(&1500u16.to_le_bytes());
+        desc[20] = cfg(17) as u8;
+        desc[21] = 8;
+        desc[22] = if self.client.boite { 3 } else { 1 };
+        desc[24..30].copy_from_slice(&STATION);
+        self.client.envoyer(CATALOGUE, &desc)?;
         let (version, offres) = fields(&self.client.recevoir(EVENT)?)?;
         require(version == 1 && offres & 1 != 0 && offres & !3 == 0)?;
         self.client.boite &= offres & 2 != 0;
@@ -378,7 +390,7 @@ fn start() -> Result<()> {
         boot,
         port: 1,
         owner: cfg(5),
-        incarnation: cfg(6),
+        incarnation: cfg(18),
         channel: cfg(9),
         epoch: cfg(6),
     };

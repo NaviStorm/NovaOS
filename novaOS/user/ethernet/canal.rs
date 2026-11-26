@@ -5,6 +5,7 @@ use core::sync::atomic::{AtomicU64, Ordering};
 pub const CONTROL: u64 = 0x45544831;
 pub const BYTES: u64 = 0x45544832;
 pub const EVENT: u64 = 0x45544833;
+pub const CATALOGUE: u64 = 0x45544835;
 pub const DRIVER: u64 = 0x45544834;
 pub const FRAME: usize = 1514;
 pub fn cfg(i: usize) -> u64 {

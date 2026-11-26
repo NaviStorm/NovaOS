@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 import re
+import resource
 import shutil
 import signal
 import socket
@@ -249,6 +250,8 @@ def main():
             dump(out/"arguments.json",args)
             peer = Pair(host,out,virtio_net_pair,a.cas)
             with qualification(Path(os.environ["NOVAOS_TMPDIR"]).resolve().parent, report), (out/"qemu.trace").open("xb") as log:
+                debut_cpu=resource.getrusage(resource.RUSAGE_CHILDREN)
+                debut_vm=time.monotonic()
                 with subprocess.Popen(args, cwd=tmp, pass_fds=(guest.fileno(),), stdin=subprocess.PIPE,
                                       stdout=subprocess.PIPE, stderr=log, bufsize=0) as vm:
                     guest.close()
@@ -284,6 +287,8 @@ def main():
                         if vm.poll() is None:
                             vm.kill()
                             vm.wait()
+                        fin_cpu=resource.getrusage(resource.RUSAGE_CHILDREN)
+                        report["cpu_qemu"]=dict(utilisateur_s=fin_cpu.ru_utime-debut_cpu.ru_utime,systeme_s=fin_cpu.ru_stime-debut_cpu.ru_stime,reel_s=time.monotonic()-debut_vm)
                         peer.thread.join(3)
                         report.update(rx_sans_tx=peer.rx_seul,trames_par_sens=peer.frames, octets_par_sens=peer.octets, intervalle_pair_ns=peer.last-peer.first, erreur_pair=peer.error)
             serial=(out/"serie.log").read_text(errors="replace")
