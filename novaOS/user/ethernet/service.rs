@@ -85,16 +85,16 @@ impl Service {
                 .position(Option::is_none)
                 .ok_or(WOULD_BLOCK)?;
             if self.io.boite {
-                lot.ajouter(n)?.copy_from_slice(src);
+                if h.count > 1 {
+                    lot.ajouter(n)?.copy_from_slice(src);
+                }
                 entries[i] = ((coupon as u32) << 16) | n as u32;
             } else {
-                let mut frame = [0; FRAME];
-                frame[..n].copy_from_slice(src);
                 self.io.envoyer(
                     DRIVER,
                     &pair(backend::PREPARER, ((coupon as u64) << 32) | n as u64),
                 )?;
-                self.io.donnees(true, 1, &mut frame[..n])?;
+                self.io.offrir(1, src)?;
                 let (s, id) = fields(&self.io.recevoir(DRIVER)?)?;
                 if s != OK {
                     return Err(s);
@@ -112,9 +112,15 @@ impl Service {
                 &entries[..usize::from(h.count)],
                 &mut msg,
             );
-            self.io.envoyer_lot(&lot.bytes[..lot.longueur()], || {
-                self.io.envoyer(DRIVER, &msg[..size])
-            })?;
+            let port = eth(self.api.port())?;
+            let backend = port.backend();
+            let bytes = if h.count == 1 {
+                eth(backend.image(self.suffix[0].ok_or(REFUSED)?))?
+            } else {
+                &lot.bytes[..lot.longueur()]
+            };
+            self.io
+                .envoyer_lot(bytes, || self.io.envoyer(DRIVER, &msg[..size]))?;
             let (status, n) = fields(&self.io.recevoir(DRIVER)?)?;
             if status != OK {
                 return Err(status);
@@ -208,7 +214,7 @@ impl Service {
             };
             let mut frame = [0; FRAME];
             let dst = frame.get_mut(..n).ok_or(REFUSED)?;
-            self.io.donnees(false, 1, dst)?;
+            self.io.prendre(1, dst)?;
             eth(eth(self.api.port())?.backend().receive(dst))?;
         }
         Ok(())
@@ -246,6 +252,7 @@ impl Service {
         }
         self.client
             .envoyer(EVENT, &pair(1, if self.client.boite { 2 } else { 1 }))?;
+        let mut lot = Trames::vide();
         loop {
             let msg = match receive_for(self.client.rx, 1) {
                 Err(TIMED_OUT) if self.ouverts => {
@@ -275,7 +282,7 @@ impl Service {
                 continue;
             }
             mark(60, h.op as u64);
-            let mut lot = Trames::vide();
+            lot.vider();
             let mut permis = true;
             if h.op == wire::TX {
                 if self.groupes {
@@ -405,7 +412,7 @@ impl Service {
                 self.perdre_pilote()?;
             }
             if h.op == wire::RX {
-                let mut lot = Trames::vide();
+                lot.vider();
                 for d in out[32..n].chunks_exact(12) {
                     let i = wire::word(d, 0);
                     let slot = ethernet::Slot {
@@ -414,16 +421,18 @@ impl Service {
                         generation: u32::from_le_bytes(d[4..8].try_into().unwrap()),
                     };
                     let src = eth(eth(self.api.port())?.read_rx(self.peer, slot))?;
+                    if self.groupes && n == 44 {
+                        self.client
+                            .envoyer_lot(src, || self.client.envoyer(CONTROL, &out[..n]))?;
+                        continue;
+                    }
                     if self.groupes {
                         lot.ajouter(src.len())?.copy_from_slice(src);
                         continue;
                     }
-                    let mut data = [0; FRAME];
-                    data[..src.len()].copy_from_slice(src);
-                    let size = src.len();
-                    self.client.donnees(true, i as u64 + 1, &mut data[..size])?;
+                    self.client.offrir(i as u64 + 1, src)?;
                 }
-                if self.groupes {
+                if self.groupes && n != 44 {
                     self.client.envoyer_lot(&lot.bytes[..lot.longueur()], || {
                         self.client.envoyer(CONTROL, &out[..n])
                     })?;

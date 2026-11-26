@@ -57,49 +57,57 @@ impl Canal {
             return Ok(r);
         }
     }
-    pub fn donnees(&self, put: bool, key: u64, buf: &mut [u8]) -> Result<()> {
+    fn mot(&self, key: u64) -> Result<()> {
+        let msg = self.recevoir(BYTES)?;
+        require(msg.len == 8 && msg.payload[..8] == key.to_le_bytes())
+    }
+    fn fragment(key: u64, i: usize, length: usize) -> [u8; 128] {
+        let mut packet = [0; 128];
+        packet[..8].copy_from_slice(&key.to_le_bytes());
+        packet[8..10].copy_from_slice(&((i * 96) as u16).to_le_bytes());
+        packet[10..12].copy_from_slice(&(length as u16).to_le_bytes());
+        packet
+    }
+    pub fn copier_page(&self, op: u64, tag: u64, address: u64, length: usize) -> Result<()> {
+        require(self.boite && tag != 0 && (1..=4096).contains(&length))?;
+        let desc = BulkV1 {
+            version: VERSION,
+            size: 32,
+            tag,
+            address,
+            length: length as u64,
+        };
+        require(value(call(op, self.page, (&raw const desc) as u64, 32))? == desc.length)
+    }
+    pub fn offrir(&self, key: u64, buf: &[u8]) -> Result<()> {
         require(key != 0 && !buf.is_empty() && buf.len() <= FRAME)?;
         if self.boite {
-            let desc = BulkV1 {
-                version: VERSION,
-                size: 32,
-                tag: key,
-                address: buf.as_mut_ptr() as u64,
-                length: buf.len() as u64,
-            };
-            if put {
-                let n = value(call(IPC_PUT, self.page, &desc as *const BulkV1 as u64, 32))?;
-                require(n == desc.length)?;
-                self.envoyer(BYTES, &key.to_le_bytes())?;
-                let ack = self.recevoir(BYTES)?;
-                require(ack.len == 8 && ack.payload[..8] == key.to_le_bytes())
-            } else {
-                let msg = self.recevoir(BYTES)?;
-                require(msg.len == 8 && msg.payload[..8] == key.to_le_bytes())?;
-                let n = value(call(IPC_TAKE, self.page, &desc as *const BulkV1 as u64, 32))?;
-                require(n == desc.length)?;
-                self.envoyer(BYTES, &key.to_le_bytes())
-            }
-        } else {
-            let length = buf.len();
-            for (i, area) in buf.chunks_mut(96).enumerate() {
-                let mut packet = [0u8; 128];
-                packet[..8].copy_from_slice(&key.to_le_bytes());
-                packet[8..10].copy_from_slice(&((i * 96) as u16).to_le_bytes());
-                packet[10..12].copy_from_slice(&(length as u16).to_le_bytes());
-                if put {
-                    packet[32..32 + area.len()].copy_from_slice(area);
-                    self.envoyer(BYTES, &packet[..32 + area.len()])?;
-                } else {
-                    let msg = self.recevoir(BYTES)?;
-                    require(
-                        msg.len as usize == 32 + area.len() && msg.payload[..32] == packet[..32],
-                    )?;
-                    area.copy_from_slice(&msg.payload[32..32 + area.len()]);
-                }
-            }
-            Ok(())
+            self.copier_page(IPC_PUT, key, buf.as_ptr() as u64, buf.len())?;
+            self.envoyer(BYTES, &key.to_le_bytes())?;
+            return self.mot(key);
         }
+        for (i, area) in buf.chunks(96).enumerate() {
+            let mut packet = Self::fragment(key, i, buf.len());
+            packet[32..32 + area.len()].copy_from_slice(area);
+            self.envoyer(BYTES, &packet[..32 + area.len()])?;
+        }
+        Ok(())
+    }
+    pub fn prendre(&self, key: u64, buf: &mut [u8]) -> Result<()> {
+        let length = buf.len();
+        require(key != 0 && length != 0 && length <= FRAME)?;
+        if self.boite {
+            self.mot(key)?;
+            self.copier_page(IPC_TAKE, key, buf.as_mut_ptr() as u64, length)?;
+            return self.envoyer(BYTES, &key.to_le_bytes());
+        }
+        for (i, area) in buf.chunks_mut(96).enumerate() {
+            let packet = Self::fragment(key, i, length);
+            let msg = self.recevoir(BYTES)?;
+            require(msg.len as usize == 32 + area.len() && msg.payload[..32] == packet[..32])?;
+            area.copy_from_slice(&msg.payload[32..32 + area.len()]);
+        }
+        Ok(())
     }
 }
 pub fn pair(op: u64, arg: u64) -> [u8; 16] {

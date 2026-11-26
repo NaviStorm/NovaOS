@@ -33,7 +33,7 @@ fn paquet(n: u32, rx: bool, data: &mut [u8]) -> usize {
     for (i, b) in data[15..size].iter_mut().enumerate() {
         *b = (n.wrapping_mul(29).wrapping_add(i as u32 * 17) as u8) ^ if rx { 0xa5 } else { 0 };
     }
-    if n >= 16 {
+    if n >= 16 || cfg(11) == 20 {
         data[14..18].copy_from_slice(&n.to_be_bytes());
     }
     size
@@ -51,7 +51,7 @@ impl Client {
         let n = h.encode(&mut pkt, body).map_err(|_| BAD_ARGUMENT)?;
         let marque = cfg(58);
         if marque != 0 && (op == wire::TX || (op == wire::RX && matches!(cfg(11), 16 | 17))) {
-            let taille = if cfg(11) >= 12 {
+            let taille = if (12..=20).contains(&cfg(11)) {
                 mark(58, 0);
                 marque
             } else {
@@ -155,7 +155,7 @@ impl Client {
             {
                 data[offset] ^= 1;
             }
-            self.c.donnees(true, i as u64 + 1, &mut data[..n])?;
+            self.c.offrir(i as u64 + 1, &data[..n])?;
         }
         Ok(())
     }
@@ -252,8 +252,10 @@ impl Client {
         let rx = !matches!(mode, 14 | 15);
         let mut first = 0;
         let mut ticket = 0u64;
-        for b in [1, 4, 8] {
-            for _ in 0..1024 {
+        let groupes: &[usize] = if mode == 20 { &[8] } else { &[1, 4, 8] };
+        for &b in groupes {
+            let repetitions = if mode == 20 { 12500 } else { 1024 };
+            for _ in 0..repetitions {
                 ticket += 1;
                 mark(58, b as u64);
                 if tx {
@@ -307,13 +309,14 @@ impl Client {
                 && desc[24..30] == [0x52, 0x54, 0, 0x12, 0x34, 0x56]
                 && desc[30..] == [0, 0],
         )?;
-        self.c
-            .envoyer(EVENT, &pair(1, if self.c.boite { 3 } else { 1 }))?;
+        let boite = self.c.boite && cfg(11) != 22;
+        self.c.envoyer(EVENT, &pair(1, if boite { 3 } else { 1 }))?;
         let (_, t) = fields(&self.c.recevoir(EVENT)?)?;
-        require(t == if self.c.boite { 2 } else { 1 })?;
+        require(t == if boite { 2 } else { 1 })?;
+        self.c.boite = boite;
         let mut options = [0; 16];
-        // Le cas « plein » exerce un client v1 sans l'option de regroupement.
-        if self.c.boite && cfg(11) != 9 {
+        // Un client v1 antérieur ignore le bit optionnel même avec une boîte disponible.
+        if self.c.boite && cfg(11) != 21 {
             options[8..].copy_from_slice(&wire::BOITE_GROUPEE.to_le_bytes());
         }
         let nego = self.ctrl(wire::NEGOTIATE, 0, &options)?;
@@ -321,6 +324,7 @@ impl Client {
         self.groupes =
             u64::from_le_bytes(nego.payload[32..40].try_into().unwrap()) & wire::BOITE_GROUPEE != 0;
         require(!self.groupes || self.c.boite)?;
+        mark(64, if self.groupes { 3 } else { t });
         let mut rights = [0; 8];
         rights[0] = 15;
         require(self.ctrl(wire::OPEN, 0, &rights)?.payload[32] == 1)?;
@@ -345,7 +349,7 @@ impl Client {
             require(self.recu(wire::TX, 1)?.payload[32] == 1)?;
             return self.veille();
         }
-        if cfg(11) >= 12 {
+        if (12..=20).contains(&cfg(11)) {
             return self.performance();
         }
         for invalid in [0, 6, 13] {

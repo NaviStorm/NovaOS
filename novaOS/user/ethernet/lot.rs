@@ -26,6 +26,9 @@ impl Trames {
     pub fn trame(&self, i: usize) -> &[u8] {
         &self.bytes[self.ends[i]..self.ends[i + 1]]
     }
+    pub fn vider(&mut self) {
+        self.n = 0;
+    }
     pub fn longueur(&self) -> usize {
         self.ends[self.n]
     }
@@ -40,7 +43,7 @@ impl Trames {
                 } else {
                     u64::from(word(0)) + 1
                 };
-                canal.donnees(false, key, dst)?;
+                canal.prendre(key, dst)?;
             }
         }
         if groupes {
@@ -51,17 +54,6 @@ impl Trames {
     }
 }
 impl Canal {
-    fn transfert(&self, op: u64, i: usize, addr: u64, len: usize) -> Result<()> {
-        require(self.boite && (1..=PAGE).contains(&len))?;
-        let desc = BulkV1 {
-            version: VERSION,
-            size: 32,
-            tag: TAG_LOT + i as u64,
-            address: addr,
-            length: len as u64,
-        };
-        require(value(call(op, self.page, (&raw const desc) as u64, 32))? == len as u64)
-    }
     // Le premier PUT précède le message de contrôle qui annonce le lot. Chaque
     // segment suivant attend le TAKE précédent. Le prochain échange de protocole
     // confirme la consommation finale avant réutilisation par le même producteur.
@@ -69,14 +61,14 @@ impl Canal {
         require(bytes.len() <= 8 * FRAME)?;
         let mut chunks = bytes.chunks(PAGE);
         if let Some(first) = chunks.next() {
-            self.transfert(IPC_PUT, 0, first.as_ptr() as u64, first.len())?;
+            self.copier_page(IPC_PUT, TAG_LOT, first.as_ptr() as u64, first.len())?;
         }
         controle()?;
         for (i, chunk) in chunks.enumerate() {
             let key = TAG_LOT + i as u64;
             let ack = self.recevoir(BYTES)?;
             require(ack.len == 8 && ack.payload[..8] == key.to_le_bytes())?;
-            self.transfert(IPC_PUT, i + 1, chunk.as_ptr() as u64, chunk.len())?;
+            self.copier_page(IPC_PUT, key + 1, chunk.as_ptr() as u64, chunk.len())?;
             self.envoyer(BYTES, &(key + 1).to_le_bytes())?;
         }
         Ok(())
@@ -90,7 +82,7 @@ impl Canal {
                 let msg = self.recevoir(BYTES)?;
                 require(msg.len == 8 && msg.payload[..8] == key.to_le_bytes())?;
             }
-            self.transfert(IPC_TAKE, i, chunk.as_mut_ptr() as u64, chunk.len())?;
+            self.copier_page(IPC_TAKE, key, chunk.as_mut_ptr() as u64, chunk.len())?;
             if i + 1 < n {
                 self.envoyer(BYTES, &key.to_le_bytes())?;
             }

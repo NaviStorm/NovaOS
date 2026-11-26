@@ -26,6 +26,7 @@ fn main() {
     println!("cargo::rerun-if-env-changed=NOVAOS_NET_SERIE");
     println!("cargo::rustc-check-cfg=cfg(net_p9_coexistence)");
     println!("cargo::rerun-if-env-changed=NOVAOS_ETH3_CASE");
+    println!("cargo::rerun-if-env-changed=NOVAOS_ETH3B_DETAIL");
     println!("cargo::rerun-if-changed=../tests/ethernet_v1");
     let port = env::var_os("CARGO_FEATURE_ETHERNET_V1_PORT").is_some();
     let net = env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some();

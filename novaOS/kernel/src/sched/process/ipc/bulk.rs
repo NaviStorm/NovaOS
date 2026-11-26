@@ -110,6 +110,8 @@ pub(in crate::sched::process) fn transfer(
             {
                 return Ok(Err(BAD_ARGUMENT));
             }
+            #[cfg(all(feature="ethernet-v1-port",any(all(target_arch="x86_64",feature="net-q35-lab"),all(target_arch="aarch64",feature="net-arm-lab"))))]
+            let debut_copie = crate::sched::process::net_preparation::port_v1::profil_3b::detail::debut_copie();
             let buf = &mut ipc.pages_bulk.get_mut(lane.slot)[..len as usize];
             if put {
                 if lane.len != 0 {
@@ -132,7 +134,10 @@ pub(in crate::sched::process) fn transfer(
                 lane.len = 0;
             }
             #[cfg(all(feature="ethernet-v1-port",any(all(target_arch="x86_64",feature="net-q35-lab"),all(target_arch="aarch64",feature="net-arm-lab"))))]
-            crate::sched::process::net_preparation::port_v1::profil_3b::copie(pid.number,len);
+            {
+                crate::sched::process::net_preparation::port_v1::profil_3b::detail::fin_copie(put,debut_copie);
+                crate::sched::process::net_preparation::port_v1::profil_3b::copie(pid.number,len);
+            }
             Ok(Ok(len))
         })
         .unwrap()

@@ -151,7 +151,7 @@ pub(super) fn executer(handle: u64, epoch: u64) -> Result<()> {
                 let len = arg as u32 as usize;
                 require(coupon < CREDITS && !coupons.contains(&Some(coupon)))?;
                 let buf = frame.get_mut(..len).ok_or(BAD_ARGUMENT)?;
-                lien.donnees(false, 1, buf)?;
+                lien.prendre(1, buf)?;
                 preparer(
                     coupon,
                     buf,
@@ -215,7 +215,7 @@ pub(super) fn executer(handle: u64, epoch: u64) -> Result<()> {
             }
             let n = frame.len();
             lien.envoyer(DRIVER, &pair(OK, n as u64))?;
-            lien.donnees(true, 1, &mut slot[12..12 + n])?;
+            lien.offrir(1, &slot[12..12 + n])?;
         } else {
             lien.envoyer(
                 DRIVER,

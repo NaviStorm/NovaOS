@@ -196,7 +196,13 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
     };
     hal::interrupts::mask();
     threads::stop_if_dying();
-    with(|s| s.thread_mut(s.current()).in_syscall = false);
+    with(|s| {
+        #[cfg(all(feature="ethernet-v1-port",any(all(target_arch="x86_64",feature="net-q35-lab"),all(target_arch="aarch64",feature="net-arm-lab"))))]
+        if net_preparation::port_v1::profil_3b::detail::ACTIF {
+            net_preparation::port_v1::profil_3b::detail::sortir(caller(s).number);
+        }
+        s.thread_mut(s.current()).in_syscall = false;
+    });
     #[cfg(feature = "materiel-lab")]
     super::stop_if_requested();
     match result {

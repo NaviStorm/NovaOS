@@ -593,6 +593,8 @@ pub(super) fn invoke(id: u64, args: [u64; 3]) -> Res<u64> {
             }
             let space = s.processes.get(p).space.as_ref().unwrap();
             let resuming = s.ipc.waits.has(tid.slot);
+            #[cfg(all(feature="ethernet-v1-port",any(all(target_arch="x86_64",feature="net-q35-lab"),all(target_arch="aarch64",feature="net-arm-lab"))))]
+            if resuming {crate::sched::process::net_preparation::port_v1::profil_3b::detail::reprise(p.number);}
             #[cfg(feature = "ethernet-2b-lab")]
             if !resuming { probes::phase2b::start_sample(p.number, id, args[1], s.stats.wakes); }
             #[cfg(all(feature="ethernet-v1-port",any(all(target_arch="x86_64",feature="net-q35-lab"),all(target_arch="aarch64",feature="net-arm-lab"))))]

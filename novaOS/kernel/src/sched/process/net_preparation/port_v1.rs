@@ -246,6 +246,9 @@ impl EthernetActor {
             Some("incertain") => 4,
             Some("boite") => 1,
             Some("plein") => 9,
+            Some("mixte100k") => 20,
+            Some("ancien") => 21,
+            Some("choix-data") => 22,
             Some("echo60") => 12,
             Some("echo1514") => 13,
             Some("tx60") => 14,
@@ -262,6 +265,7 @@ impl EthernetActor {
             5 => 65552,
             10 | 11 => 4608,
             12..=19 => 13 * 1024,
+            20 => 100000,
             7 => 16,
             8 => 1,
             _ => 144,
@@ -430,6 +434,17 @@ pub(crate) fn ethernet_actor(
             break;
         }
         sequence = seq;
+        if op == 1 {
+            // Lecture d'un témoin de qualification. Le noyau authentifie les droits séparément.
+            let selection = with(|k| {
+                k.processes
+                    .get(cp)
+                    .space
+                    .as_ref()
+                    .and_then(|space| heap::with_pages(|m| Ok(space.read_data(m, 64))).ok())
+            });
+            hal::log(format_args!("E3B transport_client={selection:?}"));
+        }
         last = ticks();
         calls += 1;
         let debut_mediation = hal::timer::counter();

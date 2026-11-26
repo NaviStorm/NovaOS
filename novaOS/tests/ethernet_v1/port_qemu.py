@@ -115,10 +115,13 @@ class Pair:
         self.filtrees = 0
         self.frames = self.octets = 0
         self.first = self.last = 0
+        self.groupes_pair = []
         self.error = None
         self.thread = threading.Thread(target=self.run, daemon=True)
 
     def oracle(self, numero, retour):
+        if self.cas in ("mixte100k", "historique100k"):
+            return self.ref.trame_longue(numero,retour)
         if self.cas not in PERF and self.cas not in ("mesure60","mesure1514"):
             fn=self.ref.trame if numero<16 else self.ref.trame_longue
             return fn(numero,retour)
@@ -218,6 +221,8 @@ class Pair:
                     self.frames += 1
                     self.octets += n
                     self.last = now
+                    if self.cas in ("mixte100k", "historique100k") and self.frames % 16 == 0:
+                        self.groupes_pair.append(now)
                     if self.cas.startswith("tx") and self.frames == PERF_FRAMES:
                         for i in range(16):
                             injecter(i)
@@ -231,7 +236,7 @@ class Pair:
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("arch", choices=("arm", "q35"))
-    p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "filtre", "court", "temoin16", "port","plein","mesure60","mesure1514", *PERF))
+    p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "filtre", "court", "temoin16", "port","plein","mesure60","mesure1514", "mixte100k","historique100k","ancien","choix-data", *PERF))
     for name in ("elf", "sortie", "temoin", "archive", "limine", "relais"):
         p.add_argument(name, type=lambda v: Path(v).resolve())
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
@@ -265,9 +270,17 @@ def main():
     report = dict(audit=AUDIT, arch=a.arch, cas=a.cas, elf=digest(a.elf), modele=digest(Path(args[0])), succes=False)
     report["commit_sources"]=subprocess.check_output(["git","-C",NOVA,"rev-parse","HEAD"],text=True).strip()
     report["sources_suivies_modifiees"]=bool(subprocess.check_output(["git","-C",NOVA,"status","--porcelain","--untracked-files=no"]))
+    if a.cas == "historique100k":
+        provenance = a.temoin / "novaOS/docs/validation/virtio-net/cloture-20261126/applicabilite-candidat-final.json"
+        source = json.loads(provenance.read_text())
+        assert report["elf"] == source["comparaisons"][a.arch+"-endurance"]["ancien"]["sha256"]
+        report["commit_lanceur"] = report["commit_sources"]
+        report["commit_sources"] = source["reference_executions"]
+        report["provenance_elf"] = str(provenance.relative_to(a.temoin))
     if a.source_elf:
         report["commit_lanceur"] = report["commit_sources"]
         report["commit_sources"] = a.source_elf
+        report["construction"] = manifest
     try:
         with ExitStack() as stack:
             tmp = Path(stack.enter_context(tempfile.TemporaryDirectory(prefix="e3", dir=os.environ["NOVAOS_TMPDIR"])))
@@ -310,7 +323,7 @@ def main():
                         args[i+1] = re.sub(r"file=[^,]+", f"file={disk}", dev)
                     elif "unit=1," in dev or ("unit=0," in dev and a.arch=="arm"):
                         args[i+1] = re.sub(r"file=([^,]+)", lambda m: "file="+str(tmp/Path(m[1]).name), dev)
-                elif a.cas!="temoin16" and value == "-fw_cfg" and "opt/novaos/net-p9" in args[i+1]:
+                elif a.cas not in ("temoin16","historique100k") and value == "-fw_cfg" and "opt/novaos/net-p9" in args[i+1]:
                     args[i+1]="name=opt/novaos/net-p9,string=ethernet-p9"
                 elif value == "-chardev" and "id=tch," in args[i+1]:
                     args[i+1] = f"socket,id=tch,path={tpm_socket}"
@@ -395,16 +408,39 @@ def main():
                     fin_acteurs.groups()[1:]==("0","0") and "retrait=Err(" in serial and
                     ("NET Q35 L2 quarantaine=" in serial if a.arch=="q35" else report["volume_relu_identique"] and "quarantaine disque_lisible=true" in serial))
             modes={"boite":1,"data":2,"deces":3,"incertain":4,"endurance":5,"revocation":6,"veille":7,"filtre":7,"court":8,"port":0,"plein":9,"mesure60":10,"mesure1514":11}
+            if a.cas in ("mixte100k","historique100k"):
+                # Même pair, même horloge et mêmes numéros de trames pour les deux ELF.
+                records = peer.groupes_pair[15:-16]
+                delta = sorted(b-a for a,b in zip(records,records[1:]))
+                dump(out/"groupes-pair-ns.json",peer.groupes_pair)
+                if delta:
+                    report["fenetre_pair"] = dict(premiere=256, derniere=256+16*len(delta),
+                        trames=16*len(delta), duree_ns=records[-1]-records[0],
+                        p99_intervalles_16_ns=delta[(99*len(delta)+99)//100-1])
+                fin = ("NET L2 total TX=100000 RX=100000" in serial and
+                       "NET L2 pilote fin=Exit(0) racines=0" in serial) if a.cas=="historique100k" else (
+                    "ETH3 drainage tx=100000 rx=100000" in serial and "acteurs=[Exit(0), Exit(0), Exit(0)]" in serial)
+                report["succes"] = (len(peer.groupes_pair)==6250 and not peer.error and fin and
+                    ("NET Q35 etat=Ok(())" in serial if a.arch=="q35" else report["volume_relu_identique"] and "NET ARM bilan Ok(())" in serial))
             modes.update(PERF)
+            modes.update(mixte100k=20, ancien=21)
+            modes["choix-data"]=22
             if a.cas in PERF:
                 tx = 0 if a.cas.startswith("rx") else PERF_FRAMES
                 rx = 16 if a.cas.startswith("tx") else PERF_FRAMES
                 injectees = 0 if a.cas.startswith("echo") else rx
+                report.update(trames_tx=peer.frames,trames_rx=(peer.frames if a.cas.startswith("echo") else peer.rx_perf),
+                              rx_hors_mesure=16 if a.cas.startswith("tx") else 0)
                 report["succes"] = (peer.frames == tx and peer.rx_perf == injectees and not peer.error
                     and f"ETH3 drainage tx={tx} rx={rx} " in serial
                     and "materiel=Ok(()) retrait=Ok(" in serial and "acteurs=[Exit(0), Exit(0), Exit(0)]" in serial
                     and all(f"ETH3 lot={b} n=1024 " in serial for b in (1,4,8))
                     and ("NET Q35 etat=Ok(())" in serial if a.arch=="q35" else report["volume_relu_identique"] and "NET ARM bilan Ok(())" in serial))
+            selection=re.search(r"E3B transport_client=Some\((\d+)\)",serial)
+            if selection:
+                report["transport_client"]=int(selection[1])
+                attendu=1 if a.cas in ("data","plein","choix-data") else 2 if a.cas=="ancien" else 3
+                report["succes"] &= report["transport_client"]==attendu
             if a.cas in modes:
                 details=f"mode={modes[a.cas]} racines=[0, 4, 1] boites_globales={0 if a.cas=='data' else 8 if a.cas=='plein' else 2} endpoints_globaux={13 if a.cas=='plein' else 5}"
                 report["profil_verifie"]=details in serial
@@ -412,7 +448,7 @@ def main():
                 if a.cas == "boite":
                     report["neuvieme_refuse"] = "ETH3 préparation supplémentaire refusée par le courtier" in serial
                     report["succes"] &= report["neuvieme_refuse"]
-                if a.cas in ("boite","data","endurance","plein","port","mesure60","mesure1514"):
+                if a.cas in ("boite","data","endurance","plein","port","mesure60","mesure1514","ancien","choix-data"):
                     counts=re.search(r"publications=\[([0-9, ]+)\]",serial)
                     wrapped=int(a.cas=="endurance")
                     report["publications"]=[int(v) for v in counts[1].split(",")] if counts else []

@@ -1,5 +1,7 @@
 //! Compteurs du banc monoprocesseur. Aucun handle ou compteur n'est exporté aux acteurs.
 use super::*;
+#[path = "profil_detail.rs"]
+pub(crate) mod detail;
 const ZERO: AtomicU64 = AtomicU64::new(0);
 static CASE: AtomicU64 = ZERO;
 static CELL: AtomicU64 = ZERO;
@@ -11,6 +13,7 @@ const COLS: usize = 30;
 static COST: [[AtomicU64; COLS]; 3] = [const { [const { ZERO }; COLS] }; 3];
 
 pub(super) fn initialiser(case: u64, front: [u64; 2], hw: u64) {
+    detail::reset();
     CASE.store(case, Relaxed);
     CELL.store(0, Relaxed);
     for (n, v) in FRONT.iter().zip(front) {
@@ -42,6 +45,7 @@ pub(super) fn debut(b: u64, wakes: u64) {
         _ => return,
     };
     CELL.store(cell, Relaxed);
+    detail::entrer(0, 0);
     inc(0, 1); // l'entrée SEND du client précède le point de départ du chronomètre.
     SWITCH.store(crate::sched::profile::switches_bsp(), Relaxed);
     WAKES.store(wakes, Relaxed);
@@ -78,21 +82,21 @@ pub(super) fn appel(pid: u64, id: u64, args: [u64; 3], wakes: u64) {
     }
     let front = actor == 0 || (actor == 1 && FRONT.iter().any(|v| v.load(Relaxed) == args[0]));
     let hw = actor == 2 && args[0] == HW.load(Relaxed);
-    inc(
-        if front {
-            0
-        } else if hw {
-            2
-        } else {
-            1
-        },
-        1,
-    );
+    let classe = if front {
+        0
+    } else if hw {
+        2
+    } else {
+        1
+    };
+    detail::entrer(actor, classe);
+    inc(classe, 1);
     if id == abi::IPC_NOTIFY {
         inc(10, 1);
     }
 }
 pub(super) fn attente(pid: u64) {
+    detail::bloque(pid);
     if CELL.load(Relaxed) != 0 && ACTEURS.iter().any(|p| p.load(Relaxed) == pid) {
         inc(6, 1);
     }
@@ -104,6 +108,7 @@ pub(crate) fn copie(pid: u64, len: u64) {
     }
 }
 pub(crate) fn controle(pid: u64, tag: u64, payload: &[u8]) {
+    detail::message(pid, tag, payload);
     if CELL.load(Relaxed) == 0
         || pid != CLIENT_PID.load(Relaxed)
         || tag != 0x45544831
@@ -144,6 +149,7 @@ pub(super) fn bilan() {
     if !actif() {
         return;
     }
+    detail::bilan();
     for (b, row) in [1, 4, 8].into_iter().zip(&COST) {
         let compte = row.each_ref().map(|n| n.load(Relaxed));
         hal::log(format_args!("E3B cout lot={b} compte={compte:?}"));
