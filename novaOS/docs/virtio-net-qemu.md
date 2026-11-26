@@ -1,6 +1,8 @@
 # VirtIO-net sous QEMU
 
-## État du confinement DMA
+Le premier lot Ethernet est clos dans les profils QEMU identifiés le 26 novembre 2026. L’audit rassemble la matrice nominale et les pannes, les empreintes vérifiées, les mesures et la proposition d’intégration. Les étapes ci-dessous retracent la qualification depuis l’inventaire initial. [Audit de clôture et inventaire des interfaces](virtio-net-audit-cloture-20261126.md)
+
+## État du confinement DMA lors du prototype initial
 
 Le prototype OVMF Q35 et son témoin Secure Boot ont été exercés jusqu’à l’activation de VT-d avec une racine vide. Sur AArch64, le contrat de propriété du contrôleur partagé entre disque et NIC est soumis à arbitrage. Le NIC reste sans bail sur les deux architectures. [Résultats Q35 et portabilité](virtio-net-ovmf-q35.md) · [Contrat AArch64 pour revue](virtio-net-contrat-iommu-aarch64.md)
 

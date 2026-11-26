@@ -1,0 +1,128 @@
+{
+  "date": "2026-11-26",
+  "methode": "Contrôle hors ligne de pièces existantes. Aucune exécution QEMU. Les nombres de membres décrivent les fichiers archivés, y compris les diagnostics en échec.",
+  "publication_auditee": "6783dc9c2f3d3bcc13f26281cab05cca5c2c5e36",
+  "main_relu_sur_origin": "5c7f1bfa313a3859ccc0830660438e76d598acb1",
+  "ancetre_commun": "5c7f1bfa313a3859ccc0830660438e76d598acb1",
+  "arbre_audite": "0b58cb620877f7f7489fef15a077c35c1aaa5181",
+  "campagnes": {
+    "cloture-20261126": {
+      "manifeste_sha256": "36cfb99ae328c4053b8fb638d15260dbdf387f3ab96b4fa31903ad4769adb4d0",
+      "entrees_externes_verifiees": 34,
+      "membres_verifies_par_archive": {
+        "constructions-et-controles.tar.zst": 90,
+        "continuites-locales.tar.zst": 48,
+        "controles-natifs-candidat.tar.zst": 4,
+        "developpement-et-diagnostics.tar.zst": 345,
+        "endurance-sur-candidat.tar.zst": 34,
+        "preconditions-et-wait-ferme.tar.zst": 113,
+        "redemarrages.tar.zst": 24,
+        "retraits-concurrents.tar.zst": 48,
+        "saturation-et-comparaisons.tar.zst": 45,
+        "volumes-initiaux.tar.zst": 2,
+        "volumes-synthetiques.tar.zst": 16,
+        "wait-concurrents.tar.zst": 72
+      },
+      "total_membres_verifies": 841,
+      "entrees_locales_verifiees": 77,
+      "octets_locaux_lus": 6787350896
+    },
+    "finale-20261125": {
+      "manifeste_sha256": "80af261be37c4c82643b671eff7fea1a77b690293a14d5640112581a7d1dbdc0",
+      "entrees_externes_verifiees": 72,
+      "membres_verifies_par_archive": {
+        "arm-debit-rx.tar.zst": 24,
+        "arm-debit-tx.tar.zst": 12,
+        "arm-duplex.tar.zst": 12,
+        "arm-endurance.tar.zst": 11,
+        "arm-faute.tar.zst": 16,
+        "arm-p9-4096-avec.tar.zst": 12,
+        "arm-p9-4096-repos.tar.zst": 11,
+        "arm-p9-512-avec.tar.zst": 24,
+        "arm-p9-512-repos.tar.zst": 33,
+        "arm-pression.tar.zst": 14,
+        "arm-recontrole-instrumentation.tar.zst": 35,
+        "arm-redemarrages.tar.zst": 11,
+        "arm-rtt.tar.zst": 12,
+        "confirmations-terminales.tar.zst": 39,
+        "constructions-faute-et-controles.tar.zst": 20,
+        "q35-acpi-et-compilation.tar.zst": 36,
+        "q35-debit-rx.tar.zst": 15,
+        "q35-debit-tx.tar.zst": 15,
+        "q35-deux-domaines-fermes.tar.zst": 88,
+        "q35-duplex.tar.zst": 15,
+        "q35-endurance.tar.zst": 14,
+        "q35-faute.tar.zst": 19,
+        "q35-p9-coexistence-ordres.tar.zst": 24,
+        "q35-p9-cycle.tar.zst": 66,
+        "q35-p9-diagnostics.tar.zst": 24,
+        "q35-p9-mesures-courtes.tar.zst": 46,
+        "q35-p9-mesures-soutenues.tar.zst": 46,
+        "q35-parcours-candidat.tar.zst": 12,
+        "q35-pio-demarrage.tar.zst": 60,
+        "q35-post-publication-et-reprises.tar.zst": 33,
+        "q35-pression.tar.zst": 16,
+        "q35-redemarrages.tar.zst": 14,
+        "q35-rtt.tar.zst": 15,
+        "requalification-modeles.tar.zst": 190
+      },
+      "total_membres_verifies": 1034,
+      "entrees_locales_verifiees": 106,
+      "octets_locaux_lus": 324630987
+    }
+  },
+  "verification_elf": {
+    "candidat_fonctionnel": "1863ff413db0c9c47a52d3e1a1592e718aae22e6",
+    "comparaisons": {
+      "q35-rearmement": {
+        "elf_execute_ou_reference_sha256": "635d60aca7cb7e46d116e947e12523531bc8bcda8fb59ce5544dd5094be270cc",
+        "elf_candidat_sha256": "98971c52bfd179e68ec9af9922a6940e2390bd117b5aa8c8b13f3c07292f6f7e",
+        "emplacements_de_ligne_rapproches": 19
+      },
+      "q35-redemarrage": {
+        "elf_execute_ou_reference_sha256": "26b94a2253b64ac49d75f673317da74197a7f6229f12fa0f7588fb48bb9a0c0a",
+        "elf_candidat_sha256": "ffaa52967b8a16c85e8dab064d641f68b86f4a88a1147ab77541d3d2ddbbd9d7",
+        "emplacements_de_ligne_rapproches": 19
+      },
+      "q35-endurance": {
+        "elf_execute_ou_reference_sha256": "10830fd33f52321e0b287794df6627ffa194b4e4ca48b21918bba5cae068b155",
+        "elf_candidat_sha256": "ece014c95dde47ed7b093415ac19160c129f457d64497ecb9a5a8ed277695459",
+        "emplacements_de_ligne_rapproches": 15
+      },
+      "arm-endurance": {
+        "elf_execute_ou_reference_sha256": "f00417ba06b9031a54aa5864ddab3bc8131e676ad6dd3e9cb7cd2ef36ade21ce",
+        "elf_candidat_sha256": "632c87c8cddd9577c6606f5b142734d0b3b4ee27202ba76611a46e4a6ccf0514",
+        "emplacements_de_ligne_rapproches": 10
+      },
+      "arm-stockage": {
+        "elf_execute_ou_reference_sha256": "b39e317b05a5a54f9c4a2e0bf4064890eb4d29bbfde82393cc0cb63295cc771a",
+        "elf_candidat_sha256": "22c258a4a80a575b6d2d486d8bf9161d2c71275ed5efc8e9f6329a478a164826",
+        "emplacements_de_ligne_rapproches": 20
+      },
+      "q35-ordinaire": {
+        "elf_execute_ou_reference_sha256": "0e4c703c9af95a6d347bfb6c45a5266dfeb2094822458db92e754f9e02f45c47",
+        "elf_candidat_sha256": "0e4c703c9af95a6d347bfb6c45a5266dfeb2094822458db92e754f9e02f45c47",
+        "emplacements_de_ligne_rapproches": 0
+      },
+      "arm-ordinaire": {
+        "elf_execute_ou_reference_sha256": "2427d79c61355b83cd402ca4699ec0a1945c6cc257333d2668466f7c766d917e",
+        "elf_candidat_sha256": "2427d79c61355b83cd402ca4699ec0a1945c6cc257333d2668466f7c766d917e",
+        "emplacements_de_ligne_rapproches": 0
+      },
+      "q35-pression-rx": {
+        "elf_execute_ou_reference_sha256": "15b6b529907e328e96522b26b60f52555ffb19a6ff77951ca399c0b1f4633af1",
+        "elf_candidat_sha256": "15b6b529907e328e96522b26b60f52555ffb19a6ff77951ca399c0b1f4633af1",
+        "emplacements_de_ligne_rapproches": 0
+      }
+    }
+  },
+  "recoupement_q35": {
+    "essais": 16,
+    "rapports_pairs_series_traces": 64,
+    "volumes_terminaux": 16,
+    "volumes_de_depart": 2,
+    "controles": "Empreintes du bilan reliées aux membres des archives, ELF scellé, génération P9, deux ancres et empreinte du fichier recoupées avec la relecture archivée.",
+    "releves_racines_par_pid": 110,
+    "racines_maximales_par_acteur": 4
+  }
+}
