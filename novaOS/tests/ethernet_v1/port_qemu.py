@@ -101,6 +101,7 @@ class Pair:
         self.ref = ref
         self.cas = cas
         self.rx_seul = 0
+        self.filtrees = 0
         self.frames = self.octets = 0
         self.first = self.last = 0
         self.error = None
@@ -125,11 +126,21 @@ class Pair:
                     stamp=time.time_ns()//1000
                     n=len(frame)
                     trace.write(struct.pack("<IIII",stamp//1000000,stamp%1000000,n,n)+frame)
-                if self.cas=="veille":
+                if self.cas in ("veille", "filtre"):
                     limit=time.monotonic()+35
                     while not (self.out/"serie.log").exists() or "ETH3 RX attente bloquée" not in (self.out/"serie.log").read_text(errors="replace"):
                         if time.monotonic()>limit: raise TimeoutError("Client en attente introuvable")
                         time.sleep(.01)
+                    if self.cas == "filtre":
+                        for i in range(16):
+                            frame = bytearray(self.ref.trame(i, True))
+                            if i % 2:
+                                frame[6:12] = bytes.fromhex("024e56000002")
+                            else:
+                                frame[12:14] = bytes.fromhex("88b6")
+                            self.sock.sendall(struct.pack(">I", len(frame)) + frame)
+                            pcap(frame)
+                            self.filtrees += 1
                     for i in range(16):
                         frame=self.ref.trame(i,True)
                         self.sock.sendall(struct.pack(">I",len(frame))+frame)
@@ -167,7 +178,7 @@ class Pair:
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("arch", choices=("arm", "q35"))
-    p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "court", "temoin16", "port","plein","mesure60","mesure1514"))
+    p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "filtre", "court", "temoin16", "port","plein","mesure60","mesure1514"))
     for name in ("elf", "sortie", "temoin", "archive", "limine", "relais"):
         p.add_argument(name, type=lambda v: Path(v).resolve())
     p.add_argument("--delai", type=int, default=90)
@@ -290,7 +301,7 @@ def main():
                         fin_cpu=resource.getrusage(resource.RUSAGE_CHILDREN)
                         report["cpu_qemu"]=dict(utilisateur_s=fin_cpu.ru_utime-debut_cpu.ru_utime,systeme_s=fin_cpu.ru_stime-debut_cpu.ru_stime,reel_s=time.monotonic()-debut_vm)
                         peer.thread.join(3)
-                        report.update(rx_sans_tx=peer.rx_seul,trames_par_sens=peer.frames, octets_par_sens=peer.octets, intervalle_pair_ns=peer.last-peer.first, erreur_pair=peer.error)
+                        report.update(rx_sans_tx=peer.rx_seul, rx_filtrees=peer.filtrees, trames_par_sens=peer.frames, octets_par_sens=peer.octets, intervalle_pair_ns=peer.last-peer.first, erreur_pair=peer.error)
             serial=(out/"serie.log").read_text(errors="replace")
             if a.arch=="q35" and "NET Q35 etat=" in serial:
                 report["dma"]=vtd_trafic(out)
@@ -304,9 +315,10 @@ def main():
             report["succes"]=(peer.frames==(65552 if a.cas=="endurance" else 4608 if a.cas in ("mesure60","mesure1514") else 144) and not peer.error and
                               "materiel=Ok(()) retrait=Ok(" in serial and "acteurs=[Exit(0), Exit(0), Exit(0)]" in serial and
                               ("NET Q35 etat=Ok(())" in serial if a.arch=="q35" else report["volume_relu_identique"] and "disque_lisible=true" in serial))
-            if a.cas=="veille":
-                report["succes"]=bool(peer.rx_seul==16 and peer.frames==0 and not peer.error and "ETH3 RX attente bloquée" in serial and
-                    "ETH3 drainage tx=0 rx=16" in serial and "acteurs=[Exit(0), Exit(0), Exit(0)]" in serial and
+            if a.cas in ("veille", "filtre"):
+                attendues = 16 if a.cas == "filtre" else 0
+                report["succes"]=bool(peer.filtrees==attendues and peer.rx_seul==16 and peer.frames==0 and not peer.error and "ETH3 RX attente bloquée" in serial and
+                    f"ETH3 drainage tx=0 rx={16 + attendues} " in serial and "acteurs=[Exit(0), Exit(0), Exit(0)]" in serial and
                     ("NET Q35 etat=Ok(())" in serial if a.arch=="q35" else "NET ARM bilan Ok(())" in serial))
             if a.cas=="court":
                 report["succes"]=bool(peer.frames==1 and not peer.error and "retrait=Err(12)" in serial and
@@ -321,11 +333,14 @@ def main():
                     fin_acteurs[1] == {"deces":"9","incertain":"11","revocation":"10"}[a.cas] and
                     fin_acteurs.groups()[1:]==("0","0") and "retrait=Err(" in serial and
                     ("NET Q35 L2 quarantaine=" in serial if a.arch=="q35" else report["volume_relu_identique"] and "quarantaine disque_lisible=true" in serial))
-            modes={"boite":1,"data":2,"deces":3,"incertain":4,"endurance":5,"revocation":6,"veille":7,"court":8,"port":0,"plein":9,"mesure60":10,"mesure1514":11}
+            modes={"boite":1,"data":2,"deces":3,"incertain":4,"endurance":5,"revocation":6,"veille":7,"filtre":7,"court":8,"port":0,"plein":9,"mesure60":10,"mesure1514":11}
             if a.cas in modes:
                 details=f"mode={modes[a.cas]} racines=[0, 4, 1] boites_globales={0 if a.cas=='data' else 8 if a.cas=='plein' else 2} endpoints_globaux={13 if a.cas=='plein' else 5}"
                 report["profil_verifie"]=details in serial
                 report["succes"] &= report["profil_verifie"]
+                if a.cas == "boite":
+                    report["neuvieme_refuse"] = "ETH3 préparation supplémentaire refusée par le courtier" in serial
+                    report["succes"] &= report["neuvieme_refuse"]
                 if a.cas in ("boite","data","endurance","plein","port","mesure60","mesure1514"):
                     counts=re.search(r"publications=\[([0-9, ]+)\]",serial)
                     wrapped=int(a.cas=="endurance")

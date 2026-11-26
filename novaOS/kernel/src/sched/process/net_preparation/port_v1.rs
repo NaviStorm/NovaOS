@@ -354,6 +354,9 @@ pub(crate) fn ethernet(
                 break;
             }
         };
+        if case == 1 && op == 2 && res == Err(abi::WOULD_BLOCK) {
+            hal::log(format_args!("ETH3 préparation supplémentaire refusée par le courtier"));
+        }
         if op >= 32
             && res.is_ok()
             && let Some(check) = publish.take()

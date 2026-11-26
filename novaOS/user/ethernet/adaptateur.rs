@@ -48,7 +48,9 @@ pub(super) fn executer(handle: u64, epoch: u64) -> Result<()> {
                 let id = hw(2, n)?;
                 require(id < coupons.len() && coupons[id].is_none())?;
                 coupons[id] = Some(coupon);
-                if cfg(16) != 0 && !saturation_verifiee && coupons.iter().all(Option::is_some) {
+                if cfg(16) == 1 && !saturation_verifiee
+                    && coupons.iter().flatten().count() == CREDITS
+                {
                     require(hw(2, n) == Err(WOULD_BLOCK))?;
                     saturation_verifiee = true;
                 }
@@ -94,16 +96,20 @@ pub(super) fn executer(handle: u64, epoch: u64) -> Result<()> {
         {
             let frame =
                 virtio_net::decode_rx(slot.get(..bytes).ok_or(REFUSED)?).map_err(|_| REFUSED)?;
-            require(
-                frame.len() >= 60
-                    && frame[..6] == [0x52, 0x54, 0, 0x12, 0x34, 0x56]
-                    && frame[6..12] == [2, 0x4e, 0x56, 0, 0, 1]
-                    && frame[12..14] == [0x88, 0xb5],
-            )?;
+            rx += 1;
+            // Toute complétion consomme un des seize descripteurs avant le réarmement.
+            // Un paquet destiné à un autre protocole ne doit pas interrompre la session.
+            if frame.len() < 60
+                || frame[..6] != [0x52, 0x54, 0, 0x12, 0x34, 0x56]
+                || frame[6..12] != [2, 0x4e, 0x56, 0, 0, 1]
+                || frame[12..14] != [0x88, 0xb5]
+            {
+                lien.envoyer(DRIVER, &pair(WOULD_BLOCK, 0))?;
+                continue;
+            }
             let n = frame.len();
             lien.envoyer(DRIVER, &pair(OK, n as u64))?;
             lien.donnees(true, 1, &mut slot[12..12 + n])?;
-            rx += 1;
         } else {
             lien.envoyer(
                 DRIVER,
