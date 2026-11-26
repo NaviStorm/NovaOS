@@ -7,6 +7,8 @@ pub(super) struct Preparation {
     pub(super) domaine: domain::Domain,
     cadres: [Frame; 22],
     pub(super) nic: Device,
+    #[cfg(feature="ethernet-v1-port")]
+    retrait_differe: Option<u64>,
 }
 static ISR_PREPARATION: AtomicU64 = AtomicU64::new(0);
 static ETAT_IRQ: AtomicU64 = AtomicU64::new(0);
@@ -103,6 +105,8 @@ impl Preparation {
             domaine,
             cadres: [EMPTY; 22],
             nic,
+            #[cfg(feature="ethernet-v1-port")]
+            retrait_differe: None,
         };
         for n in 0..22 {
             let r = Frame::allocate().and_then(|f| {
@@ -258,12 +262,57 @@ impl Preparation {
     }
 
     #[cfg(feature="ethernet-v1-port")]
+    fn retrait_complet(self) -> Result<()> {
+        let generation = self.domaine.generation();
+        let numero = {
+            let mut place = QUARANTAINE.lock();
+            if place.is_some() { return Err(Error::Quarantine); }
+            let bail = place.insert(self);
+            // La fermeture interdit toute nouvelle MAP. Les cadres restent épinglés,
+            // y compris celui déjà retiré, jusqu'au dernier reçu et au DETACH.
+            bail.domaine.retirer_nic(21)?;
+            let n = bail.domaine.differer_nic()?;
+            bail.retrait_differe = Some(n);
+            n
+        };
+        if option_env!("NOVAOS_ETH3_CASE") == Some("recu-arm-differe") {
+            if !matches!(Self::ouvrir(), Err(Error::Quarantine))
+                || !matches!(Self::reprendre_retrait(generation-1,numero), Err(Error::State))
+                || !matches!(Self::reprendre_retrait(generation,numero-1), Err(Error::State)) {
+                return Err(Error::Quarantine);
+            }
+            let epingles = QUARANTAINE.lock().as_ref().ok_or(Error::State)?.cadres.iter().filter(|f| f.pa != 0).count();
+            hal::log(format_args!("E3C retrait differe VirtIO-IOMMU generation={generation} numero={numero} anciennes_references_refusees=true epingles_nic={epingles}"));
+        }
+        match Self::reprendre_retrait(generation, numero) {
+            Err(Error::Timeout) => Self::reprendre_retrait(generation, numero),
+            resultat => resultat,
+        }
+    }
+
+    #[cfg(feature="ethernet-v1-port")]
+    fn reprendre_retrait(generation: u64, numero: u64) -> Result<()> {
+        let bail = {
+            let mut place = QUARANTAINE.lock();
+            let p = place.as_ref().ok_or(Error::State)?;
+            if p.domaine.generation()!=generation || p.retrait_differe!=Some(numero) {
+                return Err(Error::State);
+            }
+            p.domaine.reconcilier_nic(numero)?;
+            let mut bail = place.take().ok_or(Error::State)?;
+            bail.retrait_differe = None;
+            bail
+        };
+        bail.fermer()
+    }
+
+    #[cfg(feature="ethernet-v1-port")]
     fn recuperer(mut self, preuve: super::net_trames::Arret) -> Result<()> {
         let generation = self.domaine.generation();
         let pages: [bool; 22] = core::array::from_fn(|i| preuve.page_restituable(i));
         let rendues = pages.iter().filter(|v| **v).count();
         if rendues == pages.len() {
-            self.fermer()?;
+            self.retrait_complet()?;
             hal::log(format_args!("E3C VirtIO-IOMMU generation={generation} rendus=22 quarantaine=0 detache=true"));
             return Ok(());
         }

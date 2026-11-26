@@ -63,7 +63,7 @@ def compiler(dest, modes, revision, detail):
             (out/"construction.json").write_text(json.dumps(manifest,indent=2)+"\n")
 
 
-def rejouer(images, sortie, modes, repetitions):
+def rejouer(images, sortie, modes, repetitions, cycle_vie=False, architectures=ARCH):
     worktrees = NOVA.parent.parent
     archive = worktrees / "archives-virtio-net"
     outils = worktrees / "archives-ethernet-phase3/reproduction-8bd3f9c"
@@ -73,7 +73,7 @@ def rejouer(images, sortie, modes, repetitions):
             source = images / variante
             historique = mode in ("historique100k", "historique1514")
             manifeste = None if historique else json.loads((source / "construction.json").read_text())
-            for arch in ARCH:
+            for arch in architectures:
                 if mode == "historique100k":
                     elf = archive / "cloture-20261126" / f"applicabilite-{arch}-endurance.elf"
                 elif mode == "historique1514":
@@ -87,7 +87,7 @@ def rejouer(images, sortie, modes, repetitions):
                     with elf.open("rb") as stream:
                         empreinte = hashlib.file_digest(stream, "sha256").hexdigest()
                     if (precedent["succes"] and precedent["cas"] == mode and precedent["arch"] == arch
-                            and precedent["elf"] == empreinte):
+                            and precedent["elf"] == empreinte and (not cycle_vie or "cycle_vie" in precedent)):
                         continue
                     raise ValueError(f"Résultat antérieur incomplet ou d'une autre image : {out}")
 
@@ -97,6 +97,8 @@ def rejouer(images, sortie, modes, repetitions):
                     outils / "limine-enroll", outils / "BOOTAA64.EFI",
                     "--delai", "420" if mode == "historique1514" else "220",
                 ]
+                if cycle_vie:
+                    commande.append("--cycle-vie")
                 if manifeste is not None:
                     commande.extend(["--source-elf", manifeste["commit"]])
                 if arch == "arm":
@@ -110,6 +112,8 @@ if __name__ == "__main__":
     p.add_argument("images", type=Path)
     p.add_argument("modes", nargs="+")
     p.add_argument("--sortie", type=Path)
+    p.add_argument("--cycle-vie", action="store_true", help="Contrôles de récupération de phase 3C")
+    p.add_argument("--arch", choices=ARCH, help="Limiter le rejeu à cette architecture")
     p.add_argument("--revision", default="HEAD")
     p.add_argument("--detail", action="store_true", help="Chronométrage séparé, hors séries de débit")
     p.add_argument("--repetitions", type=int, default=3)
@@ -120,6 +124,6 @@ if __name__ == "__main__":
         with qualification(Path(os.environ["NOVAOS_TMPDIR"]).resolve().parent, {}):
             compiler(a.images.resolve(), a.modes, a.revision, a.detail)
     elif a.sortie and a.repetitions >= 1:
-        rejouer(a.images.resolve(), a.sortie.resolve(), a.modes, a.repetitions)
+        rejouer(a.images.resolve(), a.sortie.resolve(), a.modes, a.repetitions, a.cycle_vie, [a.arch] if a.arch else ARCH)
     else:
         p.error("--sortie et un nombre positif de démarrages sont requis")

@@ -140,7 +140,7 @@ impl Port<'_> {
                 if s.en_vol != 0
                     || s.preparees != s.completees
                     || s.publiees != s.completees
-                    || rx_used.r16(2) != s.rx_lues as u16
+                    || (s.rx_rendues == u16::MAX && rx_used.r16(2) != s.rx_lues as u16)
                     || tx_used.r16(2) != s.completees as u16
                 {
                     return Err(abi::REFUSED);

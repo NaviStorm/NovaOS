@@ -241,7 +241,7 @@ impl EthernetActor {
         let case = match option_env!("NOVAOS_ETH3_CASE") {
             Some("data") => 2,
             Some("veille") => 7,
-            Some("court" | "cycles-court" | "preuve-absente" | "recu-vtd-absent") => 8,
+            Some("court" | "cycles-court" | "preuve-absente" | "recu-vtd-absent" | "recu-vtd-differe") => 8,
             Some("revocation") => 6,
             Some("deces") => 3,
             Some("endurance") => 5,

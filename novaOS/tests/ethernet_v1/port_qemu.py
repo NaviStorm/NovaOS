@@ -73,7 +73,7 @@ def qualification(worktrees, report):
             report["liberation"]=utc()
 
 
-def vtd_trafic(out):
+def vtd_trafic(out, cycles=1):
     """Relecture des permissions réellement utilisées, entre les transitions de BME."""
     bme=False
     ouvertures=0
@@ -86,7 +86,11 @@ def vtd_trafic(out):
             cmd=re.match(r"pci_cfg_write virtio-net-pci 00:07\.0 @0x4 <- (0x[0-9a-f]+)$",line)
             if cmd:
                 active=bool(int(cmd[1],16)&4)
-                ouvertures+=active and not bme
+                if active and not bme:
+                    if len({v>>12 for v in physical.values()}) != len(physical):
+                        raise ValueError("Cadres VT-d partagés")
+                    physical.clear()
+                    ouvertures += 1
                 bme=active
             if not line.startswith("vtd_iotlb_page_") or "sid 0x38 " not in line:
                 continue
@@ -98,7 +102,7 @@ def vtd_trafic(out):
             if not 0<=index<22 or val&4095!=(2 if index in (2,5,*range(6,14)) else 1) or physical.setdefault(index,val)!=val:
                 raise ValueError("Traduction hors des feuilles autorisées")
             traductions+=1
-    if bme or ouvertures!=1 or not traductions or len({v>>12 for v in physical.values()})!=len(physical):
+    if bme or ouvertures!=cycles or not traductions or len({v>>12 for v in physical.values()})!=len(physical):
         raise ValueError("Attribution VT-d ou restitution BME incohérente")
     return dict(pages_touchees=len(physical),echantillons=traductions,attributions=ouvertures,bme_final=bme)
 
@@ -120,6 +124,10 @@ class Pair:
         self.thread = threading.Thread(target=self.run, daemon=True)
 
     def oracle(self, numero, retour):
+        if self.cas in ("cycles", "recu-arm-differe"):
+            numero %= 144
+        elif self.cas in ("cycles-court", "recu-vtd-differe"):
+            numero = 0
         if self.cas in ("mixte100k", "historique100k"):
             return self.ref.trame_longue(numero,retour)
         if self.cas not in PERF and self.cas not in ("mesure60","mesure1514","historique1514"):
@@ -183,7 +191,10 @@ class Pair:
                                 pending_line = lines.pop()
                                 for line in lines:
                                     match = re.search(rb"E3B admission_rx (1|4|8)\s*$",line)
-                                    if match:
+                                    if self.cas == "rattrapage" and b"E3C dernier lot RX generation=" in line:
+                                        for i in range(16):
+                                            injecter(i)
+                                    elif match:
                                         for _ in range(int(match[1])):
                                             injecter(self.rx_perf)
                     except Exception as err:
@@ -191,7 +202,7 @@ class Pair:
                 verrou_trace = threading.Lock()
                 arret = threading.Event()
                 generateur_rx = None
-                if self.cas.startswith(("rx", "duplex")):
+                if self.cas.startswith(("rx", "duplex")) or self.cas == "rattrapage":
                     generateur_rx = threading.Thread(target=generateur, daemon=True)
                     generateur_rx.start()
                 pending=[]
@@ -234,11 +245,13 @@ class Pair:
 
 
 def main():
+    import cycle_vie
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("arch", choices=("arm", "q35"))
-    p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "filtre", "court", "temoin16", "port","plein","mesure60","mesure1514", "mixte100k","historique100k","historique1514","ancien","choix-data","segment-interrompu","recu-collecte", *PERF))
+    p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "filtre", "court", "temoin16", "port","plein","mesure60","mesure1514", "mixte100k","historique100k","historique1514","ancien","choix-data","segment-interrompu","recu-collecte", *cycle_vie.NOUVEAUX, *PERF))
     for name in ("elf", "sortie", "temoin", "archive", "limine", "relais"):
         p.add_argument(name, type=lambda v: Path(v).resolve())
+    p.add_argument("--cycle-vie", action="store_true", help="Vérifier les reçus et la mémoire du profil 3C")
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
     p.add_argument("--delai", type=int, default=90)
     p.add_argument("--cpu-max", action="store_true", help="Témoin ArmVirt avec RNDR et chargeur direct")
@@ -372,7 +385,12 @@ def main():
                             with socket.socket(socket.AF_UNIX,socket.SOCK_STREAM) as qt:
                                 qt.connect(str(tmp/"qtest.sock"))
                                 with qt.makefile("rwb",buffering=0) as stream:
-                                    report["cadres_vtd_controles"]=verifier_tables(vm,stream,serial.encode(),out,"NET Q35 retrait cookie=" in serial)
+                                    retire = "NET Q35 retrait cookie=" in serial
+                                    if a.cycle_vie:
+                                        report["preuve_qi"] = cycle_vie.preuve_qi(vm,stream,serial,retire or a.cas=="recu-vtd-absent")
+                                    if not (a.cycle_vie and a.cas=="recu-vtd-absent"):
+                                        cycles = cycle_vie.nombre_cycles(a.cas,"q35") if retire and a.cycle_vie else 1
+                                        report["cadres_vtd_controles"]=verifier_tables(vm,stream,serial.encode(),out,retire,cycles)
                         if "Synchronous Exception" in serial:
                             report["registres_efi"]=qmp(vm,"human-monitor-command",**{"command-line":"info registers"})
                             report["code_efi"]=qmp(vm,"human-monitor-command",**{"command-line":"xp /12i 0x4e936730"})
@@ -388,9 +406,9 @@ def main():
                         report.update(rx_injectees_perf=peer.rx_perf, rx_sans_tx=peer.rx_seul, rx_filtrees=peer.filtrees, trames_par_sens=peer.frames, octets_par_sens=peer.octets, intervalle_pair_ns=peer.last-peer.first, erreur_pair=peer.error)
             serial=(out/"serie.log").read_text(errors="replace")
             if a.arch=="q35" and "NET Q35 etat=" in serial:
-                report["dma"]=vtd_trafic(out)
+                report["dma"]=vtd_trafic(out, cycle_vie.nombre_cycles(a.cas,"q35") if a.cycle_vie else 1)
             if a.arch=="arm":
-                if "NET ARM bilan" in serial and a.cas!="endurance":
+                if "NET ARM bilan" in serial and a.cas!="endurance" and not a.cycle_vie:
                     report["domaines"]=verifier_domaines(out,True,ethernet=True,quarantaine="quarantaine disque_lisible=true" in serial)
                 volume=refdir/"volume-relu.p9"
                 with disk.open("rb") as fp:
@@ -459,6 +477,12 @@ def main():
                     and "materiel=Ok(()) retrait=Ok(" in serial and "acteurs=[Exit(0), Exit(0), Exit(0)]" in serial
                     and all(f"ETH3 lot={b} n=1024 " in serial for b in (1,4,8))
                     and ("NET Q35 etat=Ok(())" in serial if a.arch=="q35" else report["volume_relu_identique"] and "NET ARM bilan Ok(())" in serial))
+            if a.cycle_vie:
+                if a.cas == "echo1514" and not report["succes"]:
+                    raise ValueError("Critères du lanceur de performance 3B")
+                report["cycle_vie"] = cycle_vie.verifier(out, report, serial)
+                report["succes"] = True
+                modes.update(cycle_vie.CAS)
             selection=re.search(r"E3B transport_client=Some\((\d+)\)",serial)
             if selection:
                 report["transport_client"]=int(selection[1])

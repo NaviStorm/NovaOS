@@ -10,6 +10,9 @@ use crate::{
     memory::{self, firmware},
 };
 
+#[cfg(feature="ethernet-v1-port")]
+mod retrait;
+
 const SID: u16 = 7 << 3;
 const IOVA: u64 = 0x1000_0000;
 const ROOT: u32 = 1 << 30;
@@ -101,7 +104,32 @@ fn publier(frames: &[Frame], line: usize) {
     barrier()
 }
 
-fn invalider(reg: Region, frames: &[Frame], index: u64, cookie: u32, line: usize) -> Result<(), &'static str> {
+#[derive(Clone, Copy)]
+struct RecuQi {
+    root: u64,
+    queue: u64,
+    statut: Frame,
+    fin: u64,
+    cookie: u32,
+}
+
+impl RecuQi {
+    fn collecter(self, reg: Region) -> Result<(), &'static str> {
+        if reg.r64(0x20) != self.root || reg.r64(0x90) != self.queue || reg.r64(0x88) != self.fin {
+            return Err("identite QI");
+        }
+        wait(|| reg.r32(0x34) != 0 ||
+            (reg.r64(0x80) == self.fin && self.statut.mem.r32(0) == self.cookie))
+            .map_err(|_| "expiration QI")?;
+        if reg.r32(0x34) != 0 || reg.r64(0x80) != self.fin || reg.r64(0x88) != self.fin
+            || self.statut.mem.r32(0) != self.cookie {
+            return Err("faute QI");
+        }
+        Ok(())
+    }
+}
+
+fn soumettre_invalidation(reg: Region, frames: &[Frame], index: u64, cookie: u32, line: usize) -> Result<RecuQi, &'static str> {
     if index > 4096-48 || index % 16 != 0 || cookie == 0
         || frames[7].mem.r32(0) != cookie-1 || reg.r64(0x90) != frames[6].pa
         || reg.r64(0x20) != frames[0].pa || reg.r64(0x80) != index
@@ -118,12 +146,11 @@ fn invalider(reg: Region, frames: &[Frame], index: u64, cookie: u32, line: usize
     q.w64(index as usize + 40, frames[7].pa);
     publier(&frames[6..7], line);
     reg.w64(0x88, index + 48);
-    wait(|| reg.r32(0x34) != 0 || (reg.r64(0x80) == index + 48 && frames[7].mem.r32(0) == cookie))
-        .map_err(|_| "expiration QI")?;
-    if reg.r32(0x34) != 0 || reg.r64(0x88) != index + 48 {
-        return Err("faute QI");
-    }
-    Ok(())
+    Ok(RecuQi { root: frames[0].pa, queue: frames[6].pa, statut: frames[7], fin: index+48, cookie })
+}
+
+fn invalider(reg: Region, frames: &[Frame], index: u64, cookie: u32, line: usize) -> Result<(), &'static str> {
+    soumettre_invalidation(reg, frames, index, cookie, line)?.collecter(reg)
 }
 
 fn permanent(i: usize) -> bool { matches!(i, 0 | 6 | 7) }
@@ -154,6 +181,8 @@ fn reserver_cadres(frames: &mut [Frame;30], reprise: bool) -> Result<(), &'stati
 }
 
 pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
+    #[cfg(feature="ethernet-v1-port")]
+    if !retrait::disponible() { return Err("NIC en quarantaine"); }
     if crate::smp::index() != 0 || crate::smp::count() != 1 {
         return Err("cpu");
     }
@@ -196,6 +225,9 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     let reference = memory::pinned_dma_frames();
     let mut frames = [EMPTY; 30];
     reserver_cadres(&mut frames, false)?;
+    #[cfg(feature="ethernet-v1-port")]
+    let mut generation_exposee = 0;
+    let operation = (|| {
     // Après RTADDR, conserver tous les cadres en cas de retour indéterminé.
     publier(&frames[..8], line);
     reg.w64(0x20, frames[0].pa);
@@ -216,11 +248,13 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     let cycles = if cfg!(feature="ethernet-v1-port") {
         match option_env!("NOVAOS_ETH3_CASE") {
             Some("cycles" | "cycles-court") => 4,
-            Some("rattrapage") => 2,
+            Some("rattrapage" | "recu-vtd-differe") => 2,
             _ => 1,
         }
     } else if cfg!(feature="net-ethernet-lab") && option_env!("NOVAOS_NET_SERIE")==Some("redemarrage") && boot::scenario()==b"net-q35-ethernet" {4u32} else {1};
     for cycle in 0..cycles {
+    #[cfg(feature="ethernet-v1-port")]
+    { generation_exposee = cycle + 1; }
     if cycle!=0 {
         if !pairs_fermes() || reg.r32(0x1c) != ROOT | QI | TE || frames[0].mem.r64(0)!=0 { return Err("controleur non retire"); }
         reserver_cadres(&mut frames,true)?;
@@ -256,8 +290,16 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
         true => {
             // Le domaine appartient exclusivement au titulaire. Une issue incertaine
             // conserve tous ses cadres épinglés jusqu'à arrêt de la VM.
-            super::block::net_event::trafic_q35(frames[8..].try_into().unwrap(),u64::from(cycle)+1).map_err(|e|{hal::log(format_args!("NET Q35 L2 quarantaine={e:?}")); "trafic non confirme"})?;
-            if reg.r32(0x34)!=0 {return Err("faute VT-d")}
+            let trafic = super::block::net_event::trafic_q35(frames[8..].try_into().unwrap(),u64::from(cycle)+1);
+            if trafic.is_err() || reg.r32(0x34) != 0 {
+                hal::log(format_args!("NET Q35 L2 quarantaine={trafic:?}"));
+                #[cfg(feature="ethernet-v1-port")]
+                {
+                    retrait::garer(&mut frames,cycle+1,None)?;
+                    hal::log(format_args!("E3C VT-d arret incertain generation={} epingles={} rattachement_refuse={}",cycle+1,memory::pinned_dma_frames()-reference,!retrait::disponible()));
+                }
+                return Err("trafic non confirme");
+            }
             Ok(())
         }
         _ => super::block::net_event::q35(frames[8..].try_into().expect("22 cadres du NIC")),
@@ -272,20 +314,20 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
         }
         frames[0].mem.w64(0, 0);
         publier(&frames[..1], line);
-        invalider(reg, &frames, offset+48, cookie+1, line)?;
-        if !pairs_fermes()
-            || reg.r32(0x1c) != ROOT | QI | TE
-            || (0..512).any(|i| frames[0].mem.r64(i * 8) != 0)
-        {
-            return Err("retrait incertain");
-        }
         #[cfg(feature="ethernet-v1-port")]
         {
-            if option_env!("NOVAOS_ETH3_CASE") == Some("recu-vtd-absent") {
-                hal::log(format_args!("E3C VT-d recu non livre generation={} cookie={} epingles={}", cycle+1, cookie+1, memory::pinned_dma_frames()-reference));
-                return Err("recu de retrait indisponible");
-            }
+            let attente = match soumettre_invalidation(reg,&frames,offset+48,cookie+1,line) {
+                Ok(r) => r,
+                Err(e) => { retrait::garer(&mut frames,cycle+1,None)?; return Err(e); }
+            };
+            retrait::attendre(reg,&mut frames,cycle+1,attente)?;
             hal::log(format_args!("E3C VT-d generation={} bme=0 reset=0 cc=global iotlb=global dr=1 dw=1 iqh={} iqt={} cookie={} fsts=0",cycle+1,reg.r64(0x80),reg.r64(0x88),frames[7].mem.r32(0)));
+        }
+        #[cfg(not(feature="ethernet-v1-port"))]
+        {
+            invalider(reg,&frames,offset+48,cookie+1,line)?;
+            if !pairs_fermes() || reg.r32(0x1c) != ROOT | QI | TE
+                || (0..512).any(|i| frames[0].mem.r64(i*8)!=0) { return Err("retrait incertain"); }
         }
         for (i, f) in frames.iter_mut().enumerate() {
             if !permanent(i) {
@@ -309,4 +351,10 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     negotiation.map_err(|_| "negociation EVENT_IDX")?;
     }
     Ok(())
+    })();
+    #[cfg(feature="ethernet-v1-port")]
+    if operation.is_err() && frames.iter().any(|f| f.pa != 0) {
+        retrait::garer(&mut frames, generation_exposee, None)?;
+    }
+    operation
 }
