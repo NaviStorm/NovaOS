@@ -15,7 +15,7 @@ ARCH = {"arm": ("aarch64-unknown-none-softfloat", "net-arm-lab"),
         "q35": ("x86_64-unknown-none", "net-q35-lab")}
 
 
-def compiler(dest, modes, revision, detail):
+def compiler(dest, modes, revision, detail, cloture_froide=False):
     from port_construire_q35 import git
     commit = git("rev-parse", "--verify", revision + "^{commit}").decode().strip()
     instrumentation = git("rev-parse", "HEAD").decode().strip()
@@ -40,6 +40,13 @@ def compiler(dest, modes, revision, detail):
                 rel = Path("novaOS/kernel") / name
                 (root/rel).write_bytes(git("show", f"{instrumentation}:{rel}"))
                 sources[str(rel)] = git("hash-object", root/rel).decode().strip()
+        if cloture_froide:
+            if modes != ["echo1514"] or detail or commit != "0169c75148c8359c9235f3f19359133a0e002115":
+                raise ValueError("Le diagnostic de phase 3D exige la cellule echo1514 de clôture 3C")
+            patch = Path(__file__).with_name("cloture_froide.patch")
+            subprocess.run(["git", "apply", "--check", str(patch)], cwd=root, check=True)
+            subprocess.run(["git", "apply", str(patch)], cwd=root, check=True)
+            sources["cloture_froide.patch"] = hashlib.sha256(patch.read_bytes()).hexdigest()
         target = root/"target"
         for mode in modes:
             out = dest / mode
@@ -115,6 +122,7 @@ if __name__ == "__main__":
     p.add_argument("--cycle-vie", action="store_true", help="Contrôles de récupération de phase 3C")
     p.add_argument("--arch", choices=ARCH, help="Limiter le rejeu à cette architecture")
     p.add_argument("--revision", default="HEAD")
+    p.add_argument("--cloture-froide", action="store_true", help="Diagnostic isolé de la régression Q35 3C")
     p.add_argument("--detail", action="store_true", help="Chronométrage séparé, hors séries de débit")
     p.add_argument("--repetitions", type=int, default=3)
     a = p.parse_args()
@@ -122,7 +130,7 @@ if __name__ == "__main__":
         from port_qemu import qualification
         # Les constructions Rust ne doivent pas concurrencer le processus QEMU mesuré.
         with qualification(Path(os.environ["NOVAOS_TMPDIR"]).resolve().parent, {}):
-            compiler(a.images.resolve(), a.modes, a.revision, a.detail)
+            compiler(a.images.resolve(), a.modes, a.revision, a.detail, a.cloture_froide)
     elif a.sortie and a.repetitions >= 1:
         rejouer(a.images.resolve(), a.sortie.resolve(), a.modes, a.repetitions, a.cycle_vie, [a.arch] if a.arch else ARCH)
     else:

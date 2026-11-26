@@ -1,0 +1,75 @@
+--- a/novaOS/kernel/src/hardware/block/net_trames/v1.rs
++++ b/novaOS/kernel/src/hardware/block/net_trames/v1.rs
+@@ -136,36 +136,43 @@
+                 self.kicks[0].w16(0, 0);
+                 Ok(0)
+             }
+-            4 => {
+-                if s.en_vol != 0
+-                    || s.preparees != s.completees
+-                    || s.publiees != s.completees
+-                    || (s.rx_rendues == u16::MAX && rx_used.r16(2) != s.rx_lues as u16)
+-                    || tx_used.r16(2) != s.completees as u16
+-                {
+-                    return Err(abi::REFUSED);
+-                }
+-                if s.rx_rendues != u16::MAX {
+-                    #[cfg(feature="net-q35-duo")]
+-                    return Err(abi::REFUSED);
+-                    #[cfg(not(feature="net-q35-duo"))]
+-                    {
+-                        hal::log(format_args!("E3C fermeture RX partielle rx_lus={} tx_lus={}", s.rx_lues, s.completees));
+-                        return Ok(0);
+-                    }
+-                }
+-                self.draine = true;
+-                hal::log(format_args!(
+-                    "ETH3 drainage tx={} rx={} wraps_tx={} wraps_rx={} publications={:?}",
+-                    s.completees,
+-                    s.rx_lues,
+-                    s.completees >> 16,
+-                    s.rx_lues >> 16,
+-                    s.tailles
+-                ));
+-                Ok(0)
+-            }
++            4 => self.clore_v1(),
+             _ => Err(abi::DENIED),
+         }
+     }
++
++    #[cold]
++    #[inline(never)]
++    fn clore_v1(&mut self) -> core::result::Result<usize, u64> {
++        let s = &self.flux;
++        let rx_used = self.cadres[2].mem;
++        let tx_used = self.cadres[5].mem;
++        if s.en_vol != 0
++            || s.preparees != s.completees
++            || s.publiees != s.completees
++            || (s.rx_rendues == u16::MAX && rx_used.r16(2) != s.rx_lues as u16)
++            || tx_used.r16(2) != s.completees as u16
++        {
++            return Err(abi::REFUSED);
++        }
++        if s.rx_rendues != u16::MAX {
++            #[cfg(feature="net-q35-duo")]
++            return Err(abi::REFUSED);
++            #[cfg(not(feature="net-q35-duo"))]
++            {
++                hal::log(format_args!("E3C fermeture RX partielle rx_lus={} tx_lus={}", s.rx_lues, s.completees));
++                return Ok(0);
++            }
++        }
++        self.draine = true;
++        hal::log(format_args!(
++            "ETH3 drainage tx={} rx={} wraps_tx={} wraps_rx={} publications={:?}",
++            s.completees,
++            s.rx_lues,
++            s.completees >> 16,
++            s.rx_lues >> 16,
++            s.tailles
++        ));
++        Ok(0)
++    }
+ }
