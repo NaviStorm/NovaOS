@@ -95,7 +95,7 @@ def rejouer(images, sortie, modes, repetitions, cycle_vie=False, architectures=A
                     sys.executable, "-B", Path(__file__).with_name("port_qemu.py"),
                     arch, mode, elf, out, worktrees / "pilote-virtio-net", archive,
                     outils / "limine-enroll", outils / "BOOTAA64.EFI",
-                    "--delai", "420" if mode == "historique1514" else "220",
+                    "--delai", "1200" if mode == "cycles-256" else "420" if mode == "historique1514" else "220",
                 ]
                 if cycle_vie:
                     commande.append("--cycle-vie")

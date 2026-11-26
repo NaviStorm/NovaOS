@@ -1,0 +1,242 @@
+--- a/novaOS/kernel/src/hardware/block/net_event.rs
++++ b/novaOS/kernel/src/hardware/block/net_event.rs
+@@ -122,7 +122,15 @@
+         return Err(Error::Quarantine);
+     }
+
++    let individuel = dual && matches!(option_env!("NOVAOS_ETH3_CASE"),
++        Some("duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset"));
++    let titulaire = actor.as_ref().map(|a| a.owner());
++    let mut scelle = false;
+     let mut operation = |tag:u64, len:usize, copie:&mut [u8]| {
++        if tag == 5 && individuel {
++            scelle = port.sceller(generation).is_ok() && option_env!("NOVAOS_ETH3_CASE") != Some("duo-sans-reset");
++            return if scelle { Ok(0) } else { Err(crate::abi::REFUSED) };
++        }
+         if tag == 5 {
+             return port.stopper().map(|()| 0).map_err(|_| crate::abi::REFUSED);
+         }
+@@ -139,7 +147,9 @@
+         crate::sched::process::net_preparation::ethernet_actor(a,||true,&mut operation,true)
+     } else {crate::sched::process::net_preparation::ethernet(generation,||true,&mut operation)};
+
+-    let stop = port.stopper();
++    let stop = if individuel {
++        if scelle && titulaire.is_some_and(crate::sched::process::net_preparation::nic_exited) { Ok(()) } else { Err(Error::Quarantine) }
++    } else { port.stopper() };
+     let cause = ligne.cause();
+     hal::log(format_args!(
+         "NET Q35 L2 GSI=23 ISR={cause:#x} D31IR={ir:#x} hz={hz} dma={}",
+@@ -149,7 +159,7 @@
+         return Err(Error::Quarantine);
+     }
+     stop?;
+-    if !ok || cause != 0x101 {
++    if (!individuel && !ok) || cause != 0x101 {
+         return Err(Error::Fault);
+     }
+     Ok(())
+--- a/novaOS/kernel/src/hardware/nvme_domain/traffic.rs
++++ b/novaOS/kernel/src/hardware/nvme_domain/traffic.rs
+@@ -11,6 +11,7 @@
+     Nic,
+     Disk,
+     NicFenced(u64, u64),
++    NicRetired(u64, u64, u32),
+ }
+
+ static FAILED_NIC: sched::sync::Mutex<Option<(u64, u64)>> = sched::sync::Mutex::new(None);
+@@ -60,6 +61,9 @@
+         }
+         if result.is_ok() {
+             *DRAIN.lock() = Some(Drain { owner, epoch });
++            if work.fault == LocalFault::Nic {
++                *FAILED_NIC.lock() = Some((owner, epoch));
++            }
+             if work.contention {
+                 let key = Key(owner, epoch);
+                 if post(Owner::Nic, key, "NIC").is_err() {
+@@ -98,7 +102,7 @@
+
+ impl Domain {
+     pub(crate) fn local_nic(&self) -> bool {
+-        matches!(self.fault, LocalFault::Nic | LocalFault::NicFenced(..))
++        matches!(self.fault, LocalFault::Nic | LocalFault::NicFenced(..) | LocalFault::NicRetired(..))
+     }
+     pub(crate) fn local_disk(&self) -> bool {
+         self.fault == LocalFault::Disk
+@@ -122,12 +126,47 @@
+         {
+             return Err(Error::Quarantine);
+         }
++        if let Some(preuve) = DRAIN.lock().take() {
++            let plan = self.layout();
++            let cookie = self.engine.retirer_individuel(preuve, lease, plan)?;
++            self.fault = LocalFault::NicRetired(id.0, id.1, cookie);
++            let avant = crate::memory::pinned_dma_frames();
++            for (pid, generation, marque) in [(id.0, id.1 - 1, cookie), (id.0 + 1, id.1, cookie), (id.0, id.1, cookie - 1)] {
++                if self.engine.collecter_individuel((pid, generation), marque, lease, plan) != Err(Error::Denied) {
++                    return Err(Error::Quarantine);
++                }
++            }
++            if self.engine.prepare_nic(id.0, lease, plan) != Err(Error::Denied)
++                || !self.kept_network_frames() || crate::memory::pinned_dma_frames() != avant {
++                return Err(Error::Quarantine);
++            }
++            crate::hal::log(format_args!("E3D WAIT NIC pid={} generation={} cookie={cookie} retenus=26 anciennes=refusees admission=refusee", id.0,id.1));
++            self.engine.trace_duo();
++            return Ok(());
++        }
+         self.fault = LocalFault::NicFenced(id.0, id.1);
+         crate::hal::log(format_args!(
+             "DUO panne NIC pid={} generation={} BME=0 DMA_retenu=26 NVMe_verifie=true",
+             id.0, id.1
+         ));
+         Ok(())
++    }
++
++    pub(crate) fn reconcilier_nic(&mut self, terminees: u64) -> Result<()> {
++        let LocalFault::NicRetired(pid, epoch, cookie) = self.fault else {return Ok(())};
++        if !self.kept_network_frames() || option_env!("NOVAOS_ETH3_CASE") == Some("duo-absent")
++            || (option_env!("NOVAOS_ETH3_CASE") == Some("duo-differe") && terminees < 30) { return Ok(()); }
++        let bail = self.lease.ok_or(Error::Denied)?;
++        let plan = self.layout();
++        self.engine.collecter_individuel((pid,epoch),cookie,bail,plan)?;
++        if self.engine.collecter_individuel((pid,epoch),cookie,bail,plan) != Err(Error::Denied)
++            || !self.engine.retrait_verifie((pid,epoch),bail,plan) {return Err(Error::Quarantine);}
++        crate::hal::log(format_args!("E3D collecte NIC pid={pid} generation={epoch} cookie={cookie} terminees={terminees} liberes=26 doublon=refuse NVMe_actif=true"));
++        Ok(())
++    }
++
++    pub(crate) fn restitution_nic(&self) -> bool {
++        matches!(self.fault, LocalFault::NicRetired(..)) && self.engine.network_frames() == [0;26]
+     }
+
+     pub(super) fn disk_survivor_ok(&self) -> bool {
+@@ -136,6 +175,8 @@
+                 self.engine
+                     .failed_nic_fenced((pid, epoch), lease, self.layout())
+             }),
++            LocalFault::NicRetired(pid, epoch, _) => self.lease.is_some_and(|bail|
++                self.engine.retrait_verifie((pid,epoch),bail,self.layout())),
+             _ => true,
+         }
+     }
+--- a/novaOS/kernel/src/hardware/vtd_lab/duo.rs
++++ b/novaOS/kernel/src/hardware/vtd_lab/duo.rs
+@@ -1,6 +1,8 @@
+ //! Superviseur du profil Q35 PIO à deux domaines. Propriétaire exclusif de la QI.
+ //! Le scénario fermé ne donne aucun handle ni adresse physique aux pilotes.
+ use super::*;
++#[path = "retrait_individuel.rs"]
++mod individuel;
+
+ /// Le choix appartient au ticket d'admission, copié avant le retrait des réponses Limine.
+ #[derive(Clone, Copy, PartialEq, Eq)]
+@@ -53,6 +55,7 @@
+     delegated: bool,
+     requested: Option<Operation>,
+     pending: Option<Receipt>,
++    retrait: Option<individuel::Recu>,
+ }
+
+ impl Supervisor {
+@@ -60,7 +63,7 @@
+         Self {
+             enabled: profile != Profile::Ordinary,
+             frames: [EMPTY; FRAMES], generation: 0, owner: 0, published: false, delegated: false,
+-            requested: None, pending: None,
++            requested: None, pending: None, retrait: None,
+         }
+     }
+
+@@ -137,7 +140,7 @@
+         if !self.enabled {return true;}
+         if service[1].mem.r64(NIC_CTX) != self.nic_context(112) ||
+             service[1].mem.r64(NIC_CTX+8) != self.nic_context(113) {return false;}
+-        if !self.published {return true;}
++        if !self.published && self.retrait.is_none() {return true;}
+         self.frames.iter().enumerate().all(|(i,f)| {
+             f.pa != 0 && f.pa < 1<<48 && f.pa % PAGE == 0 &&
+             self.frames[..i].iter().chain(service.iter()).all(|other| other.pa != f.pa) &&
+@@ -312,7 +315,7 @@
+         Ok(())
+     }
+
+-    fn release_fenced_nic(&mut self,lost:bool)->Result<()> {
++    fn invalider_nic(&mut self,lost:bool)->Result<()> {
+         if !self.duo.published || !self.closed_nic() || self.in_queue ||
+             !self.duo.verify_nic(&self.service,&self.pages) {return Err(Error::Quarantine);}
+         self.service[1].mem.w64(NIC_CTX,0);
+@@ -323,7 +326,14 @@
+             return Err(Error::Quarantine);
+         }
+         self.duo.published=false;
++        Ok(())
++    }
++    fn liberer_cadres_nic(&mut self) {
+         for frame in &mut self.duo.frames {free(*frame); *frame=EMPTY;}
++    }
++    fn release_fenced_nic(&mut self,lost:bool)->Result<()> {
++        self.invalider_nic(lost)?;
++        self.liberer_cadres_nic();
+         Ok(())
+     }
+     pub(in crate::hardware) fn trace_duo(&self) {
+--- a/novaOS/kernel/src/sched/process/nvme/broker.rs
++++ b/novaOS/kernel/src/sched/process/nvme/broker.rs
+@@ -389,6 +389,13 @@
+                             .as_mut()
+                             .filter(|t| t.stage == Stage::Submitted)
+                             .ok_or(DENIED)?;
++                        #[cfg(feature="net-q35-duo")]
++                        {
++                            let fin = hal::timer::counter();
++                            let op = match cmd { Command::Read { .. } => "READ", Command::Write { .. } => "WRITE", _ => "FLUSH" };
++                            hal::log(format_args!("E3D CQE op={op} cid={} ticks={} hz={}", info.cid,
++                                fin - self.samples.command, hal::timer::counter_hz()));
++                        }
+                         t.stage = Stage::Completed;
+                         self.completed += 1;
+                         match cmd {
+@@ -463,7 +470,7 @@
+                     _ => return Err(DENIED),
+                 };
+                 #[cfg(feature="net-q35-duo")]
+-                if self.mode==profile::MEASURE {self.samples.command=hal::timer::counter();}
++                self.samples.command=hal::timer::counter();
+                 let r = if matches!(cmd, Command::Write { .. }) {
+                     let src = self
+                         .ticket
+--- a/novaOS/kernel/src/sched/process/nvme.rs
++++ b/novaOS/kernel/src/sched/process/nvme.rs
+@@ -178,6 +178,10 @@
+                 return Err("premier lot matériel NIC absent");
+             }
+             fault_boundary = true;
++        }
++        #[cfg(feature="net-q35-duo")]
++        if fault_boundary && domain.local_nic() {
++            domain.reconcilier_nic(b.completed as u64).map_err(|_| "reçu NIC incohérent")?;
+         }
+         let mut progress = false;
+         let admitted = with(|s| {
+@@ -739,7 +743,7 @@
+         .checked_add(domain.witness_pages() as u64)
+         .ok_or("bilan des temoins")?;
+     #[cfg(feature="net-q35-duo")]
+-    let expected = if domain.local_nic() {
++    let expected = if domain.local_nic() && !domain.restitution_nic() {
+         if !domain.kept_network_frames() {return Err("cadres de quarantaine NIC");}
+         expected + 26
+     } else {expected};
+@@ -806,7 +810,8 @@
+         }
+         #[cfg(feature="net-q35-duo")]
+         if domain.repeat_sessions {
+-            for round in 1..=4 {
++            let cycles = if option_env!("NOVAOS_ETH3_CASE") == Some("duo-cycles") { 256 } else { 4 };
++            for round in 1..=cycles {
+                 hal::log(format_args!("DUO debut cycle={round}"));
+                 measure("duo_avant_cycle");
+                 session(&mut domain, mode)?;

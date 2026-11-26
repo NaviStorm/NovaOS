@@ -4,9 +4,9 @@ import json
 import re
 import struct
 
-NOUVEAUX = ("cycles", "cycles-court", "rattrapage", "preuve-absente", "recu-vtd-absent",
+NOUVEAUX = ("cycles-256", "cycles", "cycles-court", "rattrapage", "preuve-absente", "recu-vtd-absent",
             "recu-vtd-differe", "recu-arm-differe", "recu-arm-absent", "deces-recu-tx-absent")
-CAS = {"port": 0, "cycles": 0, "court": 8, "cycles-court": 8, "preuve-absente": 8,
+CAS = {"cycles-256": 0, "port": 0, "cycles": 0, "court": 8, "cycles-court": 8, "preuve-absente": 8,
        "recu-vtd-absent": 8, "recu-vtd-differe": 8, "recu-arm-differe": 0, "recu-arm-absent": 0, "deces": 3, "deces-recu-tx-absent": 3, "incertain": 4, "revocation": 6,
        "segment-interrompu": 23, "rattrapage": 23, "recu-collecte": 24, "echo1514": 13}
 
@@ -17,6 +17,8 @@ def exiger(ok, objet):
 
 
 def nombre_cycles(cas, arch):
+    if cas == "cycles-256" and arch == "arm":
+        return 256
     if cas == "cycles" or (cas == "cycles-court" and arch == "q35"):
         return 4
     return 2 if cas in ("rattrapage", "recu-vtd-differe", "recu-arm-differe") else 1

@@ -219,6 +219,9 @@ static CAS_ADMIS: core::sync::atomic::AtomicU8 = core::sync::atomic::AtomicU8::n
 pub(crate) fn admettre(scenario: &[u8]) -> bool {
     let mode = match scenario {
         b"net-q35-duo-nvme-charge" => 0,
+        b"net-q35-duo-nvme-cycles" if option_env!("NOVAOS_ETH3_CASE") == Some("duo-cycles") => 0,
+        b"net-q35-duo-nvme-contention-nic" if option_env!("NOVAOS_ETH3_CASE") == Some("duo-concurrence") => 0,
+        b"net-q35-duo-nvme-contention-disque" if option_env!("NOVAOS_ETH3_CASE") == Some("duo-disque") => 0,
         b"net-q35-duo-nvme-panne-nic" => 3,
         _ => return false,
     };
@@ -248,7 +251,7 @@ impl EthernetActor {
             Some("veille") => 7,
             Some("court" | "cycles-court" | "preuve-absente" | "recu-vtd-absent" | "recu-vtd-differe") => 8,
             Some("revocation") => 6,
-            Some("deces" | "deces-recu-tx-absent") => 3,
+            Some("deces" | "deces-recu-tx-absent" | "duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset") => 3,
             Some("endurance") => 5,
             Some("incertain") => 4,
             Some("boite") => 1,
@@ -285,7 +288,7 @@ impl EthernetActor {
         }
         // Une incarnation refusée ou abandonnée ne peut jamais rouvrir un numéro consommé.
         let precedente = reserver_generation(generation)?;
-        if precedente != 0 && matches!(option_env!("NOVAOS_ETH3_CASE"), Some("cycles" | "cycles-court" | "rattrapage" | "recu-arm-differe" | "recu-vtd-differe"))
+        if precedente != 0 && matches!(option_env!("NOVAOS_ETH3_CASE"), Some("cycles" | "cycles-256" | "duo-cycles" | "cycles-court" | "rattrapage" | "recu-arm-differe" | "recu-vtd-differe"))
             && (reserver_generation(precedente).is_some() || reserver_generation(generation).is_some()) {
             return None;
         }
@@ -570,7 +573,8 @@ pub(crate) fn ethernet_actor(
     });
     let outcomes = [driver.join(), service.join(), client.join()];
     #[cfg(feature = "net-q35-duo")]
-    if case == 3 && outcomes == [Outcome::Exit(9), Outcome::Exit(0), Outcome::Exit(0)] {
+    if case == 3 && outcomes == [Outcome::Exit(9), Outcome::Exit(0), Outcome::Exit(0)]
+        && with(|s| [pid, sp, cp].iter().all(|p| s.ipc.racines_pilotes(*p) == 0)) {
         PILOTE_COLLECTE.store(pid.number, core::sync::atomic::Ordering::Release);
     }
     profil_3b::bilan();

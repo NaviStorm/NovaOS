@@ -124,7 +124,7 @@ class Pair:
         self.thread = threading.Thread(target=self.run, daemon=True)
 
     def oracle(self, numero, retour):
-        if self.cas in ("cycles", "recu-arm-differe"):
+        if self.cas in ("cycles", "cycles-256", "recu-arm-differe"):
             numero %= 144
         elif self.cas in ("cycles-court", "recu-vtd-differe"):
             numero = 0

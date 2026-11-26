@@ -40,7 +40,12 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("sortie", type=lambda v: Path(v).resolve())
     p.add_argument("--revision", default="HEAD")
+    p.add_argument("--phase3d", action="store_true", help="Appliquer le raccord de retrait individuel après vérification des modules audités")
+    p.add_argument("--cas", nargs="+", choices=("port", "deces", "duo-retrait", "duo-differe", "duo-absent",
+                   "duo-sans-reset", "duo-cycles", "duo-concurrence", "duo-disque"))
     a = p.parse_args()
+    if a.cas and not a.phase3d:
+        p.error("--cas nécessite --phase3d")
     revision = git("rev-parse", "--verify", a.revision + "^{commit}").decode().strip()
     a.sortie.mkdir(parents=True, exist_ok=False)
     tmp = Path(os.environ["NOVAOS_TMPDIR"]).resolve(strict=True)
@@ -63,6 +68,13 @@ def main():
             if git("hash-object", dest).decode().strip() != reference:
                 raise ValueError(f"Module audité divergent {name}")
             sources[str(path)] = reference
+        raccord = {}
+        if a.phase3d:
+            patch = root / "novaOS/tests/ethernet_v1/retrait_duo.patch"
+            subprocess.run(["git", "apply", "--check", str(patch)], cwd=root, check=True)
+            subprocess.run(["git", "apply", str(patch)], cwd=root, check=True)
+            raccord = {name: git("hash-object", root / name).decode().strip() for name in sources}
+            raccord["patch_sha256"] = hashlib.sha256(patch.read_bytes()).hexdigest()
         # L'option des modules d'origine n'existe que dans le manifeste de cette copie.
         manifest = root / "novaOS/kernel/Cargo.toml"
         text = manifest.read_text()
@@ -74,7 +86,8 @@ def main():
         env["RUSTC"] = subprocess.check_output(["rustup", "which", "--toolchain", "stable", "rustc"], text=True).strip()
         result = dict(port=revision, audit=AUDIT, modules=sources, elf={},
                       rustc=subprocess.check_output([env["RUSTC"], "-V"], text=True).strip())
-        for cas in ("port", "deces"):
+        result["raccord_3d"] = raccord
+        for cas in a.cas or ("port", "deces"):
             env["NOVAOS_ETH3_CASE"] = cas
             with (a.sortie / f"{cas}-compilation.log").open("xb") as log:
                 subprocess.run(["rustup", "run", "stable", "cargo", "build", "--offline", "--locked",

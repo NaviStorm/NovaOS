@@ -555,6 +555,7 @@ pub(crate) fn net_p9() -> Result<()> {
         if matches!(mode,126|127) {
             #[cfg(feature="ethernet-v1-port")]
             let cycles = match option_env!("NOVAOS_ETH3_CASE") {
+                Some("cycles-256") => 256,
                 Some("cycles" | "cycles-court") => 4,
                 Some("rattrapage" | "recu-arm-differe") => 2,
                 _ => 1,
