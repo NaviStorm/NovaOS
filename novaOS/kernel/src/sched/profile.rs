@@ -122,6 +122,11 @@ pub(super) fn ipc_woke(cpu: usize, since: u64) {
             .fetch_add(hal::timer::counter().saturating_sub(since), Relaxed);
     }
 }
+#[cfg(feature = "ethernet-ipc-lab")]
+pub(super) fn switches_bsp() -> u64 {
+    CPU[0].switches.load(Relaxed)
+}
+
 pub(super) fn report() {
     ACTIVE.store(false, Release);
     for (cpu, p) in CPU[..smp::count()].iter().enumerate() {

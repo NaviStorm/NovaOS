@@ -2,6 +2,10 @@
 //! fournit aucune porte privilégiée à l’image utilisateur.
 use super::*;
 mod bulk;
+#[cfg(feature = "ethernet-ipc-lab")]
+mod ethernet {
+    include!(concat!(env!("CARGO_MANIFEST_DIR"), "/../tests/ethernet_v1/guest.rs"));
+}
 #[cfg(feature = "ipc-smp-lab")]
 pub(crate) mod multicore;
 mod contract;
@@ -234,6 +238,11 @@ pub(crate) fn run(scenario: &[u8]) {
     #[cfg(feature = "ipc-smp-lab")]
     if scenario.starts_with(b"ipc-smp-") {
         multicore::run(scenario);
+    }
+    #[cfg(feature = "ethernet-ipc-lab")]
+    if scenario == b"ipc-perf" {
+        ethernet::run();
+        return;
     }
     if scenario == b"ipc-test" {
         admission::run();
