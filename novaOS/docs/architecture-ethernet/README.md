@@ -8,6 +8,8 @@ La phase 2B recommande la boîte IPC pour le premier port expérimental et préc
 
 Le premier port Ethernet v1 échange des trames avec le pair VirtIO-net sous QEMU AArch64 et x86_64. Le rapport couvre les 30 démarrages ciblés, le retrait DMA et la continuité de NovaFS. [Qualification de phase 3](phase3.md)
 
+La phase 3B compare le coût du port avant et après regroupement, ainsi que le débit au pair du pilote historique. [Performances et non-régression](phase3b.md) · [Critères de mesure](criteres-phase3b.md)
+
 ## Pièces soumises à décision
 
 | Livrable du mandat | Pièce et décision préparée |
