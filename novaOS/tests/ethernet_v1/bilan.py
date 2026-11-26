@@ -143,6 +143,8 @@ def main():
     parser.add_argument("preuves",type=Path)
     parser.add_argument("sortie",type=Path)
     parser.add_argument("--json",type=Path)
+    parser.add_argument("--repetitions", action="store_true",
+                        help="Vérifier aussi les deux démarrages supplémentaires de chaque invité")
     opts=parser.parse_args()
     profiles={}
     for isa in ("aarch64","x86_64"):
@@ -150,6 +152,36 @@ def main():
         profiles["Darwin "+("ARM64 natif" if isa=="aarch64" else "x86_64 sous Rosetta")]=series_host(json.loads(raw))
     for isa in ("aarch64","x86_64"):
         profiles["NovaOS QEMU "+isa]=series_guest(gzip.decompress((opts.preuves/f"qemu-{isa}.log.gz").read_bytes()).decode())
-    opts.sortie.write_text(markdown(profiles))
-    if opts.json: opts.json.write_text(json.dumps({name:{"cellules":rows,"decision":decisions(rows)} for name,rows in profiles.items()},indent=2)+"\n")
+    report = markdown(profiles)
+    evidence = {name: {"cellules": rows, "decision": decisions(rows)}
+                for name, rows in profiles.items()}
+    if opts.repetitions:
+        table = ["", "## Répétabilité en invité", "",
+                 "Trois démarrages indépendants avec le même ELF par ISA. Chaque p99 unitaire est le maximum de 16 lots après une chauffe. Les répétitions 2 et 3 sont diagnostiques. La campagne 1 reste la référence des tableaux précédents.", "",
+                 "| ISA | Démarrage | Gain débit B=4 / B=8 à 1 514 | p99 B=1 à 60, fenêtre / meilleur concurrent (µs) | Variation p99 à 60 / 1 514 |",
+                 "|---|---:|---:|---:|---:|"]
+        for isa in ("aarch64", "x86_64"):
+            name = "NovaOS QEMU " + isa
+            by_boot = []
+            for boot in (1, 2, 3):
+                if boot == 1:
+                    rows = profiles[name]
+                else:
+                    path = opts.preuves / f"qemu-{isa}-{boot}.log.gz"
+                    rows = series_guest(gzip.decompress(path.read_bytes()).decode())
+                decision = decisions(rows)
+                unit = {row["mode"]: row["p99"] / 1000 for row in rows
+                        if row["b"] == 1 and row["length"] == 60}
+                best = min(unit["boite"], unit["data"])
+                gain = decision["gain_pct"]
+                tail = decision["regression_p99_pct"]
+                table.append(f"| {isa} | {boot} | {fmt(gain[4])} % / {fmt(gain[8])} % "
+                             f"| {fmt(unit['fenetre'])} / {fmt(best)} "
+                             f"| {fmt(tail[60])} % / {fmt(tail[1514])} % |")
+                by_boot.append(dict(demarrage=boot, decision=decision, p99_60_us=unit))
+            evidence[name]["repetabilite"] = by_boot
+        report += "\n".join(table) + "\n"
+    opts.sortie.write_text(report)
+    if opts.json:
+        opts.json.write_text(json.dumps(evidence, indent=2) + "\n")
 if __name__=="__main__":main()

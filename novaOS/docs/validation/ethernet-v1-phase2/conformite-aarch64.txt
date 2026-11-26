@@ -1,0 +1,20 @@
+running 17 tests
+test tests::all_transports_same_bytes_and_counts ... ok
+test tests::armed_wait_wakes_once_including_revoke ... ok
+test tests::atomic_batch_and_generations ... ok
+test tests::binary_multicast_rx_atomic_return_and_link ... ok
+test tests::binary_vectors_canonical_both_isa ... ok
+test tests::credits_and_journal_saturation_recovery ... ok
+test tests::edge_counters_fail_closed ... ok
+test tests::identities_ports_and_incarnations ... ok
+test tests::link_stats_notifications_rearm ... ok
+test tests::lost_response_and_partial_publication ... ok
+test tests::multicast_rx_quota_and_single_return ... ok
+test tests::protocol_admission_and_receipts ... ok
+test tests::revoke_between_put_and_take ... ok
+test tests::revoke_during_lot_scrubs_and_preserves_unknown ... ok
+test tests::session_death_and_error_envelopes ... ok
+test tests::snapshot_padding_and_remote_delivery_oracle ... ok
+test tests::versions_features_and_initial_denial ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

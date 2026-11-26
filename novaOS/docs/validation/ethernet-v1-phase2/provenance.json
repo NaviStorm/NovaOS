@@ -1,0 +1,139 @@
+{
+  "systeme": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "clang": "Apple clang version 21.0.0 (clang-2100.4.1.1)\nTarget: arm64-apple-darwin27.2.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin",
+  "critères": "dcdd51d87b4c292f6a3e2c8518676c20c929dd82",
+  "phase1": "323793849e3e814e8804b675e39a294d84fbfbb6",
+  "date": "2026-11-26",
+  "profils": {
+    "aarch64": {
+      "darwin": {
+        "uname": "arm64",
+        "binaire": "Mach-O 64-bit executable arm64",
+        "translation": "0"
+      },
+      "empreintes_darwin": {
+        "commandes.json": "ffbbbef254ffa2c31ae6cfbcbcf8e4c887e1829e0800bfe0fb1db9554e7a417b",
+        "conformite": "cf5cf44a143b6711655bf83e478d3ab204b7db5ec09706723ad0f494f945ff4b",
+        "construction.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution.json": "cf716f3534e270092af118b0578bb45109549df5e959ba1db6f68b0b68236baf",
+        "libethernet_v1.rlib": "6ce25741050330412adf1f9ef7ed7cbc0e9b0fe94739fd83ca8e6ac9c2e3317b",
+        "series.json.gz": "1c078f9637363967ad6678ae59e1946647d7d6bf0b39e93bc5c89c18482d0199",
+        "tests.txt": "17fdf20f0db41242af414134b1b930b295fa63434f685ade50c34849da810f5f",
+        "transport": "519c41234d24ec86564d4d521ec76a2b804a7a9296135da8914a6bab81860f2d",
+        "usage.o": "87259723ef4f0c600515862ec2c267199d6dd61befbf68127be2732393c36942"
+      },
+      "empreintes_invité": {
+        "construction-iso.log": "55149652e488c42ecbd75bce7d902007be6809ad4ccdfb0748d209d6c91350f9",
+        "novaos.elf": "00a3916e3d66929425a3ffeede52edea592c8eb03d060a120e769a3db5aaf070",
+        "ethernet.iso": "c904f3d072fbb5be06cc88a776c69ee9552b9ef915b56889273f4fed82edc2ba",
+        "serie.log": "9bd8500f82c3ea31ff24f46e4e458e46a6b780c2536bd6e16b28b15599e795d5",
+        "noyau-ordinaire.elf": "72c4c376e4a4f60366146ee8b08cf2819fb3e74dcf2ec87dde4ce4483febc4f1",
+        "modele-novaos.rlib": "30443c352c4fbe10587d60d8d641f100c1821dba2943cbb741da889325243833"
+      },
+      "qemu": "QEMU emulator version 11.1.3",
+      "machine": "virt,gic-version=2",
+      "cpu": "cortex-a72",
+      "accélération": "tcg",
+      "vCPU": 1,
+      "Mio": 256,
+      "nic": "none",
+      "mode": "ipc-perf",
+      "feature": "ethernet-ipc-lab",
+      "firmware_sha256": {
+        "edk2-aarch64-code.fd": "47765fe344818cbc464b1c14ae658fb4b854f5c2ceffa982411731eb4865594d",
+        "edk2-arm-vars.fd": "b3b855c5a80310168051164986855692d1bdb06e67619856177965cd87c6774f"
+      },
+      "repetitions": {
+        "2": {
+          "construction-iso.log": "00d5ba0885066cb82f89c20b6e08f703aa218de11c3f73431d9138ff82b0ef16",
+          "novaos.elf": "00a3916e3d66929425a3ffeede52edea592c8eb03d060a120e769a3db5aaf070",
+          "ethernet.iso": "5c7f8ccd7c00dfbf15af983cd609d4447ee46468bd63525cb39647ccc9c949be",
+          "serie.log": "ed2f672c1b6bb51f0ec725fef1c8e8bc5d7b423efd606971c5411e56640a96f6"
+        },
+        "3": {
+          "construction-iso.log": "98c36b8d70727ee6440be20076bb84dda63734182602e596cd9391b233249189",
+          "novaos.elf": "00a3916e3d66929425a3ffeede52edea592c8eb03d060a120e769a3db5aaf070",
+          "ethernet.iso": "233b9672073f94c2a70192b034cfa0d54b65bb652daeb467b19a68ed04921aa3",
+          "serie.log": "1cacc143b2d0b6d0f74b61a28a46befa26f9ed11af0ab53f82923e9e9c5705c2"
+        }
+      }
+    },
+    "x86_64": {
+      "darwin": {
+        "uname": "x86_64",
+        "binaire": "Mach-O 64-bit executable x86_64",
+        "translation": "1"
+      },
+      "empreintes_darwin": {
+        "commandes.json": "fdcc83c34a7d9ea6827998e5d39e96af1391ba96a770a20e0504768f24b7571a",
+        "conformite": "3ead8b6539fa4c1e3bdb25618b0d5991f54b3bba291b4d82116c4ab1313656fe",
+        "construction.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "execution.json": "550057da1315c2bc99b2fb07c90f893dca45e6be18df694ef524771248da223e",
+        "libethernet_v1.rlib": "6b71dbb108f242f62af049ed500db827c7e2ae106236e13e96d4da56712ed66c",
+        "series.json.gz": "a2d9837e142849bc41ddbf6425965ee88f468cffb677f6dc828b9f8f48b84bd2",
+        "tests.txt": "17fdf20f0db41242af414134b1b930b295fa63434f685ade50c34849da810f5f",
+        "transport": "f5d59bdb23bcb25e151618e60f95eeb7fcac48a7775d50282a2fd5949cfd1ab9",
+        "usage.o": "e7cf63187a53ccce389a20507a66fdd764b787ade90d0b643c2361779afdfd5e"
+      },
+      "empreintes_invité": {
+        "construction-iso.log": "69074b766d6d726a29d089b94a47885040d0fe2ca989e523f2ef9cf483ec3e16",
+        "novaos.elf": "4002e809d9d67863abfaf69dbe7d52ea851d04998efdeafeec8b830a94b5f5cb",
+        "ethernet.iso": "a7d17b67ff83343054c1fc1a657e8bab46877e0339f703500da641b9965cdb60",
+        "serie.log": "11c813c5db620a803ae0bf9927dd9e949e43eb1ebccbe261bacd06f97597c5a6",
+        "noyau-ordinaire.elf": "560a457e1957929caa014eace35893fa272c90c3341f83fd06a3863fad8a2083",
+        "modele-novaos.rlib": "a42b0f25d8560081c7158120e5cfe7446946cb1e621a1fc0d5565a8b23517506"
+      },
+      "qemu": "QEMU emulator version 11.1.3",
+      "machine": "q35,i8042=on,pic=on",
+      "cpu": "max",
+      "accélération": "tcg",
+      "vCPU": 1,
+      "Mio": 256,
+      "nic": "none",
+      "mode": "ipc-perf",
+      "feature": "ethernet-ipc-lab",
+      "firmware_sha256": {
+        "edk2-x86_64-code.fd": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+        "edk2-i386-vars.fd": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+      },
+      "repetitions": {
+        "2": {
+          "construction-iso.log": "9578071a4adf2ba9434f7b4bdbad2fbcb44b006553c43baa121ded457386c86e",
+          "novaos.elf": "4002e809d9d67863abfaf69dbe7d52ea851d04998efdeafeec8b830a94b5f5cb",
+          "ethernet.iso": "6aacebfe8b298558acf7e192734d8ab0a328cbed33b3831874ea385e233d2131",
+          "serie.log": "a3c350b8b0df20fbd10b228dd0982c40b942905f330b1c1b8aece6524b6081b4"
+        },
+        "3": {
+          "construction-iso.log": "1376977efba497323ece731dae2ffc495911973f2135dd6a397e070ff674ee3f",
+          "novaos.elf": "4002e809d9d67863abfaf69dbe7d52ea851d04998efdeafeec8b830a94b5f5cb",
+          "ethernet.iso": "42c112a282e0291cb32402b50be9ca8072a7416f820f2fa07a65f944fb798a8e",
+          "serie.log": "48332ee670e83c63abfb839fff04efce34cc592e08e6fac0b08feb79a749c7be"
+        }
+      }
+    }
+  },
+  "sources_invité": "51466ff5543a259cc39efeaea201af59f69edea7",
+  "sources_darwin": "668ea6422486565b2f58ad5f7b790229fbb788ee",
+  "sources_hachées_pendant_la_campagne_darwin": {
+    "vecteurs.py": "617bb1600d6583008ce141b039d1e5fb2bc62ba1e55b35d326e3d338afeb177e",
+    "protocol.rs": "72ea4cb48277ceec998eb67e92030849389559b766eb6480c747b64e9b225dae",
+    "transport.rs": "2fe15500f44914c1f257342ef1ec01ca0868a1bfcc1c2a696fd1ec7fd8825697",
+    "lib.rs": "833babd78d615067e2d01656618c20e3a1f218face32150591e67e9003b9ccf6",
+    "invite.py": "4b7ce2630da3dda177ab3b8b3cb754b9271c274061407f33f22fc8fa583a3db7",
+    "bilan.py": "ad4cce45e5fae0165b5b48e4a6e111db55c36ed598a64513c8742619f44dfb02",
+    "tests.rs": "eec3ed582f74cb478c6d252d04085048baa8b1e0a4f39809b617f35c0066b40f",
+    "usage_darwin.c": "ea5d1d8a8a6d6bda35b854fbedc665198cbc84dd48b889c533251c04b01985cc",
+    "hote.py": "700447d891b9b5b31e49b7a4656a12aba467a1edf20f33b86e9410ae34c88d89",
+    "vecteurs.bin": "eabdfadfaf11e3b6256518f93779dde1bc83fdbe840909339573908191653d8a",
+    "guest.rs": "5a96975db0ceb468cfe83c364edef0e12acfd37537dc155799833807e7e8aa21",
+    "wire.rs": "81f77397e5b23f9da72e41b28e0c0bc251fcc98f04fb34c85bed7c6933ffcaf2",
+    "bench.rs": "4655e290ce97b017dd5992a1df57818c671b0a71b21309c33c77103c1b267472"
+  },
+  "réducteur_publié_sha256": "4c0ec0d32b4bc35e10b9cc48262c8df9cb578f37b5317e6d3d3412b1affbabdd",
+  "registre_abi": {
+    "version": 1,
+    "sélecteurs": 48,
+    "résultats": "abi-registre.txt"
+  }
+}

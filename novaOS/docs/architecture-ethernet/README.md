@@ -2,6 +2,8 @@
 
 **Spécification proposée à la MOA/MOE le 26 novembre 2026.** La base de conception est `origin/main` à `5c7f1bfa313a3859ccc0830660438e76d598acb1`. L’unité d’installation est un paquet signé. L’unité d’autorité et de panne est une instance attachée à un groupe isolable. L’unité visible de la pile est un port Ethernet versionné. Un paquet peut couvrir de nombreux identifiants et donner lieu à plusieurs instances indépendantes.
 
+La phase 2 dispose de son [contrat binaire exécutable](contrat-v1-phase2.md), de ses [mesures inter-ISA](mesures-phase2.md) et de sa [décision sur les transports](phase2.md).
+
 ## Pièces soumises à décision
 
 | Livrable du mandat | Pièce et décision préparée |
