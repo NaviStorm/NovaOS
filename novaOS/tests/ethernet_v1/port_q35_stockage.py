@@ -100,6 +100,7 @@ def main():
     try:
         with ExitStack() as stack:
             tmpbase = Path(os.environ["NOVAOS_TMPDIR"])
+            stack.enter_context(qualification(tmpbase.parent, rapport))
             tmp = Path(stack.enter_context(tempfile.TemporaryDirectory(dir=tmpbase, prefix="e3duo")))
             support(a.elf, firmware, tmp, a.limine, duo=mode)
             rapport["entrees"] = json.loads((tmp / "entrees.json").read_text())
@@ -120,7 +121,7 @@ def main():
                     args[i+1] = f"name=opt/novaos/boot.fat,file={out}/boot.fat"
             dump(out / "arguments.json", args)
             pair = Pair(h, out, virtio_net_pair, a.cas)
-            with qualification(tmpbase.parent, rapport), (out/"qemu.trace").open("xb") as log:
+            with (out/"qemu.trace").open("xb") as log:
                 with subprocess.Popen(args, cwd=tmp, pass_fds=(g.fileno(),), stdin=subprocess.PIPE,
                                       stdout=subprocess.PIPE, stderr=log, bufsize=0) as vm:
                     g.close()

@@ -106,6 +106,10 @@ fn main() {
         if nvme_lab && (nvme_rw || name == "storage/fileclient") {
             rust.arg("--cfg").arg("nvme_rw");
         }
+        if port && matches!(name,"ethernet_client"|"net_preparation")
+            && matches!(env::var("NOVAOS_ETH3_CASE").as_deref(),Ok("segment-interrompu"|"recu-collecte")) {
+            rust.arg("--cfg").arg("ethernet_3b_incidents");
+        }
         if port && name=="net_preparation" { rust.args(["--cfg","ethernet_v1_port"]); }
         if name == "net_preparation" && net { rust.args(["--cfg","net_ethernet_lab"]); }
         let compact = name.starts_with("nvme_") || matches!(

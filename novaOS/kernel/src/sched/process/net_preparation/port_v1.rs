@@ -249,6 +249,8 @@ impl EthernetActor {
             Some("mixte100k") => 20,
             Some("ancien") => 21,
             Some("choix-data") => 22,
+            Some("segment-interrompu") => 23,
+            Some("recu-collecte") => 24,
             Some("echo60") => 12,
             Some("echo1514") => 13,
             Some("tx60") => 14,

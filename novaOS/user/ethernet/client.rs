@@ -2,6 +2,8 @@
 #![no_std]
 #![no_main]
 mod canal;
+#[cfg(ethernet_3b_incidents)]
+mod incidents;
 #[allow(dead_code)]
 #[path = "../storage/runtime.rs"]
 mod runtime;
@@ -20,6 +22,8 @@ struct Client {
 fn paquet(n: u32, rx: bool, data: &mut [u8]) -> usize {
     let size = match cfg(11) {
         10 | 12 | 14 | 16 | 18 => 60,
+        #[cfg(ethernet_3b_incidents)]
+        23 => 1514,
         11 | 13 | 15 | 17 | 19 => 1514,
         _ if n % 2 == 0 => 60,
         _ => 1514,
@@ -348,6 +352,12 @@ impl Client {
             self.tx(1, 1, 0, None)?;
             require(self.recu(wire::TX, 1)?.payload[32] == 1)?;
             return self.veille();
+        }
+        #[cfg(ethernet_3b_incidents)]
+        match cfg(11) {
+            23 => return self.interrompre_segment(),
+            24 => return self.verifier_recu_incertain(),
+            _ => {}
         }
         if (12..=20).contains(&cfg(11)) {
             return self.performance();

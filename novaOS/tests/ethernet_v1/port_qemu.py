@@ -122,13 +122,13 @@ class Pair:
     def oracle(self, numero, retour):
         if self.cas in ("mixte100k", "historique100k"):
             return self.ref.trame_longue(numero,retour)
-        if self.cas not in PERF and self.cas not in ("mesure60","mesure1514"):
+        if self.cas not in PERF and self.cas not in ("mesure60","mesure1514","historique1514"):
             fn=self.ref.trame if numero<16 else self.ref.trame_longue
             return fn(numero,retour)
         size=60 if self.cas.endswith("60") else 1514
         frame=bytearray(self.ref.trame(numero%256,retour)[:15])
         frame.extend(motif(size, numero % 256, retour))
-        if numero>=16:
+        if numero>=16 or self.cas=="historique1514":
             frame[14:18]=numero.to_bytes(4,"big")
         return bytes(frame)
 
@@ -236,7 +236,7 @@ class Pair:
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("arch", choices=("arm", "q35"))
-    p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "filtre", "court", "temoin16", "port","plein","mesure60","mesure1514", "mixte100k","historique100k","ancien","choix-data", *PERF))
+    p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "filtre", "court", "temoin16", "port","plein","mesure60","mesure1514", "mixte100k","historique100k","historique1514","ancien","choix-data","segment-interrompu","recu-collecte", *PERF))
     for name in ("elf", "sortie", "temoin", "archive", "limine", "relais"):
         p.add_argument(name, type=lambda v: Path(v).resolve())
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
@@ -268,8 +268,17 @@ def main():
     refdir = a.archive / "cloture-20261126" / f"confirmation-{a.arch}-endurance"
     args = json.loads((refdir/"arguments.json").read_text())
     report = dict(audit=AUDIT, arch=a.arch, cas=a.cas, elf=digest(a.elf), modele=digest(Path(args[0])), succes=False)
+    report["sha256_lanceur"]=digest(Path(__file__))
     report["commit_sources"]=subprocess.check_output(["git","-C",NOVA,"rev-parse","HEAD"],text=True).strip()
     report["sources_suivies_modifiees"]=bool(subprocess.check_output(["git","-C",NOVA,"status","--porcelain","--untracked-files=no"]))
+    if a.cas == "historique1514":
+        index = a.temoin / "novaOS/docs/validation/virtio-net/finale-20261125/ARTEFACTS-LOCAUX-SHA256"
+        nom = f"{a.arch}-l2-12.elf"
+        if [line.split()[0] for line in index.read_text().splitlines() if line.split()[1]==nom] != [report["elf"]]:
+            raise ValueError("ELF de performance différent de l'archive historique")
+        report["commit_lanceur"] = report["commit_sources"]
+        report["commit_sources"] = None
+        report["provenance_elf"] = str(index.relative_to(a.temoin))+"#"+nom
     if a.cas == "historique100k":
         provenance = a.temoin / "novaOS/docs/validation/virtio-net/cloture-20261126/applicabilite-candidat-final.json"
         source = json.loads(provenance.read_text())
@@ -283,6 +292,7 @@ def main():
         report["construction"] = manifest
     try:
         with ExitStack() as stack:
+            stack.enter_context(qualification(Path(os.environ["NOVAOS_TMPDIR"]).resolve().parent, report))
             tmp = Path(stack.enter_context(tempfile.TemporaryDirectory(prefix="e3", dir=os.environ["NOVAOS_TMPDIR"])))
             if a.arch == "arm":
                 lanceurs(tmp)
@@ -323,7 +333,7 @@ def main():
                         args[i+1] = re.sub(r"file=[^,]+", f"file={disk}", dev)
                     elif "unit=1," in dev or ("unit=0," in dev and a.arch=="arm"):
                         args[i+1] = re.sub(r"file=([^,]+)", lambda m: "file="+str(tmp/Path(m[1]).name), dev)
-                elif a.cas not in ("temoin16","historique100k") and value == "-fw_cfg" and "opt/novaos/net-p9" in args[i+1]:
+                elif a.cas not in ("temoin16","historique100k","historique1514") and value == "-fw_cfg" and "opt/novaos/net-p9" in args[i+1]:
                     args[i+1]="name=opt/novaos/net-p9,string=ethernet-p9"
                 elif value == "-chardev" and "id=tch," in args[i+1]:
                     args[i+1] = f"socket,id=tch,path={tpm_socket}"
@@ -334,7 +344,7 @@ def main():
                         del args[j-1:j+1]
             dump(out/"arguments.json",args)
             peer = Pair(host,out,virtio_net_pair,a.cas)
-            with qualification(Path(os.environ["NOVAOS_TMPDIR"]).resolve().parent, report), (out/"qemu.trace").open("xb") as log:
+            with (out/"qemu.trace").open("xb") as log:
                 debut_cpu=resource.getrusage(resource.RUSAGE_CHILDREN)
                 debut_vm=time.monotonic()
                 with subprocess.Popen(args, cwd=tmp, pass_fds=(guest.fileno(),), stdin=subprocess.PIPE,
@@ -408,6 +418,10 @@ def main():
                     fin_acteurs.groups()[1:]==("0","0") and "retrait=Err(" in serial and
                     ("NET Q35 L2 quarantaine=" in serial if a.arch=="q35" else report["volume_relu_identique"] and "quarantaine disque_lisible=true" in serial))
             modes={"boite":1,"data":2,"deces":3,"incertain":4,"endurance":5,"revocation":6,"veille":7,"filtre":7,"court":8,"port":0,"plein":9,"mesure60":10,"mesure1514":11}
+            if a.cas=="historique1514":
+                report["succes"] = (peer.frames==500000 and not peer.error and
+                    "NET L2 total TX=500000 RX=500000" in serial and "NET L2 pilote fin=Exit(0) racines=0" in serial and
+                    ("NET Q35 etat=Ok(())" in serial if a.arch=="q35" else report["volume_relu_identique"] and "NET ARM bilan Ok(())" in serial))
             if a.cas in ("mixte100k","historique100k"):
                 # Même pair, même horloge et mêmes numéros de trames pour les deux ELF.
                 records = peer.groupes_pair[15:-16]
@@ -425,6 +439,15 @@ def main():
             modes.update(PERF)
             modes.update(mixte100k=20, ancien=21)
             modes["choix-data"]=22
+            modes.update({"segment-interrompu":23,"recu-collecte":24})
+            if a.cas in ("segment-interrompu","recu-collecte"):
+                segment=a.cas=="segment-interrompu"
+                acteurs=re.search(r"acteurs=\[Exit\((\d+)\), Exit\((\d+)\), Exit\((\d+)\)\]",serial)
+                preuve=(acteurs and acteurs[3]=="9" and "appels_pilote=1 " in serial) if segment else (
+                    acteurs and acteurs.groups()==("9","0","0"))
+                report["succes"]=bool(preuve and not peer.error and peer.frames==(0 if segment else 8)
+                    and "retrait=Err(" in serial and ("NET Q35 L2 quarantaine=" in serial if a.arch=="q35" else
+                    report["volume_relu_identique"] and "quarantaine disque_lisible=true" in serial))
             if a.cas in PERF:
                 tx = 0 if a.cas.startswith("rx") else PERF_FRAMES
                 rx = 16 if a.cas.startswith("tx") else PERF_FRAMES

@@ -473,9 +473,6 @@ impl Service {
         Ok(cfg(59) != 0 && !self.perdu)
     }
 }
-fn ethwire<T>(r: core::result::Result<T, wire::WireError>) -> Result<T> {
-    r.map_err(|_| BAD_ARGUMENT)
-}
 fn start() -> Result<()> {
     let mut boot = [0; 16];
     boot[..8].copy_from_slice(&cfg(7).to_le_bytes());

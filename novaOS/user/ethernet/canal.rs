@@ -5,6 +5,9 @@ use core::sync::atomic::{AtomicU64, Ordering};
 #[allow(dead_code)]
 #[path = "lot.rs"]
 mod lot;
+#[cfg(ethernet_3b_incidents)]
+#[allow(unused_imports)]
+pub use lot::PREMIER_SEGMENT;
 #[allow(unused_imports)]
 pub use lot::Trames;
 pub const CONTROL: u64 = 0x45544831;

@@ -63,26 +63,44 @@ def compiler(dest, modes, revision, detail):
 
 
 def rejouer(images, sortie, modes, repetitions):
-    wt = NOVA.parent.parent
-    outils = wt / "archives-ethernet-phase3/reproduction-8bd3f9c"
+    worktrees = NOVA.parent.parent
+    archive = worktrees / "archives-virtio-net"
+    outils = worktrees / "archives-ethernet-phase3/reproduction-8bd3f9c"
     for numero in range(1, repetitions + 1):
         for mode in modes:
-            historique = mode == "historique100k"
             variante = "veille" if mode == "filtre" else mode
-            src = images / variante
-            commit = None if historique else json.loads((src / "construction.json").read_text())["commit"]
+            source = images / variante
+            historique = mode in ("historique100k", "historique1514")
+            manifeste = None if historique else json.loads((source / "construction.json").read_text())
             for arch in ARCH:
+                if mode == "historique100k":
+                    elf = archive / "cloture-20261126" / f"applicabilite-{arch}-endurance.elf"
+                elif mode == "historique1514":
+                    elf = archive / "finale-20261125" / f"{arch}-l2-12.elf"
+                else:
+                    elf = source / (arch + ".elf")
+
                 out = sortie / mode / arch / str(numero)
                 if out.exists():
-                    if json.loads((out/"campagne.json").read_text())["succes"]:
+                    precedent = json.loads((out / "campagne.json").read_text())
+                    with elf.open("rb") as stream:
+                        empreinte = hashlib.file_digest(stream, "sha256").hexdigest()
+                    if (precedent["succes"] and precedent["cas"] == mode and precedent["arch"] == arch
+                            and precedent["elf"] == empreinte):
                         continue
-                    raise ValueError(f"Essai incomplet à conserver : {out}")
-                elf = wt / f"archives-virtio-net/cloture-20261126/applicabilite-{arch}-endurance.elf" if historique else src / (arch + ".elf")
-                subprocess.run([sys.executable, "-B", str(Path(__file__).with_name("port_qemu.py")),
-                                arch, mode, str(elf), str(out), str(wt / "pilote-virtio-net"),
-                                str(wt / "archives-virtio-net"), str(outils / "limine-enroll"),
-                                str(outils / "BOOTAA64.EFI"), *(["--source-elf", commit] if commit else []), "--delai", "220",
-                                *(["--limine-arm",str(outils / "limine-a72.EFI")] if arch == "arm" else [])], check=True)
+                    raise ValueError(f"Résultat antérieur incomplet ou d'une autre image : {out}")
+
+                commande = [
+                    sys.executable, "-B", Path(__file__).with_name("port_qemu.py"),
+                    arch, mode, elf, out, worktrees / "pilote-virtio-net", archive,
+                    outils / "limine-enroll", outils / "BOOTAA64.EFI",
+                    "--delai", "420" if mode == "historique1514" else "220",
+                ]
+                if manifeste is not None:
+                    commande.extend(["--source-elf", manifeste["commit"]])
+                if arch == "arm":
+                    commande.extend(["--limine-arm", outils / "limine-a72.EFI"])
+                subprocess.run(commande, check=True)
 
 
 if __name__ == "__main__":

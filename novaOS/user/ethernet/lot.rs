@@ -3,6 +3,8 @@
 use super::*;
 const PAGE: usize = 4096;
 const TAG_LOT: u64 = 0x45544840;
+#[cfg(ethernet_3b_incidents)]
+pub const PREMIER_SEGMENT: u64 = TAG_LOT;
 pub struct Trames {
     pub bytes: [u8; 8 * FRAME],
     ends: [usize; 9],

@@ -111,6 +111,11 @@ pub(super) fn executer(handle: u64, epoch: u64) -> Result<()> {
                         }
                     }
                 }
+                #[cfg(ethernet_3b_incidents)]
+                if cfg(16) == 24 && mask != 0 {
+                    // Les used ont été lus. Aucun masque de complétion ne revient au service.
+                    return Err(CANCELLED);
+                }
                 Ok(mask)
             }
             RECEPTION_LOT if lien.boite => {
