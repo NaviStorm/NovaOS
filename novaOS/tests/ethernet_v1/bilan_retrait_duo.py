@@ -61,7 +61,7 @@ def paquet(dest, archive, inventaire):
                 rel = Path(nom)
                 inclure = rel.name in FICHIERS or (rel.parts[0]=="hote" and rel.suffix==".log")
                 # Les traces des deux contrôles QTest permettent de relire la séquence matérielle sans VM.
-                if not inclure and not (rel.parts[0]=="instantanes" and rel.name=="qemu.trace"):
+                if not inclure and not (rel.parts[0]=="instantanes-finaux" and rel.name=="qemu.trace"):
                     continue
                 data = (archive/rel).read_bytes()
                 tarinfo = tarfile.TarInfo(nom)
@@ -117,7 +117,7 @@ def main():
             ligne.update(operations=obtenu["operations"],quarantaine_nic=26)
         bilan["duo"][cas]=ligne
     for cas in ("duo-differe","duo-absent"):
-        c=verifier_lancement(archive/"instantanes"/cas/"q35",inventaire,archive)
+        c=verifier_lancement(archive/"instantanes-finaux"/cas/"q35",inventaire,archive)
         bilan["instantanes"][cas]=dict(qtest=c["nvme_actif"],source=c["commit_sources"])
     for cas in ("cycles-256","court","rattrapage","recu-arm-differe","recu-arm-absent"):
         serie = "arm-"+FINAL[:7]
@@ -149,11 +149,11 @@ def main():
             bilan["transports"][f"{isa}/{cas}"]=verifier_cycle(path,FINAL,machines_transport)
     for cas in ("deces","duo-retrait","duo-differe"):
         boots=[]
-        for serie in ("duo-B","latence-D","latence-E","latence-F","latence-G"):
+        for serie in ("qualification-"+FINAL[:7], *(f"stockage-final-{n}" for n in range(2,6))):
             path = archive/serie/cas/"q35"
             c = verifier_lancement(path,inventaire,archive)
             boots.append(mesures_stockage(path))
-            duo.exiger(c["commit_sources"].startswith("6fcdf0d") and c["stockage"].get("p9",{})["etat"]=="nouveau", "Témoin de latence")
+            duo.exiger(c["commit_sources"]==FINAL and c["stockage"].get("p9",{})["etat"]=="nouveau", "Témoin de latence")
         bilan["latences"][cas]=dict(boots=boots,mediane_us={op:{k:median(m[op][k] for m in boots)
                 for k in ("p50","p95")} for op in boots[0]})
     machines={}
