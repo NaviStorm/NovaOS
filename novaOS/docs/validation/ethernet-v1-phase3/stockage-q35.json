@@ -1,0 +1,429 @@
+{
+  "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+  "superviseur": "56db7d5c0d04490cd284b91567cbbd4736534266",
+  "construction": {
+    "port": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+    "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+    "modules": {
+      "novaOS/kernel/src/hardware/acpi.rs": "fc8118a6dc830a562907e9cc45b9226a21d961be",
+      "novaOS/kernel/src/hardware/acpi/q35_dmar.rs": "9366bbec091110f410de3ca610a3c40f052ef59b",
+      "novaOS/kernel/src/hardware/pci_inventory/lab_resources.rs": "5979b21bf6d60105c8b4664a54fbc8df741ceab1",
+      "novaOS/kernel/src/hardware/lab_irq.rs": "555ddd1a9df9e4b1bef57c3310947747dfadefa6",
+      "novaOS/kernel/src/hardware/vtd_lab.rs": "e00495a3f2a82cfe3f545043e74adefea6fa2d55",
+      "novaOS/kernel/src/hardware/vtd_lab/format.rs": "70f368f3aa5716132e51fb45fc86e6c40de6aa8e",
+      "novaOS/kernel/src/hardware/vtd_lab/duo.rs": "79188c0136cf0f9e2fee4ae5609ee92a956cdfe2",
+      "novaOS/kernel/src/hardware/nvme_domain.rs": "32a7de5156ac1c24b6c2f9db5e244a3058a08e0c",
+      "novaOS/kernel/src/hardware/nvme_domain/traffic.rs": "25f138761556ba22fa6dc986e39bd907830f5867",
+      "novaOS/kernel/src/hardware/nvme_domain/traffic/requests.rs": "046711c64aea5e900acb01130c2a545ec3aec2b0",
+      "novaOS/kernel/src/sched/process/nvme.rs": "921e5a2996268a92021a463c4ca84a00d854b762",
+      "novaOS/kernel/src/sched/process/nvme/broker.rs": "29e913d1db3975e7ddb1629d16d55666470be175",
+      "novaOS/kernel/src/sched/process/nvme/profile.rs": "1ff1352f4757cdc2c7ed63248fc6114d7e929544",
+      "novaOS/kernel/src/hardware/block/net_event.rs": "e345796d6ea2620d4f4224041a1413f2e8cce3d1",
+      "novaOS/kernel/src/memory/mod.rs": "35baf9f924be3406f47e836743ad42bd1c679b69"
+    },
+    "elf": {
+      "port": "2522cc8ea89148ef664212f67a9124d529d5967025a3fe997fb5f300f2ccb734",
+      "deces": "5efa79881afb5ef4e73abcdcccd74b4e8bcd39d6c78788e8f9298794c6a4feb9"
+    },
+    "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)"
+  },
+  "essais": {
+    "port": {
+      "campagne": {
+        "succes": true,
+        "cas": "port",
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+        "elf": "2522cc8ea89148ef664212f67a9124d529d5967025a3fe997fb5f300f2ccb734",
+        "graine": "5739dd06a8dc6a495484f2346f417386b99e9c3442987bc6772d9438a7146dd5",
+        "lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "revision_banc": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "2522cc8ea89148ef664212f67a9124d529d5967025a3fe997fb5f300f2ccb734",
+          "BOOTX64.EFI": "db8a2f4130272a509d6c17a325025876eb3fdd1a05e36919b291e3c1aa775c98",
+          "limine.conf": "0c286e39724fffed706df93c9383c6b708a5d2bcc817aa3bfc98b2cc38058915",
+          "support.raw": "61155c55c074d9c1d94e38b36d413eedb44b451b6fb3c93d53f79aaeb557f1f5",
+          "variables.fd": "b3869fbd44b0c05ab4819d1b418f2cb03ac0c2ea5c29b28136c9f47a0251fc68",
+          "OVMF_CODE.fd": "8664d02804a125496c28b5a155c6f86517bc80d266462665240f305ff96ddc6c"
+        },
+        "debut_attente": "2026-11-26T14:01:19.913976+00:00",
+        "acquisition": "2026-11-26T14:01:19.921584+00:00",
+        "attente_s": 0.007619375013746321,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "pci_initial": {
+          "0": 0,
+          "48": 0,
+          "56": 0,
+          "248": 0,
+          "251": 0
+        },
+        "pci_final": {
+          "0": 0,
+          "48": 1026,
+          "56": 1026,
+          "248": 0,
+          "251": 0
+        },
+        "liberation": "2026-11-26T14:01:23.369742+00:00",
+        "trames_par_sens": 144,
+        "stockage": {
+          "p9": {
+            "etat": "nouveau",
+            "slot": 0,
+            "generation": 4,
+            "ancres": {
+              "0": {
+                "generation": 4,
+                "manifeste_bloc": 15,
+                "sha256": "7c3a4b6cbe2489ac6e26f7d90114c3a17a5d3ffd5cba26dcfab3bc2a95103a25"
+              },
+              "1": {
+                "generation": 3,
+                "manifeste_bloc": 12,
+                "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+              }
+            },
+            "fichier": "/sortie",
+            "octets": 4231,
+            "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+            "sha256_p9": "ca81269c7ba7bc3878c4da293c8d49a3504f6bc19f600463ca447233de32c4cc",
+            "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+          },
+          "ordre": {
+            "f1_cid": 32,
+            "f2_cid": 34,
+            "confirmation_apres_f2": true
+          },
+          "operations": 32,
+          "io_apres_retrait_nic": 20,
+          "racines": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              4
+            ],
+            [
+              9,
+              0
+            ]
+          ],
+          "bme": {
+            "48": [
+              412,
+              831
+            ],
+            "56": [
+              437,
+              755
+            ]
+          },
+          "recus_sid": [
+            48,
+            56,
+            56,
+            48
+          ],
+          "recouvrement": true
+        },
+        "p9_final": "7a9a636147a238c2dfe8b727d13f411e2304e0206f8d082cb20a08dfe19d08de"
+      },
+      "sha256": {
+        "arguments.json": "494c90880d37e4d406d264ebf6da7018435ca8eb76f693daa2483c3f34acf91a",
+        "boot.fat": "cfe81a8a72aec5d9235fa5dbb914b5429f96ae2f323499f0d5a8b206cde0c5c2",
+        "campagne.json": "286390435a0c624fbe07b12b84e150f6513b13ed57e4264aa000c2e940bb1a2e",
+        "efi.log": "5b4a2905e450c69b5312334276dd304b3e356871c46433505ec79ca696ddf937",
+        "fin-mtree.txt": "4e5ac928077215a28ebfb1baa2a0ced422436a2e512556c0df404cf20ed9e6b1",
+        "fin.json": "80bee6b7e579da6ae76cb7d53341b2d8fb4a4fedff2093cd9f525b28f06ff76f",
+        "namespace.raw": "7a9a636147a238c2dfe8b727d13f411e2304e0206f8d082cb20a08dfe19d08de",
+        "novaos.elf": "2522cc8ea89148ef664212f67a9124d529d5967025a3fe997fb5f300f2ccb734",
+        "pair.pcap.gz": "4703ab1c32286ba919ea795b9c4d422282ad25577766c8f3ef2ef882a68bca45",
+        "qemu.trace": "93aa49a123cf6863757a976e5df68c9ba5684e6fba97a3895eac57078b865f51",
+        "reset-mtree.txt": "8138f3f1aa4d61b5742198a33440c3479a2d94785511c8eccb05bb10ff95aa4c",
+        "reset.json": "59f7824f3504cf4d9524730ae710827710d94f8e1e2a8de447ad4c32a802150a",
+        "serie.log": "21570883d393dca2127151a733787cc5f0678b240481cd3b9fe5aaef29a01a49",
+        "sources.json": "354ac5d4504772f720915190cd3eb68373423c481fa875544b08089b8017143d"
+      },
+      "completions_nic_entre_premiere_et_derniere_io": 288,
+      "io_entre_premiere_et_derniere_completion_nic": 9
+    },
+    "deces": {
+      "campagne": {
+        "succes": true,
+        "cas": "deces",
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+        "elf": "5efa79881afb5ef4e73abcdcccd74b4e8bcd39d6c78788e8f9298794c6a4feb9",
+        "graine": "5739dd06a8dc6a495484f2346f417386b99e9c3442987bc6772d9438a7146dd5",
+        "lecteur": "6f05f0de19197f45be8626a703cb7328655aba701fb245df9edf6bf9a8e8dc5f",
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "revision_banc": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "5efa79881afb5ef4e73abcdcccd74b4e8bcd39d6c78788e8f9298794c6a4feb9",
+          "BOOTX64.EFI": "e801f2f1f14dccf0339952588e9d37318cbb5a43d744e33705ccd245ee53ebae",
+          "limine.conf": "05878cb57f81a93288d1224c2e68165f9c8f097196d1985633c93ea02a87fb03",
+          "support.raw": "c9e2d2fc0933d799d5e38d87b27c84202824f8691f7f5c3a644acae130f7deaa",
+          "variables.fd": "ecc97d3173b93eace74f7da4c006b72f8af0ff023e20dcd4172f303c3655da99",
+          "OVMF_CODE.fd": "8664d02804a125496c28b5a155c6f86517bc80d266462665240f305ff96ddc6c"
+        },
+        "debut_attente": "2026-11-26T14:01:24.730513+00:00",
+        "acquisition": "2026-11-26T14:01:24.730880+00:00",
+        "attente_s": 0.00037541601341217756,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "pci_initial": {
+          "0": 0,
+          "48": 0,
+          "56": 0,
+          "248": 0,
+          "251": 0
+        },
+        "pci_final": {
+          "0": 0,
+          "48": 1026,
+          "56": 1026,
+          "248": 0,
+          "251": 0
+        },
+        "tables_finales": {
+          "controleur": [
+            1118208,
+            1122304,
+            1126400,
+            1130496,
+            1134592,
+            1138688,
+            1142784,
+            1146880
+          ],
+          "disque_initial": [
+            3104768,
+            3108864,
+            3112960,
+            3117056,
+            3121152,
+            3125248
+          ],
+          "nic_initial": [
+            4329472,
+            4333568,
+            4337664,
+            4341760,
+            4345856,
+            4349952,
+            4354048,
+            4358144,
+            4362240,
+            4366336,
+            4370432,
+            4374528,
+            4378624,
+            4382720,
+            4386816,
+            4390912,
+            4395008,
+            4399104,
+            4403200,
+            4407296,
+            4411392,
+            4415488,
+            4419584,
+            4423680,
+            4427776,
+            4431872
+          ],
+          "retenus": [
+            4329472,
+            4333568,
+            4337664,
+            4341760,
+            4345856,
+            4349952,
+            4354048,
+            4358144,
+            4362240,
+            4366336,
+            4370432,
+            4374528,
+            4378624,
+            4382720,
+            4386816,
+            4390912,
+            4395008,
+            4399104,
+            4403200,
+            4407296,
+            4411392,
+            4415488,
+            4419584,
+            4423680,
+            4427776,
+            4431872
+          ],
+          "sid": 56,
+          "did": 3,
+          "permissions": [
+            1,
+            1,
+            2,
+            1,
+            1,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            2,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1
+          ],
+          "cookie": 4,
+          "iqh": 192,
+          "iqt": 192
+        },
+        "liberation": "2026-11-26T14:01:28.169124+00:00",
+        "trames_par_sens": 4,
+        "stockage": {
+          "p9": {
+            "etat": "nouveau",
+            "slot": 0,
+            "generation": 4,
+            "ancres": {
+              "0": {
+                "generation": 4,
+                "manifeste_bloc": 15,
+                "sha256": "f5021b1590b2a493f51f6b78978302d4cc284db317e5c45de2dc12b11c03b00a"
+              },
+              "1": {
+                "generation": 3,
+                "manifeste_bloc": 12,
+                "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+              }
+            },
+            "fichier": "/sortie",
+            "octets": 4231,
+            "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+            "sha256_p9": "2d19f51399c73724c38fe6bdf3acc0885c05ce8cd5bae9888d3d15d2c72b3877",
+            "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+          },
+          "ordre": {
+            "f1_cid": 32,
+            "f2_cid": 34,
+            "confirmation_apres_f2": true
+          },
+          "operations": 32,
+          "io_apres_retrait_nic": 31,
+          "racines": [
+            [
+              3,
+              3
+            ],
+            [
+              4,
+              4
+            ],
+            [
+              5,
+              4
+            ],
+            [
+              6,
+              2
+            ],
+            [
+              7,
+              1
+            ],
+            [
+              8,
+              4
+            ],
+            [
+              9,
+              0
+            ]
+          ],
+          "bme": {
+            "48": [
+              412,
+              544
+            ],
+            "56": [
+              431,
+              442
+            ]
+          },
+          "recus_sid": [
+            48,
+            56,
+            48
+          ],
+          "recouvrement": true
+        },
+        "p9_final": "f1cffee8fedff05b8bc221dd1cdb4b8fa2b0f57d7a7dd29b989d8c7ef86cd55d"
+      },
+      "sha256": {
+        "arguments.json": "e00502c3757a7a8c4887cc8021dafc457c159bf19ea90734acabff610ae1b398",
+        "boot.fat": "925a3e7de0dc1862b0d0719126f67303fcac18710a108c4d048f9373c69c3639",
+        "campagne.json": "809a3c198d9196399cddd314cce5154d5d601eb5e600b2f82341490c5dff8161",
+        "efi.log": "5b4a2905e450c69b5312334276dd304b3e356871c46433505ec79ca696ddf937",
+        "fin-mtree.txt": "f7c4d916ca985c0b0aa7df4c48a9eb8201ea2dfc156b09c569feba4a4542ef8a",
+        "fin.json": "80bee6b7e579da6ae76cb7d53341b2d8fb4a4fedff2093cd9f525b28f06ff76f",
+        "namespace.raw": "f1cffee8fedff05b8bc221dd1cdb4b8fa2b0f57d7a7dd29b989d8c7ef86cd55d",
+        "novaos.elf": "5efa79881afb5ef4e73abcdcccd74b4e8bcd39d6c78788e8f9298794c6a4feb9",
+        "pair.pcap.gz": "1b00549dbbc8a4a8fe17c77cf881331f76b12236ca381fd5775084efc96d573a",
+        "qemu.trace": "f7a5d717d178958232aceb34901928617aca04bbf3ed6622c536ce92b4a451b4",
+        "reset-mtree.txt": "f4c5c1b81c12ca2879bd48d1c588b052517ea169e6d7470c196058a26b93d7c1",
+        "reset.json": "59f7824f3504cf4d9524730ae710827710d94f8e1e2a8de447ad4c32a802150a",
+        "serie.log": "422d696971414dab93312586cdc9c56625d2ba293d89cbc2bf1021398cf88f86",
+        "sources.json": "354ac5d4504772f720915190cd3eb68373423c481fa875544b08089b8017143d"
+      },
+      "completions_nic_entre_premiere_et_derniere_io": 8,
+      "io_entre_premiere_et_derniere_completion_nic": 0
+    }
+  },
+  "preuves_sha256": "bafe84c8befde3515220cc8cd58a43ce0845b048b1df8e64b18296cdc281d16c"
+}

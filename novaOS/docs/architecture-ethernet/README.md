@@ -6,6 +6,8 @@ La phase 2 dispose de son [contrat binaire exécutable](contrat-v1-phase2.md), d
 
 La phase 2B recommande la boîte IPC pour le premier port expérimental et précise les géométries qui bénéficient des fenêtres multipages. [Décision et conditions d’emploi](phase2b.md) · [Mesures des acteurs autonomes](mesures-phase2b.md)
 
+Le premier port Ethernet v1 échange des trames avec le pair VirtIO-net sous QEMU AArch64 et x86_64. Le rapport couvre les 30 démarrages ciblés, le retrait DMA et la continuité de NovaFS. [Qualification de phase 3](phase3.md)
+
 ## Pièces soumises à décision
 
 | Livrable du mandat | Pièce et décision préparée |

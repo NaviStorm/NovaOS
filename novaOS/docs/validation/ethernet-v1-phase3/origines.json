@@ -1,0 +1,259 @@
+{
+  "integration": "3eebef82f1f2e0b482f2bdb57e2d4d98045c8929",
+  "temoins": [
+    "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+    "e81d8e9f59b436ea3e47b694f0f014814d214136",
+    "56db7d5c0d04490cd284b91567cbbd4736534266"
+  ],
+  "fichiers": {
+    "novaOS/kernel/Cargo.toml": {
+      "blob": "940e164a80e6e5d3f0cdf7540d07dd58e966d2d9",
+      "revisions_au_blob_identique": [],
+      "selection": "adaptation ou reprise partielle"
+    },
+    "novaOS/kernel/build.rs": {
+      "blob": "6498b4bc9dc46dbf5699f7be7862eaa9150e5a60",
+      "revisions_au_blob_identique": [],
+      "selection": "adaptation ou reprise partielle"
+    },
+    "novaOS/kernel/src/arch/aarch64/gicv3.rs": {
+      "blob": "f490716d1b68980cca0987a0725781da106cac9f",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/arch/aarch64/timer.rs": {
+      "blob": "f121596e98807b6fb535fe1b036ad5f8635baab0",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/acpi.rs": {
+      "blob": "49ce990f73556352484ef7760bb62784d776ed9b",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/acpi/q35_dmar.rs": {
+      "blob": "17f0996c22b2fe995c9ae3056c8dc60ba7087a58",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/block/io.rs": {
+      "blob": "a7bebc878c25a84788b890bb07f0e7e20891d5ec",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/block/lease.rs": {
+      "blob": "e395d989171a2ca260b91565d13677788c298266",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/block/mod.rs": {
+      "blob": "8b52c658d6f7dcb880e27821eabb7fa6468a2503",
+      "revisions_au_blob_identique": [
+        "e81d8e9f59b436ea3e47b694f0f014814d214136"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/block/net_arm.rs": {
+      "blob": "451609f02fecab4267afc74459d942ed9f9dd08a",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/block/net_event.rs": {
+      "blob": "3731ceb5eca57e344c8c9292e86926572825f46c",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/block/net_files.rs": {
+      "blob": "0377e03dad3b718bdfc5f914f21b4dfb06d844c3",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/block/net_trames.rs": {
+      "blob": "67a4b488542f3a135ade604a3575f635927bc682",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/block/pci.rs": {
+      "blob": "dce6a70f5a5f9c1d0e89fc62bc36c2294e96fae1",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/block/qualification.rs": {
+      "blob": "3e8e70a6fa0672a1654d77cc5a3c40fea71506b8",
+      "revisions_au_blob_identique": [
+        "e81d8e9f59b436ea3e47b694f0f014814d214136"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/block/viommu_partage.rs": {
+      "blob": "39098bfa6dd4cc52bbf982e9ecd6e3f4cae37752",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/lab_irq.rs": {
+      "blob": "f0a524cf3bf33cccd23f51f6bdc23b3d20ef6bcb",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/lab_irq/x86.rs": {
+      "blob": "4a9a05e970371e4c83ad098cf999ffb6a358b268",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/mod.rs": {
+      "blob": "89e4073852941ded1f983b9d05b4963e5dbfd3de",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/hardware/net_q35.rs": {
+      "blob": "1a0704a6809f801f050c5ab3d62aa41fab38e0f8",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/main.rs": {
+      "blob": "caac7316c398ca1c89452e3296af60a0fd739e4b",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/memory/mod.rs": {
+      "blob": "21cd8a315e6f35a2e20ea19e075160b6a5296464",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/sched/process.rs": {
+      "blob": "f227891a85ef99303eeb23f40cf6c693255b7db1",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/sched/process/ipc/lab_command.rs": {
+      "blob": "4bbaa7d7dc2f21a686143702ab86573e7f507f01",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/sched/process/ipc/mod.rs": {
+      "blob": "5050e7139862531746ca1e1bf2ed1665e1ba751e",
+      "revisions_au_blob_identique": [],
+      "selection": "adaptation ou reprise partielle"
+    },
+    "novaOS/kernel/src/sched/process/net_preparation.rs": {
+      "blob": "f90643f0b64d25101b3b967277969b0e9bc1c4bd",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/kernel/src/sched/process/storage.rs": {
+      "blob": "f76692647ea1eb3cdadce6d79be15b88d1b68df0",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/user/net_preparation.rs": {
+      "blob": "c97f981057b09e1e775465c6ab899a0bb21dcada",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/user/virtio_net/ethernet_lab.rs": {
+      "blob": "2107fd10aee476346a36cc4f5b3a2152e48c1a1d",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/user/virtio_net/init.rs": {
+      "blob": "eb48bf184ac9a16b1aa094a7ad44dbbafed0a820",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    },
+    "novaOS/user/virtio_net/mod.rs": {
+      "blob": "1751262cee9a2ef2e60e7e934c256d1e01762de7",
+      "revisions_au_blob_identique": [
+        "776a752d5ba4b2ea1c3d36c6e0a0e0aa70200072",
+        "e81d8e9f59b436ea3e47b694f0f014814d214136",
+        "56db7d5c0d04490cd284b91567cbbd4736534266"
+      ],
+      "selection": "identique"
+    }
+  }
+}

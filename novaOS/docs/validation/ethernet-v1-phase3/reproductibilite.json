@@ -1,0 +1,185 @@
+{
+  "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)",
+  "cas": "port",
+  "machines": {
+    "arm": {
+      "reference": {
+        "elf": "03df0f9bf2ccb2e5fa26821b6366ff4c3c4a4bd58ea5f0712f7af0f94323ce96",
+        "entree": "0xffffffff80045460",
+        "segments": [
+          {
+            "va": "0xffffffff80000000",
+            "pa": "0xffffffff80000000",
+            "permissions": 6,
+            "octets_fichier": 680,
+            "octets_memoire": 680,
+            "alignement": 4096,
+            "sha256": "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+          },
+          {
+            "va": "0xffffffff80001000",
+            "pa": "0xffffffff80001000",
+            "permissions": 5,
+            "octets_fichier": 467592,
+            "octets_memoire": 467592,
+            "alignement": 4096,
+            "sha256": "2c61df742dd2e046cba37e1df9bbc3b1cc6ef3b01eeb2c28685e2d47aef941d2"
+          },
+          {
+            "va": "0xffffffff80074000",
+            "pa": "0xffffffff80074000",
+            "permissions": 4,
+            "octets_fichier": 5005291,
+            "octets_memoire": 5005291,
+            "alignement": 4096,
+            "sha256": "f9dda35c326211b67acefdc3a75530c784ca2425c4e60872a45d2c5b35260627"
+          },
+          {
+            "va": "0xffffffff8053a000",
+            "pa": "0xffffffff8053a000",
+            "permissions": 6,
+            "octets_fichier": 30624,
+            "octets_memoire": 181440,
+            "alignement": 4096,
+            "sha256": "955abbd48d6697bd12725c671755996ba086d476a126166c29d93c636090d5f7"
+          }
+        ]
+      },
+      "reconstruction": {
+        "elf": "246f64505af38382f836a41c53611b2f78e81af8e8b472fcf6cc5312aa8cff20",
+        "entree": "0xffffffff80045460",
+        "segments": [
+          {
+            "va": "0xffffffff80000000",
+            "pa": "0xffffffff80000000",
+            "permissions": 6,
+            "octets_fichier": 680,
+            "octets_memoire": 680,
+            "alignement": 4096,
+            "sha256": "a4338d1cb102e24a19a119cb61d94abc5abf0ce6ef0a81b9ccc1972a843db0a2"
+          },
+          {
+            "va": "0xffffffff80001000",
+            "pa": "0xffffffff80001000",
+            "permissions": 5,
+            "octets_fichier": 467592,
+            "octets_memoire": 467592,
+            "alignement": 4096,
+            "sha256": "2c61df742dd2e046cba37e1df9bbc3b1cc6ef3b01eeb2c28685e2d47aef941d2"
+          },
+          {
+            "va": "0xffffffff80074000",
+            "pa": "0xffffffff80074000",
+            "permissions": 4,
+            "octets_fichier": 5005291,
+            "octets_memoire": 5005291,
+            "alignement": 4096,
+            "sha256": "f9dda35c326211b67acefdc3a75530c784ca2425c4e60872a45d2c5b35260627"
+          },
+          {
+            "va": "0xffffffff8053a000",
+            "pa": "0xffffffff8053a000",
+            "permissions": 6,
+            "octets_fichier": 30624,
+            "octets_memoire": 181440,
+            "alignement": 4096,
+            "sha256": "955abbd48d6697bd12725c671755996ba086d476a126166c29d93c636090d5f7"
+          }
+        ]
+      },
+      "segments_identiques": true,
+      "entree_identique": true,
+      "elf_identiques": false
+    },
+    "q35": {
+      "reference": {
+        "elf": "f156df4d41b9a0c114aaaeb27da025a70beaa7f91a4c496a750f75c58d41f55f",
+        "entree": "0xffffffff800e5300",
+        "segments": [
+          {
+            "va": "0xffffffff80000000",
+            "pa": "0xffffffff80000000",
+            "permissions": 6,
+            "octets_fichier": 488,
+            "octets_memoire": 488,
+            "alignement": 4096,
+            "sha256": "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          },
+          {
+            "va": "0xffffffff80001000",
+            "pa": "0xffffffff80001000",
+            "permissions": 5,
+            "octets_fichier": 1010452,
+            "octets_memoire": 1010452,
+            "alignement": 4096,
+            "sha256": "6ffeee7b1c5b30fd92d3250ccd7d795fe954280a4a0b7b3d9d9833883de16840"
+          },
+          {
+            "va": "0xffffffff800f8000",
+            "pa": "0xffffffff800f8000",
+            "permissions": 4,
+            "octets_fichier": 5461483,
+            "octets_memoire": 5461483,
+            "alignement": 4096,
+            "sha256": "18e2f98989f94ecdc9dbe4b9d80657f5f2582828ccbe544dd04631fe70c742e4"
+          },
+          {
+            "va": "0xffffffff8062e000",
+            "pa": "0xffffffff8062e000",
+            "permissions": 6,
+            "octets_fichier": 34680,
+            "octets_memoire": 202488,
+            "alignement": 4096,
+            "sha256": "afc91cf38b75a17f4b9b8f68ddc07a3ce9f542383008a345c5f08116461976ef"
+          }
+        ]
+      },
+      "reconstruction": {
+        "elf": "1b8d573f8b8e43a53bcefab87b190fa61ae47c09180a60a819e6ebe9d3fb171e",
+        "entree": "0xffffffff800e5300",
+        "segments": [
+          {
+            "va": "0xffffffff80000000",
+            "pa": "0xffffffff80000000",
+            "permissions": 6,
+            "octets_fichier": 488,
+            "octets_memoire": 488,
+            "alignement": 4096,
+            "sha256": "b4d1765649d6b95954e0b4b4e2d00e61f13c49b4e2585bbb03070e51c752d064"
+          },
+          {
+            "va": "0xffffffff80001000",
+            "pa": "0xffffffff80001000",
+            "permissions": 5,
+            "octets_fichier": 1010452,
+            "octets_memoire": 1010452,
+            "alignement": 4096,
+            "sha256": "6ffeee7b1c5b30fd92d3250ccd7d795fe954280a4a0b7b3d9d9833883de16840"
+          },
+          {
+            "va": "0xffffffff800f8000",
+            "pa": "0xffffffff800f8000",
+            "permissions": 4,
+            "octets_fichier": 5461483,
+            "octets_memoire": 5461483,
+            "alignement": 4096,
+            "sha256": "18e2f98989f94ecdc9dbe4b9d80657f5f2582828ccbe544dd04631fe70c742e4"
+          },
+          {
+            "va": "0xffffffff8062e000",
+            "pa": "0xffffffff8062e000",
+            "permissions": 6,
+            "octets_fichier": 34680,
+            "octets_memoire": 202488,
+            "alignement": 4096,
+            "sha256": "afc91cf38b75a17f4b9b8f68ddc07a3ce9f542383008a345c5f08116461976ef"
+          }
+        ]
+      },
+      "segments_identiques": true,
+      "entree_identique": true,
+      "elf_identiques": false
+    }
+  }
+}

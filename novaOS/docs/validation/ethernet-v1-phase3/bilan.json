@@ -1,0 +1,3050 @@
+{
+  "serie": "lot-0d2a629",
+  "essais": {
+    "port/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "port",
+        "elf": "03df0f9bf2ccb2e5fa26821b6366ff4c3c4a4bd58ea5f0712f7af0f94323ce96",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:03:29.254511+00:00",
+        "acquisition": "2026-11-26T14:03:29.255040+00:00",
+        "attente_s": 0.0005424169357866049,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 0.951373,
+          "systeme_s": 0.12636699999999998,
+          "reel_s": 5.959261416923255
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 144,
+        "octets_par_sens": 113328,
+        "intervalle_pair_ns": 208448542,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:03:35.264818+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 3771,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "bme_nic_confine": 3,
+          "traductions_3": 2079
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true,
+        "publications": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "capture": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=0 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=0 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=502 ipc_client=1336 lots=32 mesure_ticks=13421627 serie_ticks=13450812 quantiles_ticks=[405813, 774375, 889625, 889625] hz=62500000 changements=8498 reveils=3974 cpu_ticks=44 idle_ticks=1 pages_ouverture=298 pages_publication=299",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[517, 519, 151, 144, 3, 2] service=[1378, 1378, 288, 295, 4, 2] pilote=[1363, 861, 144, 144, 2, 1] mediation_ticks=323821 echantillons_cpu_usr_sys_idle=[3, 40, 1]"
+    },
+    "port/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "port",
+        "elf": "f156df4d41b9a0c114aaaeb27da025a70beaa7f91a4c496a750f75c58d41f55f",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "f156df4d41b9a0c114aaaeb27da025a70beaa7f91a4c496a750f75c58d41f55f",
+          "BOOTX64.EFI": "83e5cc2a8b6a1be4270ee3698b29d029055fb5a35827f9aef668026c79693511",
+          "limine.conf": "801224252c7a1e2aeed594e8832d62a1b13a80ad3323f008fcc4f26fe2dedacb",
+          "support.raw": "c4bf612c15d41c3ebf39c3dc1b591256c01fa3ca5b7ae9b5500cbcce3837245f",
+          "variables.fd": "eebb8b17b36a83f7065208457e1744f05c103b6b3dfbacf30c9c17a2468fa6fb",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:03:25.817970+00:00",
+        "acquisition": "2026-11-26T14:03:25.818336+00:00",
+        "attente_s": 0.00037233298644423485,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 3,
+        "cpu_qemu": {
+          "utilisateur_s": 2.443192,
+          "systeme_s": 0.179421,
+          "reel_s": 2.6523345420137048
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 144,
+        "octets_par_sens": 113328,
+        "intervalle_pair_ns": 125925125,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:03:28.514244+00:00",
+        "dma": {
+          "pages_touchees": 22,
+          "echantillons": 2079,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true,
+        "publications": [
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "capture": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=0 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=0 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=502 ipc_client=1333 lots=32 mesure_ticks=130008000 serie_ticks=130484000 quantiles_ticks=[3999000, 6299000, 6802000, 6802000] hz=997812500 changements=8505 reveils=3985 cpu_ticks=103 idle_ticks=2 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[517, 518, 151, 144, 1, 2] service=[1378, 1378, 288, 295, 4, 2] pilote=[1363, 860, 144, 144, 0, 0] mediation_ticks=6039000 echantillons_cpu_usr_sys_idle=[5, 30, 2]"
+    },
+    "boite/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "boite",
+        "elf": "2d4eb7fd20a5452ab3dec92f5e3165b87835496f5dc07c139b2b3aadff5a006a",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:03:39.714269+00:00",
+        "acquisition": "2026-11-26T14:03:39.714689+00:00",
+        "attente_s": 0.000429708044975996,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 0.946609,
+          "systeme_s": 0.12499499999999997,
+          "reel_s": 5.955375541932881
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 144,
+        "octets_par_sens": 113328,
+        "intervalle_pair_ns": 212627792,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:03:45.716682+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 3771,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "bme_nic_confine": 3,
+          "traductions_3": 2084
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true,
+        "neuvieme_refuse": true,
+        "publications": [
+          6,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "capture": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=1 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=1 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=504 ipc_client=1338 lots=32 mesure_ticks=13657814 serie_ticks=13695438 quantiles_ticks=[408688, 797562, 891688, 891688] hz=62500000 changements=8513 reveils=3977 cpu_ticks=44 idle_ticks=1 pages_ouverture=299 pages_publication=299",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[518, 520, 153, 144, 1, 2] service=[1379, 1382, 288, 297, 0, 2] pilote=[1366, 861, 144, 144, 0, 0] mediation_ticks=334612 echantillons_cpu_usr_sys_idle=[1, 42, 1]"
+    },
+    "boite/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "boite",
+        "elf": "60de3efab6deede3ded394e47b36be92752d074f687db08c47880c42d0063d12",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "60de3efab6deede3ded394e47b36be92752d074f687db08c47880c42d0063d12",
+          "BOOTX64.EFI": "549db239002e25c722de20d9e47d08d7c18017170782913b84f9865cdb305f8a",
+          "limine.conf": "e14c6f0421c524668435d8de44e988b58d8a136a679875384fb6923518802af2",
+          "support.raw": "e828729c8b4079caf116e922a1299efef430b31c84e1def414454d1f80c66124",
+          "variables.fd": "a0b078516bd262fcb3000116a3c5d388dc91a45566d6f8102d3c69594b7b1d46",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:03:36.359181+00:00",
+        "acquisition": "2026-11-26T14:03:36.359550+00:00",
+        "attente_s": 0.0003748330054804683,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 3,
+        "cpu_qemu": {
+          "utilisateur_s": 2.4363590000000004,
+          "systeme_s": 0.17542899999999997,
+          "reel_s": 2.6262453329982236
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 144,
+        "octets_par_sens": 113328,
+        "intervalle_pair_ns": 131299375,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:03:39.028824+00:00",
+        "dma": {
+          "pages_touchees": 22,
+          "echantillons": 2084,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true,
+        "neuvieme_refuse": true,
+        "publications": [
+          6,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "capture": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=1 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=1 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=504 ipc_client=1339 lots=32 mesure_ticks=135368000 serie_ticks=135844000 quantiles_ticks=[4080000, 6502000, 7068000, 7068000] hz=999007812 changements=8533 reveils=3998 cpu_ticks=103 idle_ticks=2 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[519, 520, 153, 144, 1, 2] service=[1380, 1382, 288, 297, 4, 2] pilote=[1366, 861, 144, 144, 0, 0] mediation_ticks=6011000 echantillons_cpu_usr_sys_idle=[5, 31, 2]"
+    },
+    "data/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "data",
+        "elf": "c205b553c6b269f067dfb33a948466feb49d63e4e309047128411172d053ddcc",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:03:50.238421+00:00",
+        "acquisition": "2026-11-26T14:03:50.238756+00:00",
+        "attente_s": 0.00034324999433010817,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 1.179009,
+          "systeme_s": 0.129247,
+          "reel_s": 6.194233750109561
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 144,
+        "octets_par_sens": 113328,
+        "intervalle_pair_ns": 478146375,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:03:56.476905+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 3776,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "bme_nic_confine": 3,
+          "traductions_3": 2084
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true,
+        "publications": [
+          6,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "capture": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=2 racines=[0, 4, 1] boites_globales=0 endpoints_globaux=5 ipc_pages=7",
+      "bilan": "ETH3 bilan mode=2 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=503 ipc_client=2968 lots=32 mesure_ticks=30747564 serie_ticks=30779625 quantiles_ticks=[870812, 1556375, 1564375, 1564375] hz=62500000 changements=24739 reveils=12146 cpu_ticks=91 idle_ticks=1 pages_ouverture=296 pages_publication=297",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[1515, 1448, 0, 0, 3, 2] service=[3243, 3314, 0, 0, 4, 2] pilote=[2301, 1798, 0, 0, 2, 1] mediation_ticks=328548 echantillons_cpu_usr_sys_idle=[6, 84, 1]"
+    },
+    "data/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "data",
+        "elf": "bbbd58f734c5f5c831c4287879d3d4c74c0edbda509eea0ecb7a611a1f797cb6",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "bbbd58f734c5f5c831c4287879d3d4c74c0edbda509eea0ecb7a611a1f797cb6",
+          "BOOTX64.EFI": "b84675282ed15bfc61c1100f0102a3f8a13a922bdfdafb9cd4a32421b9000cc7",
+          "limine.conf": "78625348f6b9ec495205e5ef019dfa70aeced761893dc7b7cec83001ff58e7bc",
+          "support.raw": "c5ad1519da446a0068faac488a5f1aeb9c516e5669cd9bde83624e2e88667674",
+          "variables.fd": "b1653bbb7e333247eda56845bdf5f04559549c3ba29bd3fe0433d7917301e20a",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:03:46.769989+00:00",
+        "acquisition": "2026-11-26T14:03:46.770357+00:00",
+        "attente_s": 0.0003756668884307146,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 3,
+        "cpu_qemu": {
+          "utilisateur_s": 2.615761,
+          "systeme_s": 0.16791899999999998,
+          "reel_s": 2.836797208059579
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 144,
+        "octets_par_sens": 113328,
+        "intervalle_pair_ns": 307494875,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:03:49.650469+00:00",
+        "dma": {
+          "pages_touchees": 22,
+          "echantillons": 2084,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true,
+        "publications": [
+          6,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "capture": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=2 racines=[0, 4, 1] boites_globales=0 endpoints_globaux=5 ipc_pages=7",
+      "bilan": "ETH3 bilan mode=2 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=503 ipc_client=2965 lots=32 mesure_ticks=316793000 serie_ticks=317291000 quantiles_ticks=[8909000, 16440000, 16637000, 16637000] hz=1000343750 changements=24787 reveils=12175 cpu_ticks=149 idle_ticks=2 pages_ouverture=296 pages_publication=296",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[1515, 1447, 0, 0, 1, 2] service=[3243, 3314, 0, 0, 4, 2] pilote=[2301, 1797, 0, 0, 0, 0] mediation_ticks=6329000 echantillons_cpu_usr_sys_idle=[9, 73, 2]"
+    },
+    "plein/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "plein",
+        "elf": "166c05c088ba65a4b49b815f8d9da13d468e9dba68b0175cc28ddd07a65709ed",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:05:01.490722+00:00",
+        "acquisition": "2026-11-26T14:05:01.491113+00:00",
+        "attente_s": 0.00040054204873740673,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 1.142161,
+          "systeme_s": 0.12609700000000001,
+          "reel_s": 6.146629292052239
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 144,
+        "octets_par_sens": 113328,
+        "intervalle_pair_ns": 456698042,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:05:07.680881+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 3771,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "bme_nic_confine": 3,
+          "traductions_3": 2084
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true,
+        "publications": [
+          6,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "capture": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=9 racines=[0, 4, 1] boites_globales=8 endpoints_globaux=13 ipc_pages=23",
+      "bilan": "ETH3 bilan mode=9 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=503 ipc_client=2947 lots=32 mesure_ticks=29374625 serie_ticks=29406750 quantiles_ticks=[822687, 1524875, 1663000, 1663000] hz=62500000 changements=24680 reveils=12117 cpu_ticks=88 idle_ticks=1 pages_ouverture=297 pages_publication=297",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[1497, 1447, 0, 0, 1, 2] service=[3243, 3296, 0, 0, 0, 2] pilote=[2301, 1797, 0, 0, 0, 0] mediation_ticks=331428 echantillons_cpu_usr_sys_idle=[7, 80, 1]"
+    },
+    "plein/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "plein",
+        "elf": "7233b41b9c3112cae231cc59ad0435fc75691440a552a6181f1a11d042cc5a50",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "7233b41b9c3112cae231cc59ad0435fc75691440a552a6181f1a11d042cc5a50",
+          "BOOTX64.EFI": "2fe220df2e477263a67aa5562e0b6418bfe77976aa1d1bf7826314d620a9c6ac",
+          "limine.conf": "7b11b4fe52435cbd1612bb8de2d120b5f5b8b93bc8c3f138222c17f995dce2e9",
+          "support.raw": "4fcda66444b962e6ec090c3fcac5268ab36b1bf4bea4cb0ff747422956796244",
+          "variables.fd": "b0d63634d698743e36be6ed854bd0840379c8ecc91bd60ddc815d4ef21decea2",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:04:58.002697+00:00",
+        "acquisition": "2026-11-26T14:04:58.003023+00:00",
+        "attente_s": 0.00033208297099918127,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 3,
+        "cpu_qemu": {
+          "utilisateur_s": 2.610585,
+          "systeme_s": 0.178589,
+          "reel_s": 2.8643257500370964
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 144,
+        "octets_par_sens": 113328,
+        "intervalle_pair_ns": 303022084,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:05:00.910692+00:00",
+        "dma": {
+          "pages_touchees": 22,
+          "echantillons": 2084,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true,
+        "publications": [
+          6,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          4
+        ]
+      },
+      "capture": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=9 racines=[0, 4, 1] boites_globales=8 endpoints_globaux=13 ipc_pages=23",
+      "bilan": "ETH3 bilan mode=9 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=503 ipc_client=2947 lots=32 mesure_ticks=312019000 serie_ticks=312531000 quantiles_ticks=[8848000, 16732000, 16915000, 16915000] hz=997308593 changements=24690 reveils=12127 cpu_ticks=148 idle_ticks=2 pages_ouverture=296 pages_publication=296",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[1497, 1447, 0, 0, 1, 2] service=[3243, 3296, 0, 0, 0, 2] pilote=[2301, 1798, 0, 0, 2, 0] mediation_ticks=5889000 echantillons_cpu_usr_sys_idle=[10, 71, 2]"
+    },
+    "veille/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "veille",
+        "elf": "5f4b0fbcc4afea4a472da35f05597eff4b9a4c0b7e50f2246cfa3a47b7cd8fee",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:04:30.877965+00:00",
+        "acquisition": "2026-11-26T14:04:30.878375+00:00",
+        "attente_s": 0.00041983299888670444,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 0.7474190000000001,
+          "systeme_s": 0.11136299999999999,
+          "reel_s": 5.738577042007819
+        },
+        "rx_sans_tx": 16,
+        "rx_filtrees": 0,
+        "trames_par_sens": 0,
+        "octets_par_sens": 0,
+        "intervalle_pair_ns": 0,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:36.660831+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 2448,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "bme_nic_confine": 3,
+          "traductions_3": 117
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          0,
+          16
+        ],
+        "octets": [
+          0,
+          12592
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=7 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=7 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=18 ipc_client=119 lots=0 mesure_ticks=0 serie_ticks=0 quantiles_ticks=[0, 0, 0, 0] hz=62500000 changements=469 reveils=227 cpu_ticks=5 idle_ticks=1 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[44, 45, 1, 24, 3, 2] service=[80, 81, 24, 17, 4, 1] pilote=[54, 36, 16, 0, 2, 1] mediation_ticks=88315 echantillons_cpu_usr_sys_idle=[1, 3, 1]"
+    },
+    "veille/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "veille",
+        "elf": "2729e358db9fe60e62fd37df835f13d1e96b41126d101ee2321a17ccaa2df936",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "2729e358db9fe60e62fd37df835f13d1e96b41126d101ee2321a17ccaa2df936",
+          "BOOTX64.EFI": "8c3d0cc366e9c3a4a3b887a06a955a8c71b0d9fb519aca9fac7095d69785da48",
+          "limine.conf": "b73ebe28bb7f27681472ca2831e1e10506278b7b5aa5135b68efd95fa951c237",
+          "support.raw": "90b60fd94cfb5318803210d63ad6cfa6c3d61fa55a99bb9c2e82518f108acee3",
+          "variables.fd": "5070062ea954c619cea54bff4a4e0773fdcb54a4e1f5056f43870117f971ea73",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:04:27.723439+00:00",
+        "acquisition": "2026-11-26T14:04:27.723778+00:00",
+        "attente_s": 0.0003452498931437731,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 3,
+        "cpu_qemu": {
+          "utilisateur_s": 2.309731,
+          "systeme_s": 0.15861799999999998,
+          "reel_s": 2.5176413749577478
+        },
+        "rx_sans_tx": 16,
+        "rx_filtrees": 0,
+        "trames_par_sens": 0,
+        "octets_par_sens": 0,
+        "intervalle_pair_ns": 0,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:30.284835+00:00",
+        "dma": {
+          "pages_touchees": 13,
+          "echantillons": 117,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          0,
+          16
+        ],
+        "octets": [
+          0,
+          12592
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=7 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=7 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=18 ipc_client=116 lots=0 mesure_ticks=0 serie_ticks=0 quantiles_ticks=[0, 0, 0, 0] hz=998222656 changements=475 reveils=229 cpu_ticks=72 idle_ticks=1 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[44, 44, 1, 24, 1, 2] service=[80, 81, 24, 17, 4, 1] pilote=[54, 35, 16, 0, 0, 0] mediation_ticks=1913000 echantillons_cpu_usr_sys_idle=[2, 4, 1]"
+    },
+    "filtre/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "filtre",
+        "elf": "5f4b0fbcc4afea4a472da35f05597eff4b9a4c0b7e50f2246cfa3a47b7cd8fee",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:04:41.048774+00:00",
+        "acquisition": "2026-11-26T14:04:41.049226+00:00",
+        "attente_s": 0.00046070804819464684,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 0.860649,
+          "systeme_s": 0.11326000000000003,
+          "reel_s": 5.8558612919878215
+        },
+        "rx_sans_tx": 16,
+        "rx_filtrees": 16,
+        "trames_par_sens": 0,
+        "octets_par_sens": 0,
+        "intervalle_pair_ns": 0,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:46.952327+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 2448,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "bme_nic_confine": 3,
+          "traductions_3": 235
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          0,
+          16
+        ],
+        "octets": [
+          0,
+          12592
+        ],
+        "rx_hors_profil": [
+          8,
+          8
+        ],
+        "sha256_prefixe16": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=7 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=7 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=37 ipc_client=115 lots=0 mesure_ticks=0 serie_ticks=0 quantiles_ticks=[0, 0, 0, 0] hz=62500000 changements=739 reveils=353 cpu_ticks=23 idle_ticks=1 pages_ouverture=299 pages_publication=299",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[43, 44, 1, 24, 1, 2] service=[115, 135, 24, 17, 0, 1] pilote=[109, 71, 16, 0, 0, 0] mediation_ticks=107505 echantillons_cpu_usr_sys_idle=[0, 22, 1]"
+    },
+    "filtre/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "filtre",
+        "elf": "2729e358db9fe60e62fd37df835f13d1e96b41126d101ee2321a17ccaa2df936",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "2729e358db9fe60e62fd37df835f13d1e96b41126d101ee2321a17ccaa2df936",
+          "BOOTX64.EFI": "8c3d0cc366e9c3a4a3b887a06a955a8c71b0d9fb519aca9fac7095d69785da48",
+          "limine.conf": "b73ebe28bb7f27681472ca2831e1e10506278b7b5aa5135b68efd95fa951c237",
+          "support.raw": "639531383507f023f5bc0fec1e8ce6c02b58688403810861e7f2f2c80744819f",
+          "variables.fd": "b9ae556bd2216fa617c4bd6c0d02eb4323b8d769a777753141f683bc77b95b18",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:04:37.707899+00:00",
+        "acquisition": "2026-11-26T14:04:37.708211+00:00",
+        "attente_s": 0.00031958299223333597,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 3,
+        "cpu_qemu": {
+          "utilisateur_s": 2.383649,
+          "systeme_s": 0.164252,
+          "reel_s": 2.6415906250476837
+        },
+        "rx_sans_tx": 16,
+        "rx_filtrees": 16,
+        "trames_par_sens": 0,
+        "octets_par_sens": 0,
+        "intervalle_pair_ns": 0,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:40.392896+00:00",
+        "dma": {
+          "pages_touchees": 13,
+          "echantillons": 235,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          0,
+          16
+        ],
+        "octets": [
+          0,
+          12592
+        ],
+        "rx_hors_profil": [
+          8,
+          8
+        ],
+        "sha256_prefixe16": [
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=7 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=7 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=39 ipc_client=116 lots=0 mesure_ticks=0 serie_ticks=0 quantiles_ticks=[0, 0, 0, 0] hz=1000484375 changements=780 reveils=371 cpu_ticks=91 idle_ticks=1 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[44, 44, 1, 24, 1, 2] service=[120, 141, 24, 17, 4, 1] pilote=[115, 75, 16, 0, 0, 0] mediation_ticks=2156000 echantillons_cpu_usr_sys_idle=[2, 23, 1]"
+    },
+    "court/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "court",
+        "elf": "e80c9f352e87ca1d902cf6b571d512e5b9e1da1b8a0c4fd318a6c0b354fa3b6a",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:04:51.168765+00:00",
+        "acquisition": "2026-11-26T14:04:51.169131+00:00",
+        "attente_s": 0.0003764170687645674,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 0.7516510000000001,
+          "systeme_s": 0.114262,
+          "reel_s": 5.747460125014186
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 1,
+        "octets_par_sens": 60,
+        "intervalle_pair_ns": 0,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:56.960490+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 3771,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 23,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "bme_nic_confine": 3,
+          "traductions_3": 22,
+          "pages_nic_en_quarantaine": 22
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          1,
+          1
+        ],
+        "octets": [
+          60,
+          60
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "c75539ac9aee7e6edc92e81e5850f6f84c6c23ebd1f5807c0ee7f7292ed6fc77",
+          "3cfb584cd9bf80ca7c637008286aad456611fb994269c72927cd8db272fa3eb3"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=8 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=8 materiel=Err(12) retrait=Err(12) acteurs=[Exit(12), Exit(12), Exit(0)] appels_pilote=7 ipc_client=63 lots=1 mesure_ticks=856000 serie_ticks=856000 quantiles_ticks=[856000, 856000, 856000, 856000] hz=62500000 changements=203 reveils=101 cpu_ticks=6 idle_ticks=1 pages_ouverture=298 pages_publication=299",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[25, 25, 7, 1, 3, 2] service=[36, 36, 2, 8, 4, 0] pilote=[18, 11, 1, 1, 2, 1] mediation_ticks=85063 echantillons_cpu_usr_sys_idle=[0, 5, 1]"
+    },
+    "court/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "court",
+        "elf": "388f4e241a61968bcb87d8846e1ffb04d4cb5f98d348d4b1292b6b51dfde3288",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "388f4e241a61968bcb87d8846e1ffb04d4cb5f98d348d4b1292b6b51dfde3288",
+          "BOOTX64.EFI": "f9e161ef22e3ff8455eb9430c40d4a219fd772c38438756f9cce9b6ca658ce9c",
+          "limine.conf": "47dc4366037280e913a1b43b48e948f5e775f52a92c8ca01420735445f4bf995",
+          "support.raw": "56ef823bf9d7572e1303513dd1aafcd814b81ee82cf31c3a2146ac07a36f0f59",
+          "variables.fd": "374c580968710ca61095acf2426cdb21f5b0ea7a0ab71817b770cc1f8c540ce2",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:04:48.019922+00:00",
+        "acquisition": "2026-11-26T14:04:48.020252+00:00",
+        "attente_s": 0.0003357080277055502,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 30,
+        "cpu_qemu": {
+          "utilisateur_s": 2.291389,
+          "systeme_s": 0.16477799999999998,
+          "reel_s": 2.5360867501003668
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 1,
+        "octets_par_sens": 60,
+        "intervalle_pair_ns": 0,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:50.599170+00:00",
+        "dma": {
+          "pages_touchees": 8,
+          "echantillons": 22,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          1,
+          1
+        ],
+        "octets": [
+          60,
+          60
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "c75539ac9aee7e6edc92e81e5850f6f84c6c23ebd1f5807c0ee7f7292ed6fc77",
+          "3cfb584cd9bf80ca7c637008286aad456611fb994269c72927cd8db272fa3eb3"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=8 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=8 materiel=Err(12) retrait=Err(12) acteurs=[Exit(12), Exit(12), Exit(0)] appels_pilote=7 ipc_client=60 lots=1 mesure_ticks=5310000 serie_ticks=5310000 quantiles_ticks=[5310000, 5310000, 5310000, 5310000] hz=994808593 changements=207 reveils=103 cpu_ticks=70 idle_ticks=1 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[25, 24, 7, 1, 1, 2] service=[36, 36, 2, 8, 4, 0] pilote=[18, 10, 1, 1, 0, 0] mediation_ticks=1670000 echantillons_cpu_usr_sys_idle=[1, 3, 1]"
+    },
+    "deces/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "deces",
+        "elf": "a96956dc33dc29d1614210885e63756d223040a5c64d11c452f1bb2fd62ee74e",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:04:00.715337+00:00",
+        "acquisition": "2026-11-26T14:04:00.715725+00:00",
+        "attente_s": 0.0003960409667342901,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 0.731886,
+          "systeme_s": 0.11640899999999998,
+          "reel_s": 5.736359041999094
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 4,
+        "octets_par_sens": 3148,
+        "intervalle_pair_ns": 368208,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:06.495664+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 3776,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 23,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "bme_nic_confine": 3,
+          "traductions_3": 61,
+          "pages_nic_en_quarantaine": 22
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "628a441012ff94753fa11bf26bc8b73b1617c8922115d7099a0f3e6ccd3bce26",
+          "e60b173789600772fd5a1b2cf2d4cc1af6dcee191ee21a8dbc158eb5dceef97c"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=3 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=3 materiel=Err(10) retrait=Err(12) acteurs=[Exit(9), Exit(0), Exit(0)] appels_pilote=10 ipc_client=71 lots=0 mesure_ticks=0 serie_ticks=0 quantiles_ticks=[0, 0, 0, 0] hz=62500000 changements=258 reveils=122 cpu_ticks=6 idle_ticks=1 pages_ouverture=299 pages_publication=299",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[27, 27, 14, 0, 1, 2] service=[46, 47, 8, 14, 0, 0] pilote=[28, 18, 0, 8, 0, 0] mediation_ticks=79625 echantillons_cpu_usr_sys_idle=[0, 5, 1]"
+    },
+    "deces/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "deces",
+        "elf": "63e5ee33f54a705ae62d76f7f70aa4438e54d9b91058466773ec518f69fd67b9",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "63e5ee33f54a705ae62d76f7f70aa4438e54d9b91058466773ec518f69fd67b9",
+          "BOOTX64.EFI": "d22fc5a0562493fe2e9523827b1d4ba12e3ba2ff917ff6ebfd91fc6c9e94fbdb",
+          "limine.conf": "d49516c6d9d3d27b18805d355a82ca5d068748a89f41e537339cfe34a9b2e8b2",
+          "support.raw": "cd427d0c35a350d3d2db5efd0c4445f40189b4d6f54396b07166e29f69c650f4",
+          "variables.fd": "a8c546d17b38930e088cb0757731df9c577fa59f14edce32bd1fe8c8fe961a86",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:03:57.537363+00:00",
+        "acquisition": "2026-11-26T14:03:57.537749+00:00",
+        "attente_s": 0.00039266597013920546,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 30,
+        "cpu_qemu": {
+          "utilisateur_s": 2.312567,
+          "systeme_s": 0.15871400000000002,
+          "reel_s": 2.5509109999984503
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 4,
+        "octets_par_sens": 3148,
+        "intervalle_pair_ns": 342333,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:00.130646+00:00",
+        "dma": {
+          "pages_touchees": 10,
+          "echantillons": 61,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "628a441012ff94753fa11bf26bc8b73b1617c8922115d7099a0f3e6ccd3bce26",
+          "e60b173789600772fd5a1b2cf2d4cc1af6dcee191ee21a8dbc158eb5dceef97c"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=3 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=3 materiel=Err(10) retrait=Err(12) acteurs=[Exit(9), Exit(0), Exit(0)] appels_pilote=10 ipc_client=72 lots=0 mesure_ticks=0 serie_ticks=0 quantiles_ticks=[0, 0, 0, 0] hz=999273437 changements=265 reveils=125 cpu_ticks=70 idle_ticks=2 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[28, 27, 14, 0, 1, 2] service=[47, 47, 8, 14, 4, 0] pilote=[28, 18, 0, 8, 0, 0] mediation_ticks=1449000 echantillons_cpu_usr_sys_idle=[1, 2, 2]"
+    },
+    "incertain/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "incertain",
+        "elf": "8b6c81806bb26ef140258692427804df6e8871f8eccd8b7c7d84506412db812d",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:04:10.809406+00:00",
+        "acquisition": "2026-11-26T14:04:10.809801+00:00",
+        "attente_s": 0.00040449993684887886,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 0.7074320000000001,
+          "systeme_s": 0.11598899999999998,
+          "reel_s": 5.709310792037286
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 4,
+        "octets_par_sens": 3148,
+        "intervalle_pair_ns": 364666,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:16.564748+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 3771,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 23,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "bme_nic_confine": 3,
+          "traductions_3": 61,
+          "pages_nic_en_quarantaine": 22
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "628a441012ff94753fa11bf26bc8b73b1617c8922115d7099a0f3e6ccd3bce26",
+          "e60b173789600772fd5a1b2cf2d4cc1af6dcee191ee21a8dbc158eb5dceef97c"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=4 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=4 materiel=Err(10) retrait=Err(12) acteurs=[Exit(11), Exit(0), Exit(0)] appels_pilote=10 ipc_client=75 lots=0 mesure_ticks=0 serie_ticks=0 quantiles_ticks=[0, 0, 0, 0] hz=62500000 changements=265 reveils=123 cpu_ticks=5 idle_ticks=0 pages_ouverture=298 pages_publication=299",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[28, 28, 14, 0, 3, 2] service=[47, 47, 8, 14, 4, 0] pilote=[29, 20, 0, 8, 2, 1] mediation_ticks=76878 echantillons_cpu_usr_sys_idle=[0, 5, 0]"
+    },
+    "incertain/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "incertain",
+        "elf": "fb9d4d06b68031b6eb954ed20b280946d2a5b845904b06cd85e9fd5e6ae18992",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "fb9d4d06b68031b6eb954ed20b280946d2a5b845904b06cd85e9fd5e6ae18992",
+          "BOOTX64.EFI": "c50f7ec58820b4f0fb6553917feba2edf5962f21d83a6215500b48ecee189019",
+          "limine.conf": "67140e84817f0769ca6f9353d556a4237a749d5c83dd793ecc5e4983929fb18c",
+          "support.raw": "09daf10d0b67395d252b2212d2208489137d5d51b642de2bb5c136b9b08e1b19",
+          "variables.fd": "171f7521b12733a793fa785890d0e2b025db6594f012c0cdb78bd97860b833a3",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:04:07.556667+00:00",
+        "acquisition": "2026-11-26T14:04:07.557007+00:00",
+        "attente_s": 0.000346834072843194,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 30,
+        "cpu_qemu": {
+          "utilisateur_s": 2.3132189999999997,
+          "systeme_s": 0.16139599999999998,
+          "reel_s": 2.5547085830476135
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 4,
+        "octets_par_sens": 3148,
+        "intervalle_pair_ns": 338208,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:10.154488+00:00",
+        "dma": {
+          "pages_touchees": 10,
+          "echantillons": 61,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "628a441012ff94753fa11bf26bc8b73b1617c8922115d7099a0f3e6ccd3bce26",
+          "e60b173789600772fd5a1b2cf2d4cc1af6dcee191ee21a8dbc158eb5dceef97c"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=4 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=4 materiel=Err(10) retrait=Err(12) acteurs=[Exit(11), Exit(0), Exit(0)] appels_pilote=10 ipc_client=72 lots=0 mesure_ticks=0 serie_ticks=0 quantiles_ticks=[0, 0, 0, 0] hz=999968750 changements=277 reveils=127 cpu_ticks=70 idle_ticks=0 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[28, 27, 14, 0, 1, 2] service=[47, 47, 8, 14, 4, 0] pilote=[29, 19, 0, 8, 0, 0] mediation_ticks=1659000 echantillons_cpu_usr_sys_idle=[2, 3, 0]"
+    },
+    "revocation/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "revocation",
+        "elf": "3cce69e0259ecec8710fa17dfc0596c79d127046999da65e981c95b47a668651",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:04:20.849605+00:00",
+        "acquisition": "2026-11-26T14:04:20.849983+00:00",
+        "attente_s": 0.00038654101081192493,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 0.7748489999999999,
+          "systeme_s": 0.11155100000000001,
+          "reel_s": 5.784004791057669
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 4,
+        "octets_par_sens": 3148,
+        "intervalle_pair_ns": 330709,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:26.677803+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 3776,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 23,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "bme_nic_confine": 3,
+          "traductions_3": 61,
+          "pages_nic_en_quarantaine": 22
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "628a441012ff94753fa11bf26bc8b73b1617c8922115d7099a0f3e6ccd3bce26",
+          "e60b173789600772fd5a1b2cf2d4cc1af6dcee191ee21a8dbc158eb5dceef97c"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=6 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=6 materiel=Err(5) retrait=Err(12) acteurs=[Exit(10), Exit(0), Exit(0)] appels_pilote=10 ipc_client=75 lots=0 mesure_ticks=0 serie_ticks=0 quantiles_ticks=[0, 0, 0, 0] hz=62500000 changements=263 reveils=125 cpu_ticks=6 idle_ticks=1 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[28, 28, 14, 0, 3, 2] service=[47, 47, 8, 14, 4, 0] pilote=[30, 19, 0, 8, 2, 1] mediation_ticks=92124 echantillons_cpu_usr_sys_idle=[1, 4, 1]"
+    },
+    "revocation/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "revocation",
+        "elf": "1fb39fee70422251d41f130029ca62852ec9154fcfe6636ec96428e82e5dcfc0",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "1fb39fee70422251d41f130029ca62852ec9154fcfe6636ec96428e82e5dcfc0",
+          "BOOTX64.EFI": "b76c17809c33201fa3152872eb96760549381360fb334b56832120409ab91d3a",
+          "limine.conf": "d41cab0e06f409f6e67528a61f1a5e608b4ee08616134f08ecef722a88acaaf3",
+          "support.raw": "90fe93fb87884559084397e9f06335222212a732901521d35b056f7522ad0c35",
+          "variables.fd": "17a6da5fcf0bfd1a801cfe46e173df8437153a3eb0eda12410fa3f4e0c9ed113",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:04:17.612632+00:00",
+        "acquisition": "2026-11-26T14:04:17.612972+00:00",
+        "attente_s": 0.0003468750510364771,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 30,
+        "cpu_qemu": {
+          "utilisateur_s": 2.309768,
+          "systeme_s": 0.163493,
+          "reel_s": 2.54369774996303
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 4,
+        "octets_par_sens": 3148,
+        "intervalle_pair_ns": 348125,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:04:20.199689+00:00",
+        "dma": {
+          "pages_touchees": 10,
+          "echantillons": 61,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true
+      },
+      "capture": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "628a441012ff94753fa11bf26bc8b73b1617c8922115d7099a0f3e6ccd3bce26",
+          "e60b173789600772fd5a1b2cf2d4cc1af6dcee191ee21a8dbc158eb5dceef97c"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=6 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=6 materiel=Err(5) retrait=Err(12) acteurs=[Exit(10), Exit(0), Exit(0)] appels_pilote=10 ipc_client=75 lots=0 mesure_ticks=0 serie_ticks=0 quantiles_ticks=[0, 0, 0, 0] hz=997546875 changements=267 reveils=125 cpu_ticks=72 idle_ticks=2 pages_ouverture=297 pages_publication=297",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[28, 28, 14, 0, 3, 2] service=[47, 47, 8, 14, 4, 0] pilote=[30, 19, 0, 8, 2, 1] mediation_ticks=2985000 echantillons_cpu_usr_sys_idle=[3, 2, 2]"
+    },
+    "mesure60/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "mesure60",
+        "elf": "1fd9e8c67d3f1737b54071ea07196c664bb8039b4589ee21d22b5daed8afe026",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:05:15.730821+00:00",
+        "acquisition": "2026-11-26T14:05:15.731161+00:00",
+        "attente_s": 0.0003488330403342843,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 6.079294,
+          "systeme_s": 0.335473,
+          "reel_s": 11.26237737503834
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 4608,
+        "octets_par_sens": 276480,
+        "intervalle_pair_ns": 5563005750,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:05:27.038217+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 3771,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "bme_nic_confine": 3,
+          "traductions_3": 66440
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true,
+        "publications": [
+          130,
+          127,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128
+        ]
+      },
+      "capture": {
+        "trames": [
+          4608,
+          4608
+        ],
+        "octets": [
+          276480,
+          276480
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "4ca3c1f18c6b31db17d77a7766abf6ec1fea34917b2afa204da42c6283dd161b",
+          "6b84c30586e533523866e9be759a73d5ef1754bae282ed37b94dd6942d1605d0"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=10 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=10 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=16034 ipc_client=40888 lots=1024 mesure_ticks=347593756 serie_ticks=348094188 quantiles_ticks=[345625, 541125, 584500, 752375] hz=62500000 changements=268014 reveils=125152 cpu_ticks=1056 idle_ticks=1 pages_ouverture=299 pages_publication=299",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[15830, 15832, 4615, 4608, 1, 2] service=[43321, 43339, 9216, 9223, 0, 2] pilote=[43525, 27490, 4608, 4608, 0, 0] mediation_ticks=5467734 echantillons_cpu_usr_sys_idle=[76, 979, 1]",
+      "mbit_s_tx": 0.3971,
+      "lots": [
+        {
+          "taille": 1,
+          "n": 128,
+          "latence_us": [
+            2130.0,
+            2303.01,
+            3090.99,
+            13953.01
+          ],
+          "mbit_s_tx": 0.2148
+        },
+        {
+          "taille": 2,
+          "n": 128,
+          "latence_us": [
+            2980.0,
+            3240.99,
+            4114.99,
+            4148.0
+          ],
+          "mbit_s_tx": 0.3181
+        },
+        {
+          "taille": 3,
+          "n": 128,
+          "latence_us": [
+            3929.01,
+            4645.01,
+            5137.01,
+            5234.0
+          ],
+          "mbit_s_tx": 0.3542
+        },
+        {
+          "taille": 4,
+          "n": 128,
+          "latence_us": [
+            4904.0,
+            5514.0,
+            6215.01,
+            6385.01
+          ],
+          "mbit_s_tx": 0.384
+        },
+        {
+          "taille": 5,
+          "n": 128,
+          "latence_us": [
+            5742.99,
+            6376.0,
+            7326.99,
+            8120.0
+          ],
+          "mbit_s_tx": 0.409
+        },
+        {
+          "taille": 6,
+          "n": 128,
+          "latence_us": [
+            6874.0,
+            7480.0,
+            8198.99,
+            9520.0
+          ],
+          "mbit_s_tx": 0.417
+        },
+        {
+          "taille": 7,
+          "n": 128,
+          "latence_us": [
+            7668.99,
+            8259.01,
+            9576.99,
+            9830.0
+          ],
+          "mbit_s_tx": 0.4332
+        },
+        {
+          "taille": 8,
+          "n": 128,
+          "latence_us": [
+            8501.01,
+            9352.0,
+            11020.0,
+            12038.0
+          ],
+          "mbit_s_tx": 0.4465
+        }
+      ]
+    },
+    "mesure60/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "mesure60",
+        "elf": "229b53fe8ac02fc354babd89efc5119d31d2a1af718858bc24b0de041b694e45",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "229b53fe8ac02fc354babd89efc5119d31d2a1af718858bc24b0de041b694e45",
+          "BOOTX64.EFI": "a4287aca0da73261850dd11353e864698fac083ecbeff3c50a08bdb40b5871e1",
+          "limine.conf": "869e54524f7fc1e00e0088f402c49c49bf40618c24b412b766204855bbb10ba3",
+          "support.raw": "c3003e86e4a1b20edeaa53bd1bf260a3d2a05cab18a503732a7738be05071564",
+          "variables.fd": "6770d9a950c4163f303549ec112623ca41057c65ac04c555da7e2e3727d52964",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:05:08.735806+00:00",
+        "acquisition": "2026-11-26T14:05:08.736158+00:00",
+        "attente_s": 0.0003589580301195383,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 3,
+        "cpu_qemu": {
+          "utilisateur_s": 6.041503,
+          "systeme_s": 0.44337499999999996,
+          "reel_s": 6.305388999986462
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 4608,
+        "octets_par_sens": 276480,
+        "intervalle_pair_ns": 3792298417,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:05:15.085909+00:00",
+        "dma": {
+          "pages_touchees": 22,
+          "echantillons": 66440,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true,
+        "publications": [
+          130,
+          127,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128
+        ]
+      },
+      "capture": {
+        "trames": [
+          4608,
+          4608
+        ],
+        "octets": [
+          276480,
+          276480
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "4ca3c1f18c6b31db17d77a7766abf6ec1fea34917b2afa204da42c6283dd161b",
+          "6b84c30586e533523866e9be759a73d5ef1754bae282ed37b94dd6942d1605d0"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=10 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=10 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=16056 ipc_client=40933 lots=1024 mesure_ticks=3790920000 serie_ticks=3796816000 quantiles_ticks=[3757000, 5921000, 6308000, 6487000] hz=997582031 changements=268965 reveils=125690 cpu_ticks=1019 idle_ticks=1 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[15853, 15854, 4615, 4608, 1, 2] service=[43366, 43373, 9216, 9223, 4, 2] pilote=[43569, 27512, 4608, 4608, 0, 0] mediation_ticks=78209000 echantillons_cpu_usr_sys_idle=[99, 853, 1]",
+      "mbit_s_tx": 0.5811,
+      "lots": [
+        {
+          "taille": 1,
+          "n": 128,
+          "latence_us": [
+            1483.59,
+            1636.96,
+            4562.03,
+            5194.56
+          ],
+          "mbit_s_tx": 0.3124
+        },
+        {
+          "taille": 2,
+          "n": 128,
+          "latence_us": [
+            2023.89,
+            2139.17,
+            2190.3,
+            2548.16
+          ],
+          "mbit_s_tx": 0.4728
+        },
+        {
+          "taille": 3,
+          "n": 128,
+          "latence_us": [
+            2691.51,
+            3103.5,
+            3201.74,
+            3325.04
+          ],
+          "mbit_s_tx": 0.521
+        },
+        {
+          "taille": 4,
+          "n": 128,
+          "latence_us": [
+            3341.08,
+            3802.19,
+            3976.62,
+            3993.66
+          ],
+          "mbit_s_tx": 0.5624
+        },
+        {
+          "taille": 5,
+          "n": 128,
+          "latence_us": [
+            3941.53,
+            4458.78,
+            4569.05,
+            4831.68
+          ],
+          "mbit_s_tx": 0.5979
+        },
+        {
+          "taille": 6,
+          "n": 128,
+          "latence_us": [
+            4719.41,
+            5108.35,
+            5266.73,
+            5414.09
+          ],
+          "mbit_s_tx": 0.61
+        },
+        {
+          "taille": 7,
+          "n": 128,
+          "latence_us": [
+            5260.72,
+            5723.84,
+            6147.87,
+            6315.27
+          ],
+          "mbit_s_tx": 0.6327
+        },
+        {
+          "taille": 8,
+          "n": 128,
+          "latence_us": [
+            5816.06,
+            6345.34,
+            6502.72,
+            6562.87
+          ],
+          "mbit_s_tx": 0.6511
+        }
+      ]
+    },
+    "mesure1514/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "mesure1514",
+        "elf": "585765086a0ca1e197029fe648fa9bd6c8a5ffd8cfd7072e8900b0f4a865e829",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:05:35.589215+00:00",
+        "acquisition": "2026-11-26T14:05:35.589681+00:00",
+        "attente_s": 0.00047545903362333775,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 6.404995,
+          "systeme_s": 0.34872099999999995,
+          "reel_s": 11.588966417009942
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 4608,
+        "octets_par_sens": 6976512,
+        "intervalle_pair_ns": 5822934375,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:05:47.228050+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 797,
+          "traductions_2": 6232,
+          "unmap_done_2": 797,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 3771,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "bme_nic_confine": 3,
+          "traductions_3": 66568
+        },
+        "volume_relu_identique": true,
+        "profil_verifie": true,
+        "publications": [
+          130,
+          127,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128
+        ]
+      },
+      "capture": {
+        "trames": [
+          4608,
+          4608
+        ],
+        "octets": [
+          6976512,
+          6976512
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "18b666e429249b24921c32121c7f65acd2b1038078bc27ffa3b591bd429cf86f",
+          "7691af243669c394f228d5db7cdceb47fac2d2827b793bc277293081ff49d987"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=11 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=11 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=16034 ipc_client=40888 lots=1024 mesure_ticks=362990189 serie_ticks=364279125 quantiles_ticks=[359688, 561500, 598687, 791250] hz=62500000 changements=268257 reveils=125245 cpu_ticks=1161 idle_ticks=1 pages_ouverture=299 pages_publication=299",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[15830, 15832, 4615, 4608, 1, 2] service=[43321, 43331, 9216, 9223, 0, 2] pilote=[43525, 27490, 4608, 4608, 0, 0] mediation_ticks=8223942 echantillons_cpu_usr_sys_idle=[86, 1074, 1]",
+      "mbit_s_tx": 9.5758,
+      "lots": [
+        {
+          "taille": 1,
+          "n": 128,
+          "latence_us": [
+            2177.01,
+            2322.0,
+            2978.99,
+            13860.99
+          ],
+          "mbit_s_tx": 5.3
+        },
+        {
+          "taille": 2,
+          "n": 128,
+          "latence_us": [
+            3154.0,
+            3372.0,
+            4130.0,
+            4232.0
+          ],
+          "mbit_s_tx": 7.6274
+        },
+        {
+          "taille": 3,
+          "n": 128,
+          "latence_us": [
+            4126.99,
+            4764.99,
+            5278.99,
+            5354.0
+          ],
+          "mbit_s_tx": 8.5385
+        },
+        {
+          "taille": 4,
+          "n": 128,
+          "latence_us": [
+            5092.0,
+            5708.0,
+            6616.99,
+            12660.0
+          ],
+          "mbit_s_tx": 9.21
+        },
+        {
+          "taille": 5,
+          "n": 128,
+          "latence_us": [
+            6022.0,
+            6611.01,
+            7840.0,
+            8413.01
+          ],
+          "mbit_s_tx": 9.8786
+        },
+        {
+          "taille": 6,
+          "n": 128,
+          "latence_us": [
+            7282.99,
+            7792.0,
+            8695.01,
+            9578.99
+          ],
+          "mbit_s_tx": 10.0208
+        },
+        {
+          "taille": 7,
+          "n": 128,
+          "latence_us": [
+            7966.0,
+            8506.0,
+            10009.01,
+            10222.0
+          ],
+          "mbit_s_tx": 10.5431
+        },
+        {
+          "taille": 8,
+          "n": 128,
+          "latence_us": [
+            8865.01,
+            9522.0,
+            10081.01,
+            12180.0
+          ],
+          "mbit_s_tx": 10.7993
+        }
+      ]
+    },
+    "mesure1514/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "mesure1514",
+        "elf": "7eaadeec988ef70544f33797e47e7d0861b99c9c1b809fa7cf1a51d5710c0763",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "7eaadeec988ef70544f33797e47e7d0861b99c9c1b809fa7cf1a51d5710c0763",
+          "BOOTX64.EFI": "a80f959c1d4e13a34f05f7b014fabad1b5d920379bb810661e72d33cb4469364",
+          "limine.conf": "9b5894fd475779d3ca78edd569415a0b85aa556e649c47309665b69656220fe9",
+          "support.raw": "210e7cb8a0a57b2a9fb6dfb0fde48de55256026624c31a35ccc14f2f86f1359b",
+          "variables.fd": "cdb0516b1dd04c673098a41dd93082296d4167bd5ec9598554b33faf481db843",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:05:28.185279+00:00",
+        "acquisition": "2026-11-26T14:05:28.185608+00:00",
+        "attente_s": 0.00033533305395394564,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 3,
+        "cpu_qemu": {
+          "utilisateur_s": 6.410841,
+          "systeme_s": 0.450181,
+          "reel_s": 6.620518459007144
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 4608,
+        "octets_par_sens": 6976512,
+        "intervalle_pair_ns": 4142210416,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:05:34.849161+00:00",
+        "dma": {
+          "pages_touchees": 22,
+          "echantillons": 66565,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true,
+        "publications": [
+          130,
+          127,
+          128,
+          128,
+          128,
+          128,
+          128,
+          128
+        ]
+      },
+      "capture": {
+        "trames": [
+          4608,
+          4608
+        ],
+        "octets": [
+          6976512,
+          6976512
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "18b666e429249b24921c32121c7f65acd2b1038078bc27ffa3b591bd429cf86f",
+          "7691af243669c394f228d5db7cdceb47fac2d2827b793bc277293081ff49d987"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=11 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=11 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=16047 ipc_client=40919 lots=1024 mesure_ticks=4125224000 serie_ticks=4146073000 quantiles_ticks=[4155000, 6413000, 6874000, 8429000] hz=999023437 changements=268981 reveils=125707 cpu_ticks=1106 idle_ticks=1 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[15846, 15847, 4615, 4608, 1, 2] service=[43362, 43373, 9216, 9223, 4, 2] pilote=[43563, 27515, 4608, 4608, 0, 0] mediation_ticks=146111000 echantillons_cpu_usr_sys_idle=[101, 939, 1]",
+      "mbit_s_tx": 13.4483,
+      "lots": [
+        {
+          "taille": 1,
+          "n": 128,
+          "latence_us": [
+            1520.48,
+            1723.68,
+            2107.06,
+            5421.29
+          ],
+          "mbit_s_tx": 7.6901
+        },
+        {
+          "taille": 2,
+          "n": 128,
+          "latence_us": [
+            2179.13,
+            2322.27,
+            2549.49,
+            2570.51
+          ],
+          "mbit_s_tx": 11.073
+        },
+        {
+          "taille": 3,
+          "n": 128,
+          "latence_us": [
+            2894.83,
+            3407.33,
+            3666.58,
+            4075.98
+          ],
+          "mbit_s_tx": 12.1858
+        },
+        {
+          "taille": 4,
+          "n": 128,
+          "latence_us": [
+            3619.53,
+            4148.05,
+            4390.29,
+            4399.3
+          ],
+          "mbit_s_tx": 13.06
+        },
+        {
+          "taille": 5,
+          "n": 128,
+          "latence_us": [
+            4314.21,
+            4805.69,
+            5118.0,
+            5212.09
+          ],
+          "mbit_s_tx": 13.7285
+        },
+        {
+          "taille": 6,
+          "n": 128,
+          "latence_us": [
+            5188.07,
+            5610.48,
+            5899.76,
+            6175.03
+          ],
+          "mbit_s_tx": 14.0335
+        },
+        {
+          "taille": 7,
+          "n": 128,
+          "latence_us": [
+            5712.58,
+            6263.12,
+            6769.61,
+            8437.24
+          ],
+          "mbit_s_tx": 14.6619
+        },
+        {
+          "taille": 8,
+          "n": 128,
+          "latence_us": [
+            6335.19,
+            6932.77,
+            7248.08,
+            8841.63
+          ],
+          "mbit_s_tx": 15.0616
+        }
+      ]
+    },
+    "endurance/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "endurance",
+        "elf": "18b180636e8591275ae6b935b315e8f14ee61f86a15f243b4af85a2b13a7fb9e",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "7b9cae50fc4649db9fb1ed48102c2b90d5df0ae2ad1113149d1b7f8707349b7e",
+        "relais": "bad71dc086b91aaac01858eae1ccd67d0fd9ca5de778384b59227ff4de1e63ff",
+        "debut_attente": "2026-11-26T14:06:39.160325+00:00",
+        "acquisition": "2026-11-26T14:06:39.160775+00:00",
+        "attente_s": 0.0004602500703185797,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 68.597387,
+          "systeme_s": 0.803987,
+          "reel_s": 73.97815366694704
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 65552,
+        "octets_par_sens": 51589424,
+        "intervalle_pair_ns": 68237612042,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:07:53.183640+00:00",
+        "volume_relu_identique": true,
+        "profil_verifie": true,
+        "publications": [
+          6,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          8180
+        ]
+      },
+      "capture": {
+        "trames": [
+          65552,
+          65552
+        ],
+        "octets": [
+          51589424,
+          51589424
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=5 service=4 pilote=3 incarnation=9223372036854775813 generation_instance=1 epoque=9223372036854775812 generation_materiel=4 mode=5 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=5 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=208991 ipc_client=491892 lots=8208 mesure_ticks=4255581419 serie_ticks=4265311812 quantiles_ticks=[516000, 547250, 569313, 630875] hz=62500000 changements=3316713 reveils=1524196 cpu_ticks=12509 idle_ticks=1 pages_ouverture=299 pages_publication=299",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[180388, 180390, 65559, 65552, 1, 2] service=[532818, 532853, 131104, 131111, 0, 2] pilote=[561421, 352429, 65552, 65552, 0, 0] mediation_ticks=87814805 echantillons_cpu_usr_sys_idle=[794, 11712, 1]"
+    },
+    "endurance/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "endurance",
+        "elf": "28eaed91ff6fa8977487adb71b2b0504df4ccdbef5ebe524ff383695cf87fcc8",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "28eaed91ff6fa8977487adb71b2b0504df4ccdbef5ebe524ff383695cf87fcc8",
+          "BOOTX64.EFI": "b6fffbb8c45ff5499ffda07476678143ec5ead5c852dc67f14a223383a1f14ca",
+          "limine.conf": "bbdda6342451ba02dbbc4d15295761824f16ca2ed43d6b3acf40b0f9ac227fe6",
+          "support.raw": "c01b2c038f2207f0593226cff06c03b8f8054e8e2754633904832f6d88f57772",
+          "variables.fd": "9655f6d5d091dafd62e13a3d1bce0dedb108b5cf8a9b322fa60b0af6e902c7c9",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:05:48.424203+00:00",
+        "acquisition": "2026-11-26T14:05:48.424586+00:00",
+        "attente_s": 0.0003903750330209732,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 3,
+        "cpu_qemu": {
+          "utilisateur_s": 49.635626,
+          "systeme_s": 0.69653,
+          "reel_s": 50.00314754201099
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 65552,
+        "octets_par_sens": 51589424,
+        "intervalle_pair_ns": 47534514084,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:06:38.470801+00:00",
+        "dma": {
+          "pages_touchees": 22,
+          "echantillons": 22,
+          "attributions": 1,
+          "bme_final": false
+        },
+        "profil_verifie": true,
+        "publications": [
+          6,
+          3,
+          4,
+          4,
+          4,
+          4,
+          4,
+          8180
+        ]
+      },
+      "capture": {
+        "trames": [
+          65552,
+          65552
+        ],
+        "octets": [
+          51589424,
+          51589424
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      },
+      "session": "ETH3 session client=3 service=2 pilote=1 incarnation=9223372036854775811 generation_instance=1 epoque=9223372036854775810 generation_materiel=1 mode=5 racines=[0, 4, 1] boites_globales=2 endpoints_globaux=5 ipc_pages=9",
+      "bilan": "ETH3 bilan mode=5 materiel=Ok(()) retrait=Ok(0) acteurs=[Exit(0), Exit(0), Exit(0)] appels_pilote=208991 ipc_client=491896 lots=8208 mesure_ticks=47380412000 serie_ticks=47539887000 quantiles_ticks=[5757000, 6039000, 6211000, 6605000] hz=1000824218 changements=3316508 reveils=1524677 cpu_ticks=11956 idle_ticks=1 pages_ouverture=298 pages_publication=298",
+      "ipc": "ETH3 IPC colonnes=send,receive,put,take,features,autres client=[180389, 180391, 65559, 65552, 3, 2] service=[532818, 532831, 131104, 131111, 0, 2] pilote=[561421, 352429, 65552, 65552, 0, 0] mediation_ticks=1426258000 echantillons_cpu_usr_sys_idle=[1200, 10687, 1]"
+    },
+    "temoin16/arm": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "arm",
+        "cas": "temoin16",
+        "elf": "074c1b5d1a7255d3d10798bfff998fe4b9dfab3dfae17bda653c8c825d555ee6",
+        "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "distribution": "5930b0d6cb3d1e2307f8f630fefa52af8e76967f4f13a4c34674be8b94205f9c",
+        "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+        "limine_arm": "bdf0c089d40ea7de9879a43c2a3ea648f1ea0b2eb297e8b1a750511db872b2fb",
+        "relais": null,
+        "debut_attente": "2026-11-26T14:07:57.255605+00:00",
+        "acquisition": "2026-11-26T14:07:57.256201+00:00",
+        "attente_s": 0.0006108330562710762,
+        "qemu": {
+          "qemu": {
+            "micro": 12,
+            "minor": 0,
+            "major": 10
+          },
+          "package": ""
+        },
+        "cpu_qemu": {
+          "utilisateur_s": 0.877496,
+          "systeme_s": 0.104847,
+          "reel_s": 5.859518332988955
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 16,
+        "octets_par_sens": 12592,
+        "intervalle_pair_ns": 1352208,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:08:03.166990+00:00",
+        "domaines": {
+          "bme_firmware_sans_domaine": 1,
+          "attach_2": 1,
+          "pic_pages_2": 5,
+          "map_2": 656,
+          "traductions_2": 5112,
+          "unmap_done_2": 656,
+          "detach_2": 1,
+          "attach_1": 2,
+          "pic_pages_1": 7,
+          "map_1": 14,
+          "traductions_1": 2448,
+          "attach_3": 2,
+          "pic_pages_3": 22,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "bme_nic_confine": 3,
+          "traductions_3": 219
+        },
+        "volume_relu_identique": true
+      },
+      "capture": {
+        "trames": [
+          16,
+          16
+        ],
+        "octets": [
+          12592,
+          12592
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      }
+    },
+    "temoin16/q35": {
+      "campagne": {
+        "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+        "arch": "q35",
+        "cas": "temoin16",
+        "elf": "e9a3cd6bd45923cb2b9ac681597c557842df8082252869c084e9092d617b3a0e",
+        "modele": "dea251a3cbbaf2d9bb1110b5ebea82ea44ee818875f7bbe7e7419f8e542c90ef",
+        "succes": true,
+        "commit_sources": "0d2a629a0fb98f7bd9292646f1a88f52813817d1",
+        "sources_suivies_modifiees": false,
+        "entrees": {
+          "novaos.elf": "e9a3cd6bd45923cb2b9ac681597c557842df8082252869c084e9092d617b3a0e",
+          "BOOTX64.EFI": "cea27ab79870a6e6334b5162d58fa52437e0d3384ac20cad7ee0b35a4f8cc0aa",
+          "limine.conf": "586110533729d339600bc54e3b564b66ba9438e8e3f6f9ed508f8a7d8a4182b1",
+          "support.raw": "edb743b5c1e9ce961ceb8cc790b75ed97625a207bd007e3c2a2a7aed27b6e8cf",
+          "variables.fd": "0985ebf9082f17bb06a7bb88e86c5373d18b651383271536dfe538762183e325",
+          "OVMF_CODE.fd": "e3a7a2c7f9bddc1e11f774a50029b549a06c883a81d44d63bcd7d8457e4bda0f"
+        },
+        "debut_attente": "2026-11-26T14:07:54.219381+00:00",
+        "acquisition": "2026-11-26T14:07:54.219721+00:00",
+        "attente_s": 0.00034545804373919964,
+        "qemu": {
+          "qemu": {
+            "micro": 3,
+            "minor": 1,
+            "major": 11
+          },
+          "package": ""
+        },
+        "cadres_vtd_controles": 3,
+        "cpu_qemu": {
+          "utilisateur_s": 2.134958,
+          "systeme_s": 0.163705,
+          "reel_s": 2.3225264999782667
+        },
+        "rx_sans_tx": 0,
+        "rx_filtrees": 0,
+        "trames_par_sens": 16,
+        "octets_par_sens": 12592,
+        "intervalle_pair_ns": 1261500,
+        "erreur_pair": null,
+        "liberation": "2026-11-26T14:07:56.582985+00:00",
+        "dma": {
+          "pages_touchees": 22,
+          "echantillons": 217,
+          "attributions": 1,
+          "bme_final": false
+        }
+      },
+      "capture": {
+        "trames": [
+          16,
+          16
+        ],
+        "octets": [
+          12592,
+          12592
+        ],
+        "rx_hors_profil": [
+          0,
+          0
+        ],
+        "sha256_prefixe16": [
+          "a4d459cab40119ab52491cc4d1a8be57b8724b5bd639292059b410c5cb972958",
+          "0246ff94a46978fd3594e693f958f0f67ab375e1dcd045abe5bbd4cc1929873d"
+        ]
+      }
+    }
+  },
+  "inventaire_sha256": {
+    "port/arm": {
+      "arguments.json": "a0380cf62b64356bafe14d40461bb67c0a2c36ebf9919ed00c128b4a8b3d5202",
+      "campagne.json": "c34b7352dc365657c4671aeaf32494fa95bc621e2b8b7c7e4e38c29f456003e7",
+      "fin-mtree.txt": "a708bc6acc6710c93f1889aaec4abc9caccb4f8a83a2f34a70b4abcc352344bc",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "03df0f9bf2ccb2e5fa26821b6366ff4c3c4a4bd58ea5f0712f7af0f94323ce96",
+      "pair.pcap.gz": "821b1ea7c0b72ca60883c8c1eb533382d1cd2c55cbcae4c1520207521c3122c7",
+      "qemu.trace": "5ad547c09a8e945ae1739fb1203f7629af1b6bb699960fb066a531ac75164968",
+      "reset-mtree.txt": "e2a350d299b0c32267a432beda96c017266aeee4a8c7ebd2005cf5287d527ad7",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "2ee069aa8f7d8abf2ae271a9fa5cfe0df9dc89cd1d751a28636fd3b92f830248"
+    },
+    "port/q35": {
+      "arguments.json": "ab0911917f97766da363d1c410d3d0922169cac2a9a81c61141096923665f098",
+      "campagne.json": "25311a1306f81d7ded71e1989672e13592f52ca75da84c0a8a308d5376cae87c",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "f3c0921b74c33a01c30a53904e0ff7c25f81be0c2030eb075a019c2eb84786ab",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "f156df4d41b9a0c114aaaeb27da025a70beaa7f91a4c496a750f75c58d41f55f",
+      "pair.pcap.gz": "11238fd69842d58f2dd571c2e8bdffb26f142540ec3f4a50b1ba2d2a3cb4ad83",
+      "qemu.trace": "21a0d3394bd9925c1bf9f38078330d530f2798ebd7217ffef6008af030330666",
+      "reset-mtree.txt": "1786932b75b6ee8aca4f1924ab5dd7bfc11feb57ecc26a9a8587f1ddaeff0655",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "373a47465603a5b3c963dc22530505525fee7fe8f6c37e2e5ee9dcc3980c3e7c",
+      "tables.json": "22ef45869a480e303f229a4bcd8bd1987f1c674dc2a7a3957d11381c4e08f6a7"
+    },
+    "boite/arm": {
+      "arguments.json": "51ff130fa5105409390c91ae597f145f6cb17ad937c3e598c306a9d34febfc14",
+      "campagne.json": "f859eb5397df2e974682419db5b44d41395adb673a467f757b24b5b4577e4dfe",
+      "fin-mtree.txt": "eec1e1c8ea3c788421fc83fab661aed63b879615a11fbc1b15a3ec10f2ba6972",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "2d4eb7fd20a5452ab3dec92f5e3165b87835496f5dc07c139b2b3aadff5a006a",
+      "pair.pcap.gz": "d8b2854e1d76cae155740e1e6ddeb93603667826359667f2807007487b9d398a",
+      "qemu.trace": "be7efbffa52978a01139581305c840f14c06fbe9cb2c3f13cdd079972dfbce19",
+      "reset-mtree.txt": "c351dfb1e5f7fb406bc257660d6ded2eac8bd4111f253a4da4a40f68b24be4ce",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "59320c8c57c9811e38f1c3a3213cd9f911fa87e8e0fe923f4f9b013535224925"
+    },
+    "boite/q35": {
+      "arguments.json": "2ffefe09e343b2b9cb530aefc5fbdc84baf688374b777809363f4bd037327712",
+      "campagne.json": "f9e21cd86e582d8e09dafe47788ff0916318b0ef1f77c3ac26c2dd8a2e4bb225",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "c3ff33039f187e68d5974d4305abb9e8fa477c5cb1680217f9ef109ec2539ab1",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "60de3efab6deede3ded394e47b36be92752d074f687db08c47880c42d0063d12",
+      "pair.pcap.gz": "83f172dbfc222deef4399c68088dcaa3ab0dbcd6e955faa34fa74c9158e27a63",
+      "qemu.trace": "53a35a39c5035654f3654192d43072653141390217280b8ccb384ea2bf08cd53",
+      "reset-mtree.txt": "e7d4ceaf912e6b8ee61805cfbd9e01b9d62691af0b15b6f3a98747cc6f283ceb",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "e831f40e71cfcfa3417cdca6b04c4e86c92d713e7417e8a76526c6b3fd0e4569",
+      "tables.json": "22ef45869a480e303f229a4bcd8bd1987f1c674dc2a7a3957d11381c4e08f6a7"
+    },
+    "data/arm": {
+      "arguments.json": "d8da86afbf9171348748769948f2a76e3610f3842a2f5e48172c44871d11f14c",
+      "campagne.json": "bb62ed1fddfbec7a0f50a2cc9190ede03379421e3f57d069e4737915d13267e5",
+      "fin-mtree.txt": "a4dfc8a5b985996d2227123340dced493f035559f3e5f54703ee6a71d6ee7deb",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "c205b553c6b269f067dfb33a948466feb49d63e4e309047128411172d053ddcc",
+      "pair.pcap.gz": "ce3e0867c5b0a4ba3b31f483a1267dc8e867fa85c6784647309cc784c417f1a7",
+      "qemu.trace": "0f0b8f60332eba76e53e0ae11df71d6985224c45a5cd302c853a8a77490a3d57",
+      "reset-mtree.txt": "05af781aa3dd1ddb68b50a37526e2b9f036a973f8f5e8bd6477621dca9937f24",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "4d071d46eb048360f9bc850523b01640c4296a8a1a77eb3be92993002799fbf8"
+    },
+    "data/q35": {
+      "arguments.json": "aa1382abdd8e9d724099de2b1685c3a6540775db4dec8b3197328a973317aadc",
+      "campagne.json": "7bb3dfbd42ccd35e4def5900a44e9dfc32cf6b246a4b302ea19cd8857c9759bf",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "9799c78e39d95815ca6e1786d989cd7829cf074134279cf6d9afc0bdd1270f3a",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "bbbd58f734c5f5c831c4287879d3d4c74c0edbda509eea0ecb7a611a1f797cb6",
+      "pair.pcap.gz": "df8d6e8a32dc64ec1f6fc9a8594528dab9cec9e7efc42efac291feb87ea274f2",
+      "qemu.trace": "53a35a39c5035654f3654192d43072653141390217280b8ccb384ea2bf08cd53",
+      "reset-mtree.txt": "ff1b5a8c4f0b9f3096db59eaee372c770fc4a37df1b0d9c6fed14391d2d08148",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "58a360164182ba5773ea4baad0dc2eb65d44e8a62c03a45708a5618f5904ae17",
+      "tables.json": "22ef45869a480e303f229a4bcd8bd1987f1c674dc2a7a3957d11381c4e08f6a7"
+    },
+    "plein/arm": {
+      "arguments.json": "4dd05788dc9e2437f1d55d18e9b2492f177ebf9cf665286c8418be33a79c16bf",
+      "campagne.json": "b362a726664b7b46285ad581d192c0df2eccede1a88be92ad43f969f6f9f990c",
+      "fin-mtree.txt": "515cf4c09cc882c02449b93bad7dd59e03eb8eaddca8b71de40743f3287a3c66",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "166c05c088ba65a4b49b815f8d9da13d468e9dba68b0175cc28ddd07a65709ed",
+      "pair.pcap.gz": "6a278050c7a79bd0a9f90d883b9da6deca56922c2af43ce36479a2c4ab199a98",
+      "qemu.trace": "876046d7a3aafcb082ccfc011455d372fea3eb3eacdf05b116225b74805973f0",
+      "reset-mtree.txt": "591586ef6e43aeffcf590bde82ec8d6ea1608d51a4c91746d66344dccd0ef5a6",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "ef1896846aeb858d8fef79db340ec80771c9430361e88eb7b008e9e82b00bd62"
+    },
+    "plein/q35": {
+      "arguments.json": "0d0285fc58a1ad14e2dd1eaa1f619e35f682a04d3fc3eb578ae63f04d82fe509",
+      "campagne.json": "f2a01eed64a986bd884bb216c6b0462c1f09d5ba865bcf918ac3be8ff941785b",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "462f3337a3c34ec77f9bf9eceacbeff0bff4bff81ef4bb452dd5028fb9d1901a",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "7233b41b9c3112cae231cc59ad0435fc75691440a552a6181f1a11d042cc5a50",
+      "pair.pcap.gz": "8baa138d57d988ffb4b58332dde3b2d179fda15ccdee59db94f5e099347c28d5",
+      "qemu.trace": "53a35a39c5035654f3654192d43072653141390217280b8ccb384ea2bf08cd53",
+      "reset-mtree.txt": "16191a978e72bb85e7559e39b4e5bbe135b44c55f7804b444226bab7345cd330",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "bdc16695231bafaf45d1281911c4cf207bc8bae638e19947930f8f522ea84083",
+      "tables.json": "22ef45869a480e303f229a4bcd8bd1987f1c674dc2a7a3957d11381c4e08f6a7"
+    },
+    "veille/arm": {
+      "arguments.json": "89f694c143a534431e71cb6247643b75f49c0210b1259c6976cfd8b3e8620cb4",
+      "campagne.json": "0ba673c14f7b548e54008b1740f73495571b2e5e5253ce401a110f9d2c761749",
+      "fin-mtree.txt": "5d54e68399d54efd9f1d21a605a353f3269440337cb3d4a76f2145b46982a78c",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "5f4b0fbcc4afea4a472da35f05597eff4b9a4c0b7e50f2246cfa3a47b7cd8fee",
+      "pair.pcap.gz": "cf491ec3ffb27c2e90032dfe19d6e38f4b71075a0cba9a9e67cbc7894297525c",
+      "qemu.trace": "2dbfd894062ae8d47e5b6a981a6c66e46e87417cf8512b2efbbd088a6b93ceb9",
+      "reset-mtree.txt": "678864bce5bf772afd972a429b7723c9fe875178ce05ad784b9aa86eff9a93cd",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "927dfc41525a8591278b6641e41438781f7464b630686630942b9c04fef0d335"
+    },
+    "veille/q35": {
+      "arguments.json": "0bb141cb12e9cfef4c88d2823fa9e6fce20fe046b193314ed61307bd48f656d3",
+      "campagne.json": "4a6f95bf8c2790c80330372919da33cf119f98a2e380072e819786b286c3d98a",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "8c4f0e725956d518109aded0061cad0996a38954771ce4b903e2f66bdb442b5d",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "2729e358db9fe60e62fd37df835f13d1e96b41126d101ee2321a17ccaa2df936",
+      "pair.pcap.gz": "06c9801e09d1e4abd8e509225c1eb1a9b45c5a61a9ad744decd938660623e619",
+      "qemu.trace": "eb5429c25a1899a3bf2bf9f33dcfd606bd1e667cde31e519246654c237fa4c0d",
+      "reset-mtree.txt": "e58d0d1ab36fc82bbcb876b4d8b4075a8cfbcfd5b496b12c461ae85faf7eefda",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "911779c8ca9f524e595b2aa0ca6ae8c566ba76bde939b1ca876a9b62d140fef5",
+      "tables.json": "22ef45869a480e303f229a4bcd8bd1987f1c674dc2a7a3957d11381c4e08f6a7"
+    },
+    "filtre/arm": {
+      "arguments.json": "9702129073a0ea9fb2a517c2cbd37bff059ca897fe92d7ec5afc705c3817925c",
+      "campagne.json": "2ee84aac36668d9a3fbd0d4c0e226a270be9e675224ac3b16fe1805473d3172c",
+      "fin-mtree.txt": "d204e585d301e2f6c6ca876736a8a1c033a34810fdab630bd0daa2e661a340b2",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "5f4b0fbcc4afea4a472da35f05597eff4b9a4c0b7e50f2246cfa3a47b7cd8fee",
+      "pair.pcap.gz": "c12bcef60f6fb37c8d18a9bb0122b19bce5c2da5322aab3d104dc8bf7a11bb3d",
+      "qemu.trace": "bffb1b79a2cde886836a6465f2bd97ba15710cf88a93f7dc3e745170869dc8fc",
+      "reset-mtree.txt": "54b67d17c091c37dc97e65b8737802f1aac50764d5146f4d936aa91f6dc3d7f7",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "f01a35a02b1150921bb288362fd7d879a3aeeec1237857cc7d0da3e81c3d2aa2"
+    },
+    "filtre/q35": {
+      "arguments.json": "0b819b5529522c516cf43f2bfaab4ec688eed4b340e5faddb1f85746b7323a69",
+      "campagne.json": "8956045681a7996abc354088421bbcfaf292ce1c7a1233ed4ee017cc6db7af86",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "b86d9562bb0aa6d72086f6e14f5cb7c52af89a6f06ff82426e6d96709df18eb5",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "2729e358db9fe60e62fd37df835f13d1e96b41126d101ee2321a17ccaa2df936",
+      "pair.pcap.gz": "438bf5f721156cd1ea8229cf1792dbe82b27fed73d2616fd3a7a912f8d9339e4",
+      "qemu.trace": "79a05b8e9b26de38dca9c23b92b45268de3a1459ec2240eecc73e6ccedcf246b",
+      "reset-mtree.txt": "05684856a4943e06d75e8ebaa53eb474f94d1959b6991bf212711e4525498231",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "2af25a081e0674758a7537931217d422e74bfd6c6e696829697922225d2226d3",
+      "tables.json": "22ef45869a480e303f229a4bcd8bd1987f1c674dc2a7a3957d11381c4e08f6a7"
+    },
+    "court/arm": {
+      "arguments.json": "8725ed0e7a8928c26e9da0542776dfb5c768bce97fe44215cdc86f6180f63548",
+      "campagne.json": "0d4fbb5a0820e0ca304c353af3d83bfe9d823552b10bc81cb64f480ecfc52e9d",
+      "fin-mtree.txt": "00bff5f1c0b4a54fdb49e56be219cde02d4ce9fe79f737e9684709befcb3c934",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "e80c9f352e87ca1d902cf6b571d512e5b9e1da1b8a0c4fd318a6c0b354fa3b6a",
+      "pair.pcap.gz": "6f71dd524d92c74a3c465976d300a75081b3b4b97947d0a4c04c2a716d29e19c",
+      "qemu.trace": "58a3d814382474b182bc7b10ae301456545f8b86d88e41bbb3538e7b23d9881d",
+      "reset-mtree.txt": "1b518a5c37601d6db609f4cb90a614da5e09e259ab48ec1919ea7ab6076e8eb0",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "8d174f90829271aef4262c8334a396e2161ffb9448c9e5270fabd3e3ad0c69e9"
+    },
+    "court/q35": {
+      "arguments.json": "ab484b1525bb6576de7d7e4d7f954ae4bd7d55866d25134366b4e1e14331c57d",
+      "campagne.json": "0dd3d73a54d2c297a38f066ae783e1b0f7adf3630cdee147961aa475ce5a99b1",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "42bb0937dbb2ade20b5ecc489829249c6eb9b9df0620df31ebb565583abcc9a3",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "388f4e241a61968bcb87d8846e1ffb04d4cb5f98d348d4b1292b6b51dfde3288",
+      "pair.pcap.gz": "5a42a835389b2c6a0a73fd5b87b69b22fd78c60e5334838e1737ac4840588ce4",
+      "qemu.trace": "0c33424d8821a7f11ccc59efab3adfc07ee9dda3099d1e67caa362dedc346867",
+      "reset-mtree.txt": "b52453bfab9f85fdd52468ece7263883475c95c7778a88f0657f065aa6175aab",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "8951731300e924e2c4aefbaf98d202cf9b57fcc36d9499156334290613d24c6b",
+      "tables.json": "e166180f5eb82dc51d0e9b4ee0cc3c131630fca6f2e9c585797a527289c07bd3"
+    },
+    "deces/arm": {
+      "arguments.json": "1f3d640f7ad27ab55957b106f6523813a49897da7272d02ab685f2a7e39520af",
+      "campagne.json": "92000136d64e9c65f31b5a8f8b6c3ace0e1d55e7005cc39d2e6a58fc5d5caef3",
+      "fin-mtree.txt": "19c5c11912858b49fbe2fdb16f256b6423c37f692c8d308ae95d6c46a1f2f694",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "a96956dc33dc29d1614210885e63756d223040a5c64d11c452f1bb2fd62ee74e",
+      "pair.pcap.gz": "08f6aabf3767733fd4b3f92fe038779645fe0fc2b5652c904a3a46b82b18d80c",
+      "qemu.trace": "aa97ef92c6996f4889baddcaec1f0015093fcd3e5cb7f238ff237d774f1d51bf",
+      "reset-mtree.txt": "7f0f62b1317cc4fe66765e0d04434695b2d490157f262fe424745a3c6d8e9350",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "63d2b8e5adbcf358c915688565d0b79089602c4eb97bcae5071d8b0d27bfb2d9"
+    },
+    "deces/q35": {
+      "arguments.json": "e1c2438607f7151aff1aa7e488d2c8107aa39f239d9ae63d5453afd921d5ae27",
+      "campagne.json": "f3d93865488d98b09c715ad1f5257ce87216f0cfc65c7151fcf14d3ed058726a",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "a52eeb9ea677ada3e06c6f8186efe0e5ab671e359a1e1992d2183b4d385cb559",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "63e5ee33f54a705ae62d76f7f70aa4438e54d9b91058466773ec518f69fd67b9",
+      "pair.pcap.gz": "45a71e312652111e7dd2f500e357f675c67b68c09178bce3fef1ae82b4c3e836",
+      "qemu.trace": "a2885a1c3080500860428a9d19aefd4f23ebf4a1052a8664803bfe145f10712f",
+      "reset-mtree.txt": "8f423eedc038f8483b12f45ad414863f00dc2a151e6cc0c99837b417dc833a05",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "75925178d4e5783a98a51cd6b07785f889e4205999f32852321abf54cba19a6b",
+      "tables.json": "e166180f5eb82dc51d0e9b4ee0cc3c131630fca6f2e9c585797a527289c07bd3"
+    },
+    "incertain/arm": {
+      "arguments.json": "84bd7528e000fe0e533b31522d6b0a061d283c39b1beb44094e8f1e6582bedf1",
+      "campagne.json": "8b3502a292f6976df228f9ae5c9b4f3d11aa0df027faa724472be18a9b90daf9",
+      "fin-mtree.txt": "2ac8da0cdede1aa858dd7bab5276f9760d7812c6a9edd98e4ccf9f231c29bf42",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "8b6c81806bb26ef140258692427804df6e8871f8eccd8b7c7d84506412db812d",
+      "pair.pcap.gz": "c64f118f815c172d4f5ffa15b8145dd59186f70d695f83d428a0a192f7569f61",
+      "qemu.trace": "0c4f64e4ca226eda599582576437ac02e3efb4fd1ccca8bdbcc5a065ce8a2a07",
+      "reset-mtree.txt": "e78fa46144ebb6384c1369a925c206bf07ece47f12c3382192ac58cdc11563cf",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "d8aabb7c6e8a142939f5bbd6f94676c5b9de6e0e99bff7023b403183aa7790b6"
+    },
+    "incertain/q35": {
+      "arguments.json": "3d344f0b959a30cfc3d703b227f37e217dee27908e2bc24854041efda6005f77",
+      "campagne.json": "2c735a84387b18e13c24f7b28f550c7ac5ac6136b562032a863da416b050a21e",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "87508f913b61333c46880566f38b320c1fffadead4b86a650c8536cae4a5a380",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "fb9d4d06b68031b6eb954ed20b280946d2a5b845904b06cd85e9fd5e6ae18992",
+      "pair.pcap.gz": "ac279b507bcae21c0bafeb015148eb266555dbf5f2e8618e5ddff8405185c9b3",
+      "qemu.trace": "a2885a1c3080500860428a9d19aefd4f23ebf4a1052a8664803bfe145f10712f",
+      "reset-mtree.txt": "9ffe290b9ad6b0b664c41dc56862ce110be9eba5a894a1e4346388db2a3a9d99",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "b90d0141f6429d38c50433ae9ee6bdb01ab568bd75ca2bcd280840264d4d59a6",
+      "tables.json": "e166180f5eb82dc51d0e9b4ee0cc3c131630fca6f2e9c585797a527289c07bd3"
+    },
+    "revocation/arm": {
+      "arguments.json": "c21663d70a4d7697f3556fe95a749ccd692220981c96a9318aabba559b7c9b19",
+      "campagne.json": "509480210e615d3c82a4ea91d61662fe7b4e568ba34b5551460dd0ee844cb9ce",
+      "fin-mtree.txt": "08c8cf0a8458a2c34143100e26f39afcfbd21cee025b8320b035af8c967b9e31",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "3cce69e0259ecec8710fa17dfc0596c79d127046999da65e981c95b47a668651",
+      "pair.pcap.gz": "ce49db92aa1e4edf94035d4473aa766dc78738eba4080210921611d06078b7a6",
+      "qemu.trace": "d0af80b54498c75eba3c774d46ae7c55fb8f673713200b225c1f8279822b0e56",
+      "reset-mtree.txt": "24ce0229fdd4aaa4b3bac52a5da988c1e0f1738d63b788b0c32176c9a5afd6ef",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "760d4787049273e507f5bf8dc1da22f1a27248809d562a182930bbab01131cfe"
+    },
+    "revocation/q35": {
+      "arguments.json": "882f4d04ad3ed42bb5d9a7e56d2144f6650c16d115e468e12dd8416e126bdf43",
+      "campagne.json": "239e3ee5667eadd5e2367b2c5a135dad8e75ae9144756d98e162921ea9b201a9",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "85c54f6eae07e9329132cfe311cca2127acb19cb0628bdab79de22f294c5cdac",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "1fb39fee70422251d41f130029ca62852ec9154fcfe6636ec96428e82e5dcfc0",
+      "pair.pcap.gz": "aa36726ffb1ee5f995ca6ac16ed7ebd835c3921cbcd75d24220f6687fd24574a",
+      "qemu.trace": "a2885a1c3080500860428a9d19aefd4f23ebf4a1052a8664803bfe145f10712f",
+      "reset-mtree.txt": "9e075111a75a8191e16b8bb6fc8fe1d5f501ce7ca114e8fe5543760c5b3be9a0",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "992a3a51c0e8bc90e5d0a61939b25835844a512349cd1bcb629fca144a4475b2",
+      "tables.json": "e166180f5eb82dc51d0e9b4ee0cc3c131630fca6f2e9c585797a527289c07bd3"
+    },
+    "mesure60/arm": {
+      "arguments.json": "87a2d50fe31d0c9fa8629db4b379677296a4e3c25dadb299687c7586acbee8c0",
+      "campagne.json": "5292f39b6dc589c46842247d6f658e6572880f5e9de2bc2512e7884d4fd785d9",
+      "fin-mtree.txt": "6bbd1365781a8a918dcad2a7653735ae76abcf136ce283c22e17460cd8d673e2",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "1fd9e8c67d3f1737b54071ea07196c664bb8039b4589ee21d22b5daed8afe026",
+      "pair.pcap.gz": "fb9a2722537b2731825f361d3ae421654d8436843432f358cafea2b16da1cb5b",
+      "qemu.trace": "031cd3351f56809d55913c039fca16a70ff659cd12b89d5695cac7fc1f9cc52e",
+      "reset-mtree.txt": "23e6aceea6dd93922897fe09135790d8e06746ea56e6256c34e1885c983f4d3b",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "f5e6131c55aadf96496b5c85b863caf60bd3994f7ce772b8ddfdfb8444fd79da"
+    },
+    "mesure60/q35": {
+      "arguments.json": "1c6452c9a7b3c6c80385a363952639fd42955dc245ca0899ca825e6ba61712df",
+      "campagne.json": "462c8e12930711c82a8d57b773e3889072413a49b7d5927ad3f2a7d91c5892c4",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "8002d69fbfce0ffb511eb6b4bbccaabed540a560fa077d085ba58eb5bed2cf2e",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "229b53fe8ac02fc354babd89efc5119d31d2a1af718858bc24b0de041b694e45",
+      "pair.pcap.gz": "6fe409d52f7dc514ffb187287830c8804d45c1d3cba06d95bbe96b2ccf9857e9",
+      "qemu.trace": "940db69d78549ce6822ccda38a936cd3b1c6a76a993b696d69fff988c3df4935",
+      "reset-mtree.txt": "6c2ec75a44d76f9159c70e67315fe2a4ca5c026b13aadc025855eb85a7be84aa",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "b58741ce1965b3b1a576ad2340ecf3df231b9f29eb5659c9204070341726d5b0",
+      "tables.json": "22ef45869a480e303f229a4bcd8bd1987f1c674dc2a7a3957d11381c4e08f6a7"
+    },
+    "mesure1514/arm": {
+      "arguments.json": "930de4ac4ddef3dbda2612fe0f7256a4c986c441e45da232366af5600f0c550d",
+      "campagne.json": "2be1390cc63e6af1e3a955df91739020f68264511feaff8451fcf53c6a3b5f01",
+      "fin-mtree.txt": "7cee27b5372912defe486db5987e636e895b34d8ee6b0577756f72673e3bcbf4",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "585765086a0ca1e197029fe648fa9bd6c8a5ffd8cfd7072e8900b0f4a865e829",
+      "pair.pcap.gz": "c7b749d62d0a63d74c5d61a235ada4ced721c39319df691cb9a508fada236864",
+      "qemu.trace": "3268e82fd9fcfbbdb3ff96359ea057e92095b2af0783cf6a9cc125522bcb8d50",
+      "reset-mtree.txt": "fe2a4c3b3d5e73c04de97fa78786933995e0bb3e11134ff5552e21ac84258d38",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "218a9282754fe4419a11c1c46abf47385aa80820fd43494553bb84f2ec94758b"
+    },
+    "mesure1514/q35": {
+      "arguments.json": "c4c74774789c22d27c3a79f3d6ac07f9d3514e0866cfefa749dec045168a1bec",
+      "campagne.json": "742cc3ad5e56a4ccbecf67406b384423135871a9219ac742c33ef05cdce50d27",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "36908752be41431497dfc4833852b0533231de1d4bf296447c33956aa6793475",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "7eaadeec988ef70544f33797e47e7d0861b99c9c1b809fa7cf1a51d5710c0763",
+      "pair.pcap.gz": "9c27f4bb2719b359609356114decdff78e243700ded62d396f70b764f0f50f3c",
+      "qemu.trace": "a444f8a6703d87a294e8d8072acda29d1056760b74bbe93950cf7875668f423d",
+      "reset-mtree.txt": "148a432d2943e4fd483d8ad4b335da93936c2fc59f1e07b1f2cf4ad3a0150215",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "757b35dccfec02d8135009c275de13372689f1c59c5d76c1e0e2abd5bfcb9752",
+      "tables.json": "22ef45869a480e303f229a4bcd8bd1987f1c674dc2a7a3957d11381c4e08f6a7"
+    },
+    "endurance/arm": {
+      "arguments.json": "b1e9b203d8f64fa17ee9ac2bf67c8c997aa258179b2a99b995042fa7996736ea",
+      "campagne.json": "8902694d5fe18026ad71a59436c82d7dffb68185e897bd8891702508cdba89c7",
+      "fin-mtree.txt": "3a6ce833a9eee971a3d9c02607c3212a4422ab311abf3fdaabf88592d11e085f",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "18b180636e8591275ae6b935b315e8f14ee61f86a15f243b4af85a2b13a7fb9e",
+      "pair.pcap.gz": "16afaf08e1fb59da4a201ee37623fb5bd641b906b206707ee55c9ed965cd738c",
+      "qemu.trace": "27cbc75e9ac6a96ca97e14cc811870cd98de180362007ef97d3e7f2c52713b18",
+      "reset-mtree.txt": "ab4014e7a0ce156f9c3e0d240af12f3432662e22b3d0a6fcb7570bd7c5d8f993",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "5c15dca4a2434729fc8c2b920ae6cab6383c91f6befbf36fa65de81d3b19bf6e"
+    },
+    "endurance/q35": {
+      "arguments.json": "dca8b9c9747c0d54cfa994aa240c3dae6067d9e746881c6a4b455d3fc900f303",
+      "campagne.json": "48376944640c71880445d991fd86ef6468ff3ef0637041619130387a024f494c",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "cecb9496374ae37b0ac44ee0e2d36a192a1bba55bf9f4b42183908df119be2ee",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "28eaed91ff6fa8977487adb71b2b0504df4ccdbef5ebe524ff383695cf87fcc8",
+      "pair.pcap.gz": "90233aa0968930810d9bbab4297ff09abc4fcb3d960df269f93ee6ea37663934",
+      "qemu.trace": "ae4b580234241339f2d5a5c0463ad3721324e2c6c6cc9ea088e713f551dff4d6",
+      "reset-mtree.txt": "d865458df2cb3fb202cacdfb19a5ef433fb7eb3d6b4b08a10398e1508f8a5bf8",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "bed579612001558fa44cabb8925a2e7166373f420f85c4b9b8c941056af8b7bc",
+      "tables.json": "22ef45869a480e303f229a4bcd8bd1987f1c674dc2a7a3957d11381c4e08f6a7"
+    },
+    "temoin16/arm": {
+      "arguments.json": "111e0c64f3d4e667d04ffe8fcd03acbca7042ba24a8ac760eafa4d4229a3a51d",
+      "campagne.json": "c310f171fbd968dc3c26fac27adaf26d54f90aa65808fae65825f1fbb2327fdc",
+      "fin-mtree.txt": "54db22ab1ef238e6f73d22486092b425c5c62334ab63005877ef0b0bfa5a61a4",
+      "fin.json": "85f6a4ca7572b4cb6497341c4afe81b5319bb5d8cef4baf5ad4de18e392680e5",
+      "labo.tpm": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "novaos.elf": "074c1b5d1a7255d3d10798bfff998fe4b9dfab3dfae17bda653c8c825d555ee6",
+      "pair.pcap.gz": "041c1716567122999ebac3963134bcfcaeb37f088db27c185ac85c46c690d625",
+      "qemu.trace": "7f3e8ec5398649d054913296632c8bdc634a2e00f7428c5d1e6efae3463d14a8",
+      "reset-mtree.txt": "4fcae50669045e0f4958763fdd27e001a86bdd43ea3793fe89bf3fa6273964cd",
+      "reset.json": "270e94a66447313e9b12e8a4cade5cae2688b24c156c407b4b6d2eb3e5cd1aee",
+      "serie.log": "b88cb9bf64636b9217da90c6ed14e22fe703e741494e3f54fe723a87d997bfc5"
+    },
+    "temoin16/q35": {
+      "arguments.json": "b93cee9333a0604d166ee572a9061b64ae7f36ff6fdc35f38dd798a4edea2dfc",
+      "campagne.json": "b818eeb4c7c461eb845f95d831921ec9cc4d67f8768dd643ba5fa48771fe8a70",
+      "efi.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin-mtree.txt": "76f8ad495460f0991df6b33e2625937b5683a11938382903a23955bdbb46d689",
+      "fin.json": "d7c03c462c1352ee281d670c531a5d6e244dd0ac9307bbdf61ef60684203228e",
+      "novaos.elf": "e9a3cd6bd45923cb2b9ac681597c557842df8082252869c084e9092d617b3a0e",
+      "pair.pcap.gz": "7da919813c51490ff93d4f0c1ffc87051317effbd2e8fdd4a6b50b98c4a33688",
+      "qemu.trace": "0a3045a4bfa136e47cffcbb6b3194c8a5def8e79e3aa63420f2f13dbf05a3a97",
+      "reset-mtree.txt": "ef8ecd82a31376e9cab68d4b47ba10ebdf1aa8a40b97f0aea9854ca6305f976d",
+      "reset.json": "dbde09bd6b93898255dafe676e95f7fe559b018e54b04a188a879351202ffeed",
+      "serie.log": "1f5109e4db6a03d10eea688cd0464c15d0633ee80ff325e2e98c328d82e1b08b",
+      "tables.json": "891b070fe4519858a3a6bc500b5384932ad759c535743b1177bc2acad98a6ff8"
+    }
+  },
+  "preuves_sha256": "3691a7bd235670a6578d4c224c2d147943af5a2587ea0965af19cdf4e4461ae9"
+}

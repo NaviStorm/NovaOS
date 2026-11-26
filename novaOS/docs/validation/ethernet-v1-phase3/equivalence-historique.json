@@ -1,0 +1,34 @@
+{
+  "arm": {
+    "archive": "rx-corrige-20261125/arm-final-512/pair.json",
+    "reference_sha256": "b532fd9dd1b768b3fd8b47a5b12e22887af607463168892b00a97d783612362a",
+    "comparaisons": {
+      "port": {
+        "tx": 16,
+        "rx": 16,
+        "pcap": "821b1ea7c0b72ca60883c8c1eb533382d1cd2c55cbcae4c1520207521c3122c7"
+      },
+      "temoin16": {
+        "tx": 16,
+        "rx": 16,
+        "pcap": "041c1716567122999ebac3963134bcfcaeb37f088db27c185ac85c46c690d625"
+      }
+    }
+  },
+  "q35": {
+    "archive": "rx-corrige-20261125/q35-final/pair.json",
+    "reference_sha256": "d5ceacd826b3d1e2ff8b795363198b8b54fb432130b45ecb5637dea4d2f271fe",
+    "comparaisons": {
+      "port": {
+        "tx": 16,
+        "rx": 16,
+        "pcap": "11238fd69842d58f2dd571c2e8bdffb26f142540ec3f4a50b1ba2d2a3cb4ad83"
+      },
+      "temoin16": {
+        "tx": 16,
+        "rx": 16,
+        "pcap": "7da919813c51490ff93d4f0c1ffc87051317effbd2e8fdd4a6b50b98c4a33688"
+      }
+    }
+  }
+}
