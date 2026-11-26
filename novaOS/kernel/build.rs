@@ -45,6 +45,7 @@ fn main() {
         "nvme_block",
         "fp_probe",
         "ipc",
+        "ethernet_2b",
         "storage/service",
         "storage/client",
         "storage/failure",
@@ -65,7 +66,11 @@ fn main() {
         if name.starts_with("nvme_") && !nvme_lab {
             continue;
         }
-        let file_client = matches!(name, "pipe_compute" | "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "journal_service" | "service_control_test" | "cache_client_test" | "storage/managed");
+        if name == "ethernet_2b" {
+            if env::var_os("CARGO_FEATURE_ETHERNET_2B_LAB").is_none() { continue; }
+            println!("cargo::rerun-if-changed=../tests/ethernet_v1/phase2b");
+        }
+        let file_client = name == "ethernet_2b" || matches!(name, "pipe_compute" | "storage/fileclient" | "tmp_sample" | "service_manager" | "system_service" | "journal_service" | "service_control_test" | "cache_client_test" | "storage/managed");
         let linker = format!(
             "link-arg=-T{}",
             user.join(if file_client {
@@ -97,6 +102,7 @@ fn main() {
         if name == "journal_service" && env::var_os("CARGO_FEATURE_JOURNAL_PANNES_LAB").is_some() {
             rust.args(["--cfg", "journal_pannes"]);
         }
+        if name == "ethernet_2b" { rust.arg("--cfg").arg("ethernet_2b_actor"); }
         if name == "ipc" && env::var_os("CARGO_FEATURE_IPC_SMP_LAB").is_some() {
             rust.args(["--cfg", "ipc_smp_lab"]);
         }
@@ -125,6 +131,7 @@ fn main() {
             rust.args(["-C", "link-arg=--oformat=binary"]);
         }
         let source = match name {
+            "ethernet_2b" => "ipc",
             "pipe_compute" => "demo",
             "nvme_rw_driver" => "nvme_driver",
             "storage/managed" => {

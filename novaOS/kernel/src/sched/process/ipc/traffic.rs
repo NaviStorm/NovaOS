@@ -591,6 +591,8 @@ pub(super) fn invoke(id: u64, args: [u64; 3]) -> Res<u64> {
             }
             let space = s.processes.get(p).space.as_ref().unwrap();
             let resuming = s.ipc.waits.has(tid.slot);
+            #[cfg(feature = "ethernet-2b-lab")]
+            if !resuming { probes::phase2b::start_sample(p.number, id, args[1], s.stats.wakes); }
             s.ipc.metrics.entry = entry;
             if resuming && s.ipc.metrics.includes(p) {
                 let w = core::mem::take(&mut s.ipc.metrics.woken[tid.slot]);
@@ -624,6 +626,8 @@ pub(super) fn invoke(id: u64, args: [u64; 3]) -> Res<u64> {
                     s.ipc.metrics.sample(4, round, end);
                 }
             }
+            #[cfg(feature = "ethernet-2b-lab")]
+            if r.is_ok_and(|v| v.is_some()) { probes::phase2b::end_sample(p.number, id, args[1], s.stats.wakes); }
             s.ipc.metrics.section(begin, end, id, entry, r);
             (r, cookie, p.number)
         });

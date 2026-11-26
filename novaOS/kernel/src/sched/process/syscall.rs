@@ -147,6 +147,8 @@ pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static st
             ipc::instance_call(id, a, b, c)
         }
         THREAD_CREATE..=THREAD_NOTIFY => threads::call(id, args, pc, level),
+        #[cfg(feature = "ethernet-2b-lab")]
+        IPC_PUT | IPC_TAKE if ipc::mediation_measured() => ipc::timed_transfer(id, a, b, c),
         IPC_PUT | IPC_TAKE => ipc::transfer(id, a, b, c),
         IPC_CREATE..=IPC_BOOTSTRAP => ipc::call(id, args),
         crate::hardware::block::wire::PAGE_PORTAL => device_page(a, b, c),

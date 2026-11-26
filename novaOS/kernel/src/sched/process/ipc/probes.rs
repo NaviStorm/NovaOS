@@ -2,6 +2,10 @@
 //! fournit aucune porte privilégiée à l’image utilisateur.
 use super::*;
 mod bulk;
+#[cfg(feature = "ethernet-2b-lab")]
+pub(super) mod phase2b {
+    include!(concat!(env!("CARGO_MANIFEST_DIR"), "/../tests/ethernet_v1/phase2b/invite.rs"));
+}
 #[cfg(feature = "ethernet-ipc-lab")]
 mod ethernet {
     include!(concat!(env!("CARGO_MANIFEST_DIR"), "/../tests/ethernet_v1/guest.rs"));
@@ -239,6 +243,8 @@ pub(crate) fn run(scenario: &[u8]) {
     if scenario.starts_with(b"ipc-smp-") {
         multicore::run(scenario);
     }
+    #[cfg(feature = "ethernet-2b-lab")]
+    if scenario.starts_with(b"ipc-eth2b-") { phase2b::run(scenario); return; }
     #[cfg(feature = "ethernet-ipc-lab")]
     if scenario == b"ipc-perf" {
         ethernet::run();

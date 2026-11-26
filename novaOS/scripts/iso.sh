@@ -24,6 +24,7 @@ cp "$root/boot/limine.conf" "$stage/root/"
 if [ "$#" -ne 0 ]; then
     [ "$#" -eq 2 ] || exit 2
     case "$1" in
+        ipc-eth2b-mesure|ipc-eth2b-mesure-1|ipc-eth2b-mesure-2|ipc-eth2b-essai|ipc-eth2b-surete) : ;;
         cache-pression|cache-propriete-invalide|cache-test|cache-reprise|cache-coupure|cache-restaure|cache-reinstalle|cache-actualise|cache-reprise-purge|journal-admin|services-config-race|services-config-admin|services-admin|services-test|services-perte|instances-reboot|tmp-test|tmp-contention|tmp-coupure|tmp-reprise|tmp-attentes|cli-p8|cli-p8-test) ;;
         instances-reboot=*|instances-coupure=*)
             identity=${1#*=}

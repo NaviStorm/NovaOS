@@ -22,11 +22,14 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("archive",type=Path)
     parser.add_argument("architectures",nargs="+",choices=("aarch64","x86_64"))
+    parser.add_argument("--phase2b", choices=("mesure","mesure-1","mesure-2","essai","surete"))
     args=parser.parse_args()
+    phase = "2b" if args.phase2b else "2"
+    complete = b"ETH2B campagne OK" if args.phase2b else b"ETH2 campagne OK"
     root=args.archive.resolve()
     root.mkdir(parents=True,exist_ok=False)
     lock=Path(os.environ["NOVAOS_TMPDIR"]).resolve().parent/".qualification-utilitaires-exclusive.lock"
-    owner={"tache":"Ethernet phase 2","pid":os.getpid(),"nonce":uuid.uuid4().hex}
+    owner={"tache":"Ethernet phase "+phase,"pid":os.getpid(),"nonce":uuid.uuid4().hex}
     marker=lock/"owner.json"
     while True:
         try:
@@ -46,7 +49,7 @@ def main():
             iso=run/"ethernet.iso"
             os.environ.update(NOVA_ARCH=arch,NOVA_KERNEL_ELF=str(elf),NOVA_ISO=str(iso),NOVA_RAM="256",NOVA_VCPUS="1")
             with (run/"construction-iso.log").open("w") as log:
-                subprocess.run(["sh",NOVA/"scripts/iso.sh","ipc-perf",iso],cwd=NOVA,check=True,stdout=log,stderr=subprocess.STDOUT)
+                subprocess.run(["sh",NOVA/"scripts/iso.sh",f"ipc-eth2b-{args.phase2b}" if args.phase2b else "ipc-perf",iso],cwd=NOVA,check=True,stdout=log,stderr=subprocess.STDOUT)
             def observe(vm,directory,serial):
                 deadline=time.monotonic()+180
                 previous=0
@@ -55,12 +58,12 @@ def main():
                     if len(data)>previous:
                         previous=len(data)
                         deadline=time.monotonic()+180
-                    if b"ETH2 campagne OK" in data: return
+                    if complete in data: return
                     if any(s in data for s in (b"Panique",b"Erreur fatale",b"panicked",b"Exception noyau")):
                         raise RuntimeError(data[-2000:].decode(errors="replace"))
                     time.sleep(0.25)
                 raise RuntimeError("Banc sans progression")
-            name=f"ethernet-phase2-{arch}"
+            name=f"ethernet-phase{phase}-{arch}"
             try:
                 demarrage.boot(name,observe)
             finally:
