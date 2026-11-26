@@ -151,6 +151,8 @@ pub(crate) struct EthernetActor {
     handle: u64,
     generation: u64,
     initial_pages: usize,
+    #[cfg(feature="net-q35-duo")]
+    local_fault: u8,
 }
 
 #[cfg(feature = "net-ethernet-lab")]
@@ -159,7 +161,27 @@ impl EthernetActor {
         measure("net_avant_pilote");
         let initial_pages = with(|s| s.ipc.pages());
         let (child, handle) = creer(3, None, generation)?;
-        Some(Self { child, handle, generation, initial_pages })
+        Some(Self { child, handle, generation, initial_pages, #[cfg(feature="net-q35-duo")] local_fault:0 })
+    }
+    #[cfg(feature="net-q35-duo")]
+    pub(crate) fn prepare_local_fault(&mut self, nic:bool)->bool {
+        self.local_fault=if nic {1} else {2};
+        with(|s| heap::with_pages(|m| {
+            let space=s.processes.get(self.child.0).space.as_ref().ok_or(crate::memory::Error::Geometry)?;
+            space.write_data(m,10,u64::from(self.local_fault));
+            space.write_data(m,12,0);
+            Ok(())
+        })).is_ok()
+    }
+
+    #[cfg(feature="net-q35-duo")]
+    pub(crate) fn publish_clock(&self, hz:u64)->bool {
+        if self.local_fault!=2 {return true;}
+        with(|s|heap::with_pages(|m|{
+            let space=s.processes.get(self.child.0).space.as_ref().ok_or(crate::memory::Error::Geometry)?;
+            space.write_data(m,11,hz);
+            Ok(())
+        })).is_ok() && hz!=0
     }
     #[cfg(feature="net-q35-duo")]
     pub(crate) fn owner(&self) -> u64 { self.child.0.number }
@@ -180,7 +202,9 @@ pub(crate) fn ethernet_actor(
     mut operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
     shared_storage: bool,
 ) -> bool {
-    let EthernetActor {child: actif, handle, generation, initial_pages: initial} = actor;
+    #[cfg(feature="net-q35-duo")]
+    let fault=actor.local_fault;
+    let EthernetActor {child: actif, handle, generation, initial_pages: initial, ..} = actor;
     let pid = actif.0;
     let mut copie = [0u8; 1526];
     let mut ok = true;
@@ -200,6 +224,20 @@ pub(crate) fn ethernet_actor(
     }));
     for (indice,(tag,pression)) in ops.enumerate() {
         let seq=indice as u64+1;
+        #[cfg(feature="net-q35-duo")]
+        if seq==36 && fault==2 {
+            use core::sync::atomic::Ordering;
+            DISK_GATE.store(1,Ordering::Release);
+            let start=ticks();
+            while DISK_GATE.load(Ordering::Acquire)!=2 && ticks().wrapping_sub(start)<u64::from(HZ)*3 {sleep(1);}
+            if DISK_GATE.load(Ordering::Acquire)!=2 {ok=false;break;}
+            let released=with(|s|heap::with_pages(|m|{
+                let space=s.processes.get(pid).space.as_ref().ok_or(crate::memory::Error::Geometry)?;
+                space.write_data(m,12,generation);
+                Ok(())
+            })).is_ok();
+            if !released {ok=false;break;}
+        }
         if seq == 19 {
             measure("net_files_pleines");
             if !pendant.take().is_some_and(|f|f()) {ok=false;break}
@@ -308,5 +346,32 @@ pub(crate) fn ethernet_actor(
     hal::log(format_args!(
         "NET L2 pilote fin={fin:?} racines={racines} ipc_avant={initial} ipc_apres={pages}"
     ));
+    #[cfg(feature="net-q35-duo")]
+    if fault==1 && fin==Outcome::Exit(crate::abi::CANCELLED) && racines==0 {
+        FAILED_ACTOR.store(pid.number,core::sync::atomic::Ordering::Release);
+    }
     ok && fin == Outcome::Exit(0) && racines == 0 && (pages == initial || (cfg!(feature="net-q35-duo") && shared_storage && pages < initial))
+}
+
+#[cfg(feature="net-q35-duo")]
+static DISK_GATE: core::sync::atomic::AtomicU8=core::sync::atomic::AtomicU8::new(0);
+#[cfg(feature="net-q35-duo")]
+static FAILED_ACTOR: core::sync::atomic::AtomicU64=core::sync::atomic::AtomicU64::new(0);
+#[cfg(feature="net-q35-duo")]
+pub(crate) fn disk_isolated()->bool {
+    DISK_GATE.load(core::sync::atomic::Ordering::Acquire)==2
+}
+#[cfg(feature="net-q35-duo")]
+pub(crate) fn nic_exited(pid:u64)->bool {
+    pid!=0 && FAILED_ACTOR.load(core::sync::atomic::Ordering::Acquire)==pid
+}
+#[cfg(feature="net-q35-duo")]
+pub(crate) fn await_first_batch()->bool {
+    let start=ticks();
+    while DISK_GATE.load(core::sync::atomic::Ordering::Acquire)==0 && ticks().wrapping_sub(start)<u64::from(HZ)*3 {sleep(1);}
+    DISK_GATE.load(core::sync::atomic::Ordering::Acquire)==1
+}
+#[cfg(feature="net-q35-duo")]
+pub(crate) fn permit_next_batch()->bool {
+    DISK_GATE.compare_exchange(1,2,core::sync::atomic::Ordering::AcqRel,core::sync::atomic::Ordering::Acquire).is_ok()
 }

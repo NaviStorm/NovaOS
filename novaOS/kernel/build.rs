@@ -106,6 +106,7 @@ fn main() {
         {
             rust.args(["--cfg", "net_p9_trace"]);
         }
+        if dual && name == "net_preparation" { rust.args(["--cfg","net_q35_fault_test"]); }
         if coexistence && name == "storage/net_measure" {rust.args(["--cfg","net_p9_coexistence"]);}
         if name == "net_preparation" && env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some() {
             rust.args(["--cfg", "net_ethernet_lab"]);

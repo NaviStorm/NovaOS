@@ -12,7 +12,7 @@ use core::sync::atomic::{AtomicBool, AtomicU64, Ordering};
 #[cfg(feature="net-q35-duo")]
 mod duo;
 #[cfg(feature="net-q35-duo")]
-pub(super) use duo::{Profile as DuoProfile, irq_delivery_ok};
+pub(super) use duo::{Profile as DuoProfile, StorageFence, irq_delivery_ok};
 mod format;
 use format::{DID, PAGE, SID, STRIDE};
 pub(crate) const IOVA: u64 = format::BASE;
@@ -459,6 +459,15 @@ impl Engine {
         Ok(())
     }
     fn confirm(&mut self) -> Result<()> {
+        #[cfg(feature="net-q35-duo")]
+        if self.duo.uncertain() { return Err(Error::Quarantine); }
+        let result = self.confirm_pending();
+        #[cfg(feature="net-q35-duo")]
+        if result.is_err() && self.in_queue { self.duo.hold_uncertain(); }
+        result
+    }
+
+    fn confirm_pending(&mut self) -> Result<()> {
         if !self.in_queue {
             return Err(Error::Quarantine);
         }
@@ -540,7 +549,12 @@ impl Engine {
     /// superviseur ne suit que les huit pages dont il est propriétaire.
     #[cfg(feature = "nvme-lab")]
     pub(super) fn exact_nvme(&self, lease: Lease, layout: NvmeLayout) -> bool {
-        if !self.active(lease) || self.pinned() != layout.pages() {
+        self.active(lease) && self.tables_match_nvme(lease, layout)
+    }
+
+    #[cfg(feature = "nvme-lab")]
+    fn tables_match_nvme(&self, lease: Lease, layout: NvmeLayout) -> bool {
+        if self.pinned() != layout.pages() {
             return false;
         }
         #[cfg(feature="net-q35-duo")]

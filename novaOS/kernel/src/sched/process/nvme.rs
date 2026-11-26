@@ -77,9 +77,15 @@ const READ_PERMISSION_TEST: u64 = 6;
 pub(crate) fn mode(s: &[u8]) -> Option<u64> {
     match s {
         #[cfg(feature="net-q35-duo")]
+        _ if crate::hardware::nvme_domain::contention_wait(s).is_some()=>Some(profile::UPDATE),
+        #[cfg(feature="net-q35-duo")]
+        b"net-q35-duo-nvme-panne-disque" => Some(profile::DRIVER_DEATH),
+        #[cfg(feature="net-q35-duo")]
         b"net-q35-duo-nvme-init" => Some(profile::INIT),
         #[cfg(feature="net-q35-duo")]
-        b"net-q35-duo-nvme-update" | b"net-q35-duo-nvme-charge" | b"net-q35-duo-nvme-charge-disque" => Some(profile::UPDATE),
+        b"net-q35-duo-nvme-update" | b"net-q35-duo-nvme-charge" | b"net-q35-duo-nvme-panne-nic" | b"net-q35-duo-nvme-charge-disque" | b"net-q35-duo-nvme-contention-nic" | b"net-q35-duo-nvme-contention-disque" => Some(profile::UPDATE),
+        #[cfg(feature="net-q35-duo")]
+        b"net-q35-duo-nvme-cycles" => Some(profile::CYCLES),
         #[cfg(feature="net-q35-duo")]
         b"net-q35-duo-nvme-recover" => Some(profile::RECOVER),
         #[cfg(feature="net-q35-duo")]
@@ -150,6 +156,8 @@ fn supervise(
     let mut migration_witness = false;
     let mut await_client = false;
     let mut identify_seen = false;
+    #[cfg(feature="net-q35-duo")]
+    let mut fault_boundary = false;
     loop {
         if ticks().wrapping_sub(last_progress) > u64::from(HZ) * 35 {
             return Err("echeance supervision");
@@ -160,6 +168,16 @@ fn supervise(
                 return Err("retrait experimental de la traduction DATA");
             }
             deny_read = false;
+        }
+        #[cfg(feature="net-q35-duo")]
+        if !fault_boundary && b.completed > 0 && (domain.local_nic() || domain.local_disk()) {
+            if domain.local_nic() {
+                domain.observe_nic_failure().map_err(|_| "panne NIC non isolée")?;
+                measure("duo_panne_nic");
+            } else if !super::net_preparation::await_first_batch() {
+                return Err("premier lot matériel NIC absent");
+            }
+            fault_boundary = true;
         }
         let mut progress = false;
         let admitted = with(|s| {
@@ -428,12 +446,23 @@ fn exercise(
     // pendant toute l'incarnation, y compris en cas de mise en quarantaine.
     #[cfg(feature="net-q35-duo")]
     let worker = if domain.network {
-        let actor = super::net_preparation::EthernetActor::reserve(1).ok_or("instance NIC")?;
+        let actor = super::net_preparation::EthernetActor::reserve(domain.network_epoch()?).ok_or("instance NIC")?;
+        let mut actor=actor;
+        if domain.local_nic() || domain.local_disk() {
+            if !actor.prepare_local_fault(domain.local_nic()) {
+                actor.cancel();
+                return Err("configuration de panne de l’instance NIC");
+            }
+            measure("duo_avant_panne");
+        }
         let owner=actor.owner();
         let network=match domain.reserve_network(owner) {
             Ok(frames)=>frames,
             Err(_)=>{actor.cancel(); return Err("préparation NIC");}
         };
+        if domain.local_nic() || domain.local_disk() {
+            hal::log(format_args!("DUO inventaire controleur={:?} disque={:?} reseau={network:?}",&denied[..8],&denied[8..14]));
+        }
         let roots_ok = actor.audit(|nic| with(|s| {
             peers.pids.iter().chain(peers.app.iter()).chain(core::iter::once(&nic)).all(|pid| {
                 let roots = s.ipc.racines_pilotes(*pid);
@@ -499,6 +528,18 @@ fn exercise(
             domain.pinned() == 0 && crate::memory::pinned_dma_frames() == base
         } else {
             domain.quarantine();
+            #[cfg(feature="net-q35-duo")]
+            if domain.local_disk() {
+                if actors.children[0].try_result()!=Some(Outcome::Exit(0)) ||
+                    !matches!(b.flight(),Some(crate::hardware::nvme::Command::Write {..})) {
+                    return Err("mort NVMe et WRITE en vol non démontrés");
+                }
+                domain.check_failed_disk().map_err(|_| "panne NVMe non isolée")?;
+                measure("duo_panne_disque");
+                if !super::net_preparation::permit_next_batch() {return Err("rendez-vous de reprise NIC périmé");}
+                domain.drain_network(worker.ok_or("pilote NIC absent")?)
+                    .map_err(|_| "drainage NIC après mort NVMe")?;
+            }
             domain.pinned() == frames
                 && crate::memory::pinned_dma_frames() == base + frames as u64
                 && domain.prepare(pid).is_err()
@@ -639,10 +680,15 @@ fn exercise(
             .map_err(|_| "observation des lectures du second bail")?;
     }
     #[cfg(feature="net-q35-duo")]
-    if domain.network && !domain.disk_first() { domain.drain_network(worker.ok_or("worker NIC absent")?).map_err(|_|"drainage NIC avant disque")?; }
+    if domain.network && !domain.contention && !domain.local_nic() && !domain.disk_first() { domain.drain_network(worker.ok_or("worker NIC absent")?).map_err(|_|"drainage NIC avant disque")?; }
+    #[cfg(feature="net-q35-duo")]
+    let retirement = if domain.contention {
+        domain.retire_contended(&proof, worker.ok_or("worker NIC absent")?)
+    } else { domain.retire(&proof) };
+    #[cfg(not(feature="net-q35-duo"))]
     let retirement = domain.retire(&proof);
     #[cfg(feature="net-q35-duo")]
-    if domain.network && domain.disk_first() { retirement.as_ref().map_err(|_|"retrait disque avant NIC")?; domain.drain_network(worker.ok_or("worker NIC absent")?).map_err(|_|"drainage NIC après disque")?; }
+    if domain.network && !domain.contention && domain.disk_first() { retirement.as_ref().map_err(|_|"retrait disque avant NIC")?; domain.drain_network(worker.ok_or("worker NIC absent")?).map_err(|_|"drainage NIC après disque")?; }
     if matches!(mode, profile::QI_ERROR | profile::QI_DELAY) {
         domain.quarantine();
         let held = retirement.is_err()
@@ -692,6 +738,11 @@ fn exercise(
     let expected = base
         .checked_add(domain.witness_pages() as u64)
         .ok_or("bilan des temoins")?;
+    #[cfg(feature="net-q35-duo")]
+    let expected = if domain.local_nic() {
+        if !domain.kept_network_frames() {return Err("cadres de quarantaine NIC");}
+        expected + 26
+    } else {expected};
     if pages != expected
         || ipc_pages != 0
         || b.submitted != b.completed
@@ -753,6 +804,16 @@ pub(crate) fn run(mode: u64, admission: Admission) -> bool {
                 .arm_reuse_probe()
                 .map_err(|_| "armement du temoin de reattribution")?;
         }
+        #[cfg(feature="net-q35-duo")]
+        if domain.repeat_sessions {
+            for round in 1..=4 {
+                hal::log(format_args!("DUO debut cycle={round}"));
+                measure("duo_avant_cycle");
+                session(&mut domain, mode)?;
+                hal::log(format_args!("DUO fin cycle={round}"));
+            }
+        } else { session(&mut domain, mode)?; }
+        #[cfg(not(feature="net-q35-duo"))]
         session(&mut domain, mode)?;
         if mode == profile::REUSE {
             domain

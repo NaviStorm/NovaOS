@@ -1,0 +1,70 @@
+{
+  "qemu": "e19eefd4e4bd662fafb85a2093fdbb12723c1cdec4cb960bfe0b68723d6dac67",
+  "diff": "6d64ba98c8e8b797edad47d599069ded7c634d04cb19b739a23cf910962657f9",
+  "ovmf": "8664d02804a125496c28b5a155c6f86517bc80d266462665240f305ff96ddc6c",
+  "fermes": {
+    "signature": {
+      "campagne.json": "f7a1e59672f1f6d29a09e2b09fb4cfff06ed1c3764aa684f1d38948387b8eac3",
+      "modele-rx.json": "2ea2c1be99c5031c6a2b5bd61b17971047e75d0b6520c30eafc699906cd8c39b",
+      "qemu.trace": "3d68894631c3f3feecb1741fe91417826a31232b91cfa5d28b76d1105ba5a3cd",
+      "efi.log": "190ce93912b089d98b490fd67549f0b62014435db321e05a7c6b16bb160ca511",
+      "serie.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin.json": "e5d9ffb9862a77587447c213feba16887b3194cbe12e611c21dcc2abf06b31df",
+      "reset.json": "59f7824f3504cf4d9524730ae710827710d94f8e1e2a8de447ad4c32a802150a"
+    },
+    "avant-dbx": {
+      "campagne.json": "1eb09395a6028aae0f5d178779466343016b2326e6f71a11cb814476fe23821f",
+      "modele-rx.json": "2ea2c1be99c5031c6a2b5bd61b17971047e75d0b6520c30eafc699906cd8c39b",
+      "qemu.trace": "94dc98e343125558b1ba259e71f8dd2e00dab4008ed02ac9c3e91f93bec8fe8a",
+      "efi.log": "a0c3b7fcd97593a39753514850a9ba60a96f42b134af9d966bb4994835ee2073",
+      "serie.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin.json": "d92df7d42009c3818236524b5cf1c8fe59cad1008ac5ace16dd46fbf2555a7ff",
+      "reset.json": "59f7824f3504cf4d9524730ae710827710d94f8e1e2a8de447ad4c32a802150a"
+    },
+    "dbx": {
+      "campagne.json": "350dd745a61e67fd6bc7854850fea8981aae863aca118a3bb6ee4c067f64bb22",
+      "modele-rx.json": "2ea2c1be99c5031c6a2b5bd61b17971047e75d0b6520c30eafc699906cd8c39b",
+      "qemu.trace": "bca5d4e8e3cee55dfbe6199d1a538adf8d01dd2f224d41de42291117bc61590f",
+      "efi.log": "9dfce05d71ccc4d9d9fb77ffb77e3911a577a0459cc13314766f8cdec795efea",
+      "serie.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin.json": "e5d9ffb9862a77587447c213feba16887b3194cbe12e611c21dcc2abf06b31df",
+      "reset.json": "59f7824f3504cf4d9524730ae710827710d94f8e1e2a8de447ad4c32a802150a"
+    },
+    "noyau-altere": {
+      "campagne.json": "14a5ffd6b605df803498abe82d3710c121e7d18afc2fa0b1843a46f76828ae3b",
+      "modele-rx.json": "2ea2c1be99c5031c6a2b5bd61b17971047e75d0b6520c30eafc699906cd8c39b",
+      "qemu.trace": "4d06e3523403792172045430f0ad5e5650b98c892253e3be2445a7bd6fbf3d7b",
+      "efi.log": "4a05fd31116598f3f2ea1a21a57c483b25b7838f2fc3642c17a992ad9a09e0ca",
+      "serie.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin.json": "d92df7d42009c3818236524b5cf1c8fe59cad1008ac5ace16dd46fbf2555a7ff",
+      "reset.json": "59f7824f3504cf4d9524730ae710827710d94f8e1e2a8de447ad4c32a802150a"
+    },
+    "sans-iommu": {
+      "campagne.json": "c4d0d53992c2f3545f53d0bf48c802c211d2cc52bce1f9a0188b58076c538eeb",
+      "modele-rx.json": "2ea2c1be99c5031c6a2b5bd61b17971047e75d0b6520c30eafc699906cd8c39b",
+      "qemu.trace": "8a599488ecb08e44533b619eb4d4681f696e0ca4a111bb8ba37ca63eb82c1432",
+      "efi.log": "e6b88961027529cfdc39e6b13d44c2d943e5435e5f09ba032da0d2e9e66483ce",
+      "serie.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "fin.json": "b020a0ab013256a7eb6e23da756ba83a38d6ea8e90816bd8df9b5193a5ac64d3",
+      "reset.json": "a0f6882de05b5d0c52c3ab24e4f0a139c463417807a3983ff85770139ac1ce89"
+    },
+    "domaines": {
+      "campagne.json": "cee067cc08d704db057a7d238a3a3cc3610cf181e246d502aa4006bf3cda229f",
+      "modele-rx.json": "2ea2c1be99c5031c6a2b5bd61b17971047e75d0b6520c30eafc699906cd8c39b",
+      "qemu.trace": "0f870eee965b3bb19f284095fca28123b8953e8cb8bc55d1a3340b345cd539c0",
+      "efi.log": "5b4a2905e450c69b5312334276dd304b3e356871c46433505ec79ca696ddf937",
+      "serie.log": "98a857b4732ba3304879c39c03479a53896beb5ec8bad67cbb2c5945bb2abcef",
+      "fin.json": "54f924296aeb65224e9f23af18be8dcd817ae06a2b5cd2ced309449170bf3a00",
+      "reset.json": "59f7824f3504cf4d9524730ae710827710d94f8e1e2a8de447ad4c32a802150a"
+    },
+    "total-nic": {
+      "campagne.json": "a71d579b408f0733acf85c572fba187a773dd3926a029d94460614703fd447b0",
+      "modele-rx.json": "2ea2c1be99c5031c6a2b5bd61b17971047e75d0b6520c30eafc699906cd8c39b",
+      "qemu.trace": "cc49a3b3d5c805e8f9bc712b7249a5bbff18f88865cfe8286566f64b58f27d54",
+      "efi.log": "5b4a2905e450c69b5312334276dd304b3e356871c46433505ec79ca696ddf937",
+      "serie.log": "ff34be05c84705b5dc01745406ee5c25a41b91c09699ebb30180069fc8826c28",
+      "fin.json": "54f924296aeb65224e9f23af18be8dcd817ae06a2b5cd2ced309449170bf3a00",
+      "reset.json": "59f7824f3504cf4d9524730ae710827710d94f8e1e2a8de447ad4c32a802150a"
+    }
+  }
+}

@@ -16,15 +16,18 @@ def verifier(vm, qt, serial, final, mode):
         return reg(vm,address) | reg(vm,address+4)<<32
     counters = {offset:reg64(base+offset) for offset in (0x20,0x80,0x88,0x90)}
     device_order = [0,48,56]
-    if mode in ("retrait-nic","perte-wait","total-nic"):
+    fault = mode in ("wait-court", "wait-tardif", "wait-absent")
+    if fault or mode in ("retrait-nic","perte-wait","total-nic"):
         device_order += [56]
     if mode in ("retrait-disque","total-disque","total-nic"):
         device_order += [48]
     if mode == "total-disque":
         device_order += [56]
     cookie = len(device_order)
+    head = cookie*48-16 if mode == "wait-absent" else cookie*48
+    status = 0 if mode == "wait-absent" else cookie
     if (final["vtd_gsts"] != 0xc4000000 or reg(vm,base+0x34) != 0 or
-        counters != {0x20:root,0x80:cookie*48,0x88:cookie*48,0x90:qi} or reg(vm,wait)!=cookie):
+        counters != {0x20:root,0x80:head,0x88:cookie*48,0x90:qi} or reg(vm,wait)!=status):
         raise ValueError("État matériel ou WAIT différent du résultat annoncé")
     pages = set()
     def unique(pa):
@@ -55,13 +58,21 @@ def verifier(vm, qt, serial, final, mode):
             raise ValueError("Portée ou permissions intermédiaires invalides")
         return table[index]&~4095
     ctx = entries(sole(entries(root),0,1))
-    disk = mode in ("domaines","ir-retrait","retrait-nic","perte-wait")
+    disk = fault or mode in ("domaines","ir-retrait","retrait-nic","perte-wait")
     nic = mode in ("domaines","ir-retrait","retrait-disque")
     if mode == "ir-retrait":
         if (serial.count(b"DUO IRTA retrait 0x1000 puis 0 refus=Quarantine,Quarantine") != 1 or
             reg64(base+0xb8) != 0 or matches[-1][3:] != matches[0][3:]):
             raise ValueError("Retour de IRTA à zéro ou maintien de la quarantaine non démontré")
-    held = mode=="perte-wait"
+    held = mode in ("perte-wait", "wait-tardif", "wait-absent")
+    if fault:
+        observations = re.findall(rb"DUO WAIT observation cycles=([0-9]+) issue=(\S+) cookie=(\d+) iqh=(\d+) iqt=(\d+) dma=(\d+)",serial)
+        expect = (b"Err(Quarantine)",b"0",b"176",b"192",b"40") if held else (b"Ok(())",b"4",b"192",b"192",b"14")
+        if len(observations)!=1 or int(observations[0][0])<=0 or observations[0][1:]!=expect:
+            raise ValueError("Le registre WAIT ne correspond pas à la décision du pilote")
+        refus = re.findall(rb"DUO WAIT refus nic=(\S+) nvme=(\S+) cookie=(\d+) iqh=(\d+) iqt=(\d+) dma=(\d+)",serial)
+        if refus != ([(b"Err(Quarantine)",b"Err(Quarantine)",str(status).encode(),str(head).encode(),b"192",b"40")] if held else []):
+            raise ValueError("Nouvelle reconfiguration ou restitution après expiration")
     rights = {}
     for sid,did,addr,perms in [(48,1,0x02000000,[1,2,1,2,2,1]),(56,3,0x10000000,[1,1,2,1,1,2]+[2]*8+[1]*8)]:
         if not (disk if sid==48 else nic):
@@ -88,7 +99,9 @@ def verifier(vm, qt, serial, final, mode):
               for n,sid in enumerate(device_order,1) if sid and not (held and n==cookie)]
     observed=[(int(s),int(d),int(o),int(g),b==b"true",int(c),int(t)) for s,d,o,g,b,c,t in
               re.findall(rb"DUO WAIT sid=(\d+) did=(\d+) instance=(\d+) generation=(\d+) publication=(true|false) cookie=(\d+) iqt=(\d+)",serial)]
-    if observed!=expected or (matches[-1][-1]==b"true")!=held:
+    expected_tail = (str(cookie*48).encode(),str(cookie).encode(),b"true" if held or nic else b"false",
+                     b"true" if disk else b"false",b"true" if held else b"false")
+    if matches[-1][3:]!=expected_tail or observed!=expected or (matches[-1][-1]==b"true")!=held:
         raise ValueError("Association des acquittements aux instances et aux opérations incohérente")
     return dict(feuilles=rights, registres=counters, pages_distinctes_relues=len(pages), cadres_epingles=retained,
                 attente_non_acquittee=held, ordre_des_domaines=device_order, recus=observed)

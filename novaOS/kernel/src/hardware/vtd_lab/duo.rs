@@ -7,6 +7,7 @@ use super::*;
 pub(in crate::hardware) enum Profile { Ordinary, Dual, RefuseIr }
 
 static IRQ_REGS: core::sync::atomic::AtomicUsize = core::sync::atomic::AtomicUsize::new(0);
+static QI_UNCERTAIN: AtomicBool = AtomicBool::new(false);
 static DELIVERY_LOST: AtomicBool = AtomicBool::new(false);
 
 pub(in crate::hardware) fn irq_delivery_ok() -> bool {
@@ -19,7 +20,7 @@ pub(in crate::hardware) fn irq_delivery_ok() -> bool {
     if status != SRTP | RUN || !format::interrupt_state(status, irta) {
         DELIVERY_LOST.store(true, Ordering::Release);
     }
-    !DELIVERY_LOST.load(Ordering::Acquire)
+    !DELIVERY_LOST.load(Ordering::Acquire) && !QI_UNCERTAIN.load(Ordering::Acquire)
 }
 
 const NIC: u16 = 56;
@@ -61,6 +62,14 @@ impl Supervisor {
             frames: [EMPTY; FRAMES], generation: 0, owner: 0, published: false, delegated: false,
             requested: None, pending: None,
         }
+    }
+
+    pub(super) fn uncertain(&self) -> bool {
+        self.enabled && QI_UNCERTAIN.load(Ordering::Acquire)
+    }
+
+    pub(super) fn hold_uncertain(&self) {
+        if self.enabled { QI_UNCERTAIN.store(true, Ordering::Release); }
     }
 
     pub(super) fn arm_irq_guard(&self, regs: Region) {
@@ -145,7 +154,35 @@ impl Supervisor {
     }
 }
 
+/// Lecture seule des ressources permanentes. Le worker réseau peut les
+/// observer tant que le superviseur attend sa preuve de drainage.
+pub(in crate::hardware) struct StorageFence {
+    regs: Region,
+    status: Region,
+    root: u64,
+    queue: u64,
+    fault_record: usize,
+    cookie: u32,
+    tail: u16,
+}
+
+impl StorageFence {
+    pub(in crate::hardware) fn permits_network_io(&self) -> bool {
+        let ok = irq_delivery_ok() && self.regs.r64(0x20)==self.root &&
+            self.regs.r64(0x90)==self.queue && self.regs.r64(0x80)==u64::from(self.tail) &&
+            self.regs.r64(0x88)==u64::from(self.tail) && self.status.r32(0)==self.cookie &&
+            self.regs.r32(0x34)==0 && self.regs.r32(0x38)==0 && self.regs.r64(self.fault_record+8)>>63==0 &&
+            FAULT_IRQS.load(Ordering::Acquire)==0 && super::super::pci_ports::port(SID,4,2,None)&4==0;
+        if !ok { DELIVERY_LOST.store(true,Ordering::Release); }
+        ok
+    }
+}
+
 impl Engine {
+    pub(in crate::hardware) fn storage_fence(&self) -> StorageFence {
+        StorageFence {regs:self.regs,status:self.service[7].mem,root:self.service[0].pa,
+            queue:self.service[6].pa,fault_record:self.record,cookie:self.cookie,tail:self.tail}
+    }
     pub(super) fn request_disk(&mut self, lease:Lease, publication:bool)->Result<()> {
         if !self.duo.enabled {return Ok(());}
         self.duo.request(Operation {sid:SID, did:DID, owner:lease.owner(), generation:lease.epoch(), publication})
@@ -161,12 +198,15 @@ impl Engine {
         super::super::pci_ports::port(NIC,0,4,None)==0x1041_1af4 &&
         super::super::pci_ports::port(NIC,4,2,None)&4==0 && !self.fault_pending() && self.running()
     }
+    pub(in crate::hardware) fn next_network_epoch(&self) -> Option<u64> {
+        self.duo.generation.checked_add(1)
+    }
     pub(in crate::hardware) fn prepare_nic(&mut self, owner:u64, lease:Lease, layout:NvmeLayout)->Result<()> {
         if !self.duo.enabled || owner==0 || self.in_queue || self.duo.published ||
            self.duo.frames.iter().any(|f|f.pa!=0) || !self.closed_nic() || !self.exact_nvme(lease,layout) {
             return Err(Error::Denied);
         }
-        let next=self.duo.generation.checked_add(1).ok_or(Error::Denied)?;
+        let next=self.next_network_epoch().ok_or(Error::Denied)?;
         for i in 0..FRAMES {
             let f=match Frame::allocate() {
                 Ok(f)=>f, Err(_)=>{
@@ -226,6 +266,34 @@ impl Engine {
         }
         hal::log(format_args!("DUO IRTA retrait 0x1000 puis 0 refus=Quarantine,Quarantine"));
         Ok(())
+    }
+
+    pub(in crate::hardware) fn failed_nic_fenced(&self,id:(u64,u64),lease:Lease,layout:NvmeLayout)->bool {
+        self.duo.delegated && self.duo.published && (self.duo.owner,self.duo.generation)==id &&
+        self.closed_nic() && super::super::pci_ports::port(SID,4,2,None)&4!=0 &&
+        self.clean_nvme(lease) && self.exact_nvme(lease,layout)
+    }
+
+    pub(in crate::hardware) fn fenced_storage_tables(&self,lease:Lease,layout:NvmeLayout,nic_armed:bool)->bool {
+        self.lease==Some(lease) && self.state==State::Closing && self.duo.published && self.duo.delegated &&
+        self.duo.pending.is_none() && self.duo.requested.is_none() &&
+        (super::super::pci_ports::port(NIC,4,2,None)&4!=0)==nic_armed &&
+        self.running() && self.context() && !self.in_queue && !self.fault_pending() &&
+        self.regs.r32(0x38)==0 && FAULT_IRQS.load(Ordering::Acquire)==0 &&
+        self.regs.r64(0x80)==u64::from(self.tail) && self.regs.r64(0x88)==u64::from(self.tail) &&
+        self.service[7].mem.r32(0)==self.cookie && self.tables_match_nvme(lease,layout)
+    }
+
+    pub(in crate::hardware) fn common_wait_held(&self)->bool {
+        self.in_queue && self.duo.uncertain() && self.duo.pending.is_some() &&
+            super::super::pci_ports::port(NIC,4,2,None)&4==0 &&
+            super::super::pci_ports::port(SID,4,2,None)&4==0
+    }
+
+    // Lecture seule du cookie et des indices. Une observation tardive ne consomme
+    // jamais le reçu conservé par le superviseur.
+    pub(in crate::hardware) fn wait_snapshot(&self) -> (u32, u64, u64) {
+        (self.service[7].mem.r32(0), self.regs.r64(0x80), self.regs.r64(0x88))
     }
 
     pub(in crate::hardware) fn network_frames(&self) -> [u64;26] {self.duo.frames.map(|f| f.pa)}

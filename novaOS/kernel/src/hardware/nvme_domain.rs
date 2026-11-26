@@ -176,6 +176,12 @@ pub(crate) struct Admission {
     network: bool,
     #[cfg(feature="net-q35-duo")]
     disk_first: bool,
+    #[cfg(feature="net-q35-duo")]
+    repeat_sessions: bool,
+    #[cfg(feature="net-q35-duo")]
+    contention: bool,
+    #[cfg(feature="net-q35-duo")]
+    fault: traffic::LocalFault,
     source: Option<bool>,
     phase2_media: bool,
     retirement: Invalidation,
@@ -273,11 +279,23 @@ pub(crate) fn discover() -> Option<Admission> {
     // avant la création du domaine peut la laisser tomber sans ressource à rendre.
     bar.unmap().ok()?;
     let scenario = crate::boot::scenario();
+    #[cfg(feature="net-q35-duo")]
+    let wait_contention=contention_wait(scenario);
     Some(Admission {
         #[cfg(feature="net-q35-duo")]
-        disk_first: scenario == b"net-q35-duo-nvme-charge-disque",
+        fault: match scenario {
+            b"net-q35-duo-nvme-panne-nic"=>traffic::LocalFault::Nic,
+            b"net-q35-duo-nvme-panne-disque"=>traffic::LocalFault::Disk,
+            _=>traffic::LocalFault::None,
+        },
         #[cfg(feature="net-q35-duo")]
-        network: matches!(scenario,b"net-q35-duo-nvme-charge" | b"net-q35-duo-nvme-charge-disque" | b"net-q35-duo-nvme-mesure-charge"),
+        contention: wait_contention.is_some() || matches!(scenario,b"net-q35-duo-nvme-contention-nic"|b"net-q35-duo-nvme-contention-disque"),
+        #[cfg(feature="net-q35-duo")]
+        repeat_sessions: scenario == b"net-q35-duo-nvme-cycles",
+        #[cfg(feature="net-q35-duo")]
+        disk_first: wait_contention==Some(true) || matches!(scenario,b"net-q35-duo-nvme-charge-disque"|b"net-q35-duo-nvme-contention-disque"),
+        #[cfg(feature="net-q35-duo")]
+        network: wait_contention.is_some() || matches!(scenario,b"net-q35-duo-nvme-charge" | b"net-q35-duo-nvme-charge-disque" | b"net-q35-duo-nvme-mesure-charge" | b"net-q35-duo-nvme-cycles" | b"net-q35-duo-nvme-contention-nic" | b"net-q35-duo-nvme-contention-disque" | b"net-q35-duo-nvme-panne-nic" | b"net-q35-duo-nvme-panne-disque"),
         #[cfg(feature="net-q35-duo")]
         profile: if scenario == b"net-q35-duo-refus-ir" {super::vtd_lab::DuoProfile::RefuseIr}
                  else if duo {super::vtd_lab::DuoProfile::Dual} else {super::vtd_lab::DuoProfile::Ordinary},
@@ -307,9 +325,18 @@ pub(crate) fn discover() -> Option<Admission> {
 }
 
 #[cfg(feature="net-q35-duo")]
+pub(crate) fn contention_wait(s:&[u8])->Option<bool> {
+    match s.strip_prefix(b"net-q35-duo-nvme-contention-wait-")? {
+        b"court-nic" | b"absent-nic" | b"tardif-nic"=>Some(false),
+        b"court-disque" | b"absent-disque" | b"tardif-disque"=>Some(true),
+        _=>None
+    }
+}
+
+#[cfg(feature="net-q35-duo")]
 pub(crate) fn qualifier_duo(mode: &[u8]) -> Result<()> {
     static OBSERVATION: crate::sched::sync::Mutex<Option<Domain>> = crate::sched::sync::Mutex::new(None);
-    if !matches!(mode,b"net-q35-duo-domaines"|b"net-q35-duo-ir-retrait"|b"net-q35-duo-refus-ir"|b"net-q35-duo-retrait-nic"|b"net-q35-duo-retrait-disque"|b"net-q35-duo-perte-wait"|b"net-q35-duo-total-nic"|b"net-q35-duo-total-disque") || crate::smp::count()!=1 {return Err(Error::Denied);}
+    if !matches!(mode,b"net-q35-duo-domaines"|b"net-q35-duo-ir-retrait"|b"net-q35-duo-refus-ir"|b"net-q35-duo-retrait-nic"|b"net-q35-duo-retrait-disque"|b"net-q35-duo-perte-wait"|b"net-q35-duo-total-nic"|b"net-q35-duo-total-disque"|b"net-q35-duo-wait-court"|b"net-q35-duo-wait-tardif"|b"net-q35-duo-wait-absent") || crate::smp::count()!=1 {return Err(Error::Denied);}
     let before=memory::pinned_dma_frames();
     let mut domain=Domain::new(discover().ok_or(Error::Denied)?)?;
     let result=(|| {
@@ -321,6 +348,9 @@ pub(crate) fn qualifier_duo(mode: &[u8]) -> Result<()> {
         if mode.ends_with(b"retrait-disque") || mode.ends_with(b"total-disque") {domain.cancel_prepared()?;}
         if mode.ends_with(b"retrait-nic") || mode.ends_with(b"total-nic") || mode.ends_with(b"total-disque") {domain.engine.remove_unstarted_nic(false)?;}
         if mode.ends_with(b"total-nic") {domain.cancel_prepared()?;}
+        if mode.starts_with(b"net-q35-duo-wait-") {
+            domain.observe_hardware_wait(mode, before)?;
+        }
         if mode.ends_with(b"ir-retrait") {
             domain.engine.qualify_lost_delivery()?;
         }
@@ -334,6 +364,53 @@ pub(crate) fn qualifier_duo(mode: &[u8]) -> Result<()> {
     // Conserver le propriétaire des tables encore pointées, y compris lors d'un arrêt indéterminé.
     *OBSERVATION.lock()=Some(domain);
     result
+}
+
+#[cfg(feature="net-q35-duo")]
+impl Domain {
+    fn observe_hardware_wait(&mut self, mode: &[u8], before: u64) -> Result<()> {
+        let short = mode.ends_with(b"-court");
+        let late = mode.ends_with(b"-tardif");
+        let start = crate::hal::timer::counter();
+        let held = memory::pinned_dma_frames();
+        if held != before + 40 { return Err(Error::Geometry); }
+        let outcome = self.engine.remove_unstarted_nic(false);
+        let observed = self.engine.wait_snapshot();
+        log(format_args!("DUO WAIT observation cycles={} issue={outcome:?} cookie={} iqh={} iqt={} dma={}",
+            crate::hal::timer::counter().wrapping_sub(start), observed.0, observed.1, observed.2,
+            memory::pinned_dma_frames()));
+        if short {
+            if outcome.is_err() || observed != (4,192,192) || memory::pinned_dma_frames()!=before+14 {
+                return Err(Error::Quarantine);
+            }
+            return Ok(());
+        }
+        if outcome != Err(Error::Quarantine) || observed != (0,176,192) ||
+            memory::pinned_dma_frames() != held {
+            return Err(Error::Quarantine);
+        }
+        if late {
+            // Fenêtre d'observation du banc après le refus terminal. Le délai
+            // de confirmation et le droit de réutilisation restent ceux du pilote.
+            let begin = crate::hal::timer::counter();
+            while self.engine.wait_snapshot() != (4,192,192) {
+                if crate::hal::timer::counter().wrapping_sub(begin) > 30_000_000_000 {
+                    return Err(Error::Quarantine);
+                }
+                core::hint::spin_loop();
+            }
+        }
+        let nic = self.engine.remove_unstarted_nic(false);
+        let disk = self.cancel_prepared();
+        let state = self.engine.wait_snapshot();
+        log(format_args!("DUO WAIT refus nic={nic:?} nvme={disk:?} cookie={} iqh={} iqt={} dma={}",
+            state.0, state.1, state.2, memory::pinned_dma_frames()));
+        if nic != Err(Error::Quarantine) || disk != Err(Error::Quarantine) ||
+            state != if late {(4,192,192)} else {(0,176,192)} || memory::pinned_dma_frames()!=held {
+            return Err(Error::Quarantine);
+        }
+        Ok(())
+    }
 }
 
 enum State {
@@ -358,6 +435,12 @@ pub(crate) struct Domain {
     pub(crate) network:bool,
     #[cfg(feature="net-q35-duo")]
     disk_first:bool,
+    #[cfg(feature="net-q35-duo")]
+    pub(crate) repeat_sessions: bool,
+    #[cfg(feature="net-q35-duo")]
+    pub(crate) contention: bool,
+    #[cfg(feature="net-q35-duo")]
+    fault: traffic::LocalFault,
     source: Option<bool>,
     phase2_media: bool,
     retirement: Invalidation,
@@ -390,6 +473,12 @@ impl Domain {
             network:admission.network,
             #[cfg(feature="net-q35-duo")]
             disk_first:admission.disk_first,
+            #[cfg(feature="net-q35-duo")]
+            repeat_sessions:admission.repeat_sessions,
+            #[cfg(feature="net-q35-duo")]
+            contention:admission.contention,
+            #[cfg(feature="net-q35-duo")]
+            fault:admission.fault,
             data_page: admission.data_page,
             source: admission.source,
             phase2_media: admission.phase2_media,
@@ -582,6 +671,8 @@ impl Domain {
     /// Le canal de faute n’est jamais acquitté pendant un bail NVMe.
     /// Le superviseur sonde après la complétion et avant livraison au client.
     pub(crate) fn dma_clean(&self) -> bool {
+        #[cfg(feature="net-q35-duo")]
+        if !self.disk_survivor_ok() {return false;}
         matches!(self.state, State::Active) && self.lease.is_some_and(|l| self.engine.clean_nvme(l))
     }
 

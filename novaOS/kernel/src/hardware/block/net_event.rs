@@ -72,12 +72,13 @@ pub(in crate::hardware) fn q35(cadres: &[super::Frame; 22]) -> Result<()> {
 
 #[cfg(all(target_arch = "x86_64", feature = "net-ethernet-lab"))]
 pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u64) -> Result<()> {
-    q35_session(cadres,generation,None)
+    q35_session(cadres,generation,None,||true)
 }
 
 #[cfg(all(target_arch = "x86_64", feature = "net-ethernet-lab"))]
 pub(in crate::hardware) fn q35_session(cadres: &[super::Frame;22], generation:u64,
-    mut actor: Option<crate::sched::process::net_preparation::EthernetActor>) -> Result<()> {
+    mut actor: Option<crate::sched::process::net_preparation::EthernetActor>,
+    permitted: impl Fn()->bool) -> Result<()> {
     use crate::{hardware::pci_ports, memory};
     let dual=actor.is_some();
     let cfg = super::pci::Config::open(56)?;
@@ -113,10 +114,19 @@ pub(in crate::hardware) fn q35_session(cadres: &[super::Frame;22], generation:u6
     let ligne =
         crate::hardware::lab_irq::net_intx::Ligne::ouvrir(nic.isr.base()).ok_or(Error::Route)?;
     let hz = hal::timer::counter_hz();
+    #[cfg(feature="net-q35-duo")]
+    if actor.as_ref().is_some_and(|a| !a.publish_clock(hz)) {
+        if let Some(actor)=actor.take() {actor.cancel();}
+        let _=port.stopper();
+        let _=ligne.fermer();
+        return Err(Error::Quarantine);
+    }
+
     let mut operation = |tag:u64, len:usize, copie:&mut [u8]| {
         if tag == 5 {
             return port.stopper().map(|()| 0).map_err(|_| crate::abi::REFUSED);
         }
+        if !permitted() {return Err(crate::abi::REVOKED);}
         #[cfg(feature="net-q35-duo")]
         if dual && !crate::hardware::vtd_lab::irq_delivery_ok() { return Err(crate::abi::REVOKED); }
         if tag==6 {

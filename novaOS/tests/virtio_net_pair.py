@@ -60,7 +60,7 @@ def verifier_redemarrages(serie, pair):
 
 
 class Pair:
-    def __init__(self, sortie):
+    def __init__(self, sortie, *, contention=False, panne_nic=False):
         self.sortie = sortie
         self.sock, self.modele = socket.socketpair(socket.AF_UNIX, socket.SOCK_STREAM)
         for endpoint in (self.sock, self.modele):
@@ -80,6 +80,8 @@ class Pair:
                 raise ValueError("Profil de performance inconnu")
             self.lots=6 if serie.startswith("court-") else 62500 if serie=="perf-long-rx" else 31250
         self.fenetres=[]
+        self.contention = contention
+        self.panne_nic = panne_nic
         self.cycles = 4 if os.environ.get("NOVAOS_NET_SERIE")=="redemarrage" else 1
         self.generations = []
         self.tx_comptes = 0
@@ -112,7 +114,7 @@ class Pair:
             self.capture_pression=observer(vm,self.sortie)
 
     def serie(self):
-        for batch in range(self.lots*self.cycles):
+        for batch in range(1 if self.panne_nic else self.lots*self.cycles):
             reponses = bytearray()
             for slot in range(16):
                 numero = (batch % self.lots) * 16 + slot
@@ -143,6 +145,23 @@ class Pair:
                 nombre=17
             elif self.pression and batch==1:
                 nombre=15
+            if self.panne_nic:
+                deadline=time.monotonic()+3
+                while time.monotonic()<deadline:
+                    if b"pci_nvme_read " in (self.sortie/"qemu.trace").read_bytes(): break
+                    time.sleep(.002)
+                else: raise ValueError("Premier READ matériel NVMe absent avant la panne NIC")
+            if self.contention and batch==0:
+                # Le premier lot TX a réellement atteint le pair. Attendre une E/S
+                # NVMe ultérieure dans la même trace avant de rendre ses réponses RX.
+                deadline=time.monotonic()+3
+                while time.monotonic()<deadline:
+                    trace=(self.sortie/"qemu.trace").read_bytes()
+                    first=trace.find(b"virtqueue_fill ")
+                    if first>=0 and trace.find(b"pci_nvme_io_cmd ",first)>first:
+                        break
+                    time.sleep(.002)
+                else: raise ValueError("Aucune E/S NVMe après le premier lot TX")
             self.sock.sendall(reponses)
             self.envoyees += nombre
 
@@ -201,7 +220,7 @@ class Pair:
         bilan = dict(trames=self.trames, erreur=self.erreur, stockage_avant_derniere_reponse=self.stockage, reponses_envoyees=self.envoyees, perte=self.perte,
                      succes=self.envoyees==16 and len(self.trames)==16 and not self.thread.is_alive() and self.erreur is None)
         if self.lots > 1:
-            total = self.lots*self.cycles*16
+            total = 16 if self.panne_nic else self.lots*self.cycles*16
             bilan.update(trames_tx=self.tx_comptes, trames_rx=self.envoyees, lots=self.lots, cycles=self.cycles, generations=self.generations,
                          tx_sha256=self.empreinte_tx.hexdigest(),rx_sha256=self.empreinte_rx.hexdigest(),
                          succes=self.tx_comptes==self.envoyees==total and not self.thread.is_alive() and self.erreur is None)

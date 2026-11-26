@@ -104,7 +104,7 @@ pub(in crate::sched::process) fn nvme_group(
         if rw {
             let app_image = include_bytes!(concat!(env!("OUT_DIR"), "/storage-fileclient.bin")).as_slice();
             #[cfg(feature="net-q35-duo")]
-            let app_image = if mode == profile::MEASURE {
+            let app_image = if matches!(mode, profile::MEASURE | profile::CYCLES) {
                 include_bytes!(concat!(env!("OUT_DIR"), "/storage-net_measure.bin")).as_slice()
             } else {app_image};
             application = Some(
@@ -173,7 +173,7 @@ pub(in crate::sched::process) fn nvme_group(
                         mode
                     } else {
                         #[cfg(feature="net-q35-duo")]
-                        if mode == profile::MEASURE {mode} else {profile::file_mode(mode)}
+                        if matches!(mode, profile::MEASURE | profile::CYCLES) {mode} else {profile::file_mode(mode)}
                         #[cfg(not(feature="net-q35-duo"))]
                         profile::file_mode(mode)
                     },

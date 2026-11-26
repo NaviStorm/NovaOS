@@ -68,6 +68,25 @@ fn nvme(mut c: Client) -> rt::Result<()> {
     c.close(0)
 }
 
+#[cfg(net_q35_p9)]
+fn cycle(mut c: Client) -> rt::Result<()> {
+    c.mount()?;
+    let f = c.open(b"/sortie", w::READABLE | w::WRITABLE)?;
+    let mut previous = [0u8; 1];
+    ensure(c.read(f, 0, &mut previous)? == 1)?;
+    let mut data: [u8; 4231] = core::array::from_fn(|i| (i as u8).wrapping_mul(73) ^ (i >> 5) as u8);
+    data[0] = u8::from(previous[0] != 1);
+    log(b"NVME P9 debut transaction");
+    c.write(f, 0, &data)?;
+    c.sync(f)?;
+    log(b"NVME P9 sauvegarde confirmee");
+    let mut readback = [0u8; 4231];
+    ensure(c.read(f, 0, &mut readback)? == data.len() && data == readback)?;
+    log(b"NVME P9 cycle contenu conforme");
+    c.close(f)?;
+    c.close(0)
+}
+
 #[cfg(nvme_rw)]
 #[path = "../nvme_diagnostic.rs"]
 mod nvme_diagnostic;
@@ -78,6 +97,8 @@ fn probe() -> rt::Result<()> {
         25 => coexistence(Client::new()?),
         #[cfg(net_q35_p9)]
         1007 => nvme(Client::new()?),
+        #[cfg(net_q35_p9)]
+        1008 => cycle(Client::new()?),
         _ => Err(rt::REFUSED),
     }
 }

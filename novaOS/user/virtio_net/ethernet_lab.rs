@@ -111,6 +111,19 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
     }
     seq+=1;
     commande(handle, generation, seq, if lot+1==lots {4} else {6}, 0)?;
+    #[cfg(net_q35_fault_test)]
+    if lot==0 && lots>1 && config(10)==1 {return Err(CANCELLED);}
+    // Aucun appel d’E/S n’est en vol durant ce rendez-vous privé Q35.
+    #[cfg(net_q35_fault_test)]
+    if lot==0 && config(10)==2 {
+        let limit=config(11).checked_mul(3).filter(|&v|v>0).ok_or(REFUSED)?;
+        // Sur le profil Q35 de qualification, RDTSC est accessible en Ring 3.
+        let start=unsafe {core::arch::x86_64::_rdtsc()};
+        while config(12)!=generation {
+            if unsafe {core::arch::x86_64::_rdtsc()}.wrapping_sub(start)>=limit {return Err(TIMED_OUT);}
+            call(THREAD_YIELD,0,0,0);
+        }
+    }
     }
     Ok(())
 }

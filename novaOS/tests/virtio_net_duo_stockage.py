@@ -13,7 +13,7 @@ def verifier_trafic(trace, serial, mode, driver):
     if len(peer)!=1 or int(peer[0])==driver or "NET L2 pilote fin=Exit(0) racines=0" not in serial:
         raise ValueError("Identité des pilotes ou restitution du canal")
     netpid=int(peer[0])
-    series = {"endurance": (100_000, 34_464, 6_249), "stockage": (1_000_000, 16_960, 62_499)}
+    series = {"rearmement": (48, 48, 2), "endurance": (100_000, 34_464, 6_249), "stockage": (1_000_000, 16_960, 62_499)}
     count, index, rearms = series[os.environ["NOVAOS_NET_SERIE"]]
     if (f"DUO réseau instance={netpid} génération=1 drainage=Ok(())" not in serial or
         "NET Q35 L2 GSI=23 ISR=0x101" not in serial or
@@ -67,17 +67,35 @@ def verifier_trafic(trace, serial, mode, driver):
     expected=[(str(sid),str(1 if sid==48 else 3),str(driver if sid==48 else netpid),"1","true" if i<3 else "false",str(i+1),str(48*(i+1))) for i,sid in enumerate(order) if sid]
     receipts=re.findall(r"DUO WAIT sid=(\d+) did=(\d+) instance=(\d+) generation=(\d+) publication=(\w+) cookie=(\d+) iqt=(\d+)",serial)
     if receipts!=expected: raise ValueError("Ordre ou identité des reçus")
+    if mode.startswith("nvme-contention-"):
+        disk_first=mode.endswith("-disque")
+        collision=re.search(r"DUO contention demandes=2 premier_disque=(true|false) dma=40 octets_slots=(\d+) octets_mutex=(\d+)",serial)
+        if not collision or (collision[1]=="true")!=disk_first: raise ValueError("Deux demandes en attente")
+        for who,pid in (("NIC",netpid),("NVMe",driver)):
+            msg=f"DUO demande {who} pid={pid} generation=1 doublon=refuse avant_WAIT=refuse"
+            if serial.count(msg)!=1 or serial.index(msg)>collision.start(): raise ValueError("Dépôt et saturation par titulaire")
+        withdrawals=list(re.finditer(r"DUO WAIT sid=(\d+) did=\d+ instance=\d+ generation=1 publication=false",serial))
+        if len(withdrawals)!=2 or withdrawals[0].start()<collision.end(): raise ValueError("WAIT antérieur à la concurrence")
+        released=re.findall(r"DUO restitution (NIC|NVMe) dma=(\d+)",serial)
+        if released!=([("NVMe","34"),("NIC","8")] if disk_first else [("NIC","14"),("NVMe","8")]):
+            raise ValueError("Restitution sans le bon acquittement")
+        for wait,(device,pages) in zip(withdrawals,released):
+            if serial.index(f"DUO restitution {device} dma={pages}")<wait.start(): raise ValueError("Restitution prématurée")
+        if serial.count(f"DUO réponse NIC collectée pid={netpid} generation=1")!=1: raise ValueError("Réponse au titulaire")
     return dict(recus=receipts,waits=waits,bus_master=writes,commandes_vtd=commands,
                 completions_nic_pendant_nvme=overlap,io_nvme_pendant_nic=sum(fills[0]<n<fills[-1] for n in submits))
 
 
 def verifier(out, mode, sector, reader, initial, old):
-    traffic = mode in ("nvme-charge", "nvme-charge-disque", "nvme-mesure-charge")
+    traffic = mode.startswith("nvme-contention-") or mode in ("nvme-charge", "nvme-charge-disque", "nvme-mesure-charge")
     measured = mode.startswith("nvme-mesure")
     label = "update" if traffic or measured else mode.removeprefix("nvme-")
     image = out / "namespace.raw"
     trace = (out / "qemu.trace").read_text()
     serial = (out / "serie.log").read_text()
+    if mode == "nvme-cycles":
+        from virtio_net_duo_cycles import verifier_cycles
+        return verifier_cycles(out, sector, reader, initial, old)
     operations = io_trace(out / "qemu.trace", sector)
     result = {"secteur": sector, "mode": label, "sha256_avant": initial,
               "sha256_apres": digest(image), "sha256_lecteur": digest(reader), "operations": operations}
