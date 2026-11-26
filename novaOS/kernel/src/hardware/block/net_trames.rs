@@ -7,6 +7,10 @@ use crate::{abi, hal};
 const N: usize = 16;
 #[cfg(feature="ethernet-v1-port")]
 mod v1;
+#[cfg(feature="ethernet-v1-port")]
+mod retrait;
+#[cfg(all(feature="ethernet-v1-port",target_arch="aarch64"))]
+pub(super) use retrait::Arret;
 
 pub(super) struct Port<'a> {
     #[cfg(feature="ethernet-v1-port")]

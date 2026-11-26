@@ -553,7 +553,22 @@ pub(crate) fn net_p9() -> Result<()> {
         ));
         #[cfg(feature="net-ethernet-lab")]
         if matches!(mode,126|127) {
-            let trafic=suite.trames(||{
+            #[cfg(feature="ethernet-v1-port")]
+            let cycles = match option_env!("NOVAOS_ETH3_CASE") {
+                Some("cycles" | "cycles-court") => 4,
+                Some("rattrapage") => 2,
+                _ => 1,
+            };
+            #[cfg(not(feature="ethernet-v1-port"))]
+            let cycles = 1;
+            let mut premier = Some(suite);
+            for cycle in 0..cycles {
+            let nic = match premier.take() {
+                Some(nic) => nic,
+                None => super::net_arm::Preparation::ouvrir()?,
+            };
+            let generation = nic.domaine.generation();
+            let trafic=nic.trames(||{
                 if mode==126 {return true}
                 let mut reads=[0u64;64];
                 let mut flushes=[0u64;16];
@@ -581,6 +596,10 @@ pub(crate) fn net_p9() -> Result<()> {
             if let Err(e)=trafic {
                 t.begin_read(table.volume)?;
                 t.finish_read()?;
+                if !matches!(super::net_arm::Preparation::ouvrir(), Err(Error::Quarantine)) {
+                    return Err(Error::Fault);
+                }
+                hal::log(format_args!("E3C rattachement refuse generation={generation} disque_lisible=true"));
                 t.close()?;
                 hal::log(format_args!("ETH3 quarantaine disque_lisible=true cadres_retenus={}",crate::memory::pinned_dma_frames()));
                 return Err(e);
@@ -588,6 +607,9 @@ pub(crate) fn net_p9() -> Result<()> {
             trafic?;
             t.begin_read(table.volume)?;
             t.finish_read()?;
+            #[cfg(feature="ethernet-v1-port")]
+            hal::log(format_args!("E3C cycle={} generation={generation} disque_lisible=true dma_residents={}",cycle+1,crate::memory::pinned_dma_frames()));
+            }
             t.close()?;
             let fin=crate::memory::pinned_dma_frames();
             hal::log(format_args!("NET ARM L2 retrait disque_lisible=true cadres_fin={fin}"));

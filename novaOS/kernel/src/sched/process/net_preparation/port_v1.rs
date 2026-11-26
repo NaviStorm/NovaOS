@@ -226,6 +226,8 @@ pub(crate) fn admettre(scenario: &[u8]) -> bool {
     true
 }
 type Groupe = (Child, Child, Child, u64, [[u64; 2]; 2]);
+static DERNIERE_GENERATION: AtomicU64 = AtomicU64::new(0);
+static DERNIERE_CLE: AtomicU64 = AtomicU64::new(0);
 
 pub(crate) struct EthernetActor {
     groupe: Option<Groupe>,
@@ -239,7 +241,7 @@ impl EthernetActor {
         let case = match option_env!("NOVAOS_ETH3_CASE") {
             Some("data") => 2,
             Some("veille") => 7,
-            Some("court") => 8,
+            Some("court" | "cycles-court" | "preuve-absente" | "recu-vtd-absent") => 8,
             Some("revocation") => 6,
             Some("deces") => 3,
             Some("endurance") => 5,
@@ -249,7 +251,7 @@ impl EthernetActor {
             Some("mixte100k") => 20,
             Some("ancien") => 21,
             Some("choix-data") => 22,
-            Some("segment-interrompu") => 23,
+            Some("segment-interrompu" | "rattrapage") => 23,
             Some("recu-collecte") => 24,
             Some("echo60") => 12,
             Some("echo1514") => 13,
@@ -279,12 +281,15 @@ impl EthernetActor {
         measure("eth3_initial");
         let base = heap::audit(false).free_pages;
         let groupe = setup(generation, case, total)?;
-        Some(Self {
-            groupe: Some(groupe),
-            generation,
-            case,
-            base,
-        })
+        let precedente = DERNIERE_GENERATION.swap(generation, Relaxed);
+        let ancienne_cle = DERNIERE_CLE.swap(groupe.3, Relaxed);
+        let ancienne_valide = with(|k| k.ipc.lab_can_submit(groupe.0.0, ancienne_cle));
+        let acteur = Self { groupe: Some(groupe), generation, case, base };
+        if generation <= precedente || ancienne_valide {
+            return None;
+        }
+        hal::log(format_args!("E3C admission generation={generation} precedente={precedente} ancienne_capacite_valide={ancienne_valide}"));
+        Some(acteur)
     }
     #[cfg(feature = "net-q35-duo")]
     pub(crate) fn owner(&self) -> u64 {
@@ -534,8 +539,8 @@ pub(crate) fn ethernet_actor(
         }
     }
     CLIENT_PID.store(0, Relaxed);
-    let rt = operation(5, 0, &mut frame);
     with(|s| s.ipc.lab_close_sender(pid, hw));
+    let rt = operation(5, 0, &mut frame);
     // Les appels ordinaires expirent aussi si le titulaire d'un prêt disparaît.
     // Le courtier a déjà fermé le bus et tenté le reset avant cette collecte.
     let jusqua = ticks() + u64::from(HZ) * 30;

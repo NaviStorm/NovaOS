@@ -144,7 +144,7 @@ impl Preparation {
         }
         Ok(())
     }
-    fn retirer(&self) -> Result<()> {
+    fn purger_irq(&self) -> Result<()> {
         if ISR_PREPARATION.load(Ordering::Acquire) != 0 {
             if ISR_PREPARATION.load(Ordering::Acquire) != self.nic.isr.base() as u64 {
                 return Err(Error::Quarantine);
@@ -152,6 +152,10 @@ impl Preparation {
             hal::timer::purger_spi_reseau()?;
             ISR_PREPARATION.store(0, Ordering::Release);
         }
+        Ok(())
+    }
+    fn retirer(&self) -> Result<()> {
+        self.purger_irq()?;
         if self.nic.cfg.get(4, 2) & 4 != 0 {
             return Err(Error::Quarantine);
         }
@@ -170,6 +174,8 @@ impl Preparation {
 impl Preparation {
     pub(super) fn trames(self, pendant:impl FnOnce()->bool) -> Result<()> {
         // Les 22 mappings sont acquittés avant publication d'un premier descripteur.
+        #[cfg(feature="ethernet-v1-port")]
+        let mut preuve = None;
         let resultat = (|| {
             self.domaine.faults_preparation()?;
             let mut port = super::net_trames::Port::nouveau(&self.nic, &self.cadres)?;
@@ -195,6 +201,12 @@ impl Preparation {
                 pendant,
                 |tag, len, copie| {
                     if tag == 5 {
+                        #[cfg(feature="ethernet-v1-port")]
+                        {
+                            preuve = port.sceller(self.domaine.generation()).ok();
+                            return preuve.map(|_| 0).ok_or(crate::abi::REFUSED);
+                        }
+                        #[cfg(not(feature="ethernet-v1-port"))]
                         return port.stopper().map(|()| 0).map_err(|_| crate::abi::REFUSED);
                     }
                     if tag==6 {
@@ -213,12 +225,18 @@ impl Preparation {
                 hal::timer::counter_hz(),
                 memory::pinned_dma_frames()
             ));
-            port.stopper()?;
-            self.domaine.faults_preparation()?;
-            if !ok || irq != 0x101 {
-                return Err(Error::Fault);
+            #[cfg(not(feature="ethernet-v1-port"))]
+            {
+                port.stopper()?;
+                if !ok || irq != 0x101 { return Err(Error::Fault); }
             }
-            Ok(())
+            #[cfg(feature="ethernet-v1-port")]
+            {
+                hal::log(format_args!("E3C session generation={} succes={ok}", self.domaine.generation()));
+                preuve.ok_or(Error::Quarantine)?;
+                self.purger_irq()?;
+            }
+            self.domaine.faults_preparation()
         })();
         if resultat.is_err() {
             self.nic.cfg.intx(false);
@@ -233,6 +251,46 @@ impl Preparation {
             *q = Some(self);
             return resultat;
         }
+        #[cfg(feature="ethernet-v1-port")]
+        return self.recuperer(preuve.ok_or(Error::Quarantine)?);
+        #[cfg(not(feature="ethernet-v1-port"))]
         self.fermer()
+    }
+
+    #[cfg(feature="ethernet-v1-port")]
+    fn recuperer(mut self, preuve: super::net_trames::Arret) -> Result<()> {
+        let generation = self.domaine.generation();
+        let pages: [bool; 22] = core::array::from_fn(|i| preuve.page_restituable(i));
+        let rendues = pages.iter().filter(|v| **v).count();
+        if rendues == pages.len() {
+            self.fermer()?;
+            hal::log(format_args!("E3C VirtIO-IOMMU generation={generation} rendus=22 quarantaine=0 detache=true"));
+            return Ok(());
+        }
+        // Conserver le domaine en fermeture. Le disque dispose de sa propre
+        // attribution. Chaque unmap synchrone vérifie incarnation, ID, used et statut.
+        let retrait = (|| {
+            for (i, &libre) in pages.iter().enumerate() {
+                if libre { self.domaine.retirer_nic(i)?; }
+            }
+            self.domaine.faults_preparation()
+        })();
+        let mut liberes = 0;
+        if retrait.is_ok() {
+            for (i, &libre) in pages.iter().enumerate() {
+                if libre {
+                    // Sûreté : propriété du couple de descripteurs démontrée,
+                    // reset et purge IRQ confirmés, traduction de cette page retirée.
+                    unsafe { memory::release_dma(self.cadres[i].pa) }
+                    self.cadres[i] = EMPTY;
+                    liberes += 1;
+                }
+            }
+        }
+        hal::log(format_args!("E3C VirtIO-IOMMU generation={generation} rendus={liberes} quarantaine={} detache=false", 22-liberes));
+        let mut q = QUARANTAINE.lock();
+        assert!(q.is_none());
+        *q = Some(self);
+        Err(Error::Quarantine)
     }
 }

@@ -63,6 +63,7 @@ fn topologie() -> Option<u64> {
             || f.header & 127 != 0
             || f.rom_enabled
             || f.msi_armed
+            || (sid == 56 && cfg!(feature="ethernet-v1-port") && f.pcie)
             || (sid == 56 && (f.bus_master || f.class != 2 || f.subclass != 0 || f.msi || f.msix))
         {
             return None;
@@ -100,16 +101,22 @@ fn publier(frames: &[Frame], line: usize) {
     barrier()
 }
 
-fn invalider(reg: Region, frames: &[Frame], index: u64, cookie: u32) -> Result<(), &'static str> {
-    if reg.r64(0x80) != index || reg.r64(0x88) != index || reg.r32(0x34) != 0 {
+fn invalider(reg: Region, frames: &[Frame], index: u64, cookie: u32, line: usize) -> Result<(), &'static str> {
+    if index > 4096-48 || index % 16 != 0 || cookie == 0
+        || frames[7].mem.r32(0) != cookie-1 || reg.r64(0x90) != frames[6].pa
+        || reg.r64(0x20) != frames[0].pa || reg.r64(0x80) != index
+        || reg.r64(0x88) != index || reg.r32(0x34) != 0 {
         return Err("file occupee");
     }
     let q = frames[6].mem;
+    // CC global et IOTLB global, DR et DW. Les mots réservés restent nuls.
+    q.w64(index as usize + 8, 0);
+    q.w64(index as usize + 24, 0);
     q.w64(index as usize, 0x11);
     q.w64(index as usize + 16, 0xd2);
     q.w64(index as usize + 32, (u64::from(cookie) << 32) | 0x25);
     q.w64(index as usize + 40, frames[7].pa);
-    barrier();
+    publier(&frames[6..7], line);
     reg.w64(0x88, index + 48);
     wait(|| reg.r32(0x34) != 0 || (reg.r64(0x80) == index + 48 && frames[7].mem.r32(0) == cookie))
         .map_err(|_| "expiration QI")?;
@@ -197,13 +204,22 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     reg.w64(0x90, frames[6].pa);
     reg.w32(0x18, QI);
     wait(|| reg.r32(0x1c) == ROOT | QI && reg.r64(0x90) == frames[6].pa).map_err(|_| "QIES")?;
-    invalider(reg, &frames, 0, 1)?;
+    invalider(reg, &frames, 0, 1, line)?;
     reg.w32(0x18, QI | TE);
     wait(|| reg.r32(0x1c) == ROOT | QI | TE).map_err(|_| "TES")?;
     if !pairs_fermes() {
         return Err("PCI");
     }
-    let cycles = if cfg!(feature="net-ethernet-lab") && option_env!("NOVAOS_NET_SERIE")==Some("redemarrage") && boot::scenario()==b"net-q35-ethernet" {4u32} else {1};
+    // Le chargeur peut déjà avoir restitué ses pages au second cycle.
+    #[cfg(feature="net-event-idx")]
+    let scenario_ethernet = boot::scenario() == b"net-q35-ethernet";
+    let cycles = if cfg!(feature="ethernet-v1-port") {
+        match option_env!("NOVAOS_ETH3_CASE") {
+            Some("cycles" | "cycles-court") => 4,
+            Some("rattrapage") => 2,
+            _ => 1,
+        }
+    } else if cfg!(feature="net-ethernet-lab") && option_env!("NOVAOS_NET_SERIE")==Some("redemarrage") && boot::scenario()==b"net-q35-ethernet" {4u32} else {1};
     for cycle in 0..cycles {
     if cycle!=0 {
         if !pairs_fermes() || reg.r32(0x1c) != ROOT | QI | TE || frames[0].mem.r64(0)!=0 { return Err("controleur non retire"); }
@@ -226,7 +242,7 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     publier(&frames[1..6], line);
     frames[0].mem.w64(0, frames[1].pa | 1);
     publier(&frames[..1], line);
-    invalider(reg, &frames, offset, cookie)?;
+    invalider(reg, &frames, offset, cookie, line)?;
     if !pairs_fermes() || reg.r32(0x1c) != ROOT | QI | TE {
         return Err("etat terminal");
     }
@@ -235,9 +251,9 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
         frames[0].pa, frames[6].pa, frames[7].pa
     ));
     #[cfg(feature = "net-event-idx")]
-    let negotiation = match boot::scenario() {
+    let negotiation = match scenario_ethernet {
         #[cfg(feature="net-ethernet-lab")]
-        b"net-q35-ethernet" => {
+        true => {
             // Le domaine appartient exclusivement au titulaire. Une issue incertaine
             // conserve tous ses cadres épinglés jusqu'à arrêt de la VM.
             super::block::net_event::trafic_q35(frames[8..].try_into().unwrap(),u64::from(cycle)+1).map_err(|e|{hal::log(format_args!("NET Q35 L2 quarantaine={e:?}")); "trafic non confirme"})?;
@@ -249,19 +265,27 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     #[cfg(feature = "net-event-idx")]
     let retrait = retrait || negotiation.is_err();
     if retrait {
-        // BME est resté coupé. Supprimer la seule racine avant CC global,
+        // BME est coupé et le NIC arrêté. Supprimer la seule racine avant CC global,
         // IOTLB global avec DR/DW et WAIT sur un nouveau reçu de cette file.
         if !pairs_fermes() || frames[0].mem.r64(0) != frames[1].pa | 1 {
             return Err("retrait non admissible");
         }
         frames[0].mem.w64(0, 0);
         publier(&frames[..1], line);
-        invalider(reg, &frames, offset+48, cookie+1)?;
+        invalider(reg, &frames, offset+48, cookie+1, line)?;
         if !pairs_fermes()
             || reg.r32(0x1c) != ROOT | QI | TE
             || (0..512).any(|i| frames[0].mem.r64(i * 8) != 0)
         {
             return Err("retrait incertain");
+        }
+        #[cfg(feature="ethernet-v1-port")]
+        {
+            if option_env!("NOVAOS_ETH3_CASE") == Some("recu-vtd-absent") {
+                hal::log(format_args!("E3C VT-d recu non livre generation={} cookie={} epingles={}", cycle+1, cookie+1, memory::pinned_dma_frames()-reference));
+                return Err("recu de retrait indisponible");
+            }
+            hal::log(format_args!("E3C VT-d generation={} bme=0 reset=0 cc=global iotlb=global dr=1 dw=1 iqh={} iqt={} cookie={} fsts=0",cycle+1,reg.r64(0x80),reg.r64(0x88),frames[7].mem.r32(0)));
         }
         for (i, f) in frames.iter_mut().enumerate() {
             if !permanent(i) {

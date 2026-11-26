@@ -107,7 +107,7 @@ fn main() {
             rust.arg("--cfg").arg("nvme_rw");
         }
         if port && matches!(name,"ethernet_client"|"net_preparation")
-            && matches!(env::var("NOVAOS_ETH3_CASE").as_deref(),Ok("segment-interrompu"|"recu-collecte")) {
+            && matches!(env::var("NOVAOS_ETH3_CASE").as_deref(),Ok("segment-interrompu"|"recu-collecte"|"rattrapage")) {
             rust.arg("--cfg").arg("ethernet_3b_incidents");
         }
         if port && name=="net_preparation" { rust.args(["--cfg","ethernet_v1_port"]); }

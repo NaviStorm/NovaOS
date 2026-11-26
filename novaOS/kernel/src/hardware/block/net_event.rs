@@ -100,8 +100,16 @@ pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u
     let ligne =
         crate::hardware::lab_irq::net_intx::Ligne::ouvrir(nic.isr.base()).ok_or(Error::Route)?;
     let hz = hal::timer::counter_hz();
+    #[cfg(feature="ethernet-v1-port")]
+    let mut scelle = false;
     let ok = crate::sched::process::net_preparation::ethernet(generation, ||true, |tag, len, copie| {
         if tag == 5 {
+            #[cfg(feature="ethernet-v1-port")]
+            {
+                scelle = port.sceller(generation).is_ok();
+                return scelle.then_some(0).ok_or(crate::abi::REFUSED);
+            }
+            #[cfg(not(feature="ethernet-v1-port"))]
             return port.stopper().map(|()| 0).map_err(|_| crate::abi::REFUSED);
         }
         if tag==6 {
@@ -110,6 +118,7 @@ pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u
         }
         port.demande(tag, len, copie, ligne.cause() == 0x101)
     });
+    #[cfg(not(feature="ethernet-v1-port"))]
     let stop = port.stopper();
     let cause = ligne.cause();
     hal::log(format_args!(
@@ -119,9 +128,17 @@ pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u
     if !ligne.fermer() {
         return Err(Error::Quarantine);
     }
-    stop?;
-    if !ok || cause != 0x101 {
-        return Err(Error::Fault);
+    #[cfg(not(feature="ethernet-v1-port"))]
+    {
+        stop?;
+        if !ok || cause != 0x101 { return Err(Error::Fault); }
+    }
+    #[cfg(feature="ethernet-v1-port")]
+    {
+        hal::log(format_args!("E3C session generation={generation} succes={ok}"));
+        if !scelle { return Err(Error::Quarantine); }
+        // Les cadres restent épinglés. Le propriétaire VT-d doit retirer la
+        // racine, achever CC/IOTLB DR+DW et vérifier son WAIT avant restitution.
     }
     Ok(())
 }

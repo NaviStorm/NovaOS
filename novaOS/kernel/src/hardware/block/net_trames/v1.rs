@@ -6,12 +6,12 @@ use super::*;
 pub(super) struct Flux {
     tailles: [u32; 8],
     preparees: u32,
-    publiees: u32,
-    completees: u32,
-    en_vol: u16,
-    rx_lues: u32,
-    rx_rendues: u16,
-    rx_base: u32,
+    pub(super) publiees: u32,
+    pub(super) completees: u32,
+    pub(super) en_vol: u16,
+    pub(super) rx_lues: u32,
+    pub(super) rx_rendues: u16,
+    pub(super) rx_base: u32,
 }
 impl Port<'_> {
     pub(super) fn v1(
@@ -140,11 +140,19 @@ impl Port<'_> {
                 if s.en_vol != 0
                     || s.preparees != s.completees
                     || s.publiees != s.completees
-                    || s.rx_rendues != u16::MAX
                     || rx_used.r16(2) != s.rx_lues as u16
                     || tx_used.r16(2) != s.completees as u16
                 {
                     return Err(abi::REFUSED);
+                }
+                if s.rx_rendues != u16::MAX {
+                    #[cfg(feature="net-q35-duo")]
+                    return Err(abi::REFUSED);
+                    #[cfg(not(feature="net-q35-duo"))]
+                    {
+                        hal::log(format_args!("E3C fermeture RX partielle rx_lus={} tx_lus={}", s.rx_lues, s.completees));
+                        return Ok(0);
+                    }
                 }
                 self.draine = true;
                 hal::log(format_args!(
