@@ -103,6 +103,8 @@ fn wait(key: u64, out: u64, len: u64) -> Result<u64, u64> {
 /// Les deux portes appellent cette fonction sur la pile privée, IRQ masquées.
 /// Le contexte entier est sauvegardé avant de permettre une préemption.
 pub(crate) fn call(id: u64, args: [u64; 3], pc: u64, sp: u64, level: &'static str) -> Reply {
+    #[cfg(feature = "ethernet-2b-course")]
+    ipc::course::entry(id, args[0]);
     threads::stop_if_dying();
     let (exec, stack, secondary) = with(|s| {
         let space = s.processes.get(caller(s)).space.as_ref().unwrap();

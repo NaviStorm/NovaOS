@@ -25,6 +25,8 @@ pub(super) use pipe_admission::{PendingReader, ReaderReceipt};
 mod lab_command;
 pub(super) use bulk::transfer;
 pub(crate) use probes::{quiet, run};
+#[cfg(feature = "ethernet-2b-course")]
+pub(crate) use probes::course;
 #[cfg(feature = "ethernet-2b-lab")]
 pub(super) use probes::phase2b::{mediation_measured, timed_transfer};
 

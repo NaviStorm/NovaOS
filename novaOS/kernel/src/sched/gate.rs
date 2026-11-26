@@ -28,6 +28,8 @@ fn acquire(depth: usize) {
         .is_err()
     {
         conflict = true;
+        #[cfg(feature = "ethernet-2b-course")]
+        super::process::ipc::course::contended(me - 1, OWNER.load(Ordering::Relaxed));
         while OWNER.load(Ordering::Relaxed) != 0 {
             crate::smp::check_stop();
             crate::arch::poll_translation();

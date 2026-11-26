@@ -22,7 +22,8 @@ def main():
     parser=argparse.ArgumentParser()
     parser.add_argument("archive",type=Path)
     parser.add_argument("architectures",nargs="+",choices=("aarch64","x86_64"))
-    parser.add_argument("--phase2b", choices=("mesure","mesure-1","mesure-2","essai","surete"))
+    parser.add_argument("--phase2b", choices=("mesure","mesure-1","mesure-2","essai","surete","course","rare","rare-1","rare-2"))
+    parser.add_argument("--cibles",type=Path,default=NOVA/"target")
     args=parser.parse_args()
     phase = "2b" if args.phase2b else "2"
     complete = b"ETH2B campagne OK" if args.phase2b else b"ETH2 campagne OK"
@@ -45,9 +46,9 @@ def main():
             run.mkdir()
             target={"aarch64":"aarch64-unknown-none-softfloat","x86_64":"x86_64-unknown-none"}[arch]
             elf=run/"novaos.elf"
-            shutil.copyfile(NOVA/"target"/target/"release/novaos",elf)
+            shutil.copyfile(args.cibles/target/"release/novaos",elf)
             iso=run/"ethernet.iso"
-            os.environ.update(NOVA_ARCH=arch,NOVA_KERNEL_ELF=str(elf),NOVA_ISO=str(iso),NOVA_RAM="256",NOVA_VCPUS="1")
+            os.environ.update(NOVA_ARCH=arch,NOVA_KERNEL_ELF=str(elf),NOVA_ISO=str(iso),NOVA_RAM="256",NOVA_VCPUS="2" if args.phase2b=="course" else "1")
             with (run/"construction-iso.log").open("w") as log:
                 subprocess.run(["sh",NOVA/"scripts/iso.sh",f"ipc-eth2b-{args.phase2b}" if args.phase2b else "ipc-perf",iso],cwd=NOVA,check=True,stdout=log,stderr=subprocess.STDOUT)
             def observe(vm,directory,serial):

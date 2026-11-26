@@ -480,6 +480,8 @@ impl UserSpace {
             // destination noyau disjointe et bornée, verrou conservé.
             unsafe { paging::copy_user_bytes(ptr, out.as_mut_ptr().add(offset), n) };
             offset += n;
+            #[cfg(feature = "ethernet-2b-course")]
+            crate::sched::process::ipc::course::segment(false, va, out.len(), offset);
         }
         true
     }
@@ -494,6 +496,8 @@ impl UserSpace {
             // la première écriture. Les cadres restent possédés jusqu’au retour.
             unsafe { paging::copy_user_bytes(input.as_ptr().add(offset), ptr, n) };
             offset += n;
+            #[cfg(feature = "ethernet-2b-course")]
+            crate::sched::process::ipc::course::segment(true, va, input.len(), offset);
         }
         true
     }

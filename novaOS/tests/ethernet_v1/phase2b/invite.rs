@@ -386,9 +386,10 @@ pub(super) fn run(scenario: &[u8]) {
         return;
     }
     let smoke = scenario == b"ipc-eth2b-essai";
+    let rare_long = scenario.starts_with(b"ipc-eth2b-rare");
     let rotation = match scenario {
-        b"ipc-eth2b-mesure-1" => 1,
-        b"ipc-eth2b-mesure-2" => 2,
+        b"ipc-eth2b-mesure-1" | b"ipc-eth2b-rare-1" => 1,
+        b"ipc-eth2b-mesure-2" | b"ipc-eth2b-rare-2" => 2,
         _ => 0,
     };
     hal::log(format_args!("ETH2B ordre rotation={rotation}"));
@@ -405,6 +406,9 @@ pub(super) fn run(scenario: &[u8]) {
         (1, 1, 60),
         (1, 1, 1514),
     ] {
+        if rare_long && profile != 1 {
+            continue;
+        }
         for shift in 0..3 {
             let mode = (shift + b + len + profile + rotation) % 3;
             cell(
@@ -416,7 +420,7 @@ pub(super) fn run(scenario: &[u8]) {
                 },
                 if smoke {
                     16
-                } else if profile == 1 {
+                } else if profile == 1 && !rare_long {
                     1000
                 } else {
                     N
