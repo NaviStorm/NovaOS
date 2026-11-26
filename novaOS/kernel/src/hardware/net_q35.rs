@@ -320,7 +320,15 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
                 Ok(r) => r,
                 Err(e) => { retrait::garer(&mut frames,cycle+1,None)?; return Err(e); }
             };
-            retrait::attendre(reg,&mut frames,cycle+1,attente)?;
+            match retrait::attendre(reg, &mut frames, cycle+1, attente) {
+                Err("livraison differee" | "expiration QI") => {
+                    frames = retrait::reprendre(reg, cycle+1, attente.cookie)?;
+                    if retrait::reprendre(reg, cycle+1, attente.cookie).err() != Some("aucun retrait en attente") {
+                        return Err("recu de retrait reutilisable");
+                    }
+                }
+                resultat => resultat?,
+            }
             hal::log(format_args!("E3C VT-d generation={} bme=0 reset=0 cc=global iotlb=global dr=1 dw=1 iqh={} iqt={} cookie={} fsts=0",cycle+1,reg.r64(0x80),reg.r64(0x88),frames[7].mem.r32(0)));
         }
         #[cfg(not(feature="ethernet-v1-port"))]

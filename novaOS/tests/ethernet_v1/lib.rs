@@ -1,4 +1,6 @@
 #![no_std]
+#[cfg(test)]
+mod retrait_dma;
 pub mod protocol;
 pub mod transport;
 pub mod wire;

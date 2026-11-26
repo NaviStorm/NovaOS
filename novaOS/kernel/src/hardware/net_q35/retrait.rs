@@ -31,7 +31,11 @@ pub(super) fn garer(
     Ok(())
 }
 
-fn reprendre(reg: Region, generation: u32, cookie: u32) -> Result<[Frame; 30], &'static str> {
+pub(super) fn reprendre(
+    reg: Region,
+    generation: u32,
+    cookie: u32,
+) -> Result<[Frame; 30], &'static str> {
     let mut place = QUARANTAINE.lock();
     let bail = place.as_ref().ok_or("aucun retrait en attente")?;
     let recu = bail.attente.ok_or("arret NIC incertain")?;
@@ -55,48 +59,37 @@ pub(super) fn attendre(
     recu: RecuQi,
 ) -> Result<(), &'static str> {
     garer(cadres, generation, Some(recu))?;
-    match option_env!("NOVAOS_ETH3_CASE") {
-        Some("recu-vtd-absent") => {
-            let epingles = QUARANTAINE
-                .lock()
-                .as_ref()
-                .unwrap()
-                .cadres
-                .iter()
-                .filter(|f| f.pa != 0)
-                .count();
+    if matches!(
+        option_env!("NOVAOS_ETH3_CASE"),
+        Some("recu-vtd-absent" | "recu-vtd-differe")
+    ) {
+        let epingles = QUARANTAINE
+            .lock()
+            .as_ref()
+            .unwrap()
+            .cadres
+            .iter()
+            .filter(|f| f.pa != 0)
+            .count();
+        if disponible()
+            || reprendre(reg, generation - 1, recu.cookie).err() != Some("autre retrait")
+            || reprendre(reg, generation, recu.cookie - 1).err() != Some("autre retrait")
+        {
+            return Err("identite du retrait");
+        }
+        if option_env!("NOVAOS_ETH3_CASE") == Some("recu-vtd-absent") {
             hal::log(format_args!(
-                "E3C VT-d recu non livre generation={generation} cookie={} epingles={epingles} rattachement_refuse={}",
-                recu.cookie,
-                !disponible()
+                "E3C VT-d recu non livre generation={generation} cookie={} epingles={epingles} rattachement_refuse=true",
+                recu.cookie
             ));
             return Err("recu de retrait indisponible");
         }
-        Some("recu-vtd-differe") => {
-            if disponible()
-                || reprendre(reg, generation - 1, recu.cookie).err() != Some("autre retrait")
-                || reprendre(reg, generation, recu.cookie - 1).err() != Some("autre retrait")
-            {
-                return Err("identite du retrait");
-            }
-            let epingles = QUARANTAINE
-                .lock()
-                .as_ref()
-                .unwrap()
-                .cadres
-                .iter()
-                .filter(|f| f.pa != 0)
-                .count();
-            hal::log(format_args!(
-                "E3C retrait differe VT-d generation={generation} cookie={} anciennes_references_refusees=true epingles={epingles}",
-                recu.cookie
-            ));
-        }
-        _ => {}
+        hal::log(format_args!(
+            "E3C retrait differe VT-d generation={generation} cookie={} anciennes_references_refusees=true epingles={epingles}",
+            recu.cookie
+        ));
+        return Err("livraison differee");
     }
-    *cadres = match reprendre(reg, generation, recu.cookie) {
-        Err("expiration QI") => reprendre(reg, generation, recu.cookie),
-        resultat => resultat,
-    }?;
+    *cadres = reprendre(reg, generation, recu.cookie)?;
     Ok(())
 }

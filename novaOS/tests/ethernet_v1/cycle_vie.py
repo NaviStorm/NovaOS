@@ -5,9 +5,9 @@ import re
 import struct
 
 NOUVEAUX = ("cycles", "cycles-court", "rattrapage", "preuve-absente", "recu-vtd-absent",
-            "recu-vtd-differe", "recu-arm-differe")
+            "recu-vtd-differe", "recu-arm-differe", "recu-arm-absent")
 CAS = {"port": 0, "cycles": 0, "court": 8, "cycles-court": 8, "preuve-absente": 8,
-       "recu-vtd-absent": 8, "recu-vtd-differe": 8, "recu-arm-differe": 0, "deces": 3, "incertain": 4, "revocation": 6,
+       "recu-vtd-absent": 8, "recu-vtd-differe": 8, "recu-arm-differe": 0, "recu-arm-absent": 0, "deces": 3, "incertain": 4, "revocation": 6,
        "segment-interrompu": 23, "rattrapage": 23, "recu-collecte": 24, "echo1514": 13}
 
 
@@ -151,11 +151,13 @@ def verifier(out, c, serie):
     exiger(len(bilans)==cycles and all(int(b[0])==mode for b in bilans),bilans)
     attentes={0:144,8:1,3:4,4:4,6:4,23:0,24:8,13:13312}
     exiger(c["trames_par_sens"] == cycles*attentes[mode] and c["erreur_pair"] is None, c["trames_par_sens"])
-    if cas in ("recu-arm-differe", "recu-vtd-differe"):
+    if cas in ("recu-arm-differe", "recu-vtd-differe", "recu-arm-absent"):
         differes = re.findall(r"E3C retrait differe (VirtIO-IOMMU|VT-d) generation=(\d+) (?:numero|cookie)=(\d+) anciennes_references_refusees=true epingles(?:_nic)?=(\d+)", serie)
         exiger(len(differes)==cycles and [int(d[1]) for d in differes]==generations
                and len({d[2] for d in differes})==cycles and
                all((d[0], int(d[3]))==(("VirtIO-IOMMU",22) if arch=="arm" else ("VT-d",30)) for d in differes), differes)
+    if cas in ("recu-arm-differe", "recu-arm-absent"):
+        exiger(serie.count("epingles_nic=22 lecture_flush=true") == cycles, "E/S pendant la quarantaine")
     if cas=="rattrapage":
         exiger(c["rx_injectees_perf"]==16*cycles and all(int(a[4],16)==65535 and int(a[1])==0 for a in arrets), arrets)
     for b in bilans:
@@ -177,7 +179,10 @@ def verifier(out, c, serie):
                     cadres_cpu=cpu,ram=ram)
     if arch=="arm":
         retenues = set(range(22)) if absent else pages_retenues(int(arrets[-1][4],16),int(arrets[-1][5],16))
-        if not absent:
+        sans_livraison = cas == "recu-arm-absent"
+        if sans_livraison:
+            retenues = set(range(22))
+        if not absent and not sans_livraison:
             retrait=re.findall(r"E3C VirtIO-IOMMU generation=(\d+) rendus=(\d+) quarantaine=(\d+) detache=(true|false)",serie)
             exiger(len(retrait)==cycles,retrait)
             for a,s in zip(arrets,retrait):
@@ -189,7 +194,7 @@ def verifier(out, c, serie):
         else:
             exiger("NET ARM bilan Ok(())" in serie and "NET ARM L2 retrait disque_lisible=true cadres_fin=0" in serie,"restitution ARM")
         exiger(c["volume_relu_identique"], "P9 modifié")
-        evidence["iommu"]=domaines_arm(out,retenues)
+        evidence["iommu"]=domaines_arm(out, retenues - {0,21} if sans_livraison else retenues)
         evidence["memoire_finale"]=dict(nic=len(retenues),controleur=9 if retenues else 0,permanent=0)
     else:
         qi=c["preuve_qi"]

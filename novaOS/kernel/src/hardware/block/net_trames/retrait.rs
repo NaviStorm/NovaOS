@@ -1,5 +1,6 @@
 //! Preuve de propriété des buffers à la clôture du seul port Ethernet v1.
 use super::*;
+mod propriete;
 const TOUS: u16 = u16::MAX;
 
 /// Photographié après le retrait de l'autorité du pilote et le reset acquitté.
@@ -13,38 +14,20 @@ pub(in crate::hardware::block) struct Arret {
 impl Arret {
     #[cfg(target_arch = "aarch64")]
     pub(in crate::hardware::block) fn page_restituable(self, n: usize) -> bool {
-        match n {
-            0..=5 => self.rx_rendus == TOUS && self.tx_en_vol == 0,
-            6..=13 => self.rx_rendus >> (2 * (n - 6)) & 3 == 3,
-            14..=21 => self.tx_en_vol >> (2 * (n - 14)) & 3 == 0,
-            _ => false,
-        }
+        propriete::restituable(self.rx_rendus, self.tx_en_vol, n)
     }
 }
 
 /// Valide les nouvelles entrées used, y compris celles que le pilote n'a pas lues.
 /// Un identifiant, une longueur ou une distance incohérents invalident toute la preuve.
 fn rendus(used: Region, lus: u32, dus: u16, rx: bool) -> Result<u16> {
-    let delta = used.r16(2).wrapping_sub(lus as u16);
-    if u32::from(delta) > dus.count_ones() {
-        return Err(Error::Quarantine);
-    }
+    let index = used.r16(2);
     barrier();
-    let mut restants = dus;
-    for n in 0..delta {
-        let pos = 4 + 8 * ((lus as usize + usize::from(n)) & 15);
-        let id = used.r32(pos);
-        let len = used.r32(pos + 4);
-        if id >= 16
-            || restants & (1 << id) == 0
-            || (rx && !(72..=1526).contains(&len))
-            || (!rx && len != 0)
-        {
-            return Err(Error::Quarantine);
-        }
-        restants &= !(1 << id);
-    }
-    Ok(restants)
+    propriete::restants(lus, index, dus, rx, |slot| {
+        let pos = 4 + 8 * slot;
+        (used.r32(pos), used.r32(pos + 4))
+    })
+    .ok_or(Error::Quarantine)
 }
 
 impl Port<'_> {

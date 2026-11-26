@@ -593,6 +593,31 @@ pub(crate) fn net_p9() -> Result<()> {
                 true
             });
             #[cfg(feature="ethernet-v1-port")]
+            let trafic = if trafic.is_err()
+                && let Some((numero, epingles)) = super::net_arm::Preparation::attente_retrait(generation)
+            {
+                use super::net_arm::Preparation;
+                // Le stockage conserve son domaine et son bail pendant la réconciliation.
+                t.begin_read(table.volume)?;
+                t.finish_read()?;
+                t.output(0, true)?;
+                if !matches!(Preparation::ouvrir(), Err(Error::Quarantine))
+                    || !matches!(Preparation::reprendre_retrait(generation-1, numero), Err(Error::State))
+                    || !matches!(Preparation::reprendre_retrait(generation, numero-1), Err(Error::State)) {
+                    return Err(Error::Fault);
+                }
+                hal::log(format_args!("E3C retrait differe VirtIO-IOMMU generation={generation} numero={numero} anciennes_references_refusees=true epingles_nic={epingles} lecture_flush=true"));
+                if option_env!("NOVAOS_ETH3_CASE") == Some("recu-arm-absent") {
+                    Err(Error::Quarantine)
+                } else {
+                    let resultat = Preparation::reprendre_retrait(generation, numero);
+                    if resultat.is_ok() && !matches!(Preparation::reprendre_retrait(generation, numero), Err(Error::State)) {
+                        return Err(Error::Fault);
+                    }
+                    resultat
+                }
+            } else { trafic };
+            #[cfg(feature="ethernet-v1-port")]
             if let Err(e)=trafic {
                 t.begin_read(table.volume)?;
                 t.finish_read()?;

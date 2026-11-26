@@ -275,23 +275,27 @@ impl Preparation {
             bail.retrait_differe = Some(n);
             n
         };
-        if option_env!("NOVAOS_ETH3_CASE") == Some("recu-arm-differe") {
-            if !matches!(Self::ouvrir(), Err(Error::Quarantine))
-                || !matches!(Self::reprendre_retrait(generation-1,numero), Err(Error::State))
-                || !matches!(Self::reprendre_retrait(generation,numero-1), Err(Error::State)) {
-                return Err(Error::Quarantine);
-            }
-            let epingles = QUARANTAINE.lock().as_ref().ok_or(Error::State)?.cadres.iter().filter(|f| f.pa != 0).count();
-            hal::log(format_args!("E3C retrait differe VirtIO-IOMMU generation={generation} numero={numero} anciennes_references_refusees=true epingles_nic={epingles}"));
+        if matches!(option_env!("NOVAOS_ETH3_CASE"), Some("recu-arm-differe" | "recu-arm-absent")) {
+            // Le contrôleur peut déjà avoir enregistré le succès. Le propriétaire du
+            // bail n'en reçoit aucune notification lors de ce premier passage.
+            let q = QUARANTAINE.lock();
+            q.as_ref().ok_or(Error::State)?.domaine.reconcilier_nic(numero)?;
+            return Err(Error::Quarantine);
         }
-        match Self::reprendre_retrait(generation, numero) {
-            Err(Error::Timeout) => Self::reprendre_retrait(generation, numero),
-            resultat => resultat,
-        }
+        Self::reprendre_retrait(generation, numero)
     }
 
     #[cfg(feature="ethernet-v1-port")]
-    fn reprendre_retrait(generation: u64, numero: u64) -> Result<()> {
+    pub(super) fn attente_retrait(generation: u64) -> Option<(u64, usize)> {
+        let q = QUARANTAINE.lock();
+        let bail = q.as_ref()?;
+        (bail.domaine.generation() == generation).then_some((
+            bail.retrait_differe?, bail.cadres.iter().filter(|f| f.pa != 0).count()
+        ))
+    }
+
+    #[cfg(feature="ethernet-v1-port")]
+    pub(super) fn reprendre_retrait(generation: u64, numero: u64) -> Result<()> {
         let bail = {
             let mut place = QUARANTAINE.lock();
             let p = place.as_ref().ok_or(Error::State)?;
@@ -303,7 +307,9 @@ impl Preparation {
             bail.retrait_differe = None;
             bail
         };
-        bail.fermer()
+        bail.fermer()?;
+        hal::log(format_args!("E3C VirtIO-IOMMU generation={generation} rendus=22 quarantaine=0 detache=true"));
+        Ok(())
     }
 
     #[cfg(feature="ethernet-v1-port")]
@@ -312,9 +318,7 @@ impl Preparation {
         let pages: [bool; 22] = core::array::from_fn(|i| preuve.page_restituable(i));
         let rendues = pages.iter().filter(|v| **v).count();
         if rendues == pages.len() {
-            self.retrait_complet()?;
-            hal::log(format_args!("E3C VirtIO-IOMMU generation={generation} rendus=22 quarantaine=0 detache=true"));
-            return Ok(());
+            return self.retrait_complet();
         }
         // Conserver le domaine en fermeture. Le disque dispose de sa propre
         // attribution. Chaque unmap synchrone vérifie incarnation, ID, used et statut.
