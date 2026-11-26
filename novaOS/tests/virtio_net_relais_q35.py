@@ -171,6 +171,13 @@ def run(a,out):
                                     for motif in [b"NET L2 completions TX=16 RX=16 identifiants_uniques=true", b"NET Q35 L2 GSI=23 ISR=0x101", b"NET L2 pilote fin=Exit(0) racines=0", b"NET Q35 etat=Ok(()) bail=false"]:
                                         if motif not in serial:
                                             raise ValueError(f"Preuve invitée absente {motif!r}: {serial[-450:]!r}")
+                                    if pair.pression:
+                                        first = b"NET RX fenetre 16 completions avant rearmement"
+                                        released = b"NET RX capture terminee generation=1 IPC_en_attente=0"
+                                        if serial.count(first) != 1 or serial.count(released) != 1 or not (
+                                            serial.index(first) < serial.index(released) < serial.index(b"NET L2 total ")
+                                        ):
+                                            raise ValueError("Rendez-vous de saturation RX Q35 incomplet")
                                     total=pair.lots*16
                                     tx=32 if pair.performance=="rx" else total
                                     rx=32 if pair.performance=="tx" else total

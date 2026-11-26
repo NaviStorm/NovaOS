@@ -28,6 +28,13 @@ fn main() {
         && env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some()
         && env::var("NOVAOS_NET_SERIE").as_deref()==Ok("stockage");
     if coexistence { println!("cargo::rustc-cfg=net_p9_coexistence"); }
+    println!("cargo::rustc-check-cfg=cfg(net_q35_rx_pressure)");
+    let q35_rx_pressure = target == "x86_64-unknown-none"
+        && env::var_os("CARGO_FEATURE_NET_Q35_LAB").is_some()
+        && env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some()
+        && env::var_os("CARGO_FEATURE_NET_Q35_DUO").is_none()
+        && env::var("NOVAOS_NET_SERIE").as_deref() == Ok("pression-rx");
+    if q35_rx_pressure { println!("cargo::rustc-cfg=net_q35_rx_pressure"); }
     let nvme_lab = target == "x86_64-unknown-none" && env::var_os("CARGO_FEATURE_NVME_LAB").is_some();
     println!("cargo:rerun-if-changed=../user/virtio_net");
     for name in [
@@ -106,6 +113,7 @@ fn main() {
         {
             rust.args(["--cfg", "net_p9_trace"]);
         }
+        if q35_rx_pressure && name == "net_preparation" { rust.args(["--cfg", "net_q35_rx_pressure"]); }
         if dual && name == "net_preparation" { rust.args(["--cfg","net_q35_fault_test"]); }
         if coexistence && name == "storage/net_measure" {rust.args(["--cfg","net_p9_coexistence"]);}
         if name == "net_preparation" && env::var_os("CARGO_FEATURE_NET_ETHERNET_LAB").is_some() {

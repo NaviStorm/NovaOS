@@ -24,6 +24,8 @@ fn profil() -> u64 {
 }
 
 fn creer(mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child, u64)> {
+    #[cfg(net_q35_rx_pressure)]
+    let pressure_hz = hal::timer::counter_hz();
     let _guard = Guard::new();
     let child = create_image(IMAGE, &mode.to_le_bytes(), None, None).ok()?;
     let pid = child.0;
@@ -42,6 +44,11 @@ fn creer(mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child,
             if mode == 3 {
                 space.write_data(m, 7, lots());
                 space.write_data(m, 9, profil());
+                #[cfg(net_q35_rx_pressure)]
+                {
+                    space.write_data(m, 10, 0);
+                    space.write_data(m, 11, pressure_hz);
+                }
                 if option_env!("NOVAOS_NET_SERIE")==Some("redemarrage") {space.write_data(m,8,generation.checked_mul(65536).ok_or(crate::memory::Error::Geometry)?);}
             }
             Ok(())
@@ -245,6 +252,21 @@ pub(crate) fn ethernet_actor(
         if option_env!("NOVAOS_NET_SERIE")==Some("pression-rx") && tag==6 && seq==35 {
             hal::log(format_args!("NET RX fenetre 16 completions avant rearmement"));
             sleep(u64::from(HZ)/8);
+            #[cfg(net_q35_rx_pressure)]
+            {
+                // Aucune attente de réponse IPC ne doit courir pendant la capture.
+                let released = with(|s| {
+                    if !matches!(s.ipc.lab_pop(pid, handle), Ok(None)) { return false; }
+                    heap::with_pages(|m| {
+                        let space = s.processes.get(pid).space.as_ref()
+                            .ok_or(crate::memory::Error::Geometry)?;
+                        space.write_data(m, 10, generation);
+                        Ok(())
+                    }).is_ok()
+                });
+                if !released { ok = false; break; }
+                hal::log(format_args!("NET RX capture terminee generation={generation} IPC_en_attente=0"));
+            }
         }
         if demande(pid, handle, lots()>1) != Some((tag, generation, seq)) {
             ok = false;

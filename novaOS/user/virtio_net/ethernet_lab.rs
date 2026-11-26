@@ -109,6 +109,18 @@ pub(super) fn executer(handle: u64, generation: u64) -> Result<()> {
     if !tx_seul && recus != u16::MAX {
         return Err(REFUSED);
     }
+    #[cfg(net_q35_rx_pressure)]
+    if lot == 0 {
+        // Attendre la fin de la fenêtre d’observation avant de déposer le réarmement.
+        let limit = config(11).checked_mul(3).filter(|&v| v > 0).ok_or(REFUSED)?;
+        let start = unsafe { core::arch::x86_64::_rdtsc() };
+        while config(10) != generation {
+            if unsafe { core::arch::x86_64::_rdtsc() }.wrapping_sub(start) >= limit {
+                return Err(TIMED_OUT);
+            }
+            call(THREAD_YIELD, 0, 0, 0);
+        }
+    }
     seq+=1;
     commande(handle, generation, seq, if lot+1==lots {4} else {6}, 0)?;
     #[cfg(net_q35_fault_test)]
