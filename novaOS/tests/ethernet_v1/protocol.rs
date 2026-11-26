@@ -46,6 +46,13 @@ impl Endpoint {
             close_receipt: None,
         }
     }
+    pub fn retirer_options(&mut self, masque: u64) -> Result<()> {
+        if self.version.is_some() {
+            return Err(Error::State);
+        }
+        self.available &= !masque;
+        Ok(())
+    }
     pub fn port(&mut self) -> Result<&mut Port> {
         self.port.as_mut().ok_or(Error::State)
     }
@@ -82,7 +89,7 @@ impl Endpoint {
                 let v = negotiate(1, 0, u64_at(body, 0), u64_at(body, 8), self.available)?;
                 self.version = Some(v);
                 field(&mut answer, 0, v.features);
-                field(&mut answer, 8, self.available & MULTICAST);
+                field(&mut answer, 8, self.available & OPTIONS);
                 16
             }
             wire::OPEN => {

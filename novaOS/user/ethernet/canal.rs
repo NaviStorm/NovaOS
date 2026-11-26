@@ -2,6 +2,11 @@
 //! emploie la même page de 4 Kio après restitution par le destinataire.
 use crate::runtime::*;
 use core::sync::atomic::{AtomicU64, Ordering};
+#[allow(dead_code)]
+#[path = "lot.rs"]
+mod lot;
+#[allow(unused_imports)]
+pub use lot::Trames;
 pub const CONTROL: u64 = 0x45544831;
 pub const BYTES: u64 = 0x45544832;
 pub const EVENT: u64 = 0x45544833;

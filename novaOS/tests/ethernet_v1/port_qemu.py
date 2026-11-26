@@ -165,7 +165,11 @@ class Pair:
                     self.rx_perf += 1
                 def generateur():
                     try:
-                        with (self.out/"serie.log").open("rb") as serial:
+                        path = self.out / "serie.log"
+                        while not path.exists():
+                            if arret.wait(.005):
+                                return
+                        with path.open("rb") as serial:
                             pending_line = b""
                             while self.rx_perf < PERF_FRAMES and not arret.is_set():
                                 data = serial.read(8192)

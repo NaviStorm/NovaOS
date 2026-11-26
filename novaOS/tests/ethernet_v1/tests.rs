@@ -54,6 +54,13 @@ fn versions_features_and_initial_denial() {
     assert_eq!(negotiate(1, 0, 2, 0, 15), Err(Error::Feature));
     assert_eq!(negotiate(1, 0, 0, 15, 15).unwrap().features, 1);
     let k = key(1);
+    assert_eq!(negotiate(1, 0, 0, BOITE_GROUPEE, 0).unwrap().features, 0);
+    assert_eq!(
+        negotiate(1, 0, 0, BOITE_GROUPEE, BOITE_GROUPEE)
+            .unwrap()
+            .features,
+        BOITE_GROUPEE
+    );
     let v = negotiate(1, 0, 0, 0, 0).unwrap();
     assert!(matches!(
         Port::open(k, 0, TX_RIGHT, v, MAC),

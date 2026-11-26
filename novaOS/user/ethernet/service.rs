@@ -31,6 +31,7 @@ struct Service {
     suffix: [Option<Ticket>; 8],
     ns: usize,
     ouverts: bool,
+    groupes: bool,
     perdu: bool,
     en_publication: usize,
     dernier: u64,
@@ -65,6 +66,8 @@ impl Service {
     fn preparer(&mut self, h: wire::Header) -> Result<()> {
         self.admission = Some((h.request, h.count));
         self.publier(self.ns)?;
+        let mut lot = Trames::vide();
+        let mut entries = [0u32; 8];
         for i in 0..h.count as usize {
             let t = Ticket {
                 binding: self.peer,
@@ -75,27 +78,48 @@ impl Service {
             let mut backend = p.backend();
             eth(backend.transition(t, Stage::Admitted, Stage::Publishing))?;
             let src = eth(backend.image(t))?;
-            let mut frame = [0; FRAME];
             let n = src.len();
-            frame[..n].copy_from_slice(src);
             let coupon = self
                 .active
                 .iter()
                 .position(Option::is_none)
                 .ok_or(WOULD_BLOCK)?;
-            self.io.envoyer(
-                DRIVER,
-                &pair(backend::PREPARER, ((coupon as u64) << 32) | n as u64),
-            )?;
-            self.io.donnees(true, 1, &mut frame[..n])?;
-            let (s, id) = fields(&self.io.recevoir(DRIVER)?)?;
-            if s != OK {
-                return Err(s);
+            if self.io.boite {
+                lot.ajouter(n)?.copy_from_slice(src);
+                entries[i] = ((coupon as u32) << 16) | n as u32;
+            } else {
+                let mut frame = [0; FRAME];
+                frame[..n].copy_from_slice(src);
+                self.io.envoyer(
+                    DRIVER,
+                    &pair(backend::PREPARER, ((coupon as u64) << 32) | n as u64),
+                )?;
+                self.io.donnees(true, 1, &mut frame[..n])?;
+                let (s, id) = fields(&self.io.recevoir(DRIVER)?)?;
+                if s != OK {
+                    return Err(s);
+                }
+                require(id == coupon as u64)?;
             }
-            require(id == coupon as u64)?;
-            self.active[id as usize] = Some(t);
+            self.active[coupon] = Some(t);
             self.suffix[self.ns] = Some(t);
             self.ns += 1;
+        }
+        if self.io.boite {
+            let mut msg = [0; 48];
+            let size = backend::liste(
+                backend::PREPARER_LOT,
+                &entries[..usize::from(h.count)],
+                &mut msg,
+            );
+            self.io.envoyer_lot(&lot.bytes[..lot.longueur()], || {
+                self.io.envoyer(DRIVER, &msg[..size])
+            })?;
+            let (status, n) = fields(&self.io.recevoir(DRIVER)?)?;
+            if status != OK {
+                return Err(status);
+            }
+            require(n == u64::from(h.count))?;
         }
         let n = if (cfg(16) != 0 && h.request == 10) || matches!(cfg(16), 3 | 4 | 6) {
             self.ns.div_ceil(2)
@@ -109,6 +133,25 @@ impl Service {
     }
     fn completions(&mut self) -> Result<()> {
         self.publier(self.ns)?;
+        if self.io.boite {
+            let active = self.active.iter().flatten().count();
+            if active == 0 {
+                return Ok(());
+            }
+            let mask = self.cmd(backend::COMPLETIONS, active as u64)?;
+            require(mask < 256)?;
+            for id in 0..8 {
+                if mask & (1 << id) != 0 {
+                    let t = self.active[id].take().ok_or(REFUSED)?;
+                    eth(eth(self.api.port())?.backend().transition(
+                        t,
+                        Stage::Published,
+                        Stage::Complete,
+                    ))?;
+                }
+            }
+            return Ok(());
+        }
         for _ in 0..8 {
             if self.active.iter().all(Option::is_none) {
                 break;
@@ -127,24 +170,37 @@ impl Service {
         Ok(())
     }
     fn reception(&mut self) -> Result<()> {
-        let p = eth(self.api.port())?;
-        let mut temp = [0; 128];
-        let header = wire::Header {
-            op: wire::RX,
-            reply: false,
-            count: 0,
-            epoch: self.peer.epoch,
-            request: 1,
-        };
-        let mut query = [0; 128];
-        let n = ethwire(header.encode(&mut query, &[]))?;
-        let _ = p;
-        let sz = eth(self.api.exchange(self.peer, &query[..n], &[], &mut temp))?;
-        let (known, _) = ethwire(wire::Header::decode(&temp[..sz]))?;
-        if known.count == 0 {
+        let known = eth(eth(self.api.port())?.rx_occupes(self.peer))?;
+        if known == 8 {
+            return Ok(());
+        }
+        if self.io.boite {
+            let arg = (8 - known) as u64 | (u64::from(known == 0) << 8);
+            self.io
+                .envoyer(DRIVER, &pair(backend::RECEPTION_LOT, arg))?;
+            let msg = self.io.recevoir(DRIVER)?;
+            require(msg.len >= 16)?;
+            let n = u64::from_le_bytes(msg.payload[8..16].try_into().unwrap()) as usize;
+            require(
+                msg.payload[..8] == OK.to_le_bytes()
+                    && n <= 8 - known
+                    && msg.len as usize == 16 + 4 * n,
+            )?;
+            let mut lot = Trames::vide();
+            for d in msg.payload[16..msg.len as usize].chunks_exact(4) {
+                lot.ajouter(u32::from_le_bytes(d.try_into().unwrap()) as usize)?;
+            }
+            let length = lot.longueur();
+            self.io.recevoir_lot(&mut lot.bytes[..length])?;
+            for i in 0..n {
+                eth(eth(self.api.port())?.backend().receive(lot.trame(i)))?;
+            }
+            return Ok(());
+        }
+        if known == 0 {
             self.cmd(backend::ECOUTER, 0)?;
         }
-        for _ in usize::from(known.count)..8 {
+        for _ in known..8 {
             let n = match self.cmd(backend::RECEPTION, 0) {
                 Ok(n) => n as usize,
                 Err(WOULD_BLOCK) => break,
@@ -185,6 +241,9 @@ impl Service {
         let (version, offres) = fields(&self.client.recevoir(EVENT)?)?;
         require(version == 1 && offres & 1 != 0 && offres & !3 == 0)?;
         self.client.boite &= offres & 2 != 0;
+        if !self.client.boite {
+            eth(self.api.retirer_options(ethernet::BOITE_GROUPEE))?;
+        }
         self.client
             .envoyer(EVENT, &pair(1, if self.client.boite { 2 } else { 1 }))?;
         loop {
@@ -216,21 +275,26 @@ impl Service {
                 continue;
             }
             mark(60, h.op as u64);
-            let mut frames = [[0; FRAME]; 8];
-            let mut lens = [0usize; 8];
+            let mut lot = Trames::vide();
             let mut permis = true;
             if h.op == wire::TX {
-                for (i, d) in body.chunks_exact(12).enumerate() {
-                    let n = wire::word(d, 2) as usize;
-                    lens[i] = n;
-                    self.client
-                        .donnees(false, i as u64 + 1, &mut frames[i][..n])?;
-                    permis &= frames[i][..6] == PAIR
-                        && frames[i][6..12] == STATION
-                        && frames[i][12..14] == [0x88, 0xb5];
+                if self.groupes {
+                    let pret = self.client.recevoir(BYTES)?;
+                    require(pret.len == 8 && pret.payload[..8] == h.request.to_le_bytes())?;
                 }
+                lot.recevoir(&self.client, body, self.groupes, true)?;
+                permis = (0..usize::from(h.count)).all(|i| {
+                    let f = lot.trame(i);
+                    f[..6] == PAIR && f[6..12] == STATION && f[12..14] == [0x88, 0xb5]
+                });
             }
-            let slots: [&[u8]; 8] = core::array::from_fn(|i| &frames[i][..lens[i]]);
+            let slots: [&[u8]; 8] = core::array::from_fn(|i| {
+                if h.op == wire::TX && i < usize::from(h.count) {
+                    lot.trame(i)
+                } else {
+                    &[]
+                }
+            });
             let mut out = [0; 128];
             if self.perdu
                 && !matches!(
@@ -245,6 +309,10 @@ impl Service {
             if h.op == wire::RX && self.ouverts {
                 self.completions()?;
                 self.reception()?;
+            }
+            let actualiser = h.op == wire::QUERY && self.ns == 0 && !self.perdu;
+            if actualiser && self.completions().is_err() {
+                self.perdre_pilote()?;
             }
             let result = if permis {
                 self.api.exchange(
@@ -267,6 +335,11 @@ impl Service {
                     continue;
                 }
             };
+            if h.op == wire::NEGOTIATE {
+                self.groupes = self.client.boite
+                    && u64::from_le_bytes(out[32..40].try_into().unwrap()) & wire::BOITE_GROUPEE
+                        != 0;
+            }
             if h.op == wire::OPEN && !self.ouverts {
                 self.cmd(backend::OUVRIR, 0)?;
                 self.ouverts = true;
@@ -317,19 +390,22 @@ impl Service {
             }
             let suppress =
                 matches!(cfg(16), 1 | 2) && h.op == wire::TX && h.request == 2 && self.dernier < 2;
-            if !suppress {
+            if !suppress && !(h.op == wire::RX && self.groupes) {
                 self.client.envoyer(CONTROL, &out[..n])?;
             }
             if h.op == wire::TX && h.request > self.dernier {
-                self.cmd(backend::ECOUTER, 0)?;
+                if !self.io.boite {
+                    self.cmd(backend::ECOUTER, 0)?;
+                }
                 if self.preparer(h).is_err() {
                     self.perdre_pilote()?;
                 }
             }
-            if h.op == wire::QUERY && !self.perdu && self.completions().is_err() {
+            if h.op == wire::QUERY && !actualiser && !self.perdu && self.completions().is_err() {
                 self.perdre_pilote()?;
             }
             if h.op == wire::RX {
+                let mut lot = Trames::vide();
                 for d in out[32..n].chunks_exact(12) {
                     let i = wire::word(d, 0);
                     let slot = ethernet::Slot {
@@ -338,10 +414,19 @@ impl Service {
                         generation: u32::from_le_bytes(d[4..8].try_into().unwrap()),
                     };
                     let src = eth(eth(self.api.port())?.read_rx(self.peer, slot))?;
+                    if self.groupes {
+                        lot.ajouter(src.len())?.copy_from_slice(src);
+                        continue;
+                    }
                     let mut data = [0; FRAME];
                     data[..src.len()].copy_from_slice(src);
                     let size = src.len();
                     self.client.donnees(true, i as u64 + 1, &mut data[..size])?;
+                }
+                if self.groupes {
+                    self.client.envoyer_lot(&lot.bytes[..lot.longueur()], || {
+                        self.client.envoyer(CONTROL, &out[..n])
+                    })?;
                 }
             }
             if self.ouverts {
@@ -394,7 +479,12 @@ fn start() -> Result<()> {
         channel: cfg(9),
         epoch: cfg(6),
     };
-    let api = Endpoint::new(peer, u8::try_from(cfg(17)).map_err(|_| DENIED)?, 0, STATION);
+    let api = Endpoint::new(
+        peer,
+        u8::try_from(cfg(17)).map_err(|_| DENIED)?,
+        ethernet::BOITE_GROUPEE,
+        STATION,
+    );
     let mut s = Service {
         api,
         peer,
@@ -404,6 +494,7 @@ fn start() -> Result<()> {
         suffix: [None; 8],
         ns: 0,
         ouverts: false,
+        groupes: false,
         perdu: false,
         en_publication: 0,
         dernier: 0,

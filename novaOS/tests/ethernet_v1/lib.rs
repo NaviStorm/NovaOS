@@ -9,6 +9,8 @@ pub const RX_RIGHT: u8 = 2;
 pub const OBSERVE: u8 = 4;
 pub const ADMIN: u8 = 8;
 pub const MULTICAST: u64 = 1;
+pub use wire::BOITE_GROUPEE;
+pub const OPTIONS: u64 = MULTICAST | BOITE_GROUPEE;
 const JOURNAL: usize = 2;
 pub const EV_TX: u8 = 1;
 pub const EV_RX: u8 = 2;
@@ -64,7 +66,7 @@ pub fn negotiate(
     if major != 1 || min_minor != 0 {
         return Err(Error::Version);
     }
-    let supported = available & MULTICAST;
+    let supported = available & OPTIONS;
     if required & !supported != 0 {
         return Err(Error::Feature);
     }
@@ -220,7 +222,7 @@ impl Port {
         {
             return Err(Error::Invalid);
         }
-        negotiate(v.major, v.minor, v.features, 0, MULTICAST)?;
+        negotiate(v.major, v.minor, v.features, 0, OPTIONS)?;
         Ok(Self {
             binding,
             rights: requested,
@@ -482,6 +484,10 @@ impl Port {
         }
         self.changed(EV_RX);
         Ok(())
+    }
+    pub fn rx_occupes(&self, peer: Binding) -> Result<usize> {
+        self.authorize(peer, RX_RIGHT)?;
+        Ok(self.rx.iter().filter(|s| s.len != 0).count())
     }
     pub fn read_rx(&self, peer: Binding, s: Slot) -> Result<&[u8]> {
         self.authorize(peer, RX_RIGHT)?;

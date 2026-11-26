@@ -1,4 +1,5 @@
 // Enveloppes Ethernet privées v1.0, indépendantes du layout Rust.
+pub const BOITE_GROUPEE: u64 = 1 << 32;
 pub const HEADER: usize = 32;
 pub const ENTRY: usize = 12;
 pub const LIMIT: usize = 8;

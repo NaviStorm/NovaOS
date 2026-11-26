@@ -67,7 +67,10 @@ if __name__ == "__main__":
     p.add_argument("--repetitions", type=int, default=3)
     a = p.parse_args()
     if a.action == "compiler":
-        compiler(a.images.resolve(), a.modes)
+        from port_qemu import qualification
+        # Les constructions Rust ne doivent pas concurrencer le processus QEMU mesuré.
+        with qualification(Path(os.environ["NOVAOS_TMPDIR"]).resolve().parent, {}):
+            compiler(a.images.resolve(), a.modes)
     elif a.sortie and a.repetitions >= 1:
         rejouer(a.images.resolve(), a.sortie.resolve(), a.modes, a.repetitions)
     else:

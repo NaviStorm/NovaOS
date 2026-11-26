@@ -15,6 +15,7 @@ struct Client {
     epoch: u64,
     corr: u64,
     generations: [u32; 8],
+    groupes: bool,
 }
 fn paquet(n: u32, rx: bool, data: &mut [u8]) -> usize {
     let size = match cfg(11) {
@@ -131,6 +132,22 @@ impl Client {
             ));
         }
         self.envoyer(wire::TX, id, count as u16, &desc[..count * 12])?;
+        if self.groupes {
+            let mut lot = Trames::vide();
+            for i in 0..count {
+                let len = usize::from(wire::word(&desc, 12 * i + 2));
+                let dest = lot.ajouter(len)?;
+                require(paquet(first + i as u32, false, dest) == len)?;
+                if i + 1 == count
+                    && let Some(offset) = invalide
+                {
+                    dest[offset] ^= 1;
+                }
+            }
+            return self.c.envoyer_lot(&lot.bytes[..lot.longueur()], || {
+                self.c.envoyer(BYTES, &id.to_le_bytes())
+            });
+        }
         for i in 0..count {
             let n = paquet(first + i as u32, false, &mut data);
             if let Some(offset) = invalide
@@ -142,21 +159,23 @@ impl Client {
         }
         Ok(())
     }
+    fn verifier_rx(&self, entries: &[u8], first: u32, release: &mut [u8; 96]) -> Result<()> {
+        let mut lot = Trames::vide();
+        lot.recevoir(&self.c, entries, self.groupes, false)?;
+        for (i, d) in entries.chunks_exact(12).enumerate() {
+            let mut expected = [0; FRAME];
+            let n = paquet(first + i as u32, true, &mut expected);
+            require(lot.trame(i) == &expected[..n])?;
+            release[12 * i..12 * i + 12].copy_from_slice(d);
+            release[12 * i + 2..12 * i + 4].fill(0);
+        }
+        Ok(())
+    }
     fn vague_rx(&mut self, first: u32, relacher: bool) -> Result<()> {
         let list = self.ctrl(wire::RX, 0, &[])?;
         require(list.len == 128 && list.payload[6] == 1)?;
         let mut release = [0; 96];
-        for (i, d) in list.payload[32..].chunks_exact(12).enumerate() {
-            let len = wire::word(d, 2) as usize;
-            let mut data = [0; FRAME];
-            let mut expected = [0; FRAME];
-            require(len == paquet(first + i as u32, true, &mut expected))?;
-            self.c
-                .donnees(false, u64::from(wire::word(d, 0)) + 1, &mut data[..len])?;
-            require(data[..len] == expected[..len])?;
-            release[12 * i..12 * i + 12].copy_from_slice(d);
-            release[12 * i + 2..12 * i + 4].fill(0);
-        }
+        self.verifier_rx(&list.payload[32..], first, &mut release)?;
         if relacher {
             if first != 0 {
                 let mut anciens = release;
@@ -214,18 +233,8 @@ impl Client {
             }
             require(entries.len() / 12 <= b - lus)?;
             let mut release = [0; 96];
-            for (i, d) in entries.chunks_exact(12).enumerate() {
-                let mut data = [0; FRAME];
-                let mut expected = [0; FRAME];
-                let n = paquet(first + lus as u32, true, &mut expected);
-                require(wire::word(d, 2) as usize == n)?;
-                self.c
-                    .donnees(false, u64::from(wire::word(d, 0)) + 1, &mut data[..n])?;
-                require(data[..n] == expected[..n])?;
-                release[12 * i..12 * i + 12].copy_from_slice(d);
-                release[12 * i + 2..12 * i + 4].fill(0);
-                lus += 1;
-            }
+            self.verifier_rx(entries, first + lus as u32, &mut release)?;
+            lus += entries.len() / 12;
             require(
                 self.ctrl(
                     wire::RELEASE,
@@ -302,7 +311,16 @@ impl Client {
             .envoyer(EVENT, &pair(1, if self.c.boite { 3 } else { 1 }))?;
         let (_, t) = fields(&self.c.recevoir(EVENT)?)?;
         require(t == if self.c.boite { 2 } else { 1 })?;
-        require(self.ctrl(wire::NEGOTIATE, 0, &[0; 16])?.len == 48)?;
+        let mut options = [0; 16];
+        // Le cas « plein » exerce un client v1 sans l'option de regroupement.
+        if self.c.boite && cfg(11) != 9 {
+            options[8..].copy_from_slice(&wire::BOITE_GROUPEE.to_le_bytes());
+        }
+        let nego = self.ctrl(wire::NEGOTIATE, 0, &options)?;
+        require(nego.len == 48)?;
+        self.groupes =
+            u64::from_le_bytes(nego.payload[32..40].try_into().unwrap()) & wire::BOITE_GROUPEE != 0;
+        require(!self.groupes || self.c.boite)?;
         let mut rights = [0; 8];
         rights[0] = 15;
         require(self.ctrl(wire::OPEN, 0, &rights)?.payload[32] == 1)?;
@@ -396,35 +414,7 @@ impl Client {
                 }
             }
             require(complete)?;
-            let mut received = 0;
-            while received < b {
-                let list = self.ctrl(wire::RX, 0, &[])?;
-                require(list.payload[6] == 1)?;
-                let entries = &list.payload[32..list.len as usize];
-                if entries.is_empty() {
-                    continue;
-                }
-                let mut release = [0; 96];
-                for (i, d) in entries.chunks_exact(12).enumerate() {
-                    let slot = wire::word(d, 0);
-                    let len = wire::word(d, 2) as usize;
-                    let mut data = [0; FRAME];
-                    let mut expected = [0; FRAME];
-                    require(received < b && len <= FRAME)?;
-                    self.c.donnees(false, slot as u64 + 1, &mut data[..len])?;
-                    let n = paquet(seen + received as u32, true, &mut expected);
-                    require(n == len && expected[..n] == data[..n])?;
-                    release[12 * i..12 * i + 12].copy_from_slice(d);
-                    release[12 * i + 2..12 * i + 4].fill(0);
-                    received += 1;
-                }
-                let count = (entries.len() / 12) as u16;
-                require(
-                    self.ctrl(wire::RELEASE, count, &release[..entries.len()])?
-                        .len
-                        == 32,
-                )?;
-            }
+            self.lire_lot(seen, b)?;
             require(self.ctrl(wire::ACK, 0, &id.to_le_bytes())?.len == 32)?;
 
             sizes |= 1 << (b - 1);
@@ -466,6 +456,7 @@ extern "C" fn run() -> ! {
             epoch: cfg(6),
             corr: 100000,
             generations: [1; 8],
+            groupes: false,
         }
         .exercer()
     });
