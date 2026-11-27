@@ -23,7 +23,7 @@ def lancer(script, *args):
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("archive", type=lambda s: Path(s).resolve())
-    p.add_argument("lot", choices=("reference", "modele", "images", "arm", "garde", "mmio", "ethernet", "hote"))
+    p.add_argument("lot", choices=("reference", "modele", "images", "arm", "garde", "mmio", "ethernet", "option-arm", "hote"))
     a = p.parse_args()
     out = a.archive
     wt = Path(os.environ["NOVAOS_TMPDIR"]).resolve(strict=True).parent
@@ -57,6 +57,14 @@ def main():
             lancer("port_qemu.py","arm",cas,images/image/"arm.elf",out/"observations"/cas/"arm/1",
                    temoin,archives,outils/"limine-enroll",outils/"BOOTAA64.EFI","--limine-arm",outils/"limine-a72.EFI",
                    "--source-elf",NOYAU,"--cycle-vie",*options)
+    elif a.lot == "option-arm":
+        for n in range(1,4):
+            ordre = ("offert","masque") if n%2 else ("masque","offert")
+            for choix in ordre:
+                lancer("port_qemu.py","arm","echo1514-reset",images/"echo1514-reset/arm.elf",
+                       out/"option-arm"/choix/"arm"/str(n),temoin,archives,outils/"limine-enroll",
+                       outils/"BOOTAA64.EFI","--limine-arm",outils/"limine-a72.EFI","--source-elf",NOYAU,
+                       "--cycle-vie",*(["--sans-reset-perf"] if choix=="masque" else []))
     elif a.lot == "ethernet":
         for n in range(1,4):
             for isa in ("arm","q35"):

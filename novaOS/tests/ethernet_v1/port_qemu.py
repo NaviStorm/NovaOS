@@ -254,6 +254,7 @@ def main():
     p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "filtre", "court", "temoin16", "port","plein","mesure60","mesure1514", "mixte100k","historique100k","historique1514","ancien","choix-data","segment-interrompu","recu-collecte", *cycle_vie.NOUVEAUX, *PERF))
     for name in ("elf", "sortie", "temoin", "archive", "limine", "relais"):
         p.add_argument(name, type=lambda v: Path(v).resolve())
+    p.add_argument("--sans-reset-perf", action="store_true", help="Même ELF ARM echo1514-reset, seule l’offre PCI du bit 40 change")
     p.add_argument("--modele-recus", type=lambda s: Path(s).resolve(), help="Manifeste du modèle ARM de lecture de queue_reset")
     p.add_argument("--trace-registres", action="store_true", help="Capturer les lectures et écritures MMIO du reset ARM sur une série courte")
     p.add_argument("--cycle-vie", action="store_true", help="Vérifier les reçus et la mémoire du profil 3C")
@@ -262,6 +263,8 @@ def main():
     p.add_argument("--cpu-max", action="store_true", help="Témoin ArmVirt avec RNDR et chargeur direct")
     p.add_argument("--limine-arm", type=Path, help="Second étage Limine de laboratoire identifié")
     a = p.parse_args()
+    if a.sans_reset_perf and (a.arch != "arm" or a.cas != "echo1514-reset" or not a.cycle_vie):
+        p.error("--sans-reset-perf exige le profil de mesure ARM avec vérification de cycle de vie")
     if bool(a.modele_recus) != a.cas.startswith("mmio-"):
         p.error("Le modèle de reçus est réservé aux scénarios mmio")
     if a.trace_registres and not (a.arch == "arm" and a.cycle_vie and a.cas in cycle_vie.RESET and a.cas != "echo1514-reset"):
@@ -305,6 +308,8 @@ def main():
         env_vm["NOVAOS_E3E_TX_RECEIPT"] = a.cas.removeprefix("mmio-")
         args[0] = str(binaire)
     report = dict(audit=AUDIT, arch=a.arch, cas=a.cas, elf=digest(a.elf), modele=digest(Path(args[0])), succes=False)
+    if a.sans_reset_perf:
+        report["offre_reset_masquee"] = True
     if a.modele_recus:
         report["modele_recu"] = dict(construction=digest(a.modele_recus), mode=env_vm["NOVAOS_E3E_TX_RECEIPT"])
     report["sha256_lanceur"]=digest(Path(__file__))
@@ -364,7 +369,7 @@ def main():
             for i, value in enumerate(args):
                 if value == "-netdev":
                     args[i+1] = re.sub(r"fd=\d+", f"fd={guest.fileno()}", args[i+1])
-                elif a.arch == "arm" and a.cas == "reset-sans-option" and value == "-device" and args[i+1].startswith("virtio-net-pci,"):
+                elif a.arch == "arm" and (a.cas == "reset-sans-option" or a.sans_reset_perf) and value == "-device" and args[i+1].startswith("virtio-net-pci,"):
                     args[i+1] += ",queue_reset=off"
                 elif value in ("-serial", "-debugcon"):
                     args[i+1] = "file:" + str(out/Path(args[i+1]).name)

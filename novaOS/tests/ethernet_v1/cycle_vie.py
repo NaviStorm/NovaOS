@@ -163,7 +163,7 @@ def preuve_qi(vm, qt, serie, retire):
                 racine_vide=vide,descripteurs=commandes)
 
 def verifier_reset(cas, c, serie, generations):
-    actif = cas != "reset-sans-option"
+    actif = cas != "reset-sans-option" and not c.get("offre_reset_masquee", False)
     valide = actif and cas not in ("reset-invalide", "reset-absent", "mmio-absent", "mmio-invalide")
     pci = c["capacite_pci_arm"]
     exiger(pci["bar"] == 4 and pci["offset"] == 0 and pci["champ_queue_reset_dans_capacite"]
