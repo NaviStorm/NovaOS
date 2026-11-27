@@ -41,7 +41,7 @@ def pages_retenues(rx, tx):
     return retenues
 
 
-def domaines_arm(out, retenues):
+def domaines_arm(out, retenues, *, stockage_incertain=False):
     """Contrôle les permissions dans la trace réelle et identifie chaque IOVA finale."""
     for phase in ("reset", "fin"):
         capture = json.loads((out / (phase + ".json")).read_text())
@@ -102,10 +102,17 @@ def domaines_arm(out, retenues):
             elif line.startswith(("virtio_iommu_report_fault", "virtio_iommu_set_config")):
                 exiger(False, numero)
     finales = {(lo-0x10000000)//4096 for lo,_ in cartes[3]}
-    exiger(not master and not firmware and not cartes[1] and not cartes[2] and finales == retenues,
-           ("IOVA finales", finales, retenues))
-    exiger(domaines == ({56:3} if retenues else {}) and all(compte[f"traductions_{d}"] for d in (1,2,3)), "attributions finales")
-    return dict(compteurs=dict(compte), slots_retenus=sorted(finales), domaines_finaux=domaines)
+    disque = {(lo-0x8000000)//4096 for lo,_ in cartes[1]}
+    attendus = {56:3} if retenues else {}
+    if stockage_incertain:
+        attendus[48]=1
+    exiger(not master and not firmware and not cartes[2] and finales == retenues and
+           disque == (set(range(7)) if stockage_incertain else set()), ("IOVA finales", finales, disque))
+    exiger(domaines == attendus and all(compte[f"traductions_{d}"] for d in (1,2,3)), "attributions finales")
+    bilan=dict(compteurs=dict(compte), slots_retenus=sorted(finales), domaines_finaux=domaines)
+    if stockage_incertain:
+        bilan["slots_disque_retenus"]=sorted(disque)
+    return bilan
 
 
 def capacite_pci_arm(vm, serie):

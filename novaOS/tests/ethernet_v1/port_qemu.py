@@ -574,6 +574,9 @@ def main():
                             "NET ARM L2 retrait disque_lisible=true cadres_fin=0" in serial and
                             "acteurs=[Exit(0), Exit(0), Exit(0)]" in serial):
                         raise ValueError("chemin DATA ou restitution incomplet")
+                elif a.gestionnaire_4e1=="controleur-commun":
+                    from controleur import verifier as verifier_defaut
+                    report["cycle_vie"]=verifier_defaut(out,report,serial)
                 else:
                     report["cycle_vie"] = cycle_vie.verifier(out, report, serial)
                 report["succes"] = True
