@@ -43,7 +43,7 @@ index 35baf9f924be3406f47e836743ad42bd1c679b69..6d17ce21b50c67870654ca7f3577284a
 -            self.staging.resident()
 +            self.staging.resident(), r.elf_headers
 diff --git a/novaOS/kernel/src/sched/process/nvme.rs b/novaOS/kernel/src/sched/process/nvme.rs
-index 7d0ce7609acccd94de7ab68ade073a373abca4b1..c15af74e9470d5ade8522d6c76ca7f5aa81d1c94 100644
+index 7d0ce7609acccd94de7ab68ade073a373abca4b1..77b21d60841f207bff894e5979b1f05983f87054 100644
 --- a/novaOS/kernel/src/sched/process/nvme.rs
 +++ b/novaOS/kernel/src/sched/process/nvme.rs
 @@ -160,0 +161 @@ fn supervise(
@@ -70,11 +70,11 @@ index 7d0ce7609acccd94de7ab68ade073a373abca4b1..c15af74e9470d5ade8522d6c76ca7f5a
 +    let mut cycle = None;
 @@ -453 +472,12 @@ fn exercise(
 -        let actor = super::net_preparation::EthernetActor::reserve(domain.network_epoch()?).ok_or("instance NIC")?;
-+        use crate::hardware::net_q35::gestionnaire;
++        use crate::hardware::net_q35::selectionner_port;
 +        if !matches!(option_env!("NOVAOS_ETH3_CASE"), Some("duo-retrait" | "duo-absent" | "duo-differe")) {
 +            return Err("profil double 4F fermé");
 +        }
-+        let (mesure, mut decision) = gestionnaire::selectionner()?;
++        let (mesure, mut decision) = selectionner_port()?;
 +        cycle = Some(mesure);
 +        let generation = domain.network_epoch()?;
 +        let owner = decision.reserver_titulaire().ok_or("réservation du numéro de processus")?;

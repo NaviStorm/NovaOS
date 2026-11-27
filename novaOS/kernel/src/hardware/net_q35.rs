@@ -14,6 +14,8 @@ use crate::{
 mod retrait;
 #[cfg(feature = "gestionnaire-4f")]
 pub(in crate::hardware) mod gestionnaire;
+#[cfg(all(feature = "gestionnaire-4f", feature = "net-q35-duo"))]
+pub(crate) use gestionnaire::selectionner as selectionner_port;
 
 const SID: u16 = 7 << 3;
 const IOVA: u64 = 0x1000_0000;
