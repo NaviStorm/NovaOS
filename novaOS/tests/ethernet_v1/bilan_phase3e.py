@@ -181,6 +181,8 @@ def stockage(archive, index):
            sources["sonde_garde_sha256"]==digest(Path(__file__).with_name("sonde_garde_q35.patch")),diff)
     serie=(path/"serie.log").read_text()
     garde=c["garde"]
+    prev = re.findall(r"E3C admission generation=(\d+) precedente=(\d+) ancienne_capacite_valide=false",serie)
+    exiger(prev == [("1","0"),("2","1")], ("Ancienne capacité du candidat",prev))
     exiger(serie.count("E3E garde readmission=refusee")==1 and garde["cqe_retrouvee"]
            and c["qi_finale"]["cookie"]==5 and c["qi_finale"]["contextes_finaux"]=={},garde)
     return dict(garde=garde, delta_modules=diff, qi=c["qi_finale"], stockage=preuve, trames=trames(path,"port",[4,4]))

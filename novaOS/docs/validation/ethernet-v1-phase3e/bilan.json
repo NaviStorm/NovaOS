@@ -1,0 +1,2669 @@
+{
+  "reference": "4c3bd8896c496636118a7f4751b6947fba72d1e3",
+  "noyau": "fd3ff113fcaf39bee804eebdcedc44557f41817d",
+  "arm": {
+    "reset-court": {
+      "generations": [
+        4,
+        5
+      ],
+      "trames": {
+        "trames": [
+          2,
+          2
+        ],
+        "octets": [
+          120,
+          120
+        ]
+      },
+      "bilans": [
+        [
+          "8",
+          "Ok(())",
+          "Ok(0)",
+          "0",
+          "0",
+          "0",
+          "7"
+        ],
+        [
+          "8",
+          "Ok(())",
+          "Ok(0)",
+          "0",
+          "0",
+          "0",
+          "7"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "1",
+          "1",
+          "1",
+          "0x0001",
+          "0x0000"
+        ],
+        [
+          "5",
+          "1",
+          "1",
+          "1",
+          "0x0001",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61536,
+          61537
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          9,
+          10
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 5121,
+          "attach_3": 3,
+          "map_3": 67,
+          "unmap_done_3": 67,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 3,
+          "traductions_3": 44
+        },
+        "slots_retenus": [],
+        "domaines_finaux": {}
+      },
+      "volume_intact": true,
+      "capacite_pci": {
+        "bar": 4,
+        "offset": 0,
+        "octets": 4096,
+        "champ_queue_reset_dans_capacite": true,
+        "bit_40_offert": true,
+        "bit_40_negocie": true
+      }
+    },
+    "reset-deces": {
+      "generations": [
+        4
+      ],
+      "trames": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ]
+      },
+      "bilans": [
+        [
+          "3",
+          "Err(10)",
+          "Ok(0)",
+          "9",
+          "0",
+          "0",
+          "10"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "0",
+          "0",
+          "4",
+          "0x000f",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61537,
+          61537
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          9,
+          9
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3776,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "traductions_3": 61
+        },
+        "slots_retenus": [],
+        "domaines_finaux": {}
+      },
+      "volume_intact": true,
+      "capacite_pci": {
+        "bar": 4,
+        "offset": 0,
+        "octets": 4096,
+        "champ_queue_reset_dans_capacite": true,
+        "bit_40_offert": true,
+        "bit_40_negocie": true
+      }
+    },
+    "reset-revocation": {
+      "generations": [
+        4
+      ],
+      "trames": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ]
+      },
+      "bilans": [
+        [
+          "6",
+          "Err(5)",
+          "Ok(0)",
+          "10",
+          "0",
+          "0",
+          "10"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "0",
+          "0",
+          "4",
+          "0x000f",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61537,
+          61537
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          9,
+          9
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3771,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "traductions_3": 61
+        },
+        "slots_retenus": [],
+        "domaines_finaux": {}
+      },
+      "volume_intact": true,
+      "capacite_pci": {
+        "bar": 4,
+        "offset": 0,
+        "octets": 4096,
+        "champ_queue_reset_dans_capacite": true,
+        "bit_40_offert": true,
+        "bit_40_negocie": true
+      }
+    },
+    "reset-incertain": {
+      "generations": [
+        4
+      ],
+      "trames": {
+        "trames": [
+          4,
+          4
+        ],
+        "octets": [
+          3148,
+          3148
+        ]
+      },
+      "bilans": [
+        [
+          "4",
+          "Err(10)",
+          "Ok(0)",
+          "11",
+          "0",
+          "0",
+          "10"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "0",
+          "0",
+          "4",
+          "0x000f",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61537,
+          61537
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          9,
+          9
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3776,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "traductions_3": 61
+        },
+        "slots_retenus": [],
+        "domaines_finaux": {}
+      },
+      "volume_intact": true,
+      "capacite_pci": {
+        "bar": 4,
+        "offset": 0,
+        "octets": 4096,
+        "champ_queue_reset_dans_capacite": true,
+        "bit_40_offert": true,
+        "bit_40_negocie": true
+      }
+    },
+    "reset-absent": {
+      "generations": [
+        4
+      ],
+      "trames": {
+        "trames": [
+          1,
+          1
+        ],
+        "octets": [
+          60,
+          60
+        ]
+      },
+      "bilans": [
+        [
+          "8",
+          "Ok(())",
+          "Ok(0)",
+          "0",
+          "0",
+          "0",
+          "7"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "1",
+          "1",
+          "1",
+          "0x0001",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61537,
+          61537
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          9,
+          9
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 14,
+        "controleur": 9,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3771,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 31,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "traductions_3": 22
+        },
+        "slots_retenus": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "domaines_finaux": {
+          "56": 3
+        }
+      },
+      "volume_intact": true,
+      "capacite_pci": {
+        "bar": 4,
+        "offset": 0,
+        "octets": 4096,
+        "champ_queue_reset_dans_capacite": true,
+        "bit_40_offert": true,
+        "bit_40_negocie": true
+      }
+    },
+    "reset-differe": {
+      "generations": [
+        4
+      ],
+      "trames": {
+        "trames": [
+          1,
+          1
+        ],
+        "octets": [
+          60,
+          60
+        ]
+      },
+      "bilans": [
+        [
+          "8",
+          "Ok(())",
+          "Ok(0)",
+          "0",
+          "0",
+          "0",
+          "7"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "1",
+          "1",
+          "1",
+          "0x0001",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61536,
+          61536
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          10,
+          10
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3776,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 45,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 2,
+          "traductions_3": 22
+        },
+        "slots_retenus": [],
+        "domaines_finaux": {}
+      },
+      "volume_intact": true,
+      "capacite_pci": {
+        "bar": 4,
+        "offset": 0,
+        "octets": 4096,
+        "champ_queue_reset_dans_capacite": true,
+        "bit_40_offert": true,
+        "bit_40_negocie": true
+      }
+    },
+    "reset-invalide": {
+      "generations": [
+        4
+      ],
+      "trames": {
+        "trames": [
+          1,
+          1
+        ],
+        "octets": [
+          60,
+          60
+        ]
+      },
+      "bilans": [
+        [
+          "8",
+          "Ok(())",
+          "Ok(0)",
+          "0",
+          "0",
+          "0",
+          "7"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "1",
+          "1",
+          "1",
+          "0x0001",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61536,
+          61536
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          10,
+          10
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 14,
+        "controleur": 9,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3776,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 31,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "traductions_3": 22
+        },
+        "slots_retenus": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "domaines_finaux": {
+          "56": 3
+        }
+      },
+      "volume_intact": true,
+      "capacite_pci": {
+        "bar": 4,
+        "offset": 0,
+        "octets": 4096,
+        "champ_queue_reset_dans_capacite": true,
+        "bit_40_offert": true,
+        "bit_40_negocie": true
+      }
+    },
+    "reset-sans-option": {
+      "generations": [
+        4
+      ],
+      "trames": {
+        "trames": [
+          1,
+          1
+        ],
+        "octets": [
+          60,
+          60
+        ]
+      },
+      "bilans": [
+        [
+          "8",
+          "Ok(())",
+          "Ok(0)",
+          "0",
+          "0",
+          "0",
+          "7"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "1",
+          "1",
+          "1",
+          "0x0001",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61537,
+          61537
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          9,
+          9
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 14,
+        "controleur": 9,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3776,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 31,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "traductions_3": 22
+        },
+        "slots_retenus": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "domaines_finaux": {
+          "56": 3
+        }
+      },
+      "volume_intact": true,
+      "capacite_pci": {
+        "bar": 4,
+        "offset": 0,
+        "octets": 4096,
+        "champ_queue_reset_dans_capacite": true,
+        "bit_40_offert": false,
+        "bit_40_negocie": false
+      }
+    },
+    "reset-iommu-absent": {
+      "generations": [
+        4
+      ],
+      "trames": {
+        "trames": [
+          1,
+          1
+        ],
+        "octets": [
+          60,
+          60
+        ]
+      },
+      "bilans": [
+        [
+          "8",
+          "Ok(())",
+          "Ok(0)",
+          "0",
+          "0",
+          "0",
+          "7"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "1",
+          "1",
+          "1",
+          "0x0001",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61537,
+          61537
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          9,
+          9
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 22,
+        "controleur": 9,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3808,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 25,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "traductions_3": 22
+        },
+        "slots_retenus": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "domaines_finaux": {
+          "56": 3
+        }
+      },
+      "volume_intact": true,
+      "activite_disque_entre_unmap": [
+        {
+          "lectures": 32,
+          "ecritures": 17
+        }
+      ],
+      "capacite_pci": {
+        "bar": 4,
+        "offset": 0,
+        "octets": 4096,
+        "champ_queue_reset_dans_capacite": true,
+        "bit_40_offert": true,
+        "bit_40_negocie": true
+      }
+    },
+    "reset-iommu-differe": {
+      "generations": [
+        4,
+        5
+      ],
+      "trames": {
+        "trames": [
+          2,
+          2
+        ],
+        "octets": [
+          120,
+          120
+        ]
+      },
+      "bilans": [
+        [
+          "8",
+          "Ok(())",
+          "Ok(0)",
+          "0",
+          "0",
+          "0",
+          "7"
+        ],
+        [
+          "8",
+          "Ok(())",
+          "Ok(0)",
+          "0",
+          "0",
+          "0",
+          "7"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "1",
+          "1",
+          "1",
+          "0x0001",
+          "0x0000"
+        ],
+        [
+          "5",
+          "1",
+          "1",
+          "1",
+          "0x0001",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61536,
+          61537
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          9,
+          10
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 5180,
+          "attach_3": 3,
+          "map_3": 67,
+          "unmap_done_3": 67,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 3,
+          "traductions_3": 44
+        },
+        "slots_retenus": [],
+        "domaines_finaux": {}
+      },
+      "volume_intact": true,
+      "activite_disque_entre_unmap": [
+        {
+          "lectures": 21,
+          "ecritures": 11
+        },
+        {
+          "lectures": 21,
+          "ecritures": 11
+        }
+      ],
+      "capacite_pci": {
+        "bar": 4,
+        "offset": 0,
+        "octets": 4096,
+        "champ_queue_reset_dans_capacite": true,
+        "bit_40_offert": true,
+        "bit_40_negocie": true
+      }
+    },
+    "court": {
+      "generations": [
+        4
+      ],
+      "trames": {
+        "trames": [
+          1,
+          1
+        ],
+        "octets": [
+          60,
+          60
+        ]
+      },
+      "bilans": [
+        [
+          "8",
+          "Ok(())",
+          "Ok(0)",
+          "0",
+          "0",
+          "0",
+          "7"
+        ]
+      ],
+      "arrets": [
+        [
+          "4",
+          "1",
+          "1",
+          "1",
+          "0x0001",
+          "0x0000"
+        ]
+      ],
+      "ouverture": {
+        "libres": [
+          61537,
+          61537
+        ],
+        "processus": [
+          3,
+          3
+        ],
+        "ipc": [
+          9,
+          9
+        ],
+        "dma": [
+          38,
+          38
+        ]
+      },
+      "tour": {
+        "libres": [
+          61837,
+          61837
+        ],
+        "processus": [
+          0,
+          0
+        ],
+        "ipc": [
+          0,
+          0
+        ],
+        "dma": [
+          38,
+          38
+        ],
+        "tables": [
+          149,
+          149
+        ]
+      },
+      "fin": {
+        "nic": 14,
+        "controleur": 9,
+        "permanent": 0
+      },
+      "iommu": {
+        "compteurs": {
+          "attach_2": 1,
+          "map_2": 815,
+          "traductions_2": 6376,
+          "unmap_done_2": 815,
+          "detach_2": 1,
+          "attach_1": 2,
+          "map_1": 14,
+          "traductions_1": 3781,
+          "attach_3": 2,
+          "map_3": 45,
+          "unmap_done_3": 31,
+          "unmap_done_1": 14,
+          "detach_1": 2,
+          "detach_3": 1,
+          "traductions_3": 22
+        },
+        "slots_retenus": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "domaines_finaux": {
+          "56": 3
+        }
+      },
+      "volume_intact": true
+    }
+  },
+  "observations": {
+    "reset-court": {
+      "memoire": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "bar4": 549755846656,
+      "acces_reset": 16,
+      "operations": [
+        {
+          "file": 0,
+          "reset": [
+            0,
+            0
+          ],
+          "enable": [
+            0,
+            0
+          ]
+        },
+        {
+          "file": 1,
+          "reset": [
+            0,
+            0
+          ],
+          "enable": [
+            0,
+            0
+          ]
+        },
+        {
+          "file": 0,
+          "reset": [
+            0,
+            0
+          ],
+          "enable": [
+            0,
+            0
+          ]
+        },
+        {
+          "file": 1,
+          "reset": [
+            0,
+            0
+          ],
+          "enable": [
+            0,
+            0
+          ]
+        }
+      ],
+      "modele": []
+    },
+    "reset-sans-option": {
+      "memoire": {
+        "nic": 14,
+        "controleur": 9,
+        "permanent": 0
+      },
+      "bar4": 549755846656,
+      "acces_reset": 0,
+      "operations": [],
+      "modele": []
+    },
+    "mmio-absent": {
+      "memoire": {
+        "nic": 14,
+        "controleur": 9,
+        "permanent": 0
+      },
+      "bar4": 549755846656,
+      "acces_reset": null,
+      "operations": null,
+      "modele": [
+        "E3E model: TX reset executed, readback=-1"
+      ]
+    },
+    "mmio-invalide": {
+      "memoire": {
+        "nic": 14,
+        "controleur": 9,
+        "permanent": 0
+      },
+      "bar4": 549755846656,
+      "acces_reset": 7,
+      "operations": [
+        {
+          "file": 0,
+          "reset": [
+            0,
+            0
+          ],
+          "enable": [
+            0,
+            0
+          ]
+        },
+        {
+          "file": 1,
+          "reset": [
+            2
+          ],
+          "enable": [
+            0
+          ]
+        }
+      ],
+      "modele": [
+        "E3E model: TX reset executed, readback=-2"
+      ]
+    },
+    "mmio-differe": {
+      "memoire": {
+        "nic": 0,
+        "controleur": 0,
+        "permanent": 0
+      },
+      "bar4": 549755846656,
+      "acces_reset": 80,
+      "operations": [
+        {
+          "file": 0,
+          "reset": [
+            0,
+            0
+          ],
+          "enable": [
+            0,
+            0
+          ]
+        },
+        {
+          "file": 1,
+          "reset": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0
+          ],
+          "enable": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "file": 0,
+          "reset": [
+            0,
+            0
+          ],
+          "enable": [
+            0,
+            0
+          ]
+        },
+        {
+          "file": 1,
+          "reset": [
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            1,
+            0,
+            0
+          ],
+          "enable": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "modele": [
+        "E3E model: TX reset executed, readback=32",
+        "E3E model: TX delayed for 32 MMIO reads",
+        "E3E model: TX reset executed, readback=32",
+        "E3E model: TX delayed for 32 MMIO reads"
+      ]
+    }
+  },
+  "replis": {
+    "choix-data": {
+      "transport": "DATA",
+      "trames": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      }
+    },
+    "plein": {
+      "transport": "DATA",
+      "trames": {
+        "trames": [
+          144,
+          144
+        ],
+        "octets": [
+          113328,
+          113328
+        ]
+      }
+    }
+  },
+  "modele_experimental": {
+    "archive": "7c9605290b34152debb842e965a55d2e4fbba4793e536ab677b4027e5dc0ba1a",
+    "recette": "ce5d426fe1989fe3222f23e26aa97bea64e0d80d1afea27e0ee2f09d4f5ba08b",
+    "patch": "c57f4384ef377a0fe5f97edf7cc3ec49a2ebfff79a13c8d64731eb4fb0b26a4c",
+    "modele_reference": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+    "debut_attente": "2026-11-27T02:27:16.420970+00:00",
+    "acquisition": "2026-11-27T02:27:16.421329+00:00",
+    "attente_s": 0.0003639589995145798,
+    "sha256": "8bb72b975946a577f0900107188bfc2d47cc8aeae20b1b03d1e5dcb04b40383d",
+    "version": "QEMU emulator version 10.0.12\nCopyright (c) 2003-2025 Fabrice Bellard and the QEMU Project developers",
+    "liberation": "2026-11-27T02:28:15.093345+00:00"
+  },
+  "q35": {
+    "garde": {
+      "candidat": 10,
+      "generation": 2,
+      "disque": 3,
+      "generation_vtd": 1,
+      "epoque_ipc": 3,
+      "cid": 10,
+      "commande": "READ",
+      "dma": 14,
+      "cqe_retrouvee": true
+    },
+    "delta_modules": [
+      "novaOS/kernel/src/sched/process/nvme.rs"
+    ],
+    "qi": {
+      "racine": 1118208,
+      "contexte": 1122304,
+      "queue": 1142784,
+      "page_recu": 1146880,
+      "cookie": 5,
+      "iqt": 240,
+      "bouclages": 0,
+      "contextes_finaux": {}
+    },
+    "stockage": {
+      "cycles": [
+        {
+          "generation": 1,
+          "ram": {
+            "image": 2139,
+            "tables": 107,
+            "kpile": 32,
+            "upile": 0,
+            "heap": 6,
+            "buddy": 1,
+            "ipc": 0,
+            "utilisateur": 0,
+            "processus": 0,
+            "meta_octets": 23784,
+            "meta_actifs": 0,
+            "tcb_octets": 6656,
+            "heap_va": 65536,
+            "libres": 24566,
+            "cache": 3,
+            "chargeur": 16620,
+            "restitue": 0,
+            "extra_elf": 0,
+            "video": 0,
+            "ram_video": 0,
+            "resident": 2293,
+            "retenu": 18913,
+            "dma": 8,
+            "elf_preparation": 0
+          },
+          "racines": {
+            "3": 3,
+            "4": 4,
+            "5": 4,
+            "6": 2,
+            "7": 1,
+            "8": 4,
+            "9": 0
+          },
+          "ordre": {
+            "f1_cid": 32,
+            "f2_cid": 34,
+            "confirmation_apres_f2": true
+          },
+          "latences_us": [
+            [
+              "READ",
+              7,
+              4816.238967244342
+            ],
+            [
+              "READ",
+              8,
+              3469.3417289109725
+            ],
+            [
+              "READ",
+              9,
+              4663.342492093729
+            ],
+            [
+              "READ",
+              10,
+              15749.34283837608
+            ],
+            [
+              "READ",
+              11,
+              3188.6962251805694
+            ],
+            [
+              "READ",
+              12,
+              2520.7800442594657
+            ],
+            [
+              "READ",
+              13,
+              4758.902789062862
+            ],
+            [
+              "READ",
+              14,
+              3164.5546764725773
+            ],
+            [
+              "READ",
+              15,
+              4755.885095474363
+            ],
+            [
+              "READ",
+              16,
+              4693.519427978718
+            ],
+            [
+              "READ",
+              17,
+              4663.342492093729
+            ],
+            [
+              "READ",
+              18,
+              3200.766999534565
+            ],
+            [
+              "READ",
+              19,
+              4477.251387469626
+            ],
+            [
+              "FLUSH",
+              20,
+              2959.351512454648
+            ],
+            [
+              "READ",
+              21,
+              4665.354287819394
+            ],
+            [
+              "READ",
+              22,
+              4833.339230912503
+            ],
+            [
+              "READ",
+              23,
+              2423.207951564666
+            ],
+            [
+              "READ",
+              24,
+              4770.973563416858
+            ],
+            [
+              "READ",
+              25,
+              4677.42506217339
+            ],
+            [
+              "WRITE",
+              26,
+              4966.117748806458
+            ],
+            [
+              "WRITE",
+              27,
+              5276.9401884218505
+            ],
+            [
+              "WRITE",
+              28,
+              5041.5600885189315
+            ],
+            [
+              "WRITE",
+              29,
+              2761.1896334765497
+            ],
+            [
+              "WRITE",
+              30,
+              3022.723077813126
+            ],
+            [
+              "WRITE",
+              31,
+              3478.3948096764693
+            ],
+            [
+              "FLUSH",
+              32,
+              4058.797876531103
+            ],
+            [
+              "WRITE",
+              33,
+              3100.1772132512665
+            ],
+            [
+              "FLUSH",
+              34,
+              3890.812933437994
+            ],
+            [
+              "READ",
+              35,
+              4236.841798252542
+            ],
+            [
+              "READ",
+              36,
+              3755.016721955541
+            ],
+            [
+              "READ",
+              37,
+              3061.9530944636126
+            ],
+            [
+              "READ",
+              38,
+              4770.973563416858
+            ]
+          ],
+          "operations": 32
+        }
+      ],
+      "p9": {
+        "etat": "nouveau",
+        "slot": 0,
+        "generation": 4,
+        "ancres": {
+          "0": {
+            "generation": 4,
+            "manifeste_bloc": 15,
+            "sha256": "23089d155fdbc1ac48024a8f6a03076cec48a97ff16d2c95f492ada9ad53615a"
+          },
+          "1": {
+            "generation": 3,
+            "manifeste_bloc": 12,
+            "sha256": "0619aa0709d89e1de7f9258043f70b98db395308c2dff990bfe28d450238c2ff"
+          }
+        },
+        "fichier": "/sortie",
+        "octets": 4231,
+        "sha256_fichier": "9d691dbec9d08e43fb398131d7e4a7f53c0086e2b9380a652f3ab68c558ad849",
+        "sha256_p9": "aa6c517e0b08966daa15390a87f79bde14c18d32ebf83b9f7827a9d30827b6c4",
+        "sha256_garde": "d1124c71bf8c8fd91f55ad7864154aef99cd64460d33ae2334435dd24010a6c6"
+      },
+      "cadres_nic_retenus": 0,
+      "processus_distincts": 7,
+      "attentes": 5,
+      "E_S_apres_BME_NIC": 31,
+      "E_S_apres_WAIT_NIC": 31
+    },
+    "trames": {
+      "trames": [
+        4,
+        4
+      ],
+      "octets": [
+        3148,
+        3148
+      ]
+    }
+  },
+  "ethernet": {
+    "arm": {
+      "3d": {
+        "series": [
+          {
+            "elf": "adbc7daa5c0f67e9794322a1fbeeea57579aaa785942d719c4a5ad90e564c242",
+            "acquisition": "2026-11-27T02:33:49.905225+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 8.745340152889343,
+                "rx_mbps": 8.745340152889343,
+                "p99_ms": 1.832992,
+                "ipc_par_trame": 50.9990234375
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 20.295494517277152,
+                "rx_mbps": 20.295494517277152,
+                "p99_ms": 2.940992,
+                "ipc_par_trame": 21.0
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 27.587193561583604,
+                "rx_mbps": 27.587193561583604,
+                "p99_ms": 3.846,
+                "ipc_par_trame": 14.933349609375
+              }
+            }
+          },
+          {
+            "elf": "adbc7daa5c0f67e9794322a1fbeeea57579aaa785942d719c4a5ad90e564c242",
+            "acquisition": "2026-11-27T02:34:52.559469+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 8.898321539911223,
+                "rx_mbps": 8.898321539911223,
+                "p99_ms": 1.748,
+                "ipc_par_trame": 50.9990234375
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 20.577765316401248,
+                "rx_mbps": 20.577765316401248,
+                "p99_ms": 2.571008,
+                "ipc_par_trame": 21.0
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 27.718568995906576,
+                "rx_mbps": 27.718568995906576,
+                "p99_ms": 3.737008,
+                "ipc_par_trame": 14.9339599609375
+              }
+            }
+          },
+          {
+            "elf": "adbc7daa5c0f67e9794322a1fbeeea57579aaa785942d719c4a5ad90e564c242",
+            "acquisition": "2026-11-27T02:35:25.529655+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 8.737696551619036,
+                "rx_mbps": 8.737696551619036,
+                "p99_ms": 1.842,
+                "ipc_par_trame": 50.9990234375
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 20.36078718756659,
+                "rx_mbps": 20.36078718756659,
+                "p99_ms": 2.604,
+                "ipc_par_trame": 21.0
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 26.93408513063245,
+                "rx_mbps": 26.93408513063245,
+                "p99_ms": 3.987008,
+                "ipc_par_trame": 14.930419921875
+              }
+            }
+          }
+        ],
+        "medianes": {
+          "1": {
+            "tx_mbps": 8.745340152889343,
+            "rx_mbps": 8.745340152889343,
+            "p99_ms": 1.832992,
+            "ipc_par_trame": 50.9990234375
+          },
+          "4": {
+            "tx_mbps": 20.36078718756659,
+            "rx_mbps": 20.36078718756659,
+            "p99_ms": 2.604,
+            "ipc_par_trame": 21.0
+          },
+          "8": {
+            "tx_mbps": 27.587193561583604,
+            "rx_mbps": 27.587193561583604,
+            "p99_ms": 3.846,
+            "ipc_par_trame": 14.933349609375
+          }
+        }
+      },
+      "3e": {
+        "series": [
+          {
+            "elf": "841df2e678bd2b31b0f96c10152c930a58d268d115af445321dac95d1af4d72c",
+            "acquisition": "2026-11-27T02:34:04.126796+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 8.504293100932157,
+                "rx_mbps": 8.504293100932157,
+                "p99_ms": 1.822,
+                "ipc_par_trame": 50.9990234375
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 19.4532585553201,
+                "rx_mbps": 19.4532585553201,
+                "p99_ms": 2.734,
+                "ipc_par_trame": 20.999267578125
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 25.717917991697373,
+                "rx_mbps": 25.717917991697373,
+                "p99_ms": 4.270992,
+                "ipc_par_trame": 14.93603515625
+              }
+            }
+          },
+          {
+            "elf": "841df2e678bd2b31b0f96c10152c930a58d268d115af445321dac95d1af4d72c",
+            "acquisition": "2026-11-27T02:34:37.882135+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 8.413473474968661,
+                "rx_mbps": 8.413473474968661,
+                "p99_ms": 1.83,
+                "ipc_par_trame": 50.9990234375
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 18.948809993964094,
+                "rx_mbps": 18.948809993964094,
+                "p99_ms": 2.916,
+                "ipc_par_trame": 20.999267578125
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 25.802172440711793,
+                "rx_mbps": 25.802172440711793,
+                "p99_ms": 4.036,
+                "ipc_par_trame": 14.9364013671875
+              }
+            }
+          },
+          {
+            "elf": "841df2e678bd2b31b0f96c10152c930a58d268d115af445321dac95d1af4d72c",
+            "acquisition": "2026-11-27T02:35:39.763815+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 8.556603829401652,
+                "rx_mbps": 8.556603829401652,
+                "p99_ms": 1.828992,
+                "ipc_par_trame": 50.9990234375
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 19.460596987618995,
+                "rx_mbps": 19.460596987618995,
+                "p99_ms": 2.810992,
+                "ipc_par_trame": 20.99951171875
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 26.09297332570445,
+                "rx_mbps": 26.09297332570445,
+                "p99_ms": 3.966,
+                "ipc_par_trame": 14.935546875
+              }
+            }
+          }
+        ],
+        "medianes": {
+          "1": {
+            "tx_mbps": 8.504293100932157,
+            "rx_mbps": 8.504293100932157,
+            "p99_ms": 1.828992,
+            "ipc_par_trame": 50.9990234375
+          },
+          "4": {
+            "tx_mbps": 19.4532585553201,
+            "rx_mbps": 19.4532585553201,
+            "p99_ms": 2.810992,
+            "ipc_par_trame": 20.999267578125
+          },
+          "8": {
+            "tx_mbps": 25.802172440711793,
+            "rx_mbps": 25.802172440711793,
+            "p99_ms": 4.036,
+            "ipc_par_trame": 14.93603515625
+          }
+        }
+      }
+    },
+    "q35": {
+      "3d": {
+        "series": [
+          {
+            "elf": "357a69f8f5e4beb292716087db82fd5013838dd65746aff010fde1a66289d013",
+            "acquisition": "2026-11-27T02:34:18.800235+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 11.524740404400308,
+                "rx_mbps": 11.524740404400308,
+                "p99_ms": 1.4179450884547997,
+                "ipc_par_trame": 52.0361328125
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 27.06896486059896,
+                "rx_mbps": 27.06896486059896,
+                "p99_ms": 2.368567429447032,
+                "ipc_par_trame": 21.036376953125
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 35.68021573227759,
+                "rx_mbps": 35.68021573227759,
+                "p99_ms": 3.224327246915879,
+                "ipc_par_trame": 14.963134765625
+              }
+            }
+          },
+          {
+            "elf": "357a69f8f5e4beb292716087db82fd5013838dd65746aff010fde1a66289d013",
+            "acquisition": "2026-11-27T02:35:16.027733+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 11.884608582017856,
+                "rx_mbps": 11.884608582017856,
+                "p99_ms": 1.2719790497568275,
+                "ipc_par_trame": 51.869140625
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 27.983402793580908,
+                "rx_mbps": 27.983402793580908,
+                "p99_ms": 2.015213867065719,
+                "ipc_par_trame": 21.019287109375
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 35.958424665017766,
+                "rx_mbps": 35.958424665017766,
+                "p99_ms": 3.219354034168849,
+                "ipc_par_trame": 14.9652099609375
+              }
+            }
+          },
+          {
+            "elf": "357a69f8f5e4beb292716087db82fd5013838dd65746aff010fde1a66289d013",
+            "acquisition": "2026-11-27T02:35:54.395059+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 11.406052278709229,
+                "rx_mbps": 11.406052278709229,
+                "p99_ms": 1.4712988348846496,
+                "ipc_par_trame": 51.95703125
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 26.450587184721847,
+                "rx_mbps": 26.450587184721847,
+                "p99_ms": 2.1869577790269115,
+                "ipc_par_trame": 21.02734375
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 35.412086273694584,
+                "rx_mbps": 35.412086273694584,
+                "p99_ms": 3.1325071661198995,
+                "ipc_par_trame": 14.9595947265625
+              }
+            }
+          }
+        ],
+        "medianes": {
+          "1": {
+            "tx_mbps": 11.524740404400308,
+            "rx_mbps": 11.524740404400308,
+            "p99_ms": 1.4179450884547997,
+            "ipc_par_trame": 51.95703125
+          },
+          "4": {
+            "tx_mbps": 27.06896486059896,
+            "rx_mbps": 27.06896486059896,
+            "p99_ms": 2.1869577790269115,
+            "ipc_par_trame": 21.02734375
+          },
+          "8": {
+            "tx_mbps": 35.68021573227759,
+            "rx_mbps": 35.68021573227759,
+            "p99_ms": 3.219354034168849,
+            "ipc_par_trame": 14.963134765625
+          }
+        }
+      },
+      "3e": {
+        "series": [
+          {
+            "elf": "485fe504350a41ebe96e4719b9b57099df8dd42b6d724ccd62e09ddb141cde6a",
+            "acquisition": "2026-11-27T02:34:28.410791+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 11.999693795697967,
+                "rx_mbps": 11.999693795697967,
+                "p99_ms": 1.2684170603187834,
+                "ipc_par_trame": 51.869140625
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 28.006616572819055,
+                "rx_mbps": 28.006616572819055,
+                "p99_ms": 2.035273783447582,
+                "ipc_par_trame": 21.02978515625
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 36.31645450502412,
+                "rx_mbps": 36.31645450502412,
+                "p99_ms": 3.1174828143904434,
+                "ipc_par_trame": 14.9501953125
+              }
+            }
+          },
+          {
+            "elf": "485fe504350a41ebe96e4719b9b57099df8dd42b6d724ccd62e09ddb141cde6a",
+            "acquisition": "2026-11-27T02:35:06.616170+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 11.896186346465553,
+                "rx_mbps": 11.896186346465553,
+                "p99_ms": 1.2941507135942039,
+                "ipc_par_trame": 51.8427734375
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 28.202099141608958,
+                "rx_mbps": 28.202099141608958,
+                "p99_ms": 1.9787014771556166,
+                "ipc_par_trame": 21.012939453125
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 36.48888394823981,
+                "rx_mbps": 36.48888394823981,
+                "p99_ms": 2.9780456575372414,
+                "ipc_par_trame": 14.951416015625
+              }
+            }
+          },
+          {
+            "elf": "485fe504350a41ebe96e4719b9b57099df8dd42b6d724ccd62e09ddb141cde6a",
+            "acquisition": "2026-11-27T02:36:04.117606+00:00",
+            "cellules": {
+              "1": {
+                "n": 1024,
+                "tx_mbps": 11.862376290516712,
+                "rx_mbps": 11.862376290516712,
+                "p99_ms": 1.2325922223524814,
+                "ipc_par_trame": 51.8779296875
+              },
+              "4": {
+                "n": 1024,
+                "tx_mbps": 27.175364934637134,
+                "rx_mbps": 27.175364934637134,
+                "p99_ms": 2.1740445610161867,
+                "ipc_par_trame": 21.0166015625
+              },
+              "8": {
+                "n": 1024,
+                "tx_mbps": 36.19386459528437,
+                "rx_mbps": 36.19386459528437,
+                "p99_ms": 3.038459885782862,
+                "ipc_par_trame": 14.9534912109375
+              }
+            }
+          }
+        ],
+        "medianes": {
+          "1": {
+            "tx_mbps": 11.896186346465553,
+            "rx_mbps": 11.896186346465553,
+            "p99_ms": 1.2684170603187834,
+            "ipc_par_trame": 51.869140625
+          },
+          "4": {
+            "tx_mbps": 28.006616572819055,
+            "rx_mbps": 28.006616572819055,
+            "p99_ms": 2.035273783447582,
+            "ipc_par_trame": 21.0166015625
+          },
+          "8": {
+            "tx_mbps": 36.31645450502412,
+            "rx_mbps": 36.31645450502412,
+            "p99_ms": 3.038459885782862,
+            "ipc_par_trame": 14.951416015625
+          }
+        }
+      }
+    }
+  },
+  "contre_epreuve_arm": {
+    "offert": {
+      "series": [
+        {
+          "acquisition": "2026-11-27T02:38:42.902282+00:00",
+          "n": 1024,
+          "tx_mbps": 26.980870810139308,
+          "p99_ms": 3.793008,
+          "ipc_par_trame": 14.9306640625
+        },
+        {
+          "acquisition": "2026-11-27T02:39:26.078692+00:00",
+          "n": 1024,
+          "tx_mbps": 27.12400257352747,
+          "p99_ms": 3.816,
+          "ipc_par_trame": 14.927001953125
+        },
+        {
+          "acquisition": "2026-11-27T02:39:40.394469+00:00",
+          "n": 1024,
+          "tx_mbps": 26.672549757363157,
+          "p99_ms": 3.88,
+          "ipc_par_trame": 14.93310546875
+        }
+      ],
+      "mediane": {
+        "tx_mbps": 26.980870810139308,
+        "p99_ms": 3.816,
+        "ipc_par_trame": 14.9306640625
+      }
+    },
+    "masque": {
+      "series": [
+        {
+          "acquisition": "2026-11-27T02:38:57.401089+00:00",
+          "n": 1024,
+          "tx_mbps": 27.325089504312082,
+          "p99_ms": 3.717008,
+          "ipc_par_trame": 14.9276123046875
+        },
+        {
+          "acquisition": "2026-11-27T02:39:11.613894+00:00",
+          "n": 1024,
+          "tx_mbps": 27.063573332904134,
+          "p99_ms": 3.912,
+          "ipc_par_trame": 14.930419921875
+        },
+        {
+          "acquisition": "2026-11-27T02:39:54.696720+00:00",
+          "n": 1024,
+          "tx_mbps": 26.566159933745332,
+          "p99_ms": 3.968992,
+          "ipc_par_trame": 14.9326171875
+        }
+      ],
+      "mediane": {
+        "tx_mbps": 27.063573332904134,
+        "p99_ms": 3.912,
+        "ipc_par_trame": 14.930419921875
+      }
+    },
+    "elf": "841df2e678bd2b31b0f96c10152c930a58d268d115af445321dac95d1af4d72c"
+  },
+  "hote": {
+    "revision": "eacda9a96cafb948ff907320d05d211b4aa0b00c",
+    "audit": "56db7d5c0d04490cd284b91567cbbd4736534266",
+    "essais": [
+      {
+        "jeu": "ethernet",
+        "execution": [
+          "arch",
+          "-arm64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/ethernet-arm64",
+          "--test-threads=1",
+          "credits_and_journal_saturation_recovery",
+          "publication_incertaine_conserve_credit_et_recu",
+          "revoke_during_lot_scrubs_and_preserves_unknown",
+          "lost_response_and_partial_publication",
+          "atomic_batch_and_generations",
+          "identities_ports_and_incarnations",
+          "armed_wait_wakes_once_including_revoke",
+          "versions_features_and_initial_denial",
+          "snapshot_padding_and_remote_delivery_oracle",
+          "retrait_dma::"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "aarch64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/architecture-ethernet/novaOS/tests/ethernet_v1/lib.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/ethernet-arm64"
+        ],
+        "architecture": "arm64",
+        "rosetta": false,
+        "tests": 12,
+        "elf_sha256": "4c7f2faf290024479a75f5aeb62df996f6582e94a5f0dc74e0611a88bc4734b2"
+      },
+      {
+        "jeu": "ethernet",
+        "execution": [
+          "arch",
+          "-x86_64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/ethernet-x86_64",
+          "--test-threads=1",
+          "credits_and_journal_saturation_recovery",
+          "publication_incertaine_conserve_credit_et_recu",
+          "revoke_during_lot_scrubs_and_preserves_unknown",
+          "lost_response_and_partial_publication",
+          "atomic_batch_and_generations",
+          "identities_ports_and_incarnations",
+          "armed_wait_wakes_once_including_revoke",
+          "versions_features_and_initial_denial",
+          "snapshot_padding_and_remote_delivery_oracle",
+          "retrait_dma::"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "x86_64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/architecture-ethernet/novaOS/tests/ethernet_v1/lib.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/ethernet-x86_64"
+        ],
+        "architecture": "x86_64",
+        "rosetta": true,
+        "tests": 12,
+        "elf_sha256": "1aa1a6548c108fdb0e75536b0c8d365b352643afee1a63f6c69ceaa0a8821de3"
+      },
+      {
+        "jeu": "demandes",
+        "execution": [
+          "arch",
+          "-arm64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/demandes-arm64",
+          "--test-threads=1"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "aarch64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp06ao11wv/tests/virtio_net_retraits.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/demandes-arm64"
+        ],
+        "architecture": "arm64",
+        "rosetta": false,
+        "tests": 3,
+        "elf_sha256": "cb6a3eb87fd85a6bbe13caab48213bf077403ece8febe3f89e19801aaa9edd5d"
+      },
+      {
+        "jeu": "demandes",
+        "execution": [
+          "arch",
+          "-x86_64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/demandes-x86_64",
+          "--test-threads=1"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "x86_64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp06ao11wv/tests/virtio_net_retraits.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/demandes-x86_64"
+        ],
+        "architecture": "x86_64",
+        "rosetta": true,
+        "tests": 3,
+        "elf_sha256": "ef1a4cae696fba045c5ce45368b26eac4d60bbfc963744a5046eeb727859bc83"
+      },
+      {
+        "jeu": "vtd",
+        "execution": [
+          "arch",
+          "-arm64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/vtd-arm64",
+          "--test-threads=1"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "aarch64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp06ao11wv/vtd.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/vtd-arm64"
+        ],
+        "architecture": "arm64",
+        "rosetta": false,
+        "tests": 5,
+        "elf_sha256": "702da184aab9d11a9f31c7b87db6e0b34e20092af7826b0bab2fa23102918afb"
+      },
+      {
+        "jeu": "vtd",
+        "execution": [
+          "arch",
+          "-x86_64",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/vtd-x86_64",
+          "--test-threads=1"
+        ],
+        "compilation": [
+          "rustup",
+          "run",
+          "stable",
+          "rustc",
+          "--edition",
+          "2024",
+          "--test",
+          "-O",
+          "--target",
+          "x86_64-apple-darwin",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/tmp/tmp06ao11wv/vtd.rs",
+          "-o",
+          "/Users/thierry/SynologyDrive/Personnel/StudioProjects/OS-worktrees/archives-ethernet-phase3e/hote/vtd-x86_64"
+        ],
+        "architecture": "x86_64",
+        "rosetta": true,
+        "tests": 5,
+        "elf_sha256": "7d91394e764fdcfdb0ec103a035c20b74a94c76330f7d2afaf044dec2c7d3c4b"
+      }
+    ],
+    "debut_attente": "2026-11-27T02:36:35.776085+00:00",
+    "acquisition": "2026-11-27T02:36:35.776474+00:00",
+    "attente_s": 0.00039616692811250687,
+    "selecteurs": 48,
+    "liberation": "2026-11-27T02:36:40.142955+00:00"
+  },
+  "demarrages": 37
+}

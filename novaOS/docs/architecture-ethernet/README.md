@@ -14,6 +14,8 @@ La phase 3C qualifie la restitution DMA, les réouvertures et la continuité de 
 
 La phase 3D qualifie le retrait individuel du NIC avec le NVMe actif, les reçus différés et 256 générations par architecture. [Retrait DMA multipériphérique et preuves](phase3d.md)
 
+Sur ARM, la phase 3E qualifie la restitution des 22 cadres NIC après reset des deux virtqueues. Sur Q35, la garde conservée refuse la réadmission pendant le bail NVMe actif. [Résultats, mesures et reproduction](phase3e.md) · [Contrats du futur gestionnaire](contrats-phase3e.md)
+
 ## Pièces soumises à décision
 
 | Livrable du mandat | Pièce et décision préparée |
