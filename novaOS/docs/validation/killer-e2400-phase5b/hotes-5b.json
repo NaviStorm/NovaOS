@@ -1,0 +1,136 @@
+{
+  "base": "7c3bb99a2f63326818024ac8e498ec329c6ad345",
+  "revision": "45c7d67b7ccdbe537d2c7e7994c686596fd5f445",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "abi": 48,
+  "suites": {
+    "aarch64": {
+      "machine": "arm64",
+      "rosetta": false,
+      "e2400": {
+        "tests": 44,
+        "groupes": [
+          21,
+          12,
+          7,
+          4,
+          0
+        ],
+        "sha256": "82f95cdc7de417e3ccf94a5407c48f8746e689a2e4a5fc49e38356ea862ddd79",
+        "mesures": [
+          "courtier_tete=384 courtier_tas=12248 registre_tas=777 reserve_ack_octets=304 rejeu_octets=152 table_plan=720 permis=152",
+          "horloge_cpu_sonde=[(30008000, 30008125), (30008000, 30008000), (30003000, 30001667)] controle_ns=30005000 ticks=30004333 corrige_ns=30004333",
+          "courtier_264_allers_retours_cpu_ns p50=108750 p99=122167 series=128"
+        ]
+      },
+      "gestionnaire": {
+        "tests": 33,
+        "groupes": [
+          4,
+          7,
+          4,
+          7,
+          7,
+          4,
+          0
+        ],
+        "sha256": "4e5846d10fcf6b912e17ce4e133c92326b6efac539984de868e4df10b54238ae",
+        "mesures": [
+          "horloge_cpu_sonde=[(30012000, 30011875), (30011000, 30010375), (30010000, 30008458)] controle_ns=30001000 ticks=30001000 corrige_ns=30001624",
+          "dma_frames=22 heap=66 group=368 receipt_bytes=240 samples=256 cpu_ns_reserve=[1083, 1167, 2167, 7126] cpu_ns_evidence=[84, 125, 125, 167] clock_ns=[83, 125, 125, 125]",
+          "dma_frames=128 heap=384 group=368 receipt_bytes=240 samples=256 cpu_ns_reserve=[1167, 1250, 6083, 6875] cpu_ns_evidence=[167, 209, 250, 250] clock_ns=[83, 125, 125, 125]",
+          "dma_frames=129 heap=387 group=368 receipt_bytes=240 samples=256 cpu_ns_reserve=[1167, 1416, 2208, 6583] cpu_ns_evidence=[208, 209, 250, 250] clock_ns=[84, 125, 125, 125]",
+          "dma_frames=258 heap=774 group=368 receipt_bytes=240 samples=256 cpu_ns_reserve=[1292, 1375, 6250, 7167] cpu_ns_evidence=[250, 292, 292, 4834] clock_ns=[83, 125, 125, 125]",
+          "dma_frames=259 heap=777 group=368 receipt_bytes=240 samples=256 cpu_ns_reserve=[1292, 1375, 1626, 7209] cpu_ns_evidence=[291, 292, 333, 375] clock_ns=[83, 125, 125, 167]",
+          "gestionnaire_tete=2416 gestionnaire_tas_initial=27648 inventaire=18488 noeud=128 groupe=368 registre=11776 liens_recus=(736, 11264) plans_table=576 selection_pic=9134 selection_retenue=854 roles=30",
+          "endurance=256 delta=0 pic_temporaire=9134 profondeur_echantillonnee=10536 inventaire_ns=[28375, 33666, 34125, 34250] selection_ipc_ns=[642125, 680791, 684584, 685542] cycle_ns=[647125, 685541, 689334, 690334]"
+        ]
+      },
+      "virtio-net": {
+        "tests": 8,
+        "groupes": [
+          8
+        ],
+        "sha256": "8015d54f8918895da02fc68900f5ff0e2b539f9257f6fae63c04519e017f4fab"
+      },
+      "nvme": {
+        "tests": 16,
+        "groupes": [
+          16
+        ],
+        "sha256": "c2002ec28de731755b85d5c1abaf7ac3baf84f5c2d818d47be49ac2a00a0d430"
+      },
+      "nvme-diagnostic": {
+        "tests": 2,
+        "groupes": [
+          2
+        ],
+        "sha256": "27490de17493e2ad71585d049e23951d073176c59319e70d4e11c8e58e7c0fc3"
+      }
+    },
+    "x86_64": {
+      "machine": "x86_64",
+      "rosetta": true,
+      "e2400": {
+        "tests": 44,
+        "groupes": [
+          21,
+          12,
+          7,
+          4,
+          0
+        ],
+        "sha256": "3401482e3ac10630a6abc2fdf1857d9a78966f5d2e820443b76b35e562eb1077",
+        "mesures": [
+          "courtier_tete=384 courtier_tas=12248 registre_tas=777 reserve_ack_octets=304 rejeu_octets=152 table_plan=720 permis=152",
+          "horloge_cpu_sonde=[(30014000, 720343), (30006000, 720129), (30013000, 720271)] controle_ns=30003000 ticks=720057 corrige_ns=30002999",
+          "courtier_264_allers_retours_cpu_ns p50=193754 p99=207921 series=128"
+        ]
+      },
+      "gestionnaire": {
+        "tests": 33,
+        "groupes": [
+          4,
+          7,
+          4,
+          7,
+          7,
+          4,
+          0
+        ],
+        "sha256": "c5c86f84314f2a214643461d5a2d59a7f531d3418e19baa4e8e6caa3e173708c",
+        "mesures": [
+          "horloge_cpu_sonde=[(30003000, 720049), (30012000, 720258), (30003000, 719976)] controle_ns=30002000 ticks=720037 corrige_ns=30002791",
+          "dma_frames=22 heap=66 group=368 receipt_bytes=240 samples=256 cpu_ns_reserve=[2125, 2209, 2666, 9125] cpu_ns_evidence=[250, 250, 292, 625] clock_ns=[167, 209, 209, 250]",
+          "dma_frames=128 heap=384 group=368 receipt_bytes=240 samples=256 cpu_ns_reserve=[2250, 2417, 2833, 8208] cpu_ns_evidence=[417, 459, 542, 6459] clock_ns=[167, 209, 250, 250]",
+          "dma_frames=129 heap=387 group=368 receipt_bytes=240 samples=256 cpu_ns_reserve=[2250, 2458, 7625, 7833] cpu_ns_evidence=[417, 459, 542, 542] clock_ns=[167, 209, 250, 333]",
+          "dma_frames=258 heap=774 group=368 receipt_bytes=240 samples=256 cpu_ns_reserve=[2375, 2458, 7708, 8459] cpu_ns_evidence=[667, 667, 833, 834] clock_ns=[167, 209, 250, 250]",
+          "dma_frames=259 heap=777 group=368 receipt_bytes=240 samples=256 cpu_ns_reserve=[2334, 2417, 3084, 7917] cpu_ns_evidence=[667, 667, 834, 5917] clock_ns=[167, 209, 250, 334]",
+          "gestionnaire_tete=2416 gestionnaire_tas_initial=27648 inventaire=18488 noeud=128 groupe=368 registre=11776 liens_recus=(736, 11264) plans_table=576 selection_pic=9133 selection_retenue=853 roles=30",
+          "endurance=256 delta=0 pic_temporaire=9133 profondeur_echantillonnee=30319 inventaire_ns=[52875, 58708, 63334, 64625] selection_ipc_ns=[1641667, 1681750, 1709375, 1718875] cycle_ns=[1650417, 1690334, 1717916, 1727542]"
+        ]
+      },
+      "virtio-net": {
+        "tests": 8,
+        "groupes": [
+          8
+        ],
+        "sha256": "8015d54f8918895da02fc68900f5ff0e2b539f9257f6fae63c04519e017f4fab"
+      },
+      "nvme": {
+        "tests": 16,
+        "groupes": [
+          16
+        ],
+        "sha256": "c2002ec28de731755b85d5c1abaf7ac3baf84f5c2d818d47be49ac2a00a0d430"
+      },
+      "nvme-diagnostic": {
+        "tests": 2,
+        "groupes": [
+          2
+        ],
+        "sha256": "27490de17493e2ad71585d049e23951d073176c59319e70d4e11c8e58e7c0fc3"
+      }
+    }
+  }
+}

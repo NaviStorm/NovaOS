@@ -1,6 +1,6 @@
 # Killer E2400 — inventaire MSI, phase 5B
 
-Fiche de lecture locale pour MSI-DESKTOP. Les blocs PowerShell sont à utiliser en présence de l’opérateur, si la MOA autorise cette collecte. La préparation de cette fiche a été réalisée sur le Mac de développement. Aucun accès au MSI n’a eu lieu. Afficher les résultats à la console. Si l’opérateur les conserve, choisir un dossier privé local hors dépôt, sauvegarde partagée et synchronisation. Le rapport public peut indiquer « observé », « absent » ou « indéterminé » et la version des outils. Les identifiants d’instance, MAC, topologie nominative et tables ACPI brutes restent locaux.
+Fiche de lecture locale pour MSI-DESKTOP. L’arbitrage A8 de phase 5B couvre cet inventaire non destructif. Les commandes PowerShell sont réservées à l’opérateur présent sur le MSI. La préparation de cette fiche a été réalisée sur le Mac de développement. Aucun accès au MSI n’a eu lieu. Afficher les résultats à la console. Si l’opérateur les conserve, choisir un dossier privé local hors dépôt, sauvegarde partagée et synchronisation. Le rapport public peut indiquer « observé », « absent » ou « indéterminé » et la version des outils. Les identifiants d’instance, MAC, topologie nominative et tables ACPI brutes restent locaux.
 
 ## Sous Windows
 

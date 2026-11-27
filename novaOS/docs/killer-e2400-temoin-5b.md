@@ -17,3 +17,5 @@ Un démarrage Q35 TCG sans NIC, sous le verrou partagé, a exercé les six sessi
 La limite de 128 porte sur les pages du groupe dans le gestionnaire simulé. Elle est distincte du masque des membres de l’inventaire PCI. Le reçu synthétique de 4C rassemble une preuve d’arrêt de la source et deux ensembles de pages pour le retrait des traductions et le retour de propriété. La garde de réadmission Q35 s’applique avant la réservation lorsqu’un bail NVMe est actif. Le mandat exige de conserver la distinction entre une preuve du banc et un reçu matériel. [Gestion des groupes](../libs/gestionnaire-pilotes/src/manager.rs) · [Reçus du cycle de vie](../libs/gestionnaire-pilotes/src/lifecycle.rs) · [Périmètre matériel de 4F](gestionnaire-pilotes/phase4f-v0.25.0.md)
 
 L’inventaire MSI et ses commandes de lecture sont préparés pour l’opérateur. Aucun relevé privé de machine n’est joint à ces preuves. [Protocole Windows et limites d’observation](killer-e2400-inventaire-msi-5b.md)
+
+Le registre étendu, le courtier simulé et la comparaison avec ce témoin sont qualifiés dans la livraison 5B. [Rapport de phase 5B](killer-e2400-phase5b.md)

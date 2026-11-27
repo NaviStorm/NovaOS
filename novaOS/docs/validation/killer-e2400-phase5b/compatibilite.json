@@ -1,0 +1,99 @@
+{
+  "contrat": {
+    "base": "908976948ba58fc85e7fe38bfc315f689ed1c44e",
+    "revision": "45c7d67b7ccdbe537d2c7e7994c686596fd5f445",
+    "ovmf": {
+      "edk2-x86_64-code.fd": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "edk2-i386-vars.fd": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+    },
+    "cpu": "max",
+    "modele": "q35",
+    "vcpus": 1,
+    "ram_mio": 256,
+    "acceleration": "tcg",
+    "nic": "none",
+    "elf": "32a0f922323952e6696a02d7a6c1bbd7265c49761435589ce3043d476a758316",
+    "noyau": "c2b78032d152c0c93754091b2421c37016c12d6f16f72b83d0b5b7abf53b930a",
+    "banc": "3ca6ede5131c13e2bb53c50ee08241449e520c77f7366b87c838d874902c7af2",
+    "qemu": "QEMU emulator version 11.1.3",
+    "debut_attente": "2026-11-27T17:13:44.600638+00:00",
+    "acquisition": "2026-11-27T17:14:28.683212+00:00",
+    "attente_s": 44.08251691702753,
+    "liberation": "2026-11-27T17:14:32.017072+00:00",
+    "journal": "d33fabcea7e5e4c1757038575f638192588b3f3d045f97c96e3ecbe25ce51b73"
+  },
+  "q35": {
+    "duo-retrait": {
+      "revision": "7cbba950fb0b7571984ccfed16384ee9ac2edffb",
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "elf": "08e163bd07e13686e1f11295fd3e4d444d5beec3b9de7ee406a544bd6122bb39",
+      "p9_final": "05c79a531c34c81474827f33d79373c4ed153153bdd30547b753f86495a97a8c",
+      "cadres_nic_retenus": 0,
+      "trames_par_sens": 4,
+      "cqe": {
+        "READ": 22,
+        "FLUSH": 3,
+        "WRITE": 7
+      },
+      "io_apres_attente": 31,
+      "garde": {
+        "candidat": 12,
+        "generation": 2,
+        "disque": 3,
+        "generation_vtd": 1,
+        "epoque_ipc": 3,
+        "cid": 10,
+        "commande": "READ",
+        "dma": 14,
+        "cqe_retrouvee": true
+      }
+    },
+    "duo-absent": {
+      "revision": "7cbba950fb0b7571984ccfed16384ee9ac2edffb",
+      "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+      "elf": "b8e2a821d946b4fe2da49c5dc03848b44b08231ff9e9428e3e839932b6785827",
+      "p9_final": "49e1cd6697c3bedeb972a219059f236f70481d7f881ce4a483161dd8236ddf11",
+      "cadres_nic_retenus": 26,
+      "trames_par_sens": 4,
+      "cqe": {
+        "READ": 22,
+        "FLUSH": 3,
+        "WRITE": 7
+      },
+      "io_apres_attente": 31,
+      "garde": null
+    }
+  },
+  "arm": [
+    {
+      "revision": "45c7d67b7ccdbe537d2c7e7994c686596fd5f445",
+      "boot": "b4d8ca693002174982992edd9c9db371",
+      "elf": "b2cc606bd19a1d5d3b2a1de47bbca03dc3b13126cd060635761a3d30edf90b6c",
+      "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+      "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+      "trames_par_sens": 13312,
+      "octets_par_sens": 20154368,
+      "capture_sha256": "6334b8489e2b2653a06c199cf45d321b6890890e1ffb0eb4a038933f6f8eab4d"
+    },
+    {
+      "revision": "45c7d67b7ccdbe537d2c7e7994c686596fd5f445",
+      "boot": "0d85339b6ac3a5f588940bfa5835bdab",
+      "elf": "b2cc606bd19a1d5d3b2a1de47bbca03dc3b13126cd060635761a3d30edf90b6c",
+      "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+      "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+      "trames_par_sens": 13312,
+      "octets_par_sens": 20154368,
+      "capture_sha256": "cc8603644a0479227a3d9b0fb2fbf449242480d9d221b61f86e96e1a26859678"
+    },
+    {
+      "revision": "45c7d67b7ccdbe537d2c7e7994c686596fd5f445",
+      "boot": "7d1e639bb382174e099033c5d8acc0ea",
+      "elf": "b2cc606bd19a1d5d3b2a1de47bbca03dc3b13126cd060635761a3d30edf90b6c",
+      "modele": "539a6c4cefa699a730ddbabf8855aff3d77f2e79d0610fa864da3b98975c66d5",
+      "firmware": "921f2295821511fc113eece78bd757f4014b193a7113e047594551557d991805",
+      "trames_par_sens": 13312,
+      "octets_par_sens": 20154368,
+      "capture_sha256": "45436a66972dc6d6657193f5465527bbb48586fa7ab9ec8b67c09d1d1ebd630d"
+    }
+  ]
+}
