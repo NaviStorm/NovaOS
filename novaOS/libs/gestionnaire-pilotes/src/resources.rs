@@ -55,7 +55,7 @@ impl Use {
     pub fn plan(p: &Plan) -> Result<Self> {
         let q = p.quotas();
         let dma = p.hardware().dma_pages;
-        if dma > 128 || q.ipc_roots_created > 4 || q.ipc_handles > 32 {
+        if dma > crate::dma::MAX_FRAMES as u32 || q.ipc_roots_created > 4 || q.ipc_handles > 32 {
             return Err(Error::Full);
         }
         Ok(Self {

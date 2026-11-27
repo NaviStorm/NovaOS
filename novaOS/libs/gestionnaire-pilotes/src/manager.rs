@@ -14,6 +14,8 @@ pub use control::{Delivery, Pending, Selection};
 pub const MAX_GROUPS: usize = 32;
 pub const MAX_PLANS: usize = 2;
 struct SelectionPlan {
+    #[cfg(feature = "e2400-sim")]
+    e2400: Option<crate::e2400::Authorization>,
     parent: Option<Lease>,
     slot: Slot,
     profile: [u8; 32],
@@ -46,10 +48,7 @@ pub struct Group {
     handles: u8,
     held: Use,
     scope: Scope,
-    pages: u128,
-    initial_pages: u128,
-    unmapped: u128,
-    returned: u128,
+    pages: crate::dma::Ledger,
     stopped: bool,
     last_proof: u64,
     fresh_proof: bool,
@@ -243,10 +242,7 @@ impl<'c, 'p> Manager<'c, 'p> {
                 reset_peers: 0,
                 dependencies: 0,
             },
-            pages: 0,
-            initial_pages: 0,
-            unmapped: 0,
-            returned: 0,
+            pages: Default::default(),
             stopped: false,
             last_proof: 0,
             fresh_proof: false,
@@ -362,6 +358,8 @@ impl<'c, 'p> Manager<'c, 'p> {
         crate::push(
             &mut self.plans,
             SelectionPlan {
+                #[cfg(feature = "e2400-sim")]
+                e2400: None,
                 parent,
                 slot: node.slot,
                 profile: target.profile.unwrap_or([0; 32]),
@@ -410,6 +408,52 @@ impl<'c, 'p> Manager<'c, 'p> {
         holder: u64,
         incarnation: u64,
         domain: u32,
+    ) -> Result<Stamp> {
+        #[cfg(feature = "e2400-sim")]
+        if let Some(permit) = self
+            .plans
+            .iter()
+            .find(|p| p.slot == s.attachment.slot)
+            .and_then(|p| p.e2400)
+        {
+            return permit.reserve(self, s, holder, incarnation, domain);
+        }
+        self.reserve_inner(s, holder, incarnation, domain, None)
+    }
+    #[cfg(feature = "e2400-sim")]
+    pub(crate) fn install_simulated_permit(
+        &mut self,
+        s: Stamp,
+        p: crate::e2400::Authorization,
+    ) -> Result<()> {
+        self.current_plan_stamp(s)?;
+        let selection = self
+            .plans
+            .iter_mut()
+            .find(|v| v.slot == s.attachment.slot)
+            .ok_or(Error::Transition)?;
+        if selection.e2400.is_some() {
+            return Err(Error::Conflict);
+        }
+        selection.e2400 = Some(p);
+        Ok(())
+    }
+    #[cfg(feature = "e2400-sim")]
+    fn current_plan_stamp(&self, s: Stamp) -> Result<()> {
+        let i = self.checked(s)?;
+        self.present(s.attachment)?;
+        if self.groups[i].state != State::Verified {
+            return Err(Error::Transition);
+        }
+        Ok(())
+    }
+    pub(crate) fn reserve_inner(
+        &mut self,
+        s: Stamp,
+        holder: u64,
+        incarnation: u64,
+        domain: u32,
+        layout: Option<(&[u8; 32], &[crate::dma::Region])>,
     ) -> Result<Stamp> {
         let i = self.checked(s)?;
         self.present(s.attachment)?;
@@ -489,6 +533,21 @@ impl<'c, 'p> Manager<'c, 'p> {
         let generation = next(self.last_generation)?;
         let seal = crate::plan_wire::seal(&v.plan);
         let grants = crate::rights::Grants::from_plan(&v.plan)?;
+        if layout.is_some_and(|(digest, _)| *digest != v.profile) {
+            return Err(Error::Denied);
+        }
+        let mut pages = crate::dma::Ledger::reserve(
+            held.dma as usize,
+            &v.plan.hardware().dma,
+            layout
+                .map(|(_, parts)| parts)
+                .or_else(|| crate::virtio_lab_layout::lookup(&v.plan, &v.profile)),
+        )?;
+        pages.allocate(
+            self.baseline.dma,
+            self.cap.dma,
+            self.groups.iter().map(|g| &g.pages),
+        )?;
         let profile = v.profile;
         let (inventory, catalog, policy) = (v.inventory, v.catalog, v.policy);
         let g = &mut self.groups[i];
@@ -503,10 +562,7 @@ impl<'c, 'p> Manager<'c, 'p> {
         g.held = held;
         g.scope = scope;
         g.generation = generation;
-        g.pages = mask(held.dma);
-        g.initial_pages = g.pages;
-        g.unmapped = 0;
-        g.returned = 0;
+        g.pages = pages;
         g.lease = Some(Lease {
             attachment: s.attachment,
             inventory: g.source_revision,
@@ -572,7 +628,19 @@ impl<'c, 'p> Manager<'c, 'p> {
         g.revision = next(g.revision)?;
         g.launched = true;
         g.exposed = true;
+        g.pages.expose_all();
         Ok(g.stamp())
+    }
+    /// L'indice est relatif à ce bail complet. Aucun cadre physique n'est libéré par le modèle.
+    pub fn dma_page(&self, lease: Lease, index: usize) -> Result<crate::dma::PageInfo> {
+        let g = self.group(lease.attachment.slot)?;
+        if g.lease != Some(lease) {
+            return Err(Error::Stale);
+        }
+        g.pages.page(index, g.state == Quarantined)
+    }
+    pub fn dma_registry_heap(&self) -> usize {
+        self.groups.iter().map(|g| g.pages.bytes()).sum()
     }
     pub fn grant_bytes(&self) -> usize {
         self.groups.iter().map(|g| g.grants.bytes()).sum()
@@ -662,22 +730,17 @@ impl<'c, 'p> Manager<'c, 'p> {
         if !matches!(g.state, Reconciling | Quarantined) {
             return Err(Error::Transition);
         }
-        if (p.translations_removed | p.ownership_returned) & !g.initial_pages != 0 {
-            return Err(Error::Format);
-        }
-        let stopped = g.stopped || p.source_stopped;
-        let unmapped = g.unmapped | p.translations_removed;
-        let returned = g.returned | p.ownership_returned;
-        if (stopped, unmapped, returned) == (g.stopped, g.unmapped, g.returned) {
+        let (changed, held) = g.pages.evidence(
+            p.source_stopped,
+            &p.stopped_pages,
+            &p.translations_removed,
+            &p.ownership_returned,
+        )?;
+        if !changed && (!p.source_stopped || g.stopped) {
             return Err(Error::Stale);
         }
-        g.stopped = stopped;
-        g.unmapped = unmapped;
-        g.returned = returned;
-        if stopped {
-            g.pages &= !(unmapped & returned);
-        }
-        g.held.dma = g.pages.count_ones();
+        g.stopped |= p.source_stopped;
+        g.held.dma = held;
         g.last_proof = p.serial;
         g.fresh_proof = true;
         Ok(())
@@ -728,14 +791,14 @@ impl<'c, 'p> Manager<'c, 'p> {
                 return Err(Error::Uncertain);
             }
             Event::Quarantine
-                if g.lease.is_none() && self.inventory.ready() || g.stopped && g.pages == 0 =>
+                if g.lease.is_none() && self.inventory.ready() || g.stopped && g.held.dma == 0 =>
             {
                 return Err(Error::Transition);
             }
             Event::Return
                 if g.state != Reconciling
                     || g.lease.is_none() && !self.inventory.ready()
-                    || g.lease.is_some() && (!g.stopped || g.pages != 0) =>
+                    || g.lease.is_some() && (!g.stopped || g.held.dma != 0) =>
             {
                 return Err(Error::Uncertain);
             }
@@ -803,11 +866,14 @@ impl<'c, 'p> Manager<'c, 'p> {
                     reset_peers: 0,
                     dependencies: 0,
                 };
-                g.pages = 0;
+                g.pages = Default::default();
             }
             Event::Publish => g.leaf_epoch = revision,
             Event::Remove => g.removed = true,
-            Event::Uncertain | Event::Assign => g.exposed = true,
+            Event::Uncertain | Event::Assign => {
+                g.exposed = true;
+                g.pages.expose_all();
+            }
             Event::Suspend => {
                 g.backend = false;
                 g.prepared = false;
@@ -939,14 +1005,6 @@ impl<'c, 'p> Manager<'c, 'p> {
         self.plans.capacity() * size_of::<SelectionPlan>()
     }
     pub fn registry_bytes(&self) -> usize {
-        self.groups.capacity() * size_of::<Group>()
-    }
-}
-
-fn mask(count: u32) -> u128 {
-    if count == 128 {
-        u128::MAX
-    } else {
-        (1u128 << count) - 1
+        self.groups.capacity() * size_of::<Group>() + self.dma_registry_heap()
     }
 }

@@ -24,9 +24,29 @@ path = "anneaux.rs"
 name = "extraire"
 path = "extraire.rs"
 
+[[test]]
+name = "qualification_5b"
+path = "qualification_5b.rs"
+
+[[bin]]
+name = "courtier-5b"
+path = "acteur_5b.rs"
+test = false
+required-features = ["invite-5b"]
+
+[features]
+invite-5b = ["dep:dlmalloc", "dep:spin", "dep:sha2", "dep:novaos-gestionnaire-sim"]
+
+[dependencies]
+dlmalloc = { version = "0.2.14", optional = true }
+spin = { version = "0.9.9", default-features = false, features = ["mutex", "spin_mutex"], optional = true }
+novaos-gestionnaire-sim = { path = "../../libs/gestionnaire-pilotes", features = ["e2400-sim"], optional = true }
+sha2 = { version = "0.10.9", default-features = false, optional = true }
+
 [dev-dependencies]
+libc = "0.2"
 novaos-identity = { path = "../../user/novaauth", features = ["distribution-lab"] }
-novaos-gestionnaire-sim = { path = "../../libs/gestionnaire-pilotes" }
+novaos-gestionnaire-sim = { path = "../../libs/gestionnaire-pilotes", features=["e2400-sim"] }
 sha2 = { version = "0.10.9", default-features = false }
 
 [profile.release]

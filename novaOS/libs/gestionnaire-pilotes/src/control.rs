@@ -285,7 +285,7 @@ impl Manager<'_, '_> {
                 let e = match group.state {
                     Reserved => Event::Uncertain,
                     Reconciling
-                        if group.lease.is_some() && (!group.stopped || group.pages != 0) =>
+                        if group.lease.is_some() && (!group.stopped || group.held.dma != 0) =>
                     {
                         Event::Quarantine
                     }

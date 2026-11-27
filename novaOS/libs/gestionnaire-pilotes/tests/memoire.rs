@@ -379,3 +379,93 @@ fn selection_un_et_soixante_quatre_paquets() {
         }
     }
 }
+
+// Coût CPU du thread appelant. Le chargement du catalogue et la sélection
+// restent en dehors des intervalles chronométrés de réserve et de réconciliation.
+#[cfg(target_os = "macos")]
+fn cpu_ns() -> u128 {
+    let mut t = libc::timespec {
+        tv_sec: 0,
+        tv_nsec: 0,
+    };
+    // Sûreté : l'horloge Darwin copie un timespec dans l'objet local valide.
+    assert_eq!(
+        unsafe { libc::clock_gettime(libc::CLOCK_THREAD_CPUTIME_ID, &mut t) },
+        0
+    );
+    t.tv_sec as u128 * 1_000_000_000 + t.tv_nsec as u128
+}
+#[cfg(target_os = "macos")]
+#[test]
+fn cout_cpu_registre_borne() {
+    use novaos_gestionnaire_sim::dma::PageSet;
+    for n in [22, 128, 129, 258, 259, 260] {
+        let p = lab::policy();
+        let mut c = Catalog::new(&p);
+        let raw = lab::RAW.replace("dma_pages=22", &format!("dma_pages={n}"));
+        c.admit(
+            raw.as_bytes(),
+            &lab::sign(raw.as_bytes(), 1),
+            &lab::objects(),
+        )
+        .unwrap();
+        let mut m = sim(&c, 1);
+        let mut d = m.discover(sl(0)).unwrap();
+        let mut target = lab::target(if cfg!(target_arch = "aarch64") {
+            "aarch64"
+        } else {
+            "x86_64"
+        });
+        target.attachment = "dev-000";
+        target.revision = m.inventory().revision();
+        target.limits.dma_pages = n;
+        let mut reserve = [0u128; 256];
+        let mut evidence = [0u128; 256];
+        let mut clock = [0u128; 256];
+        for i in 0..256 {
+            let s = m.select(d, &target, None, 1).unwrap();
+            let start = cpu_ns();
+            clock[i] = cpu_ns() - start;
+            let start = cpu_ns();
+            let result = m.reserve(s, 16, i as u64 + 1, 17);
+            reserve[i] = cpu_ns() - start;
+            if n == 260 {
+                assert_eq!(result, Err(Error::Full));
+                assert!(m.group(sl(0)).unwrap().lease().is_none());
+                assert_eq!(m.dma_registry_heap(), 0);
+                break;
+            }
+            let r = result.unwrap();
+            assert_eq!(m.dma_registry_heap(), 3 * n as usize);
+            let l = m.group(sl(0)).unwrap().lease().unwrap();
+            let rec = m.step(r, Event::Uncertain).unwrap();
+            let all = PageSet::range(0, n as usize).unwrap();
+            let receipt = Observation {
+                lease: l,
+                serial: 1,
+                source_stopped: true,
+                stopped_pages: PageSet::default(),
+                translations_removed: all,
+                ownership_returned: all,
+            };
+            let start = cpu_ns();
+            m.evidence(receipt).unwrap();
+            evidence[i] = cpu_ns() - start;
+            let returned = m.step(rec, Event::Return).unwrap();
+            let readmit = m.step(returned, Event::Readmit).unwrap();
+            d = m.step(readmit, Event::Rediscover).unwrap();
+            assert_eq!(m.dma_registry_heap(), 0);
+        }
+        if n <= 259 {
+            println!(
+                "dma_frames={n} heap={} group={} receipt_bytes={} samples=256 cpu_ns_reserve={:?} cpu_ns_evidence={:?} clock_ns={:?}",
+                3 * n,
+                size_of::<Group>(),
+                size_of::<Observation>(),
+                quantiles(reserve),
+                quantiles(evidence),
+                quantiles(clock)
+            );
+        }
+    }
+}

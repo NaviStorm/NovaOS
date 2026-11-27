@@ -88,8 +88,9 @@ pub struct Observation {
     pub lease: Lease,
     pub serial: u64,
     pub source_stopped: bool,
-    pub translations_removed: u128,
-    pub ownership_returned: u128,
+    pub stopped_pages: crate::dma::PageSet,
+    pub translations_removed: crate::dma::PageSet,
+    pub ownership_returned: crate::dma::PageSet,
 }
 #[derive(Debug, PartialEq, Eq, Copy, Clone)]
 pub struct Stamp {

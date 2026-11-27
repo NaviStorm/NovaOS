@@ -86,13 +86,24 @@ pub fn activate(m: &mut Manager<'_, '_>, r: Stamp) -> Stamp {
     let i = m.step(a, Event::Initialize).unwrap();
     m.step(i, Event::Publish).unwrap()
 }
+pub fn pages(bits: u128) -> novaos_gestionnaire_sim::dma::PageSet {
+    let count = bits.count_ones() as usize;
+    let first = if bits == 0 {
+        0
+    } else {
+        bits.trailing_zeros() as usize
+    };
+    assert!(count == 128 || (bits >> first) == (1u128 << count) - 1);
+    novaos_gestionnaire_sim::dma::PageSet::range(first, count).unwrap()
+}
 pub fn proof(l: Lease, serial: u64, mask: u128) -> Observation {
     Observation {
         lease: l,
         serial,
         source_stopped: true,
-        translations_removed: mask,
-        ownership_returned: mask,
+        stopped_pages: Default::default(),
+        translations_removed: pages(mask),
+        ownership_returned: pages(mask),
     }
 }
 pub const PAGES: u128 = (1 << 22) - 1;

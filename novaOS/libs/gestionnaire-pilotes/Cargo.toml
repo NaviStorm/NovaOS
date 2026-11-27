@@ -5,6 +5,9 @@ edition = "2024"
 license = "MIT"
 publish = false
 
+[features]
+e2400-sim = []
+
 [workspace]
 
 [dependencies]
@@ -12,6 +15,7 @@ sha2 = { version = "0.10.9", default-features = false }
 novaos-catalogue = { path = "../catalogue-pilotes" }
 
 [dev-dependencies]
+libc = "0.2"
 ed25519-dalek = { version = "=2.2.0", default-features = false }
 
 [profile.release]

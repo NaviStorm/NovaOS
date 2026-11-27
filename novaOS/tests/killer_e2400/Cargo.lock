@@ -207,6 +207,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "dlmalloc"
+version = "0.2.14"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ad5208a115eaba24916f7456929832e310a81518c641f93fee4f89aa93aa3675"
+dependencies = [
+ "cfg-if",
+ "libc",
+ "windows-sys",
+]
+
+[[package]]
 name = "ed25519"
 version = "2.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -383,9 +394,12 @@ dependencies = [
 name = "novaos-qualification-e2400"
 version = "0.1.0"
 dependencies = [
+ "dlmalloc",
+ "libc",
  "novaos-gestionnaire-sim",
  "novaos-identity",
  "sha2 0.10.9",
+ "spin",
 ]
 
 [[package]]

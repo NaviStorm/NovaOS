@@ -2,6 +2,10 @@
 #![forbid(unsafe_code)]
 //! Simulation hors ligne. Les descriptions, autorités et confirmations sont fournies par le banc.
 extern crate alloc;
+pub mod dma;
+#[cfg(feature = "e2400-sim")]
+#[path = "../../../user/killer-e2400/profil_gestionnaire.rs"]
+pub mod e2400;
 pub mod inventory;
 pub mod ipc;
 pub mod lifecycle;
@@ -38,3 +42,4 @@ fn push<T>(v: &mut alloc::vec::Vec<T>, item: T, max: usize) -> Result<()> {
 pub mod rights;
 
 mod plan_wire;
+mod virtio_lab_layout;
