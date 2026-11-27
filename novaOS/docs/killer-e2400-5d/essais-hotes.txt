@@ -1,0 +1,107 @@
+=== acpi / aarch64-apple-darwin ===
+running 16 tests
+test acpi::tests::ecam_ne_peut_pas_designer_la_memoire_des_tables ... ok
+test acpi::tests::iort_plages_reservees_descriptives_bornees ... ok
+test acpi::tests::dmar_portee_et_adresse_unite ... ok
+test acpi::tests::drhd_refuse_rmrr_unites_multiples_et_portee_manquante ... ok
+test acpi::tests::iort_verifie_noeuds_et_references_de_sortie ... ok
+test acpi::tests::drhd_q35_une_unite_portee_non_ambigue ... ok
+test acpi::tests::iort_cycle_indirect_et_portee_smmu ... ok
+test acpi::tests::limites_entrees_et_table_inconnue ... ok
+test acpi::tests::drhd_hors_profil_ne_delivre_pas_de_registres ... ok
+test acpi::tests::mcfg_refuse_alias_et_depassement ... ok
+test acpi::tests::pointeur_inaccessible_taille_tronquee_et_relecture_incoherente ... ok
+test acpi::tests::madt_srat_verifient_les_sous_structures ... ok
+test acpi::tests::pointeurs_dupliques_et_chevauchements_refuses ... ok
+test acpi::tests::racine_32_et_64_et_fenetre_distincte_de_bus_zero ... ok
+test acpi::tests::slit_controle_matrice_et_fadt_taille_selon_revision ... ok
+test acpi::tests::sommes_racines_et_enfants_independantes ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+=== acpi / x86_64-apple-darwin ===
+running 16 tests
+test acpi::tests::dmar_portee_et_adresse_unite ... ok
+test acpi::tests::drhd_refuse_rmrr_unites_multiples_et_portee_manquante ... ok
+test acpi::tests::drhd_q35_une_unite_portee_non_ambigue ... ok
+test acpi::tests::iort_plages_reservees_descriptives_bornees ... ok
+test acpi::tests::drhd_hors_profil_ne_delivre_pas_de_registres ... ok
+test acpi::tests::iort_verifie_noeuds_et_references_de_sortie ... ok
+test acpi::tests::iort_cycle_indirect_et_portee_smmu ... ok
+test acpi::tests::ecam_ne_peut_pas_designer_la_memoire_des_tables ... ok
+test acpi::tests::madt_srat_verifient_les_sous_structures ... ok
+test acpi::tests::mcfg_refuse_alias_et_depassement ... ok
+test acpi::tests::limites_entrees_et_table_inconnue ... ok
+test acpi::tests::pointeurs_dupliques_et_chevauchements_refuses ... ok
+test acpi::tests::pointeur_inaccessible_taille_tronquee_et_relecture_incoherente ... ok
+test acpi::tests::racine_32_et_64_et_fenetre_distincte_de_bus_zero ... ok
+test acpi::tests::sommes_racines_et_enfants_independantes ... ok
+test acpi::tests::slit_controle_matrice_et_fadt_taille_selon_revision ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+=== pci_inventory / aarch64-apple-darwin ===
+running 19 tests
+test pci_inventory::tests::bus_vide_et_fenetre_invalide ... ok
+test pci_inventory::tests::pont_ferme_et_formats_incoherents ... ok
+test pci_inventory::tests::pont_fenetres_32_64_et_io_32 ... ok
+test pci_inventory::tests::ponts_imbriques_et_bornes_subordonnees ... ok
+test pci_inventory::tests::fonctions_multiples_identite_et_bar_sans_ecriture ... ok
+test pci_inventory::tests::profil_lecture_seule_taille_connue_et_bus_master_herite ... ok
+test pci_inventory::tests::profil_nvme_q35_ferme_et_bar_64_du_firmware ... ok
+test pci_inventory::tests::ponts_ambigus_et_boucles ... ok
+test pci_inventory::tests::pont_refuse_interdit_toute_lecture_aval ... ok
+test pci_inventory::tests::identite_changee_ou_non_prete_et_types_inconnus ... ok
+test pci_inventory::tests::capacites_refusees_sans_depassement ... ok
+test pci_inventory::tests::liste_de_capacites_msi_msix_pcie ... ok
+test pci_inventory::tests::profil_refuse_taille_inconnue_et_bar_hors_aperture ... ok
+test pci_inventory::tests::profil_relu_refuse_recouvrements_rom_msi_et_objet_etranger ... ok
+test pci_inventory::tests::tailles_bar_excluent_les_depassements_et_les_frontieres ... ok
+test pci_inventory::tests::table_msix_bir_invalide_ou_zones_superposees ... ok
+test pci_inventory::tests::transport_en_erreur_distingue_de_l_absence ... ok
+test pci_inventory::tests::formats_bar_refuses ... ok
+test pci_inventory::tests::fenetre_dense_limitee_en_lectures ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+=== pci_inventory / x86_64-apple-darwin ===
+running 19 tests
+test pci_inventory::tests::bus_vide_et_fenetre_invalide ... ok
+test pci_inventory::tests::fonctions_multiples_identite_et_bar_sans_ecriture ... ok
+test pci_inventory::tests::formats_bar_refuses ... ok
+test pci_inventory::tests::capacites_refusees_sans_depassement ... ok
+test pci_inventory::tests::identite_changee_ou_non_prete_et_types_inconnus ... ok
+test pci_inventory::tests::liste_de_capacites_msi_msix_pcie ... ok
+test pci_inventory::tests::pont_fenetres_32_64_et_io_32 ... ok
+test pci_inventory::tests::pont_ferme_et_formats_incoherents ... ok
+test pci_inventory::tests::pont_refuse_interdit_toute_lecture_aval ... ok
+test pci_inventory::tests::ponts_ambigus_et_boucles ... ok
+test pci_inventory::tests::ponts_imbriques_et_bornes_subordonnees ... ok
+test pci_inventory::tests::profil_nvme_q35_ferme_et_bar_64_du_firmware ... ok
+test pci_inventory::tests::profil_lecture_seule_taille_connue_et_bus_master_herite ... ok
+test pci_inventory::tests::profil_refuse_taille_inconnue_et_bar_hors_aperture ... ok
+test pci_inventory::tests::profil_relu_refuse_recouvrements_rom_msi_et_objet_etranger ... ok
+test pci_inventory::tests::tailles_bar_excluent_les_depassements_et_les_frontieres ... ok
+test pci_inventory::tests::table_msix_bir_invalide_ou_zones_superposees ... ok
+test pci_inventory::tests::transport_en_erreur_distingue_de_l_absence ... ok
+test pci_inventory::tests::fenetre_dense_limitee_en_lectures ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+=== format / aarch64-apple-darwin ===
+running 4 tests
+test format::tests::champs_de_faute_et_perte_de_trace ... ok
+test format::tests::dimensions_et_capacites_lues_sur_q35 ... ok
+test format::tests::epuisement_des_epoques_sans_recyclage ... ok
+test format::tests::fenetres_disjointes_sous_le_masque_edu ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+=== format / x86_64-apple-darwin ===
+running 4 tests
+test format::tests::champs_de_faute_et_perte_de_trace ... ok
+test format::tests::dimensions_et_capacites_lues_sur_q35 ... ok
+test format::tests::fenetres_disjointes_sous_le_masque_edu ... ok
+test format::tests::epuisement_des_epoques_sans_recyclage ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
