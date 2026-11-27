@@ -228,7 +228,7 @@ def verifier(out, c, serie):
         exiger([int(a[0]) for a in arrets]==generations,arrets)
     bilans = re.findall(r"ETH3 bilan mode=(\d+) materiel=(\S+) retrait=(\S+) acteurs=\[Exit\((\d+)\), Exit\((\d+)\), Exit\((\d+)\)\] appels_pilote=(\d+)",serie)
     exiger(len(bilans)==cycles and all(int(b[0])==mode for b in bilans),bilans)
-    attentes={0:144,8:1,3:4,4:4,6:4,23:0,24:8,13:13312}
+    attentes={0:144,8:1,9:144,3:4,4:4,6:4,23:0,24:8,13:13312}
     exiger(c["trames_par_sens"] == cycles*attentes[mode] and c["erreur_pair"] is None, c["trames_par_sens"])
     if cas in ("recu-arm-differe", "recu-vtd-differe", "recu-arm-absent", "reset-iommu-absent", "reset-iommu-differe"):
         differes = re.findall(r"E3C retrait differe (VirtIO-IOMMU|VT-d) generation=(\d+) (?:numero|cookie)=(\d+) anciennes_references_refusees=true epingles(?:_nic)?=(\d+)", serie)

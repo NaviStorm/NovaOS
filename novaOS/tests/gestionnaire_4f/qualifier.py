@@ -112,7 +112,8 @@ def verifier_remplacements(cas, serie, changements):
 
 def controler(cas, dest, *, enregistrer=True):
     c = json.loads((dest/"campagne.json").read_text())
-    if not c["succes"] or c["erreur_pair"] or c["entrees"]["novaos.elf"] != c["elf"]:
+    if (not c["succes"] or c["erreur_pair"] or not c.get("profil_verifie") or not c.get("cycle_vie")
+            or c["entrees"]["novaos.elf"] != c["elf"]):
         raise ValueError("Empreinte Limine, pair ou oracles matériels")
     if cas == "statique":
         return

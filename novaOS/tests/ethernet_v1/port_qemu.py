@@ -624,6 +624,11 @@ def main():
                     wrapped=int(a.cas=="endurance")
                     report["publications"]=[int(v) for v in counts[1].split(",")] if counts else []
                     report["succes"] &= len(report["publications"])==8 and min(report["publications"],default=0)>0 and f"wraps_tx={wrapped} wraps_rx={wrapped}" in serial
+    except BaseException as erreur:
+        # Une étape intermédiaire a pu réussir avant le dernier oracle.
+        report["succes"] = False
+        report["erreur_qualification"] = f"{type(erreur).__name__}: {erreur}"
+        raise
     finally:
         dump(out/"campagne.json",report)
     if not report["succes"]:
