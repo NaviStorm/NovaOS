@@ -1,0 +1,8 @@
+origin="laboratoire"
+policy_revision=1
+security_epoch=3
+id="org.novaos.lab.profil-e2400-5a"
+kind="system-profile"
+version=[1,0,0]
+sha256="7407359f85ac793c318bcf1bde16ec0e6e3522dd66ddd48016343a1d33d38d42"
+dependencies=[]

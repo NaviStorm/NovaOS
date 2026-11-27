@@ -1,0 +1,3 @@
+paquet/*.pkg01 binary
+paquet/*.sig binary
+paquet/*.toml text eol=lf

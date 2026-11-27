@@ -1,0 +1,33 @@
+[package]
+name = "novaos-qualification-e2400"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+# Utiliser directement le contrat partagé du service et ses propres tests.
+[lib]
+name = "ethernet_v1"
+path = "../ethernet_v1/lib.rs"
+
+[[test]]
+name = "catalogue"
+path = "catalogue.rs"
+
+[[test]]
+name = "anneaux"
+path = "anneaux.rs"
+
+[[example]]
+name = "extraire"
+path = "extraire.rs"
+
+[dev-dependencies]
+novaos-identity = { path = "../../user/novaauth", features = ["distribution-lab"] }
+novaos-gestionnaire-sim = { path = "../../libs/gestionnaire-pilotes" }
+sha2 = { version = "0.10.9", default-features = false }
+
+[profile.release]
+overflow-checks = true
