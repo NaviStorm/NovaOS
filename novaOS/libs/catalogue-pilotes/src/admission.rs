@@ -1,6 +1,19 @@
 use super::*;
 use ed25519_dalek::Signature;
-use novaos_identity::distribution::{self, Machine};
+#[cfg(not(target_os = "uefi"))]
+use novaos_identity::distribution;
+#[cfg(target_os = "uefi")]
+mod distribution {
+    // Le même vérificateur pkg01, sans l'autorité de stockage du système.
+    type Id = [u8; 16];
+    type Hash = [u8; 32];
+    #[allow(dead_code)] // Le catalogue ne consomme que la vérification du paquet.
+    mod parser {
+        include!("../../../user/novaauth/src/paquet_elf.rs");
+    }
+    pub(super) use parser::{Machine, MAX_WIRE, public_key, verify};
+}
+use distribution::Machine;
 use sha2::{Digest, Sha256};
 
 #[derive(Clone, Copy, Debug, Deserialize, PartialEq, Eq)]

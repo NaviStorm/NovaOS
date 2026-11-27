@@ -430,3 +430,22 @@ fn drhd_refuse_rmrr_unites_multiples_et_portee_manquante() {
     put32(&mut d, 4, n);
     assert!(probe(&image(false, d)).unwrap().q35_dmar.is_none());
 }
+
+#[test]
+fn visiteur_borne_avant_publication() {
+    let ram = image(false, table(b"HPET", 56));
+    let mut visites = Vec::new();
+    let bilan = discover_with(RSDP as u64, |addr, dst| {
+        let Some(src) = ram.get(addr as usize..).and_then(|s| s.get(..dst.len())) else {
+            return false;
+        };
+        dst.copy_from_slice(src);
+        true
+    }, |sig, data| {
+        assert_eq!(&data[..4], &sig);
+        visites.push(sig);
+        if &sig == b"HPET" { Err(Error::Limit) } else { Ok(()) }
+    });
+    assert_eq!(visites, [*b"FACP", *b"HPET"]);
+    assert!(matches!(bilan, Err(Error::Limit)));
+}

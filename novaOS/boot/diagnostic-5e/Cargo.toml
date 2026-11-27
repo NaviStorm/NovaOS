@@ -1,0 +1,30 @@
+[package]
+name = "novaos-diagnostic-uefi"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[dependencies]
+sha2 = { version = "=0.10.9", default-features = false }
+r-efi = "=6.0.0"
+novaos-catalogue = { path = "../../libs/catalogue-pilotes" }
+
+[features]
+firmware = []
+
+[[bin]]
+name = "diagnostic"
+path = "main.rs"
+required-features = ["firmware"]
+test = false
+bench = false
+
+[profile.release]
+panic = "abort"
+overflow-checks = true
+lto = true
+codegen-units = 1
+strip = true

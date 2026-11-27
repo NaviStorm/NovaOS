@@ -158,7 +158,17 @@ fn read_table(
 
 /// Les plages admises par `read` sont des plages firmware, jamais des registres.
 /// Un appel échoué n'expose ni fenêtre MCFG ni inventaire partiel.
-pub fn discover(rsdp_phys: u64, mut read: impl FnMut(u64, &mut [u8]) -> bool) -> Result<Inventory> {
+pub fn discover(rsdp_phys: u64, read: impl FnMut(u64, &mut [u8]) -> bool) -> Result<Inventory> {
+    discover_with(rsdp_phys, read, |_, _| Ok(()))
+}
+
+/// Le visiteur reçoit les tables figées et validées. Ses résultats restent privés
+/// jusqu'au succès du parcours complet (notamment des contrôles d'unicité).
+pub fn discover_with(
+    rsdp_phys: u64,
+    mut read: impl FnMut(u64, &mut [u8]) -> bool,
+    mut visit: impl FnMut([u8; 4], &[u8]) -> Result<()>,
+) -> Result<Inventory> {
     let mut legacy = [0; 20];
     read_at(&mut read, rsdp_phys, &mut legacy)?;
     if &legacy[..8] != b"RSD PTR " {
@@ -251,6 +261,7 @@ pub fn discover(rsdp_phys: u64, mut read: impl FnMut(u64, &mut [u8]) -> bool) ->
             #[cfg(feature = "net-q35-lab")]
             { inventory.q35_net = q35_dmar::recognize_slot(&table, 7); }
         }
+        visit(sig, &table)?;
         inventory.tables.push(sig);
     }
     if !inventory.tables.contains(b"FACP") {
