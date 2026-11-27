@@ -29,18 +29,18 @@ Les lignes du registre ci-dessous rassemblent des **besoins sans affectation MOA
 
 ## Arbitrages réseau restants
 
-La décision du 27 novembre 2026 fixe les protocoles obligatoires, les exclusions et l’architecture. Les questions ouvertes portent sur les profils et les moyens de satisfaire la décision.
+La MOA a validé le 27 novembre 2026 les protocoles obligatoires, les exclusions, l’architecture et la répartition des jalons réseau v0.26.0 à v0.29.x. Les questions ouvertes portent sur les profils et les moyens de satisfaire la décision.
 
 | Décision attendue | Proposition à instruire par la MOE | Moment et conséquence |
 |---|---|---|
-| Séquence et capacité des équipes | Chiffrer portage Rust, revues de sûreté, moyens de test et temps QEMU par famille. Réserver des créneaux pour les 18 lots ARC-027, le secours, la distribution et les compilateurs. | MOA avant ouverture des lots. En cas de surcharge, fractionner les jalons intermédiaires et conserver tous les critères pré-stables. |
+| Capacité des équipes | Chiffrer portage Rust, revues de sûreté, moyens de test et temps QEMU par famille. Réserver des créneaux pour les 18 lots ARC-027, le secours, la distribution et les compilateurs. | MOA avant ouverture des lots. En cas de surcharge, proposer des sous-versions supplémentaires en conservant tous les critères pré-stables. |
 | Rôles et profils d’interopérabilité | Ratifier les rôles de la matrice, notamment clients DHCP/DHCPv6, DNS, NTP, LDAP/LDAPS, agent SNMPv3 et demandeur 802.1X. Fixer le profil d’interopérabilité SCP sur SSH et les pairs capables de distinguer le protocole SCP d’une copie SFTP. Fixer versions des pairs et profil MQTT. | Avant préparation des bancs et portage. Les deux versions NFS et SMB 3.1.1 exigent déjà les deux rôles. |
 | Réseau et exploitation | Fixer MTU, budgets de files et d’états, pente de remise à l’heure, délai de bascule du bonding, mode VLAN, méthode EAP, politique multicast et sort des flux actifs après restriction. | Avant qualification de la configuration et des tunnels. Documenter les seuils et préserver le secours local. |
 | Identité et chiffrement | Définir autorités de confiance, rotation des clés, profils SSH, TLS, Kerberos/AD, LDAP protégé, protection NFS et iSCSI, identité des pairs VPN, indisponibilité de l’annuaire et révocation des sessions. | Avant ouverture des services. Éprouver temps invalide, principal retiré et secours avec les droits courants. |
 | Fichiers et volumes bloc | Arrêter correspondance des identités et ACL, garanties de verrouillage, reprise NFS/SMB, quotas et exclusivité du LUN iSCSI. Fixer les opérations WebDAV admissibles au regard de P9. | Avant exposition de volumes. Refuser toute opération dont l’autorité ou la persistance est ambiguë. Soumettre séparément toute évolution de P9. |
 | Recette finale | Nommer un responsable par lot et les pairs de référence, dont un domaine AD et un authentificateur 802.1X. Fixer les seuils mémoire, latence et reprise, ainsi que la conservation des preuves. | Avant le candidat v0.29.x. La MOA statue sur les preuves des deux architectures pour la première stable v0.30.0. |
 
-[Tableau des jalons](proposition.md#jalons-réseau-proposés) · [Matrice des protocoles](acceptation-serveur.md#matrice-réseau)
+[Tableau des jalons](proposition.md#jalons-réseau-validés) · [Matrice des protocoles](acceptation-serveur.md#matrice-réseau)
 
 ## Questions transversales sorties de la revue des contrats
 

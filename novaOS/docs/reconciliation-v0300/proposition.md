@@ -13,7 +13,7 @@
 
 ## Répartition proposée à la MOA et à la MOE
 
-La phase 1 a associé bibliothèque Rust et fondations des threads applicatifs, initialement placés en v0.21.0. La phase 2 a apporté le SDK autonome et la reprise de jonction. Les deux phases sont intégrées dans `main`. Le jalon NovaOS v0.20.0 est clos avec la livraison du SDK Rust natif `nova-system` 0.2.0. Les mandats v0.21.0 ont ensuite engagé quatre phases. Au-delà, les numéros intermédiaires du tableau gardent leur statut de proposition (ARC-019). [Décisions et filiation](decisions.md) · [Scénario avant le mandat de phase 1](https://github.com/NaviStorm/NovaOS/blob/cfcf3ab64d7d93710455380d5e8a1d1569919f12/novaOS/docs/reconciliation-v0300/proposition.md)
+La phase 1 a associé bibliothèque Rust et fondations des threads applicatifs, initialement placés en v0.21.0. La phase 2 a apporté le SDK autonome et la reprise de jonction. Les deux phases sont intégrées dans `main`. Le jalon NovaOS v0.20.0 est clos avec la livraison du SDK Rust natif `nova-system` 0.2.0. Les mandats v0.21.0 ont ensuite engagé quatre phases. ARC-019 proposait les numéros intermédiaires du tableau. La MOA a depuis validé la répartition des lots réseau v0.26.0 à v0.29.x détaillée ci-dessous. [Décisions et filiation](decisions.md) · [Scénario avant le mandat de phase 1](https://github.com/NaviStorm/NovaOS/blob/cfcf3ab64d7d93710455380d5e8a1d1569919f12/novaOS/docs/reconciliation-v0300/proposition.md)
 
 | Version | Résultat attendu | Dépendances et preuve de sortie proposée |
 |---|---|---|
@@ -38,11 +38,11 @@ La phase 1 a associé bibliothèque Rust et fondations des threads applicatifs, 
 
 **Documentation universelle avant la stable (ARC-026).** Proposer le lot commun avec les outils d’administration texte du **jalon v0.23.0 proposé**, sous réserve d’arbitrage. Il réunirait le catalogue structuré, la version propre à chaque fournisseur, le traitement sans droit métier de l’aide et de la version et le premier lecteur `man` natif. Appliquer d’abord ce lot aux intégrés, utilitaires ELF et scripts livrés. Chaque commande ajoutée ensuite, y compris les outils réseau et de développement, fournirait ses trois interfaces à son intégration. Sur le candidat de qualification v0.29.0 proposé, inventorier les deux images installées et exercer toute la matrice avant la première stable v0.30.0. Le périmètre particulier de `service` reste couvert par ARC-025. [Contrat et architecture proposée](exigences-serveur.md#documentation-universelle-des-commandes) · [Inventaire par commande](inventaire-commandes.md) · [Recette](acceptation-serveur.md#documentation-de-toutes-les-commandes)
 
-## Jalons réseau proposés
+## Jalons réseau validés
 
-Le 27 novembre 2026, la MOA a fixé le périmètre réseau de la première stable. Le tableau complète les tranches ci-dessus à partir de v0.26.0. Chaque sortie proposée se vérifie sur les deux invités QEMU. La MOA valide encore les créneaux et les moyens. [Rôles et preuves détaillés](acceptation-serveur.md#matrice-réseau)
+Le 27 novembre 2026, la MOA a validé la répartition des lots réseau de v0.26.0 à v0.29.x. Chaque sortie reste à qualifier sur les deux invités QEMU. Des sous-versions supplémentaires peuvent être proposées en conservant intégralement le périmètre de la première stable v0.30.0. Les arbitrages techniques détaillés restent ouverts. [Validation MOA](decisions.md#validation-des-jalons-réseau) [Rôles et preuves détaillés](acceptation-serveur.md#matrice-réseau)
 
-| Jalon proposé | Lot réseau | Prérequis et preuve de sortie |
+| Jalon validé | Lot réseau | Prérequis et preuve de sortie |
 |---|---|---|
 | v0.26.0 | Configuration et diagnostic de la double pile, ARP/NDP, DHCP/DHCPv6, DNS, NTP, pare-feu initial | Reprendre le pilote, IPv4/IPv6, ICMP/ICMPv6, TCP/UDP et le routage du socle v0.25.0. Vérifier voisins, renouvellement, perte de lien et refus entrant/sortant sur les deux familles. Garder la console de secours. |
 | v0.26.1 | TLS 1.3, SSH, SFTP, SCP et politique persistante du pare-feu | Entropie, temps, magasins de confiance, clés d’hôte renouvelables et sessions NovaAuth révocables. Exercer connexion et transfert dans chaque sens, puis modification atomique du filtre depuis une seconde session. |
