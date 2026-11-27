@@ -1,18 +1,21 @@
 """Reconstituer la matrice 4F, les mesures et la capsule vérifiable depuis les démarrages."""
 import argparse
 from collections import Counter
+from functools import cache
 import gzip
 import hashlib
 import json
 from pathlib import Path
 import re
 import statistics
+import subprocess
 import sys
 import tarfile
 
-from qualifier import BASE, CAS, controler, elf, sha, write
+from qualifier import BASE, CAS, NOVA, controler, elf, sha, write
 from double import verifier as verifier_double
 from ethernet_v1.performance_bilan import run as mesure
+from ethernet_v1 import cycle_vie
 
 DOUBLE = {
     "nominal": ("port","duo-retrait","duo-differe","duo-absent"),
@@ -26,6 +29,13 @@ FICHIERS = ("campagne.json","reprise.json","serie.log","arguments.json","entrees
             "reset.json","reset-mtree.txt","fin-mtree.txt","sources.json","tables.json","qemu.trace.gz","trame-tx.bin","pair.pcap.gz")
 def lire(path):
     return json.loads(path.read_text())
+
+@cache
+def empreinte_lanceur(revision):
+    source = subprocess.check_output(["git", "-C", NOVA.parent, "show",
+                                      revision+":novaOS/tests/ethernet_v1/port_qemu.py"])
+    return hashlib.sha256(source).hexdigest()
+
 
 def bornes(values):
     if not values: return None
@@ -163,10 +173,14 @@ def main():
             p = source/"simple"/cas/str(n)
             c = lire(p/"campagne.json")
             recoupe(p,controler,cas,p)
-            if c["elf"] != construction["elf"]["q35"] or c["commit_sources"] != construction["commit"]:
+            if (c["elf"] != construction["elf"]["q35"] or c["commit_sources"] != construction["commit"]
+                    or c["sha256_lanceur"] != empreinte_lanceur(c["commit_lanceur"])):
                 raise ValueError(("Provenance Q35", cas))
             pieces_boot(f"simple/{cas}/{n}",p)
-            serie=(p/"serie.log").read_text()
+            serie = (p/"serie.log").read_text()
+            materiel = cycle_vie.verifier(p, c, serie)
+            if json.loads(json.dumps(materiel)) != c["cycle_vie"]:
+                raise ValueError(("Désaccord de relecture des cycles VT-d", cas, n))
             if cas=="statique":
                 if n == 1:
                     memoire[cas] = ressources(serie)
@@ -196,7 +210,12 @@ def main():
                          quantiles_reprise_ms=quantiles(lat), pic_admission=bornes(admissions),
                          pic_retrait=bornes(retraits))
         ajouter(f"images/simple/{cas}/construction.json",source/"images"/cas/"construction.json")
-    duos={}
+    duos = {}
+    temoin_p9 = BASE/"pilote-virtio-net"
+    sys.path.insert(0, str(temoin_p9/"novaOS/tests"))
+    from nvme_phase2_oracle import inspect
+    lecteur = temoin_p9/"novaFS/target/aarch64-apple-darwin/release/novafs"
+    empreinte_lecteur = sha(lecteur)
     for scenario,caslist in list(DOUBLE.items())+[("endurance",("duo-cycles",))]:
         for cas in caslist:
             groupe="nominal" if scenario=="endurance" else scenario
@@ -222,6 +241,11 @@ def main():
                 if c["elf"] != construction["elf"][cas] or c["commit_sources"] != construction["port"]:
                     raise ValueError(("Provenance du noyau double", groupe, cas))
                 stockage = c["stockage"]
+                if c["lecteur"] != empreinte_lecteur:
+                    raise ValueError("Empreinte du lecteur NovaFS")
+                p9 = inspect(lecteur, p/"namespace.raw", 512)
+                if json.loads(json.dumps(p9)) != stockage["p9"]:
+                    raise ValueError(("Désaccord de relecture du volume P9", groupe, cas, n))
                 serie = (p/"serie.log").read_text()
                 if n == 1 and groupe == "nominal" and cas == "duo-retrait":
                     images["double_retrait"] = elf(p/"novaos.elf")
