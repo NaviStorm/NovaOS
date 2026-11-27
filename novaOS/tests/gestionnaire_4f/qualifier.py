@@ -19,6 +19,7 @@ CAS = {key: "court" for key in (
     "nominal", "avant-selection", "apres-selection", "reservation", "lanceur-avant",
     "lanceur-engage", "lanceur-apres", "attribution", "deces-observe", "lanceur-observe",
     "gestionnaire-actif", "lanceur-actif", "publication", "reconciliation", "concurrence",
+    "journal-perdu", "non-corroborable",
 )}
 CAS.update(endurance="cycles-256-court", differe="recu-vtd-differe", absent="recu-vtd-absent",
            ethernet="echo1514", statique="echo1514")
@@ -78,19 +79,26 @@ def controler(cas, dest):
     boots = set(re.findall(r"E41 demarrage boot=([0-9a-f]{32})", texte))
     recus = re.findall(r"E41 recu generation=(\d+) intention=(\d+) pilote=(\d+) incarnation=(\d+) creations=1 rejeu=sans_effet", texte)
     fins = re.findall(r"E41 fin generation=(\d+) creations=1 epingles=(\d+) mappes=(\d+) recu=(\d+) gel=(\w+) compactage=(\w+)", texte)
-    if len(boots) != 1 or len(recus) != cycles or len(fins) != cycles:
+    gel_journal = cas in {"journal-perdu", "non-corroborable"}
+    if gel_journal:
+        preuve = rf"E41 gel cause={cas} generation=1 recu_observe=3 traductions=0 epingles_proprietaire=22"
+        if preuve not in texte or "compactage=false" not in texte or len(recus) != 1:
+            raise ValueError("Perte du journal et conservation physique")
+        if cas == "journal-perdu" and "E41 fin generation=0 creations=0" not in texte:
+            raise ValueError("Ancienne vue encore publiée")
+    if len(boots) != 1 or len(recus) != cycles or (not gel_journal and len(fins) != cycles):
         raise ValueError("Époque ou unicité du lancement")
     for i, (r, fin) in enumerate(zip(recus, fins), 1):
         if int(r[0]) != i or fin[0] != str(i) or len(set(x[2] for x in recus)) != cycles:
             raise ValueError("Incarnation ou génération")
         attendu = ("4194303","4194303","0","true","false") if cas=="absent" else ("0","0",str(2*i+1),"false","true")
-        if fin[1:] != attendu:
+        if not gel_journal and fin[1:] != attendu:
             raise ValueError(("Disposition du bail",fin,attendu))
     changements = [s for s in texte.splitlines() if s.startswith(("E41 reprise ", "E41 reprise_selection "))]
-    if cas in set(CAS)-{"nominal","endurance","differe","absent","ethernet","statique"} and len(changements)!=cycles:
+    if not gel_journal and cas in set(CAS)-{"nominal","endurance","differe","absent","ethernet","statique"} and len(changements)!=cycles:
         raise ValueError(("Remplacement attendu", cas, changements))
     ressources = re.findall(r"D4 cycle avant=(\d+) minimum=(\d+) apres=(\d+) pic=(\d+) ipc=(\d+) dma=(\d+)", texte)
-    if len(ressources)!=cycles or any(int(r[4]) or int(r[5])!=(30 if cas=="absent" else 3) for r in ressources):
+    if len(ressources)!=cycles or any(int(r[4]) or int(r[5])!=(30 if cas=="absent" or gel_journal else 3) for r in ressources):
         raise ValueError("Comptes après cycle")
     if len({r[2] for r in ressources})!=1 and cycles>1:
         raise ValueError("Dérive des cadres libres")

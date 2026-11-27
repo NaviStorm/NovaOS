@@ -821,9 +821,10 @@ pub(crate) fn publication(
         if !pendant() {
             return None;
         }
-        hal::log(format_args!(
-            "E41 stockage sans_controle role={role} generation={g} sequence={n}"
-        ));
+        #[cfg(target_arch = "aarch64")]
+        hal::log(format_args!("E41 stockage sans_controle role={role} generation={g} sequence={n}"));
+        #[cfg(target_arch = "x86_64")]
+        hal::log(format_args!("F4 publication sans_controle role={role} generation={g} sequence={n}"));
         if scenario() == "publication" {
             s.reprendre("publication")?;
         }

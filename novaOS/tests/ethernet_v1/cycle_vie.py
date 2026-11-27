@@ -286,7 +286,10 @@ def verifier(out, c, serie):
     else:
         qi=c["preuve_qi"]
         manque = cas=="recu-vtd-absent"
-        if absent or manque:
+        if gel:
+            exiger(qi["racine_vide"] and qi["cookie"]==3 and 'NET Q35 etat=Err("quarantaine VT-d")' in serie, "WAIT confirmé sans restitution")
+            exiger("NET Q35 retrait cookie=" not in serie and ram["4d_fin_cycle"][0]["dma"]==30, "propriété du bail")
+        elif absent or manque:
             exiger("NET Q35 etat=Err(" in serie and qi["racine_vide"]==manque,cas)
             exiger(qi["cookie"]==(3 if manque else 2),qi)
             exiger("rattachement_refuse=true" in serie, "propriétaire de quarantaine")
@@ -297,5 +300,5 @@ def verifier(out, c, serie):
             rec = re.findall(r"E3C VT-d generation=(\d+) bme=0 reset=0 cc=global iotlb=global dr=1 dw=1 iqh=(\d+) iqt=(\d+) cookie=(\d+) fsts=0",serie)
             exiger(len(rec)==cycles and all(int(g)==i+1 and int(cookie)==3+2*i and head==tail
                    and int(head)==(48*int(cookie))%4096 for i,(g,head,tail,cookie) in enumerate(rec)),rec)
-        evidence["memoire_finale"]=dict(nic=22 if absent or manque else 0,tables_privees=5 if absent or manque else 0,permanent=3)
+        evidence["memoire_finale"]=dict(nic=22 if absent or manque or gel else 0,tables_privees=5 if absent or manque or gel else 0,permanent=3)
     return evidence

@@ -447,8 +447,9 @@ def main():
                                 qt.connect(str(tmp/"qtest.sock"))
                                 with qt.makefile("rwb",buffering=0) as stream:
                                     retire = "NET Q35 retrait cookie=" in serial
+                                    gel = a.gestionnaire_4f in ("journal-perdu", "non-corroborable")
                                     if a.cycle_vie:
-                                        report["preuve_qi"] = cycle_vie.preuve_qi(vm,stream,serial,retire or a.cas=="recu-vtd-absent")
+                                        report["preuve_qi"] = cycle_vie.preuve_qi(vm,stream,serial,retire or a.cas=="recu-vtd-absent" or gel)
                                     if a.cas == "cycles-256-court" and a.gestionnaire_4f:
                                         preuve = report["preuve_qi"]
                                         pages = [preuve[k] for k in ("racine", "queue", "statut")]
@@ -456,7 +457,7 @@ def main():
                                                 n % 4096 or not 0 < n <= (256 << 20)-4096 for n in pages):
                                             raise ValueError("Cadres permanents du contrôleur")
                                         report["cadres_vtd_controles"] = len(pages)
-                                    elif not (a.cycle_vie and a.cas=="recu-vtd-absent"):
+                                    elif not gel and not (a.cycle_vie and a.cas=="recu-vtd-absent"):
                                         cycles = cycle_vie.nombre_cycles(a.cas,"q35") if retire and a.cycle_vie else 1
                                         report["cadres_vtd_controles"]=verifier_tables(vm,stream,serial.encode(),out,retire,cycles)
                         if "Synchronous Exception" in serial:
