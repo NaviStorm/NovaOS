@@ -1,0 +1,23 @@
+{
+  "base": "908976948ba58fc85e7fe38bfc315f689ed1c44e",
+  "revision": "2ed47c1b5e8373a11aa059a339c53ca8cb654f2b",
+  "ovmf": {
+    "edk2-x86_64-code.fd": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+    "edk2-i386-vars.fd": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+  },
+  "cpu": "max",
+  "modele": "q35",
+  "vcpus": 1,
+  "ram_mio": 256,
+  "acceleration": "tcg",
+  "nic": "none",
+  "elf": "32a0f922323952e6696a02d7a6c1bbd7265c49761435589ce3043d476a758316",
+  "noyau": "d3b1480647b2bdf1429715d58c3a281c1c78d0416916e3e7538d229e1f2c2d8d",
+  "banc": "3ca6ede5131c13e2bb53c50ee08241449e520c77f7366b87c838d874902c7af2",
+  "qemu": "QEMU emulator version 11.1.3",
+  "debut_attente": "2026-11-27T16:26:44.255436+00:00",
+  "acquisition": "2026-11-27T16:26:44.255871+00:00",
+  "attente_s": 0.0004420418990775943,
+  "liberation": "2026-11-27T16:26:48.064826+00:00",
+  "journal": "d33fabcea7e5e4c1757038575f638192588b3f3d045f97c96e3ecbe25ce51b73"
+}

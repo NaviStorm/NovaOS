@@ -1,0 +1,76 @@
+{
+  "base": "908976948ba58fc85e7fe38bfc315f689ed1c44e",
+  "revision": "2ed47c1b5e8373a11aa059a339c53ca8cb654f2b",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "macos": "27.2.1",
+  "paquet": {
+    "pilote.pkg01": "032e99ce7de2989383627e2166e1727a0bae94dfdd28dd321d82d1317b3161cc",
+    "pilote.sig": "c01d1b089fa7831b86a17d1d833535f88ea7b67b3977dce045ae9eb785ed7842",
+    "pilote.toml": "afa0c2b49d3be80a267f408acf8128c05b527f5d81af55e495b049beea315176",
+    "profil.sig": "3fced218bad57104f90713f031631ab4a9427a00140f61e54100be5270d4f695",
+    "profil.toml": "6c60290cae70c9bb68cab9576f99ec210241a14236109b08e27faf6737c4a1ca"
+  },
+  "elf": {
+    "sha256": "32a0f922323952e6696a02d7a6c1bbd7265c49761435589ce3043d476a758316",
+    "octets": 25080,
+    "segments": [
+      {
+        "type": 1,
+        "droits": 5,
+        "va": 16777216,
+        "fichier": 14805,
+        "memoire": 14805,
+        "align": 4096
+      },
+      {
+        "type": 1,
+        "droits": 4,
+        "va": 16793600,
+        "fichier": 3088,
+        "memoire": 3088,
+        "align": 4096
+      },
+      {
+        "type": 1,
+        "droits": 6,
+        "va": 16797696,
+        "fichier": 1,
+        "memoire": 24456,
+        "align": 4096
+      },
+      {
+        "type": 1685382481,
+        "droits": 6,
+        "va": 16822152,
+        "fichier": 0,
+        "memoire": 65536,
+        "align": 1
+      }
+    ]
+  },
+  "abi": 48,
+  "hotes": {
+    "aarch64": {
+      "machine": "arm64",
+      "translation": "0",
+      "tests": [
+        21,
+        12,
+        7,
+        0
+      ],
+      "journal": "318db50e3224fdf8ec85b1175870c3717fefe6ee08da8d0de6f115f888aae960"
+    },
+    "x86_64": {
+      "machine": "x86_64",
+      "translation": "1",
+      "tests": [
+        21,
+        12,
+        7,
+        0
+      ],
+      "journal": "fca7d9d29f455204b060321100f76a80b73eb1622ffe82dc58ea793b65c763a4"
+    }
+  }
+}

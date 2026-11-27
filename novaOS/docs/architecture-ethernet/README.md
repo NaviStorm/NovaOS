@@ -18,6 +18,8 @@ Sur ARM, la phase 3E qualifie la restitution des 22 cadres NIC après reset des 
 
 La phase 4A reprend ces garanties pour les autres classes de périphériques et décrit les conditions d’intégration du port Ethernet v1. [Gestionnaire universel de pilotes](../gestionnaire-pilotes/README.md)
 
+La phase 5A raccorde un pair CPU Killer E2400 au port v1 et chiffre le blocage d’admission du MSI. [Qualification logicielle](../killer-e2400-phase5a.md) · [Protocole physique soumis à A7 et A8](../killer-e2400-protocole-msi-5a.md)
+
 ## Pièces soumises à décision
 
 | Livrable du mandat | Pièce et décision préparée |
