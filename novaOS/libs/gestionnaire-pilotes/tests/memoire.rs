@@ -380,24 +380,15 @@ fn selection_un_et_soixante_quatre_paquets() {
     }
 }
 
-// Coût CPU du thread appelant. Le chargement du catalogue et la sélection
-// restent en dehors des intervalles chronométrés de réserve et de réconciliation.
 #[cfg(target_os = "macos")]
-fn cpu_ns() -> u128 {
-    let mut t = libc::timespec {
-        tv_sec: 0,
-        tv_nsec: 0,
-    };
-    // Sûreté : l'horloge Darwin copie un timespec dans l'objet local valide.
-    assert_eq!(
-        unsafe { libc::clock_gettime(libc::CLOCK_THREAD_CPUTIME_ID, &mut t) },
-        0
-    );
-    t.tv_sec as u128 * 1_000_000_000 + t.tv_nsec as u128
-}
+#[path = "support/cpu.rs"]
+mod cpu;
+
 #[cfg(target_os = "macos")]
 #[test]
 fn cout_cpu_registre_borne() {
+    let timer = cpu::Clock::calibrate();
+    let cpu_ns = || u128::from(timer.now());
     use novaos_gestionnaire_sim::dma::PageSet;
     for n in [22, 128, 129, 258, 259, 260] {
         let p = lab::policy();

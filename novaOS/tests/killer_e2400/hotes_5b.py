@@ -58,7 +58,7 @@ def main():
             if name=="gestionnaire" and ("endurance=256 delta=0" not in data or "dma_frames=259 heap=777" not in data):
                 raise ValueError("Mesure du gestionnaire absente")
             suites[name]["mesures"]=[line.split(" ... ")[-1] for line in data.splitlines() if any(
-                key in line for key in ("dma_frames=","courtier_tete=","courtier_264_allers_retours_cpu_ns","gestionnaire_tete=","endurance=256 delta="))]
+                key in line for key in ("horloge_cpu_sonde=","dma_frames=","courtier_tete=","courtier_264_allers_retours_cpu_ns","gestionnaire_tete=","endurance=256 delta="))]
         for name,source in (("virtio-net",NOVA/"user/virtio_net/mod.rs"),("nvme",NOVA/"tests/nvme_controleur.rs"),
                              ("nvme-diagnostic",NOVA/"tests/nvme_diagnostic.rs")):
             binary=dest/f"{name}-{isa}"

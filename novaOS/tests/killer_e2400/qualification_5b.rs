@@ -137,20 +137,14 @@ fn refus_avant_attribution_et_echec_allocation() {
 }
 
 #[cfg(target_os = "macos")]
+#[path = "../../libs/gestionnaire-pilotes/tests/support/cpu.rs"]
+mod cpu;
+
+#[cfg(target_os = "macos")]
 #[test]
 fn cpu_du_lot_de_264_tx_rx() {
-    let clock = || {
-        let mut t = libc::timespec {
-            tv_sec: 0,
-            tv_nsec: 0,
-        };
-        // Sûreté : Darwin écrit dans un timespec local valide.
-        assert_eq!(
-            unsafe { libc::clock_gettime(libc::CLOCK_THREAD_CPUTIME_ID, &mut t) },
-            0
-        );
-        t.tv_sec as u64 * 1_000_000_000 + t.tv_nsec as u64
-    };
+    let timer = cpu::Clock::calibrate();
+    let clock = || timer.now();
     let mut samples = [0u64; 128];
     for sample in &mut samples {
         *sample = scenario_5b::run(clock).unwrap().transfer_cpu_ns;
