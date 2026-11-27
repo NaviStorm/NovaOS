@@ -11,6 +11,7 @@ def verifier(cas, out, serie, rapport):
             or "ETH3 session" in serie or "Panique" in serie):
         raise ValueError("état final du lancement inattendu")
     conditions = {
+        "numeros-4e1": ["E41 refus numero_epuise precedent=18446744073709551615", "D4 refus provisionnement", "NET ARM refus preparation=State cadres_dma=0"],
         "signature": ["D4 controle interrompu marque=2", "mode=1", "NET ARM refus preparation=State cadres_dma=0"],
         "revision": ["D4 plan perime revision=1", "mode=2", "NET ARM refus preparation=State cadres_dma=0"],
         "racines": ["D4 saturation reelle racines=4", "D4 refus provisionnement epoch=1 mode=3 ipc_pages=0",

@@ -12,6 +12,9 @@ name = "gestionnaire"
 path = "acteur.rs"
 test = false
 
+[features]
+reprise-4e1 = []
+
 [dependencies]
 novaos-gestionnaire-sim = { path = "../../libs/gestionnaire-pilotes" }
 sha2 = { version = "0.10.9", default-features = false }

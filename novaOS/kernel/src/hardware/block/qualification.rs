@@ -597,6 +597,18 @@ pub(crate) fn net_p9() -> Result<()> {
                         if &bloc[..8]!=b"NOVAP0FS" {return false}
                     }
                 }
+                #[cfg(feature="gestionnaire-4e1")]
+                if matches!(option_env!("NOVAOS_4E1_CAS"),Some("publication"|"gestionnaire-actif"|"lanceur-actif")){
+                    // Sur la copie jetable, réécrire à l'identique le secteur déjà lu.
+                    // La même autorisation de sortie, la plage et le sens DMA restent requis.
+                    if secteur==0 || secteur>bloc.len(){return false}
+                    t.p.0[22].mem.put(0,&bloc[..secteur]);
+                    if t.output(table.volume,false).is_err() || t.output(0,true).is_err() ||
+                        t.begin_read(table.volume).is_err() || t.finish_read().is_err(){return false}
+                    let mut relu=[0;PAGE];t.p.0[20].mem.read_page(&mut relu);
+                    if relu[..secteur]!=bloc[..secteur]{return false}
+                    hal::log(format_args!("E41 stockage secteur={secteur} lecture_ecriture_flush_relecture=true"));
+                }
                 for mesure in &mut flushes{
                     let debut=hal::timer::counter();
                     if t.output(0,true).is_err(){return false}
@@ -607,7 +619,7 @@ pub(crate) fn net_p9() -> Result<()> {
                 true
             });
             #[cfg(feature="gestionnaire-4d")]
-            if matches!(option_env!("NOVAOS_4D_REFUS"),Some("lancement"|"attribution"|"deces-gestionnaire")) && trafic==Err(Error::State) {
+            if (matches!(option_env!("NOVAOS_4D_REFUS"),Some("lancement"|"attribution"|"deces-gestionnaire")) || (cfg!(feature="gestionnaire-4e1") && option_env!("NOVAOS_4E1_CAS")==Some("refus-certain"))) && trafic==Err(Error::State) {
                 t.begin_read(lba)?;t.finish_read()?;t.output(0,true)?;t.close()?;
                 hal::log(format_args!("D4 echec scelle stockage lecture_flush=true cadres_dma={}",crate::memory::pinned_dma_frames()));
                 return Err(Error::State)

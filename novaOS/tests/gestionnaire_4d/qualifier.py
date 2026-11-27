@@ -49,14 +49,14 @@ def elf(path):
     return dict(sha256=sha(path),octets=len(b),segments=segments)
 
 
-def build(case, archive):
+def build(case, archive, *, reprise=None, revision=None):
     if case in MMIO:
         return build("reset-court", archive)
     if case=="temoin-3e":
         path=BASE/"archives-ethernet-phase3e/images-qualifiees/echo1514-reset/arm.elf"
         return path, json.loads(path.with_name("construction.json").read_text())["commit"]
-    folder=archive/"images"/case
-    ref=output("git","rev-parse","HEAD")
+    folder=archive/"images"/(reprise or case)
+    ref=revision or output("git","rev-parse","HEAD")
     k=folder/"arm.elf"
     if k.exists():
         manifest=json.loads((folder/"construction.json").read_text())
@@ -71,6 +71,9 @@ def build(case, archive):
              CARGO_PROFILE_RELEASE_STRIP="none",NOVAOS_ETH3_CASE="reset-court" if case in NEG else case,
              NOVAOS_4D_REFUS=case if case in NEG else "")
     feature = "gestionnaire-4d"
+    if reprise:
+        env["NOVAOS_4E1_CAS"]=reprise
+        feature="gestionnaire-4e1"
     if case == STATIQUE:
         env["NOVAOS_ETH3_CASE"] = "echo1514-reset"
         feature = "net-arm-lab,ethernet-v1-port"
@@ -94,7 +97,7 @@ def build(case, archive):
     shutil.copyfile(source/"novaos",k)
     write(folder/"construction.json",dict(commit=ref,elf={"arm":sha(k)},acteurs=actors,commande=cmd,
          cas=env["NOVAOS_ETH3_CASE"],injection=env["NOVAOS_4D_REFUS"],rustc=output(env["RUSTC"],"-V"),
-         paquet={"taille":len(pkg),"sha256":hashlib.sha256(pkg).hexdigest(),"manifeste":sha(out/"pilote.toml")},
+         **({"reprise":reprise} if reprise else {}), paquet={"taille":len(pkg),"sha256":hashlib.sha256(pkg).hexdigest(),"manifeste":sha(out/"pilote.toml")},
          sources_adaptateur=output("git","rev-parse","HEAD:novaOS/user/ethernet/adaptateur.rs"),
          sources_courtier=output("git","rev-parse","HEAD:novaOS/user/virtio_net/ethernet_lab.rs")))
     return k,ref

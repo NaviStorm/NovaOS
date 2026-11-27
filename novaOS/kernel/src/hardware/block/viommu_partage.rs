@@ -289,6 +289,10 @@ impl Controle {
 }
 
 pub(super) struct Domain(Titulaire);
+#[cfg(feature="gestionnaire-4e1")]
+pub(super) fn carte_bail(generation:u64,cadres:[u64;22])->Result<u64>{
+    Domain(Titulaire{sid:NIC,domaine:3,incarnation:generation}).carte_nic(cadres)
+}
 impl Domain {
     fn reserver(sid: u8) -> Result<Self> {
         let index = usize::from(sid == NIC);
@@ -447,6 +451,23 @@ impl Domain {
             return Err(e);
         }
         Ok(nic)
+    }
+    #[cfg(feature="gestionnaire-4e1")]
+    pub(super) fn carte_nic(&self, cadres:[u64;22])->Result<u64>{
+        self.controle(|c,id|{
+            c.faute()?;
+            let attribution=c.etat(id)?;
+            if id.sid!=NIC || !attribution.attachee{return Err(Error::State)}
+            let mut masque=0;
+            for (i,mapping) in attribution.pages.iter().enumerate(){
+                if let Some((pa,droits))=*mapping{
+                    let attendus=if matches!(i,2|5|6..=13){2}else{1};
+                    if cadres[i]!=pa || pa==0 || droits!=attendus{return Err(Error::State)}
+                    masque |= 1<<i;
+                }
+            }
+            Ok(masque)
+        })
     }
     pub(super) fn mapper_nic(&self, n: usize, f: Frame) -> Result<()> {
         if self.0.sid != NIC || n >= 22 {

@@ -1,5 +1,7 @@
 //! Préparation sans BME. Les cadres non retirés restent épinglés en quarantaine.
 use super::io::EMPTY;
+#[cfg(feature="gestionnaire-4e1")]
+use crate::sched::process::net_preparation::dynamique::reprise;
 use super::*;
 use crate::{memory, sched::sync::Mutex};
 #[cfg(feature="ethernet-v1-port")]
@@ -156,6 +158,11 @@ impl Preparation {
                 lease.fermer()?;
                 return Err(e);
             }
+            #[cfg(feature="gestionnaire-4e1")]
+            if !reprise::map(lease.domaine.generation(),n,lease.cadres[n].pa){
+                *QUARANTAINE.lock()=Some(lease);
+                return Err(Error::Quarantine)
+            }
             #[cfg(feature="gestionnaire-4d")]
             if n==2 && option_env!("NOVAOS_4D_REFUS")==Some("reservation"){
                 hal::log(format_args!("D4 reservation interrompue mappings=3"));
@@ -179,18 +186,26 @@ impl Preparation {
         // Une quarantaine matérielle possède seulement le bail DMA et ses preuves.
         #[cfg(feature="gestionnaire-4d")]
         drop(self.decision.take());
-        if self.retirer().is_err() {
+        #[cfg(feature="gestionnaire-4e1")]
+        let autorise=reprise::liberation_permises(self.domaine.generation(),self.cadres.map(|f|f.pa));
+        #[cfg(not(feature="gestionnaire-4e1"))]
+        let autorise=true;
+        if !autorise || self.retirer().is_err() {
             let mut q = QUARANTAINE.lock();
             assert!(q.is_none());
             *q = Some(self);
             return Err(Error::Quarantine);
         }
+        #[cfg(feature="gestionnaire-4e1")]
+        let generation=self.domaine.generation();
         for f in self.cadres {
             if f.pa != 0 {
                 // release_dma efface le cadre avant restitution à l’allocateur.
                 unsafe { memory::release_dma(f.pa) }
             }
         }
+        #[cfg(feature="gestionnaire-4e1")]
+        reprise::rendu(generation,[0;22]);
         Ok(())
     }
     fn purger_irq(&self) -> Result<()> {
@@ -367,7 +382,13 @@ impl Preparation {
             // Le contrôleur peut déjà avoir enregistré le succès. Le propriétaire du
             // bail n'en reçoit aucune notification lors de ce premier passage.
             let q = QUARANTAINE.lock();
-            q.as_ref().ok_or(Error::State)?.domaine.reconcilier_nic(numero)?;
+            let bail=q.as_ref().ok_or(Error::State)?;
+            bail.domaine.reconcilier_nic(numero)?;
+            #[cfg(feature="gestionnaire-4e1")]
+            {
+                let frames=bail.cadres.map(|f|f.pa);
+                if !reprise::ressources(generation,frames,bail.domaine.carte_nic(frames).inspect_err(|_|reprise::geler_carte(generation))?,0,"attente"){return Err(Error::Quarantine)}
+            }
             return Err(Error::Quarantine);
         }
         Self::reprendre_retrait(generation, numero)
@@ -393,6 +414,12 @@ impl Preparation {
                 return Err(Error::State);
             }
             p.domaine.reconcilier_nic(numero)?;
+            #[cfg(feature="gestionnaire-4e1")]
+            {
+                let frames=p.cadres.map(|f|f.pa);
+                let mapped=p.domaine.carte_nic(frames).inspect_err(|_|reprise::geler_carte(generation))?;
+                if !reprise::ressources(generation,frames,mapped,numero,"reconciliation"){return Err(Error::Quarantine)}
+            }
             let mut bail = place.take().ok_or(Error::State)?;
             bail.retrait_differe = None;
             bail
@@ -421,7 +448,11 @@ impl Preparation {
             self.domaine.faults_preparation()
         })();
         let mut liberes = 0;
-        if retrait.is_ok() {
+        #[cfg(feature="gestionnaire-4e1")]
+        let autorise={let frames=self.cadres.map(|f|f.pa);self.domaine.carte_nic(frames).inspect_err(|_|reprise::geler_carte(generation)).is_ok_and(|m|reprise::ressources(generation,frames,m,0,"retrait-partiel")) && reprise::liberation_permises(generation,frames)};
+        #[cfg(not(feature="gestionnaire-4e1"))]
+        let autorise=true;
+        if autorise && retrait.is_ok() {
             for (i, &libre) in pages.iter().enumerate() {
                 if libre {
                     // Sûreté : propriété du couple de descripteurs démontrée,
@@ -430,6 +461,14 @@ impl Preparation {
                     self.cadres[i] = EMPTY;
                     liberes += 1;
                 }
+            }
+        }
+        #[cfg(feature="gestionnaire-4e1")]
+        {
+            let frames=self.cadres.map(|f|f.pa);
+            reprise::rendu(generation,frames);
+            if let Ok(mapped)=self.domaine.carte_nic(frames).inspect_err(|_|reprise::geler_carte(generation)){
+                reprise::ressources(generation,frames,mapped,0,"quarantaine");
             }
         }
         hal::log(format_args!("E3C VirtIO-IOMMU generation={generation} rendus={liberes} quarantaine={} detache=false", 22-liberes));

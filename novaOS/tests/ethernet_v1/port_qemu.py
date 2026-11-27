@@ -261,6 +261,7 @@ def main():
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
     p.add_argument("--delai", type=int, default=90)
     p.add_argument("--six-boites-4d",action="store_true",help="Contrôler six boîtes déjà attribuées avant l’ouverture du port")
+    p.add_argument("--gestionnaire-4e1", metavar="SCENARIO", help="Vérifier les deux acteurs de contrôle survivants du profil ARM 4E.1")
     p.add_argument("--gestionnaire-4d",action="store_true",help="Contrôler le compte physique du port après fermeture de ses liaisons de lancement")
     p.add_argument("--refus-4d", choices=("signature","revision","racines","lancement","attribution","droits","cle-revoquee","distribution","deces-gestionnaire","reservation"))
     p.add_argument("--esp-verifiee", action="store_true", help="Réécrire aussi les secteurs nuls alloués et relire l’ELF sur la copie FAT32 ARM")
@@ -269,7 +270,7 @@ def main():
     a = p.parse_args()
     if a.six_boites_4d and (not a.gestionnaire_4d or a.cas!="port"):
         p.error("La pression à six boîtes exige le port nominal 4D")
-    if a.gestionnaire_4d and (a.arch!="arm" or not a.esp_verifiee or not a.cycle_vie):
+    if (a.gestionnaire_4d or a.gestionnaire_4e1) and (a.arch!="arm" or not a.esp_verifiee or not a.cycle_vie):
         p.error("Le contrôle 4D exige le profil ARM, sa relecture EFI et le cycle de vie")
     if a.refus_4d and (a.arch!="arm" or a.cas!="port" or not a.esp_verifiee or not a.cycle_vie):
         p.error("Le refus 4D exige le port ARM, la relecture EFI et le contrôle du cycle.")
@@ -318,6 +319,8 @@ def main():
         env_vm["NOVAOS_E3E_TX_RECEIPT"] = a.cas.removeprefix("mmio-")
         args[0] = str(binaire)
     report = dict(audit=AUDIT, arch=a.arch, cas=a.cas, elf=digest(a.elf), modele=digest(Path(args[0])), succes=False)
+    if a.gestionnaire_4e1:
+        report["gestionnaire_4e1"]=a.gestionnaire_4e1
     if a.gestionnaire_4d:
         report["gestionnaire_4d"]=True
     if a.sans_reset_perf:
@@ -430,7 +433,7 @@ def main():
                             time.sleep(.1)
                         qmp(vm,"stop")
                         final=capture(vm,out,"fin",a.arch=="arm")
-                        if a.arch=="arm" and (a.cas=="court" or a.cas in cycle_vie.RESET) and a.cycle_vie:
+                        if a.arch=="arm" and (a.cas=="court" or a.cas in cycle_vie.RESET) and a.cycle_vie and a.gestionnaire_4e1 not in ("refus-certain","limite-numeros"):
                             report["capacite_pci_arm"]=cycle_vie.capacite_pci_arm(vm, serial)
                         if final["pci_command"] & 4:
                             raise ValueError("BME du NIC toujours actif à la fin")
@@ -466,10 +469,33 @@ def main():
                 volume=refdir/"volume-relu.p9"
                 with disk.open("rb") as fp:
                     fp.seek(61<<20)
-                    report["volume_relu_identique"]=sha256(fp.read(volume.stat().st_size)).hexdigest()==digest(volume)
+                    contenu=fp.read(volume.stat().st_size)
+                    lu=sha256(contenu).hexdigest()
+                    report["volume_relu_identique"]=lu==digest(volume)
+                    if a.gestionnaire_4e1:
+                        sys.path.insert(0,str(NOVA/"tests/gestionnaire_4e1"))
+                        from stockage import verifier_volume
+                        lecteur=a.temoin/"novaFS/target/aarch64-apple-darwin/release/novafs"
+                        report["volume_p9"]=dict(octets=len(contenu),sha256_relu=lu,sha256_temoin=digest(volume),
+                                                **verifier_volume(lecteur,contenu))
+
             report["succes"]=(peer.frames==(65552 if a.cas=="endurance" else 4608 if a.cas in ("mesure60","mesure1514") else 144) and not peer.error and
                               "materiel=Ok(()) retrait=Ok(" in serial and "acteurs=[Exit(0), Exit(0), Exit(0)]" in serial and
                               ("NET Q35 etat=Ok(())" in serial if a.arch=="q35" else report["volume_relu_identique"] and "disque_lisible=true" in serial))
+            if a.gestionnaire_4e1=="limite-numeros":
+                from refus_4d import verifier
+                report["iommu_refus"]=verifier("numeros-4e1",out,serial,report)
+                report["succes"]=True
+                return
+            if a.gestionnaire_4e1=="refus-certain":
+                from refus_4d import verifier
+                report["iommu_refus"]=verifier("lancement",out,serial,report)
+                if not (peer.frames==0 and not peer.error and report["volume_relu_identique"] and
+                        "D4 lancement refuse avant files" in serial and "D4 echec scelle stockage lecture_flush=true cadres_dma=0" in serial and
+                        "E41 refus certain" in serial and "D4 lancement scelle" not in serial):
+                    raise ValueError("refus avant création, stockage ou domaine du NIC")
+                report["succes"]=True
+                return
             if a.refus_4d:
                 from refus_4d import verifier
                 report["refus_4d"]=verifier(a.refus_4d,out,serial,report)
@@ -538,7 +564,7 @@ def main():
             if a.cycle_vie:
                 if a.cas in ("echo1514", "echo1514-reset") and not report["succes"]:
                     raise ValueError("Critères du lanceur de performance 3B")
-                if a.gestionnaire_4d and (a.cas in ("plein","choix-data") or a.six_boites_4d):
+                if (a.gestionnaire_4d and (a.cas in ("plein","choix-data") or a.six_boites_4d)) or a.gestionnaire_4e1=="pression":
                     if a.six_boites_4d and ("ETH3 préallocation boites=6 octets=24576 racines=[3, 3, 0]" not in serial or
                         "D4 coexistence mode=0 racines=[0, 4, 1] boites=8 endpoints=17 " not in serial):
                         raise ValueError("six boîtes préallouées et deux boîtes du port attendues")
@@ -565,6 +591,13 @@ def main():
                     details="mode=9 racines=[0, 4, 1] boites_globales=0 endpoints_globaux=5"
                     report["pression_reelle"]="D4 coexistence mode=9 racines=[0, 4, 1] boites=8 endpoints=19 " in serial
                     report["succes"] &= report["pression_reelle"]
+                if a.gestionnaire_4e1=="pression":
+                    details="mode=9 racines=[0, 4, 1] boites_globales=0 "
+                    report["pression_reelle"]=bool(re.search(r"D4 coexistence mode=9 racines=\[0, 4, 1\] boites=8 endpoints=\d+ ",serial))
+                    report["succes"] &= report["pression_reelle"]
+                if a.gestionnaire_4e1:
+                    # Les compteurs détaillés des liens de contrôle sont vérifiés dans cycle_vie.
+                    details=details.split(" endpoints_globaux=")[0].rstrip()+" "
                 report["profil_verifie"]=details in serial
                 report["succes"] &= report["profil_verifie"]
                 if a.cas == "boite":

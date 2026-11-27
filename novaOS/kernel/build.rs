@@ -218,8 +218,13 @@ fn main() {
         println!("cargo::rerun-if-changed=../libs/gestionnaire-pilotes");
         assert!(Command::new("python3").args(["-B"]).arg(manager.join("preparer.py"))
             .arg(out.join("net_preparation.bin")).arg(&out).status().unwrap().success());
-        let built = Command::new(env::var_os("CARGO").unwrap())
-            .args(["build", "--release", "--offline", "--locked", "--target", &target])
+        let mut commande = Command::new(env::var_os("CARGO").unwrap());
+        commande.args(["build", "--release", "--offline", "--locked", "--target", &target]);
+        if env::var_os("CARGO_FEATURE_GESTIONNAIRE_4E1").is_some() {
+            println!("cargo::rerun-if-env-changed=NOVAOS_4E1_CAS");
+            commande.args(["--features", "reprise-4e1"]);
+        }
+        let built = commande
             .current_dir(manager).env("CARGO_TARGET_DIR", &work)
             .env("CARGO_ENCODED_RUSTFLAGS", format!("{flags}\x1f--cfg\x1fnovaos_mesure_tas_4d\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\""))
             .env("CARGO_PROFILE_RELEASE_STRIP","symbols").env("NOVA_4D_OBJETS", &out).status().unwrap();

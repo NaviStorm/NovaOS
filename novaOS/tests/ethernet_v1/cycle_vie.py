@@ -190,13 +190,18 @@ def verifier_reset(cas, c, serie, generations):
 def verifier(out, c, serie):
     cas, arch = c["cas"], c["arch"]
     mode = CAS[cas]
-    cycles = nombre_cycles(cas,arch)
+    reprise=c.get("gestionnaire_4e1")
+    gel=reprise in ("journal-perdu","non-corroborable")
+    cycles = 1 if gel else nombre_cycles(cas,arch)
     admissions = re.findall(r"E3C admission generation=(\d+) precedente=(\d+) ancienne_capacite_valide=false", serie)
     generations = [int(n) for n,_ in admissions]
     exiger(len(generations) == cycles and all(int(g)>int(pre) for g,pre in admissions)
            and [int(pre) for _,pre in admissions] == [0]+generations[:-1], admissions)
     pages_session = 10 if c.get("gestionnaire_4d") else 9
-    sessions = re.findall(r"ETH3 session .*?incarnation=(\d+) .*?epoque=(\d+) generation_materiel=(\d+) mode=(\d+) racines=\[0, 4, 1\] boites_globales=2 endpoints_globaux=5 ipc_pages=" + str(pages_session) + r"\b", serie)
+    geometrie="5 ipc_pages="+str(pages_session)
+    if reprise:
+        geometrie = r"(?:13 ipc_pages=18|11 ipc_pages=16)"
+    sessions = re.findall(r"ETH3 session .*?incarnation=(\d+) .*?epoque=(\d+) generation_materiel=(\d+) mode=(\d+) racines=\[0, 4, 1\] boites_globales=2 endpoints_globaux=" + geometrie + r"\b", serie)
     exiger(len(sessions)==cycles and [int(s[2]) for s in sessions]==generations
            and all(int(s[3])==mode for s in sessions)
            and all(len({s[i] for s in sessions})==cycles for i in (0,1)), sessions)
@@ -235,8 +240,13 @@ def verifier(out, c, serie):
     for phase,items in re.findall(r"RAM phase=(\w+) ([^\n]+)",serie):
         ram.setdefault(phase,[]).append({k:int(v) for k,v in re.findall(r"(\w+)=(\d+)",items)})
     cpu = [list(map(int,x)) for x in re.findall(r"ETH3 cadres avant=(\d+) apres=(\d+)",serie)]
-    exiger(len(cpu)==cycles and all(a==b for a,b in cpu),cpu)
-    exiger(all(v["ipc"]==0 and v["processus"]==0 and v["upile"]==0 for v in ram["eth3_retrait"]), "ressources acteurs")
+    if reprise:
+        exiger(len(cpu)==cycles and len(ram["eth3_retrait"])==cycles,cpu)
+        exiger(all(v["processus"]==2 and v["ipc"]>0 and v["upile"]==32 for v in ram["eth3_retrait"]),"deux contrôleurs")
+        exiger(len(ram["4d_fin_cycle"])==cycles and all(v["ipc"]==0 and v["processus"]==0 and v["upile"]==0 for v in ram["4d_fin_cycle"]),"collecte contrôleurs")
+    else:
+        exiger(len(cpu)==cycles and all(a==b for a,b in cpu),cpu)
+        exiger(all(v["ipc"]==0 and v["processus"]==0 and v["upile"]==0 for v in ram["eth3_retrait"]), "ressources acteurs")
     evidence = dict(generations=generations,incarnations=sessions,arrets=arrets,bilans=bilans,
                     cadres_cpu=cpu,ram=ram)
     if arch=="arm":
@@ -246,7 +256,7 @@ def verifier(out, c, serie):
             confirme = verifier_reset(cas, c, serie, generations)
             if confirme:
                 retenues = set()
-        sans_livraison = cas in ("recu-arm-absent", "reset-iommu-absent")
+        sans_livraison = gel or cas in ("recu-arm-absent", "reset-iommu-absent")
         if sans_livraison:
             retenues = set(range(22))
         if not absent and not sans_livraison:

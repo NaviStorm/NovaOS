@@ -321,7 +321,12 @@ impl EthernetActor {
         let base = heap::audit(false).free_pages;
         #[cfg(feature="gestionnaire-4d")]
         let (ticket,controle,base)=decision?.preparer(generation)?;
-        let groupe = setup(generation, case, total, #[cfg(feature="gestionnaire-4d")] ticket)?;
+        let Some(groupe)=setup(generation, case, total, #[cfg(feature="gestionnaire-4d")] ticket) else {
+            // setup a annulé les processus non publiés sous sa garde d’ordonnancement.
+            #[cfg(feature="gestionnaire-4e1")]
+            super::dynamique::reprise::refuser(generation)?;
+            return None
+        };
         #[cfg(feature="gestionnaire-4d")]
         measure("4d_acteurs_attribues");
         let ancienne_cle = DERNIERE_CLE.swap(groupe.3, Relaxed);
@@ -330,7 +335,7 @@ impl EthernetActor {
         #[cfg(feature="gestionnaire-4d")]
         {
             let (d,s,c,_,_)=acteur.groupe.as_ref()?;
-            if !controle.confirmer(d.0){return None}
+            if !controle.confirmer(d.0, #[cfg(feature="gestionnaire-4e1")] generation, #[cfg(feature="gestionnaire-4e1")] acteur.groupe.as_ref()?.3){return None}
             let boot=crate::boot_id::current()?;
             with(|k|{
                 let id=k.processes.get(c.0).instance.identity(Some(boot))?;
@@ -518,6 +523,12 @@ pub(crate) fn ethernet_actor(
         last = ticks();
         calls += 1;
         let debut_mediation = hal::timer::counter();
+        #[cfg(feature="gestionnaire-4e1")]
+        let differer=matches!(super::dynamique::reprise::scenario(),"publication"|"gestionnaire-actif"|"lanceur-actif") && op>=32 && publish.is_some();
+        #[cfg(not(feature="gestionnaire-4e1"))]
+        let differer=false;
+        #[cfg(feature="gestionnaire-4e1")]
+        if differer && !super::dynamique::reprise::intention_publication(generation,seq){status=Err(abi::REFUSED);break}
         let outcome = with(|k| {
             if !k.ipc.lab_can_submit(pid, hw) || k.processes.get(pid).outcome.is_some() {
                 return Err(abi::REVOKED);
@@ -546,7 +557,7 @@ pub(crate) fn ethernet_actor(
             {
                 return Err(abi::BAD_ADDRESS);
             }
-            ecrire(
+            if !differer {ecrire(
                 k,
                 pid,
                 &[
@@ -554,7 +565,7 @@ pub(crate) fn ethernet_actor(
                     (4, ret.err().unwrap_or(abi::OK)),
                     (3, seq),
                 ],
-            )?;
+            )?;}
             if case == 6 && op >= 32 && ret.is_ok() {
                 k.ipc.lab_close_sender(pid, hw);
             }
@@ -574,6 +585,15 @@ pub(crate) fn ethernet_actor(
                 break;
             }
         };
+        #[cfg(feature="gestionnaire-4e1")]
+        if differer {
+            let Some(check)=publish.take() else {status=Err(abi::REFUSED);break};
+            let Some(recu)=res.ok().and_then(|n|super::dynamique::reprise::publication(generation,seq,n,check)) else {status=Err(abi::REFUSED);break};
+            peak=peak.min(heap::audit(false).free_pages);measure("eth3_publication");
+            if with(|k|ecrire(k,pid,&[(5,recu as u64),(4,abi::OK),(3,seq)])).is_err() || !super::dynamique::reprise::accuser_publication(generation,seq){status=Err(abi::REVOKED);break}
+        }
+        #[cfg(feature="gestionnaire-4e1")]
+        if op==8 && res.is_ok() && !super::dynamique::reprise::reception_active(generation,seq){status=Err(abi::REFUSED);break}
         if case == 1 && op == 2 && res == Err(abi::WOULD_BLOCK) {
             hal::log(format_args!(
                 "ETH3 préparation supplémentaire refusée par le courtier"
@@ -603,6 +623,8 @@ pub(crate) fn ethernet_actor(
     }
     CLIENT_PID.store(0, Relaxed);
     with(|s| s.ipc.lab_close_sender(pid, hw));
+    #[cfg(feature="gestionnaire-4e1")]
+    super::dynamique::reprise::etat_port(generation);
     let rt = operation(5, 0, &mut frame);
     // Les appels ordinaires expirent aussi si le titulaire d'un prêt disparaît.
     // Le courtier a déjà fermé le bus et tenté le reset avant cette collecte.
@@ -667,11 +689,15 @@ pub(crate) fn ethernet_actor(
     measure("eth3_retrait");
     let fin = heap::audit(false).free_pages;
     hal::log(format_args!("ETH3 cadres avant={base} apres={fin}"));
+    #[cfg(feature="gestionnaire-4e1")]
+    let compte_port=super::dynamique::reprise::port_collecte();
+    #[cfg(not(feature="gestionnaire-4e1"))]
+    let compte_port=base==fin || stockage_partage;
     status.is_ok()
         && rt.is_ok()
         && outcomes.iter().all(|r| *r == Outcome::Exit(0))
         && (count > 0 || case == 7)
         && count <= N
-        && (base == fin || stockage_partage)
+        && compte_port
         && with(|s| [pid, sp, cp].iter().all(|p| s.ipc.racines_pilotes(*p) == 0))
 }

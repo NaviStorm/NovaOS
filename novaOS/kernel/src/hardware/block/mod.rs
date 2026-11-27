@@ -467,6 +467,10 @@ mod domain;
 
 #[cfg(all(target_arch = "aarch64", feature = "net-arm-lab"))]
 pub(crate) mod net_arm;
+#[cfg(all(target_arch="aarch64",feature="gestionnaire-4e1"))]
+pub(crate) fn carte_bail_nic(generation:u64,cadres:[u64;22])->Option<u64>{
+    domain::carte_bail(generation,cadres).ok()
+}
 #[cfg(all(target_arch="aarch64",feature="gestionnaire-4d"))]
 pub(crate) fn verifier_port_selectionne(id:u64,sid:u64)->bool {net_arm::Preparation::correspond(id,sid)}
 

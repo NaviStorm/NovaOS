@@ -445,7 +445,7 @@ impl Domain {
         Ok(key)
     }
     /// Racine privée, uniquement RECEIVE dès sa première publication à ce PID.
-    #[cfg(feature = "materiel-lab")]
+    #[cfg(any(feature = "materiel-lab", feature = "gestionnaire-4e1"))]
     pub(super) fn lab_receiver(&mut self, pid: Pid) -> Res<u64> {
         let key = self.create(pid)?;
         let node = self.lookup(pid, key, ALL).expect("racine à peine créée");

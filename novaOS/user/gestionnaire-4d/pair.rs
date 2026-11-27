@@ -2,6 +2,8 @@
 #![no_main]
 extern crate alloc;
 mod lancement;
+#[cfg(feature="reprise-4e1")]
+mod reprise;
 mod mesures_tas;
 #[allow(dead_code)]
 #[path = "../storage/runtime.rs"]
@@ -77,7 +79,11 @@ fn session() -> Result<[u8; 32]> {
 }
 #[unsafe(no_mangle)]
 extern "C" fn run() -> ! {
-    exit(match session().and_then(lancement::servir) {
+    #[cfg(feature="reprise-4e1")]
+    let resultat = reprise::acteur(reprise::wire::LAUNCHER, session);
+    #[cfg(not(feature="reprise-4e1"))]
+    let resultat = session().and_then(lancement::servir);
+    exit(match resultat {
         Ok(()) => 0,
         Err(e) => e,
     })

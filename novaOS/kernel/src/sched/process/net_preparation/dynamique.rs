@@ -1,5 +1,7 @@
 //! Profil ARM fermé. Le superviseur garde la seule autorité matérielle 3E.
 use super::*;
+#[cfg(feature="gestionnaire-4e1")]
+pub(crate) mod reprise;
 use core::sync::atomic::{AtomicU64, Ordering};
 const MANAGER: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/gestionnaire.elf"));
 const PEER: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/pair.elf"));
@@ -77,6 +79,8 @@ impl Decision {
     }
 }
 fn actors(epoch: u64, id: u64, sid: u64, mode: u64, boot: u64) -> Option<(Child, Child, u64, u64)> {
+    #[cfg(feature="gestionnaire-4e1")]
+    let ancienne=reprise::ancienne_selection();
     let _guard = Guard::new();
     let m = create_image(MANAGER, &[], None, None).ok()?;
     let p = match create_image(PEER, &[], None, None) {
@@ -135,6 +139,14 @@ fn actors(epoch: u64, id: u64, sid: u64, mode: u64, boot: u64) -> Option<(Child,
             })
             .map_err(|_| crate::abi::NO_MEMORY)?;
         }
+        #[cfg(feature="gestionnaire-4e1")]
+        {
+            reprise::installer(s,m.0,notify,ancienne)?;
+            reprise::installer(s,p.0,lanceur,(0,0))?;
+            let racines=[s.ipc.racines_pilotes(m.0),s.ipc.racines_pilotes(p.0)];
+            if racines!=[4,4]{return Err(crate::abi::REFUSED)}
+            hal::log(format_args!("E41 liaisons initiales racines={racines:?} pages={}",s.ipc.pages()));
+        }
         MARK.store(0, Ordering::Relaxed);
         CHANNEL.store(notify, Ordering::Relaxed);
         OBSERVER.store(m.0.number, Ordering::Release);
@@ -179,6 +191,8 @@ impl Cycle {
 }
 impl Drop for Cycle {
     fn drop(&mut self) {
+        #[cfg(feature="gestionnaire-4e1")]
+        reprise::fin();
         let (min, end) =
             heap::with_pages(|m| Ok((m.cycle_minimum(false).unwrap(), m.free_pages()))).unwrap();
         hal::log(format_args!(
@@ -262,6 +276,8 @@ pub(super) fn piles_port(ids: [Pid; 3], op: u64) {
     });
 }
 pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
+    #[cfg(feature="gestionnaire-4e1")]
+    let _selection=reprise::reserver_selection()?;
     let epoch = INVENTORY
         .try_update(Ordering::AcqRel, Ordering::Acquire, |n| {
             n.checked_add(1).filter(|v| v >> 63 == 0)
@@ -282,6 +298,8 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
         _ => 0,
     };
     let boot = crate::boot_id::current()?;
+    #[cfg(feature="gestionnaire-4e1")]
+    hal::log(format_args!("E41 demarrage boot={:032x} inventaire={epoch}",u128::from_le_bytes(boot)));
     let lo = u64::from_le_bytes(boot[..8].try_into().ok()?);
     let hi = u64::from_le_bytes(boot[8..].try_into().ok()?);
     let boot = if lo != 0 { lo } else { hi };
@@ -298,6 +316,19 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
         ));
         return None;
     };
+    #[cfg(feature="gestionnaire-4e1")]
+    if reprise::premier_avant(){
+        let dep=demande(m.0,key,true);
+        if dep!=Some((1,epoch,1)){stop(m);stop(p);return None}
+        let old=m.0;
+        let inc=with(|s|s.processes.get(old).instance.serial);
+        if reprise::garder_avant(old,key).is_none(){stop(m);stop(p);return None}
+        stop(m);stop(p);OBSERVER.store(0,Ordering::Release);
+        if with(|s|s.ipc.lab_can_submit(old,key)){return None}
+        hal::log(format_args!("E41 avant-selection pid={} incarnation={inc} inventaire={epoch} anciennes_racines_refusees=true",old.number));
+        drop(_sample);drop(_selection);
+        return selection(id,sid);
+    }
     let mp = m.0;
     let pp = p.0;
     let controle = Controle {
@@ -380,7 +411,8 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
         INVENTORY.fetch_add(1, Ordering::AcqRel);
         hal::log(format_args!("D4 plan perime revision={epoch}"));
     }
-    let decision = Decision {
+    #[allow(unused_mut)]
+    let mut decision = Decision {
         epoch,
         id,
         sid,
@@ -394,6 +426,12 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
     if !decision.actuelle(id, sid) {
         return None;
     }
+    #[cfg(feature="gestionnaire-4e1")]
+    {
+        let mut c=decision.liaison.take()?;
+        reprise::ouvrir(&mut c,&decision)?;
+        decision.liaison=Some(c);
+    }
     ACTIVATION.store(hal::timer::counter(), Ordering::Relaxed);
     RETRAIT.store(0, Ordering::Relaxed);
     Some(decision)
@@ -401,7 +439,7 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
 
 fn sceller(d: &Decision) -> Option<user::SealedImage> {
     let mut digest = d.digest;
-    if option_env!("NOVAOS_4D_REFUS") == Some("lancement") {
+    if option_env!("NOVAOS_4D_REFUS") == Some("lancement") || (cfg!(feature="gestionnaire-4e1") && option_env!("NOVAOS_4E1_CAS")==Some("refus-certain")) {
         digest[0] ^= 1;
     }
     let epoch = d.epoch;
@@ -459,6 +497,9 @@ impl Controle {
             demande(p.0, self.key, false) == Some((op, self.epoch | (1 << 63), id))
         })
     }
+    #[cfg(feature="gestionnaire-4e1")]
+    pub(super) fn confirmer(self,pid:Pid,g:u64,broker:u64)->bool{reprise::cree(pid,g,broker)}
+    #[cfg(not(feature="gestionnaire-4e1"))]
     pub(super) fn confirmer(mut self, pid: Pid) -> bool {
         let inc = with(|s| s.processes.get(pid).instance.serial);
         if self
@@ -499,6 +540,17 @@ pub(super) struct Ticket {
     generation: u64,
 }
 impl Decision {
+    #[cfg(feature="gestionnaire-4e1")]
+    pub(super) fn preparer(mut self,generation:u64)->Option<(Ticket,Controle,u64)>{
+        if !self.actuelle(self.id,self.sid){return None}
+        let controle=self.liaison.take()?;
+        let base=heap::audit(false).free_pages;
+        reprise::preparer(generation)?;
+        let Some(image)=sceller(&self) else {reprise::refuser(generation)?;return None};
+        reprise::engager(generation)?;
+        Some((Ticket{decision:self,image,generation},controle,base))
+    }
+    #[cfg(not(feature="gestionnaire-4e1"))]
     pub(super) fn preparer(mut self, generation: u64) -> Option<(Ticket, Controle, u64)> {
         if !self.actuelle(self.id, self.sid) || generation == 0 {
             return None;

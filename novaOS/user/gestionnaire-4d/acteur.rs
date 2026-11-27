@@ -2,6 +2,8 @@
 #![no_main]
 extern crate alloc;
 mod lancement;
+#[cfg(feature="reprise-4e1")]
+mod reprise;
 mod mesures_tas;
 
 #[path = "../heap.rs"]
@@ -298,7 +300,11 @@ fn gate() -> Result<[u8; 32]> {
 }
 #[unsafe(no_mangle)]
 extern "C" fn run() -> ! {
-    exit(match gate().and_then(lancement::conduire) {
+    #[cfg(feature="reprise-4e1")]
+    let resultat = reprise::acteur(reprise::wire::MANAGER, gate);
+    #[cfg(not(feature="reprise-4e1"))]
+    let resultat = gate().and_then(lancement::conduire);
+    exit(match resultat {
         Ok(()) => 0,
         Err(e) => e,
     })
