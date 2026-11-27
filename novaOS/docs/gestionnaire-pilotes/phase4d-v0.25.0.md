@@ -168,6 +168,10 @@ python3 -B novaOS/tests/gestionnaire_4d/bilan.py "$laboratoire/campagne" "$labor
 
 Le test hôte demande macOS ARM64 avec Rosetta, Python avec le module cryptography, les cibles Rust Darwin et nues, et LLVM. Le banc de cette livraison a utilisé macOS 27.2.1 et rustc 1.99.1. Les fichiers de construction donnent les SHA-256 de chaque ELF et paquet. Le modèle perturbé du registre de reset est celui de 3E, de SHA-256 `8bb72b975946a577f0900107188bfc2d47cc8aeae20b1b03d1e5dcb04b40383d`. Il est utilisé uniquement pour les trois cas MMIO, jamais pour comparer les performances. L’archive de qualification des phases précédentes conserve sa propre provenance.
 
+### Contrôle de la recette publiée
+
+Au commit de recette `73d80a80e8a35f4d76b000e80280d80b1e9b1ed1`, deux démarrages supplémentaires ont réussi, hors des 87 utilisés pour les statistiques. Le cas `mmio-differe` a démarré exactement le même noyau dynamique que la qualification. Le témoin statique de même révision a retransmis les 13 312 trames par sens et son volume P9 a été relu à l’identique. Son ELF reconstruit est passé de 8 388 192 à 8 388 208 octets. Son SHA-256 est passé de `d5d81f21ee1b98c7dac1f5738343a94b20aae81e8f76e76c28bc109eb4180fed` à `1e636f9980b2bbac4222dbbbdeaefb266eb24d7d814ccee4a495e8a810446707`. La comparaison section par section localise la différence dans `.symtab` et `.strtab`, hors chargement. La comparaison des quatre segments `PT_LOAD` retrouve exactement les mêmes longueurs et octets. Le noyau statique occupe 1 779 cadres dans les deux démarrages.
+
 ## Défauts corrigés pendant l’intégration
 
 - La construction creuse de l’ESP omettait des secteurs nuls du nouvel ELF. En appliquant ce relevé sur un disque déjà rempli, certains secteurs gardaient des octets de l’ancien fichier. Dans le gestionnaire, cela altérait l’état initial de l’allocateur. Le profil écrit tous les secteurs alloués du nouvel ELF et un lecteur distinct contrôle les deux FAT, la chaîne, la longueur et l’empreinte du fichier avant chaque démarrage. Un test ciblé reproduit l’ancien mélange avec des données fictives. [Test de l’ESP](../../tests/gestionnaire_4d/test_esp.py)
