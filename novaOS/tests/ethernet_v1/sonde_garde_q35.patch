@@ -1,0 +1,37 @@
+--- a/novaOS/kernel/src/sched/process/nvme.rs
++++ b/novaOS/kernel/src/sched/process/nvme.rs
+@@ -158,6 +158,8 @@
+     let mut identify_seen = false;
+     #[cfg(feature="net-q35-duo")]
+     let mut fault_boundary = false;
++    #[cfg(feature="net-q35-duo")]
++    let mut garde_sondee = false;
+     loop {
+         if ticks().wrapping_sub(last_progress) > u64::from(HZ) * 35 {
+             return Err("echeance supervision");
+@@ -182,6 +184,25 @@
+         #[cfg(feature="net-q35-duo")]
+         if fault_boundary && domain.local_nic() {
+             domain.reconcilier_nic(b.completed as u64).map_err(|_| "reçu NIC incohérent")?;
++            if !garde_sondee && domain.restitution_nic() && b.completed >= 3
++                && let Some(cid) = b.controller.inflight_cid()
++            {
++                let generation = domain.network_epoch()?;
++                let candidat = super::net_preparation::EthernetActor::reserve(generation)
++                    .ok_or("création du candidat au retrait refusé")?;
++                let pid = candidat.owner();
++                let avant = crate::memory::pinned_dma_frames();
++                let refus = matches!(domain.reserve_network(pid), Err(crate::hardware::nvme_domain::Error::Denied));
++                candidat.cancel();
++                if !refus || !domain.restitution_nic() || !domain.dma_clean()
++                    || b.controller.inflight_cid() != Some(cid)
++                    || crate::memory::pinned_dma_frames() != avant || !with(|s| peers.authorized(s)) {
++                    return Err("garde de réadmission ou bail stockage");
++                }
++                garde_sondee = true;
++                hal::log(format_args!("E3E garde readmission=refusee candidat={pid} generation={generation} disque={} bail={} cid={cid} dma={avant}",
++                    peers.pids[0].number, peers.cfg[0][wire::EPOCH]));
++            }
+         }
+         let mut progress = false;
+         let admitted = with(|s| {

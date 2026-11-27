@@ -43,7 +43,10 @@ def main():
     p.add_argument("--phase3d", action="store_true", help="Appliquer le raccord de retrait individuel après vérification des modules audités")
     p.add_argument("--cas", nargs="+", choices=("port", "deces", "duo-retrait", "duo-differe", "duo-absent",
                    "duo-sans-reset", "duo-cycles", "duo-reouverture", "duo-postdisque", "duo-concurrence", "duo-disque", "duo-wait-absent", "duo-wait-tardif"))
+    p.add_argument("--sonder-garde", action="store_true", help="Observer le refus de réadmission après restitution sur un bail NVMe actif")
     a = p.parse_args()
+    if a.sonder_garde and (not a.phase3d or a.cas != ["duo-retrait"]):
+        p.error("La sonde de garde exige --phase3d --cas duo-retrait")
     if a.cas and not a.phase3d:
         p.error("--cas nécessite --phase3d")
     revision = git("rev-parse", "--verify", a.revision + "^{commit}").decode().strip()
@@ -73,6 +76,10 @@ def main():
             patch = root / "novaOS/tests/ethernet_v1/retrait_duo.patch"
             subprocess.run(["git", "apply", "--check", str(patch)], cwd=root, check=True)
             subprocess.run(["git", "apply", str(patch)], cwd=root, check=True)
+            if a.sonder_garde:
+                sonde = root / "novaOS/tests/ethernet_v1/sonde_garde_q35.patch"
+                subprocess.run(["git", "apply", "--check", str(sonde)], cwd=root, check=True)
+                subprocess.run(["git", "apply", str(sonde)], cwd=root, check=True)
             raccord = {name: git("hash-object", root / name).decode().strip() for name in sources}
             raccord["patch_sha256"] = hashlib.sha256(patch.read_bytes()).hexdigest()
         # L'option des modules d'origine n'existe que dans le manifeste de cette copie.
@@ -87,6 +94,8 @@ def main():
         result = dict(port=revision, audit=AUDIT, modules=sources, elf={},
                       rustc=subprocess.check_output([env["RUSTC"], "-V"], text=True).strip())
         result["raccord_3d"] = raccord
+        if a.sonder_garde:
+            result["sonde_garde_sha256"] = hashlib.sha256(sonde.read_bytes()).hexdigest()
         for cas in a.cas or ("port", "deces"):
             env["NOVAOS_ETH3_CASE"] = cas
             with (a.sortie / f"{cas}-compilation.log").open("xb") as log:
