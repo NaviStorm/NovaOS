@@ -14,6 +14,7 @@ novaos-catalogue = { path = "../../libs/catalogue-pilotes" }
 
 [features]
 firmware = []
+diagnostic-5j = ["diagnostic-5h"]
 diagnostic-5h = []
 diagnostic-5i = ["diagnostic-5h"]
 diagnostic-5i-temoin = ["diagnostic-5i"]
@@ -22,6 +23,13 @@ diagnostic-5i-temoin = ["diagnostic-5i"]
 name = "diagnostic"
 path = "main.rs"
 required-features = ["firmware"]
+test = false
+bench = false
+
+[[bin]]
+name = "diagnostic-5j"
+path = "../diagnostic-5j/entree.rs"
+required-features = ["diagnostic-5j"]
 test = false
 bench = false
 

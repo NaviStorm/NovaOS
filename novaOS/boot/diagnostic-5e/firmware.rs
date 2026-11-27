@@ -203,13 +203,25 @@ pub unsafe fn image(
     bs: &efi::BootServices,
     handle: efi::Handle,
 ) -> Result<&loaded_image::Protocol, u64> {
+    let image = unsafe { protocole_image(bs, handle) }?;
+    if !load_policy(image.revision, image.load_options_size) {
+        return Err(2);
+    }
+    Ok(image)
+}
+
+/// Récupération commune. Chaque profil contrôle ensuite ses propres options.
+pub unsafe fn protocole_image(
+    bs: &efi::BootServices,
+    handle: efi::Handle,
+) -> Result<&loaded_image::Protocol, u64> {
     let mut p = ptr::null_mut();
     let s = unsafe { (bs.handle_protocol)(handle, &mut { loaded_image::PROTOCOL_GUID }, &mut p) };
     if s != efi::Status::SUCCESS || p.is_null() {
         return Err(2);
     }
     let image = unsafe { &*p.cast::<loaded_image::Protocol>() };
-    if !load_policy(image.revision, image.load_options_size) {
+    if image.revision != loaded_image::REVISION {
         return Err(2);
     }
     Ok(image)
