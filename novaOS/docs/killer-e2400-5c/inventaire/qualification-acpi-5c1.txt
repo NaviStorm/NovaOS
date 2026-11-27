@@ -1,0 +1,38 @@
+NovaOS v0.25.0 - Phase 5C.1 - vecteurs fictifs et PnP simule
+eefb4d3c9d47dd100613c1bc5016235652292ab3
+Darwin arm64
+PowerShell 7.7.0
+OK DRHD RMRR ATSR
+OK ECAM IOAPIC ISO
+OK chemin endpoint et sous-arbre
+OK SATA sur branche distincte
+OK synthese expurgee
+OK cible inconnue
+OK segments ambigus
+OK deux unites explicites
+OK type inconnu conserve et couverture indeterminee
+OK checksum incorrect
+OK signature incorrecte
+OK longueur ACPI incorrecte
+OK DRHD tronquee
+OK structure de taille nulle
+OK scope tronque
+OK MADT tronquee
+OK MCFG tronquee
+OK enumeration et lecture uniques
+OK octets prives identiques
+OK refus isole sans resultat partiel
+OK multiple et absente
+OK enum-error
+OK zero
+OK limite
+OK course
+OK get-error
+OK rapprochement PnP et DMAR
+OK PnP SATA indisponible conserve le NIC
+OK scope explicite dans un autre segment ecarte
+OK fenetres ECAM recouvrantes
+OK ATSR ALL_PORTS limite aux branches sous pont
+OK le scope de pont ne transforme pas un endpoint en pont
+bcd868f7c00f1c1c5c36fae3e4f98453ee8269c74fa18d2b198f9efc493b3d81  novaOS/docs/killer-e2400-5c/inventaire/acpi-5c1.ps1
+0eecb763cbfd148ca0447158a767e8e7d4b766f3a32fce461221f12b09df7e0f  novaOS/docs/killer-e2400-5c/inventaire/essai-acpi-5c1.ps1

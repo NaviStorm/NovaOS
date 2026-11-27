@@ -5,12 +5,12 @@
 ## Collecter
 
 1. Examiner les deux sources. Utiliser Windows PowerShell 64 bits avec les droits de lecture des modules PnP, BitLocker et SecureBoot. Garder la politique d’exécution existante. Depuis le dossier livré, lancer la commande ci-dessous. Si Windows refuse son exécution, consigner le refus. Le script affiche un JSON privé sur la console. Il vérifie la présence d’une unique fonction portant l’identifiant complet attendu et une classe Ethernet.
-2. Si un Python 3 local de confiance est déjà disponible, exécuter la seconde commande. Elle lit par API Windows la liste des tables ACPI et les exemplaires uniques de DMAR, MCFG et APIC. Elle vérifie signature, longueur annoncée et somme de contrôle avant de rendre leurs octets. Une table indisponible, ambiguë ou tronquée laisse sa rubrique indéterminée. En l’absence de Python, utiliser l’option ACPICA déjà installée et vérifiée décrite dans la fiche 5B, ou consigner « inaccessible ». [API firmware Microsoft](https://learn.microsoft.com/en-us/windows/win32/api/sysinfoapi/nf-sysinfoapi-getsystemfirmwaretable) · [Alternative de lecture](../../killer-e2400-inventaire-msi-5b.md)
+2. Pour le complément ACPI, utiliser le [collecteur Windows PowerShell autonome de phase 5C.1](acpi-5c1.md). Il ne nécessite aucune installation. Le script Python initial reste conservé pour la provenance de 5C.
 3. Dans `msinfo32`, relever manuellement le mode BIOS, l’état du démarrage sécurisé et la protection DMA du noyau Windows. Relever la date et la version de Windows. Une erreur d’accès reste une observation manquante. Pour conserver les résultats, choisir au préalable un dossier privé local non synchronisé, à accès restreint. Utiliser des noms libres et `Out-File -NoClobber -Encoding utf8` en sortie de la commande. Ne joindre au dépôt ni JSON, ni capture, ni identifiant, ni table brute.
 
 ```powershell
 .\collecter.ps1
-py -3 -B .\tables.py
+powershell.exe -NoProfile -NonInteractive -File .\acpi-5c1.ps1
 ```
 
 ## Exploiter localement
