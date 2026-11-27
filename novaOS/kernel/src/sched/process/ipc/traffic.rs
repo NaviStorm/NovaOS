@@ -58,7 +58,7 @@ impl Domain {
         Ok(e.sequence)
     }
     /// Notifications dérivées d'une source matérielle privée, au format IPC existant.
-    #[cfg(any(feature = "materiel-lab", feature = "gestionnaire-4e1"))]
+    #[cfg(any(feature = "materiel-lab", gestionnaire_reprise))]
     pub(in crate::sched::process) fn lab_notify(&mut self, pid: Pid, key: u64, bits: u64) -> bool {
         let Ok(node) = self.lookup(pid, key, RECEIVE) else {
             return false;

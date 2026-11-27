@@ -82,7 +82,8 @@ pub(in crate::hardware) fn q35(cadres: &[super::Frame; 22]) -> Result<()> {
 }
 
 #[cfg(all(target_arch = "x86_64", feature = "net-ethernet-lab"))]
-pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u64) -> Result<()> {
+pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u64,
+    #[cfg(feature = "gestionnaire-4f")] acteur: crate::sched::process::net_preparation::port_v1::EthernetActor) -> Result<()> {
     use crate::{hardware::pci_ports, memory};
     let cfg = super::pci::Config::open(56)?;
     let base = u64::from(cfg.get(0x24, 4)) << 32 | u64::from(cfg.get(0x20, 4) & !15);
@@ -113,7 +114,7 @@ pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u
     let hz = hal::timer::counter_hz();
     #[cfg(feature="ethernet-v1-port")]
     let mut scelle = false;
-    let ok = crate::sched::process::net_preparation::ethernet(generation, ||true, |tag, len, copie| {
+    let operation = |tag, len, copie: &mut [u8]| {
         if tag == 5 {
             #[cfg(feature="ethernet-v1-port")]
             {
@@ -128,7 +129,11 @@ pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u
             if !ligne.rearmer() {return Err(crate::abi::REFUSED);}
         }
         port.demande(tag, len, copie, ligne.cause() == 0x101)
-    });
+    };
+    #[cfg(feature = "gestionnaire-4f")]
+    let ok = crate::sched::process::net_preparation::port_v1::ethernet_actor(acteur, ||true, operation, false);
+    #[cfg(not(feature = "gestionnaire-4f"))]
+    let ok = crate::sched::process::net_preparation::ethernet(generation, ||true, operation);
     #[cfg(not(feature="ethernet-v1-port"))]
     let stop = port.stopper();
     let cause = ligne.cause();

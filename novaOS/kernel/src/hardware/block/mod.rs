@@ -471,6 +471,8 @@ pub(crate) mod net_arm;
 pub(crate) fn carte_bail_nic(generation:u64,cadres:[u64;22])->Option<u64>{
     domain::carte_bail(generation,cadres).ok()
 }
+#[cfg(feature = "gestionnaire-4f")]
+pub(crate) use super::net_q35::gestionnaire::{carte_bail_nic, verifier_port_selectionne};
 #[cfg(all(target_arch="aarch64",feature="gestionnaire-4d"))]
 pub(crate) fn verifier_port_selectionne(id:u64,sid:u64)->bool {net_arm::Preparation::correspond(id,sid)}
 

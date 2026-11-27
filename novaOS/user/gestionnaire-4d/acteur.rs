@@ -74,6 +74,11 @@ fn checkpoint(tag: u64, epoch: u64) -> Result<()> {
     body[8..].copy_from_slice(&1u64.to_le_bytes());
     send_frame(config(6), tag, &body, 0, false)
 }
+#[cfg(target_arch = "aarch64")]
+const ISA: &str = "aarch64";
+#[cfg(target_arch = "x86_64")]
+const ISA: &str = "x86_64";
+
 fn gate() -> Result<[u8; 32]> {
     let epoch = config(2);
     let id = config(3);
@@ -94,7 +99,7 @@ fn gate() -> Result<[u8; 32]> {
             object!("pilote.toml"),
             &signature,
             &[Blob {
-                isa: "aarch64",
+                isa: ISA,
                 bytes: object!("pilote.pkg01"),
             }],
         )
@@ -153,7 +158,7 @@ fn gate() -> Result<[u8; 32]> {
         attachment: "dev-007",
         bus,
         class: "ethernet",
-        isa: "aarch64",
+        isa: ISA,
         os: [0, 20, 0],
         abi: 1,
         profile: Some(Sha256::digest(object!("profil.bin")).into()),

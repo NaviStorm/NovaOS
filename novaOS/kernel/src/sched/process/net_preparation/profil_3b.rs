@@ -112,7 +112,7 @@ pub(crate) fn copie(pid: u64, len: u64) {
     }
 }
 pub(crate) fn controle(pid: u64, tag: u64, payload: &[u8]) {
-    #[cfg(feature="gestionnaire-4d")]
+    #[cfg(gestionnaire_dynamique)]
     if tag==0x45544831 && matches!(payload.get(4),Some(2|12)){
         super::super::dynamique::session_message(pid==super::ACTEURS[1].load(Relaxed),pid==super::CLIENT_PID.load(Relaxed),tag,payload);
     }

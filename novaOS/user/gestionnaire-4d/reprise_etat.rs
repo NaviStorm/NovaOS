@@ -1,5 +1,11 @@
 //! Vue locale reconstruite par un acteur EL0. Les adresses et les handles matériels
 //! restent dans les tables de leurs propriétaires.
+// Identité du contrôleur dans le profil fermé. La valeur Q35 est un identifiant
+// de laboratoire, indépendant des adresses MMIO et des identités de processus.
+#[cfg(target_arch = "aarch64")]
+pub const CONTROLEUR: u64 = 40;
+#[cfg(target_arch = "x86_64")]
+pub const CONTROLEUR: u64 = 0x10000;
 pub const WORDS: usize = 23;
 pub const FULL: u64 = (1 << 22) - 1;
 pub const RESERVED: u64 = 0;
@@ -40,7 +46,7 @@ impl EtatRepris {
             remis,
         ] = mots;
         if (boot_lo | boot_hi) == 0
-            || controleur != 40
+            || controleur != CONTROLEUR
             || groupe != 56
             || inventaire == 0
             || epingles & !FULL != 0
@@ -101,7 +107,7 @@ mod tests {
     use super::*;
     fn selection() -> [u64; WORDS] {
         let mut s = [0; WORDS];
-        s[..5].copy_from_slice(&[11, 12, 40, 56, 1]);
+        s[..5].copy_from_slice(&[11, 12, CONTROLEUR, 56, 1]);
         s
     }
     fn pilote() -> [u64; WORDS] {

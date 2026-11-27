@@ -4,9 +4,9 @@ import json
 import re
 import struct
 
-NOUVEAUX = ("cycles-256", "cycles", "cycles-court", "rattrapage", "preuve-absente", "recu-vtd-absent",
+NOUVEAUX = ("cycles-256-court", "cycles-256", "cycles", "cycles-court", "rattrapage", "preuve-absente", "recu-vtd-absent",
             "recu-vtd-differe", "recu-arm-differe", "recu-arm-absent", "deces-recu-tx-absent")
-CAS = {"cycles-256": 0, "port": 0, "cycles": 0, "court": 8, "cycles-court": 8, "preuve-absente": 8,
+CAS = {"cycles-256-court": 8, "cycles-256": 0, "port": 0, "cycles": 0, "court": 8, "cycles-court": 8, "preuve-absente": 8,
        "recu-vtd-absent": 8, "recu-vtd-differe": 8, "recu-arm-differe": 0, "recu-arm-absent": 0, "deces": 3, "deces-recu-tx-absent": 3, "incertain": 4, "revocation": 6,
        "segment-interrompu": 23, "rattrapage": 23, "recu-collecte": 24, "echo1514": 13}
 
@@ -24,7 +24,7 @@ def exiger(ok, objet):
 
 
 def nombre_cycles(cas, arch):
-    if cas == "cycles-256" and arch == "arm":
+    if (cas == "cycles-256" and arch == "arm") or (cas == "cycles-256-court" and arch == "q35"):
         return 256
     if cas == "cycles" or (cas == "cycles-court" and arch == "q35"):
         return 4
@@ -157,11 +157,14 @@ def preuve_qi(vm, qt, serie, retire):
         return reg(vm,0xfed90000+offset) | (reg(vm,0xfed90004+offset)<<32)
     head,tail = registre64(0x80),registre64(0x88)
     cookie = reg(vm,statut)
-    exiger(head == tail == 48*cookie and 0 < cookie <= 9 and registre64(0x20) == root
+    exiger(head == tail == (48*cookie) % 4096 and 0 < cookie <= 513 and registre64(0x20) == root
            and registre64(0x90) == queue and reg(vm,0xfed90034) == 0, "registres QI")
     commandes=[]
-    for i in range(cookie):
-        mots = struct.unpack("<6Q",lire(queue+48*i,48))
+    # 85 commandes complètes au plus restent lisibles après bouclage.
+    anneau = lire(queue, 4096)
+    for i in range(max(0, cookie - 85), cookie):
+        debut = (48 * i) % 4096
+        mots = struct.unpack("<6Q", (anneau + anneau)[debut:debut+48])
         exiger(mots == (0x11,0,0xd2,0,((i+1)<<32)|0x25,statut), ("QI",i,mots))
         commandes.append(list(mots))
     vide = lire(root,4096) == bytes(4096)
@@ -197,7 +200,7 @@ def verifier_reset(cas, c, serie, generations):
 def verifier(out, c, serie):
     cas, arch = c["cas"], c["arch"]
     mode = CAS[cas]
-    reprise=c.get("gestionnaire_4e1")
+    reprise=c.get("gestionnaire_4e1") or c.get("gestionnaire_4f")
     gel=reprise in ("journal-perdu","non-corroborable")
     cycles = 1 if gel else nombre_cycles(cas,arch)
     admissions = re.findall(r"E3C admission generation=(\d+) precedente=(\d+) ancienne_capacite_valide=false", serie)
@@ -293,6 +296,6 @@ def verifier(out, c, serie):
             exiger("NET Q35 etat=Ok(())" in serie and qi["racine_vide"] and qi["cookie"]==1+2*cycles,qi)
             rec = re.findall(r"E3C VT-d generation=(\d+) bme=0 reset=0 cc=global iotlb=global dr=1 dw=1 iqh=(\d+) iqt=(\d+) cookie=(\d+) fsts=0",serie)
             exiger(len(rec)==cycles and all(int(g)==i+1 and int(cookie)==3+2*i and head==tail
-                   and int(head)==48*int(cookie) for i,(g,head,tail,cookie) in enumerate(rec)),rec)
+                   and int(head)==(48*int(cookie))%4096 for i,(g,head,tail,cookie) in enumerate(rec)),rec)
         evidence["memoire_finale"]=dict(nic=22 if absent or manque else 0,tables_privees=5 if absent or manque else 0,permanent=3)
     return evidence

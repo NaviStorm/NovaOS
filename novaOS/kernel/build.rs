@@ -207,8 +207,15 @@ fn main() {
         &format!("-Clink-arg=-T{}", linker.display()),
     ]
     .join("\x1f");
-    if env::var_os("CARGO_FEATURE_GESTIONNAIRE_4D").is_some() {
-        assert_eq!(target, "aarch64-unknown-none-softfloat");
+    let arm = env::var_os("CARGO_FEATURE_GESTIONNAIRE_4D").is_some();
+    let q35 = env::var_os("CARGO_FEATURE_GESTIONNAIRE_4F").is_some();
+    println!("cargo::rustc-check-cfg=cfg(gestionnaire_dynamique)");
+    println!("cargo::rustc-check-cfg=cfg(gestionnaire_reprise)");
+    if arm || q35 {
+        assert!(!arm || !q35, "Un seul profil de gestionnaire");
+        let isa = if q35 { "x86_64" } else { "aarch64" };
+        assert_eq!(target, if q35 { "x86_64-unknown-none" } else { "aarch64-unknown-none-softfloat" });
+        println!("cargo::rustc-cfg=gestionnaire_dynamique");
         println!("cargo::rerun-if-env-changed=NOVAOS_4D_REFUS");
         let manager = user.join("gestionnaire-4d");
         println!("cargo::rerun-if-changed=../user/gestionnaire-4d/acteur.ld");
@@ -217,10 +224,11 @@ fn main() {
         println!("cargo::rerun-if-changed=../libs/catalogue-pilotes");
         println!("cargo::rerun-if-changed=../libs/gestionnaire-pilotes");
         assert!(Command::new("python3").args(["-B"]).arg(manager.join("preparer.py"))
-            .arg(out.join("net_preparation.bin")).arg(&out).status().unwrap().success());
+            .arg(out.join("net_preparation.bin")).arg(&out).arg(isa).status().unwrap().success());
         let mut commande = Command::new(env::var_os("CARGO").unwrap());
         commande.args(["build", "--release", "--offline", "--locked", "--target", &target]);
-        if env::var_os("CARGO_FEATURE_GESTIONNAIRE_4E1").is_some() {
+        if q35 || env::var_os("CARGO_FEATURE_GESTIONNAIRE_4E1").is_some() {
+            println!("cargo::rustc-cfg=gestionnaire_reprise");
             println!("cargo::rerun-if-env-changed=NOVAOS_4E1_CAS");
             commande.args(["--features", "reprise-4e1"]);
         }

@@ -23,7 +23,7 @@ fn profil() -> u64 {
     }
 }
 
-#[cfg(feature = "gestionnaire-4d")]
+#[cfg(gestionnaire_dynamique)]
 pub(crate) mod dynamique;
 
 fn creer(mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child, u64)> {

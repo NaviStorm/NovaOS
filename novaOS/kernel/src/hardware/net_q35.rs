@@ -12,6 +12,8 @@ use crate::{
 
 #[cfg(feature="ethernet-v1-port")]
 mod retrait;
+#[cfg(feature = "gestionnaire-4f")]
+pub(in crate::hardware) mod gestionnaire;
 
 const SID: u16 = 7 << 3;
 const IOVA: u64 = 0x1000_0000;
@@ -130,7 +132,7 @@ impl RecuQi {
 }
 
 fn soumettre_invalidation(reg: Region, frames: &[Frame], index: u64, cookie: u32, line: usize) -> Result<RecuQi, &'static str> {
-    if index > 4096-48 || index % 16 != 0 || cookie == 0
+    if index >= 4096 || index % 16 != 0 || cookie == 0
         || frames[7].mem.r32(0) != cookie-1 || reg.r64(0x90) != frames[6].pa
         || reg.r64(0x20) != frames[0].pa || reg.r64(0x80) != index
         || reg.r64(0x88) != index || reg.r32(0x34) != 0 {
@@ -138,15 +140,16 @@ fn soumettre_invalidation(reg: Region, frames: &[Frame], index: u64, cookie: u32
     }
     let q = frames[6].mem;
     // CC global et IOTLB global, DR et DW. Les mots réservés restent nuls.
-    q.w64(index as usize + 8, 0);
-    q.w64(index as usize + 24, 0);
-    q.w64(index as usize, 0x11);
-    q.w64(index as usize + 16, 0xd2);
-    q.w64(index as usize + 32, (u64::from(cookie) << 32) | 0x25);
-    q.w64(index as usize + 40, frames[7].pa);
+    let slot = |offset: u64| ((index + offset) % 4096) as usize;
+    for (off, lo, hi) in [(0, 0x11, 0), (16, 0xd2, 0),
+        (32, (u64::from(cookie) << 32) | 0x25, frames[7].pa)] {
+        q.w64(slot(off + 8), hi);
+        q.w64(slot(off), lo);
+    }
     publier(&frames[6..7], line);
-    reg.w64(0x88, index + 48);
-    Ok(RecuQi { root: frames[0].pa, queue: frames[6].pa, statut: frames[7], fin: index+48, cookie })
+    let fin = (index + 48) % 4096;
+    reg.w64(0x88, fin);
+    Ok(RecuQi { root: frames[0].pa, queue: frames[6].pa, statut: frames[7], fin, cookie })
 }
 
 fn invalider(reg: Region, frames: &[Frame], index: u64, cookie: u32, line: usize) -> Result<(), &'static str> {
@@ -224,6 +227,8 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     crate::sched::process::net_preparation::mesurer("net_initial");
     let reference = memory::pinned_dma_frames();
     let mut frames = [EMPTY; 30];
+    #[cfg(feature = "gestionnaire-4f")]
+    let mut premier = Some(gestionnaire::selectionner()?);
     reserver_cadres(&mut frames, false)?;
     #[cfg(feature="ethernet-v1-port")]
     let mut generation_exposee = 0;
@@ -248,6 +253,8 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     let cycles = if cfg!(feature="ethernet-v1-port") {
         match option_env!("NOVAOS_ETH3_CASE") {
             Some("cycles" | "cycles-court") => 4,
+            #[cfg(feature = "gestionnaire-4f")]
+            Some("cycles-256-court") => 256,
             Some("rattrapage" | "recu-vtd-differe") => 2,
             _ => 1,
         }
@@ -255,12 +262,17 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
     for cycle in 0..cycles {
     #[cfg(feature="ethernet-v1-port")]
     { generation_exposee = cycle + 1; }
+    #[cfg(feature = "gestionnaire-4f")]
+    let (_mesure, decision) = match premier.take() {
+        Some(p) => p,
+        None => gestionnaire::selectionner()?,
+    };
     if cycle!=0 {
         if !pairs_fermes() || reg.r32(0x1c) != ROOT | QI | TE || frames[0].mem.r64(0)!=0 { return Err("controleur non retire"); }
         reserver_cadres(&mut frames,true)?;
     }
     let cookie=2+2*cycle;
-    let offset=48+96*u64::from(cycle);
+    let offset=(48+96*u64::from(cycle)) % 4096;
     // Une seule feuille de second niveau, exactement 22 cadres NIC.
     for (idx, shift) in [39, 30, 21].into_iter().enumerate() {
         frames[2 + idx]
@@ -284,13 +296,16 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
         "NET Q35 domaine=3 sid=56 iova={IOVA:#x} root={:#x} qi={:#x} recu={:#x} cookie={cookie} blocs=22 cadres=30",
         frames[0].pa, frames[6].pa, frames[7].pa
     ));
+    #[cfg(feature = "gestionnaire-4f")]
+    let acteur = gestionnaire::admettre(reg, &frames, u64::from(cycle) + 1, decision)?;
     #[cfg(feature = "net-event-idx")]
     let negotiation = match scenario_ethernet {
         #[cfg(feature="net-ethernet-lab")]
         true => {
             // Le domaine appartient exclusivement au titulaire. Une issue incertaine
             // conserve tous ses cadres épinglés jusqu'à arrêt de la VM.
-            let trafic = super::block::net_event::trafic_q35(frames[8..].try_into().unwrap(),u64::from(cycle)+1);
+            let trafic = super::block::net_event::trafic_q35(frames[8..].try_into().unwrap(),u64::from(cycle)+1,
+                #[cfg(feature = "gestionnaire-4f")] acteur);
             if trafic.is_err() || reg.r32(0x34) != 0 {
                 hal::log(format_args!("NET Q35 L2 quarantaine={trafic:?}"));
                 #[cfg(feature="ethernet-v1-port")]
@@ -316,7 +331,7 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
         publier(&frames[..1], line);
         #[cfg(feature="ethernet-v1-port")]
         {
-            let attente = match soumettre_invalidation(reg,&frames,offset+48,cookie+1,line) {
+            let attente = match soumettre_invalidation(reg,&frames,(offset+48)%4096,cookie+1,line) {
                 Ok(r) => r,
                 Err(e) => { retrait::garer(&mut frames,cycle+1,None)?; return Err(e); }
             };
@@ -333,16 +348,20 @@ pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
         }
         #[cfg(not(feature="ethernet-v1-port"))]
         {
-            invalider(reg,&frames,offset+48,cookie+1,line)?;
+            invalider(reg,&frames,(offset+48)%4096,cookie+1,line)?;
             if !pairs_fermes() || reg.r32(0x1c) != ROOT | QI | TE
                 || (0..512).any(|i| frames[0].mem.r64(i*8)!=0) { return Err("retrait incertain"); }
         }
+        #[cfg(feature = "gestionnaire-4f")]
+        gestionnaire::autoriser_restitution(u64::from(cycle) + 1, &frames, cookie + 1)?;
         for (i, f) in frames.iter_mut().enumerate() {
             if !permanent(i) {
                 unsafe { memory::release_dma(f.pa) }
                 *f=EMPTY;
             }
         }
+        #[cfg(feature = "gestionnaire-4f")]
+        gestionnaire::restitue(u64::from(cycle) + 1);
         #[cfg(feature="net-ethernet-lab")]
         crate::sched::process::net_preparation::mesurer("net_final");
         let gardes = memory::pinned_dma_frames()

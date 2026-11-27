@@ -333,7 +333,7 @@ impl Journal {
     }
     fn corroborer(&self) -> bool {
         self.boot == crate::boot_id::current().unwrap_or([0; 16])
-            && self.controller == 40
+            && self.controller == CONTROLEUR
             && self.group == 56
             && self.inventory == INVENTORY.load(Ordering::Acquire)
             && (self.generation == 0
@@ -634,7 +634,7 @@ pub(super) fn ouvrir(controls: &mut Controle, decision: &Decision) -> Option<()>
         pub_delivered: false,
         state: 0,
         launches: 0,
-        controller: 40,
+        controller: CONTROLEUR,
         group: decision.sid,
     };
     *lock = Some(Session {
@@ -646,7 +646,7 @@ pub(super) fn ouvrir(controls: &mut Controle, decision: &Decision) -> Option<()>
     });
     drop(lock);
     hal::log(format_args!(
-        "E41 autorite boot={:032x} controleur=40 groupe={} inventaire={}",
+        "E41 autorite boot={:032x} controleur={CONTROLEUR} groupe={} inventaire={}",
         u128::from_le_bytes(boot),
         decision.sid,
         decision.epoch
@@ -687,6 +687,23 @@ pub(super) fn ouvrir(controls: &mut Controle, decision: &Decision) -> Option<()>
         s.panne("apres-selection", wire::MANAGER)
     })
 }
+/// Le Q35 publie la table entière avant l'invalidation. Un seul relevé du
+/// propriétaire atteste les 22 traductions dans la même génération.
+#[cfg(feature = "gestionnaire-4f")]
+pub(crate) fn lot_vtd(g: u64, frames: [u64; 22]) -> bool {
+    avec(|s| {
+        if g == 0 || s.journal.generation != 0 || frames.contains(&0)
+            || crate::hardware::block::carte_bail_nic(g, frames) != Some(FULL) {
+            return None;
+        }
+        s.journal.generation = g;
+        s.journal.frames = frames;
+        s.journal.mapped = FULL;
+        s.panne("reservation", wire::MANAGER)
+    }).is_some()
+}
+
+#[cfg(target_arch = "aarch64")]
 pub(crate) fn map(g: u64, n: usize, pa: u64) -> bool {
     avec(|s| {
         let j = &mut s.journal;

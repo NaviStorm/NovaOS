@@ -27,7 +27,7 @@ static COUNT: AtomicU64 = AtomicU64::new(0);
 static ACTEURS: [AtomicU64; 3] = [const { AtomicU64::new(0) }; 3];
 static IPC: [[AtomicU64; 6]; 3] = [const { [const { AtomicU64::new(0) }; 6] }; 3];
 pub(crate) fn compter(pid: u64, id: u64, args: [u64; 3], wakes: u64) {
-    #[cfg(feature="gestionnaire-4d")]
+    #[cfg(gestionnaire_dynamique)]
     if id==abi::IPC_SEND {super::dynamique::horodater(pid,id,args[0]);}
     profil_3b::appel(pid, id, args, wakes);
     let colonne = match id {
@@ -134,13 +134,13 @@ fn setup(
     generation: u64,
     case: u64,
     total: u64,
-    #[cfg(feature="gestionnaire-4d")] ticket: super::dynamique::Ticket,
+    #[cfg(gestionnaire_dynamique)] ticket: super::dynamique::Ticket,
 ) -> Option<(Child, Child, Child, u64, [[u64; 2]; 2])> {
     let _guard = Guard::new();
     let boot = crate::boot_id::current()?;
-    #[cfg(feature="gestionnaire-4d")]
+    #[cfg(gestionnaire_dynamique)]
     let (driver, hw) = super::dynamique::lancer(ticket, generation)?;
-    #[cfg(not(feature="gestionnaire-4d"))]
+    #[cfg(not(gestionnaire_dynamique))]
     let (driver, hw) = creer(3, None, generation)?;
     let mut group = [Some(driver), None, None];
     let mut reserves: [Option<Child>; 3] = [None, None, None];
@@ -148,13 +148,13 @@ fn setup(
     let attempt = (|| -> Result<(), u64> {
         group[1] = Some(create_image(SERVICE, &[], None, None).map_err(ipc::launch_error)?);
         group[2] = Some(create_image(CLIENT, &[], None, None).map_err(ipc::launch_error)?);
-        let six=cfg!(feature="gestionnaire-4d") && option_env!("NOVAOS_ETH3_CASE")==Some("six-boites");
+        let six=cfg!(gestionnaire_dynamique) && option_env!("NOVAOS_ETH3_CASE")==Some("six-boites");
         if case == 9 || six {
             for child in &mut reserves {
                 *child = Some(create_image(CLIENT, &[], None, None).map_err(ipc::launch_error)?);
             }
             let ids = reserves.each_ref().map(|slot| slot.as_ref().unwrap().0);
-            with(|s| ipc::liaison_ethernet::remplir(s, ids,#[cfg(feature="gestionnaire-4d")] if six {3}else{4}))?;
+            with(|s| ipc::liaison_ethernet::remplir(s, ids,#[cfg(gestionnaire_dynamique)] if six {3}else{4}))?;
         }
         let [d, s, c] = group.each_ref().map(|v| v.as_ref().unwrap().0);
         with(|k| {
@@ -203,9 +203,9 @@ fn setup(
             if roots != [0, 4, 1] {
                 return Err(abi::LIMIT);
             }
-            #[cfg(not(feature="gestionnaire-4d"))]
+            #[cfg(not(gestionnaire_dynamique))]
             log_session(k,[c,s,d],generation,case,(identite.instance,identite.generation),epoch);
-            #[cfg(feature="gestionnaire-4d")]
+            #[cfg(gestionnaire_dynamique)]
             hal::log(format_args!("D4 coexistence mode={case} racines={roots:?} boites={} endpoints={} ipc_pages={}",
                  k.ipc.pages_bulk_count(),k.ipc.endpoint_count(),k.ipc.pages()));
             Ok::<(), u64>(())
@@ -264,7 +264,7 @@ pub(crate) struct EthernetActor {
 }
 
 impl EthernetActor {
-    pub(crate) fn reserve(generation: u64, #[cfg(feature="gestionnaire-4d")] decision: Option<super::dynamique::Decision>) -> Option<Self> {
+    pub(crate) fn reserve(generation: u64, #[cfg(gestionnaire_dynamique)] decision: Option<super::dynamique::Decision>) -> Option<Self> {
         let case = match option_env!("NOVAOS_ETH3_CASE") {
             Some("reset-court" | "reset-differe" | "reset-invalide" | "reset-absent" |
                  "reset-sans-option" | "reset-iommu-absent" | "reset-iommu-differe") => 8,
@@ -273,7 +273,7 @@ impl EthernetActor {
             Some("reset-incertain") => 4,
             Some("data") => 2,
             Some("veille") => 7,
-            Some("court" | "cycles-court" | "preuve-absente" | "recu-vtd-absent" | "recu-vtd-differe") => 8,
+            Some("court" | "cycles-256-court" | "cycles-court" | "preuve-absente" | "recu-vtd-absent" | "recu-vtd-differe") => 8,
             Some("revocation") => 6,
             Some("deces" | "deces-recu-tx-absent" | "duo-retrait" | "duo-differe" | "duo-absent" | "duo-sans-reset" | "duo-reouverture" | "duo-postdisque") => 3,
             Some("endurance") => 5,
@@ -312,30 +312,30 @@ impl EthernetActor {
         }
         // Une incarnation refusée ou abandonnée ne peut jamais rouvrir un numéro consommé.
         let precedente = reserver_generation(generation)?;
-        if precedente != 0 && matches!(option_env!("NOVAOS_ETH3_CASE"), Some("cycles" | "cycles-256" | "duo-cycles" | "duo-reouverture" | "cycles-court" | "rattrapage" | "recu-arm-differe" | "recu-vtd-differe"))
+        if precedente != 0 && matches!(option_env!("NOVAOS_ETH3_CASE"), Some("cycles" | "cycles-256" | "cycles-256-court" | "duo-cycles" | "duo-reouverture" | "cycles-court" | "rattrapage" | "recu-arm-differe" | "recu-vtd-differe"))
             && (reserver_generation(precedente).is_some() || reserver_generation(generation).is_some()) {
             return None;
         }
         measure("eth3_initial");
-        #[cfg(not(feature="gestionnaire-4d"))]
+        #[cfg(not(gestionnaire_dynamique))]
         let base = heap::audit(false).free_pages;
-        #[cfg(feature="gestionnaire-4d")]
+        #[cfg(gestionnaire_dynamique)]
         let (ticket,controle,base)=decision?.preparer(generation)?;
-        let Some(groupe)=setup(generation, case, total, #[cfg(feature="gestionnaire-4d")] ticket) else {
+        let Some(groupe)=setup(generation, case, total, #[cfg(gestionnaire_dynamique)] ticket) else {
             // setup a annulé les processus non publiés sous sa garde d’ordonnancement.
-            #[cfg(feature="gestionnaire-4e1")]
+            #[cfg(gestionnaire_reprise)]
             super::dynamique::reprise::refuser(generation)?;
             return None
         };
-        #[cfg(feature="gestionnaire-4d")]
+        #[cfg(gestionnaire_dynamique)]
         measure("4d_acteurs_attribues");
         let ancienne_cle = DERNIERE_CLE.swap(groupe.3, Relaxed);
         let ancienne_valide = with(|k| k.ipc.lab_can_submit(groupe.0.0, ancienne_cle));
         let acteur = Self { groupe: Some(groupe), generation, case, base };
-        #[cfg(feature="gestionnaire-4d")]
+        #[cfg(gestionnaire_dynamique)]
         {
             let (d,s,c,_,_)=acteur.groupe.as_ref()?;
-            if !controle.confirmer(d.0, #[cfg(feature="gestionnaire-4e1")] generation, #[cfg(feature="gestionnaire-4e1")] acteur.groupe.as_ref()?.3){return None}
+            if !controle.confirmer(d.0, #[cfg(gestionnaire_reprise)] generation, #[cfg(gestionnaire_reprise)] acteur.groupe.as_ref()?.3){return None}
             let boot=crate::boot_id::current()?;
             with(|k|{
                 let id=k.processes.get(c.0).instance.identity(Some(boot))?;
@@ -425,7 +425,7 @@ pub(crate) fn ethernet(
     pendant: impl FnOnce() -> bool,
     operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
 ) -> bool {
-    let Some(a) = EthernetActor::reserve(generation, #[cfg(feature="gestionnaire-4d")] None) else {
+    let Some(a) = EthernetActor::reserve(generation, #[cfg(gestionnaire_dynamique)] None) else {
         hal::log(format_args!(
             "ETH3 refus ouverture bootid={} cadres={}",
             crate::boot_id::current().is_some(),
@@ -507,7 +507,7 @@ pub(crate) fn ethernet_actor(
             break;
         }
         sequence = seq;
-        #[cfg(feature="gestionnaire-4d")]
+        #[cfg(gestionnaire_dynamique)]
         if matches!(op,1|5){super::dynamique::piles_port([pid,sp,cp],op);}
         if op == 1 {
             // Lecture d'un témoin de qualification. Le noyau authentifie les droits séparément.
@@ -523,11 +523,11 @@ pub(crate) fn ethernet_actor(
         last = ticks();
         calls += 1;
         let debut_mediation = hal::timer::counter();
-        #[cfg(feature="gestionnaire-4e1")]
+        #[cfg(gestionnaire_reprise)]
         let differer=matches!(super::dynamique::reprise::scenario(),"publication"|"gestionnaire-actif"|"lanceur-actif") && op>=32 && publish.is_some();
-        #[cfg(not(feature="gestionnaire-4e1"))]
+        #[cfg(not(gestionnaire_reprise))]
         let differer=false;
-        #[cfg(feature="gestionnaire-4e1")]
+        #[cfg(gestionnaire_reprise)]
         if differer && !super::dynamique::reprise::intention_publication(generation,seq){status=Err(abi::REFUSED);break}
         let outcome = with(|k| {
             if !k.ipc.lab_can_submit(pid, hw) || k.processes.get(pid).outcome.is_some() {
@@ -585,14 +585,14 @@ pub(crate) fn ethernet_actor(
                 break;
             }
         };
-        #[cfg(feature="gestionnaire-4e1")]
+        #[cfg(gestionnaire_reprise)]
         if differer {
             let Some(check)=publish.take() else {status=Err(abi::REFUSED);break};
             let Some(recu)=res.ok().and_then(|n|super::dynamique::reprise::publication(generation,seq,n,check)) else {status=Err(abi::REFUSED);break};
             peak=peak.min(heap::audit(false).free_pages);measure("eth3_publication");
             if with(|k|ecrire(k,pid,&[(5,recu as u64),(4,abi::OK),(3,seq)])).is_err() || !super::dynamique::reprise::accuser_publication(generation,seq){status=Err(abi::REVOKED);break}
         }
-        #[cfg(feature="gestionnaire-4e1")]
+        #[cfg(gestionnaire_reprise)]
         if op==8 && res.is_ok() && !super::dynamique::reprise::reception_active(generation,seq){status=Err(abi::REFUSED);break}
         if case == 1 && op == 2 && res == Err(abi::WOULD_BLOCK) {
             hal::log(format_args!(
@@ -623,7 +623,7 @@ pub(crate) fn ethernet_actor(
     }
     CLIENT_PID.store(0, Relaxed);
     with(|s| s.ipc.lab_close_sender(pid, hw));
-    #[cfg(feature="gestionnaire-4e1")]
+    #[cfg(gestionnaire_reprise)]
     super::dynamique::reprise::etat_port(generation);
     let rt = operation(5, 0, &mut frame);
     // Les appels ordinaires expirent aussi si le titulaire d'un prêt disparaît.
@@ -689,9 +689,9 @@ pub(crate) fn ethernet_actor(
     measure("eth3_retrait");
     let fin = heap::audit(false).free_pages;
     hal::log(format_args!("ETH3 cadres avant={base} apres={fin}"));
-    #[cfg(feature="gestionnaire-4e1")]
+    #[cfg(gestionnaire_reprise)]
     let compte_port=super::dynamique::reprise::port_collecte();
-    #[cfg(not(feature="gestionnaire-4e1"))]
+    #[cfg(not(gestionnaire_reprise))]
     let compte_port=base==fin || stockage_partage;
     status.is_ok()
         && rt.is_ok()

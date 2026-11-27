@@ -129,7 +129,7 @@ class Pair:
             numero %= 144
         elif self.cas == "duo-reouverture":
             numero %= 4
-        elif self.cas in ("cycles-court", "recu-vtd-differe", "reset-court", "reset-iommu-differe", "mmio-differe"):
+        elif self.cas in ("cycles-256-court", "cycles-court", "recu-vtd-differe", "reset-court", "reset-iommu-differe", "mmio-differe"):
             numero = 0
         if self.cas in ("mixte100k", "historique100k"):
             return self.ref.trame_longue(numero,retour)
@@ -261,6 +261,7 @@ def main():
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
     p.add_argument("--delai", type=int, default=90)
     p.add_argument("--six-boites-4d",action="store_true",help="Contrôler six boîtes déjà attribuées avant l’ouverture du port")
+    p.add_argument("--gestionnaire-4f", metavar="SCENARIO", help="Contrôler la reprise et les ressources du profil Q35")
     p.add_argument("--gestionnaire-4e1", metavar="SCENARIO", help="Vérifier les deux acteurs de contrôle survivants du profil ARM 4E.1")
     p.add_argument("--gestionnaire-4d",action="store_true",help="Contrôler le compte physique du port après fermeture de ses liaisons de lancement")
     p.add_argument("--refus-4d", choices=("signature","revision","racines","lancement","attribution","droits","cle-revoquee","distribution","deces-gestionnaire","reservation"))
@@ -268,6 +269,8 @@ def main():
     p.add_argument("--cpu-max", action="store_true", help="Témoin ArmVirt avec RNDR et chargeur direct")
     p.add_argument("--limine-arm", type=Path, help="Second étage Limine de laboratoire identifié")
     a = p.parse_args()
+    if a.gestionnaire_4f and (a.arch != "q35" or not a.cycle_vie or a.gestionnaire_4e1 or a.gestionnaire_4d):
+        p.error("La vérification 4F exige le profil Q35 avec cycle de vie")
     if a.six_boites_4d and (not a.gestionnaire_4d or a.cas!="port"):
         p.error("La pression à six boîtes exige le port nominal 4D")
     if (a.gestionnaire_4d or a.gestionnaire_4e1) and (a.arch!="arm" or not a.esp_verifiee or not a.cycle_vie):
@@ -319,6 +322,8 @@ def main():
         env_vm["NOVAOS_E3E_TX_RECEIPT"] = a.cas.removeprefix("mmio-")
         args[0] = str(binaire)
     report = dict(audit=AUDIT, arch=a.arch, cas=a.cas, elf=digest(a.elf), modele=digest(Path(args[0])), succes=False)
+    if a.gestionnaire_4f:
+        report["gestionnaire_4f"] = a.gestionnaire_4f
     if a.gestionnaire_4e1:
         report["gestionnaire_4e1"]=a.gestionnaire_4e1
     if a.gestionnaire_4d:
@@ -444,7 +449,14 @@ def main():
                                     retire = "NET Q35 retrait cookie=" in serial
                                     if a.cycle_vie:
                                         report["preuve_qi"] = cycle_vie.preuve_qi(vm,stream,serial,retire or a.cas=="recu-vtd-absent")
-                                    if not (a.cycle_vie and a.cas=="recu-vtd-absent"):
+                                    if a.cas == "cycles-256-court" and a.gestionnaire_4f:
+                                        preuve = report["preuve_qi"]
+                                        pages = [preuve[k] for k in ("racine", "queue", "statut")]
+                                        if not preuve["racine_vide"] or len(set(pages)) != 3 or any(
+                                                n % 4096 or not 0 < n <= (256 << 20)-4096 for n in pages):
+                                            raise ValueError("Cadres permanents du contrôleur")
+                                        report["cadres_vtd_controles"] = len(pages)
+                                    elif not (a.cycle_vie and a.cas=="recu-vtd-absent"):
                                         cycles = cycle_vie.nombre_cycles(a.cas,"q35") if retire and a.cycle_vie else 1
                                         report["cadres_vtd_controles"]=verifier_tables(vm,stream,serial.encode(),out,retire,cycles)
                         if "Synchronous Exception" in serial:
@@ -598,7 +610,7 @@ def main():
                     details="mode=9 racines=[0, 4, 1] boites_globales=0 "
                     report["pression_reelle"]=bool(re.search(r"D4 coexistence mode=9 racines=\[0, 4, 1\] boites=8 endpoints=\d+ ",serial))
                     report["succes"] &= report["pression_reelle"]
-                if a.gestionnaire_4e1:
+                if a.gestionnaire_4e1 or a.gestionnaire_4f:
                     # Les compteurs détaillés des liens de contrôle sont vérifiés dans cycle_vie.
                     details=details.split(" endpoints_globaux=")[0].rstrip()+" "
                 report["profil_verifie"]=details in serial

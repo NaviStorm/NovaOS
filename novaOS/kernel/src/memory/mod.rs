@@ -143,7 +143,7 @@ impl Memory {
     pub(crate) fn release_kernel_frame(&mut self, frame: KernelFrame) {
         self.frames.release(frame.physical);
     }
-    #[cfg(feature="gestionnaire-4d")]
+    #[cfg(gestionnaire_dynamique)]
     pub(crate) fn cycle_minimum(&mut self, open:bool)->Option<u64> {
         if open {self.frames.cycle_minimum.replace(self.frames.available)} else {self.frames.cycle_minimum.take()}
     }

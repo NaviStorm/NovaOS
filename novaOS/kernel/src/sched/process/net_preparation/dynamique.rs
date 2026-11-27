@@ -1,6 +1,6 @@
 //! Profil ARM fermé. Le superviseur garde la seule autorité matérielle 3E.
 use super::*;
-#[cfg(feature="gestionnaire-4e1")]
+#[cfg(gestionnaire_reprise)]
 pub(crate) mod reprise;
 use core::sync::atomic::{AtomicU64, Ordering};
 const MANAGER: &[u8] = include_bytes!(concat!(env!("OUT_DIR"), "/gestionnaire.elf"));
@@ -79,7 +79,7 @@ impl Decision {
     }
 }
 fn actors(epoch: u64, id: u64, sid: u64, mode: u64, boot: u64) -> Option<(Child, Child, u64, u64)> {
-    #[cfg(feature="gestionnaire-4e1")]
+    #[cfg(gestionnaire_reprise)]
     let ancienne=reprise::ancienne_selection();
     let _guard = Guard::new();
     let m = create_image(MANAGER, &[], None, None).ok()?;
@@ -139,7 +139,7 @@ fn actors(epoch: u64, id: u64, sid: u64, mode: u64, boot: u64) -> Option<(Child,
             })
             .map_err(|_| crate::abi::NO_MEMORY)?;
         }
-        #[cfg(feature="gestionnaire-4e1")]
+        #[cfg(gestionnaire_reprise)]
         {
             reprise::installer(s,m.0,notify,ancienne)?;
             reprise::installer(s,p.0,lanceur,(0,0))?;
@@ -191,7 +191,7 @@ impl Cycle {
 }
 impl Drop for Cycle {
     fn drop(&mut self) {
-        #[cfg(feature="gestionnaire-4e1")]
+        #[cfg(gestionnaire_reprise)]
         reprise::fin();
         let (min, end) =
             heap::with_pages(|m| Ok((m.cycle_minimum(false).unwrap(), m.free_pages()))).unwrap();
@@ -276,7 +276,7 @@ pub(super) fn piles_port(ids: [Pid; 3], op: u64) {
     });
 }
 pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
-    #[cfg(feature="gestionnaire-4e1")]
+    #[cfg(gestionnaire_reprise)]
     let _selection=reprise::reserver_selection()?;
     let epoch = INVENTORY
         .try_update(Ordering::AcqRel, Ordering::Acquire, |n| {
@@ -298,7 +298,7 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
         _ => 0,
     };
     let boot = crate::boot_id::current()?;
-    #[cfg(feature="gestionnaire-4e1")]
+    #[cfg(gestionnaire_reprise)]
     hal::log(format_args!("E41 demarrage boot={:032x} inventaire={epoch}",u128::from_le_bytes(boot)));
     let lo = u64::from_le_bytes(boot[..8].try_into().ok()?);
     let hi = u64::from_le_bytes(boot[8..].try_into().ok()?);
@@ -316,7 +316,7 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
         ));
         return None;
     };
-    #[cfg(feature="gestionnaire-4e1")]
+    #[cfg(gestionnaire_reprise)]
     if reprise::premier_avant(){
         let dep=demande(m.0,key,true);
         if dep!=Some((1,epoch,1)){stop(m);stop(p);return None}
@@ -426,7 +426,7 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
     if !decision.actuelle(id, sid) {
         return None;
     }
-    #[cfg(feature="gestionnaire-4e1")]
+    #[cfg(gestionnaire_reprise)]
     {
         let mut c=decision.liaison.take()?;
         reprise::ouvrir(&mut c,&decision)?;
@@ -439,7 +439,7 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
 
 fn sceller(d: &Decision) -> Option<user::SealedImage> {
     let mut digest = d.digest;
-    if option_env!("NOVAOS_4D_REFUS") == Some("lancement") || (cfg!(feature="gestionnaire-4e1") && option_env!("NOVAOS_4E1_CAS")==Some("refus-certain")) {
+    if option_env!("NOVAOS_4D_REFUS") == Some("lancement") || (cfg!(gestionnaire_reprise) && option_env!("NOVAOS_4E1_CAS")==Some("refus-certain")) {
         digest[0] ^= 1;
     }
     let epoch = d.epoch;
@@ -497,9 +497,9 @@ impl Controle {
             demande(p.0, self.key, false) == Some((op, self.epoch | (1 << 63), id))
         })
     }
-    #[cfg(feature="gestionnaire-4e1")]
+    #[cfg(gestionnaire_reprise)]
     pub(super) fn confirmer(self,pid:Pid,g:u64,broker:u64)->bool{reprise::cree(pid,g,broker)}
-    #[cfg(not(feature="gestionnaire-4e1"))]
+    #[cfg(not(gestionnaire_reprise))]
     pub(super) fn confirmer(mut self, pid: Pid) -> bool {
         let inc = with(|s| s.processes.get(pid).instance.serial);
         if self
@@ -540,7 +540,7 @@ pub(super) struct Ticket {
     generation: u64,
 }
 impl Decision {
-    #[cfg(feature="gestionnaire-4e1")]
+    #[cfg(gestionnaire_reprise)]
     pub(super) fn preparer(mut self,generation:u64)->Option<(Ticket,Controle,u64)>{
         if !self.actuelle(self.id,self.sid){return None}
         let controle=self.liaison.take()?;
@@ -550,7 +550,7 @@ impl Decision {
         reprise::engager(generation)?;
         Some((Ticket{decision:self,image,generation},controle,base))
     }
-    #[cfg(not(feature="gestionnaire-4e1"))]
+    #[cfg(not(gestionnaire_reprise))]
     pub(super) fn preparer(mut self, generation: u64) -> Option<(Ticket, Controle, u64)> {
         if !self.actuelle(self.id, self.sid) || generation == 0 {
             return None;

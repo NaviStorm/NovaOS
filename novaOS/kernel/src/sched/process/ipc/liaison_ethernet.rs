@@ -24,7 +24,7 @@ pub(in crate::sched::process) fn installer(
     }
     Ok(([req, rep], [data, back]))
 }
-#[cfg(feature = "gestionnaire-4d")]
+#[cfg(gestionnaire_dynamique)]
 pub(in crate::sched::process) fn controle(s: &mut Core, client: Pid, manager: Pid) -> Res<([u64;2],[u64;2])> {
     let req = s.ipc.create(client)?;
     let rep = s.ipc.create(client)?;
@@ -39,8 +39,8 @@ pub(in crate::sched::process) fn controle(s: &mut Core, client: Pid, manager: Pi
     Ok(([req,rep],[rx,tx]))
 }
 /// Liens IPC ordinaires préalloués par le banc avant la négociation Ethernet.
-pub(in crate::sched::process) fn remplir(s: &mut Core, ids: [Pid; 3],#[cfg(feature="gestionnaire-4d")] par_acteur:usize) -> Res<()> {
-    #[cfg(not(feature="gestionnaire-4d"))]
+pub(in crate::sched::process) fn remplir(s: &mut Core, ids: [Pid; 3],#[cfg(gestionnaire_dynamique)] par_acteur:usize) -> Res<()> {
+    #[cfg(not(gestionnaire_dynamique))]
     let par_acteur=4;
     if !(3..=4).contains(&par_acteur){return Err(REFUSED)}
     for owner in &ids[..2] {

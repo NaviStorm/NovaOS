@@ -339,7 +339,7 @@ impl UserSpace {
     }
 
     /// Le port 4D compare la vue CPU privée avant de rendre le processus exécutable.
-    #[cfg(feature="gestionnaire-4d")]
+    #[cfg(gestionnaire_dynamique)]
     pub(crate) fn verifier_image_chargee(&self,m:&mut Memory,objet:&SealedImage)->Result<(usize,usize)> {
         let bytes=objet.bytes();
         let elf=Elf::parse(bytes)?;

@@ -1,5 +1,5 @@
 schema="novaos.driver/1"
-id="org.novaos.lab.virtio-net-arm"
+id="org.novaos.lab.virtio-net-@PORT@"
 version=[1,0,0]
 security_epoch=3
 origin="laboratoire"
@@ -12,14 +12,14 @@ provides=["ethernet/1.0"]
 required_caps=["tx","rx"]
 optional_caps=[]
 [compat]
-architectures=["aarch64"]
+architectures=["@ISA@"]
 abi_major=1
 os_min=[0,20,0]
 os_before=[0,21,0]
 required_features=["courtier"]
 [[image]]
-isa="aarch64"
-member="virtio-net-arm"
+isa="@ISA@"
+member="virtio-net-@PORT@"
 package_sha256="@PAQUET@"
 elf_sha256="@ELF@"
 [[match]]
@@ -27,7 +27,7 @@ bus="pci"
 vendor=0x1af4
 device=0x1041
 [[dependency]]
-id="org.novaos.lab.courtier-arm"
+id="org.novaos.lab.courtier-@PORT@"
 kind="system-profile"
 min=[1,0,0]
 before=[2,0,0]

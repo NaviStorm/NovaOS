@@ -236,7 +236,7 @@ impl Domain {
     pub(super) fn pages_bulk_count(&self)->usize{self.pages_bulk.ids().count()}
     #[cfg(feature="ethernet-v1-port")]
     pub(super) fn endpoint_count(&self)->usize{self.ends.ids().count()}
-    #[cfg(feature="gestionnaire-4d")]
+    #[cfg(gestionnaire_dynamique)]
     pub(super) fn detail_pages(&self)->[usize;5] {
         [self.ends.pages(),self.nodes.pages(),self.locals.pages(),self.waits.pages(),self.pages_bulk.pages()].map(|n|n as usize)
     }
@@ -445,7 +445,7 @@ impl Domain {
         Ok(key)
     }
     /// Racine privée, uniquement RECEIVE dès sa première publication à ce PID.
-    #[cfg(any(feature = "materiel-lab", feature = "gestionnaire-4e1"))]
+    #[cfg(any(feature = "materiel-lab", gestionnaire_reprise))]
     pub(super) fn lab_receiver(&mut self, pid: Pid) -> Res<u64> {
         let key = self.create(pid)?;
         let node = self.lookup(pid, key, ALL).expect("racine à peine créée");
