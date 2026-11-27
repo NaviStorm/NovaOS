@@ -11,7 +11,7 @@ CAS = {"cycles-256": 0, "port": 0, "cycles": 0, "court": 8, "cycles-court": 8, "
        "segment-interrompu": 23, "rattrapage": 23, "recu-collecte": 24, "echo1514": 13}
 
 
-RESET = {"echo1514-reset":13, "reset-court":8, "reset-differe":8, "reset-absent":8, "reset-invalide":8,
+RESET = {"mmio-absent":8, "mmio-differe":8, "mmio-invalide":8, "echo1514-reset":13, "reset-court":8, "reset-differe":8, "reset-absent":8, "reset-invalide":8,
          "reset-sans-option":8, "reset-iommu-absent":8, "reset-iommu-differe":8,
          "reset-deces":3, "reset-revocation":6, "reset-incertain":4}
 NOUVEAUX += tuple(RESET)
@@ -28,7 +28,7 @@ def nombre_cycles(cas, arch):
         return 256
     if cas == "cycles" or (cas == "cycles-court" and arch == "q35"):
         return 4
-    return 2 if cas in ("rattrapage", "recu-vtd-differe", "recu-arm-differe", "reset-court", "reset-iommu-differe") else 1
+    return 2 if cas in ("rattrapage", "recu-vtd-differe", "recu-arm-differe", "reset-court", "reset-iommu-differe", "mmio-differe") else 1
 
 
 def pages_retenues(rx, tx):
@@ -164,7 +164,7 @@ def preuve_qi(vm, qt, serie, retire):
 
 def verifier_reset(cas, c, serie, generations):
     actif = cas != "reset-sans-option"
-    valide = actif and cas not in ("reset-invalide", "reset-absent")
+    valide = actif and cas not in ("reset-invalide", "reset-absent", "mmio-absent", "mmio-invalide")
     pci = c["capacite_pci_arm"]
     exiger(pci["bar"] == 4 and pci["offset"] == 0 and pci["champ_queue_reset_dans_capacite"]
            and pci["bit_40_offert"] == actif and pci["bit_40_negocie"] == actif, pci)
@@ -175,12 +175,15 @@ def verifier_reset(cas, c, serie, generations):
     attendus = []
     for (pid, inc, gen, ok), session in zip(preuves, sessions):
         exiger((pid,gen) == session and int(inc) > 0 and (ok=="true") == valide, (session, preuves))
-        attendus += [(f,pid,gen) for f in (["0"] if cas == "reset-absent" else ["0","1"])]
+        attendus += [(f,pid,gen) for f in (["0"] if cas in ("reset-absent","mmio-absent","mmio-invalide") else ["0","1"])]
     exiger(acquits == attendus, acquits)
     if cas == "reset-absent":
         exiger("reset TX non transmis queue_enable=1" in serie, cas)
     if cas == "reset-differe":
         exiger("livraison reset TX differee" in serie, cas)
+    if cas in ("mmio-absent", "mmio-invalide"):
+        observation = ("incoherent=false attente=Err(Timeout)" if cas=="mmio-absent" else "incoherent=true attente=Ok(())")
+        exiger("E3E reset non confirme file=1 " + observation in serie, (cas,observation))
     return valide
 
 

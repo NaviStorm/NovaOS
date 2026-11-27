@@ -44,12 +44,21 @@ pub(super) fn retirer(nic: &Device, id: Titulaire) -> Option<Recu> {
         }
         reset.w16(0, 1);
         barrier();
-        let confirme = || commun.r16(22) == file && reset.r16(0) == 0 && commun.r16(28) == 0;
-        wait(confirme).ok()?;
+        let lire = || (commun.r16(22), reset.r16(0), commun.r16(28));
+        let mut incoherent = false;
+        let attente = wait(|| {
+            let (selection, en_reset, active) = lire();
+            incoherent = selection != file || en_reset > 1 || active > 1 || commun.r8(20) != 15;
+            incoherent || (en_reset == 0 && active == 0)
+        });
+        if attente.is_err() || incoherent || lire() != (file, 0, 0) {
+            hal::log(format_args!("E3E reset non confirme file={file} incoherent={incoherent} attente={attente:?}"));
+            return None;
+        }
         if file == 1 && option_env!("NOVAOS_ETH3_CASE") == Some("reset-differe") {
             hal::log(format_args!("E3E livraison reset TX differee"));
             crate::sched::sleep(1);
-            if !confirme() { return None; }
+            if lire() != (file, 0, 0) { return None; }
         }
         recus[usize::from(file)] = commun.r16(22);
         hal::log(format_args!("E3E reset file={file} pid={} generation={} queue_reset=0 queue_enable=0", id.0,id.2));

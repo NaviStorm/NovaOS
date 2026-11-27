@@ -129,7 +129,7 @@ class Pair:
             numero %= 144
         elif self.cas == "duo-reouverture":
             numero %= 4
-        elif self.cas in ("cycles-court", "recu-vtd-differe", "reset-court", "reset-iommu-differe"):
+        elif self.cas in ("cycles-court", "recu-vtd-differe", "reset-court", "reset-iommu-differe", "mmio-differe"):
             numero = 0
         if self.cas in ("mixte100k", "historique100k"):
             return self.ref.trame_longue(numero,retour)
@@ -254,6 +254,7 @@ def main():
     p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "filtre", "court", "temoin16", "port","plein","mesure60","mesure1514", "mixte100k","historique100k","historique1514","ancien","choix-data","segment-interrompu","recu-collecte", *cycle_vie.NOUVEAUX, *PERF))
     for name in ("elf", "sortie", "temoin", "archive", "limine", "relais"):
         p.add_argument(name, type=lambda v: Path(v).resolve())
+    p.add_argument("--modele-recus", type=lambda s: Path(s).resolve(), help="Manifeste du modèle ARM de lecture de queue_reset")
     p.add_argument("--trace-registres", action="store_true", help="Capturer les lectures et écritures MMIO du reset ARM sur une série courte")
     p.add_argument("--cycle-vie", action="store_true", help="Vérifier les reçus et la mémoire du profil 3C")
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
@@ -261,6 +262,8 @@ def main():
     p.add_argument("--cpu-max", action="store_true", help="Témoin ArmVirt avec RNDR et chargeur direct")
     p.add_argument("--limine-arm", type=Path, help="Second étage Limine de laboratoire identifié")
     a = p.parse_args()
+    if bool(a.modele_recus) != a.cas.startswith("mmio-"):
+        p.error("Le modèle de reçus est réservé aux scénarios mmio")
     if a.trace_registres and not (a.arch == "arm" and a.cycle_vie and a.cas in cycle_vie.RESET and a.cas != "echo1514-reset"):
         p.error("--trace-registres exige un cas court du reset ARM")
     if a.cas in cycle_vie.RESET and (a.arch != "arm" or not a.cycle_vie):
@@ -288,7 +291,22 @@ def main():
     a.elf=out/"novaos.elf"
     refdir = a.archive / "cloture-20261126" / f"confirmation-{a.arch}-endurance"
     args = json.loads((refdir/"arguments.json").read_text())
+    env_vm = os.environ.copy()
+    env_vm.pop("NOVAOS_E3E_TX_RECEIPT", None)
+    if a.modele_recus:
+        from modele_reset_arm import ARCHIVE, MANIFESTE
+        preuve_modele = json.loads(a.modele_recus.read_text())
+        binaire = a.modele_recus.with_name("qemu-system-aarch64")
+        if (preuve_modele["recette"] != MANIFESTE or preuve_modele["archive"] != ARCHIVE
+                or preuve_modele["patch"] != digest(Path(__file__).with_name("modele_reset_arm.patch"))
+                or preuve_modele["modele_reference"] != digest(Path(args[0]))
+                or digest(binaire) != preuve_modele["sha256"]):
+            raise ValueError("Provenance du modèle de retour MMIO")
+        env_vm["NOVAOS_E3E_TX_RECEIPT"] = a.cas.removeprefix("mmio-")
+        args[0] = str(binaire)
     report = dict(audit=AUDIT, arch=a.arch, cas=a.cas, elf=digest(a.elf), modele=digest(Path(args[0])), succes=False)
+    if a.modele_recus:
+        report["modele_recu"] = dict(construction=digest(a.modele_recus), mode=env_vm["NOVAOS_E3E_TX_RECEIPT"])
     report["sha256_lanceur"]=digest(Path(__file__))
     report["commit_sources"]=subprocess.check_output(["git","-C",NOVA,"rev-parse","HEAD"],text=True).strip()
     report["sources_suivies_modifiees"]=bool(subprocess.check_output(["git","-C",NOVA,"status","--porcelain","--untracked-files=no"]))
@@ -372,7 +390,7 @@ def main():
             with (out/"qemu.trace").open("xb") as log:
                 debut_cpu=resource.getrusage(resource.RUSAGE_CHILDREN)
                 debut_vm=time.monotonic()
-                with subprocess.Popen(args, cwd=tmp, pass_fds=(guest.fileno(),), stdin=subprocess.PIPE,
+                with subprocess.Popen(args, cwd=tmp, env=env_vm, pass_fds=(guest.fileno(),), stdin=subprocess.PIPE,
                                       stdout=subprocess.PIPE, stderr=log, bufsize=0) as vm:
                     guest.close()
                     peer.thread.start()

@@ -1,0 +1,45 @@
+--- a/include/hw/virtio/virtio-pci.h
++++ b/include/hw/virtio/virtio-pci.h
+@@ -128,4 +128,5 @@
+    */
+   bool reset;
++  int e3e_tx_receipt; /* Lab only: mask the readback after a real queue reset. */
+   uint32_t desc[2];
+   uint32_t avail[2];
+--- a/hw/virtio/virtio-pci.c
++++ b/hw/virtio/virtio-pci.c
+@@ -1563,4 +1563,13 @@
+     case VIRTIO_PCI_COMMON_Q_RESET:
+         val = proxy->vqs[vdev->queue_sel].reset;
++        int *receipt = &proxy->vqs[vdev->queue_sel].e3e_tx_receipt;
++        if (*receipt > 0) {
++            val = 1;
++            if (--*receipt == 0) {
++                fprintf(stderr, "E3E model: TX delayed for 32 MMIO reads\n");
++            }
++        } else if (*receipt < 0) {
++            val = *receipt == -1 ? 1 : 2;
++        }
+         break;
+     default:
+@@ -1661,4 +1670,5 @@
+                        ((uint64_t)proxy->vqs[vdev->queue_sel].used[1]) << 32 |
+                        proxy->vqs[vdev->queue_sel].used[0]);
++            proxy->vqs[vdev->queue_sel].e3e_tx_receipt = 0;
+             proxy->vqs[vdev->queue_sel].enabled = 1;
+             proxy->vqs[vdev->queue_sel].reset = 0;
+@@ -1694,4 +1704,14 @@
+             proxy->vqs[vdev->queue_sel].reset = 0;
+             proxy->vqs[vdev->queue_sel].enabled = 0;
++            if (vdev->device_id == VIRTIO_ID_NET && vdev->queue_sel == 1) {
++                const char *mode = g_getenv("NOVAOS_E3E_TX_RECEIPT");
++                if (mode) {
++                    int mask = !strcmp(mode, "absent") ? -1 :
++                               !strcmp(mode, "invalide") ? -2 :
++                               !strcmp(mode, "differe") ? 32 : 0;
++                    proxy->vqs[vdev->queue_sel].e3e_tx_receipt = mask;
++                    fprintf(stderr, "E3E model: TX reset executed, readback=%d\n", mask);
++                }
++            }
+         }
+         break;
