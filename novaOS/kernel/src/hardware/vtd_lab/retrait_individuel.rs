@@ -108,9 +108,15 @@ impl Engine {
         {
             return Err(Error::Quarantine);
         }
+        #[cfg(feature = "gestionnaire-4f")]
+        if !crate::hardware::net_q35::gestionnaire::autoriser_double(id, cookie, self.duo.frames) {
+            return Err(Error::Quarantine);
+        }
         self.duo.retrait = None;
         self.duo.delegated = false;
         self.liberer_cadres_nic();
+        #[cfg(feature = "gestionnaire-4f")]
+        crate::hardware::net_q35::gestionnaire::restitue(id.1);
         Ok(())
     }
 }

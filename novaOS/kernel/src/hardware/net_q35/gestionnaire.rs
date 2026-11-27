@@ -9,6 +9,17 @@ struct Vue {
     reg: Region,
     frames: [Frame; 30],
     recu: Option<u32>,
+    #[cfg(feature = "net-q35-duo")]
+    partage: Option<BailDouble>,
+}
+
+#[cfg(feature = "net-q35-duo")]
+#[derive(Clone, Copy)]
+struct BailDouble {
+    titulaire: u64,
+    disque: u64,
+    epoque: u64,
+    contexte_nvme: [u64; 2],
 }
 
 // Le superviseur garde les cadres épinglés tant que cette vue est installée.
@@ -20,7 +31,7 @@ pub(crate) fn verifier_port_selectionne(id: u64, sid: u64) -> bool {
         && commande(SID) & 4 == 0
 }
 
-pub(super) fn selectionner() -> Result<(dynamique::Cycle, dynamique::Decision), &'static str> {
+pub(crate) fn selectionner() -> Result<(dynamique::Cycle, dynamique::Decision), &'static str> {
     let cycle = dynamique::Cycle::ouvrir();
     let id = u64::from(pci_ports::port(SID, 0, 4, None));
     if !verifier_port_selectionne(id, u64::from(SID)) || VUE.lock().is_some() {
@@ -41,8 +52,24 @@ pub(crate) fn carte_bail_nic(generation: u64, cadres: [u64; 22]) -> Option<u64> 
         return None;
     }
     if let Some(cookie) = vue.recu {
+        #[cfg(feature = "net-q35-duo")]
+        if let Some(bail) = vue.partage {
+            let ctx = usize::from(SID) * 16;
+            return (bail.disque != 0 && bail.epoque != 0 && bail.titulaire != 0
+                && commande(SID) & 4 == 0 && commande(48) & 4 != 0
+                && f[0].mem.r64(0) == f[1].pa | 1
+                && f[1].mem.r64(ctx) == 0 && f[1].mem.r64(ctx+8) == 0
+                && [f[1].mem.r64(48*16), f[1].mem.r64(48*16+8)] == bail.contexte_nvme
+                && f[7].mem.r32(0) >= cookie && reg.r64(0x80) == reg.r64(0x88)).then_some(0);
+        }
         return (f[7].mem.r32(0) == cookie && reg.r64(0x80) == reg.r64(0x88)
             && pairs_fermes() && (0..512).all(|i| f[0].mem.r64(i * 8) == 0)).then_some(0);
+    }
+    #[cfg(feature = "net-q35-duo")]
+    if let Some(bail) = vue.partage {
+        if [f[1].mem.r64(48*16), f[1].mem.r64(48*16+8)] != bail.contexte_nvme {
+            return None;
+        }
     }
     let ctx = usize::from(SID) * 16;
     if f[0].mem.r64(0) != f[1].pa | 1 || f[1].mem.r64(ctx) != f[2].pa | 1
@@ -68,11 +95,42 @@ pub(super) fn admettre(reg: Region, frames: &[Frame; 30], g: u64, decision: dyna
     {
         let mut vue = VUE.lock();
         if vue.is_some() { return Err("ancien bail Q35"); }
-        *vue = Some(Vue {generation: g, reg, frames: *frames, recu: None});
+        *vue = Some(Vue {generation: g, reg, frames: *frames, recu: None,
+            #[cfg(feature="net-q35-duo")] partage: None});
     }
     let pages = core::array::from_fn(|i| frames[8+i].pa);
     if !reprise::lot_vtd(g, pages) { return Err("bail Q35 non corrobore"); }
     EthernetActor::reserve(g, Some(decision)).ok_or("admission dynamique Q35")
+}
+
+#[cfg(feature = "net-q35-duo")]
+pub(in crate::hardware) fn enregistrer_double(reg: Region, frames: [Frame; 30], generation: u64,
+    titulaire: u64, disque: u64, epoque: u64) -> Result<(), &'static str> {
+    let contexte_nvme = [frames[1].mem.r64(48*16), frames[1].mem.r64(48*16+8)];
+    if titulaire == 0 || disque == 0 || epoque == 0 || titulaire == disque || contexte_nvme[0] & 1 == 0 {
+        return Err("identité des deux domaines");
+    }
+    {
+        let mut lock = VUE.lock();
+        if lock.is_some() {return Err("ancien bail matériel");}
+        *lock = Some(Vue {reg, frames, generation, recu: None,
+            partage: Some(BailDouble {titulaire, disque, epoque, contexte_nvme})});
+    }
+    let pages = core::array::from_fn(|i| frames[8+i].pa);
+    reprise::lot_vtd(generation, pages).then_some(()).ok_or("bail double non corroboré")
+}
+
+#[cfg(feature = "net-q35-duo")]
+pub(in crate::hardware) fn autoriser_double(id: (u64, u64), cookie: u32, cadres: [Frame; 26]) -> bool {
+    let frames = {
+        let lock = VUE.lock();
+        let Some(v) = lock.as_ref() else {return false};
+        if v.generation != id.1 || v.partage.is_none_or(|b| b.titulaire != id.0)
+            || !cadres[..4].iter().zip(&v.frames[2..6]).all(|(a,b)| a.pa == b.pa)
+            || !cadres[4..].iter().zip(&v.frames[8..]).all(|(a,b)| a.pa == b.pa) {return false;}
+        v.frames
+    };
+    autoriser_restitution(id.1, &frames, cookie).is_ok()
 }
 
 // Appel exclusivement après la collecte du WAIT par le propriétaire matériel.
@@ -94,7 +152,7 @@ pub(super) fn autoriser_restitution(g: u64, frames: &[Frame; 30], cookie: u32) -
     Ok(())
 }
 
-pub(super) fn restitue(g: u64) {
+pub(in crate::hardware) fn restitue(g: u64) {
     reprise::rendu(g, [0; 22]);
     dynamique::fin_retrait();
 }

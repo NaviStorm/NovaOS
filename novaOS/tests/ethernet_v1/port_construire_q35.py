@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -44,7 +45,12 @@ def main():
     p.add_argument("--cas", nargs="+", choices=("port", "deces", "duo-retrait", "duo-differe", "duo-absent",
                    "duo-sans-reset", "duo-cycles", "duo-reouverture", "duo-postdisque", "duo-concurrence", "duo-disque", "duo-wait-absent", "duo-wait-tardif"))
     p.add_argument("--sonder-garde", action="store_true", help="Observer le refus de réadmission après restitution sur un bail NVMe actif")
+    p.add_argument("--phase4f", choices=("nominal", "deces-observe", "lanceur-observe", "reconciliation"),
+                   help="Assembler le gestionnaire dynamique Q35 et le retrait individuel 3D")
     a = p.parse_args()
+    if a.phase4f and (not a.phase3d or a.sonder_garde or not a.cas or
+                     set(a.cas) - {"duo-retrait", "duo-differe", "duo-absent"}):
+        p.error("4F exige le retrait individuel, différé ou absent, sur Q35 double")
     if a.sonder_garde and (not a.phase3d or a.cas != ["duo-retrait"]):
         p.error("La sonde de garde exige --phase3d --cas duo-retrait")
     if a.cas and not a.phase3d:
@@ -82,6 +88,18 @@ def main():
                 subprocess.run(["git", "apply", str(sonde)], cwd=root, check=True)
             raccord = {name: git("hash-object", root / name).decode().strip() for name in sources}
             raccord["patch_sha256"] = hashlib.sha256(patch.read_bytes()).hexdigest()
+        if a.phase4f:
+            dynamique = root / "novaOS/tests/gestionnaire_4f/raccord_duo.patch"
+            preimages = re.findall(r"^diff --git a/(\S+) b/\1\nindex ([a-f0-9]{40})\.\.([a-f0-9]{40}) ", dynamique.read_text(), re.M)
+            if {n for n,_,_ in preimages} != {"novaOS/kernel/src/"+n for n in
+                    ("hardware/block/net_event.rs","hardware/vtd_lab/duo.rs","memory/mod.rs","sched/process/nvme.rs")}:
+                raise ValueError("Périmètre du raccord 4F")
+            if any(git("hash-object",root/n).decode().strip()!=old for n,old,_ in preimages):
+                raise ValueError("Préimage 3D différente")
+            subprocess.run(["git", "apply", "--check", "--unidiff-zero", str(dynamique)], cwd=root, check=True)
+            subprocess.run(["git", "apply", "--unidiff-zero", str(dynamique)], cwd=root, check=True)
+            if any(git("hash-object",root/n).decode().strip()!=new for n,_,new in preimages):
+                raise ValueError("Raccord 4F divergent")
         # L'option des modules d'origine n'existe que dans le manifeste de cette copie.
         manifest = root / "novaOS/kernel/Cargo.toml"
         text = manifest.read_text()
@@ -94,13 +112,21 @@ def main():
         result = dict(port=revision, audit=AUDIT, modules=sources, elf={},
                       rustc=subprocess.check_output([env["RUSTC"], "-V"], text=True).strip())
         result["raccord_3d"] = raccord
+        features = "net-q35-duo"
+        if a.phase4f:
+            features += ",gestionnaire-4f"
+            env["NOVAOS_4E1_CAS"] = a.phase4f
+            env["NOVAOS_4D_REFUS"] = ""
+            result["gestionnaire_4f"] = a.phase4f
+            result["raccord_4f_sha256"] = hashlib.sha256(dynamique.read_bytes()).hexdigest()
+            result["modules_4f"] = {name: git("hash-object", root / name).decode().strip() for name in sources}
         if a.sonder_garde:
             result["sonde_garde_sha256"] = hashlib.sha256(sonde.read_bytes()).hexdigest()
         for cas in a.cas or ("port", "deces"):
             env["NOVAOS_ETH3_CASE"] = cas
             with (a.sortie / f"{cas}-compilation.log").open("xb") as log:
                 subprocess.run(["rustup", "run", "stable", "cargo", "build", "--offline", "--locked",
-                                "--release", "--target", "x86_64-unknown-none", "--features", "net-q35-duo"],
+                                "--release", "--target", "x86_64-unknown-none", "--features", features],
                                cwd=root/"novaOS", env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
             elf = a.sortie / f"{cas}.elf"
             shutil.copyfile(root/"target/x86_64-unknown-none/release/novaos", elf)

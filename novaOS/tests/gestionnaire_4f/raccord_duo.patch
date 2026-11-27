@@ -1,0 +1,93 @@
+diff --git a/novaOS/kernel/src/hardware/block/net_event.rs b/novaOS/kernel/src/hardware/block/net_event.rs
+index 8e357401182f518159e10762b96626f43813ae07..a0d83ad9777183ad7e5ffb4ddb8fc736a648a392 100644
+--- a/novaOS/kernel/src/hardware/block/net_event.rs
++++ b/novaOS/kernel/src/hardware/block/net_event.rs
+@@ -74,2 +74,4 @@ pub(in crate::hardware) fn q35(cadres: &[super::Frame; 22]) -> Result<()> {
+-pub(in crate::hardware) fn trafic_q35(cadres: &[super::Frame; 22], generation: u64) -> Result<()> {
+-    q35_session(cadres,generation,None,||true)
++pub(in crate::hardware) fn trafic_q35(_cadres: &[super::Frame; 22], _generation: u64,
++    _acteur: crate::sched::process::net_preparation::EthernetActor) -> Result<()> {
++    // Cette image fermée exige le contrôleur partagé et son bail NVMe identifié.
++    Err(Error::Route)
+diff --git a/novaOS/kernel/src/hardware/vtd_lab/duo.rs b/novaOS/kernel/src/hardware/vtd_lab/duo.rs
+index 9e55ec373e9aa2a71755fa59cbfb05d7fce47860..1cc3d6807489879cf6e4f67993a8c3677992781a 100644
+--- a/novaOS/kernel/src/hardware/vtd_lab/duo.rs
++++ b/novaOS/kernel/src/hardware/vtd_lab/duo.rs
+@@ -245,0 +246,8 @@ impl Engine {
++        if !self.duo.verify_nic(&self.service, &self.pages) {return Err(Error::Quarantine);}
++        let mut vue = [EMPTY; 30];
++        vue[..2].copy_from_slice(&self.service[..2]);
++        vue[2..6].copy_from_slice(&self.duo.frames[..4]);
++        vue[6..8].copy_from_slice(&self.service[6..8]);
++        vue[8..].copy_from_slice(&self.duo.frames[4..]);
++        super::super::net_q35::gestionnaire::enregistrer_double(self.regs, vue, next,
++            owner, lease.owner(), lease.epoch()).map_err(|_| Error::Quarantine)?;
+diff --git a/novaOS/kernel/src/memory/mod.rs b/novaOS/kernel/src/memory/mod.rs
+index 35baf9f924be3406f47e836743ad42bd1c679b69..6d17ce21b50c67870654ca7f3577284a4e8cd4d2 100644
+--- a/novaOS/kernel/src/memory/mod.rs
++++ b/novaOS/kernel/src/memory/mod.rs
+@@ -145,0 +146,4 @@ impl Memory {
++    #[cfg(gestionnaire_dynamique)]
++    pub(crate) fn cycle_minimum(&mut self, open:bool)->Option<u64> {
++        if open {self.frames.cycle_minimum.replace(self.frames.available)} else {self.frames.cycle_minimum.take()}
++    }
+@@ -337,0 +342 @@ pub(crate) struct Resident {
++    pub elf_headers: usize,
+@@ -373 +378 @@ impl Memory {
+-            + (r.ipc + r.stacks + r.user + r.user_stacks + r.heap + r.buddy) as u64;
++            + (r.ipc + r.stacks + r.user + r.user_stacks + r.elf_headers + r.heap + r.buddy) as u64;
+@@ -376 +381 @@ impl Memory {
+-            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} ipc={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={} dma={} elf_preparation={}",
++            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} ipc={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={} dma={} elf_preparation={} elf_entetes={}",
+@@ -394 +399 @@ impl Memory {
+-            self.staging.resident()
++            self.staging.resident(), r.elf_headers
+diff --git a/novaOS/kernel/src/sched/process/nvme.rs b/novaOS/kernel/src/sched/process/nvme.rs
+index 7d0ce7609acccd94de7ab68ade073a373abca4b1..c15af74e9470d5ade8522d6c76ca7f5aa81d1c94 100644
+--- a/novaOS/kernel/src/sched/process/nvme.rs
++++ b/novaOS/kernel/src/sched/process/nvme.rs
+@@ -160,0 +161 @@ fn supervise(
++    let mut garde_sondee = false;
+@@ -184,0 +186,17 @@ fn supervise(
++            if !garde_sondee && domain.restitution_nic() && b.completed >= 3
++                && let Some(cid) = b.controller.inflight_cid()
++            {
++                // Numéro neuf consommé. Aucun acteur ni privilège n'est créé par la sonde.
++                let candidat = NumeroReserve::reserver().ok_or("numéros PID épuisés")?;
++                let generation = domain.network_epoch()?;
++                let avant = crate::memory::pinned_dma_frames();
++                if !matches!(domain.reserve_network(candidat.0), Err(crate::hardware::nvme_domain::Error::Denied))
++                    || !domain.restitution_nic() || !domain.dma_clean()
++                    || b.controller.inflight_cid() != Some(cid)
++                    || crate::memory::pinned_dma_frames() != avant || !with(|s| peers.authorized(s)) {
++                    return Err("garde de réadmission ou bail stockage");
++                }
++                garde_sondee = true;
++                hal::log(format_args!("E3E garde readmission=refusee candidat={} generation={generation} disque={} epoque_ipc={} cid={cid} dma={avant}",
++                    candidat.0, peers.pids[0].number, peers.cfg[0][wire::EPOCH]));
++            }
+@@ -451,0 +470 @@ fn exercise(
++    let mut cycle = None;
+@@ -453 +472,12 @@ fn exercise(
+-        let actor = super::net_preparation::EthernetActor::reserve(domain.network_epoch()?).ok_or("instance NIC")?;
++        use crate::hardware::net_q35::gestionnaire;
++        if !matches!(option_env!("NOVAOS_ETH3_CASE"), Some("duo-retrait" | "duo-absent" | "duo-differe")) {
++            return Err("profil double 4F fermé");
++        }
++        let (mesure, mut decision) = gestionnaire::selectionner()?;
++        cycle = Some(mesure);
++        let generation = domain.network_epoch()?;
++        let owner = decision.reserver_titulaire().ok_or("réservation du numéro de processus")?;
++        let network = domain.reserve_network(owner).map_err(|_| "préparation NIC")?;
++        let actor = super::net_preparation::EthernetActor::reserve(generation, Some(decision))
++            .ok_or("instance NIC dynamique")?;
++        if actor.owner() != owner { return Err("titulaire NIC divergent"); }
+@@ -462,5 +492 @@ fn exercise(
+-        let owner=actor.owner();
+-        let network=match domain.reserve_network(owner) {
+-            Ok(frames)=>frames,
+-            Err(_)=>{actor.cancel(); return Err("préparation NIC");}
+-        };
++
+@@ -728,0 +755 @@ fn exercise(
++    drop(cycle);

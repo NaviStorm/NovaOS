@@ -242,6 +242,29 @@ fn publish_image(
     app: u64,
     member: Option<Instance>,
 ) -> Result<Child, Error> {
+    publish_image_numerote(space, wait_on, app, member, #[cfg(all(feature="gestionnaire-4f", feature="net-q35-duo"))] None)
+}
+
+// Numéro consommé sous le verrou de la table. Ce jeton privé et non copiable
+// lie le bail du NIC à la future publication. Son abandon laisse un numéro libre
+// de tout processus, sans permettre sa réutilisation.
+#[cfg(all(feature="gestionnaire-4f", feature="net-q35-duo"))]
+struct NumeroReserve(u64);
+#[cfg(all(feature="gestionnaire-4f", feature="net-q35-duo"))]
+impl NumeroReserve {
+    fn reserver() -> Option<Self> {
+        with(|s| {
+            let n = s.processes.serial.checked_add(1).filter(|n| *n < 1 << 63)?;
+            s.processes.serial = n;
+            Some(Self(n))
+        })
+    }
+}
+
+fn publish_image_numerote(
+    space: UserSpace, wait_on: Option<Child>, app: u64, member: Option<Instance>,
+    #[cfg(all(feature="gestionnaire-4f", feature="net-q35-duo"))] titulaire: Option<NumeroReserve>,
+) -> Result<Child, Error> {
     reap();
     let Some((slot, proc_slot)) = with(|s| {
         if member.is_none() && !s.processes.instances.available() {
@@ -281,16 +304,16 @@ fn publish_image(
         right
     });
     Ok(with(|s| {
-        s.processes.serial = s
-            .processes
-            .serial
-            .checked_add(1)
-            .filter(|n| *n < 1 << 63)
-            .expect("PID épuisés");
-        let pid = Pid {
-            slot: proc_slot,
-            number: s.processes.serial,
-        };
+        #[cfg(all(feature="gestionnaire-4f", feature="net-q35-duo"))]
+        let reserve = titulaire.map(|n| n.0);
+        #[cfg(not(all(feature="gestionnaire-4f", feature="net-q35-duo")))]
+        let reserve: Option<u64> = None;
+        let number = reserve.unwrap_or_else(|| {
+            s.processes.serial = s.processes.serial.checked_add(1)
+                .filter(|n| *n < 1 << 63).expect("PID épuisés");
+            s.processes.serial
+        });
+        let pid = Pid {slot: proc_slot, number};
         let main = threads::Member::new(space.main_thread(), space.entry(), 0, false);
         let instance = match member {
             Some(key) => {

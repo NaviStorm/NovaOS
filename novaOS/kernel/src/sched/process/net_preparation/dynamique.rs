@@ -68,8 +68,18 @@ pub(crate) struct Decision {
     policy: u64,
     liaison: Option<Controle>,
     cadres_controle: u64,
+    #[cfg(all(feature="gestionnaire-4f", feature="net-q35-duo"))]
+    titulaire: Option<NumeroReserve>,
 }
 impl Decision {
+    #[cfg(all(feature="gestionnaire-4f", feature="net-q35-duo"))]
+    pub(in crate::sched::process) fn reserver_titulaire(&mut self) -> Option<u64> {
+        if self.titulaire.is_some() || !self.actuelle(self.id, self.sid) { return None; }
+        let numero = NumeroReserve::reserver()?;
+        let pid = numero.0;
+        self.titulaire = Some(numero);
+        Some(pid)
+    }
     pub(crate) fn actuelle(&self, id: u64, sid: u64) -> bool {
         self.epoch == INVENTORY.load(Ordering::Acquire)
             && self.id == id
@@ -422,6 +432,8 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
         policy: data[5],
         liaison: Some(controle),
         cadres_controle: before.checked_sub(heap::audit(false).free_pages)?,
+        #[cfg(all(feature="gestionnaire-4f", feature="net-q35-duo"))]
+        titulaire: None,
     };
     if !decision.actuelle(id, sid) {
         return None;
@@ -599,6 +611,8 @@ pub(super) fn lancer(ticket: Ticket, generation: u64) -> Option<(Child, u64)> {
         ));
         return None;
     }
+    #[cfg(all(feature="gestionnaire-4f", feature="net-q35-duo"))]
+    let titulaire = d.titulaire?;
     let start = hal::timer::counter();
     let _sample = Sample::new("lancement");
 
@@ -622,6 +636,9 @@ pub(super) fn lancer(ticket: Ticket, generation: u64) -> Option<(Child, u64)> {
     // Identifiant applicatif du seul paquet de ce profil. Le bit haut le place
     // hors des identités système. La capacité native reste liée à l’incarnation complète.
     let app = u64::from_le_bytes(d.digest[..8].try_into().ok()?) | (1 << 63);
+    #[cfg(all(feature="gestionnaire-4f", feature="net-q35-duo"))]
+    let child = publish_image_numerote(space, None, app, None, Some(titulaire)).ok()?;
+    #[cfg(not(all(feature="gestionnaire-4f", feature="net-q35-duo")))]
     let child = publish_image(space, None, app, None).ok()?;
     let pid = child.0;
     let granted = installer_courtier(child, 3, None, generation)?;

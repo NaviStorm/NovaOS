@@ -25,8 +25,8 @@ CAS.update(endurance="cycles-256-court", differe="recu-vtd-differe", absent="rec
 ISA = "x86_64-unknown-none"
 
 
-def construire(cas, archive):
-    rev = output("git", "rev-parse", "HEAD")
+def construire(cas, archive, revision=None):
+    rev = output("git", "rev-parse", "--verify", (revision or "HEAD") + "^{commit}")
     dest = archive / "images" / cas
     exe = dest / "q35.elf"
     if exe.exists():
@@ -34,6 +34,8 @@ def construire(cas, archive):
         if doc["commit"] != rev or sha(exe) != doc["elf"]["q35"]:
             raise ValueError("Révision ou empreinte ELF divergente")
         return exe, rev
+    if rev != output("git", "rev-parse", "HEAD"):
+        raise ValueError("Image absente pour cette révision archivée")
     if output("git", "status", "--porcelain", "--", "novaOS/kernel", "novaOS/user", "novaOS/libs"):
         raise ValueError("Sources de construction modifiées")
     target = Path(os.environ["CARGO_TARGET_DIR"]).resolve()
@@ -81,7 +83,7 @@ def controler(cas, dest):
     for i, (r, fin) in enumerate(zip(recus, fins), 1):
         if int(r[0]) != i or fin[0] != str(i) or len(set(x[2] for x in recus)) != cycles:
             raise ValueError("Incarnation ou génération")
-        attendu = ("4194303","4194303","0","false","false") if cas=="absent" else ("0","0",str(2*i+1),"false","true")
+        attendu = ("4194303","4194303","0","true","false") if cas=="absent" else ("0","0",str(2*i+1),"false","true")
         if fin[1:] != attendu:
             raise ValueError(("Disposition du bail",fin,attendu))
     changements = [s for s in texte.splitlines() if s.startswith(("E41 reprise ", "E41 reprise_selection "))]
@@ -100,9 +102,10 @@ def main():
     p.add_argument("archive", type=lambda s:Path(s).resolve())
     p.add_argument("cas", choices=CAS)
     p.add_argument("--boots", type=int, default=3, choices=(1,2,3))
+    p.add_argument("--revision", help="Rejouer une image archivée de cette révision")
     p.add_argument("--compiler", action="store_true")
     a = p.parse_args()
-    exe,rev = construire(a.cas,a.archive)
+    exe,rev = construire(a.cas,a.archive,a.revision)
     if a.compiler: return
     outils = BASE/"archives-ethernet-phase3/reproduction-8bd3f9c"
     for n in range(1,a.boots+1):

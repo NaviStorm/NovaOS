@@ -184,6 +184,9 @@ fn reserver_cadres(frames: &mut [Frame;30], reprise: bool) -> Result<(), &'stati
 }
 
 pub(crate) fn executer(retrait: bool) -> Result<(), &'static str> {
+    if cfg!(all(feature = "gestionnaire-4f", feature = "net-q35-duo")) {
+        return Err("profil double réservé au superviseur NVMe");
+    }
     #[cfg(feature="ethernet-v1-port")]
     if !retrait::disponible() { return Err("NIC en quarantaine"); }
     if crate::smp::index() != 0 || crate::smp::count() != 1 {
