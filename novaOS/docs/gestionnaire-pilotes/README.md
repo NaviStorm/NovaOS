@@ -12,6 +12,8 @@
 
 La référence 3D est `4c3bd8896c496636118a7f4751b6947fba72d1e3`. La livraison 3E est `ff9b0322d9f449058a2b575b3d7b7fe868b0d7ad`, son noyau qualifié `fd3ff113fcaf39bee804eebdcedc44557f41817d`. Ces résultats concernent des invités et des topologies identifiés. La garde de réadmission Q35 demeure une condition impérative. Le jalon documentaire v0.25.0, la version interne v0.20.0 et l’ABI native v1 sont trois identités distinctes. [Rapport 3D](../architecture-ethernet/phase3d.md) · [Rapport 3E](../architecture-ethernet/phase3e.md) · [Contrats hérités](../architecture-ethernet/contrats-phase3e.md)
 
+Le catalogue expérimental hors ligne de phase 4B vérifie les signatures et construit un plan de sélection. [Schéma, résultats et limites mémoire](../../libs/catalogue-pilotes/README.md)
+
 ## Frontières d’autorité
 
 ```mermaid
