@@ -134,6 +134,11 @@ impl Catalog<'_> {
                     continue;
                 }
             };
+            // Le pilote racine compte aussi parmi les 64 entrées du plan.
+            if bindings.len() >= 64 {
+                failure.get_or_insert(Error::Limit);
+                continue;
+            }
             let h = &m.hardware;
             if (!h.dma.is_empty() || !h.irq.is_empty() || !h.mmio.is_empty() || h.queues > 0)
                 && !m.dependency.iter().any(|d| {
