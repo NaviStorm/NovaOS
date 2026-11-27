@@ -191,7 +191,12 @@ def main():
                 suite = serie.split("E3E garde readmission=refusee")[1]
                 cqe = re.search(r"E3D CQE op=(\w+) cid=(\d+)", suite)
                 baux = re.findall(r"DUO WAIT sid=48 did=1 instance=(\d+) generation=(\d+)", serie)
-                if (len(admissions) != 2 or admissions[1] != (str(candidat), str(generation))
+                if construction.get("gestionnaire_4f"):
+                    candidat_verifie = (len(admissions) == 1 and admissions[0][1] == "1"
+                        and not re.search(rf"PROC pid={candidat}\b|DUO WAIT sid=56 did=3 instance={candidat}\b", serie))
+                else:
+                    candidat_verifie = len(admissions) == 2 and admissions[1] == (str(candidat), str(generation))
+                if (not candidat_verifie
                         or admissions[0][0] == str(candidat) or generation != 2 or dma != 14
                         or baux != [(str(disque),"1")]*2 or epoque_ipc <= 0 or not cqe or int(cqe[2]) != cid
                         or "ancienne_capacite_valide=false" not in serie):

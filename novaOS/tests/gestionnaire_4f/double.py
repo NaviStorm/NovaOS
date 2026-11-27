@@ -1,0 +1,82 @@
+"""Vérifier les deux titulaires, le journal et le volume sur le contrôleur Q35 partagé."""
+import argparse
+import json
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+from qualifier import BASE, NOVA, output, sha, write
+
+BANC = NOVA/"tests/ethernet_v1"
+
+
+def verifier(dest, cas, scenario):
+    c = json.loads((dest/"campagne.json").read_text())
+    serie = (dest/"serie.log").read_text()
+    if not c["succes"] or not c["stockage"]["p9"] or sha(dest/"namespace.raw")!=c["p9_final"]:
+        raise ValueError("Volume ou contrôle indépendant")
+    (boot,) = re.findall(r"E41 demarrage boot=([0-9a-f]{32})",serie)
+    (recu,) = re.findall(r"E41 recu generation=1 intention=(\d+) pilote=(\d+) incarnation=(\d+) creations=1 rejeu=sans_effet",serie)
+    (proprietaire,) = re.findall(r"DUO WAIT sid=56 did=3 instance=(\d+) generation=1",serie)[:1]
+    if proprietaire!=recu[1] or len(re.findall("D4 lancement scelle",serie))!=1:
+        raise ValueError("Titulaire du bail et pilote lancé")
+    m = re.search(r"E41 fin generation=1 creations=1 epingles=(\d+) mappes=(\d+) recu=(\d+) gel=(\w+) compactage=(\w+)",serie)
+    if not m:
+        raise ValueError("Clôture du journal du pilote")
+    manque = cas=="duo-absent"
+    if manque:
+        if m[5]!="false" or m[1]!="4194303" or m[3]!="0":
+            raise ValueError("Protection des cadres sans livraison")
+    if not manque and (m.groups()[:2]!=("0","0") or int(m[3])<=0 or m.groups()[3:]!=("false","true")):
+        raise ValueError(("Journal de restitution",m.groups()))
+    remplacements=[v for v in serie.splitlines() if v.startswith("E41 reprise phase=")]
+    if len(remplacements)!=int(scenario!="nominal") or any("ancien_refuse=true" not in v for v in remplacements):
+        raise ValueError("Changement d’incarnation")
+    if scenario!="nominal" and f"phase={scenario} " not in remplacements[0]:
+        raise ValueError("Point de remplacement")
+    if not manque and cas!="port" and not c.get("garde",{}).get("cqe_retrouvee"):
+        raise ValueError("Refus de réadmission sur commande en vol")
+    if cas in ("duo-differe","duo-absent") and "nvme_actif" not in c:
+        raise ValueError("Instantané du domaine indépendant absent")
+    write(dest/"reprise.json",dict(boot=boot, creation=recu, titulaire=proprietaire, fin=m.groups(),
+                                  remplacements=remplacements, p9=c["p9_final"]))
+
+
+def main():
+    p=argparse.ArgumentParser(description=__doc__)
+    p.add_argument("archive",type=lambda x:Path(x).resolve())
+    p.add_argument("scenario",choices=("nominal","deces-observe","lanceur-observe","reconciliation"))
+    p.add_argument("cas",nargs="+",choices=("port","duo-retrait","duo-differe","duo-absent"))
+    p.add_argument("--boots",type=int,choices=(1,2,3),default=3)
+    p.add_argument("--revision",default="HEAD")
+    p.add_argument("--compiler",action="store_true")
+    a=p.parse_args()
+    revision=output("git","rev-parse","--verify",a.revision+"^{commit}")
+    images=a.archive/("duo-"+a.scenario)
+    if not images.exists():
+        subprocess.run([sys.executable,"-B",BANC/"port_construire_q35.py",images,"--revision",revision,
+                        "--phase3d","--phase4f",a.scenario,"--cas",*a.cas],check=True)
+    doc=json.loads((images/"sources.json").read_text())
+    if doc["port"]!=revision or doc["gestionnaire_4f"]!=a.scenario or any(
+            doc["elf"].get(cas)!=sha(images/(cas+".elf")) for cas in a.cas):
+        raise ValueError("Images du profil double divergentes")
+    if a.compiler: return
+    for cas in a.cas:
+        epochs=set()
+        for n in range(1,a.boots+1):
+            dest=a.archive/"double"/a.scenario/cas/str(n)
+            if not (dest/"campagne.json").exists():
+                cmd=[sys.executable,"-B",BANC/"port_q35_stockage.py",cas,images/(cas+".elf"),dest,
+                     BASE/"pilote-virtio-net",BASE/"archives-virtio-net",
+                     BASE/"archives-ethernet-phase3/reproduction-8bd3f9c/limine-enroll",
+                     BASE/"pilote-virtio-net/novaFS/target/aarch64-apple-darwin/release/novafs"]
+                if cas in ("duo-differe","duo-absent"): cmd.append("--instantane")
+                subprocess.run(cmd,check=True)
+            verifier(dest,cas,a.scenario)
+            epochs.add(json.loads((dest/"reprise.json").read_text())["boot"])
+        if len(epochs)!=a.boots: raise ValueError("Époques de démarrage répétées")
+
+
+if __name__=="__main__":
+    main()
