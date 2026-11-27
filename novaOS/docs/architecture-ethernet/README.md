@@ -16,6 +16,8 @@ La phase 3D qualifie le retrait individuel du NIC avec le NVMe actif, les reçus
 
 Sur ARM, la phase 3E qualifie la restitution des 22 cadres NIC après reset des deux virtqueues. Sur Q35, la garde conservée refuse la réadmission pendant le bail NVMe actif. [Résultats, mesures et reproduction](phase3e.md) · [Contrats du futur gestionnaire](contrats-phase3e.md)
 
+La phase 4A reprend ces garanties pour les autres classes de périphériques et décrit les conditions d’intégration du port Ethernet v1. [Gestionnaire universel de pilotes](../gestionnaire-pilotes/README.md)
+
 ## Pièces soumises à décision
 
 | Livrable du mandat | Pièce et décision préparée |
