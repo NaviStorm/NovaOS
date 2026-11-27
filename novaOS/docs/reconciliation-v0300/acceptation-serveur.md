@@ -1,5 +1,7 @@
 # Acceptation de la première stable serveur en mode texte
 
+Pour chaque architecture candidate, conserver les empreintes du même support dans les deux modes. Vérifier l’affichage, le refus du PE invalide en mode actif, le refus des charges invalides dans les deux modes, la politique de repli et le caractère volontaire de l’enrôlement. En l’absence de preuve de propriété, de drainage et de protection des pages, exiger un arrêt sans activation ni réemploi. Associer chaque résultat à sa topologie et à son intervalle d’E/S. Pour le premier démarrage physique, conserver une décision A8 distincte. Seul le diagnostic QEMU x86_64 fait l’objet du [rapport 5H](../diagnostic-uefi-5h.md).
+
 **Les seize étapes sont bloquantes sur chacune des deux architectures.** Ce document traduit les parcours approuvés par la MOA au §16 du mandat du 15 novembre 2026 en épreuves reproductibles. Leur état initial est **non exécuté** dans les deux colonnes. Chaque verdict futur portera sur les binaires candidats identifiés et sur les usages serveur documentés. [Plateformes obligatoires](contrat-plateforme.md) · [Registre des décisions](decisions.md)
 
 ## Banc et données communes

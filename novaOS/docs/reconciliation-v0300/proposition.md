@@ -1,5 +1,7 @@
 # Feuille de route du serveur NovaOS jusqu’à v0.30.0
 
+Pour chaque architecture, distribuer une image générique sous autorité NovaOS, avec découverte du matériel et sélection des pilotes compatibles à l’exécution. Qualifier le même support avec Secure Boot actif et inactif. L’activation et l’éventuel enrôlement d’une clé relèvent du propriétaire. Aucun certificat, abonnement ou audit commercial ne conditionne la distribution. [Décision 5H](decisions.md#decision-5h)
+
 **Décision MOA du 15 novembre 2026.** NovaOS v0.30.0 sera la première stable serveur généraliste complète et utilisable en mode texte. Les usages engagés comprennent l’hébergement d’une application serveur native, son administration depuis une autre machine et le rétablissement du service et des droits après incident. Le verdict sera établi sur QEMU x86_64 et QEMU AArch64. Sur chacune de ces architectures, la MOA exige aussi de compiler, lier et exécuter depuis `nsh` un programme dans chacun des trois langages Rust, C et C++. [Registre des décisions](decisions.md) · [Parcours d’acceptation](acceptation-serveur.md)
 
 ## Travaux conservés et déplacés

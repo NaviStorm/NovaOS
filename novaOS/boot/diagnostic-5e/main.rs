@@ -11,6 +11,8 @@ mod catalogue;
 mod chemins;
 mod firmware;
 mod memoire;
+#[cfg(feature = "diagnostic-5h")]
+mod phase5h;
 
 #[global_allocator]
 static HEAP: memoire::Heap = memoire::Heap;
@@ -49,9 +51,18 @@ struct Report {
 static mut REPORT: Report = unsafe { core::mem::zeroed() };
 
 fn inventory(st: &efi::SystemTable, handle: efi::Handle, r: &mut Report) -> Result<(), u64> {
-    let rt = unsafe { st.runtime_services.as_ref() }.ok_or(1u64)?;
-    if !unsafe { firmware::secure(rt) } {
+    let rt = unsafe { st.runtime_services.as_ref() };
+    #[cfg(not(feature = "diagnostic-5h"))]
+    if !rt.is_some_and(firmware::secure) {
         return Err(1);
+    }
+    #[cfg(feature = "diagnostic-5h")]
+    {
+        let trust = rt.map_or(phase5h::Trust::Unknown, firmware::trust);
+        phase5h::display(st, trust.message())?;
+        if trust == phase5h::Trust::Unknown {
+            return Err(1);
+        }
     }
     let cfg = unsafe { ptr::read_volatile(&CONFIG) };
     if &cfg[..12] != b"NOVA5E-CFG!\x01"
@@ -72,6 +83,8 @@ fn inventory(st: &efi::SystemTable, handle: efi::Handle, r: &mut Report) -> Resu
     let rsdp = unsafe { firmware::rsdp(st, &map) }?;
     let mut kinds = alloc::vec::Vec::new();
     let mut units = 0;
+    #[cfg(feature = "diagnostic-5h")]
+    let mut remappers = phase5h::Remappers::default();
     let inv = acpi::discover_with(
         rsdp,
         |a, b| map.copy_acpi(a, b),
@@ -109,6 +122,12 @@ fn inventory(st: &efi::SystemTable, handle: efi::Handle, r: &mut Report) -> Resu
                     let mut tail = &table[48..];
                     while !tail.is_empty() {
                         if tail[0..2] == [0, 0] {
+                            #[cfg(feature = "diagnostic-5h")]
+                            remappers
+                                .record(
+                                    &tail[..usize::from(u16::from_le_bytes([tail[2], tail[3]]))],
+                                )
+                                .map_err(|_| acpi::Error::Format)?;
                             units += 1;
                             add(4)?;
                         }
@@ -130,6 +149,8 @@ fn inventory(st: &efi::SystemTable, handle: efi::Handle, r: &mut Report) -> Resu
         novaos_catalogue::Error::Floor => 12u64,
         novaos_catalogue::Error::Revoked => 13,
         novaos_catalogue::Error::Signature => 6,
+        #[cfg(feature = "diagnostic-5h")]
+        novaos_catalogue::Error::Elf => 18,
         _ => 14,
     })?;
     let mut details = [Node::default(); MAX];
@@ -164,9 +185,23 @@ fn inventory(st: &efi::SystemTable, handle: efi::Handle, r: &mut Report) -> Resu
     r.tables = inv.tables.len() as u64;
     r.dmar = u64::from(inv.tables.contains(b"DMAR"));
     r.units = units;
-    r.nodes = kinds.len() as u64;
-    r.details = details;
-    Ok(())
+    #[cfg(feature = "diagnostic-5h")]
+    {
+        let candidates = details.iter().filter(|n| n.selected != 0).count();
+        phase5h::display(
+            st,
+            &alloc::format!("NovaOS: catalogue verifie - candidats={candidates}"),
+        )?;
+        remappers.report(st)?;
+        // Aucun transfert de propriété DMA authentifié dans ce profil.
+        Err(16)
+    }
+    #[cfg(not(feature = "diagnostic-5h"))]
+    {
+        r.nodes = kinds.len() as u64;
+        r.details = details;
+        Ok(())
+    }
 }
 #[unsafe(no_mangle)]
 pub extern "efiapi" fn efi_main(handle: efi::Handle, system: *mut efi::SystemTable) -> efi::Status {

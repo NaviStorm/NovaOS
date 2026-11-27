@@ -1,4 +1,8 @@
 extern crate alloc;
+#[cfg(feature = "diagnostic-5h")]
+#[path = "../phase5h.rs"]
+#[allow(dead_code)]
+mod phase5h;
 #[path = "../catalogue.rs"]
 mod catalogue;
 #[path = "../firmware.rs"]

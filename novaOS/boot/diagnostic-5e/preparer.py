@@ -21,10 +21,10 @@ BASE = Path(__file__).resolve().parent
 NOVA = BASE.parents[1]
 
 
-def identity(name):
+def identity(name, phase="5E"):
     key = rsa.generate_private_key(public_exponent=65537, key_size=2048)
     subject = x509.Name(
-        [x509.NameAttribute(NameOID.COMMON_NAME, "NovaOS 5E laboratoire " + name)]
+        [x509.NameAttribute(NameOID.COMMON_NAME, f"NovaOS {phase} laboratoire {name}")]
     )
     now = datetime.now(timezone.utc)
     cert = (
@@ -72,6 +72,7 @@ def main():
     p.add_argument("out", type=Path, help="nouveau répertoire de fichiers de banc")
     p.add_argument("--signer", default="osslsigncode")
     p.add_argument("--var-tool", default="virt-fw-vars")
+    p.add_argument("--phase5h", action="store_true", help="produire aussi le témoin pkg01 et le magasin OVMF inactif")
     a = p.parse_args()
     if not a.unsigned.is_file() or not a.template.is_file():
         raise ValueError("Le constructeur exige un PE et un gabarit ordinaires")
@@ -82,7 +83,7 @@ def main():
     with tempfile.TemporaryDirectory(dir=out) as temporary:
         secret = Path(temporary)
         for name in ("PK", "KEK", "db"):
-            key, cert = identity(name)
+            key, cert = identity(name, "5H" if a.phase5h else "5E")
             (out / (name + ".pem")).write_bytes(cert)
             if name == "db":
                 k = secret / "signer.pem"
@@ -181,6 +182,21 @@ def main():
             replace_once(raw, manifest, older), (refs / "ioapic.sig").read_bytes(), sig
         )
         volume(out / "epoque.img", signed("epoque", stale))
+        if a.phase5h:
+            # Modifier uniquement la signature ELF. Le manifeste pilote est re-signé
+            # avec le bon digest du paquet modifié, pour atteindre le vérificateur interne.
+            pkg = (NOVA / "libs/catalogue-pilotes/vecteurs/x86_64.pkg01").read_bytes()
+            broken = bytearray(pkg)
+            broken[4 + struct.unpack_from("<I", pkg)[0]] ^= 1
+            patched = replace_once(raw, pkg, broken)
+            signer = Ed25519PrivateKey.from_private_bytes(bytes([1]) * 32)
+            for name in ("ioapic", "hpet-a", "hpet-b"):
+                md = (refs / (name + ".toml")).read_bytes()
+                new = replace_once(md, sha256(pkg).hexdigest().encode(), sha256(broken).hexdigest().encode())
+                signature = signer.sign(b"NovaOS/driver-package/v1\0" + pack("<I", len(new)) + new)
+                patched = replace_once(patched, md, new)
+                patched = replace_once(patched, (refs / (name + ".sig")).read_bytes(), signature)
+            volume(out / "paquet.img", signed("paquet", patched))
     # Initialisation hors ligne de nouveaux magasins. Le gabarit et OVMF restent en lecture seule.
     for name, extra in (
         ("nominal", []),
@@ -210,6 +226,12 @@ def main():
             ],
             check=True,
         )
+    if a.phase5h:
+        from virt.firmware.varstore.edk2 import Edk2VarStore
+        base = Edk2VarStore(out / "nominal.fd")
+        variables = base.get_varlist()
+        variables.set_bool("SecureBootEnable", False)
+        base.write_varstore(out / "inactif.fd", variables)
     print("Image signée", sha256((out / "diagnostic.img").read_bytes()).hexdigest())
 
 

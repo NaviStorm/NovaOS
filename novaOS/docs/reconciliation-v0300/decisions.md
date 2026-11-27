@@ -103,3 +103,11 @@ Le mandat du 16 novembre 2026 autorise le catalogue embarqué, le lecteur natif 
 Le complément MOA/MOE de phase 1 fixe le français pour une étiquette BCP 47 syntaxiquement valide de langue principale `fr` et l’anglais dans tous les autres cas. L’option 2 maintient l’aide publique sans écriture P9 et exige une preuve distincte de la langue reçue par un ELF autonome. [Contrat et qualification](../documentation-v0.23.0-phase1.md)
 
 Le correctif définitif du même mandat précise la politique NovaOS après l’analyse syntaxique. Une écriture, une région ou une variante explicite doit être enregistrée. Le script IANA `Zzzz` conserve le français, la variante inconnue `zzzzz` entraîne le repli anglais. [Recette dans les deux invités](../cloture-documentation-v0.23.0-phase1.md).
+
+<a id="decision-5h"></a>
+
+## Décision 5H du 27 novembre 2026 — Autorité de distribution NovaOS
+
+Décision validée par la MOA. NovaOS prend en charge Secure Boot actif et inactif. La distribution dépend de l’autorité indépendante NovaOS. Aucun certificat commercial, abonnement ou audit commercial n’est exigé. En mode actif, appliquer la politique UEFI du propriétaire et refuser une image non admise. Seul le propriétaire peut décider d’enrôler une clé. Le diagnostic ne change ni le mode ni les clés. Hors Secure Boot, annoncer la limite de confiance et maintenir les vérifications internes.
+
+Cette décision remplace l’obligation générale d’activation formulée en 5G et son orientation commerciale. Les observations 5E–5G gardent leur portée d’origine. La frontière d’E/S approuvée en 5G, la protection DMA dès le chargement et la fermeture d’A8 demeurent applicables. Une nouvelle opération matérielle exige toujours l’arbitrage A7 correspondant. [Qualification et arbitrages](../diagnostic-uefi-5h.md)

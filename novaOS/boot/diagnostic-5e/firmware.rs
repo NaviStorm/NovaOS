@@ -152,26 +152,48 @@ pub unsafe fn rsdp(st: &efi::SystemTable, map: &Map) -> Result<u64, u64> {
     }
     found[1].or(found[0]).ok_or(4)
 }
-pub unsafe fn secure(rt: &efi::RuntimeServices) -> bool {
-    fn variable(rt: &efi::RuntimeServices, name: &str) -> Option<u8> {
-        let mut wide = [0u16; 16];
-        for (to, c) in wide.iter_mut().zip(name.bytes()) {
-            *to = u16::from(c);
-        }
-        let mut byte = 0u8;
-        let mut n = 1;
-        let s = unsafe {
-            (rt.get_variable)(
-                wide.as_mut_ptr(),
-                &mut { GLOBAL },
-                ptr::null_mut(),
-                &mut n,
-                (&raw mut byte).cast(),
-            )
-        };
-        (s == efi::Status::SUCCESS && n == 1).then_some(byte)
+fn flag(rt: &efi::RuntimeServices, name: &str) -> Result<Option<u8>, ()> {
+    let mut wide = [0u16; 16];
+    for (to, c) in wide.iter_mut().zip(name.bytes()) {
+        *to = u16::from(c);
     }
-    variable(rt, "SecureBoot") == Some(1) && variable(rt, "SetupMode") == Some(0)
+    let mut byte = 0u8;
+    let mut n = 1;
+    let s = unsafe {
+        (rt.get_variable)(
+            wide.as_mut_ptr(),
+            &mut { GLOBAL },
+            ptr::null_mut(),
+            &mut n,
+            (&raw mut byte).cast(),
+        )
+    };
+    if s == efi::Status::NOT_FOUND {
+        return Ok(None);
+    }
+    if s == efi::Status::SUCCESS && n == 1 {
+        Ok(Some(byte))
+    } else {
+        Err(())
+    }
+}
+
+#[cfg(not(feature = "diagnostic-5h"))]
+pub fn secure(rt: &efi::RuntimeServices) -> bool {
+    flag(rt, "SecureBoot") == Ok(Some(1)) && flag(rt, "SetupMode") == Ok(Some(0))
+}
+
+#[cfg(feature = "diagnostic-5h")]
+pub fn trust(rt: &efi::RuntimeServices) -> crate::phase5h::Trust {
+    use crate::phase5h::Trust;
+    match (
+        flag(rt, "SecureBoot"),
+        flag(rt, "SetupMode"),
+        flag(rt, "AuditMode"),
+    ) {
+        (Ok(s), Ok(m), Ok(a)) => Trust::from_flags(s, m, a),
+        _ => Trust::Unknown,
+    }
 }
 fn load_policy(revision: u32, options: u32) -> bool {
     revision == loaded_image::REVISION && options == 0

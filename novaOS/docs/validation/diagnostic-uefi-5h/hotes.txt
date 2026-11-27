@@ -1,0 +1,14 @@
+aarch64
+test firmware::tests::options_efi_externes_refusees ... ok
+test firmware::tests::une_plage_acpi_doit_etre_entierement_lisible ... ok
+test phase5h::tests::remapping_units_are_bounded_and_unambiguous ... ok
+test phase5h::tests::trust_states ... ok
+test tests::plan_ambigu_inconnu_et_plancher ... ok
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+x86_64
+test firmware::tests::options_efi_externes_refusees ... ok
+test firmware::tests::une_plage_acpi_doit_etre_entierement_lisible ... ok
+test phase5h::tests::remapping_units_are_bounded_and_unambiguous ... ok
+test phase5h::tests::trust_states ... ok
+test tests::plan_ambigu_inconnu_et_plancher ... ok
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

@@ -1,0 +1,26 @@
+{
+  "PK": [
+    {
+      "type": "certificat",
+      "sha256": "58768f82a3370a3c4f5b319eeff40762cfd182f9bc962adda79b15f3b6aff436"
+    }
+  ],
+  "KEK": [
+    {
+      "type": "certificat",
+      "sha256": "538a9b47024bc4d64310efd801929bbde91d4850dcfe43f83c0be3cd801b1a51"
+    }
+  ],
+  "db": [
+    {
+      "type": "certificat",
+      "sha256": "ec5e950fe13dc8eb411bdc6f12b04cfd7466578e607ea08453bb126e64a3c7db"
+    }
+  ],
+  "dbx": [
+    {
+      "type": "empreinte-PE",
+      "sha256": "3339ee9467d938b1dd541b5adf716ad3d2db1fc25241521fdb76ad4822c77892"
+    }
+  ]
+}

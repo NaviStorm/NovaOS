@@ -1,0 +1,3847 @@
+{
+  "qemu": "QEMU emulator version 11.1.3",
+  "firmware": "32807682a9e5c0e2d192ecb6077941d4be8bcfa6b9cd6e60830c3a9f48c0555a",
+  "support": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85",
+  "garde": {
+    "debut_attente": "2026-11-27T22:23:35.138582+00:00",
+    "acquisition": "2026-11-27T22:23:35.139037+00:00",
+    "attente_s": 0.00046379200648516417,
+    "liberation": "2026-11-27T22:24:44.486032+00:00"
+  },
+  "cas": {
+    "direct": {
+      "nominal-diagnostic": {
+        "topologie": "direct",
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85",
+        "magasin": "ead70f2f138da1572f968e079b3a12f26b9ed24e1ad29d6df70de616ef389d3f",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29253656,
+          "entree": 29007376,
+          "arret": 28982992,
+          "base": 28958720,
+          "statut": 16,
+          "tables": 5,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 515334,
+          "vivants": 0,
+          "sortie_efi": 28987344
+        },
+        "octets_avant": 18650,
+        "octets_trace": 18738,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "e1000e 00:02.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 18650,
+        "rip_arret": 28982992,
+        "halt": true,
+        "rip_final": 28982994,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "ef8430ec05bfe1f4e3a454cb0848a288680a851adc6d696c207d5cb8b6fb1d3b",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [],
+          "sortie": [],
+          "fin": []
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29007376
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28987344
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28982994
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 358,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 00:02.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "drhd_decrits": [],
+        "confiance_affichee": "NovaOS: Secure Boot actif - EFI admis par la politique UEFI",
+        "repli_interne_disqualifiant": false
+      },
+      "nominal-signature-interne": {
+        "topologie": "direct",
+        "image": "9e59b71f38b21a965c87863b989ebf9f5ca00fbc09795decbee04da6ade6b77e",
+        "magasin": "ead70f2f138da1572f968e079b3a12f26b9ed24e1ad29d6df70de616ef389d3f",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29253656,
+          "entree": 29007376,
+          "arret": 28982992,
+          "base": 28958720,
+          "statut": 6,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 21875,
+          "vivants": 0,
+          "sortie_efi": 28987344
+        },
+        "octets_avant": 18650,
+        "octets_trace": 18738,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "e1000e 00:02.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 18650,
+        "rip_arret": 28982992,
+        "halt": true,
+        "rip_final": 28982994,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "ef8430ec05bfe1f4e3a454cb0848a288680a851adc6d696c207d5cb8b6fb1d3b",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [],
+          "sortie": [],
+          "fin": []
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29007376
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28987344
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28982994
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 358,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 00:02.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "confiance_affichee": "NovaOS: Secure Boot actif - EFI admis par la politique UEFI",
+        "repli_interne_disqualifiant": false
+      },
+      "nominal-paquet": {
+        "topologie": "direct",
+        "image": "37830ef08b6848254bbac05bfe47f5e0bdc0c5d9408c96706ddfb8469c28e63a",
+        "magasin": "ead70f2f138da1572f968e079b3a12f26b9ed24e1ad29d6df70de616ef389d3f",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29253656,
+          "entree": 29007376,
+          "arret": 28982992,
+          "base": 28958720,
+          "statut": 18,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 21875,
+          "vivants": 0,
+          "sortie_efi": 28987344
+        },
+        "octets_avant": 18650,
+        "octets_trace": 18738,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "e1000e 00:02.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 18650,
+        "rip_arret": 28982992,
+        "halt": true,
+        "rip_final": 28982994,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "ef8430ec05bfe1f4e3a454cb0848a288680a851adc6d696c207d5cb8b6fb1d3b",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [],
+          "sortie": [],
+          "fin": []
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29007376
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28987344
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28982994
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 358,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 00:02.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "confiance_affichee": "NovaOS: Secure Boot actif - EFI admis par la politique UEFI",
+        "repli_interne_disqualifiant": false
+      },
+      "inactif-diagnostic": {
+        "topologie": "direct",
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85",
+        "magasin": "5a8a240b6a2d4f2b8915fa13d8186dc6d546d9cba17e62f28ec67ddfa5dcc1e8",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29446168,
+          "entree": 29199888,
+          "arret": 29175504,
+          "base": 29151232,
+          "statut": 16,
+          "tables": 5,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 515214,
+          "vivants": 0,
+          "sortie_efi": 29179856
+        },
+        "octets_avant": 18650,
+        "octets_trace": 18738,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "e1000e 00:02.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 18650,
+        "rip_arret": 29175504,
+        "halt": true,
+        "rip_final": 29175506,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "7c9a6359fdbe6223e61ef9e6f811dcb5bf097a0abba250f3ad36eb8da914eb0f",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [],
+          "sortie": [],
+          "fin": []
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29199888
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29179856
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29175506
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 358,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 00:02.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "drhd_decrits": [],
+        "confiance_affichee": "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "repli_interne_disqualifiant": false
+      },
+      "inactif-signature-interne": {
+        "topologie": "direct",
+        "image": "9e59b71f38b21a965c87863b989ebf9f5ca00fbc09795decbee04da6ade6b77e",
+        "magasin": "5a8a240b6a2d4f2b8915fa13d8186dc6d546d9cba17e62f28ec67ddfa5dcc1e8",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29446168,
+          "entree": 29199888,
+          "arret": 29175504,
+          "base": 29151232,
+          "statut": 6,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 21755,
+          "vivants": 0,
+          "sortie_efi": 29179856
+        },
+        "octets_avant": 18650,
+        "octets_trace": 18738,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "e1000e 00:02.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 18650,
+        "rip_arret": 29175504,
+        "halt": true,
+        "rip_final": 29175506,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "7c9a6359fdbe6223e61ef9e6f811dcb5bf097a0abba250f3ad36eb8da914eb0f",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [],
+          "sortie": [],
+          "fin": []
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29199888
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29179856
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29175506
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 358,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 00:02.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "confiance_affichee": "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "repli_interne_disqualifiant": false
+      },
+      "inactif-paquet": {
+        "topologie": "direct",
+        "image": "37830ef08b6848254bbac05bfe47f5e0bdc0c5d9408c96706ddfb8469c28e63a",
+        "magasin": "5a8a240b6a2d4f2b8915fa13d8186dc6d546d9cba17e62f28ec67ddfa5dcc1e8",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29446168,
+          "entree": 29199888,
+          "arret": 29175504,
+          "base": 29151232,
+          "statut": 18,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 21755,
+          "vivants": 0,
+          "sortie_efi": 29179856
+        },
+        "octets_avant": 18650,
+        "octets_trace": 18738,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "e1000e 00:02.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 18650,
+        "rip_arret": 29175504,
+        "halt": true,
+        "rip_final": 29175506,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "7c9a6359fdbe6223e61ef9e6f811dcb5bf097a0abba250f3ad36eb8da914eb0f",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [],
+          "sortie": [],
+          "fin": []
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29199888
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29179856
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29175506
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 358,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 00:02.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "confiance_affichee": "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "repli_interne_disqualifiant": false
+      },
+      "nominal-configuration": {
+        "topologie": "direct",
+        "image": "8cce360fc6b98998c42aac51ce370fbfe55a3edfa10f9775fab56436b37dd8bb",
+        "magasin": "ead70f2f138da1572f968e079b3a12f26b9ed24e1ad29d6df70de616ef389d3f",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 348672,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 11,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 348672,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 11,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 4112408,
+          "entree": 3866128,
+          "arret": 3841744,
+          "base": 3817472,
+          "statut": 9,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 2928,
+          "vivants": 0,
+          "sortie_efi": 3846096
+        },
+        "octets_avant": 21038,
+        "octets_trace": 21126,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "e1000e 00:02.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 21038,
+        "rip_arret": 3841744,
+        "halt": true,
+        "rip_final": 3841746,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "ef8430ec05bfe1f4e3a454cb0848a288680a851adc6d696c207d5cb8b6fb1d3b",
+        "refus_usb": true,
+        "vtd": {
+          "entree": [],
+          "sortie": [],
+          "fin": []
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 3866128
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 3846096
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 3841746
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 361,
+          "usb_xhci_xfer_success": 63,
+          "ide_bus_exec_cmd": 15,
+          "ahci_cmd_done": 15
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 00:02.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "confiance_affichee": "NovaOS: Secure Boot actif - EFI admis par la politique UEFI",
+        "repli_interne_disqualifiant": true
+      },
+      "revoque-diagnostic": {
+        "topologie": "direct",
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85",
+        "magasin": "74dc800e110256baf90082f359e1cb2d7d593e0e5f5c1a1bec7c9e55f12a9015",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": null,
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 348672,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 11,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": null,
+        "octets_avant": null,
+        "octets_trace": 21038,
+        "evenements_diagnostic": [],
+        "commandes_pci_entree": {},
+        "octets_avant_sortie": null,
+        "rip_arret": null,
+        "halt": true,
+        "rip_final": 52778881,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "016e4cda9a71d451389b03350121bf53794ecb50f8cee60bf832149cbc6a6d23"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "016e4cda9a71d451389b03350121bf53794ecb50f8cee60bf832149cbc6a6d23"
+          }
+        },
+        "magasin_final": "752094e4a9fa774b1efb2e689a453ff6155ca5faebc094c7bbfe98cb14f2ef0f",
+        "refus_usb": true,
+        "vtd": {
+          "fin": []
+        },
+        "pci": {
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 52778881
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 361,
+          "usb_xhci_xfer_success": 63,
+          "ide_bus_exec_cmd": 15,
+          "ahci_cmd_done": 15
+        },
+        "confiance_affichee": null,
+        "repli_interne_disqualifiant": false
+      },
+      "inactif-sans-signature": {
+        "topologie": "direct",
+        "image": "54b5ae9ff2d3c4c931d2aaafc7cde8c53f040059261d20e2c185cdf99d99b91a",
+        "magasin": "5a8a240b6a2d4f2b8915fa13d8186dc6d546d9cba17e62f28ec67ddfa5dcc1e8",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29450264,
+          "entree": 29203984,
+          "arret": 29179600,
+          "base": 29155328,
+          "statut": 16,
+          "tables": 5,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 515214,
+          "vivants": 0,
+          "sortie_efi": 29183952
+        },
+        "octets_avant": 18650,
+        "octets_trace": 18738,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "e1000e 00:02.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 18650,
+        "rip_arret": 29179600,
+        "halt": true,
+        "rip_final": 29179602,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "7c9a6359fdbe6223e61ef9e6f811dcb5bf097a0abba250f3ad36eb8da914eb0f",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [],
+          "sortie": [],
+          "fin": []
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29203984
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29183952
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "00:02.0": {
+                "classe": 512,
+                "lecture": "e0010004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29179602
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 358,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 00:02.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "drhd_decrits": [],
+        "confiance_affichee": "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "repli_interne_disqualifiant": false
+      }
+    },
+    "pont": {
+      "nominal-diagnostic": {
+        "topologie": "pont",
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85",
+        "magasin": "ead70f2f138da1572f968e079b3a12f26b9ed24e1ad29d6df70de616ef389d3f",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29249560,
+          "entree": 29003280,
+          "arret": 28978896,
+          "base": 28954624,
+          "statut": 16,
+          "tables": 6,
+          "dmar": 1,
+          "drhd": 1,
+          "noeuds": [],
+          "arena": 616566,
+          "vivants": 0,
+          "sortie_efi": 28983248
+        },
+        "octets_avant": 24408,
+        "octets_trace": 24496,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "pcie-root-port 00:02.0": 7,
+          "e1000e 01:00.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 24408,
+        "rip_arret": 28978896,
+        "halt": true,
+        "rip_final": 28978898,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "ef8430ec05bfe1f4e3a454cb0848a288680a851adc6d696c207d5cb8b6fb1d3b",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "sortie": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "fin": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ]
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29003280
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28983248
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28978898
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 469,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 01:00.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "drhd_decrits": [
+          [
+            "0",
+            "0xfed90000",
+            "false"
+          ]
+        ],
+        "confiance_affichee": "NovaOS: Secure Boot actif - EFI admis par la politique UEFI",
+        "repli_interne_disqualifiant": false
+      },
+      "nominal-signature-interne": {
+        "topologie": "pont",
+        "image": "9e59b71f38b21a965c87863b989ebf9f5ca00fbc09795decbee04da6ade6b77e",
+        "magasin": "ead70f2f138da1572f968e079b3a12f26b9ed24e1ad29d6df70de616ef389d3f",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29249560,
+          "entree": 29003280,
+          "arret": 28978896,
+          "base": 28954624,
+          "statut": 6,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 22043,
+          "vivants": 0,
+          "sortie_efi": 28983248
+        },
+        "octets_avant": 24408,
+        "octets_trace": 24496,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "pcie-root-port 00:02.0": 7,
+          "e1000e 01:00.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 24408,
+        "rip_arret": 28978896,
+        "halt": true,
+        "rip_final": 28978898,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "ef8430ec05bfe1f4e3a454cb0848a288680a851adc6d696c207d5cb8b6fb1d3b",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "sortie": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "fin": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ]
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29003280
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28983248
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28978898
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 469,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 01:00.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "confiance_affichee": "NovaOS: Secure Boot actif - EFI admis par la politique UEFI",
+        "repli_interne_disqualifiant": false
+      },
+      "nominal-paquet": {
+        "topologie": "pont",
+        "image": "37830ef08b6848254bbac05bfe47f5e0bdc0c5d9408c96706ddfb8469c28e63a",
+        "magasin": "ead70f2f138da1572f968e079b3a12f26b9ed24e1ad29d6df70de616ef389d3f",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29249560,
+          "entree": 29003280,
+          "arret": 28978896,
+          "base": 28954624,
+          "statut": 18,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 22043,
+          "vivants": 0,
+          "sortie_efi": 28983248
+        },
+        "octets_avant": 24408,
+        "octets_trace": 24496,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "pcie-root-port 00:02.0": 7,
+          "e1000e 01:00.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 24408,
+        "rip_arret": 28978896,
+        "halt": true,
+        "rip_final": 28978898,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "ef8430ec05bfe1f4e3a454cb0848a288680a851adc6d696c207d5cb8b6fb1d3b",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "sortie": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "fin": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ]
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29003280
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28983248
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 28978898
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 469,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 01:00.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "confiance_affichee": "NovaOS: Secure Boot actif - EFI admis par la politique UEFI",
+        "repli_interne_disqualifiant": false
+      },
+      "inactif-diagnostic": {
+        "topologie": "pont",
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85",
+        "magasin": "5a8a240b6a2d4f2b8915fa13d8186dc6d546d9cba17e62f28ec67ddfa5dcc1e8",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29429784,
+          "entree": 29183504,
+          "arret": 29159120,
+          "base": 29134848,
+          "statut": 16,
+          "tables": 6,
+          "dmar": 1,
+          "drhd": 1,
+          "noeuds": [],
+          "arena": 616494,
+          "vivants": 0,
+          "sortie_efi": 29163472
+        },
+        "octets_avant": 24408,
+        "octets_trace": 24496,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "pcie-root-port 00:02.0": 7,
+          "e1000e 01:00.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 24408,
+        "rip_arret": 29159120,
+        "halt": true,
+        "rip_final": 29159122,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "7c9a6359fdbe6223e61ef9e6f811dcb5bf097a0abba250f3ad36eb8da914eb0f",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "sortie": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "fin": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ]
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29183504
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29163472
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29159122
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 469,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 01:00.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "drhd_decrits": [
+          [
+            "0",
+            "0xfed90000",
+            "false"
+          ]
+        ],
+        "confiance_affichee": "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "repli_interne_disqualifiant": false
+      },
+      "inactif-signature-interne": {
+        "topologie": "pont",
+        "image": "9e59b71f38b21a965c87863b989ebf9f5ca00fbc09795decbee04da6ade6b77e",
+        "magasin": "5a8a240b6a2d4f2b8915fa13d8186dc6d546d9cba17e62f28ec67ddfa5dcc1e8",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29429784,
+          "entree": 29183504,
+          "arret": 29159120,
+          "base": 29134848,
+          "statut": 6,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 21971,
+          "vivants": 0,
+          "sortie_efi": 29163472
+        },
+        "octets_avant": 24408,
+        "octets_trace": 24496,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "pcie-root-port 00:02.0": 7,
+          "e1000e 01:00.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 24408,
+        "rip_arret": 29159120,
+        "halt": true,
+        "rip_final": 29159122,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "7c9a6359fdbe6223e61ef9e6f811dcb5bf097a0abba250f3ad36eb8da914eb0f",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "sortie": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "fin": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ]
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29183504
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29163472
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29159122
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 469,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 01:00.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "confiance_affichee": "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "repli_interne_disqualifiant": false
+      },
+      "inactif-paquet": {
+        "topologie": "pont",
+        "image": "37830ef08b6848254bbac05bfe47f5e0bdc0c5d9408c96706ddfb8469c28e63a",
+        "magasin": "5a8a240b6a2d4f2b8915fa13d8186dc6d546d9cba17e62f28ec67ddfa5dcc1e8",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29429784,
+          "entree": 29183504,
+          "arret": 29159120,
+          "base": 29134848,
+          "statut": 18,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 21971,
+          "vivants": 0,
+          "sortie_efi": 29163472
+        },
+        "octets_avant": 24408,
+        "octets_trace": 24496,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "pcie-root-port 00:02.0": 7,
+          "e1000e 01:00.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 24408,
+        "rip_arret": 29159120,
+        "halt": true,
+        "rip_final": 29159122,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "7c9a6359fdbe6223e61ef9e6f811dcb5bf097a0abba250f3ad36eb8da914eb0f",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "sortie": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "fin": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ]
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29183504
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29163472
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29159122
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 469,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 01:00.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "confiance_affichee": "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "repli_interne_disqualifiant": false
+      },
+      "nominal-configuration": {
+        "topologie": "pont",
+        "image": "8cce360fc6b98998c42aac51ce370fbfe55a3edfa10f9775fab56436b37dd8bb",
+        "magasin": "ead70f2f138da1572f968e079b3a12f26b9ed24e1ad29d6df70de616ef389d3f",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 348672,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 11,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 348672,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 11,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 4112408,
+          "entree": 3866128,
+          "arret": 3841744,
+          "base": 3817472,
+          "statut": 9,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 2976,
+          "vivants": 0,
+          "sortie_efi": 3846096
+        },
+        "octets_avant": 26894,
+        "octets_trace": 26982,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "pcie-root-port 00:02.0": 7,
+          "e1000e 01:00.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 26894,
+        "rip_arret": 3841744,
+        "halt": true,
+        "rip_final": 3841746,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "ef8430ec05bfe1f4e3a454cb0848a288680a851adc6d696c207d5cb8b6fb1d3b",
+        "refus_usb": true,
+        "vtd": {
+          "entree": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "sortie": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "fin": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ]
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 3866128
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 3846096
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 3841746
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 474,
+          "usb_xhci_xfer_success": 63,
+          "ide_bus_exec_cmd": 15,
+          "ahci_cmd_done": 15
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 01:00.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "confiance_affichee": "NovaOS: Secure Boot actif - EFI admis par la politique UEFI",
+        "repli_interne_disqualifiant": true
+      },
+      "revoque-diagnostic": {
+        "topologie": "pont",
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85",
+        "magasin": "74dc800e110256baf90082f359e1cb2d7d593e0e5f5c1a1bec7c9e55f12a9015",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": null,
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 348672,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 11,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": null,
+        "octets_avant": null,
+        "octets_trace": 26943,
+        "evenements_diagnostic": [],
+        "commandes_pci_entree": {},
+        "octets_avant_sortie": null,
+        "rip_arret": null,
+        "halt": true,
+        "rip_final": 52778881,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "016e4cda9a71d451389b03350121bf53794ecb50f8cee60bf832149cbc6a6d23"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "016e4cda9a71d451389b03350121bf53794ecb50f8cee60bf832149cbc6a6d23"
+          }
+        },
+        "magasin_final": "752094e4a9fa774b1efb2e689a453ff6155ca5faebc094c7bbfe98cb14f2ef0f",
+        "refus_usb": true,
+        "vtd": {
+          "fin": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ]
+        },
+        "pci": {
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 52778881
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 475,
+          "usb_xhci_xfer_success": 63,
+          "ide_bus_exec_cmd": 15,
+          "ahci_cmd_done": 15
+        },
+        "confiance_affichee": null,
+        "repli_interne_disqualifiant": false
+      },
+      "inactif-sans-signature": {
+        "topologie": "pont",
+        "image": "54b5ae9ff2d3c4c931d2aaafc7cde8c53f040059261d20e2c185cdf99d99b91a",
+        "magasin": "5a8a240b6a2d4f2b8915fa13d8186dc6d546d9cba17e62f28ec67ddfa5dcc1e8",
+        "initial": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "rapport": {
+          "adresse": 29433880,
+          "entree": 29187600,
+          "arret": 29163216,
+          "base": 29138944,
+          "statut": 16,
+          "tables": 6,
+          "dmar": 1,
+          "drhd": 1,
+          "noeuds": [],
+          "arena": 616494,
+          "vivants": 0,
+          "sortie_efi": 29167568
+        },
+        "octets_avant": 24408,
+        "octets_trace": 24496,
+        "evenements_diagnostic": [
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7",
+          "pci_cfg_write qemu-xhci 00:01.0 @0x4 <- 0x7"
+        ],
+        "commandes_pci_entree": {
+          "mch 00:00.0": 7,
+          "qemu-xhci 00:01.0": 7,
+          "pcie-root-port 00:02.0": 7,
+          "e1000e 01:00.0": 7,
+          "ICH9-LPC 00:1f.0": 7,
+          "ich9-ahci 00:1f.2": 7,
+          "ICH9-SMB 00:1f.3": 7
+        },
+        "octets_avant_sortie": 24408,
+        "rip_arret": 29163216,
+        "halt": true,
+        "rip_final": 29163218,
+        "disque_intact": true,
+        "usb_connecte": true,
+        "avant": {
+          "ordre": [],
+          "prochain": [],
+          "options": {},
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "apres": {
+          "ordre": [
+            1,
+            0
+          ],
+          "prochain": [],
+          "options": {
+            "Boot0000": {
+              "titre": "UiApp",
+              "chemin": "FvName(7cb8bdc9-f8eb-4f34-aaea-3ee4af6516a1)/FvFileName(462caa21-7614-4503-836e-8ab6f4662331)"
+            },
+            "Boot0001": {
+              "titre": "UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1",
+              "chemin": "PciRoot()/PCI(dev=01:0)/USB(port=0)"
+            }
+          },
+          "confiance": {
+            "PK": "334d1f7be39c7bcbe3552d7680c96bdb883cb4b912fa8c8d2beddd787295e822",
+            "KEK": "75b1e59d820ff052184610b2de7d95c01b97f2a1da8c2c393a043d4ec1f9b016",
+            "db": "3ef232916da8c5cc1e62d82efa55422860b06b3627cc71a2b0b865aefc1c3960",
+            "dbx": "88510409b73429f696a22b6bdc5c088fb516a8f1af230cce0918e736fbc776c8"
+          }
+        },
+        "magasin_final": "7c9a6359fdbe6223e61ef9e6f811dcb5bf097a0abba250f3ad36eb8da914eb0f",
+        "refus_usb": false,
+        "vtd": {
+          "entree": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "sortie": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ],
+          "fin": [
+            {
+              "fenetre": "00000000fed90000-00000000fed9022f (prio 0, i/o): intel_iommu",
+              "lecture": "fed9001c: 0x00000000",
+              "tes": false
+            }
+          ]
+        },
+        "pci": {
+          "entree": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29187600
+          },
+          "sortie": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29167568
+          },
+          "fin": {
+            "fenetre": "00000000e0000000-00000000efffffff (prio 0, i/o): pcie-mmcfg-mmio",
+            "controleurs": {
+              "01:00.0": {
+                "classe": 512,
+                "lecture": "e0100004: 0x0007",
+                "commande": 7,
+                "bme": true
+              },
+              "00:1f.2": {
+                "classe": 262,
+                "lecture": "e00fa004: 0x0007",
+                "commande": 7,
+                "bme": true
+              }
+            },
+            "rip": 29163218
+          }
+        },
+        "trace_avant": {
+          "pci_cfg_write": 469,
+          "usb_xhci_xfer_success": 54
+        },
+        "trace_apres": {
+          "pci_cfg_write": 2
+        },
+        "bme_herite": {
+          "e1000e 01:00.0": true,
+          "ich9-ahci 00:1f.2": true
+        },
+        "drhd_decrits": [
+          [
+            "0",
+            "0xfed90000",
+            "false"
+          ]
+        ],
+        "confiance_affichee": "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "repli_interne_disqualifiant": false
+      }
+    }
+  }
+}
