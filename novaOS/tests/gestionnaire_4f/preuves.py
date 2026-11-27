@@ -14,6 +14,7 @@ import tarfile
 
 from qualifier import BASE, CAS, NOVA, controler, elf, sha, write
 from double import verifier as verifier_double
+from comparaison import verifier as verifier_ordre
 from ethernet_v1.performance_bilan import run as mesure
 from ethernet_v1 import cycle_vie
 
@@ -127,6 +128,8 @@ def main():
     cli.epilog = "Vérification autonome du résultat : preuves.py --verifier DOSSIER"
     for key in ("simple","double","endurance_double","arm","arm_reprise","hotes","sortie"):
         cli.add_argument(key,type=lambda s:Path(s).resolve())
+    cli.add_argument("--comparaison", type=Path, required=True,
+                     help="Six paires alternées avec les mêmes ELF Q35")
     cli.add_argument("--pression", type=Path, help="Archive distincte du cas Q35 à huit boîtes")
     cli.add_argument("--double-actif", type=Path, required=True,
                      help="Archive des deux profils doubles avec témoin des CQE")
@@ -276,6 +279,27 @@ def main():
     machines={}
     def trois(path): return [path/str(n) for n in range(1,4)]
     perfs={k:cellules(trois(a.simple/"simple"/k),machines) for k in ("statique","ethernet")}
+    ordre = verifier_ordre(a.comparaison)
+    ordre_fichier = a.comparaison/"ordre.json"
+    if ordre != lire(ordre_fichier):
+        raise ValueError("Ordre ou provenance des paires")
+    ajouter("comparaison/ordre.json", ordre_fichier)
+    for cas in ("statique", "ethernet"):
+        serie = [a.comparaison/cas/str(n) for n in range(1,7)]
+        perfs[cas+"_apparie"] = cellules(serie, machines)
+        attendue = perfs[cas]["demarrages"][0]["elf"]
+        for p in serie:
+            c = lire(p/"campagne.json")
+            if c["elf"] != attendue or c["sha256_lanceur"] != empreinte_lanceur(c["commit_lanceur"]):
+                raise ValueError(("Dérive d’image ou du lanceur", cas, p))
+            recoupe(p, controler, cas, p)
+            if cas == "ethernet":
+                enregistrer(c, lire(p/"reprise.json")["boot"])
+            pieces_boot(f"comparaison/{cas}/{p.name}", p)
+    deltas = []
+    for fixe, dynamique in zip(perfs["statique_apparie"]["demarrages"], perfs["ethernet_apparie"]["demarrages"]):
+        deltas.append({lot: {k: 100*(dynamique["lot"][lot][k]/fixe["lot"][lot][k]-1)
+                             for k in ("tx_mbps", "p99_ms", "ipc_tx")} for lot in ("1", "4", "8")})
     perfs["arm_4e1"]=cellules(trois(a.arm/"ethernet"),machines)
     arm_boots = set()
     for n,p in enumerate(trois(a.arm/"ethernet"),1):
@@ -331,7 +355,8 @@ def main():
     ajouter("hotes.log",a.hotes)
     write(a.sortie/"bilan.json",dict(simple=etats,double=duos,memoire=memoire,ethernet=perfs,
         modeles_q35=sorted(q35_modeles),machines=machines,empreintes_pair=list(empreintes.pop()),
-        images=images,controle_ms=controle,boots_dynamiques_q35=len(epochs),boots_arm=len(arm_boots)))
+        images=images,controle_ms=controle,comparaison=dict(ordre=ordre,ecarts_paires_pct=deltas),
+        boots_dynamiques_q35=len(epochs),boots_arm=len(arm_boots)))
     nombre=compacte(a.sortie,pieces)
     (a.sortie/"SHA256SUMS").write_text("".join(f"{sha(a.sortie/n)}  {n}\n" for n in ("bilan.json","inventaire.json","preuves.tar.gz")))
     if verifier_capsule(a.sortie) != nombre:
