@@ -97,6 +97,10 @@ impl Preparation {
         }
         Ok(cfg)
     }
+    #[cfg(feature="gestionnaire-4d")]
+    pub(super) fn correspond(id:u64,sid:u64)->bool {
+        sid==56 && Self::inventaire().is_ok_and(|cfg|u64::from(cfg.get(0,4))==id)
+    }
     pub(super) fn ouvrir() -> Result<Self> {
         if QUARANTAINE.lock().is_some() {
             return Err(Error::Quarantine);
@@ -251,6 +255,8 @@ impl Preparation {
             let titulaire = acteur.as_ref().map(|a| a.titulaire_dma());
             let operation = |tag, len, copie: &mut [u8]| {
                     if tag == 5 {
+                        #[cfg(feature="gestionnaire-4d")]
+                        crate::sched::process::net_preparation::dynamique::debut_retrait();
                         #[cfg(feature="ethernet-v1-port")]
                         {
                             if let Some(id) = titulaire && self.reset_negocie {
@@ -375,6 +381,8 @@ impl Preparation {
         };
         bail.fermer()?;
         hal::log(format_args!("E3C VirtIO-IOMMU generation={generation} rendus=22 quarantaine=0 detache=true"));
+        #[cfg(feature="gestionnaire-4d")]
+        crate::sched::process::net_preparation::dynamique::fin_retrait();
         Ok(())
     }
 

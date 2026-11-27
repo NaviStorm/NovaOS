@@ -467,6 +467,9 @@ mod domain;
 
 #[cfg(all(target_arch = "aarch64", feature = "net-arm-lab"))]
 pub(crate) mod net_arm;
+#[cfg(all(target_arch="aarch64",feature="gestionnaire-4d"))]
+pub(crate) fn verifier_port_selectionne(id:u64,sid:u64)->bool {net_arm::Preparation::correspond(id,sid)}
+
 
 #[cfg(all(
     feature = "net-event-idx",

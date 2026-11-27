@@ -260,11 +260,14 @@ def main():
     p.add_argument("--cycle-vie", action="store_true", help="Vérifier les reçus et la mémoire du profil 3C")
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
     p.add_argument("--delai", type=int, default=90)
-    p.add_argument("--refus-4d", choices=("signature","revision","racines","lancement"))
+    p.add_argument("--gestionnaire-4d",action="store_true",help="Contrôler le compte physique du port après fermeture de ses liaisons de lancement")
+    p.add_argument("--refus-4d", choices=("signature","revision","racines","lancement","attribution","droits"))
     p.add_argument("--esp-verifiee", action="store_true", help="Réécrire aussi les secteurs nuls alloués et relire l’ELF sur la copie FAT32 ARM")
     p.add_argument("--cpu-max", action="store_true", help="Témoin ArmVirt avec RNDR et chargeur direct")
     p.add_argument("--limine-arm", type=Path, help="Second étage Limine de laboratoire identifié")
     a = p.parse_args()
+    if a.gestionnaire_4d and (a.arch!="arm" or not a.esp_verifiee or not a.cycle_vie):
+        p.error("Le contrôle 4D exige le profil ARM, sa relecture EFI et le cycle de vie")
     if a.refus_4d and (a.arch!="arm" or a.cas!="port" or not a.esp_verifiee or not a.cycle_vie):
         p.error("Le refus 4D exige le port ARM, la relecture EFI et le contrôle du cycle.")
     if a.sans_reset_perf and (a.arch != "arm" or a.cas != "echo1514-reset" or not a.cycle_vie):
@@ -312,6 +315,8 @@ def main():
         env_vm["NOVAOS_E3E_TX_RECEIPT"] = a.cas.removeprefix("mmio-")
         args[0] = str(binaire)
     report = dict(audit=AUDIT, arch=a.arch, cas=a.cas, elf=digest(a.elf), modele=digest(Path(args[0])), succes=False)
+    if a.gestionnaire_4d:
+        report["gestionnaire_4d"]=True
     if a.sans_reset_perf:
         report["offre_reset_masquee"] = True
     if a.modele_recus:
@@ -530,7 +535,14 @@ def main():
             if a.cycle_vie:
                 if a.cas in ("echo1514", "echo1514-reset") and not report["succes"]:
                     raise ValueError("Critères du lanceur de performance 3B")
-                report["cycle_vie"] = cycle_vie.verifier(out, report, serial)
+                if a.gestionnaire_4d and a.cas in ("plein","choix-data"):
+                    report["iommu_transport_4d"]=cycle_vie.domaines_arm(out,set())
+                    if not (peer.frames==144 and not peer.error and report["volume_relu_identique"] and
+                            "NET ARM L2 retrait disque_lisible=true cadres_fin=0" in serial and
+                            "acteurs=[Exit(0), Exit(0), Exit(0)]" in serial):
+                        raise ValueError("chemin DATA ou restitution incomplet")
+                else:
+                    report["cycle_vie"] = cycle_vie.verifier(out, report, serial)
                 report["succes"] = True
                 modes.update(cycle_vie.CAS)
             selection=re.search(r"E3B transport_client=Some\((\d+)\)",serial)
@@ -540,6 +552,12 @@ def main():
                 report["succes"] &= report["transport_client"]==attendu
             if a.cas in modes:
                 details=f"mode={modes[a.cas]} racines=[0, 4, 1] boites_globales={0 if a.cas=='data' else 8 if a.cas=='plein' else 2} endpoints_globaux={13 if a.cas=='plein' else 5}"
+                if a.gestionnaire_4d and a.cas=="plein":
+                    # Les acteurs de pression ont déposé les huit boîtes au moment de la négociation.
+                    # Leurs racines sont déjà collectées lorsque le service est publié.
+                    details="mode=9 racines=[0, 4, 1] boites_globales=0 endpoints_globaux=5"
+                    report["pression_reelle"]="D4 coexistence mode=9 racines=[0, 4, 1] boites=8 endpoints=19 " in serial
+                    report["succes"] &= report["pression_reelle"]
                 report["profil_verifie"]=details in serial
                 report["succes"] &= report["profil_verifie"]
                 if a.cas == "boite":

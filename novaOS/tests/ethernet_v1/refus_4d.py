@@ -15,6 +15,9 @@ def verifier(cas, out, serie, rapport):
         "revision": ["D4 plan perime revision=1", "mode=2", "NET ARM refus preparation=State cadres_dma=0"],
         "racines": ["D4 saturation reelle racines=4", "D4 refus provisionnement epoch=1 mode=3 ipc_pages=0",
                     "NET ARM refus preparation=State cadres_dma=0"],
+        "droits": ["mode=6","NET ARM refus preparation=State cadres_dma=0"],
+        "attribution": ["D4 objet scelle","D4 refus attribution","D4 lancement refuse avant files",
+                        "D4 echec scelle stockage lecture_flush=true cadres_dma=0"],
         "lancement": ["D4 refus lancement empreinte", "D4 lancement refuse avant files",
                       "D4 echec scelle stockage lecture_flush=true cadres_dma=0"],
     }
@@ -28,14 +31,20 @@ def verifier(cas, out, serie, rapport):
         if regs["vm"]["running"] or regs["boot_bypass"] or not regs["iommu_platform"] or regs["pci_command"] & 4:
             raise ValueError(f"IOMMU ou BME inattendu à {phase}")
     attaches = detaches = translations = 0
+    firmware=True
+    commande=0
     with (out/"qemu.trace").open() as stream:
         for line in stream:
-            if re.match(r"pci_cfg_write virtio-net-pci 00:07.0 @0x4 ", line) and int(line.split()[-1],16)&4:
-                raise ValueError("BME du NIC pendant un refus")
+            if line.startswith("virtio_iommu_detach domain=2 endpoint=48"):
+                if not firmware or commande & 4: raise ValueError("transfert EFI avec BME actif")
+                firmware=False
+            if re.match(r"pci_cfg_write virtio-net-pci 00:07.0 @0x4 ", line):
+                commande=int(line.split()[-1],16)
+                if not firmware and commande & 4: raise ValueError("BME du NIC après le transfert EFI")
             attaches += line.startswith("virtio_iommu_attach domain=3 endpoint=56")
             detaches += line.startswith("virtio_iommu_detach domain=3 endpoint=56")
             translations += line.startswith("virtio_iommu_translate ") and "rid=56 " in line
-    if translations or attaches != int(cas=="lancement") or attaches != detaches:
+    if firmware or translations or attaches != int(cas in ("lancement","attribution")) or attaches != detaches:
         raise ValueError("cycle DMA du refus incohérent")
     return dict(cause=cas, attaches=attaches, detaches=detaches, traductions_nic=translations,
                 cadres_dma_fin=0, pages_ipc_fin=0, processus_fin=0)

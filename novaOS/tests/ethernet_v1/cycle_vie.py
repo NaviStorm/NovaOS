@@ -195,7 +195,8 @@ def verifier(out, c, serie):
     generations = [int(n) for n,_ in admissions]
     exiger(len(generations) == cycles and all(int(g)>int(pre) for g,pre in admissions)
            and [int(pre) for _,pre in admissions] == [0]+generations[:-1], admissions)
-    sessions = re.findall(r"ETH3 session .*?incarnation=(\d+) .*?epoque=(\d+) generation_materiel=(\d+) mode=(\d+) racines=\[0, 4, 1\] boites_globales=2 endpoints_globaux=5 ipc_pages=9", serie)
+    pages_session = 10 if c.get("gestionnaire_4d") else 9
+    sessions = re.findall(r"ETH3 session .*?incarnation=(\d+) .*?epoque=(\d+) generation_materiel=(\d+) mode=(\d+) racines=\[0, 4, 1\] boites_globales=2 endpoints_globaux=5 ipc_pages=" + str(pages_session) + r"\b", serie)
     exiger(len(sessions)==cycles and [int(s[2]) for s in sessions]==generations
            and all(int(s[3])==mode for s in sessions)
            and all(len({s[i] for s in sessions})==cycles for i in (0,1)), sessions)

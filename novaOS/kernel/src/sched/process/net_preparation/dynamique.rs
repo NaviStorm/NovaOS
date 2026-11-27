@@ -8,6 +8,41 @@ static INVENTORY: AtomicU64 = AtomicU64::new(0);
 
 static OBSERVER: AtomicU64 = AtomicU64::new(0);
 static CHANNEL: AtomicU64 = AtomicU64::new(0);
+static ACTIVATION: AtomicU64 = AtomicU64::new(0);
+static RETRAIT: AtomicU64 = AtomicU64::new(0);
+pub(crate) fn session_message(service: bool, client: bool, tag: u64, buf: &[u8]) {
+    if tag != 0x45544831 || buf.len() < 32 {
+        return;
+    }
+    if service && buf.len() == 48 && buf[4..8] == [2, 0, 1, 0] {
+        let start = ACTIVATION.swap(0, Ordering::Relaxed);
+        if start != 0 {
+            hal::log(format_args!(
+                "D4 activation publication_open_ticks={}",
+                hal::timer::counter() - start
+            ));
+        }
+    } else if client && buf[4..8] == [12, 0, 0, 0] {
+        debut_retrait();
+    }
+}
+pub(crate) fn debut_retrait() {
+    let _ = RETRAIT.compare_exchange(
+        0,
+        hal::timer::counter(),
+        Ordering::Relaxed,
+        Ordering::Relaxed,
+    );
+}
+pub(crate) fn fin_retrait() {
+    let start = RETRAIT.swap(0, Ordering::Relaxed);
+    if start != 0 {
+        hal::log(format_args!(
+            "D4 fermeture restitution_ticks={}",
+            hal::timer::counter() - start
+        ));
+    }
+}
 static MARK: AtomicU64 = AtomicU64::new(0);
 static TIMES: [AtomicU64; 4] = [const { AtomicU64::new(0) }; 4];
 /// Horodate l'entrée ABI des quatre dépôts du seul gestionnaire observé.
@@ -29,6 +64,8 @@ pub(crate) struct Decision {
     plan: [u8; 32],
     catalog: u64,
     policy: u64,
+    liaison: Option<Controle>,
+    cadres_controle: u64,
 }
 impl Decision {
     pub(crate) fn actuelle(&self, id: u64, sid: u64) -> bool {
@@ -39,7 +76,7 @@ impl Decision {
             && self.policy == 1
     }
 }
-fn actors(epoch: u64, id: u64, sid: u64, mode: u64, boot: u64) -> Option<(Child, Child, u64)> {
+fn actors(epoch: u64, id: u64, sid: u64, mode: u64, boot: u64) -> Option<(Child, Child, u64, u64)> {
     let _guard = Guard::new();
     let m = create_image(MANAGER, &[], None, None).ok()?;
     let p = match create_image(PEER, &[], None, None) {
@@ -60,7 +97,19 @@ fn actors(epoch: u64, id: u64, sid: u64, mode: u64, boot: u64) -> Option<(Child,
             hal::log(format_args!("D4 saturation reelle racines=4"));
         }
         let (client, manager) = ipc::liaison_ethernet::controle(s, p.0, m.0)?;
+        let (request, server) = ipc::liaison_ethernet::controle(s, m.0, p.0)?;
         let notify = s.ipc.lab_sender(m.0)?;
+        let lanceur = s.ipc.lab_sender(p.0)?;
+        let roots = [s.ipc.racines_pilotes(m.0), s.ipc.racines_pilotes(p.0)];
+        if roots != [3, 3] {
+            return Err(crate::abi::REFUSED);
+        }
+        hal::log(format_args!(
+            "D4 liaisons gestionnaire={} lanceur={} racines={roots:?} boites={} cloture=independante",
+            m.0.number,
+            p.0.number,
+            s.ipc.pages_bulk_count()
+        ));
         for (child, ports) in [(p.0, client), (m.0, manager)] {
             heap::with_pages(|mem| {
                 let space = s.processes.get(child).space.as_ref().unwrap();
@@ -73,6 +122,9 @@ fn actors(epoch: u64, id: u64, sid: u64, mode: u64, boot: u64) -> Option<(Child,
                     mode,
                     if child == m.0 { notify } else { 0 },
                     boot,
+                    if child == m.0 { request[0] } else { server[0] },
+                    if child == m.0 { request[1] } else { server[1] },
+                    if child == p.0 { lanceur } else { 0 },
                 ]
                 .into_iter()
                 .enumerate()
@@ -86,10 +138,10 @@ fn actors(epoch: u64, id: u64, sid: u64, mode: u64, boot: u64) -> Option<(Child,
         MARK.store(0, Ordering::Relaxed);
         CHANNEL.store(notify, Ordering::Relaxed);
         OBSERVER.store(m.0.number, Ordering::Release);
-        Ok::<_, u64>(notify)
+        Ok::<_, u64>((notify, lanceur))
     });
     match result {
-        Ok(key) => Some((m, p, key)),
+        Ok((key, lanceur)) => Some((m, p, key, lanceur)),
         Err(_) => {
             for child in [p, m] {
                 with(|s| {
@@ -196,9 +248,24 @@ fn measure(space: &UserSpace, mem: &mut crate::memory::Memory) -> (usize, usize,
     (private, stack, (top - at) as usize)
 }
 
+pub(super) fn piles_port(ids: [Pid; 3], op: u64) {
+    with(|s| {
+        heap::with_pages(|mem|{
+        for (role,pid) in ["pilote","service","client"].into_iter().zip(ids){
+            if let Some(space)=s.processes.get(pid).space.as_ref(){
+                let (pages,stack,touched)=measure(space,mem);
+                hal::log(format_args!("D4 pile role={role} op={op} privees={pages} pile_pages={stack} pile_bloc_touche={touched}"));
+            }
+        }
+        Ok(())
+    }).unwrap();
+    });
+}
 pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
     let epoch = INVENTORY
-        .try_update(Ordering::AcqRel, Ordering::Acquire, |n| n.checked_add(1))
+        .try_update(Ordering::AcqRel, Ordering::Acquire, |n| {
+            n.checked_add(1).filter(|v| v >> 63 == 0)
+        })
         .ok()?
         + 1;
     let mode = match option_env!("NOVAOS_4D_REFUS") {
@@ -206,6 +273,8 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
         Some("revision") => 2,
         Some("racines") => 3,
         Some("lancement") => 4,
+        Some("attribution") => 5,
+        Some("droits") => 6,
         _ => 0,
     };
     let boot = crate::boot_id::current()?;
@@ -218,7 +287,7 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
     let _sample = Sample::new("selection");
     let before = heap::with_pages(|mem| Ok(mem.free_pages())).ok()?;
     let start = hal::timer::counter();
-    let Some((m, p, key)) = actors(epoch, id, sid, mode, boot) else {
+    let Some((m, p, key, lanceur)) = actors(epoch, id, sid, mode, boot) else {
         hal::log(format_args!(
             "D4 refus provisionnement epoch={epoch} mode={mode} ipc_pages={}",
             with(|s| s.ipc.pages())
@@ -227,6 +296,12 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
     };
     let mp = m.0;
     let pp = p.0;
+    let controle = Controle {
+        actors: Some((m, p)),
+        key: lanceur,
+        epoch,
+        mode,
+    };
     let ready = (0..4).all(|i| {
         let msg = demande(mp, key, false);
         if msg != Some((i as u64 + 1, epoch, 1)) {
@@ -278,16 +353,8 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
     } else {
         None
     };
-    let outcomes = if report.is_some() {
-        [m.join(), p.join()]
-    } else {
-        [stop(m), stop(p)]
-    };
-    hal::log(format_args!(
-        "D4 controle epoch={epoch} recus={ready} acteurs={outcomes:?} mode={mode}"
-    ));
     let data = report?;
-    if outcomes != [Outcome::Exit(0); 2] || data[4] != epoch || data[5] != 1 {
+    if data[4] != epoch || data[5] != 1 {
         return None;
     }
     let mut digest = [0; 32];
@@ -317,8 +384,15 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
         plan: words(12),
         catalog: data[20],
         policy: data[5],
+        liaison: Some(controle),
+        cadres_controle: before.checked_sub(heap::audit(false).free_pages)?,
     };
-    decision.actuelle(id, sid).then_some(decision)
+    if !decision.actuelle(id, sid) {
+        return None;
+    }
+    ACTIVATION.store(hal::timer::counter(), Ordering::Relaxed);
+    RETRAIT.store(0, Ordering::Relaxed);
+    Some(decision)
 }
 
 fn sceller(d: &Decision) -> Option<user::SealedImage> {
@@ -351,15 +425,141 @@ fn sceller(d: &Decision) -> Option<user::SealedImage> {
     Some(image)
 }
 
-pub(super) fn lancer(d: Decision, generation: u64) -> Option<(Child, u64)> {
-    if !d.actuelle(0x10411af4, 56) || generation == 0 {
+pub(super) struct Controle {
+    actors: Option<(Child, Child)>,
+    key: u64,
+    epoch: u64,
+    mode: u64,
+}
+impl Controle {
+    fn configurer(&self, pair: bool, fields: &[(usize, u64)]) -> Option<()> {
+        let (m, p) = self.actors.as_ref()?;
+        let pid = if pair { p.0 } else { m.0 };
+        with(|s| {
+            let actor = s.processes.get(pid);
+            if actor.outcome.is_some() {
+                return None;
+            }
+            let space = actor.space.as_ref()?;
+            heap::with_pages(|mem| {
+                for &(index, v) in fields {
+                    space.write_data(mem, index, v);
+                }
+                Ok(())
+            })
+            .ok()
+        })
+    }
+    fn demande(&self, op: u64, id: u64) -> bool {
+        self.actors.as_ref().is_some_and(|(_, p)| {
+            demande(p.0, self.key, false) == Some((op, self.epoch | (1 << 63), id))
+        })
+    }
+    pub(super) fn confirmer(mut self, pid: Pid) -> bool {
+        let inc = with(|s| s.processes.get(pid).instance.serial);
+        if self
+            .configurer(true, &[(14, pid.number), (15, inc), (13, 2)])
+            .is_none()
+            || !self.demande(7, 4)
+            || self.configurer(true, &[(16, 1)]).is_none()
+        {
+            return false;
+        }
+        let (m, p) = self.actors.take().unwrap();
+        let outcomes = [m.join(), p.join()];
+        hal::log(format_args!(
+            "D4 controle epoch={} recus=true acteurs={outcomes:?} mode={}",
+            self.epoch, self.mode
+        ));
+        hal::log(format_args!(
+            "D4 lanceur prepare=1 creation=1 recu=consulte rejeu=sans_effet ack=4 pid={} incarnation={inc}",
+            pid.number
+        ));
+        outcomes == [Outcome::Exit(0); 2]
+    }
+}
+impl Drop for Controle {
+    fn drop(&mut self) {
+        if let Some((m, p)) = self.actors.take() {
+            let outcomes = [stop(m), stop(p)];
+            hal::log(format_args!(
+                "D4 controle epoch={} recus=false acteurs={outcomes:?} mode={}",
+                self.epoch, self.mode
+            ));
+        }
+    }
+}
+pub(super) struct Ticket {
+    decision: Decision,
+    image: user::SealedImage,
+    generation: u64,
+}
+impl Decision {
+    pub(super) fn preparer(mut self, generation: u64) -> Option<(Ticket, Controle, u64)> {
+        if !self.actuelle(self.id, self.sid) || generation == 0 {
+            return None;
+        }
+        let controle = self.liaison.take()?;
+        let base = heap::audit(false)
+            .free_pages
+            .checked_add(self.cadres_controle)?;
+        controle.configurer(true, &[(12, generation)])?;
+        controle.configurer(false, &[(12, generation)])?;
+        if !controle.demande(5, 1) {
+            return None;
+        }
+        let image = sceller(&self)?;
+        controle.configurer(true, &[(13, 1)])?;
+        if !controle.demande(6, 2) {
+            return None;
+        }
+        Some((
+            Ticket {
+                decision: self,
+                image,
+                generation,
+            },
+            controle,
+            base,
+        ))
+    }
+}
+pub(super) fn lancer(ticket: Ticket, generation: u64) -> Option<(Child, u64)> {
+    let Ticket {
+        decision: d,
+        image,
+        generation: attendue,
+    } = ticket;
+    if option_env!("NOVAOS_4D_REFUS") == Some("attribution") {
+        INVENTORY.fetch_add(1, Ordering::AcqRel);
+    }
+    if !d.actuelle(d.id, d.sid)
+        || generation != attendue
+        || !crate::hardware::block::verifier_port_selectionne(d.id, d.sid)
+    {
+        hal::log(format_args!(
+            "D4 refus attribution revision={} generation={generation}",
+            d.epoch
+        ));
         return None;
     }
     let start = hal::timer::counter();
     let _sample = Sample::new("lancement");
-    let image = sceller(&d)?;
-    let space =
-        heap::with_pages(|mem| UserSpace::installed(mem, &image, &3u64.to_le_bytes())).ok()?;
+
+    let (space, (fichier, zeros)) = heap::with_pages(|mem| {
+        let space = UserSpace::installed(mem, &image, &3u64.to_le_bytes())?;
+        match space.verifier_image_chargee(mem, &image) {
+            Ok(n) => Ok((space, n)),
+            Err(e) => {
+                space.release(mem);
+                Err(e)
+            }
+        }
+    })
+    .ok()?;
+    hal::log(format_args!(
+        "D4 PT_LOAD compares={fichier} zeros={zeros} avant_capacites=true"
+    ));
     let (private, stack) = space.page_counts();
     drop(image);
     // Portée de la garde de setup : le thread ne reçoit pas le CPU avant ses propres liaisons.

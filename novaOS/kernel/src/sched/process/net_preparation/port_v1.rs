@@ -114,16 +114,32 @@ fn ecrire(s: &Core, p: Pid, fields: &[(usize, u64)]) -> Result<(), u64> {
     })
     .map_err(|_| abi::NO_MEMORY)
 }
+fn log_session(k:&Core, ids:[Pid;3],generation:u64,case:u64,identite:(u64,u64),epoch:u64) {
+    let [c,s,d]=ids;
+    let roots=ids.map(|p|k.ipc.racines_pilotes(p));
+            hal::log(format_args!(
+                "ETH3 session client={} service={} pilote={} incarnation={} generation_instance={} epoque={epoch} generation_materiel={generation} mode={case} racines={roots:?} boites_globales={} endpoints_globaux={} ipc_pages={}",
+                c.number,
+                s.number,
+                d.number,
+                identite.0,
+                identite.1,
+                k.ipc.pages_bulk_count(),
+                k.ipc.endpoint_count(),
+                k.ipc.pages()
+            ));
+}
+
 fn setup(
     generation: u64,
     case: u64,
     total: u64,
-    #[cfg(feature="gestionnaire-4d")] decision: Option<super::dynamique::Decision>,
+    #[cfg(feature="gestionnaire-4d")] ticket: super::dynamique::Ticket,
 ) -> Option<(Child, Child, Child, u64, [[u64; 2]; 2])> {
     let _guard = Guard::new();
     let boot = crate::boot_id::current()?;
     #[cfg(feature="gestionnaire-4d")]
-    let (driver, hw) = super::dynamique::lancer(decision?, generation)?;
+    let (driver, hw) = super::dynamique::lancer(ticket, generation)?;
     #[cfg(not(feature="gestionnaire-4d"))]
     let (driver, hw) = creer(3, None, generation)?;
     let mut group = [Some(driver), None, None];
@@ -186,17 +202,11 @@ fn setup(
             if roots != [0, 4, 1] {
                 return Err(abi::LIMIT);
             }
-            hal::log(format_args!(
-                "ETH3 session client={} service={} pilote={} incarnation={} generation_instance={} epoque={epoch} generation_materiel={generation} mode={case} racines={roots:?} boites_globales={} endpoints_globaux={} ipc_pages={}",
-                c.number,
-                s.number,
-                d.number,
-                identite.instance,
-                identite.generation,
-                k.ipc.pages_bulk_count(),
-                k.ipc.endpoint_count(),
-                k.ipc.pages()
-            ));
+            #[cfg(not(feature="gestionnaire-4d"))]
+            log_session(k,[c,s,d],generation,case,(identite.instance,identite.generation),epoch);
+            #[cfg(feature="gestionnaire-4d")]
+            hal::log(format_args!("D4 coexistence mode={case} racines={roots:?} boites={} endpoints={} ipc_pages={}",
+                 k.ipc.pages_bulk_count(),k.ipc.endpoint_count(),k.ipc.pages()));
             Ok::<(), u64>(())
         })
     })();
@@ -306,13 +316,29 @@ impl EthernetActor {
             return None;
         }
         measure("eth3_initial");
+        #[cfg(not(feature="gestionnaire-4d"))]
         let base = heap::audit(false).free_pages;
-        let groupe = setup(generation, case, total, #[cfg(feature="gestionnaire-4d")] decision)?;
+        #[cfg(feature="gestionnaire-4d")]
+        let (ticket,controle,base)=decision?.preparer(generation)?;
+        let groupe = setup(generation, case, total, #[cfg(feature="gestionnaire-4d")] ticket)?;
         #[cfg(feature="gestionnaire-4d")]
         measure("4d_acteurs_attribues");
         let ancienne_cle = DERNIERE_CLE.swap(groupe.3, Relaxed);
         let ancienne_valide = with(|k| k.ipc.lab_can_submit(groupe.0.0, ancienne_cle));
         let acteur = Self { groupe: Some(groupe), generation, case, base };
+        #[cfg(feature="gestionnaire-4d")]
+        {
+            let (d,s,c,_,_)=acteur.groupe.as_ref()?;
+            if !controle.confirmer(d.0){return None}
+            let boot=crate::boot_id::current()?;
+            with(|k|{
+                let id=k.processes.get(c.0).instance.identity(Some(boot))?;
+                hal::log(format_args!("D4 IPC port endpoints_noeuds_locaux_attentes_boites={:?}",k.ipc.detail_pages()));
+                log_session(k,[c.0,s.0,d.0],generation,case,(id.instance,id.generation),k.processes.get(s.0).instance.serial);
+                Some(())
+            })?;
+            measure("4d_port");
+        }
         if ancienne_valide {
             return None;
         }
@@ -475,6 +501,8 @@ pub(crate) fn ethernet_actor(
             break;
         }
         sequence = seq;
+        #[cfg(feature="gestionnaire-4d")]
+        if matches!(op,1|5){super::dynamique::piles_port([pid,sp,cp],op);}
         if op == 1 {
             // Lecture d'un témoin de qualification. Le noyau authentifie les droits séparément.
             let selection = with(|k| {

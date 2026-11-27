@@ -338,6 +338,29 @@ impl UserSpace {
         Ok(s)
     }
 
+    /// Le port 4D compare la vue CPU privée avant de rendre le processus exécutable.
+    #[cfg(feature="gestionnaire-4d")]
+    pub(crate) fn verifier_image_chargee(&self,m:&mut Memory,objet:&SealedImage)->Result<(usize,usize)> {
+        let bytes=objet.bytes();
+        let elf=Elf::parse(bytes)?;
+        let mut tampon=[0u8;256];
+        let mut fichier=0;
+        let mut zeros=0;
+        for seg in elf.segments(){
+            let mut at=0;
+            let taille=(seg.end-seg.start) as usize;
+            while at<taille {
+                let n=(taille-at).min(tampon.len());
+                let src=seg.filesz.saturating_sub(at).min(n);
+                if !self.copy_from_user(m,seg.start+at as u64,&mut tampon[..n]) ||
+                    (src!=0 && tampon[..src]!=bytes[seg.offset+at..seg.offset+at+src]) ||
+                    tampon[src..n].iter().any(|&x|x!=0) {return Err(Error::Verification)}
+                at+=n; fichier+=src; zeros+=n-src;
+            }
+        }
+        Ok((fichier,zeros))
+    }
+
     pub(crate) fn installed_header_frames(&self) -> usize {
         usize::from(matches!(self.elf, Some(Layout::Installed { .. })))
     }

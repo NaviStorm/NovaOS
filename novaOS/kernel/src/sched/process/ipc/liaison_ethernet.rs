@@ -30,6 +30,12 @@ pub(in crate::sched::process) fn controle(s: &mut Core, client: Pid, manager: Pi
     let rep = s.ipc.create(client)?;
     let rx = s.ipc.derive(client, req, manager, u64::from(RECEIVE))?;
     let tx = s.ipc.derive(client, rep, manager, u64::from(SEND))?;
+    // Les feuilles directionnelles sont en place. Les deux racines perdent GRANT et MANAGE.
+    // L'autorité de clôture du superviseur retrouve l'objet par l'incarnation bénéficiaire.
+    for (key,rights) in [(req,SEND),(rep,RECEIVE)]{
+        let node=s.ipc.lookup(client,key,ALL)?;
+        s.ipc.nodes.get_mut(node.id.slot()).rights=rights;
+    }
     Ok(([req,rep],[rx,tx]))
 }
 /// Huit liens ordinaires de laboratoire réellement provisionnés avant l'ouverture Ethernet.

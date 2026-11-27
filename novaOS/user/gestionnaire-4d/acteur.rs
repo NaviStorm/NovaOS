@@ -1,6 +1,7 @@
 #![no_std]
 #![no_main]
 extern crate alloc;
+mod lancement;
 mod mesures_tas;
 
 #[path = "../heap.rs"]
@@ -67,7 +68,7 @@ fn checkpoint(tag: u64, epoch: u64) -> Result<()> {
     body[8..].copy_from_slice(&1u64.to_le_bytes());
     send_frame(config(6), tag, &body, 0, false)
 }
-fn gate() -> Result<()> {
+fn gate() -> Result<[u8; 32]> {
     let epoch = config(2);
     let id = config(3);
     let sid = config(4);
@@ -151,7 +152,11 @@ fn gate() -> Result<()> {
         abi: 1,
         profile: Some(Sha256::digest(object!("profil.bin")).into()),
         features: &["courtier"],
-        caps: &["tx", "rx"],
+        caps: if config(5) == 6 {
+            &["rx"]
+        } else {
+            &["tx", "rx"]
+        },
         dma: &[
             "descripteurs:r",
             "disponibles:r",
@@ -175,14 +180,20 @@ fn gate() -> Result<()> {
         },
     };
     checkpoint(3, epoch)?;
-    for op in [Op::Hello, Op::Resolve, Op::Resolve, Op::Ack] {
+    let mut acquitte = false;
+    for step in 0..1431 {
         let msg = receive_for(config(0), 2500)?;
         if msg.kind != 1 || msg.tag != epoch || msg.len > 128 {
             return Err(REFUSED);
         }
         let bytes = &msg.payload[..msg.len as usize];
         let wire = Request::decode(bytes).map_err(|_| REFUSED)?;
-        if wire.op != op || wire.epoch != epoch {
+        let permis = match step {
+            0 => wire.op == Op::Hello,
+            1 | 2 => wire.op == Op::Resolve,
+            _ => matches!(wire.op, Op::ReadPlan | Op::Ack),
+        };
+        if !permis || wire.epoch != epoch {
             return Err(REFUSED);
         }
         // L’époque native est provisionnée par ouverture. L’objet 4C est local au démarrage du gestionnaire.
@@ -213,9 +224,39 @@ fn gate() -> Result<()> {
         if reply.status != Status::Confirmed {
             return Err(REFUSED);
         }
+        if wire.op == Op::Ack {
+            acquitte = true;
+            break;
+        }
+    }
+    if !acquitte {
+        return Err(REFUSED);
     }
     let plan = manager.plan(slot).ok_or(REFUSED)?;
-    if plan.revisions() != (1, epoch) || plan.hardware().dma_pages != 22 {
+    let hw = plan.hardware();
+    let q = plan.quotas();
+    let exact = |have: &[alloc::string::String], need: &[&str]| {
+        have.len() == need.len() && need.iter().all(|v| have.iter().any(|x| x == v))
+    };
+    if plan.revisions() != (1, epoch)
+        || (
+            hw.dma_pages,
+            hw.queues,
+            hw.entries_per_queue,
+            hw.max_irq_routes,
+        ) != (22, 2, 16, 0)
+        || !hw.mmio.is_empty()
+        || !hw.irq.is_empty()
+        || !exact(&hw.dma, target.dma)
+        || !exact(plan.capabilities(), target.caps)
+        || (
+            q.private_pages,
+            q.ipc_roots_created,
+            q.ipc_handles,
+            q.ipc_boxes_created,
+            q.pending_operations,
+        ) != (96, 1, 3, 0, 8)
+    {
         return Err(REFUSED);
     }
     for (i, w) in plan.image_digest().chunks_exact(8).enumerate() {
@@ -249,11 +290,11 @@ fn gate() -> Result<()> {
     while config(19) != epoch {
         call(THREAD_YIELD, 0, 0, 0);
     }
-    Ok(())
+    manager.plan_seal(slot).ok_or(REFUSED)
 }
 #[unsafe(no_mangle)]
 extern "C" fn run() -> ! {
-    exit(match gate() {
+    exit(match gate().and_then(lancement::conduire) {
         Ok(()) => 0,
         Err(e) => e,
     })

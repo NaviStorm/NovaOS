@@ -236,6 +236,10 @@ impl Domain {
     pub(super) fn pages_bulk_count(&self)->usize{self.pages_bulk.ids().count()}
     #[cfg(feature="ethernet-v1-port")]
     pub(super) fn endpoint_count(&self)->usize{self.ends.ids().count()}
+    #[cfg(feature="gestionnaire-4d")]
+    pub(super) fn detail_pages(&self)->[usize;5] {
+        [self.ends.pages(),self.nodes.pages(),self.locals.pages(),self.waits.pages(),self.pages_bulk.pages()].map(|n|n as usize)
+    }
     pub(super) fn pages(&self) -> usize {
         (self.ends.pages()
             + self.nodes.pages()

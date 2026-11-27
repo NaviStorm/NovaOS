@@ -16,8 +16,8 @@ REPO = NOVA.parent
 BASE = REPO.parent
 PORT = NOVA / "tests/ethernet_v1/port_qemu.py"
 ISA = "aarch64-unknown-none-softfloat"
-NEG = {"signature", "revision", "racines", "lancement"}
-CASES = {"reset-court","reset-deces","reset-revocation","reset-incertain","reset-absent",
+NEG = {"signature", "revision", "racines", "lancement","attribution","droits"}
+CASES = {"plein","choix-data","reset-court","reset-deces","reset-revocation","reset-incertain","reset-absent",
          "reset-iommu-absent","reset-iommu-differe","cycles-256","echo1514-reset","temoin-3e",*NEG}
 
 
@@ -83,7 +83,8 @@ def build(case, archive):
     write(folder/"construction.json",dict(commit=ref,elf={"arm":sha(k)},acteurs=actors,commande=cmd,
          cas=env["NOVAOS_ETH3_CASE"],injection=env["NOVAOS_4D_REFUS"],rustc=output(env["RUSTC"],"-V"),
          paquet={"taille":len(pkg),"sha256":hashlib.sha256(pkg).hexdigest(),"manifeste":sha(out/"pilote.toml")},
-         temoin_compilation=output("git","rev-parse","HEAD:novaOS/user/net_preparation.rs") if (NOVA/"user/net_preparation.rs").exists() else None))
+         sources_adaptateur=output("git","rev-parse","HEAD:novaOS/user/ethernet/adaptateur.rs"),
+         sources_courtier=output("git","rev-parse","HEAD:novaOS/user/virtio_net/ethernet_lab.rs")))
     return k,ref
 
 
@@ -106,6 +107,9 @@ def observer(case, dest, report):
         raise ValueError("réemploi du titulaire, de l’incarnation ou du bail")
     if case=="cycles-256" and any(a!=z or ipc!="0" or dma!="16" for a,_,z,_,ipc,dma in balances):
         raise ValueError("dérive mémoire, IPC ou DMA après un cycle nominal")
+    if (text.count("avant_capacites=true")!=wanted or text.count("D4 lanceur prepare=1 creation=1 recu=consulte rejeu=sans_effet ack=4")!=wanted
+            or text.count("racines=[3, 3] boites=0 cloture=independante")!=wanted):
+        raise ValueError("reçu de lancement, idempotence ou racines de contrôle")
     if text.count("ancienne_capacite_valide=false")!=wanted:
         raise ValueError("contrôle des anciennes capacités absent")
     report["dynamique"]=dict(cycles= wanted,pic_cadres=max(int(b[3]) for b in balances),
@@ -126,6 +130,7 @@ def run(case, number, root):
     cmd=[sys.executable,"-B",PORT,"arm",actual,image,dest,BASE/"pilote-virtio-net",BASE/"archives-virtio-net",
          files/"limine-enroll",files/"BOOTAA64.EFI","--limine-arm",files/"limine-a72.EFI","--source-elf",ref,
          "--cycle-vie","--esp-verifiee","--delai", "600" if case=="cycles-256" else "120"]
+    if case!="temoin-3e": cmd+=["--gestionnaire-4d"]
     if case in NEG: cmd+=["--refus-4d",case]
     subprocess.run(cmd,cwd=REPO,check=True)
     observer(case,dest,json.loads((dest/"campagne.json").read_text()))
