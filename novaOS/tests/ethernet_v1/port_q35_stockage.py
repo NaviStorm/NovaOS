@@ -183,21 +183,21 @@ def main():
             rapport["stockage"] = oracle(out, a.cas, a.lecteur, avant, pair)
             if "sonde_garde_sha256" in construction:
                 serie = (out / "serie.log").read_text()
-                sonde = re.findall(r"E3E garde readmission=refusee candidat=(\d+) generation=(\d+) disque=(\d+) bail=(\d+) cid=(\d+) dma=(\d+)", serie)
+                sonde = re.findall(r"E3E garde readmission=refusee candidat=(\d+) generation=(\d+) disque=(\d+) epoque_ipc=(\d+) cid=(\d+) dma=(\d+)", serie)
                 if len(sonde) != 1:
                     raise ValueError("Refus de réadmission en vol absent")
-                candidat, generation, disque, bail, cid, dma = map(int, sonde[0])
+                candidat, generation, disque, epoque_ipc, cid, dma = map(int, sonde[0])
                 admissions = re.findall(r"ETH3 session .*?pilote=(\d+) .*?generation_materiel=(\d+)", serie)
                 suite = serie.split("E3E garde readmission=refusee")[1]
                 cqe = re.search(r"E3D CQE op=(\w+) cid=(\d+)", suite)
                 baux = re.findall(r"DUO WAIT sid=48 did=1 instance=(\d+) generation=(\d+)", serie)
                 if (len(admissions) != 2 or admissions[1] != (str(candidat), str(generation))
                         or admissions[0][0] == str(candidat) or generation != 2 or dma != 14
-                        or baux != [(str(disque),str(bail))]*2 or not cqe or int(cqe[2]) != cid
+                        or baux != [(str(disque),"1")]*2 or epoque_ipc <= 0 or not cqe or int(cqe[2]) != cid
                         or "ancienne_capacite_valide=false" not in serie):
                     raise ValueError("CID, titulaires, ressources ou bail NVMe divergents")
                 rapport["garde"] = dict(candidat=candidat, generation=generation, disque=disque,
-                    bail=bail, cid=cid, commande=cqe[1], dma=dma, cqe_retrouvee=True)
+                    generation_vtd=int(baux[0][1]), epoque_ipc=epoque_ipc, cid=cid, commande=cqe[1], dma=dma, cqe_retrouvee=True)
             rapport["p9_final"] = digest(out/"namespace.raw")
             if a.instantane and "nvme_actif" not in rapport:
                 raise ValueError("Instantané des domaines en cours de retrait absent")

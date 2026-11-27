@@ -29,6 +29,7 @@ AUDIT = "56db7d5c0d04490cd284b91567cbbd4736534266"
 PERF = {mode + str(size): 12 + group * 2 + i
         for group, mode in enumerate(("echo", "tx", "rx", "duplex"))
         for i, size in enumerate((60, 1514))}
+PERF["echo1514-reset"] = 13
 PERF_FRAMES = 13 * 1024
 
 @lru_cache(maxsize=1024)
@@ -253,12 +254,17 @@ def main():
     p.add_argument("cas", choices=("boite", "data", "deces", "incertain", "endurance", "revocation", "veille", "filtre", "court", "temoin16", "port","plein","mesure60","mesure1514", "mixte100k","historique100k","historique1514","ancien","choix-data","segment-interrompu","recu-collecte", *cycle_vie.NOUVEAUX, *PERF))
     for name in ("elf", "sortie", "temoin", "archive", "limine", "relais"):
         p.add_argument(name, type=lambda v: Path(v).resolve())
+    p.add_argument("--trace-registres", action="store_true", help="Capturer les lectures et écritures MMIO du reset ARM sur une série courte")
     p.add_argument("--cycle-vie", action="store_true", help="Vérifier les reçus et la mémoire du profil 3C")
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
     p.add_argument("--delai", type=int, default=90)
     p.add_argument("--cpu-max", action="store_true", help="Témoin ArmVirt avec RNDR et chargeur direct")
     p.add_argument("--limine-arm", type=Path, help="Second étage Limine de laboratoire identifié")
     a = p.parse_args()
+    if a.trace_registres and not (a.arch == "arm" and a.cycle_vie and a.cas in cycle_vie.RESET and a.cas != "echo1514-reset"):
+        p.error("--trace-registres exige un cas court du reset ARM")
+    if a.cas in cycle_vie.RESET and (a.arch != "arm" or not a.cycle_vie):
+        p.error("Les cas de reset exigent ARM et sa vérification de cycle de vie")
     sys.dont_write_bytecode = True
     if subprocess.check_output(["git", "-C", a.temoin, "rev-parse", "HEAD"], text=True).strip() != AUDIT:
         raise ValueError("Révision du témoin inattendue")
@@ -359,6 +365,8 @@ def main():
                     if event in args:
                         j=args.index(event)
                         del args[j-1:j+1]
+            if a.trace_registres:
+                args.extend(["-trace", "memory_region_ops_read", "-trace", "memory_region_ops_write"])
             dump(out/"arguments.json",args)
             peer = Pair(host,out,virtio_net_pair,a.cas)
             with (out/"qemu.trace").open("xb") as log:
@@ -383,7 +391,7 @@ def main():
                             time.sleep(.1)
                         qmp(vm,"stop")
                         final=capture(vm,out,"fin",a.arch=="arm")
-                        if a.arch=="arm" and (a.cas=="court" or a.cas.startswith("reset-")) and a.cycle_vie:
+                        if a.arch=="arm" and (a.cas=="court" or a.cas in cycle_vie.RESET) and a.cycle_vie:
                             report["capacite_pci_arm"]=cycle_vie.capacite_pci_arm(vm, serial)
                         if final["pci_command"] & 4:
                             raise ValueError("BME du NIC toujours actif à la fin")
@@ -484,7 +492,7 @@ def main():
                     and all(f"ETH3 lot={b} n=1024 " in serial for b in (1,4,8))
                     and ("NET Q35 etat=Ok(())" in serial if a.arch=="q35" else report["volume_relu_identique"] and "NET ARM bilan Ok(())" in serial))
             if a.cycle_vie:
-                if a.cas == "echo1514" and not report["succes"]:
+                if a.cas in ("echo1514", "echo1514-reset") and not report["succes"]:
                     raise ValueError("Critères du lanceur de performance 3B")
                 report["cycle_vie"] = cycle_vie.verifier(out, report, serial)
                 report["succes"] = True

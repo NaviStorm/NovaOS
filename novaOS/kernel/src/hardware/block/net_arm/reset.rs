@@ -3,7 +3,7 @@ use super::*;
 type Titulaire = (u64, u64, u64);
 
 pub(super) fn profil() -> bool {
-    matches!(option_env!("NOVAOS_ETH3_CASE"), Some("reset-court" | "reset-deces" |
+    matches!(option_env!("NOVAOS_ETH3_CASE"), Some("echo1514-reset" | "reset-court" | "reset-deces" |
         "reset-revocation" | "reset-incertain" | "reset-differe" | "reset-invalide" |
         "reset-absent" | "reset-sans-option" | "reset-iommu-differe" | "reset-iommu-absent"))
 }

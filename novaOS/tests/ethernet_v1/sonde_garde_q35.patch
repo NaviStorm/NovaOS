@@ -29,7 +29,7 @@
 +                    return Err("garde de réadmission ou bail stockage");
 +                }
 +                garde_sondee = true;
-+                hal::log(format_args!("E3E garde readmission=refusee candidat={pid} generation={generation} disque={} bail={} cid={cid} dma={avant}",
++                hal::log(format_args!("E3E garde readmission=refusee candidat={pid} generation={generation} disque={} epoque_ipc={} cid={cid} dma={avant}",
 +                    peers.pids[0].number, peers.cfg[0][wire::EPOCH]));
 +            }
          }

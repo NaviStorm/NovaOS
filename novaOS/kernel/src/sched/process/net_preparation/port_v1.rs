@@ -269,7 +269,7 @@ impl EthernetActor {
             Some("segment-interrompu" | "rattrapage") => 23,
             Some("recu-collecte") => 24,
             Some("echo60") => 12,
-            Some("echo1514") => 13,
+            Some("echo1514" | "echo1514-reset") => 13,
             Some("tx60") => 14,
             Some("tx1514") => 15,
             Some("rx60") => 16,

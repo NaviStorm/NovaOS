@@ -11,7 +11,7 @@ CAS = {"cycles-256": 0, "port": 0, "cycles": 0, "court": 8, "cycles-court": 8, "
        "segment-interrompu": 23, "rattrapage": 23, "recu-collecte": 24, "echo1514": 13}
 
 
-RESET = {"reset-court":8, "reset-differe":8, "reset-absent":8, "reset-invalide":8,
+RESET = {"echo1514-reset":13, "reset-court":8, "reset-differe":8, "reset-absent":8, "reset-invalide":8,
          "reset-sans-option":8, "reset-iommu-absent":8, "reset-iommu-differe":8,
          "reset-deces":3, "reset-revocation":6, "reset-incertain":4}
 NOUVEAUX += tuple(RESET)
