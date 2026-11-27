@@ -1,0 +1,8 @@
+origin="distribution"
+policy_revision=1
+security_epoch=3
+id="org.novaos.lab.courtier"
+kind="system-profile"
+version=[1,0,0]
+sha256="2d6a1f832b9ec708eeba09400b25d0b8b1ab3c427b5c34f6e4eee75f6a171f2a"
+dependencies=[]
