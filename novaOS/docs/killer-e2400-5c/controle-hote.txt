@@ -1,0 +1,11 @@
+0fb87dfa4936773f246a053c0705c7f62b36c126
+Darwin arm64
+Python 3.11.18
+OK - inventaire fictif, acces refuse, Secure Boot inactif, deux identites et classe divergente
+OK — ABI 48, preuves 5B, droits et baux, quarantaine 259/130/0, VirtIO ARM, NVMe Q35, tables ACPI fictives
+compatibilite.json: OK
+hotes-5b.json: OK
+preuves-5b.tar.gz: OK
+q35-5b.json: OK
+temoin-5a.json: OK
+temoin-5a.tar.gz: OK
