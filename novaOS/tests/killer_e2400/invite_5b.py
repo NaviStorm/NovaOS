@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -28,7 +29,7 @@ def main():
     dest.mkdir(parents=True, exist_ok=False)
     triple = "x86_64-unknown-none"
     cargo = ["rustup", "run", "stable", "cargo", "build", "--locked", "--offline", "--release", "--target", triple]
-    flags = ["-Crelocation-model=static", "-Cno-redzone=yes", "-Clink-arg=-zmax-page-size=4096",
+    flags = ["--cfg", "novaos_mesure_tas_4d", "-Crelocation-model=static", "-Cno-redzone=yes", "-Clink-arg=-zmax-page-size=4096",
              "-Clink-arg=-T" + str(NOVA/"user/gestionnaire-4d/acteur.ld"), "--cfg", 'sha2_backend="soft"',
              "--cfg", 'curve25519_dalek_backend="serial"', "--cfg", 'chacha20_backend="soft"', "--cfg", 'poly1305_backend="soft"']
     env = {**os.environ, "RUSTC": subprocess.check_output(["rustup","which","--toolchain","stable","rustc"],text=True).strip()}
@@ -57,6 +58,13 @@ def main():
             if "SDK exemple admis sortie=0 restitution=OK" in data:
                 if not all(s in data for s in ("niveau=Ring3","E2400 5B registre=259 tx=264 rx=264 quarantaine=259,130,0 retour=OK dma_physique=0")):
                     raise ValueError("Témoin 5B incomplet")
+                result = re.findall(r"E2400 RAM tas_pic=(\d+) tas_vivant_fin=(\d+) pages_pic=(\d+) pages_fin=(\d+)", data)
+                if len(result) != 1:
+                    raise ValueError("Mesure du tas Ring 3 absente")
+                peak,live,pages,end = map(int,result[0])
+                if live != 0 or not 13025 <= peak <= pages*4096 or end > pages:
+                    raise ValueError("Comptage mémoire Ring 3 incohérent")
+                meta["tas_ring3"] = dict(pic_octets=peak, vivants_fin=live, pic_pages=pages, pages_fin=end)
                 return
             if "Panique du noyau" in data or "Erreur fatale" in data:
                 raise ValueError(data[-1600:])
