@@ -72,8 +72,8 @@ class Qmp:
             if k.endswith(("_operations", "_bytes"))
         }
 
-    def events(self, on):
-        for name in EVENTS:
+    def events(self, on, extra=()):
+        for name in EVENTS + extra:
             self.call("trace-event-set-state", name=name, enable=on)
 
 
@@ -182,6 +182,10 @@ def guest(
     expected=None,
     table=None,
     internal_boot=False,
+    firmware_order=False,
+    usb_connected=True,
+    observe=None,
+    extra_events=(),
 ):
     for source in (media, variables, firmware, media.parent / "diagnostic.img"):
         if not source.is_file():
@@ -219,8 +223,7 @@ def guest(
             "-S",
             "-no-reboot",
             "-no-shutdown",
-            "-boot",
-            "strict=on",
+            *([] if firmware_order else ["-boot", "strict=on"]),
             "-drive",
             f"if=pflash,unit=0,readonly=on,format=raw,file={str(firmware).replace(chr(44), chr(44) * 2)}",
             "-drive",
@@ -229,16 +232,21 @@ def guest(
             "driver=cfi.pflash01,property=secure,value=on",
             "-device",
             "qemu-xhci,id=usb",
-            "-drive",
-            f"if=none,id=externe,format=raw,readonly=on,file={str(media).replace(chr(44), chr(44) * 2)}",
-            "-device",
-            "usb-storage,bus=usb.0,drive=externe"
-            + ("" if internal_boot else ",bootindex=1"),
+        ]
+        if usb_connected:
+            args += [
+                "-drive",
+                f"if=none,id=externe,format=raw,readonly=on,file={str(media).replace(chr(44), chr(44) * 2)}",
+                "-device",
+                "usb-storage,bus=usb.0,drive=externe"
+                + ("" if internal_boot or firmware_order else ",bootindex=1"),
+            ]
+        args += [
             "-drive",
             "if=none,id=interne,format=raw,file=interne.raw",
             "-device",
             "ide-hd,drive=interne,bus=ide.0"
-            + (",bootindex=1" if internal_boot else ""),
+            + (",bootindex=1" if internal_boot and not firmware_order else ""),
             "-netdev",
             "hubport,hubid=0,id=isole",
             "-D",
@@ -271,7 +279,7 @@ def guest(
             try:
                 q = Qmp(proc)
                 start = q.stats()
-                q.events(True)
+                q.events(True, extra_events)
                 boundary = None
                 rip = None
                 handoff = None
@@ -285,12 +293,16 @@ def guest(
                         raise RuntimeError("RIP entrée")
                     debug.remove(expected["entree"])
                     before = q.stats()
+                    if observe:
+                        observe(q, "entree")
                     boundary = Path("transactions.log").stat().st_size
                     debug.resume()
                     if debug.pc() != expected["sortie_efi"]:
                         raise RuntimeError("RIP sortie des services EFI")
                     debug.remove(expected["sortie_efi"])
                     handoff = Path("transactions.log").stat().st_size
+                    if observe:
+                        observe(q, "sortie")
                     debug.resume()
                     rip = debug.pc()
                     if rip != expected["arret"]:
@@ -331,7 +343,9 @@ def guest(
                     q.call("stop")
                     before = None
                     after = q.stats()
-                q.events(False)
+                if observe:
+                    observe(q, "fin")
+                q.events(False, extra_events)
                 regs = q.call(
                     "human-monitor-command", **{"command-line": "info registers"}
                 )

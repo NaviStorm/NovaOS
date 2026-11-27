@@ -1,0 +1,117 @@
+{
+  "date_verification": "2026-11-27T20:00:00+00:00",
+  "outil": "osslsigncode 2.10, using:",
+  "magasins": {
+    "nominal": {
+      "PK": [
+        {
+          "type": "certificat",
+          "sha256": "7a284590801bbcdb8885a7ff34538ef5bb8e8afe42d650a5d8f7fcfada9fea93"
+        }
+      ],
+      "KEK": [
+        {
+          "type": "certificat",
+          "sha256": "a4ce6918753e464858815f5788bd4e946ba4f2f417c289281acca35754fb4465"
+        }
+      ],
+      "db": [
+        {
+          "type": "certificat",
+          "sha256": "b81ee3afbedd8134ee3fa06eb4da34254def56db2d3bcb813927340dd14e985e"
+        }
+      ],
+      "dbx": [
+        {
+          "type": "empreinte-PE",
+          "sha256": "6a102519dfa85acf1714e33712d7ae9a96e588f89df2ba5d795b0eeeff35f7fb"
+        }
+      ]
+    },
+    "revoque": {
+      "PK": [
+        {
+          "type": "certificat",
+          "sha256": "7a284590801bbcdb8885a7ff34538ef5bb8e8afe42d650a5d8f7fcfada9fea93"
+        }
+      ],
+      "KEK": [
+        {
+          "type": "certificat",
+          "sha256": "a4ce6918753e464858815f5788bd4e946ba4f2f417c289281acca35754fb4465"
+        }
+      ],
+      "db": [
+        {
+          "type": "certificat",
+          "sha256": "b81ee3afbedd8134ee3fa06eb4da34254def56db2d3bcb813927340dd14e985e"
+        }
+      ],
+      "dbx": [
+        {
+          "type": "certificat",
+          "sha256": "b81ee3afbedd8134ee3fa06eb4da34254def56db2d3bcb813927340dd14e985e"
+        },
+        {
+          "type": "empreinte-PE",
+          "sha256": "6a102519dfa85acf1714e33712d7ae9a96e588f89df2ba5d795b0eeeff35f7fb"
+        }
+      ]
+    }
+  },
+  "certificats": {
+    "PK": "7a284590801bbcdb8885a7ff34538ef5bb8e8afe42d650a5d8f7fcfada9fea93",
+    "KEK": "a4ce6918753e464858815f5788bd4e946ba4f2f417c289281acca35754fb4465",
+    "db": "b81ee3afbedd8134ee3fa06eb4da34254def56db2d3bcb813927340dd14e985e"
+  },
+  "cas": {
+    "diagnostic": {
+      "sha256_fichier": "35fc4a281904df1c9da59b15c517380233a161db664074e4641d85244051a403",
+      "authenticode": "033d616e87384f170ed5d93e7598c9bb3cfb2217b5790deabf97dc52cab2fe8b",
+      "verifie": true,
+      "sortie": "PE checksum   : 000535EC\n\nSignature Index: 0  (Primary Signature)\n\nMessage digest algorithm  : SHA256\nCurrent message digest    : 033D616E87384F170ED5D93E7598C9BB3CFB2217B5790DEABF97DC52CAB2FE8B \nCalculated message digest : 033D616E87384F170ED5D93E7598C9BB3CFB2217B5790DEABF97DC52CAB2FE8B \n\nSigner's certificate:\n\t------------------\n\tSigner #0:\n\t\tSubject: CN=NovaOS 5E laboratoire db\n\t\tIssuer : CN=NovaOS 5E laboratoire db\n\t\tSerial : 08FAAF7D54C78DDAA25D08BF2C6E687DD3232B67\n\t\tCertificate expiration date:\n\t\t\tnotBefore : Nov 26 19:48:20 2026 GMT\n\t\t\tnotAfter : Nov 27 19:48:20 2027 GMT\n\nMessage digest algorithm: SHA256\n\nAuthenticated attributes:\n\tSigning time: Nov 27 19:48:20 2026 GMT\n\tMicrosoft Individual Code Signing purpose\n\tMessage digest: C5E21F38662578E291A9FF64F713EC4C3536BE6A147846A885BFEDC75DA0643D \n\nCAfile: supports/db.pem\nTSA's certificates file: /etc/ssl/cert.pem\n\nTimestamp is not available\n\nSignature verification time: Nov 27 20:00:00 2026 GMT\nSigning certificate chain verified using:\n\t------------------\n\tSigner #0:\n\t\tSubject: CN=NovaOS 5E laboratoire db\n\t\tIssuer : CN=NovaOS 5E laboratoire db\n\t\tSerial : 08FAAF7D54C78DDAA25D08BF2C6E687DD3232B67\n\t\tCertificate expiration date:\n\t\t\tnotBefore : Nov 26 19:48:20 2026 GMT\n\t\t\tnotAfter : Nov 27 19:48:20 2027 GMT\n\nSignature verification: ok\n\nNumber of verified signatures: 1\nSucceeded\n"
+    },
+    "ancienne": {
+      "sha256_fichier": "5314e55f7ea818384fc25870c5d3d10e3197ad6739057bd395dd9197325c5e3c",
+      "authenticode": "6a102519dfa85acf1714e33712d7ae9a96e588f89df2ba5d795b0eeeff35f7fb",
+      "verifie": true,
+      "sortie": "PE checksum   : 0004C835\n\nSignature Index: 0  (Primary Signature)\n\nMessage digest algorithm  : SHA256\nCurrent message digest    : 6A102519DFA85ACF1714E33712D7AE9A96E588F89DF2BA5D795B0EEEFF35F7FB \nCalculated message digest : 6A102519DFA85ACF1714E33712D7AE9A96E588F89DF2BA5D795B0EEEFF35F7FB \n\nSigner's certificate:\n\t------------------\n\tSigner #0:\n\t\tSubject: CN=NovaOS 5E laboratoire db\n\t\tIssuer : CN=NovaOS 5E laboratoire db\n\t\tSerial : 08FAAF7D54C78DDAA25D08BF2C6E687DD3232B67\n\t\tCertificate expiration date:\n\t\t\tnotBefore : Nov 26 19:48:20 2026 GMT\n\t\t\tnotAfter : Nov 27 19:48:20 2027 GMT\n\nMessage digest algorithm: SHA256\n\nAuthenticated attributes:\n\tSigning time: Nov 27 19:48:20 2026 GMT\n\tMicrosoft Individual Code Signing purpose\n\tMessage digest: D8DAA21BB511B90086A900DABD7A1DDD1AA1652B2B2EE41DB1CB1166FCE79FB0 \n\nCAfile: supports/db.pem\nTSA's certificates file: /etc/ssl/cert.pem\n\nTimestamp is not available\n\nSignature verification time: Nov 27 20:00:00 2026 GMT\nSigning certificate chain verified using:\n\t------------------\n\tSigner #0:\n\t\tSubject: CN=NovaOS 5E laboratoire db\n\t\tIssuer : CN=NovaOS 5E laboratoire db\n\t\tSerial : 08FAAF7D54C78DDAA25D08BF2C6E687DD3232B67\n\t\tCertificate expiration date:\n\t\t\tnotBefore : Nov 26 19:48:20 2026 GMT\n\t\t\tnotAfter : Nov 27 19:48:20 2027 GMT\n\nSignature verification: ok\n\nNumber of verified signatures: 1\nSucceeded\n"
+    },
+    "signature-interne": {
+      "sha256_fichier": "b20e52447a73f9fd671a17f87892a0298bea258d2d66acb83eeec578b6d4b3fb",
+      "authenticode": "5ed4f7e1219f41a140ed0f91cecc8619c782e9a6c0c087244e418f4fbbaed2fd",
+      "verifie": true,
+      "sortie": "PE checksum   : 000537FF\n\nSignature Index: 0  (Primary Signature)\n\nMessage digest algorithm  : SHA256\nCurrent message digest    : 5ED4F7E1219F41A140ED0F91CECC8619C782E9A6C0C087244E418F4FBBAED2FD \nCalculated message digest : 5ED4F7E1219F41A140ED0F91CECC8619C782E9A6C0C087244E418F4FBBAED2FD \n\nSigner's certificate:\n\t------------------\n\tSigner #0:\n\t\tSubject: CN=NovaOS 5E laboratoire db\n\t\tIssuer : CN=NovaOS 5E laboratoire db\n\t\tSerial : 08FAAF7D54C78DDAA25D08BF2C6E687DD3232B67\n\t\tCertificate expiration date:\n\t\t\tnotBefore : Nov 26 19:48:20 2026 GMT\n\t\t\tnotAfter : Nov 27 19:48:20 2027 GMT\n\nMessage digest algorithm: SHA256\n\nAuthenticated attributes:\n\tSigning time: Nov 27 19:48:20 2026 GMT\n\tMicrosoft Individual Code Signing purpose\n\tMessage digest: 2A4AD7789A562959552BA7567E4520BE2BF2CEAD1F2017A5991FF34D1C092B0A \n\nCAfile: supports/db.pem\nTSA's certificates file: /etc/ssl/cert.pem\n\nTimestamp is not available\n\nSignature verification time: Nov 27 20:00:00 2026 GMT\nSigning certificate chain verified using:\n\t------------------\n\tSigner #0:\n\t\tSubject: CN=NovaOS 5E laboratoire db\n\t\tIssuer : CN=NovaOS 5E laboratoire db\n\t\tSerial : 08FAAF7D54C78DDAA25D08BF2C6E687DD3232B67\n\t\tCertificate expiration date:\n\t\t\tnotBefore : Nov 26 19:48:20 2026 GMT\n\t\t\tnotAfter : Nov 27 19:48:20 2027 GMT\n\nSignature verification: ok\n\nNumber of verified signatures: 1\nSucceeded\n"
+    },
+    "epoque": {
+      "sha256_fichier": "8f00aec5a191225dffa1f325f3e2c6dfc1a6a1f37174a459aa3204975979795a",
+      "authenticode": "bca5b0728a81ad8a54458bbd5f78f910f927c95b40263f49ae7d87bd9de1de78",
+      "verifie": true,
+      "sortie": "PE checksum   : 00049290\n\nSignature Index: 0  (Primary Signature)\n\nMessage digest algorithm  : SHA256\nCurrent message digest    : BCA5B0728A81AD8A54458BBD5F78F910F927C95B40263F49AE7D87BD9DE1DE78 \nCalculated message digest : BCA5B0728A81AD8A54458BBD5F78F910F927C95B40263F49AE7D87BD9DE1DE78 \n\nSigner's certificate:\n\t------------------\n\tSigner #0:\n\t\tSubject: CN=NovaOS 5E laboratoire db\n\t\tIssuer : CN=NovaOS 5E laboratoire db\n\t\tSerial : 08FAAF7D54C78DDAA25D08BF2C6E687DD3232B67\n\t\tCertificate expiration date:\n\t\t\tnotBefore : Nov 26 19:48:20 2026 GMT\n\t\t\tnotAfter : Nov 27 19:48:20 2027 GMT\n\nMessage digest algorithm: SHA256\n\nAuthenticated attributes:\n\tSigning time: Nov 27 19:48:20 2026 GMT\n\tMicrosoft Individual Code Signing purpose\n\tMessage digest: 4D86CA287B0C4E59A777FA8AE2726B568CA875AF590E0B23BCF4CCCA53269093 \n\nCAfile: supports/db.pem\nTSA's certificates file: /etc/ssl/cert.pem\n\nTimestamp is not available\n\nSignature verification time: Nov 27 20:00:00 2026 GMT\nSigning certificate chain verified using:\n\t------------------\n\tSigner #0:\n\t\tSubject: CN=NovaOS 5E laboratoire db\n\t\tIssuer : CN=NovaOS 5E laboratoire db\n\t\tSerial : 08FAAF7D54C78DDAA25D08BF2C6E687DD3232B67\n\t\tCertificate expiration date:\n\t\t\tnotBefore : Nov 26 19:48:20 2026 GMT\n\t\t\tnotAfter : Nov 27 19:48:20 2027 GMT\n\nSignature verification: ok\n\nNumber of verified signatures: 1\nSucceeded\n"
+    },
+    "sans-signature": {
+      "sha256_fichier": "7a5bc2a2be6656594080a16be341da761f28a1eef954481efc77beb03d1ecbda",
+      "authenticode": null,
+      "verifie": false,
+      "sortie": "Current PE checksum   : 00000000\nCalculated PE checksum: 00050FD8\nWarning: invalid PE checksum\nFailed\nNo signature found\nUnable to extract existing signature\n"
+    },
+    "substitution": {
+      "sha256_fichier": "7f0259405402f9b69d71b1f5900c541158a8d7d12dde8e52c954198ef2f94a16",
+      "authenticode": "5ed4f7e1219f41a140ed0f91cecc8619c782e9a6c0c087244e418f4fbbaed2fd",
+      "verifie": false,
+      "sortie": "Current PE checksum   : 000535EC\nCalculated PE checksum: 00054AEC\nWarning: invalid PE checksum\n\nSignature Index: 0  (Primary Signature)\n\nMessage digest algorithm  : SHA256\nCurrent message digest    : 033D616E87384F170ED5D93E7598C9BB3CFB2217B5790DEABF97DC52CAB2FE8B \nCalculated message digest : 5ED4F7E1219F41A140ED0F91CECC8619C782E9A6C0C087244E418F4FBBAED2FD     MISMATCH!!!\n\nNumber of verified signatures: 1\nFailed\nSignature verification: failed\n\n"
+    },
+    "configuration": {
+      "sha256_fichier": "561abab43a0462af4958871bd868b747fc6fc2ea8fdfb23ba920d7f23fa31eaa",
+      "authenticode": "e5e4a1c1ed43d602108d161cac6d91af52ae49eee8202f2a9ca88631e21d42a1",
+      "verifie": false,
+      "sortie": "Current PE checksum   : 000535EC\nCalculated PE checksum: 000535ED\nWarning: invalid PE checksum\n\nSignature Index: 0  (Primary Signature)\n\nMessage digest algorithm  : SHA256\nCurrent message digest    : 033D616E87384F170ED5D93E7598C9BB3CFB2217B5790DEABF97DC52CAB2FE8B \nCalculated message digest : E5E4A1C1ED43D602108D161CAC6D91AF52AE49EEE8202F2A9CA88631E21D42A1     MISMATCH!!!\n\nNumber of verified signatures: 1\nFailed\nSignature verification: failed\n\n"
+    },
+    "noyau": {
+      "sha256_fichier": "2d3b6f3c94d6df6bd6a301d3008c6e78dc7dbd736beee39704449d79cb729024",
+      "authenticode": "62c2303b36269ca636e39772893513c72f269a134a5a4b82aad752370cd82995",
+      "verifie": false,
+      "sortie": "Current PE checksum   : 000535EC\nCalculated PE checksum: 000535EB\nWarning: invalid PE checksum\n\nSignature Index: 0  (Primary Signature)\n\nMessage digest algorithm  : SHA256\nCurrent message digest    : 033D616E87384F170ED5D93E7598C9BB3CFB2217B5790DEABF97DC52CAB2FE8B \nCalculated message digest : 62C2303B36269CA636E39772893513C72F269A134A5A4B82AAD752370CD82995     MISMATCH!!!\n\nNumber of verified signatures: 1\nFailed\nSignature verification: failed\n\n"
+    }
+  }
+}
