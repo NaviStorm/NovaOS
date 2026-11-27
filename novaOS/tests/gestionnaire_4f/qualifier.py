@@ -9,6 +9,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 
 NOVA = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(NOVA / "tests"))
@@ -156,6 +157,30 @@ def controler(cas, dest, *, enregistrer=True):
     return doc
 
 
+def compresser_trace(trace):
+    destination = trace.with_suffix(".trace.gz")
+    if not trace.exists():
+        return
+    originale = sha(trace)
+    with tempfile.NamedTemporaryFile(dir=trace.parent) as temporaire:
+        if not destination.exists():
+            with trace.open("rb") as src, gzip.GzipFile(fileobj=temporaire, mode="wb", mtime=0, compresslevel=1, filename="") as gz:
+                shutil.copyfileobj(src, gz)
+            temporaire.flush()
+            with gzip.open(temporaire.name, "rb") as gz:
+                if hashlib.file_digest(gz, "sha256").hexdigest() != originale:
+                    raise ValueError("Trace compressée divergente")
+            # Le lien rend la capsule complète visible d'un coup et préserve un résultat concurrent.
+            try:
+                os.link(temporaire.name, destination)
+            except FileExistsError:
+                pass
+    with gzip.open(destination, "rb") as gz:
+        if hashlib.file_digest(gz, "sha256").hexdigest() != originale:
+            raise ValueError("Les deux traces QEMU divergent")
+    trace.unlink(missing_ok=True)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("archive", type=lambda s:Path(s).resolve())
@@ -177,11 +202,7 @@ def main():
                 cmd.extend(["--gestionnaire-4f",a.cas])
             subprocess.run(cmd,check=True)
         controler(a.cas,dest)
-        trace=dest/"qemu.trace"
-        if trace.exists():
-            with trace.open("rb") as src, gzip.open(dest/"qemu.trace.gz","xb",compresslevel=1) as dst:
-                shutil.copyfileobj(src,dst)
-            trace.unlink()
+        compresser_trace(dest/"qemu.trace")
     if a.boots>1 and a.cas!="statique":
         epochs = {json.loads((a.archive/"simple"/a.cas/str(n)/"reprise.json").read_text())["boot"] for n in range(1,a.boots+1)}
         if len(epochs)!=a.boots: raise ValueError("Démarrages distincts attendus")
