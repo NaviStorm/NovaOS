@@ -1,0 +1,208 @@
+Révision 55161f98a99439cd921fb8acdd88e61303bc5198
+Hôte macOS-27.2.1-arm64-arm-64bit-Mach-O rustc 1.99.1 (58cf8f9c3 2026-10-13)
+x86_64 sysctl.proc_translated 1
+Sources historiques vérifiées contre e9af41f00949e6daade0dd7cb267bcf3262c36e5 sélecteurs 48 crédits Ethernet 8
+vecteur reserver.data 64 fb64bb5bcba9a3d71904151c6a5813cf662a5118947e0619d496d597873a9c24
+vecteur confirme.data 88 1954347ea5d6d1777bac0404b9cc78e39774c18b824baee0fab351d69f00cb7e
+catalogue-pilotes aarch64-apple-darwin tests réussis 26 ignorés 1
+  test decode::tests::grammaire_et_limites_contre_serde_4b ... ok
+  test resolve::tests::absences_et_version ... ok
+  test resolve::tests::chaine_profonde_et_budget_des_references ... ok
+  test resolve::tests::cycle_et_diamant ... ok
+  test selection::tests::quotas_caps_versions_et_hardware ... ok
+  test selection::tests::rang_version_conflit_epingle ... ok
+  test conflit_editeurs_et_ordre ... ok
+  test deux_signatures_et_empreintes ... ok
+  test rollback_en_memoire_et_conflit_de_revision ... ok
+  test rotation_retrait_origines_plancher ... ok
+  test schema_bornes_et_troncatures ... ok
+  test vecteurs_independants_et_idempotence ... ok
+  test allocation_exacte_et_documents_denses ... ok
+  test budgets_et_refus_repetes ... ok
+  test champs_maximaux_et_transaction_de_refus ... ok
+  test refus_a_chaque_allocation_et_conservation ... ok
+  test plan_transitif_sur_pile_bornee ... ok
+  test plans_et_decisions ... ok
+  test borne_exacte_et_signataire_non_injecte ... ok
+  test dependance_facultative_et_droits ... ok
+  test distribution_fictive_authentifiee ... ok
+  test profil_obsolete_revoque_ou_etranger ... ok
+  test publication_atomique_et_derniere_place ... ok
+  test variante_de_bus_future ... ok
+  test interface_usb_attachee_au_parent ... ok
+  test plateforme_et_bus_distincts ... ok
+gestionnaire-pilotes aarch64-apple-darwin tests réussis 28 ignorés 0
+  test credits_cloture_et_liaisons_independantes ... ok
+  test enumeration_revisionnee_et_annulation ... ok
+  test preuve_differee_et_unique_credit_de_cloture ... ok
+  test publications_differees_reprise_et_consommation_unique ... ok
+  test saturation_des_soixante_quatre_recus_et_retrait ... ok
+  test selection_lancement_et_publication_par_data ... ok
+  test vecteurs_data_et_refus_avant_effet ... ok
+  test gardes_reservation_et_q35 ... ok
+  test plans_bornes_revisions_et_quotas ... ok
+  test recus_partiels_generations_et_quarantaine ... ok
+  test toutes_les_transitions_et_tous_les_refus ... ok
+  test dernier_handle_et_derniere_attente_globale ... ok
+  test deux_groupes_neuf_paires_et_deux_services_deja_a_quatre_racines ... ok
+  test feuilles_obsoletes_et_quota_de_processus ... ok
+  test huit_controleurs_et_collecte_apres_restitution ... ok
+  test le_ticket_fige_le_plan_complet_et_le_bail ... ok
+  test preuves_de_source_traduction_et_propriete_differees ... ok
+  test saturation_attentes_et_file_privee ... ok
+  test instantanes_bornes_et_deterministes ... ok
+  test meme_plan_et_refus_sur_deux_ordres_inventaire_catalogue ... ok
+  test plateformes_virtuelles_parents_et_vues_incompletes ... ok
+  test pont_fonctions_alias_et_portee_de_reset ... ok
+  test selection_signee_des_interfaces_et_des_fournisseurs ... ok
+  test trente_deux_groupes_et_soixante_quatre_catalogues ... ok
+  test usb_composite_reconfiguration_et_retrait ... ok
+  test echec_de_chaque_allocation_et_conservation ... ok
+  test endurance_256_et_mesures ... ok
+  test selection_un_et_soixante_quatre_paquets ... ok
+Série 1 aarch64-apple-darwin quantiles ns [p50, p95, p99, max]
+pile_reservee=143360
+pic_remplacement_inventaire=16384 delta_remplacement=0 inventaire_tete=2104 groupe_unique=400
+deux_plans table=1152 premier_tas=854 supplement=854 second_pic=9134
+catalogue_index=5632 objets=82806 politique_tas=299 politique_tete=120 catalogue_tete=40
+gestionnaire_tete=2416 gestionnaire_tas_initial=27648 inventaire=18488 noeud=128 groupe=400 registre=12800 liens_recus=(736, 11264) plans_table=576 selection_pic=9134 selection_retenue=854 roles=30
+quarantaine=Use { pages: 33, dma: 22, boxes: 0, endpoints: 1, nodes: 6, waits: 1, processes: 1, receipts: 1 } repos=Use { pages: 80, dma: 0, boxes: 0, endpoints: 8, nodes: 16, waits: 0, processes: 5, receipts: 0 }
+endurance=256 delta=0 pic_temporaire=9134 profondeur_echantillonnee=10456 inventaire_ns=[26167, 31667, 36208, 38542] selection_ipc_ns=[636541, 665042, 677250, 693834] cycle_ns=[640583, 669375, 681334, 698292]
+recherche paquets=1 groupes=1 ns=[9584, 13208, 15250, 23958]
+recherche paquets=1 groupes=32 ns=[9375, 11083, 13125, 13166]
+recherche paquets=64 groupes=1 ns=[620375, 649542, 667416, 678792]
+recherche paquets=64 groupes=32 ns=[626291, 650334, 668500, 735625]
+Série 2 aarch64-apple-darwin quantiles ns [p50, p95, p99, max]
+pile_reservee=143360
+pic_remplacement_inventaire=16384 delta_remplacement=0 inventaire_tete=2104 groupe_unique=400
+deux_plans table=1152 premier_tas=854 supplement=854 second_pic=9134
+catalogue_index=5632 objets=82806 politique_tas=299 politique_tete=120 catalogue_tete=40
+gestionnaire_tete=2416 gestionnaire_tas_initial=27648 inventaire=18488 noeud=128 groupe=400 registre=12800 liens_recus=(736, 11264) plans_table=576 selection_pic=9134 selection_retenue=854 roles=30
+quarantaine=Use { pages: 33, dma: 22, boxes: 0, endpoints: 1, nodes: 6, waits: 1, processes: 1, receipts: 1 } repos=Use { pages: 80, dma: 0, boxes: 0, endpoints: 8, nodes: 16, waits: 0, processes: 5, receipts: 0 }
+endurance=256 delta=0 pic_temporaire=9134 profondeur_echantillonnee=10456 inventaire_ns=[25958, 30042, 36042, 36417] selection_ipc_ns=[639417, 669500, 680958, 717625] cycle_ns=[643709, 673708, 685167, 721708]
+recherche paquets=1 groupes=1 ns=[9625, 13042, 14459, 27458]
+recherche paquets=1 groupes=32 ns=[9666, 13291, 14416, 23042]
+recherche paquets=64 groupes=1 ns=[631708, 663125, 677167, 705750]
+recherche paquets=64 groupes=32 ns=[623417, 644708, 664542, 670959]
+Série 3 aarch64-apple-darwin quantiles ns [p50, p95, p99, max]
+pile_reservee=143360
+pic_remplacement_inventaire=16384 delta_remplacement=0 inventaire_tete=2104 groupe_unique=400
+deux_plans table=1152 premier_tas=854 supplement=854 second_pic=9134
+catalogue_index=5632 objets=82806 politique_tas=299 politique_tete=120 catalogue_tete=40
+gestionnaire_tete=2416 gestionnaire_tas_initial=27648 inventaire=18488 noeud=128 groupe=400 registre=12800 liens_recus=(736, 11264) plans_table=576 selection_pic=9134 selection_retenue=854 roles=30
+quarantaine=Use { pages: 33, dma: 22, boxes: 0, endpoints: 1, nodes: 6, waits: 1, processes: 1, receipts: 1 } repos=Use { pages: 80, dma: 0, boxes: 0, endpoints: 8, nodes: 16, waits: 0, processes: 5, receipts: 0 }
+endurance=256 delta=0 pic_temporaire=9134 profondeur_echantillonnee=10456 inventaire_ns=[26084, 32167, 36208, 40667] selection_ipc_ns=[621833, 648583, 672250, 745500] cycle_ns=[626250, 653209, 676333, 750834]
+recherche paquets=1 groupes=1 ns=[9584, 13292, 13500, 26375]
+recherche paquets=1 groupes=32 ns=[9542, 12916, 13417, 14167]
+recherche paquets=64 groupes=1 ns=[627125, 664208, 680041, 724042]
+recherche paquets=64 groupes=32 ns=[630500, 663833, 679125, 685916]
+allocations registre 1
+allocations inventaire128 1
+allocations groupe 1
+allocations selection 89
+allocations reservation 1
+allocations liaison 1
+allocations reprise 1
+catalogue-pilotes x86_64-apple-darwin tests réussis 26 ignorés 1
+  test decode::tests::grammaire_et_limites_contre_serde_4b ... ok
+  test resolve::tests::absences_et_version ... ok
+  test resolve::tests::chaine_profonde_et_budget_des_references ... ok
+  test resolve::tests::cycle_et_diamant ... ok
+  test selection::tests::quotas_caps_versions_et_hardware ... ok
+  test selection::tests::rang_version_conflit_epingle ... ok
+  test conflit_editeurs_et_ordre ... ok
+  test deux_signatures_et_empreintes ... ok
+  test rollback_en_memoire_et_conflit_de_revision ... ok
+  test rotation_retrait_origines_plancher ... ok
+  test schema_bornes_et_troncatures ... ok
+  test vecteurs_independants_et_idempotence ... ok
+  test allocation_exacte_et_documents_denses ... ok
+  test budgets_et_refus_repetes ... ok
+  test champs_maximaux_et_transaction_de_refus ... ok
+  test refus_a_chaque_allocation_et_conservation ... ok
+  test plan_transitif_sur_pile_bornee ... ok
+  test plans_et_decisions ... ok
+  test borne_exacte_et_signataire_non_injecte ... ok
+  test dependance_facultative_et_droits ... ok
+  test distribution_fictive_authentifiee ... ok
+  test profil_obsolete_revoque_ou_etranger ... ok
+  test publication_atomique_et_derniere_place ... ok
+  test variante_de_bus_future ... ok
+  test interface_usb_attachee_au_parent ... ok
+  test plateforme_et_bus_distincts ... ok
+gestionnaire-pilotes x86_64-apple-darwin tests réussis 28 ignorés 0
+  test credits_cloture_et_liaisons_independantes ... ok
+  test enumeration_revisionnee_et_annulation ... ok
+  test preuve_differee_et_unique_credit_de_cloture ... ok
+  test publications_differees_reprise_et_consommation_unique ... ok
+  test saturation_des_soixante_quatre_recus_et_retrait ... ok
+  test selection_lancement_et_publication_par_data ... ok
+  test vecteurs_data_et_refus_avant_effet ... ok
+  test gardes_reservation_et_q35 ... ok
+  test plans_bornes_revisions_et_quotas ... ok
+  test recus_partiels_generations_et_quarantaine ... ok
+  test toutes_les_transitions_et_tous_les_refus ... ok
+  test dernier_handle_et_derniere_attente_globale ... ok
+  test deux_groupes_neuf_paires_et_deux_services_deja_a_quatre_racines ... ok
+  test feuilles_obsoletes_et_quota_de_processus ... ok
+  test huit_controleurs_et_collecte_apres_restitution ... ok
+  test le_ticket_fige_le_plan_complet_et_le_bail ... ok
+  test preuves_de_source_traduction_et_propriete_differees ... ok
+  test saturation_attentes_et_file_privee ... ok
+  test instantanes_bornes_et_deterministes ... ok
+  test meme_plan_et_refus_sur_deux_ordres_inventaire_catalogue ... ok
+  test plateformes_virtuelles_parents_et_vues_incompletes ... ok
+  test pont_fonctions_alias_et_portee_de_reset ... ok
+  test selection_signee_des_interfaces_et_des_fournisseurs ... ok
+  test trente_deux_groupes_et_soixante_quatre_catalogues ... ok
+  test usb_composite_reconfiguration_et_retrait ... ok
+  test echec_de_chaque_allocation_et_conservation ... ok
+  test endurance_256_et_mesures ... ok
+  test selection_un_et_soixante_quatre_paquets ... ok
+Série 1 x86_64-apple-darwin quantiles ns [p50, p95, p99, max]
+pile_reservee=131072
+pic_remplacement_inventaire=16384 delta_remplacement=0 inventaire_tete=2104 groupe_unique=400
+deux_plans table=1152 premier_tas=853 supplement=853 second_pic=9133
+catalogue_index=5632 objets=82806 politique_tas=299 politique_tete=120 catalogue_tete=40
+gestionnaire_tete=2416 gestionnaire_tas_initial=27648 inventaire=18488 noeud=128 groupe=400 registre=12800 liens_recus=(736, 11264) plans_table=576 selection_pic=9133 selection_retenue=853 roles=30
+quarantaine=Use { pages: 33, dma: 22, boxes: 0, endpoints: 1, nodes: 6, waits: 1, processes: 1, receipts: 1 } repos=Use { pages: 80, dma: 0, boxes: 0, endpoints: 8, nodes: 16, waits: 0, processes: 5, receipts: 0 }
+endurance=256 delta=0 pic_temporaire=9133 profondeur_echantillonnee=30143 inventaire_ns=[53042, 53458, 53917, 56125] selection_ipc_ns=[1444834, 1458458, 1477666, 1515625] cycle_ns=[1452667, 1466375, 1489083, 1527416]
+recherche paquets=1 groupes=1 ns=[20959, 23167, 24292, 34333]
+recherche paquets=1 groupes=32 ns=[21042, 23375, 27875, 29125]
+recherche paquets=64 groupes=1 ns=[1428000, 1450958, 1486333, 1512583]
+recherche paquets=64 groupes=32 ns=[1445792, 1560292, 1650291, 1700333]
+Série 2 x86_64-apple-darwin quantiles ns [p50, p95, p99, max]
+pile_reservee=131072
+pic_remplacement_inventaire=16384 delta_remplacement=0 inventaire_tete=2104 groupe_unique=400
+deux_plans table=1152 premier_tas=853 supplement=853 second_pic=9133
+catalogue_index=5632 objets=82806 politique_tas=299 politique_tete=120 catalogue_tete=40
+gestionnaire_tete=2416 gestionnaire_tas_initial=27648 inventaire=18488 noeud=128 groupe=400 registre=12800 liens_recus=(736, 11264) plans_table=576 selection_pic=9133 selection_retenue=853 roles=30
+quarantaine=Use { pages: 33, dma: 22, boxes: 0, endpoints: 1, nodes: 6, waits: 1, processes: 1, receipts: 1 } repos=Use { pages: 80, dma: 0, boxes: 0, endpoints: 8, nodes: 16, waits: 0, processes: 5, receipts: 0 }
+endurance=256 delta=0 pic_temporaire=9133 profondeur_echantillonnee=30143 inventaire_ns=[51167, 54208, 54250, 56750] selection_ipc_ns=[1435209, 1484084, 1495958, 1512833] cycle_ns=[1443250, 1491583, 1507375, 1520375]
+recherche paquets=1 groupes=1 ns=[21125, 23125, 24334, 34458]
+recherche paquets=1 groupes=32 ns=[21167, 23542, 26875, 28709]
+recherche paquets=64 groupes=1 ns=[1444250, 1466875, 1515541, 1536500]
+recherche paquets=64 groupes=32 ns=[1443166, 1479667, 1491791, 1502625]
+Série 3 x86_64-apple-darwin quantiles ns [p50, p95, p99, max]
+pile_reservee=131072
+pic_remplacement_inventaire=16384 delta_remplacement=0 inventaire_tete=2104 groupe_unique=400
+deux_plans table=1152 premier_tas=853 supplement=853 second_pic=9133
+catalogue_index=5632 objets=82806 politique_tas=299 politique_tete=120 catalogue_tete=40
+gestionnaire_tete=2416 gestionnaire_tas_initial=27648 inventaire=18488 noeud=128 groupe=400 registre=12800 liens_recus=(736, 11264) plans_table=576 selection_pic=9133 selection_retenue=853 roles=30
+quarantaine=Use { pages: 33, dma: 22, boxes: 0, endpoints: 1, nodes: 6, waits: 1, processes: 1, receipts: 1 } repos=Use { pages: 80, dma: 0, boxes: 0, endpoints: 8, nodes: 16, waits: 0, processes: 5, receipts: 0 }
+endurance=256 delta=0 pic_temporaire=9133 profondeur_echantillonnee=30143 inventaire_ns=[52709, 55209, 56500, 58000] selection_ipc_ns=[1451833, 1481625, 1590125, 1606000] cycle_ns=[1460208, 1489792, 1599500, 1616500]
+recherche paquets=1 groupes=1 ns=[20917, 22833, 25416, 34750]
+recherche paquets=1 groupes=32 ns=[21000, 23083, 23292, 26500]
+recherche paquets=64 groupes=1 ns=[1447208, 1481292, 1499083, 1528166]
+recherche paquets=64 groupes=32 ns=[1442333, 1470209, 1512291, 1579916]
+allocations registre 1
+allocations inventaire128 1
+allocations groupe 1
+allocations selection 89
+allocations reservation 1
+allocations liaison 1
+allocations reprise 1
+objet gestionnaire-pilotes aarch64-unknown-none-softfloat {'text': 47284, 'rodata': 1562, 'data': 0, 'bss': 0}
+objet catalogue-pilotes aarch64-unknown-none-softfloat {'text': 82212, 'rodata': 2736, 'data': 0, 'bss': 0}
+objet gestionnaire-pilotes x86_64-unknown-none {'text': 50255, 'rodata': 2340, 'data': 0, 'bss': 0}
+objet catalogue-pilotes x86_64-unknown-none {'text': 93172, 'rodata': 2702, 'data': 0, 'bss': 0}
