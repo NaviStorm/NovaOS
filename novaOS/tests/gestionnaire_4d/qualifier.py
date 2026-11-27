@@ -17,7 +17,9 @@ BASE = REPO.parent
 PORT = NOVA / "tests/ethernet_v1/port_qemu.py"
 ISA = "aarch64-unknown-none-softfloat"
 NEG = {"signature", "revision", "racines", "lancement","attribution","droits","cle-revoquee","distribution","deces-gestionnaire","reservation"}
-CASES = {"six-boites","plein","choix-data","reset-court","reset-deces","reset-revocation","reset-incertain","reset-absent",
+MMIO = {"mmio-absent", "mmio-invalide", "mmio-differe"}
+STATIQUE = "temoin-meme-revision"
+CASES = {*MMIO, STATIQUE, "reset-differe", "reset-invalide", "six-boites","plein","choix-data","reset-court","reset-deces","reset-revocation","reset-incertain","reset-absent",
          "reset-iommu-absent","reset-iommu-differe","cycles-256","echo1514-reset","temoin-3e",*NEG}
 
 
@@ -48,6 +50,8 @@ def elf(path):
 
 
 def build(case, archive):
+    if case in MMIO:
+        return build("reset-court", archive)
     if case=="temoin-3e":
         path=BASE/"archives-ethernet-phase3e/images-qualifiees/echo1514-reset/arm.elf"
         return path, json.loads(path.with_name("construction.json").read_text())["commit"]
@@ -66,10 +70,18 @@ def build(case, archive):
     env=dict(os.environ,RUSTC=output("rustup","which","--toolchain","stable","rustc"),
              CARGO_PROFILE_RELEASE_STRIP="none",NOVAOS_ETH3_CASE="reset-court" if case in NEG else case,
              NOVAOS_4D_REFUS=case if case in NEG else "")
-    cmd=["rustup","run","stable","cargo","build","--locked","--offline","--release","--features","gestionnaire-4d","--target",ISA]
+    feature = "gestionnaire-4d"
+    if case == STATIQUE:
+        env["NOVAOS_ETH3_CASE"] = "echo1514-reset"
+        feature = "net-arm-lab,ethernet-v1-port"
+    cmd=["rustup","run","stable","cargo","build","--locked","--offline","--release","--features",feature,"--target",ISA]
     with (folder/"construction.log").open("w") as log:
         subprocess.run(cmd,cwd=NOVA,env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
     source=target/ISA/"release"
+    if case == STATIQUE:
+        shutil.copyfile(source/"novaos", k)
+        write(folder/"construction.json", dict(commit=ref, elf={"arm":sha(k)}, commande=cmd, cas=env["NOVAOS_ETH3_CASE"]))
+        return k,ref
     metadata=list(source.glob("build/novaos-*/out/gestionnaire.elf"))
     if len(metadata)!=1:
         raise ValueError("plusieurs sorties 4D, choisir un répertoire privé")
@@ -92,7 +104,7 @@ def observer(case, dest, report):
     if not report["succes"] or report["elf_relu_esp"]!=report["elf"]:
         raise ValueError("échec du banc 3E ou de la relecture EFI")
     text=(dest/"serie.log").read_text()
-    if case=="temoin-3e": return
+    if case in ("temoin-3e", STATIQUE): return
     if case in NEG:
         if report["refus_4d"]["cause"]!=case: raise ValueError("cause de refus absente")
         return
@@ -100,7 +112,7 @@ def observer(case, dest, report):
     controls=re.findall(r"D4 controle epoch=(\d+) recus=true acteurs=\[Exit\(0\), Exit\(0\)\] mode=0",text)
     balances=re.findall(r"D4 cycle avant=(\d+) minimum=(\d+) apres=(\d+) pic=(\d+) ipc=(\d+) dma=(\d+)",text)
     closes=re.findall(r"RAM phase=4d_fin_cycle .*?ipc=0 utilisateur=0 processus=0 ",text)
-    wanted=256 if case=="cycles-256" else 2 if case in ("reset-court","reset-iommu-differe") else 1
+    wanted=256 if case=="cycles-256" else 2 if case in ("reset-court","reset-iommu-differe","mmio-differe") else 1
     if len(launches)!=wanted or len(balances)!=wanted or len(closes)!=wanted or controls!=[x[0] for x in launches]:
         raise ValueError("fermetures, admissions ou contrôleurs résiduels")
     if any(len({x[i] for x in launches})!=wanted for i in range(4)):
@@ -130,11 +142,15 @@ def run(case, number, root):
         observer(case,dest,report)
         return
     files=BASE/"archives-ethernet-phase3/reproduction-8bd3f9c"
-    actual = "port" if case in NEG or case=="six-boites" else "echo1514-reset" if case=="temoin-3e" else case
+    actual = "port" if case in NEG or case=="six-boites" else "echo1514-reset" if case in ("temoin-3e", STATIQUE) else case
     cmd=[sys.executable,"-B",PORT,"arm",actual,image,dest,BASE/"pilote-virtio-net",BASE/"archives-virtio-net",
          files/"limine-enroll",files/"BOOTAA64.EFI","--limine-arm",files/"limine-a72.EFI","--source-elf",ref,
          "--cycle-vie","--esp-verifiee","--delai", "600" if case=="cycles-256" else "120"]
-    if case!="temoin-3e": cmd+=["--gestionnaire-4d"]
+    if case not in ("temoin-3e", STATIQUE): cmd+=["--gestionnaire-4d"]
+    if case in MMIO:
+        cmd += ["--modele-recus", BASE/"archives-ethernet-phase3e/modele-mmio/construction.json"]
+        if case != "mmio-absent":
+            cmd += ["--trace-registres"]
     if case=="six-boites": cmd+=["--six-boites-4d"]
     if case in NEG: cmd+=["--refus-4d",case]
     subprocess.run(cmd,cwd=REPO,check=True)
@@ -152,14 +168,17 @@ def run(case, number, root):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("archive",type=Path)
-    p.add_argument("cas",nargs="+",choices=sorted(CASES))
+    p.add_argument("cas",nargs="+",choices=["tous",*sorted(CASES)])
     p.add_argument("--demarrages",type=int,choices=range(1,4),default=1)
     a=p.parse_args()
     if output("git","status","--porcelain","--untracked-files=no"):
         raise SystemExit("Indexer la révision source avant de constituer les preuves")
+    if "tous" in a.cas and a.cas != ["tous"]:
+        p.error("Indiquer tous ou une liste de scénarios")
+    cases = sorted(CASES) if a.cas == ["tous"] else a.cas
     failed=[]
     for n in range(1,a.demarrages+1):
-        for case in a.cas:
+        for case in cases:
             print(f"Début {case} démarrage {n}",flush=True)
             try:
                 run(case,n,a.archive.resolve())

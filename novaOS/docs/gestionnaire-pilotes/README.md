@@ -14,6 +14,8 @@ La référence 3D est `4c3bd8896c496636118a7f4751b6947fba72d1e3`. La livraison 3
 
 Le catalogue expérimental hors ligne de phase 4B vérifie les signatures et construit un plan de sélection. [Schéma, résultats et limites mémoire](../../libs/catalogue-pilotes/README.md)
 
+Le premier lancement dynamique d’un pilote VirtIO-net a été exercé sous NovaOS AArch64, dans le profil QEMU mono-groupe autorisé par A4. [Lancement, consommation réelle et qualification 4D](phase4d-v0.25.0.md)
+
 ## Frontières d’autorité
 
 ```mermaid
