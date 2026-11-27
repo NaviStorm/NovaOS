@@ -338,6 +338,9 @@ impl UserSpace {
         Ok(s)
     }
 
+    pub(crate) fn installed_header_frames(&self) -> usize {
+        usize::from(matches!(self.elf, Some(Layout::Installed { .. })))
+    }
     pub(crate) fn page_counts(&self) -> (usize, usize) {
         let tls_pages =
             usize::from(self.main_tls != 0) + self.thread_pages.iter().filter(|&&n| n != 0).count();

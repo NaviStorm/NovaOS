@@ -27,6 +27,8 @@ static COUNT: AtomicU64 = AtomicU64::new(0);
 static ACTEURS: [AtomicU64; 3] = [const { AtomicU64::new(0) }; 3];
 static IPC: [[AtomicU64; 6]; 3] = [const { [const { AtomicU64::new(0) }; 6] }; 3];
 pub(crate) fn compter(pid: u64, id: u64, args: [u64; 3], wakes: u64) {
+    #[cfg(feature="gestionnaire-4d")]
+    if id==abi::IPC_SEND {super::dynamique::horodater(pid,id,args[0]);}
     profil_3b::appel(pid, id, args, wakes);
     let colonne = match id {
         abi::IPC_SEND => 0,
@@ -116,9 +118,13 @@ fn setup(
     generation: u64,
     case: u64,
     total: u64,
+    #[cfg(feature="gestionnaire-4d")] decision: Option<super::dynamique::Decision>,
 ) -> Option<(Child, Child, Child, u64, [[u64; 2]; 2])> {
     let _guard = Guard::new();
     let boot = crate::boot_id::current()?;
+    #[cfg(feature="gestionnaire-4d")]
+    let (driver, hw) = super::dynamique::lancer(decision?, generation)?;
+    #[cfg(not(feature="gestionnaire-4d"))]
     let (driver, hw) = creer(3, None, generation)?;
     let mut group = [Some(driver), None, None];
     let mut reserves: [Option<Child>; 3] = [None, None, None];
@@ -247,7 +253,7 @@ pub(crate) struct EthernetActor {
 }
 
 impl EthernetActor {
-    pub(crate) fn reserve(generation: u64) -> Option<Self> {
+    pub(crate) fn reserve(generation: u64, #[cfg(feature="gestionnaire-4d")] decision: Option<super::dynamique::Decision>) -> Option<Self> {
         let case = match option_env!("NOVAOS_ETH3_CASE") {
             Some("reset-court" | "reset-differe" | "reset-invalide" | "reset-absent" |
                  "reset-sans-option" | "reset-iommu-absent" | "reset-iommu-differe") => 8,
@@ -301,7 +307,9 @@ impl EthernetActor {
         }
         measure("eth3_initial");
         let base = heap::audit(false).free_pages;
-        let groupe = setup(generation, case, total)?;
+        let groupe = setup(generation, case, total, #[cfg(feature="gestionnaire-4d")] decision)?;
+        #[cfg(feature="gestionnaire-4d")]
+        measure("4d_acteurs_attribues");
         let ancienne_cle = DERNIERE_CLE.swap(groupe.3, Relaxed);
         let ancienne_valide = with(|k| k.ipc.lab_can_submit(groupe.0.0, ancienne_cle));
         let acteur = Self { groupe: Some(groupe), generation, case, base };
@@ -385,7 +393,7 @@ pub(crate) fn ethernet(
     pendant: impl FnOnce() -> bool,
     operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
 ) -> bool {
-    let Some(a) = EthernetActor::reserve(generation) else {
+    let Some(a) = EthernetActor::reserve(generation, #[cfg(feature="gestionnaire-4d")] None) else {
         hal::log(format_args!(
             "ETH3 refus ouverture bootid={} cadres={}",
             crate::boot_id::current().is_some(),

@@ -462,6 +462,7 @@ pub(crate) fn net_p9() -> Result<()> {
     crate::sched::process::net_preparation::mesurer("net_initial");
     let (mut t, table) = ouvrir()?;
     #[cfg(feature = "net-arm-lab")]
+    #[allow(unused_mut)] // Le précontrôle 3E réouvre le disque. Le profil 4D le garde actif.
     let mut table = table;
     let mode = match fichier_fw(b"opt/novaos/net-p9") {
         Err(Error::Absent) => 25,
@@ -484,14 +485,23 @@ pub(crate) fn net_p9() -> Result<()> {
     let secteur = t.size;
     #[cfg(feature = "net-arm-lab")]
     let nic = {
+        #[cfg(feature="gestionnaire-4d")]
+        let mut premier_cycle=Some(crate::sched::process::net_preparation::dynamique::Cycle::ouvrir());
         let nic = match super::net_arm::Preparation::ouvrir() {
             Ok(nic) => nic,
             Err(e) => {
+                #[cfg(feature="gestionnaire-4d")]
+                {t.begin_read(table.volume)?;t.finish_read()?;t.output(0,true)?;hal::log(format_args!("D4 refus stockage lecture_flush=true"));}
                 t.close()?;
                 hal::log(format_args!("NET ARM refus preparation={e:?} cadres_dma={}", crate::memory::pinned_dma_frames()));
                 return Err(e);
             }
         };
+        let lba = table.volume;
+        #[cfg(feature="gestionnaire-4d")]
+        let suite = nic;
+        #[cfg(not(feature="gestionnaire-4d"))]
+        let suite = {
         let pico = crate::memory::pinned_dma_frames();
         let (controle, endpoint, vol, gardien) = super::domain::Domain::dimensions();
         hal::log(format_args!(
@@ -515,7 +525,6 @@ pub(crate) fn net_p9() -> Result<()> {
             nic.fermer()?;
             return Err(e);
         }
-        let lba = table.volume;
         t.begin_read(lba)?;
         let seq = nic.domaine.differer_nic()?;
         t.unit.verifier_pression(seq)?;
@@ -551,6 +560,8 @@ pub(crate) fn net_p9() -> Result<()> {
             "NET ARM NIC retire disque lisible pages_rendues=22 nouvelle_generation={}",
             suite.domaine.generation()
         ));
+        suite
+        };
         #[cfg(feature="net-ethernet-lab")]
         if matches!(mode,126|127) {
             #[cfg(feature="ethernet-v1-port")]
@@ -564,6 +575,8 @@ pub(crate) fn net_p9() -> Result<()> {
             let cycles = 1;
             let mut premier = Some(suite);
             for cycle in 0..cycles {
+            #[cfg(feature="gestionnaire-4d")]
+            let _mesure=premier_cycle.take().unwrap_or_else(crate::sched::process::net_preparation::dynamique::Cycle::ouvrir);
             let nic = match premier.take() {
                 Some(nic) => nic,
                 None => super::net_arm::Preparation::ouvrir()?,
@@ -593,6 +606,12 @@ pub(crate) fn net_p9() -> Result<()> {
                 hal::log(format_args!("NET ARM flush hz={hz} cycles={flushes:?}"));
                 true
             });
+            #[cfg(feature="gestionnaire-4d")]
+            if option_env!("NOVAOS_4D_REFUS")==Some("lancement") && trafic==Err(Error::State) {
+                t.begin_read(lba)?;t.finish_read()?;t.output(0,true)?;t.close()?;
+                hal::log(format_args!("D4 echec scelle stockage lecture_flush=true cadres_dma={}",crate::memory::pinned_dma_frames()));
+                return Err(Error::State)
+            }
             #[cfg(feature="ethernet-v1-port")]
             let trafic = if trafic.is_err()
                 && let Some((numero, epingles)) = super::net_arm::Preparation::attente_retrait(generation)

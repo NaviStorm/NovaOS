@@ -1,0 +1,32 @@
+[package]
+name = "novaos-gestionnaire-4d"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "gestionnaire"
+path = "acteur.rs"
+test = false
+
+[dependencies]
+novaos-gestionnaire-sim = { path = "../../libs/gestionnaire-pilotes" }
+sha2 = { version = "0.10.9", default-features = false }
+spin = { version = "0.9.9", default-features = false, features = ["spin_mutex","mutex"] }
+dlmalloc = "0.2.14"
+
+[profile.release]
+panic = "abort"
+overflow-checks = true
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true
+
+[[bin]]
+name = "pair"
+path = "pair.rs"
+test = false

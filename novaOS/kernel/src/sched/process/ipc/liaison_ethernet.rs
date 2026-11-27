@@ -24,6 +24,14 @@ pub(in crate::sched::process) fn installer(
     }
     Ok(([req, rep], [data, back]))
 }
+#[cfg(feature = "gestionnaire-4d")]
+pub(in crate::sched::process) fn controle(s: &mut Core, client: Pid, manager: Pid) -> Res<([u64;2],[u64;2])> {
+    let req = s.ipc.create(client)?;
+    let rep = s.ipc.create(client)?;
+    let rx = s.ipc.derive(client, req, manager, u64::from(RECEIVE))?;
+    let tx = s.ipc.derive(client, rep, manager, u64::from(SEND))?;
+    Ok(([req,rep],[rx,tx]))
+}
 /// Huit liens ordinaires de laboratoire réellement provisionnés avant l'ouverture Ethernet.
 pub(in crate::sched::process) fn remplir(s: &mut Core, ids: [Pid; 3]) -> Res<()> {
     for owner in &ids[..2] {

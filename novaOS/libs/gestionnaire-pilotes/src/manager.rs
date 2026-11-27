@@ -927,6 +927,11 @@ impl<'c, 'p> Manager<'c, 'p> {
     pub fn policy_revision(&self) -> u64 {
         self.policy_revision
     }
+    /// Empreinte de la sérialisation canonique utilisée par les tickets de lancement.
+    pub fn plan_seal(&self, slot: Slot) -> Option<[u8; 32]> {
+        self.plan(slot).map(crate::plan_wire::seal)
+    }
+
     pub fn plan(&self, slot: Slot) -> Option<&Plan> {
         self.plans.iter().find(|p| p.slot == slot).map(|p| &p.plan)
     }

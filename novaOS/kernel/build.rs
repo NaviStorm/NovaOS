@@ -207,6 +207,27 @@ fn main() {
         &format!("-Clink-arg=-T{}", linker.display()),
     ]
     .join("\x1f");
+    if env::var_os("CARGO_FEATURE_GESTIONNAIRE_4D").is_some() {
+        assert_eq!(target, "aarch64-unknown-none-softfloat");
+        println!("cargo::rerun-if-env-changed=NOVAOS_4D_REFUS");
+        let manager = user.join("gestionnaire-4d");
+        println!("cargo::rerun-if-changed=../user/gestionnaire-4d/acteur.ld");
+        let control_linker = manager.join("acteur.ld").canonicalize().unwrap();
+        let flags = flags.replace(&format!("-T{}", linker.display()), &format!("-T{}", control_linker.display()));
+        println!("cargo::rerun-if-changed=../libs/catalogue-pilotes");
+        println!("cargo::rerun-if-changed=../libs/gestionnaire-pilotes");
+        assert!(Command::new("python3").args(["-B"]).arg(manager.join("preparer.py"))
+            .arg(out.join("net_preparation.bin")).arg(&out).status().unwrap().success());
+        let built = Command::new(env::var_os("CARGO").unwrap())
+            .args(["build", "--release", "--offline", "--locked", "--target", &target])
+            .current_dir(manager).env("CARGO_TARGET_DIR", &work)
+            .env("CARGO_ENCODED_RUSTFLAGS", format!("{flags}\x1f--cfg\x1fnovaos_mesure_tas_4d\x1f--cfg\x1fcurve25519_dalek_backend=\"serial\""))
+            .env("CARGO_PROFILE_RELEASE_STRIP","symbols").env("NOVA_4D_OBJETS", &out).status().unwrap();
+        assert!(built.success(), "construction des acteurs 4D");
+        for name in ["gestionnaire", "pair"] {
+            std::fs::copy(work.join(&target).join("release").join(name), out.join(format!("{name}.elf"))).unwrap();
+        }
+    }
     let mut cargo_service = Command::new(env::var_os("CARGO").unwrap());
     cargo_service.args(["build", "--release", "--locked", "--target", &target]);
     if env::var_os("CARGO_FEATURE_INSTALLATION_GPT").is_some() {

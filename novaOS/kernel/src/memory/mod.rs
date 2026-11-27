@@ -143,6 +143,10 @@ impl Memory {
     pub(crate) fn release_kernel_frame(&mut self, frame: KernelFrame) {
         self.frames.release(frame.physical);
     }
+    #[cfg(feature="gestionnaire-4d")]
+    pub(crate) fn cycle_minimum(&mut self, open:bool)->Option<u64> {
+        if open {self.frames.cycle_minimum.replace(self.frames.available)} else {self.frames.cycle_minimum.take()}
+    }
     pub(crate) fn begin_frame_sample(&mut self) {
         assert!(self.frames.sample.is_none());
         self.frames.sample = Some(FrameSample {
@@ -335,6 +339,7 @@ pub(crate) struct Resident {
     pub ipc: usize,
     pub user: usize,
     pub user_stacks: usize,
+    pub elf_headers: usize,
     pub processes: usize,
     pub process_bytes: usize,
     pub tcb_bytes: usize,
@@ -370,10 +375,10 @@ impl Memory {
         let counted = self.frames.tables
             + self.dma_frames
             + self.staging.resident()
-            + (r.ipc + r.stacks + r.user + r.user_stacks + r.heap + r.buddy) as u64;
+            + (r.ipc + r.stacks + r.user + r.user_stacks + r.elf_headers + r.heap + r.buddy) as u64;
         assert_eq!(used, counted, "cadres sans attribution dans le bilan");
         log(format_args!(
-            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} ipc={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={} dma={} elf_preparation={}",
+            "RAM phase={phase} image={image} tables={} kpile={} upile={} heap={} buddy={} ipc={} utilisateur={} processus={} meta_octets={} meta_actifs={} tcb_octets={} heap_va={} libres={} cache={} chargeur={loader} restitue={released} extra_elf={exec_extra} video={video} ram_video={ram_video} resident={} retenu={} dma={} elf_preparation={} elf_entetes={}",
             self.frames.tables,
             r.stacks,
             r.user_stacks,
@@ -391,7 +396,7 @@ impl Memory {
             used + image,
             used + image + loader + exec_extra + ram_video,
             self.dma_frames,
-            self.staging.resident()
+            self.staging.resident(), r.elf_headers
         ));
     }
 }

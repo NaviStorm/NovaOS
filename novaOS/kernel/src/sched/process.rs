@@ -540,6 +540,7 @@ fn measure(phase: &str) {
                         p.pid.number, data, stack
                     ));
                 }
+                r.elf_headers += space.installed_header_frames();
                 r.user += data;
                 r.user_stacks += stack;
             }

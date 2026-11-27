@@ -38,6 +38,26 @@ pub struct Plan {
     resources: Vec<Binding>,
 }
 impl Plan {
+    /// Charges utiles conservées par le plan, objet Rust et capacités allouées inclus.
+    pub fn memory_bytes(&self) -> usize {
+        let strings = |v: &Vec<String>| {
+            v.capacity() * size_of::<String>() + v.iter().map(String::capacity).sum::<usize>()
+        };
+        size_of::<Self>()
+            + self.driver.capacity()
+            + self.attachment.capacity()
+            + self.isa.capacity()
+            + strings(&self.caps)
+            + strings(&self.hardware.dma)
+            + strings(&self.hardware.mmio)
+            + strings(&self.hardware.irq)
+            + self.resources.capacity() * size_of::<Binding>()
+            + self
+                .resources
+                .iter()
+                .map(|r| r.id.capacity())
+                .sum::<usize>()
+    }
     pub fn driver(&self) -> &str {
         &self.driver
     }

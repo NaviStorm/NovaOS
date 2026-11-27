@@ -27,6 +27,8 @@ pub struct Frames {
     pub available: u64,
     pub initial: u64,
     pub(super) sample: Option<super::FrameSample>,
+    #[cfg(feature="gestionnaire-4d")]
+    pub(super) cycle_minimum: Option<u64>,
     pub tables: u64,
     pub(super) map: alloc::vec::Vec<Entry>,
     pub(super) reclaimed: u64,
@@ -70,6 +72,8 @@ impl Frames {
             available,
             initial: available,
             sample: None,
+            #[cfg(feature="gestionnaire-4d")]
+            cycle_minimum: None,
             tables: 0,
             map: alloc::vec::Vec::new(),
             reclaimed: 0,
@@ -153,6 +157,8 @@ impl Frames {
                 .write_bytes(0, PAGE as usize)
         };
         self.available -= 1;
+        #[cfg(feature="gestionnaire-4d")]
+        if let Some(minimum)=&mut self.cycle_minimum { *minimum=(*minimum).min(self.available); }
         if let Some(sample) = &mut self.sample {
             sample.allocations += 1;
             sample.minimum_free = sample.minimum_free.min(self.available);

@@ -23,9 +23,16 @@ fn profil() -> u64 {
     }
 }
 
+#[cfg(feature = "gestionnaire-4d")]
+pub(crate) mod dynamique;
+
 fn creer(mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child, u64)> {
     let _guard = Guard::new();
     let child = create_image(IMAGE, &mode.to_le_bytes(), None, None).ok()?;
+    installer_courtier(child, mode, observateur, generation)
+}
+
+fn installer_courtier(child: Child, mode: u64, observateur: Option<u64>, generation: u64) -> Option<(Child,u64)> {
     let pid = child.0;
     let handle = with(|s| {
         let handle = match observateur {

@@ -8,6 +8,8 @@ static QUARANTAINE: Mutex<Option<Preparation>> = Mutex::new(None);
 pub(super) struct Preparation {
     pub(super) domaine: domain::Domain,
     cadres: [Frame; 22],
+    #[cfg(feature="gestionnaire-4d")]
+    decision: Option<crate::sched::process::net_preparation::dynamique::Decision>,
     pub(super) nic: Device,
     #[cfg(feature="ethernet-v1-port")]
     retrait_differe: Option<u64>,
@@ -62,10 +64,7 @@ impl Preparation {
         ));
         Ok(())
     }
-    pub(super) fn ouvrir() -> Result<Self> {
-        if QUARANTAINE.lock().is_some() {
-            return Err(Error::Quarantine);
-        }
+    fn inventaire() -> Result<pci::Config> {
         // L'ECAM du profil virt-10.0 ne contient que le pont hôte et trois
         // fonctions simples. Aucun pont secondaire ni fonction soeur admis.
         for slot in 0..32 {
@@ -96,6 +95,20 @@ impl Preparation {
         {
             return Err(Error::Route);
         }
+        Ok(cfg)
+    }
+    pub(super) fn ouvrir() -> Result<Self> {
+        if QUARANTAINE.lock().is_some() {
+            return Err(Error::Quarantine);
+        }
+        #[cfg(feature="gestionnaire-4d")]
+        let debut=hal::timer::counter();
+        let cfg=Self::inventaire()?;
+        #[cfg(feature="gestionnaire-4d")]
+        hal::log(format_args!("D4 decouverte ticks={}",hal::timer::counter()-debut));
+        #[cfg(feature="gestionnaire-4d")]
+        let decision = crate::sched::process::net_preparation::dynamique::selection(cfg.get(0,4) as u64, 56)
+            .ok_or(Error::State)?;
         let nic = Device::discover(56, 0x1041, 368)?;
         if nic.msix.is_some() {
             return Err(Error::Route);
@@ -115,6 +128,8 @@ impl Preparation {
         let mut lease = Self {
             domaine,
             cadres: [EMPTY; 22],
+            #[cfg(feature="gestionnaire-4d")]
+            decision: Some(decision),
             nic,
             #[cfg(feature="ethernet-v1-port")]
             retrait_differe: None,
@@ -189,12 +204,25 @@ impl Preparation {
 
 #[cfg(feature = "net-ethernet-lab")]
 impl Preparation {
-    pub(super) fn trames(self, pendant:impl FnOnce()->bool) -> Result<()> {
+    pub(super) fn trames(#[allow(unused_mut)] mut self, pendant:impl FnOnce()->bool) -> Result<()> {
         // Les 22 mappings sont acquittés avant publication d'un premier descripteur.
         #[cfg(feature="ethernet-v1-port")]
         let mut preuve = None;
         #[cfg(feature="ethernet-v1-port")]
         let mut files_confirmees = false;
+        #[cfg(feature="gestionnaire-4d")]
+        let acteur = {
+            let decision=self.decision.take().filter(|d|Self::inventaire().is_ok_and(|c|d.actuelle(c.get(0,4) as u64,56)));
+            match crate::sched::process::net_preparation::port_v1::EthernetActor::reserve(self.domaine.generation(),decision) {
+                Some(a)=>Some(a),
+                None=>{
+                    let generation=self.domaine.generation();
+                    self.fermer()?;
+                    hal::log(format_args!("D4 lancement refuse avant files generation={generation} rendus=22"));
+                    return Err(Error::State);
+                }
+            }
+        };
         let resultat = (|| {
             self.domaine.faults_preparation()?;
             let mut port = super::net_trames::Port::nouveau(&self.nic, &self.cadres)?;
@@ -215,11 +243,10 @@ impl Preparation {
                 hal::timer::armer_spi_reseau(false)?;
             }
             let debut = hal::timer::counter();
-            #[cfg(feature="ethernet-v1-port")]
+            #[cfg(all(feature="ethernet-v1-port",not(feature="gestionnaire-4d")))]
             let acteur = if reset::profil() {
-                Some(crate::sched::process::net_preparation::port_v1::EthernetActor::reserve(self.domaine.generation())
-                    .ok_or(Error::State)?)
-            } else { None };
+                Some(crate::sched::process::net_preparation::port_v1::EthernetActor::reserve(self.domaine.generation()).ok_or(Error::State)?)
+            } else {None};
             #[cfg(feature="ethernet-v1-port")]
             let titulaire = acteur.as_ref().map(|a| a.titulaire_dma());
             let operation = |tag, len, copie: &mut [u8]| {
@@ -298,6 +325,8 @@ impl Preparation {
 
     #[cfg(feature="ethernet-v1-port")]
     fn retrait_complet(self) -> Result<()> {
+        #[cfg(feature="gestionnaire-4d")]
+        let _temps=crate::sched::process::net_preparation::dynamique::Duree::new("retrait");
         let generation = self.domaine.generation();
         let numero = {
             let mut place = QUARANTAINE.lock();
@@ -331,6 +360,8 @@ impl Preparation {
 
     #[cfg(feature="ethernet-v1-port")]
     pub(super) fn reprendre_retrait(generation: u64, numero: u64) -> Result<()> {
+        #[cfg(feature="gestionnaire-4d")]
+        let _temps=crate::sched::process::net_preparation::dynamique::Duree::new("reconciliation");
         let bail = {
             let mut place = QUARANTAINE.lock();
             let p = place.as_ref().ok_or(Error::State)?;
