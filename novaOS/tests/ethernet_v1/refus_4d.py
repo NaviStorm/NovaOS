@@ -7,7 +7,7 @@ def verifier(cas, out, serie, rapport):
     if (not rapport.get("volume_relu_identique") or rapport.get("elf_relu_esp") != rapport["elf"]
             or rapport["trames_par_sens"] or rapport["erreur_pair"]):
         raise ValueError("volume P9, copie EFI ou pair inattendu")
-    if ("NET ARM bilan Err(State)" not in serie or "D4 lancement scelle" in serie
+    if ("NET ARM bilan Err(State)" not in serie or serie.count("D4 lancement scelle")!=int(cas=="deces-gestionnaire")
             or "ETH3 session" in serie or "Panique" in serie):
         raise ValueError("état final du lancement inattendu")
     conditions = {
@@ -15,6 +15,10 @@ def verifier(cas, out, serie, rapport):
         "revision": ["D4 plan perime revision=1", "mode=2", "NET ARM refus preparation=State cadres_dma=0"],
         "racines": ["D4 saturation reelle racines=4", "D4 refus provisionnement epoch=1 mode=3 ipc_pages=0",
                     "NET ARM refus preparation=State cadres_dma=0"],
+        "cle-revoquee": ["mode=7","NET ARM refus preparation=State cadres_dma=0"],
+        "distribution": ["mode=8","NET ARM refus preparation=State cadres_dma=0"],
+        "deces-gestionnaire": ["D4 PT_LOAD compares=","recus=false","mode=9","D4 lancement refuse avant files",
+                         "D4 echec scelle stockage lecture_flush=true cadres_dma=0"],
         "droits": ["mode=6","NET ARM refus preparation=State cadres_dma=0"],
         "attribution": ["D4 objet scelle","D4 refus attribution","D4 lancement refuse avant files",
                         "D4 echec scelle stockage lecture_flush=true cadres_dma=0"],
@@ -44,7 +48,7 @@ def verifier(cas, out, serie, rapport):
             attaches += line.startswith("virtio_iommu_attach domain=3 endpoint=56")
             detaches += line.startswith("virtio_iommu_detach domain=3 endpoint=56")
             translations += line.startswith("virtio_iommu_translate ") and "rid=56 " in line
-    if firmware or translations or attaches != int(cas in ("lancement","attribution")) or attaches != detaches:
+    if firmware or translations or attaches != int(cas in ("lancement","attribution","deces-gestionnaire")) or attaches != detaches:
         raise ValueError("cycle DMA du refus incohérent")
     return dict(cause=cas, attaches=attaches, detaches=detaches, traductions_nic=translations,
                 cadres_dma_fin=0, pages_ipc_fin=0, processus_fin=0)

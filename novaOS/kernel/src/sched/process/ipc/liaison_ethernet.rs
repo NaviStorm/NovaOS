@@ -38,10 +38,13 @@ pub(in crate::sched::process) fn controle(s: &mut Core, client: Pid, manager: Pi
     }
     Ok(([req,rep],[rx,tx]))
 }
-/// Huit liens ordinaires de laboratoire réellement provisionnés avant l'ouverture Ethernet.
-pub(in crate::sched::process) fn remplir(s: &mut Core, ids: [Pid; 3]) -> Res<()> {
+/// Liens IPC ordinaires préalloués par le banc avant la négociation Ethernet.
+pub(in crate::sched::process) fn remplir(s: &mut Core, ids: [Pid; 3],#[cfg(feature="gestionnaire-4d")] par_acteur:usize) -> Res<()> {
+    #[cfg(not(feature="gestionnaire-4d"))]
+    let par_acteur=4;
+    if !(3..=4).contains(&par_acteur){return Err(REFUSED)}
     for owner in &ids[..2] {
-        for _ in 0..4 {
+        for _ in 0..par_acteur {
             let root = s.ipc.create(*owner)?;
             let peer = s
                 .ipc
@@ -50,11 +53,12 @@ pub(in crate::sched::process) fn remplir(s: &mut Core, ids: [Pid; 3]) -> Res<()>
         }
     }
     let roots = ids.map(|id| s.ipc.racines_pilotes(id));
-    if roots != [4, 4, 0] || s.ipc.pages_bulk_count() != 8 {
+    let boites=2*par_acteur;
+    if roots != [par_acteur,par_acteur,0] || s.ipc.pages_bulk_count()!=boites {
         return Err(REFUSED);
     }
     hal::log(format_args!(
-        "ETH3 préallocation boites=8 octets=32768 racines={roots:?} ipc_pages={}",
+        "ETH3 préallocation boites={boites} octets={} racines={roots:?} ipc_pages={}",boites*4096,
         s.ipc.pages()
     ));
     Ok(())

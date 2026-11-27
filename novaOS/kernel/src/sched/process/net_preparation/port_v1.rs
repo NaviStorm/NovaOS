@@ -148,12 +148,13 @@ fn setup(
     let attempt = (|| -> Result<(), u64> {
         group[1] = Some(create_image(SERVICE, &[], None, None).map_err(ipc::launch_error)?);
         group[2] = Some(create_image(CLIENT, &[], None, None).map_err(ipc::launch_error)?);
-        if case == 9 {
+        let six=cfg!(feature="gestionnaire-4d") && option_env!("NOVAOS_ETH3_CASE")==Some("six-boites");
+        if case == 9 || six {
             for child in &mut reserves {
                 *child = Some(create_image(CLIENT, &[], None, None).map_err(ipc::launch_error)?);
             }
             let ids = reserves.each_ref().map(|slot| slot.as_ref().unwrap().0);
-            with(|s| ipc::liaison_ethernet::remplir(s, ids))?;
+            with(|s| ipc::liaison_ethernet::remplir(s, ids,#[cfg(feature="gestionnaire-4d")] if six {3}else{4}))?;
         }
         let [d, s, c] = group.each_ref().map(|v| v.as_ref().unwrap().0);
         with(|k| {

@@ -41,12 +41,16 @@ fn trust() -> novaos_gestionnaire_sim::catalogue::Result<Policy> {
         elf_key: anchor!("elf.pub"),
         first: 1,
         last: 4,
-        revoked: false,
+        revoked: config(5) == 7,
         priority: 1,
     };
     let mut p = Policy::new(
         1,
-        Origin::Laboratoire,
+        if config(5) == 8 {
+            Origin::Distribution
+        } else {
+            Origin::Laboratoire
+        },
         3,
         vec![signer],
         anchor!("systeme.pub"),

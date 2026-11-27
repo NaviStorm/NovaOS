@@ -260,12 +260,15 @@ def main():
     p.add_argument("--cycle-vie", action="store_true", help="Vérifier les reçus et la mémoire du profil 3C")
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
     p.add_argument("--delai", type=int, default=90)
+    p.add_argument("--six-boites-4d",action="store_true",help="Contrôler six boîtes déjà attribuées avant l’ouverture du port")
     p.add_argument("--gestionnaire-4d",action="store_true",help="Contrôler le compte physique du port après fermeture de ses liaisons de lancement")
-    p.add_argument("--refus-4d", choices=("signature","revision","racines","lancement","attribution","droits"))
+    p.add_argument("--refus-4d", choices=("signature","revision","racines","lancement","attribution","droits","cle-revoquee","distribution","deces-gestionnaire"))
     p.add_argument("--esp-verifiee", action="store_true", help="Réécrire aussi les secteurs nuls alloués et relire l’ELF sur la copie FAT32 ARM")
     p.add_argument("--cpu-max", action="store_true", help="Témoin ArmVirt avec RNDR et chargeur direct")
     p.add_argument("--limine-arm", type=Path, help="Second étage Limine de laboratoire identifié")
     a = p.parse_args()
+    if a.six_boites_4d and (not a.gestionnaire_4d or a.cas!="port"):
+        p.error("La pression à six boîtes exige le port nominal 4D")
     if a.gestionnaire_4d and (a.arch!="arm" or not a.esp_verifiee or not a.cycle_vie):
         p.error("Le contrôle 4D exige le profil ARM, sa relecture EFI et le cycle de vie")
     if a.refus_4d and (a.arch!="arm" or a.cas!="port" or not a.esp_verifiee or not a.cycle_vie):
@@ -535,7 +538,11 @@ def main():
             if a.cycle_vie:
                 if a.cas in ("echo1514", "echo1514-reset") and not report["succes"]:
                     raise ValueError("Critères du lanceur de performance 3B")
-                if a.gestionnaire_4d and a.cas in ("plein","choix-data"):
+                if a.gestionnaire_4d and (a.cas in ("plein","choix-data") or a.six_boites_4d):
+                    if a.six_boites_4d and ("ETH3 préallocation boites=6 octets=24576 racines=[3, 3, 0]" not in serial or
+                        "D4 coexistence mode=0 racines=[0, 4, 1] boites=8 endpoints=17 " not in serial):
+                        raise ValueError("six boîtes préallouées et deux boîtes du port attendues")
+                    report["six_boites_4d"]=a.six_boites_4d
                     report["iommu_transport_4d"]=cycle_vie.domaines_arm(out,set())
                     if not (peer.frames==144 and not peer.error and report["volume_relu_identique"] and
                             "NET ARM L2 retrait disque_lisible=true cadres_fin=0" in serial and

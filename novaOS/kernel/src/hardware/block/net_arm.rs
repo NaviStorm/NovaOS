@@ -101,6 +101,13 @@ impl Preparation {
     pub(super) fn correspond(id:u64,sid:u64)->bool {
         sid==56 && Self::inventaire().is_ok_and(|cfg|u64::from(cfg.get(0,4))==id)
     }
+    #[cfg(feature="ethernet-v1-port")]
+    fn negocier(nic:&Device)->Result<bool>{
+        if reset::profil(){super::net_event::negocier_reset(nic)}else{
+            super::net_event::negocier(nic)?;
+            Ok(false)
+        }
+    }
     pub(super) fn ouvrir() -> Result<Self> {
         if QUARANTAINE.lock().is_some() {
             return Err(Error::Quarantine);
@@ -117,13 +124,10 @@ impl Preparation {
         if nic.msix.is_some() {
             return Err(Error::Route);
         }
-        #[cfg(feature="ethernet-v1-port")]
-        let reset_negocie = if reset::profil() {
-            super::net_event::negocier_reset(&nic)?
-        } else {
-            super::net_event::negocier(&nic)?;
-            false
-        };
+        #[cfg(all(feature="ethernet-v1-port",not(feature="gestionnaire-4d")))]
+        let reset_negocie = Self::negocier(&nic)?;
+        #[cfg(feature="gestionnaire-4d")]
+        let reset_negocie = false;
         #[cfg(all(feature = "net-event-idx", not(feature="ethernet-v1-port")))]
         super::net_event::negocier(&nic)?;
         #[cfg(not(feature = "net-event-idx"))]
@@ -228,6 +232,11 @@ impl Preparation {
             }
         };
         let resultat = (|| {
+            #[cfg(feature="gestionnaire-4d")]
+            {
+                self.reset_negocie=Self::negocier(&self.nic)?;
+                hal::log(format_args!("D4 initialisation generation={} bme_avant_files={}",self.domaine.generation(),self.nic.cfg.get(4,2)&4!=0));
+            }
             self.domaine.faults_preparation()?;
             let mut port = super::net_trames::Port::nouveau(&self.nic, &self.cadres)?;
             {

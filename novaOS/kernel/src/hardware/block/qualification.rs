@@ -607,7 +607,7 @@ pub(crate) fn net_p9() -> Result<()> {
                 true
             });
             #[cfg(feature="gestionnaire-4d")]
-            if matches!(option_env!("NOVAOS_4D_REFUS"),Some("lancement"|"attribution")) && trafic==Err(Error::State) {
+            if matches!(option_env!("NOVAOS_4D_REFUS"),Some("lancement"|"attribution"|"deces-gestionnaire")) && trafic==Err(Error::State) {
                 t.begin_read(lba)?;t.finish_read()?;t.output(0,true)?;t.close()?;
                 hal::log(format_args!("D4 echec scelle stockage lecture_flush=true cadres_dma={}",crate::memory::pinned_dma_frames()));
                 return Err(Error::State)

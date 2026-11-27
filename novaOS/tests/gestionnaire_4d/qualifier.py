@@ -16,8 +16,8 @@ REPO = NOVA.parent
 BASE = REPO.parent
 PORT = NOVA / "tests/ethernet_v1/port_qemu.py"
 ISA = "aarch64-unknown-none-softfloat"
-NEG = {"signature", "revision", "racines", "lancement","attribution","droits"}
-CASES = {"plein","choix-data","reset-court","reset-deces","reset-revocation","reset-incertain","reset-absent",
+NEG = {"signature", "revision", "racines", "lancement","attribution","droits","cle-revoquee","distribution","deces-gestionnaire"}
+CASES = {"six-boites","plein","choix-data","reset-court","reset-deces","reset-revocation","reset-incertain","reset-absent",
          "reset-iommu-absent","reset-iommu-differe","cycles-256","echo1514-reset","temoin-3e",*NEG}
 
 
@@ -110,6 +110,10 @@ def observer(case, dest, report):
     if (text.count("avant_capacites=true")!=wanted or text.count("D4 lanceur prepare=1 creation=1 recu=consulte rejeu=sans_effet ack=4")!=wanted
             or text.count("racines=[3, 3] boites=0 cloture=independante")!=wanted):
         raise ValueError("reçu de lancement, idempotence ou racines de contrôle")
+    starts=[m.start() for m in re.finditer("D4 lancement scelle",text)]
+    inits=[m.start() for m in re.finditer(r"D4 initialisation generation=\d+ bme_avant_files=false",text)]
+    if len(inits)!=wanted or any(a>=b for a,b in zip(starts,inits)):
+        raise ValueError("initialisation matérielle avant admission du pilote")
     if text.count("ancienne_capacite_valide=false")!=wanted:
         raise ValueError("contrôle des anciennes capacités absent")
     report["dynamique"]=dict(cycles= wanted,pic_cadres=max(int(b[3]) for b in balances),
@@ -126,11 +130,12 @@ def run(case, number, root):
         observer(case,dest,report)
         return
     files=BASE/"archives-ethernet-phase3/reproduction-8bd3f9c"
-    actual = "port" if case in NEG else "echo1514-reset" if case=="temoin-3e" else case
+    actual = "port" if case in NEG or case=="six-boites" else "echo1514-reset" if case=="temoin-3e" else case
     cmd=[sys.executable,"-B",PORT,"arm",actual,image,dest,BASE/"pilote-virtio-net",BASE/"archives-virtio-net",
          files/"limine-enroll",files/"BOOTAA64.EFI","--limine-arm",files/"limine-a72.EFI","--source-elf",ref,
          "--cycle-vie","--esp-verifiee","--delai", "600" if case=="cycles-256" else "120"]
     if case!="temoin-3e": cmd+=["--gestionnaire-4d"]
+    if case=="six-boites": cmd+=["--six-boites-4d"]
     if case in NEG: cmd+=["--refus-4d",case]
     subprocess.run(cmd,cwd=REPO,check=True)
     observer(case,dest,json.loads((dest/"campagne.json").read_text()))

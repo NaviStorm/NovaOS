@@ -56,6 +56,9 @@ pub(crate) fn conduire(plan: [u8; 32]) -> Result<()> {
     }
     let launch = requete(Op::Launch, 2, g);
     let first = appel(ports, launch)?;
+    if config(5) == 9 {
+        return Err(REVOKED);
+    }
     // Perte logique de la réponse : consultation du reçu puis réémission de la demande initiale.
     let receipt = appel(ports, requete(Op::Receipt, 3, g))?;
     if receipt != first
