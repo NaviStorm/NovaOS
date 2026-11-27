@@ -22,7 +22,7 @@ CAS = {key: "court" for key in (
     "gestionnaire-actif", "lanceur-actif", "publication", "reconciliation", "concurrence",
     "journal-perdu", "non-corroborable",
 )}
-CAS.update(endurance="cycles-256-court", differe="recu-vtd-differe", absent="recu-vtd-absent",
+CAS.update(pression="plein", endurance="cycles-256-court", differe="recu-vtd-differe", absent="recu-vtd-absent",
            ethernet="echo1514", statique="echo1514")
 ISA = "x86_64-unknown-none"
 
@@ -95,7 +95,7 @@ def verifier_remplacements(cas, serie, changements):
             if not ligne.startswith("E41 reprise_selection "):
                 raise ValueError("Reprise de la découverte initiale")
         else:
-            phase = "attribution" if cas in {"concurrence", "endurance"} else cas
+            phase = "attribution" if cas in {"concurrence", "endurance", "pression"} else cas
             if (champs["phase"] != phase or int(champs["role"]) != (2 if cas.startswith("lanceur") else 1)
                     or int(champs["generation"]) != (0 if cas == "apres-selection" else tour)):
                 raise ValueError(("Rôle, génération ou point de reprise", cas))
@@ -131,6 +131,8 @@ def controler(cas, dest, *, enregistrer=True):
     if len(boots) != 1 or len(recus) != cycles or (not gel_journal and len(fins) != cycles):
         raise ValueError("Époque ou unicité du lancement")
     verifier_lancements(texte, cycles, next(iter(boots)))
+    if cas == "pression" and not (c.get("pression_reelle") and c.get("transport_client") == 1 and c["trames_par_sens"] == 144):
+        raise ValueError("Huit boîtes à l’ouverture, DATA négocié et trames complètes attendus")
     if len({r[2] for r in recus}) != cycles or len({r[3] for r in recus}) != cycles:
         raise ValueError("Titulaire ou incarnation réutilisé")
     if [int(r[0]) for r in recus] != list(range(1, cycles + 1)):

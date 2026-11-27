@@ -117,6 +117,7 @@ def main():
     cli.epilog = "Vérification autonome du résultat : preuves.py --verifier DOSSIER"
     for key in ("simple","double","endurance_double","arm","arm_reprise","hotes","sortie"):
         cli.add_argument(key,type=lambda s:Path(s).resolve())
+    cli.add_argument("--pression", type=Path, help="Archive distincte du cas Q35 à huit boîtes")
     cli.add_argument("--double-actif", type=Path, required=True,
                      help="Archive des deux profils doubles avec témoin des CQE")
     cli.add_argument("--objets-arm", type=Path, required=True,
@@ -152,13 +153,14 @@ def main():
         epochs.add(boot)
         q35_modeles.add(c["modele"])
     for cas in CAS:
+        source = a.pression if cas == "pression" and a.pression else a.simple
         stats = []
         lat = []
         admissions = []
         retraits = []
-        construction = lire(a.simple/"images"/cas/"construction.json")
+        construction = lire(source/"images"/cas/"construction.json")
         for n in range(1,4):
-            p = a.simple/"simple"/cas/str(n)
+            p = source/"simple"/cas/str(n)
             c = lire(p/"campagne.json")
             recoupe(p,controler,cas,p)
             if c["elf"] != construction["elf"]["q35"] or c["commit_sources"] != construction["commit"]:
@@ -193,7 +195,7 @@ def main():
         etats[cas] = dict(boots=stats, reprise_ms=bornes(lat), echantillons_reprise=len(lat),
                          quantiles_reprise_ms=quantiles(lat), pic_admission=bornes(admissions),
                          pic_retrait=bornes(retraits))
-        ajouter(f"images/simple/{cas}/construction.json",a.simple/"images"/cas/"construction.json")
+        ajouter(f"images/simple/{cas}/construction.json",source/"images"/cas/"construction.json")
     duos={}
     for scenario,caslist in list(DOUBLE.items())+[("endurance",("duo-cycles",))]:
         for cas in caslist:

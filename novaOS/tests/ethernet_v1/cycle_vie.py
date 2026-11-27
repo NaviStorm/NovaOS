@@ -199,7 +199,8 @@ def verifier_reset(cas, c, serie, generations):
 
 def verifier(out, c, serie):
     cas, arch = c["cas"], c["arch"]
-    mode = CAS[cas]
+    pression = c.get("gestionnaire_4f") == "pression" and arch == "q35" and cas == "plein"
+    mode = 9 if pression else CAS[cas]
     reprise=c.get("gestionnaire_4e1") or c.get("gestionnaire_4f")
     gel=reprise in ("journal-perdu","non-corroborable")
     cycles = 1 if gel else nombre_cycles(cas,arch)
@@ -211,7 +212,10 @@ def verifier(out, c, serie):
     geometrie="5 ipc_pages="+str(pages_session)
     if reprise:
         geometrie = r"(?:13 ipc_pages=18|11 ipc_pages=16)"
-    sessions = re.findall(r"ETH3 session .*?incarnation=(\d+) .*?epoque=(\d+) generation_materiel=(\d+) mode=(\d+) racines=\[0, 4, 1\] boites_globales=2 endpoints_globaux=" + geometrie + r"\b", serie)
+    boites = 0 if pression else 2
+    if pression:
+        geometrie = "11 ipc_pages=14"
+    sessions = re.findall(r"ETH3 session .*?incarnation=(\d+) .*?epoque=(\d+) generation_materiel=(\d+) mode=(\d+) racines=\[0, 4, 1\] boites_globales=" + str(boites) + " endpoints_globaux=" + geometrie + r"\b", serie)
     exiger(len(sessions)==cycles and [int(s[2]) for s in sessions]==generations
            and all(int(s[3])==mode for s in sessions)
            and all(len({s[i] for s in sessions})==cycles for i in (0,1)), sessions)
@@ -239,7 +243,7 @@ def verifier(out, c, serie):
         exiger(c["rx_injectees_perf"]==16*cycles and all(int(a[4],16)==65535 and int(a[1])==0 for a in arrets), arrets)
     for b in bilans:
         sorties = tuple(map(int,b[3:6]))
-        if mode in (0,8,13):
+        if mode in (0,8,9,13):
             exiger(sorties==(0,0,0) and b[1]=="Ok(())",b)
         elif mode==23:
             exiger(sorties[2]==9 and 125 not in sorties and int(b[6])==1,b)

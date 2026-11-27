@@ -607,7 +607,7 @@ def main():
                     details="mode=9 racines=[0, 4, 1] boites_globales=0 endpoints_globaux=5"
                     report["pression_reelle"]="D4 coexistence mode=9 racines=[0, 4, 1] boites=8 endpoints=19 " in serial
                     report["succes"] &= report["pression_reelle"]
-                if a.gestionnaire_4e1=="pression":
+                if a.gestionnaire_4e1=="pression" or a.gestionnaire_4f=="pression":
                     details="mode=9 racines=[0, 4, 1] boites_globales=0 "
                     report["pression_reelle"]=bool(re.search(r"D4 coexistence mode=9 racines=\[0, 4, 1\] boites=8 endpoints=\d+ ",serial))
                     report["succes"] &= report["pression_reelle"]
