@@ -21,14 +21,24 @@ def run(cmd, directory, env=None):
 
 def measure(label, crate, build):
     env = dict(os.environ, CARGO_TARGET_DIR=str(build), CARGO_PROFILE_RELEASE_STRIP="none")
+    for tool in ["rustc", "rustdoc"]:
+        env[tool.upper()] = run(["rustup", "which", "--toolchain", "stable", tool], crate).strip()
     print(f"=== {label} ===", flush=True)
     subprocess.run([sys.executable, "-B", crate / "qualifier.py"], cwd=crate, env=env, check=True)
     results = []
     for isa in ["aarch64-apple-darwin", "x86_64-apple-darwin"]:
         log = run(["rustup", "run", "stable", "cargo", "test", "--offline", "--locked", "--release",
                    "--target", isa, "--test", "plans", "--", "--nocapture", "--test-threads=1"], crate, env)
+        print(next(line[line.index("Pile Darwin"): ] for line in log.splitlines() if "Pile Darwin" in line), flush=True)
+        if (crate / "tests/allocations.rs").exists():
+            alloc = run(["rustup", "run", "stable", "cargo", "test", "--offline", "--locked", "--release",
+                         "--target", isa, "--test", "allocations", "--", "--nocapture", "--test-threads=1"], crate, env)
+            for line in alloc.splitlines():
+                for field in ["Budget cumulé", "Allocations injectées"]:
+                    if field in line:
+                        print(line[line.index(field):], flush=True)
         lines = [line[line.index("PLAN|"):] for line in log.splitlines() if "PLAN|" in line]
-        assert len(lines) == 26
+        assert len(lines) == 28
         print(isa, len(lines), sha256(("\n".join(lines)+"\n").encode()).hexdigest(), flush=True)
         results.append(lines)
     assert results[0] == results[1]
@@ -54,4 +64,4 @@ with tempfile.TemporaryDirectory(dir=BUILD) as tmp:
     before = measure("4B " + REF, old, BUILD / "temoin")
     after = measure("4B.1 " + run(["git", "rev-parse", "HEAD"], ROOT).strip(), ROOT, BUILD)
     assert before == after, "Les plans ou les refus diffèrent entre révisions"
-    print("26 plans ou décisions identiques entre révisions et architectures", flush=True)
+    print("28 plans ou décisions identiques entre révisions et architectures", flush=True)

@@ -173,7 +173,9 @@ fn champs_maximaux_et_transaction_de_refus() {
     let p = policy();
     let mut c = Catalog::new(&p);
     let full = fixture::maximal(RAW);
-    let trimmed = full.trim_end();
+    // Garder les variantes structurelles sous 16 Kio pour exercer le schéma.
+    let smaller = full.replace(&"b".repeat(93), "b");
+    let trimmed = smaller.trim_end();
     let stable = c
         .admit(full.as_bytes(), &sign(full.as_bytes(), 1), &objects())
         .unwrap();
