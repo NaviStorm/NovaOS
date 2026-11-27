@@ -260,10 +260,13 @@ def main():
     p.add_argument("--cycle-vie", action="store_true", help="Vérifier les reçus et la mémoire du profil 3C")
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
     p.add_argument("--delai", type=int, default=90)
+    p.add_argument("--refus-4d", choices=("signature","revision","racines","lancement"))
     p.add_argument("--esp-verifiee", action="store_true", help="Réécrire aussi les secteurs nuls alloués et relire l’ELF sur la copie FAT32 ARM")
     p.add_argument("--cpu-max", action="store_true", help="Témoin ArmVirt avec RNDR et chargeur direct")
     p.add_argument("--limine-arm", type=Path, help="Second étage Limine de laboratoire identifié")
     a = p.parse_args()
+    if a.refus_4d and (a.arch!="arm" or a.cas!="port" or not a.esp_verifiee or not a.cycle_vie):
+        p.error("Le refus 4D exige le port ARM, la relecture EFI et le contrôle du cycle.")
     if a.sans_reset_perf and (a.arch != "arm" or a.cas != "echo1514-reset" or not a.cycle_vie):
         p.error("--sans-reset-perf exige le profil de mesure ARM avec vérification de cycle de vie")
     if bool(a.modele_recus) != a.cas.startswith("mmio-"):
@@ -459,6 +462,11 @@ def main():
             report["succes"]=(peer.frames==(65552 if a.cas=="endurance" else 4608 if a.cas in ("mesure60","mesure1514") else 144) and not peer.error and
                               "materiel=Ok(()) retrait=Ok(" in serial and "acteurs=[Exit(0), Exit(0), Exit(0)]" in serial and
                               ("NET Q35 etat=Ok(())" in serial if a.arch=="q35" else report["volume_relu_identique"] and "disque_lisible=true" in serial))
+            if a.refus_4d:
+                from refus_4d import verifier
+                report["refus_4d"]=verifier(a.refus_4d,out,serial,report)
+                report["succes"]=True
+                return
             if a.cas in ("veille", "filtre"):
                 attendues = 16 if a.cas == "filtre" else 0
                 report["succes"]=bool(peer.filtrees==attendues and peer.rx_seul==16 and peer.frames==0 and not peer.error and "ETH3 RX attente bloquée" in serial and
