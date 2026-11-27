@@ -38,6 +38,20 @@ def git(*args):
     return subprocess.check_output(["git", "-C", NOVA.parent, *args])
 
 
+def appliquer_raccord(root, patch, modules):
+    blobs = re.findall(r"^diff --git a/(\S+) b/\1\nindex ([a-f0-9]{40})\.\.([a-f0-9]{40}) ", patch.read_text(), re.M)
+    if {nom for nom, _, _ in blobs} != {"novaOS/kernel/src/"+nom for nom in modules}:
+        raise ValueError(f"Périmètre du raccord {patch.name}")
+    for nom, avant, _ in blobs:
+        if git("hash-object", root/nom).decode().strip() != avant:
+            raise ValueError(f"Préimage différente pour {nom}")
+    subprocess.run(["git", "apply", "--check", "--unidiff-zero", str(patch)], cwd=root, check=True)
+    subprocess.run(["git", "apply", "--unidiff-zero", str(patch)], cwd=root, check=True)
+    for nom, _, apres in blobs:
+        if git("hash-object", root/nom).decode().strip() != apres:
+            raise ValueError(f"Raccord divergent pour {nom}")
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("sortie", type=lambda v: Path(v).resolve())
@@ -91,16 +105,17 @@ def main():
             raccord["patch_sha256"] = hashlib.sha256(patch.read_bytes()).hexdigest()
         if a.phase4f:
             dynamique = root / "novaOS/tests/gestionnaire_4f/raccord_duo.patch"
-            preimages = re.findall(r"^diff --git a/(\S+) b/\1\nindex ([a-f0-9]{40})\.\.([a-f0-9]{40}) ", dynamique.read_text(), re.M)
-            if {n for n,_,_ in preimages} != {"novaOS/kernel/src/"+n for n in
-                    ("hardware/block/net_event.rs","hardware/vtd_lab/duo.rs","memory/mod.rs","sched/process/nvme.rs")}:
-                raise ValueError("Périmètre du raccord 4F")
-            if any(git("hash-object",root/n).decode().strip()!=old for n,old,_ in preimages):
-                raise ValueError("Préimage 3D différente")
-            subprocess.run(["git", "apply", "--check", "--unidiff-zero", str(dynamique)], cwd=root, check=True)
-            subprocess.run(["git", "apply", "--unidiff-zero", str(dynamique)], cwd=root, check=True)
-            if any(git("hash-object",root/n).decode().strip()!=new for n,_,new in preimages):
-                raise ValueError("Raccord 4F divergent")
+            appliquer_raccord(root, dynamique, {
+                "hardware/block/net_event.rs", "hardware/vtd_lab/duo.rs", "memory/mod.rs", "sched/process/nvme.rs",
+            })
+            continuite = None
+            if a.phase4f in {"gestionnaire-actif", "lanceur-actif"}:
+                if a.cas != ["port"]:
+                    raise ValueError("Le témoin de vacance exige le profil de stockage nominal")
+                continuite = root/"novaOS/tests/gestionnaire_4f/continuite_nvme.patch"
+                appliquer_raccord(root, continuite, {
+                    "hardware/block/net_event.rs", "sched/process/nvme.rs", "sched/process/nvme/broker.rs",
+                })
         # L'option des modules d'origine n'existe que dans le manifeste de cette copie.
         manifest = root / "novaOS/kernel/Cargo.toml"
         text = manifest.read_text()
@@ -120,6 +135,8 @@ def main():
             env["NOVAOS_4D_REFUS"] = ""
             result["gestionnaire_4f"] = a.phase4f
             result["raccord_4f_sha256"] = hashlib.sha256(dynamique.read_bytes()).hexdigest()
+            if continuite is not None:
+                result["observation_cqe_4f"] = hashlib.sha256(continuite.read_bytes()).hexdigest()
             result["modules_4f"] = {name: git("hash-object", root / name).decode().strip() for name in sources}
         if a.sonder_garde:
             result["sonde_garde_sha256"] = hashlib.sha256(sonde.read_bytes()).hexdigest()

@@ -1,0 +1,56 @@
+diff --git a/novaOS/kernel/src/hardware/block/net_event.rs b/novaOS/kernel/src/hardware/block/net_event.rs
+index a0d83ad9777183ad7e5ffb4ddb8fc736a648a392..03f6d756c291a359b80a9d83163d3ff6bedfe155 100644
+--- a/novaOS/kernel/src/hardware/block/net_event.rs
++++ b/novaOS/kernel/src/hardware/block/net_event.rs
+@@ -149 +149 @@
+-        crate::sched::process::net_preparation::ethernet_actor(a,||true,&mut operation,true)
++        crate::sched::process::net_preparation::ethernet_actor(a, crate::sched::process::nvme::attendre_e_s_sans_controle, &mut operation, true)
+diff --git a/novaOS/kernel/src/sched/process/nvme.rs b/novaOS/kernel/src/sched/process/nvme.rs
+index 55ac31187987dd39160ec0b33fafd93f83ec253f..f198c0dbe3cad0c693b4776ff8d8adb89b627d8b 100644
+--- a/novaOS/kernel/src/sched/process/nvme.rs
++++ b/novaOS/kernel/src/sched/process/nvme.rs
+@@ -15,0 +16,37 @@
++
++// Témoin du banc 4F, présent uniquement dans les images de vacance active.
++// Les trois bits proviennent de CQE réellement récoltées après l'ouverture.
++use core::sync::atomic::{AtomicU8, Ordering as Ordre};
++static OBSERVATION_CQE: AtomicU8 = AtomicU8::new(0);
++const OUVERTE: u8 = 8;
++
++fn observer_cqe_sans_controle(cmd: &crate::hardware::nvme::Command) {
++    use crate::hardware::nvme::Command;
++    let bit = match cmd {
++        Command::Read { .. } => 1,
++        Command::Write { .. } => 2,
++        Command::Flush { .. } => 4,
++        _ => return,
++    };
++    let _ = OBSERVATION_CQE.fetch_update(Ordre::AcqRel, Ordre::Acquire, |etat| {
++        (etat & OUVERTE != 0).then_some(etat | bit)
++    });
++}
++
++pub(crate) fn attendre_e_s_sans_controle() -> bool {
++    if OBSERVATION_CQE.compare_exchange(0, OUVERTE, Ordre::AcqRel, Ordre::Acquire).is_err() {
++        return false;
++    }
++    hal::log(format_args!("F4 observation CQE ouverte"));
++    let debut = ticks();
++    while OBSERVATION_CQE.load(Ordre::Acquire) != OUVERTE | 7 {
++        if ticks().wrapping_sub(debut) >= u64::from(HZ) * 5 {
++            break;
++        }
++        yield_now();
++    }
++    let masque = OBSERVATION_CQE.swap(0, Ordre::AcqRel) & 7;
++    hal::log(format_args!("F4 observation CQE fermee masque={masque}"));
++    masque == 7
++}
++
+diff --git a/novaOS/kernel/src/sched/process/nvme/broker.rs b/novaOS/kernel/src/sched/process/nvme/broker.rs
+index ef6c3101c43e5733e0add7217075d77032b113b3..0ce2f040e1b9be66e31a6d9fbe6dc75239547794 100644
+--- a/novaOS/kernel/src/sched/process/nvme/broker.rs
++++ b/novaOS/kernel/src/sched/process/nvme/broker.rs
+@@ -393,0 +394,2 @@
++                            // Le courtier vient de valider la CQE et son CID.
++                            super::observer_cqe_sans_controle(&cmd);

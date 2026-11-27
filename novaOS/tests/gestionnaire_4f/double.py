@@ -48,9 +48,32 @@ def verifier(dest, cas, scenario, *, enregistrer=True):
         raise ValueError("Instantané du domaine indépendant absent")
     doc = dict(boot=boot, creation=recu, titulaire=proprietaire, fin=m.groups(),
                remplacements=remplacements, p9=c["p9_final"])
+    if scenario in {"gestionnaire-actif", "lanceur-actif"}:
+        doc["cqe_sans_controle"] = verifier_vacance_nvme(dest, serie, scenario)
     if enregistrer:
         write(dest/"reprise.json", doc)
     return doc
+
+
+def verifier_vacance_nvme(dest, serie, scenario):
+    role = 2 if scenario == "lanceur-actif" else 1
+    bornes = (f"E41 vacance role={role} ", "F4 observation CQE ouverte",
+              "F4 observation CQE fermee masque=7", f"F4 publication sans_controle role={role} ",
+              "E41 RX sans_controle ", f"E41 reprise phase={scenario} ")
+    if any(serie.count(marque) != 1 for marque in bornes):
+        raise ValueError("Vacance, témoin NVMe ou reprise absent")
+    rangs = [serie.index(marque) for marque in bornes]
+    if rangs != sorted(rangs):
+        raise ValueError("Ordre du retrait et de la reprise du rôle")
+    cqes = re.findall(r"^E3D CQE op=(READ|WRITE|FLUSH) cid=(\d+)", serie[rangs[1]:rangs[2]], re.M)
+    trace = (dest/"qemu.trace").read_text()
+    opcodes = {"READ": "2", "WRITE": "1", "FLUSH": "0"}
+    if {op for op, _ in cqes} != set(opcodes):
+        raise ValueError("La vacance n’a pas couvert les trois opérations de stockage")
+    for op, cid in cqes:
+        if not re.search(rf"^pci_nvme_io_cmd cid {cid} nsid 0x1 sqid 1 opc 0x{opcodes[op]} ", trace, re.M):
+            raise ValueError(("Commande absente de la trace QEMU", op, cid))
+    return cqes
 
 
 def controle_cycles(c, serie):
