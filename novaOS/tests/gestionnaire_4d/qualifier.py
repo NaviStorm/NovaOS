@@ -16,7 +16,7 @@ REPO = NOVA.parent
 BASE = REPO.parent
 PORT = NOVA / "tests/ethernet_v1/port_qemu.py"
 ISA = "aarch64-unknown-none-softfloat"
-NEG = {"signature", "revision", "racines", "lancement","attribution","droits","cle-revoquee","distribution","deces-gestionnaire"}
+NEG = {"signature", "revision", "racines", "lancement","attribution","droits","cle-revoquee","distribution","deces-gestionnaire","reservation"}
 CASES = {"six-boites","plein","choix-data","reset-court","reset-deces","reset-revocation","reset-incertain","reset-absent",
          "reset-iommu-absent","reset-iommu-differe","cycles-256","echo1514-reset","temoin-3e",*NEG}
 

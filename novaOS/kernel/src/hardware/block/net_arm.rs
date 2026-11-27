@@ -156,6 +156,12 @@ impl Preparation {
                 lease.fermer()?;
                 return Err(e);
             }
+            #[cfg(feature="gestionnaire-4d")]
+            if n==2 && option_env!("NOVAOS_4D_REFUS")==Some("reservation"){
+                hal::log(format_args!("D4 reservation interrompue mappings=3"));
+                lease.fermer()?;
+                return Err(Error::State)
+            }
         }
         if nic.cfg.get(4, 2) & 4 != 0 {
             lease.fermer()?;
@@ -169,7 +175,10 @@ impl Preparation {
     pub(super) fn retablir_premiere_page(&self) -> Result<()> {
         self.domaine.mapper_nic(0, self.cadres[0])
     }
-    pub(super) fn fermer(self) -> Result<()> {
+    pub(super) fn fermer(#[allow(unused_mut)] mut self) -> Result<()> {
+        // Une quarantaine matérielle possède seulement le bail DMA et ses preuves.
+        #[cfg(feature="gestionnaire-4d")]
+        drop(self.decision.take());
         if self.retirer().is_err() {
             let mut q = QUARANTAINE.lock();
             assert!(q.is_none());

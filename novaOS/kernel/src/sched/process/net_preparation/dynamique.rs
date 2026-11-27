@@ -278,6 +278,7 @@ pub(crate) fn selection(id: u64, sid: u64) -> Option<Decision> {
         Some("cle-revoquee") => 7,
         Some("distribution") => 8,
         Some("deces-gestionnaire") => 9,
+        Some("reservation") => 10,
         _ => 0,
     };
     let boot = crate::boot_id::current()?;

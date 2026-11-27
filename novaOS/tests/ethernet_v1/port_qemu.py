@@ -262,7 +262,7 @@ def main():
     p.add_argument("--delai", type=int, default=90)
     p.add_argument("--six-boites-4d",action="store_true",help="Contrôler six boîtes déjà attribuées avant l’ouverture du port")
     p.add_argument("--gestionnaire-4d",action="store_true",help="Contrôler le compte physique du port après fermeture de ses liaisons de lancement")
-    p.add_argument("--refus-4d", choices=("signature","revision","racines","lancement","attribution","droits","cle-revoquee","distribution","deces-gestionnaire"))
+    p.add_argument("--refus-4d", choices=("signature","revision","racines","lancement","attribution","droits","cle-revoquee","distribution","deces-gestionnaire","reservation"))
     p.add_argument("--esp-verifiee", action="store_true", help="Réécrire aussi les secteurs nuls alloués et relire l’ELF sur la copie FAT32 ARM")
     p.add_argument("--cpu-max", action="store_true", help="Témoin ArmVirt avec RNDR et chargeur direct")
     p.add_argument("--limine-arm", type=Path, help="Second étage Limine de laboratoire identifié")

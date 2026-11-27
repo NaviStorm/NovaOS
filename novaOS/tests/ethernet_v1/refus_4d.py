@@ -15,6 +15,7 @@ def verifier(cas, out, serie, rapport):
         "revision": ["D4 plan perime revision=1", "mode=2", "NET ARM refus preparation=State cadres_dma=0"],
         "racines": ["D4 saturation reelle racines=4", "D4 refus provisionnement epoch=1 mode=3 ipc_pages=0",
                     "NET ARM refus preparation=State cadres_dma=0"],
+        "reservation":["D4 reservation interrompue mappings=3","mode=10","NET ARM refus preparation=State cadres_dma=0"],
         "cle-revoquee": ["mode=7","NET ARM refus preparation=State cadres_dma=0"],
         "distribution": ["mode=8","NET ARM refus preparation=State cadres_dma=0"],
         "deces-gestionnaire": ["D4 PT_LOAD compares=","recus=false","mode=9","D4 lancement refuse avant files",
@@ -34,7 +35,8 @@ def verifier(cas, out, serie, rapport):
         regs = json.loads((out/(phase+".json")).read_text())
         if regs["vm"]["running"] or regs["boot_bypass"] or not regs["iommu_platform"] or regs["pci_command"] & 4:
             raise ValueError(f"IOMMU ou BME inattendu à {phase}")
-    attaches = detaches = translations = 0
+    attaches = detaches = translations = maps = unmaps = 0
+    actifs=set()
     firmware=True
     commande=0
     with (out/"qemu.trace").open() as stream:
@@ -45,10 +47,25 @@ def verifier(cas, out, serie, rapport):
             if re.match(r"pci_cfg_write virtio-net-pci 00:07.0 @0x4 ", line):
                 commande=int(line.split()[-1],16)
                 if not firmware and commande & 4: raise ValueError("BME du NIC après le transfert EFI")
+            if line.startswith(("virtio_iommu_map domain=3 ","virtio_iommu_unmap_done domain=3 ")):
+                match=re.search(r"virt_start=(0x[0-9a-f]+) virt_end=(0x[0-9a-f]+)",line)
+                if not match: raise ValueError("trace de mapping NIC incomplète")
+                lo,hi=(int(x,16) for x in match.groups())
+                if hi!=lo+4095 or not 0x10000000<=lo<0x10016000 or lo%4096:
+                    raise ValueError("intervalle NIC inattendu")
+                if "_map " in line:
+                    perms=[1,1,2,1,1,2]+[2]*8+[1]*8
+                    if lo in actifs or int(line.split("flags=")[1])!=perms[(lo-0x10000000)//4096]:
+                        raise ValueError("permission ou doublon NIC")
+                    actifs.add(lo); maps+=1
+                else:
+                    if lo not in actifs: raise ValueError("reçu UNMAP sans prêt")
+                    actifs.remove(lo); unmaps+=1
             attaches += line.startswith("virtio_iommu_attach domain=3 endpoint=56")
             detaches += line.startswith("virtio_iommu_detach domain=3 endpoint=56")
             translations += line.startswith("virtio_iommu_translate ") and "rid=56 " in line
-    if firmware or translations or attaches != int(cas in ("lancement","attribution","deces-gestionnaire")) or attaches != detaches:
+    attendus = 3 if cas=="reservation" else 22 if cas in ("lancement","attribution","deces-gestionnaire") else 0
+    if actifs or firmware or translations or attaches != int(attendus>0) or attaches != detaches or maps!=attendus or unmaps!=maps:
         raise ValueError("cycle DMA du refus incohérent")
-    return dict(cause=cas, attaches=attaches, detaches=detaches, traductions_nic=translations,
+    return dict(cause=cas, maps=maps, unmaps=unmaps, attaches=attaches, detaches=detaches, traductions_nic=translations,
                 cadres_dma_fin=0, pages_ipc_fin=0, processus_fin=0)
