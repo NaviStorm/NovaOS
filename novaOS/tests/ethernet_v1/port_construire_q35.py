@@ -50,7 +50,7 @@ def main():
                    help="Assembler le gestionnaire dynamique Q35 et le retrait individuel 3D")
     a = p.parse_args()
     if a.phase4f and (not a.phase3d or a.sonder_garde or not a.cas or
-                     set(a.cas) - {"port", "duo-retrait", "duo-differe", "duo-absent"}):
+                     set(a.cas) - {"port", "duo-cycles", "duo-retrait", "duo-differe", "duo-absent"}):
         p.error("4F exige le retrait individuel, différé ou absent, sur Q35 double")
     if a.sonder_garde and (not a.phase3d or a.cas != ["duo-retrait"]):
         p.error("La sonde de garde exige --phase3d --cas duo-retrait")

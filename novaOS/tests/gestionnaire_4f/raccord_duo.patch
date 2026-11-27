@@ -57,7 +57,7 @@ index 35baf9f924be3406f47e836743ad42bd1c679b69..6d17ce21b50c67870654ca7f3577284a
 -            self.staging.resident()
 +            self.staging.resident(), r.elf_headers
 diff --git a/novaOS/kernel/src/sched/process/nvme.rs b/novaOS/kernel/src/sched/process/nvme.rs
-index 7d0ce7609acccd94de7ab68ade073a373abca4b1..58fdfc2224b38067aa14da1693698a4e8a56532c 100644
+index 7d0ce7609acccd94de7ab68ade073a373abca4b1..55ac31187987dd39160ec0b33fafd93f83ec253f 100644
 --- a/novaOS/kernel/src/sched/process/nvme.rs
 +++ b/novaOS/kernel/src/sched/process/nvme.rs
 @@ -160,0 +161 @@ fn supervise(
@@ -85,7 +85,7 @@ index 7d0ce7609acccd94de7ab68ade073a373abca4b1..58fdfc2224b38067aa14da1693698a4e
 @@ -453 +472,12 @@ fn exercise(
 -        let actor = super::net_preparation::EthernetActor::reserve(domain.network_epoch()?).ok_or("instance NIC")?;
 +        use crate::hardware::net_q35::selectionner_port;
-+        if !matches!(option_env!("NOVAOS_ETH3_CASE"), Some("port" | "duo-retrait" | "duo-absent" | "duo-differe")) {
++        if !matches!(option_env!("NOVAOS_ETH3_CASE"), Some("port" | "duo-cycles" | "duo-retrait" | "duo-absent" | "duo-differe")) {
 +            return Err("profil double 4F fermé");
 +        }
 +        let (mesure, mut decision) = selectionner_port()?;

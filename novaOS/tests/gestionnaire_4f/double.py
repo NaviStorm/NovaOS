@@ -16,6 +16,9 @@ def verifier(dest, cas, scenario):
     serie = (dest/"serie.log").read_text()
     if not c["succes"] or not c["stockage"]["p9"] or sha(dest/"namespace.raw")!=c["p9_final"]:
         raise ValueError("Volume ou contrôle indépendant")
+    if cas=="duo-cycles":
+        controle_cycles(dest, c, serie)
+        return
     (boot,) = re.findall(r"E41 demarrage boot=([0-9a-f]{32})",serie)
     (recu,) = re.findall(r"E41 recu generation=1 intention=(\d+) pilote=(\d+) incarnation=(\d+) creations=1 rejeu=sans_effet",serie)
     (proprietaire,) = re.findall(r"DUO WAIT sid=56 did=3 instance=(\d+) generation=1",serie)[:1]
@@ -43,11 +46,34 @@ def verifier(dest, cas, scenario):
                                   remplacements=remplacements, p9=c["p9_final"]))
 
 
+def controle_cycles(dest, c, serie):
+    # Un nouveau bail de stockage doit précéder chacun des 256 titulaires NIC.
+    lots = c["stockage"]["cycles"]
+    if len(lots)!=256 or c["trames_par_sens"]!=256*144 or c["stockage"]["cadres_nic_retenus"]!=0:
+        raise ValueError("Endurance Q35 double")
+    boots=set(re.findall(r"E41 demarrage boot=([0-9a-f]{32})",serie))
+    recus=re.findall(r"E41 recu generation=(\d+) intention=(\d+) pilote=(\d+) incarnation=(\d+) creations=1 rejeu=sans_effet",serie)
+    fins=re.findall(r"E41 fin generation=(\d+) creations=1 epingles=0 mappes=0 recu=(\d+) gel=false compactage=true",serie)
+    baux=re.findall(r"DUO WAIT sid=(48|56) did=\d+ instance=(\d+) generation=(\d+)",serie)
+    if len(boots)!=1 or len(recus)!=256 or len(fins)!=256 or len(baux)!=1024:
+        raise ValueError("Reçus ou titulaires incomplets")
+    for i, (ligne, recu, fin) in enumerate(zip(lots,recus,fins),1):
+        quatre=baux[(i-1)*4:i*4]
+        if not (ligne["generation"]==i and int(recu[0])==i and int(fin[0])==i and int(fin[1])==4*i
+                and [sid for sid,_,_ in quatre]==["48","56","56","48"]
+                and all(int(g)==i for _,_,g in quatre) and quatre[0][1]==quatre[3][1]
+                and quatre[1][1]==quatre[2][1]==recu[2] and quatre[0][1]!=recu[2]):
+            raise ValueError(("Baux de la génération",i,quatre,fin))
+    if len({p for _,_,p,_ in recus})!=256 or len({inc for _,_,_,inc in recus})!=256:
+        raise ValueError("Réutilisation de titulaire")
+    write(dest/"reprise.json",dict(boot=boots.pop(),cycles=256,recus=recus,fins=fins,p9=c["p9_final"]))
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument("archive",type=lambda x:Path(x).resolve())
     p.add_argument("scenario",choices=("nominal","deces-observe","lanceur-observe","reconciliation"))
-    p.add_argument("cas",nargs="+",choices=("port","duo-retrait","duo-differe","duo-absent"))
+    p.add_argument("cas",nargs="+",choices=("port","duo-cycles","duo-retrait","duo-differe","duo-absent"))
     p.add_argument("--boots",type=int,choices=(1,2,3),default=3)
     p.add_argument("--revision",default="HEAD")
     p.add_argument("--compiler",action="store_true")
