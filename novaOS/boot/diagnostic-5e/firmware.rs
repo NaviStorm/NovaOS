@@ -103,6 +103,7 @@ pub fn map(bs: &efi::BootServices) -> Result<Map, u64> {
     Ok(Map { spans })
 }
 /// Dernier appel firmware du noyau de diagnostic. Une clé périmée permet une seule relecture.
+#[cfg(not(feature = "diagnostic-5i"))]
 #[inline(never)]
 pub unsafe fn exit(bs: &efi::BootServices, handle: efi::Handle) -> bool {
     for _ in 0..2 {

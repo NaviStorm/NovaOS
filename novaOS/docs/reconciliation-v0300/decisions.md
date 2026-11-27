@@ -111,3 +111,17 @@ Le correctif définitif du même mandat précise la politique NovaOS après l’
 Décision validée par la MOA. NovaOS prend en charge Secure Boot actif et inactif. La distribution dépend de l’autorité indépendante NovaOS. Aucun certificat commercial, abonnement ou audit commercial n’est exigé. En mode actif, appliquer la politique UEFI du propriétaire et refuser une image non admise. Seul le propriétaire peut décider d’enrôler une clé. Le diagnostic ne change ni le mode ni les clés. Hors Secure Boot, annoncer la limite de confiance et maintenir les vérifications internes.
 
 Cette décision remplace l’obligation générale d’activation formulée en 5G et son orientation commerciale. Les observations 5E–5G gardent leur portée d’origine. La frontière d’E/S approuvée en 5G, la protection DMA dès le chargement et la fermeture d’A8 demeurent applicables. Une nouvelle opération matérielle exige toujours l’arbitrage A7 correspondant. [Qualification et arbitrages](../diagnostic-uefi-5h.md)
+
+<a id="decision-5i"></a>
+
+## Décision 5I — Délégation technique A7 au laboratoire
+
+Référence de départ `4489fce73d8fe66b3406679dbb6d564d05a6c54d`. Le mandat 5I de la MOA délègue les arbitrages techniques A7 à la MOE et approuve les trois extensions de 5H pour le développement et la qualification en laboratoire. La MOE fixe les périmètres suivants.
+
+| Extension A7 | Décision MOE et limite |
+|---|---|
+| Observation passive | Mise en œuvre en 5I. Lectures typées et bornées, contrôle de la provenance des pages et des fenêtres. La capture sur Q35 suspendu est qualifiée. L’intervalle EFI repris jusqu’à HLT conserve un contre-exemple MMIO. Aucune admission DMA sur cette preuve. |
+| Protection précoce | Autorisée pour un lot ultérieur en laboratoire. Exiger un propriétaire identifié, la protection de la RAM avant usage, la séparation des demandeurs réseau/stockage et le maintien des mappings du stockage. |
+| Drainage et restitution | Autorisés pour un lot distinct en laboratoire. Exiger un bail lié au titulaire, à l’incarnation et à la génération, la clôture ciblée des transactions et les reçus d’invalidation pour chaque page. Quarantaine si la preuve manque. |
+
+L’ABI et les droits des applications restent ceux de 5H. A8 est fermé. [Matrice, preuves et conditions de 5J](../diagnostic-uefi-5i.md)

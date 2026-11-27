@@ -6,13 +6,23 @@ use r_efi::efi;
 
 #[allow(dead_code, unexpected_cfgs)]
 #[path = "../../kernel/src/hardware/acpi.rs"]
+#[cfg(any(not(feature = "diagnostic-5i"), feature = "diagnostic-5i-temoin"))]
 mod acpi;
 mod catalogue;
+#[cfg(any(not(feature = "diagnostic-5i"), feature = "diagnostic-5i-temoin"))]
 mod chemins;
+#[cfg(any(not(feature = "diagnostic-5i"), feature = "diagnostic-5i-temoin"))]
 mod firmware;
+#[cfg(feature = "diagnostic-5i")]
+mod journal5i;
 mod memoire;
 #[cfg(feature = "diagnostic-5h")]
+#[cfg(any(not(feature = "diagnostic-5i"), feature = "diagnostic-5i-temoin"))]
 mod phase5h;
+#[cfg(feature = "diagnostic-5i-temoin")]
+mod phase5i;
+#[cfg(feature = "diagnostic-5i-temoin")]
+mod topologie5i;
 
 #[global_allocator]
 static HEAP: memoire::Heap = memoire::Heap;
@@ -21,7 +31,11 @@ static HEAP: memoire::Heap = memoire::Heap;
 // plancher de catalogue 3. Les octets appartiennent à une section PE signée.
 static CONFIG: [u8; 16] = *b"NOVA5E-CFG!\x01\x05\x01\x00\x03";
 const MAX: usize = 64;
-#[derive(Clone, Copy, Default)]
+#[derive(Clone, Copy)]
+#[cfg_attr(
+    any(not(feature = "diagnostic-5i"), feature = "diagnostic-5i-temoin"),
+    derive(Default)
+)]
 #[repr(C)]
 struct Node {
     kind: u8,
@@ -29,7 +43,10 @@ struct Node {
     selected: u8,
     activation: u8,
     digest: [u8; 32],
+    #[cfg(any(not(feature = "diagnostic-5i"), feature = "diagnostic-5i-temoin"))]
     location: chemins::Location,
+    #[cfg(all(feature = "diagnostic-5i", not(feature = "diagnostic-5i-temoin")))]
+    location: [u8; 36],
 }
 #[repr(C)]
 struct Report {
@@ -50,6 +67,7 @@ struct Report {
 }
 static mut REPORT: Report = unsafe { core::mem::zeroed() };
 
+#[cfg(any(not(feature = "diagnostic-5i"), feature = "diagnostic-5i-temoin"))]
 fn inventory(st: &efi::SystemTable, handle: efi::Handle, r: &mut Report) -> Result<(), u64> {
     let rt = unsafe { st.runtime_services.as_ref() };
     #[cfg(not(feature = "diagnostic-5h"))]
@@ -85,6 +103,8 @@ fn inventory(st: &efi::SystemTable, handle: efi::Handle, r: &mut Report) -> Resu
     let mut units = 0;
     #[cfg(feature = "diagnostic-5h")]
     let mut remappers = phase5h::Remappers::default();
+    #[cfg(feature = "diagnostic-5i")]
+    let mut dmar_copy = None;
     let inv = acpi::discover_with(
         rsdp,
         |a, b| map.copy_acpi(a, b),
@@ -119,6 +139,17 @@ fn inventory(st: &efi::SystemTable, handle: efi::Handle, r: &mut Report) -> Resu
                     }
                 }
                 b"DMAR" => {
+                    #[cfg(feature = "diagnostic-5i")]
+                    {
+                        if table.len() > 16 * 1024 {
+                            return Err(acpi::Error::Limit);
+                        }
+                        let mut copy = alloc::vec::Vec::new();
+                        copy.try_reserve_exact(table.len())
+                            .map_err(|_| acpi::Error::NoMemory)?;
+                        copy.extend_from_slice(table);
+                        dmar_copy = Some(copy);
+                    }
                     let mut tail = &table[48..];
                     while !tail.is_empty() {
                         if tail[0..2] == [0, 0] {
@@ -192,6 +223,8 @@ fn inventory(st: &efi::SystemTable, handle: efi::Handle, r: &mut Report) -> Resu
             st,
             &alloc::format!("NovaOS: catalogue verifie - candidats={candidates}"),
         )?;
+        #[cfg(feature = "diagnostic-5i")]
+        phase5i::observe(st, bs, &inv.ecam, dmar_copy.as_deref())?;
         remappers.report(st)?;
         // Aucun transfert de propriété DMA authentifié dans ce profil.
         Err(16)
@@ -203,12 +236,66 @@ fn inventory(st: &efi::SystemTable, handle: efi::Handle, r: &mut Report) -> Resu
         Ok(())
     }
 }
+#[cfg(all(feature = "diagnostic-5i", not(feature = "diagnostic-5i-temoin")))]
+#[unsafe(naked)]
+#[unsafe(no_mangle)]
+pub extern "efiapi" fn efi_main(_: efi::Handle, _: *mut efi::SystemTable) -> efi::Status {
+    // Chemin terminal BSP x86_64. Aucun retour ni rappel UEFI après CLI.
+    core::arch::naked_asm!("cli", "jmp {}", sym terminal_passif);
+}
+
+#[cfg(all(feature = "diagnostic-5i", not(feature = "diagnostic-5i-temoin")))]
+extern "efiapi" fn terminal_passif() -> ! {
+    // Le banc observe la plateforme de l'extérieur. En l'absence d'un transfert
+    // authentifié, le PE ne revendique ni mode de confiance ni propriétaire DMA.
+    let r = unsafe { &mut *(&raw mut REPORT) };
+    r.address = (&raw mut REPORT) as u64;
+    r.entry = efi_main as *const () as u64;
+    r.exit = journal5i::seal as *const () as u64;
+    r.stop = stop as *const () as u64;
+    let check = || -> Result<(), u64> {
+        journal5i::append("5I observation externe - mode UEFI non atteste dans le PE")?;
+        let cfg = unsafe { ptr::read_volatile(&CONFIG) };
+        if cfg[..12] != *b"NOVA5E-CFG!\x01" || cfg[12..15] != [5, 1, 0] || cfg[15] < 3 {
+            return Err(11);
+        }
+        let policy = catalogue::policy(u32::from(cfg[15])).map_err(|_| 6u64)?;
+        let _verified = catalogue::catalog(&policy).map_err(|e| match e {
+            novaos_catalogue::Error::Signature => 6u64,
+            novaos_catalogue::Error::Elf => 18,
+            _ => 14,
+        })?;
+        journal5i::append("5I catalogue verifie - handoff DMA absent - arret")?;
+        Err(16)
+    };
+    r.status = check().err().unwrap_or(16);
+    let (used, live) = memoire::close();
+    r.arena = used as u64;
+    r.live = live as u64;
+    if live != 0 {
+        r.status = 8;
+    }
+    journal5i::seal();
+    unsafe {
+        ptr::write_volatile(&mut r.magic, *b"NOVA5E-RAM-FINAL");
+    }
+    stop()
+}
+
+#[cfg(any(not(feature = "diagnostic-5i"), feature = "diagnostic-5i-temoin"))]
 #[unsafe(no_mangle)]
 pub extern "efiapi" fn efi_main(handle: efi::Handle, system: *mut efi::SystemTable) -> efi::Status {
     let r = unsafe { &mut *(&raw mut REPORT) };
     r.address = (&raw mut REPORT) as u64;
     r.entry = efi_main as *const () as u64;
-    r.exit = firmware::exit as *const () as u64;
+    #[cfg(not(feature = "diagnostic-5i"))]
+    {
+        r.exit = firmware::exit as *const () as u64;
+    }
+    #[cfg(feature = "diagnostic-5i")]
+    {
+        r.exit = journal5i::seal as *const () as u64;
+    }
     r.stop = stop as *const () as u64;
     r.status = unsafe { system.as_ref() }
         .ok_or(1u64)
@@ -221,6 +308,9 @@ pub extern "efiapi" fn efi_main(handle: efi::Handle, system: *mut efi::SystemTab
     if live != 0 {
         r.status = 8;
     }
+    #[cfg(feature = "diagnostic-5i")]
+    journal5i::seal();
+    #[cfg(not(feature = "diagnostic-5i"))]
     if let Some(bs) = unsafe { system.as_ref().and_then(|s| s.boot_services.as_ref()) } {
         if !unsafe { firmware::exit(bs, handle) } {
             r.status = 10;

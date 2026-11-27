@@ -28,6 +28,11 @@ impl Trust {
     }
 }
 
+#[cfg(feature = "diagnostic-5i")]
+pub(crate) fn display(_: &efi::SystemTable, text: &str) -> Result<(), u64> {
+    crate::journal5i::append(text)
+}
+#[cfg(not(feature = "diagnostic-5i"))]
 pub(crate) fn display(st: &efi::SystemTable, text: &str) -> Result<(), u64> {
     let mut wide = [0u16; 128];
     if !text.is_ascii() || text.len() + 3 > wide.len() {

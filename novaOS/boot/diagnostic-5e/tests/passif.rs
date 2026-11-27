@@ -1,13 +1,28 @@
 extern crate alloc;
-#[cfg(feature = "diagnostic-5h")]
-#[path = "../phase5h.rs"]
-#[allow(dead_code)]
-mod phase5h;
+#[cfg(feature = "diagnostic-5i")]
+#[path = "../../../kernel/src/hardware/acpi.rs"]
+#[allow(dead_code, unexpected_cfgs)]
+mod acpi;
 #[path = "../catalogue.rs"]
 mod catalogue;
 #[path = "../firmware.rs"]
 #[allow(dead_code)]
 mod firmware;
+#[cfg(feature = "diagnostic-5i")]
+#[path = "../journal5i.rs"]
+#[allow(dead_code)]
+mod journal5i;
+#[cfg(feature = "diagnostic-5h")]
+#[path = "../phase5h.rs"]
+#[allow(dead_code)]
+mod phase5h;
+#[cfg(feature = "diagnostic-5i")]
+#[path = "../phase5i.rs"]
+#[allow(dead_code)]
+mod phase5i;
+#[cfg(feature = "diagnostic-5i")]
+#[path = "../topologie5i.rs"]
+mod topologie5i;
 
 #[cfg(test)]
 mod tests {

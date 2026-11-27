@@ -46,6 +46,10 @@ pub fn catalog(policy: &Policy) -> Result<Catalog<'_>, Error> {
     }
     Ok(cat)
 }
+#[cfg_attr(
+    all(feature = "diagnostic-5i", not(feature = "diagnostic-5i-temoin")),
+    allow(dead_code)
+)]
 pub fn select(
     cat: &Catalog,
     provider: &str,

@@ -12,6 +12,8 @@ export RUSTDOC="$(rustup which --toolchain stable rustdoc)"
 export RUSTFLAGS="--remap-path-prefix=$repo=/nova --remap-path-prefix=$HOME/.cargo=/cargo --remap-path-prefix=$HOME/.rustup=/rustup -C link-arg=/timestamp:0 -C link-arg=/debug:none"
 case "${NOVA_DIAGNOSTIC_PROFILE:-5e}" in
     5e) features=firmware ;;
+    5i) features=firmware,diagnostic-5i ;;
+    5i-temoin) features=firmware,diagnostic-5i-temoin ;;
     5h) features=firmware,diagnostic-5h ;;
     *) echo "Profil EFI inconnu" >&2; exit 2 ;;
 esac

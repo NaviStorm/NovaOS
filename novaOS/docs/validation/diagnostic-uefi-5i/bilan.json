@@ -1,0 +1,2580 @@
+{
+  "terminal": {
+    "cas": {
+      "direct-nominal-diagnostic": {
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "mode": "nominal",
+        "rapport": {
+          "adresse": 29351960,
+          "entree": 29118464,
+          "arret": 29121488,
+          "base": 0,
+          "statut": 16,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 56704,
+          "vivants": 0,
+          "sortie_efi": 29121504
+        },
+        "zero_ecriture": true,
+        "support": "diagnostic",
+        "topologie": "direct",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "coupe_entree": 16319,
+        "coupe_scellement": 16319,
+        "disque_intact": true,
+        "statut_inventaire": "observe"
+      },
+      "direct-inactif-diagnostic": {
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "ef3d5da20719dad587c972ab8855379d5a010887e87f17fb1ae986c47951dc07",
+        "mode": "inactif",
+        "rapport": {
+          "adresse": 29544472,
+          "entree": 29310976,
+          "arret": 29314000,
+          "base": 0,
+          "statut": 16,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 56704,
+          "vivants": 0,
+          "sortie_efi": 29314016
+        },
+        "zero_ecriture": true,
+        "support": "diagnostic",
+        "topologie": "direct",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "coupe_entree": 16319,
+        "coupe_scellement": 16319,
+        "disque_intact": true,
+        "statut_inventaire": "observe"
+      },
+      "pont-nominal-diagnostic": {
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "mode": "nominal",
+        "rapport": {
+          "adresse": 29347864,
+          "entree": 29114368,
+          "arret": 29117392,
+          "base": 0,
+          "statut": 16,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 56704,
+          "vivants": 0,
+          "sortie_efi": 29117408
+        },
+        "zero_ecriture": false,
+        "support": "diagnostic",
+        "topologie": "pont",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 22171,
+        "coupe_entree": 22077,
+        "coupe_scellement": 22171,
+        "disque_intact": true,
+        "statut_inventaire": "observe"
+      },
+      "pont-inactif-diagnostic": {
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "ef3d5da20719dad587c972ab8855379d5a010887e87f17fb1ae986c47951dc07",
+        "mode": "inactif",
+        "rapport": {
+          "adresse": 29528088,
+          "entree": 29294592,
+          "arret": 29297616,
+          "base": 0,
+          "statut": 16,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 56704,
+          "vivants": 0,
+          "sortie_efi": 29297632
+        },
+        "zero_ecriture": true,
+        "support": "diagnostic",
+        "topologie": "pont",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 22077,
+        "coupe_entree": 22077,
+        "coupe_scellement": 22077,
+        "disque_intact": true,
+        "statut_inventaire": "observe"
+      },
+      "direct-nominal-signature-interne": {
+        "image": "ad618d01ffa81be39f3bbba21f68e368b532481efda1dfaee54b35366ce6217c",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "mode": "nominal",
+        "rapport": {
+          "adresse": 29351960,
+          "entree": 29118464,
+          "arret": 29121488,
+          "base": 0,
+          "statut": 6,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 17875,
+          "vivants": 0,
+          "sortie_efi": 29121504
+        },
+        "zero_ecriture": true,
+        "support": "signature-interne",
+        "topologie": "direct",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "coupe_entree": 16319,
+        "coupe_scellement": 16319,
+        "disque_intact": true,
+        "statut_inventaire": "observe"
+      },
+      "direct-nominal-paquet": {
+        "image": "5ad8f5a184d0a4677fbed3ff55baf6d37780bcc1182e3e8d487da1dda52e4046",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "mode": "nominal",
+        "rapport": {
+          "adresse": 29351960,
+          "entree": 29118464,
+          "arret": 29121488,
+          "base": 0,
+          "statut": 18,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 17875,
+          "vivants": 0,
+          "sortie_efi": 29121504
+        },
+        "zero_ecriture": true,
+        "support": "paquet",
+        "topologie": "direct",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "coupe_entree": 16319,
+        "coupe_scellement": 16319,
+        "disque_intact": true,
+        "statut_inventaire": "observe"
+      },
+      "direct-inactif-signature-interne": {
+        "image": "ad618d01ffa81be39f3bbba21f68e368b532481efda1dfaee54b35366ce6217c",
+        "magasin": "ef3d5da20719dad587c972ab8855379d5a010887e87f17fb1ae986c47951dc07",
+        "mode": "inactif",
+        "rapport": {
+          "adresse": 29544472,
+          "entree": 29310976,
+          "arret": 29314000,
+          "base": 0,
+          "statut": 6,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 17875,
+          "vivants": 0,
+          "sortie_efi": 29314016
+        },
+        "zero_ecriture": true,
+        "support": "signature-interne",
+        "topologie": "direct",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "coupe_entree": 16319,
+        "coupe_scellement": 16319,
+        "disque_intact": true,
+        "statut_inventaire": "observe"
+      },
+      "direct-inactif-paquet": {
+        "image": "5ad8f5a184d0a4677fbed3ff55baf6d37780bcc1182e3e8d487da1dda52e4046",
+        "magasin": "ef3d5da20719dad587c972ab8855379d5a010887e87f17fb1ae986c47951dc07",
+        "mode": "inactif",
+        "rapport": {
+          "adresse": 29544472,
+          "entree": 29310976,
+          "arret": 29314000,
+          "base": 0,
+          "statut": 18,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 17875,
+          "vivants": 0,
+          "sortie_efi": 29314016
+        },
+        "zero_ecriture": true,
+        "support": "paquet",
+        "topologie": "direct",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "coupe_entree": 16319,
+        "coupe_scellement": 16319,
+        "disque_intact": true,
+        "statut_inventaire": "observe"
+      },
+      "deux": {
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "mode": "nominal",
+        "rapport": {
+          "adresse": 29351960,
+          "entree": 29118464,
+          "arret": 29121488,
+          "base": 0,
+          "statut": 16,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 56704,
+          "vivants": 0,
+          "sortie_efi": 29121504
+        },
+        "zero_ecriture": true,
+        "support": "diagnostic",
+        "topologie": "direct",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "coupe_entree": 16319,
+        "coupe_scellement": 16319,
+        "disque_intact": true,
+        "statut_inventaire": "observe"
+      },
+      "ambigu": {
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "mode": "nominal",
+        "rapport": {
+          "adresse": 29351960,
+          "entree": 29118464,
+          "arret": 29121488,
+          "base": 0,
+          "statut": 16,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 56704,
+          "vivants": 0,
+          "sortie_efi": 29121504
+        },
+        "zero_ecriture": true,
+        "support": "diagnostic",
+        "topologie": "direct",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "coupe_entree": 16319,
+        "coupe_scellement": 16319,
+        "disque_intact": true,
+        "statut_inventaire": "observe"
+      },
+      "invalide": {
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "mode": "nominal",
+        "rapport": {
+          "adresse": 29351960,
+          "entree": 29118464,
+          "arret": 29121488,
+          "base": 0,
+          "statut": 16,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 56704,
+          "vivants": 0,
+          "sortie_efi": 29121504
+        },
+        "zero_ecriture": true,
+        "support": "diagnostic",
+        "topologie": "direct",
+        "io": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "coupe_entree": 16319,
+        "coupe_scellement": 16319,
+        "disque_intact": true,
+        "statut_inventaire": "refuse"
+      }
+    },
+    "garde": {
+      "debut_attente": "2026-11-27T23:07:16.938413+00:00",
+      "acquisition": "2026-11-27T23:07:16.938738+00:00",
+      "attente_s": 0.00032904103863984346,
+      "liberation": "2026-11-27T23:08:05.740956+00:00"
+    },
+    "qemu": "QEMU emulator version 11.1.3",
+    "firmware": "32807682a9e5c0e2d192ecb6077941d4be8bcfa6b9cd6e60830c3a9f48c0555a",
+    "lecteur": "d87d244a7b7791cb078c361aae2883a3dba05e3e4c81dcd14050ccd05552415f",
+    "refus_dbx": {
+      "rapport": null,
+      "io_firmware": {
+        "unmap_operations": 0,
+        "failed_zone_append_operations": 0,
+        "failed_wr_operations": 0,
+        "failed_rd_operations": 0,
+        "wr_bytes": 0,
+        "failed_unmap_operations": 0,
+        "failed_flush_operations": 0,
+        "invalid_unmap_operations": 0,
+        "flush_operations": 0,
+        "wr_operations": 0,
+        "unmap_bytes": 0,
+        "rd_bytes": 283136,
+        "invalid_flush_operations": 0,
+        "zone_append_operations": 0,
+        "rd_operations": 10,
+        "zone_append_bytes": 0,
+        "invalid_zone_append_operations": 0,
+        "invalid_wr_operations": 0,
+        "invalid_rd_operations": 0
+      },
+      "disque_intact": true
+    },
+    "serie_sans_ecriture": false
+  },
+  "suspendu": {
+    "garde": {
+      "debut_attente": "2026-11-27T23:08:05.826557+00:00",
+      "acquisition": "2026-11-27T23:08:05.827027+00:00",
+      "attente_s": 0.00047458300832659006,
+      "liberation": "2026-11-27T23:08:21.046784+00:00"
+    },
+    "cas": {
+      "direct-nominal-diagnostic": {
+        "rip": 29118464,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "disque_intact": true
+      },
+      "direct-inactif-diagnostic": {
+        "rip": 29310976,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "ef3d5da20719dad587c972ab8855379d5a010887e87f17fb1ae986c47951dc07",
+        "disque_intact": true
+      },
+      "pont-nominal-diagnostic": {
+        "rip": 29114368,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 22077,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "disque_intact": true
+      },
+      "pont-inactif-diagnostic": {
+        "rip": 29294592,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 22077,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "ef3d5da20719dad587c972ab8855379d5a010887e87f17fb1ae986c47951dc07",
+        "disque_intact": true
+      },
+      "direct-nominal-signature-interne": {
+        "rip": 29118464,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "image": "ad618d01ffa81be39f3bbba21f68e368b532481efda1dfaee54b35366ce6217c",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "disque_intact": true
+      },
+      "direct-nominal-paquet": {
+        "rip": 29118464,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "image": "5ad8f5a184d0a4677fbed3ff55baf6d37780bcc1182e3e8d487da1dda52e4046",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "disque_intact": true
+      },
+      "direct-inactif-signature-interne": {
+        "rip": 29310976,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "image": "ad618d01ffa81be39f3bbba21f68e368b532481efda1dfaee54b35366ce6217c",
+        "magasin": "ef3d5da20719dad587c972ab8855379d5a010887e87f17fb1ae986c47951dc07",
+        "disque_intact": true
+      },
+      "direct-inactif-paquet": {
+        "rip": 29310976,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "image": "5ad8f5a184d0a4677fbed3ff55baf6d37780bcc1182e3e8d487da1dda52e4046",
+        "magasin": "ef3d5da20719dad587c972ab8855379d5a010887e87f17fb1ae986c47951dc07",
+        "disque_intact": true
+      },
+      "deux": {
+        "rip": 29118464,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "disque_intact": true
+      },
+      "ambigu": {
+        "rip": 29118464,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "disque_intact": true
+      },
+      "invalide": {
+        "rip": 29118464,
+        "avant": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "apres": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "trace_octets": 16319,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e",
+        "magasin": "558f7bd1256fe5e1b1d6b57eb7f5c05b390c3ef1b1b83907885c1153b92027b6",
+        "disque_intact": true
+      }
+    },
+    "firmware": "32807682a9e5c0e2d192ecb6077941d4be8bcfa6b9cd6e60830c3a9f48c0555a"
+  },
+  "rappels": {
+    "base": "4489fce73d8fe66b3406679dbb6d564d05a6c54d",
+    "garde": {
+      "debut_attente": "2026-11-27T23:08:47.428687+00:00",
+      "acquisition": "2026-11-27T23:08:47.429073+00:00",
+      "attente_s": 0.00039304199162870646,
+      "liberation": "2026-11-27T23:09:17.585734+00:00"
+    },
+    "cas": {
+      "direct-nominal": {
+        "topologie": "direct",
+        "magasin": "nominal",
+        "statut": 16,
+        "rapport": {
+          "adresse": 29216792,
+          "entree": 28968080,
+          "arret": 28933840,
+          "base": 28909568,
+          "statut": 16,
+          "tables": 5,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 516612,
+          "vivants": 0,
+          "sortie_efi": 28961536
+        },
+        "modele": {
+          "unites": {},
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "pci_efi": {
+          "0000:00:00.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:01.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:02.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:1f.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:1f.2": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:1f.3": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          }
+        },
+        "cycles_collecte": 291000,
+        "io_entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "io_fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "disque_intact": true,
+        "image": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677",
+        "zero_ecriture_efi": false,
+        "evenements": {
+          "'apic-msi'": 3,
+          "'apm-io'": 6
+        },
+        "coupe_entree": 16319,
+        "coupe_sortie": 17123,
+        "sha_disque_final": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677"
+      },
+      "direct-inactif": {
+        "topologie": "direct",
+        "magasin": "inactif",
+        "statut": 16,
+        "rapport": {
+          "adresse": 29409304,
+          "entree": 29160592,
+          "arret": 29126352,
+          "base": 29102080,
+          "statut": 16,
+          "tables": 5,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 516492,
+          "vivants": 0,
+          "sortie_efi": 29154048
+        },
+        "modele": {
+          "unites": {},
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "pci_efi": {
+          "0000:00:00.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:01.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:02.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:1f.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:1f.2": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:1f.3": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          }
+        },
+        "cycles_collecte": 292000,
+        "io_entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "io_fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "disque_intact": true,
+        "image": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677",
+        "zero_ecriture_efi": false,
+        "evenements": {
+          "'apic-msi'": 4,
+          "'apm-io'": 6
+        },
+        "coupe_entree": 16319,
+        "coupe_sortie": 17123,
+        "sha_disque_final": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677"
+      },
+      "pont-nominal": {
+        "topologie": "pont",
+        "magasin": "nominal",
+        "statut": 16,
+        "rapport": {
+          "adresse": 29212696,
+          "entree": 28963984,
+          "arret": 28929744,
+          "base": 28905472,
+          "statut": 16,
+          "tables": 6,
+          "dmar": 1,
+          "drhd": 1,
+          "noeuds": [],
+          "arena": 618508,
+          "vivants": 0,
+          "sortie_efi": 28957440
+        },
+        "modele": {
+          "unites": {
+            "0xfed90000": {
+              "ver": 16,
+              "cap": 9282482383832942086,
+              "ecap": 15732554,
+              "gsts": 0,
+              "rtaddr": 0
+            }
+          },
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 793398,
+              "cmd": 7,
+              "classe_revision": 100925440,
+              "header": 1,
+              "bus_pont": 65792
+            },
+            "0000:01:00.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "pci_efi": {
+          "0000:00:00.0": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:00:01.0": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:00:02.0": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:01:00.0": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:00:1f.0": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:00:1f.2": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:00:1f.3": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          }
+        },
+        "cycles_collecte": 522000,
+        "io_entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "io_fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "disque_intact": true,
+        "image": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677",
+        "zero_ecriture_efi": false,
+        "evenements": {
+          "'apic-msi'": 4,
+          "'apm-io'": 6
+        },
+        "coupe_entree": 22077,
+        "coupe_sortie": 22881,
+        "sha_disque_final": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677"
+      },
+      "pont-inactif": {
+        "topologie": "pont",
+        "magasin": "inactif",
+        "statut": 16,
+        "rapport": {
+          "adresse": 29392920,
+          "entree": 29144208,
+          "arret": 29109968,
+          "base": 29085696,
+          "statut": 16,
+          "tables": 6,
+          "dmar": 1,
+          "drhd": 1,
+          "noeuds": [],
+          "arena": 618436,
+          "vivants": 0,
+          "sortie_efi": 29137664
+        },
+        "modele": {
+          "unites": {
+            "0xfed90000": {
+              "ver": 16,
+              "cap": 9282482383832942086,
+              "ecap": 15732554,
+              "gsts": 0,
+              "rtaddr": 0
+            }
+          },
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 793398,
+              "cmd": 7,
+              "classe_revision": 100925440,
+              "header": 1,
+              "bus_pont": 65792
+            },
+            "0000:01:00.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "pci_efi": {
+          "0000:00:00.0": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:00:01.0": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:00:02.0": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:01:00.0": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:00:1f.0": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:00:1f.2": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          },
+          "0000:00:1f.3": {
+            "unite_candidate": "fed90000",
+            "rmrr": "0"
+          }
+        },
+        "cycles_collecte": 485000,
+        "io_entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "io_fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "disque_intact": true,
+        "image": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677",
+        "zero_ecriture_efi": false,
+        "evenements": {
+          "'apm-io'": 6,
+          "'apic-msi'": 3
+        },
+        "coupe_entree": 22077,
+        "coupe_sortie": 22881,
+        "sha_disque_final": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677"
+      },
+      "deux": {
+        "topologie": "direct",
+        "magasin": "nominal",
+        "statut": 16,
+        "rapport": {
+          "adresse": 29216792,
+          "entree": 28968080,
+          "arret": 28933840,
+          "base": 28909568,
+          "statut": 16,
+          "tables": 6,
+          "dmar": 1,
+          "drhd": 2,
+          "noeuds": [],
+          "arena": 618420,
+          "vivants": 0,
+          "sortie_efi": 28961536
+        },
+        "modele": {
+          "unites": {},
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "pci_efi": {
+          "0000:00:00.0": {
+            "unite_candidate": "30001000",
+            "rmrr": "0"
+          },
+          "0000:00:01.0": {
+            "unite_candidate": "30001000",
+            "rmrr": "0"
+          },
+          "0000:00:02.0": {
+            "unite_candidate": "30001000",
+            "rmrr": "0"
+          },
+          "0000:00:1f.0": {
+            "unite_candidate": "30001000",
+            "rmrr": "0"
+          },
+          "0000:00:1f.2": {
+            "unite_candidate": "30000000",
+            "rmrr": "1"
+          },
+          "0000:00:1f.3": {
+            "unite_candidate": "30001000",
+            "rmrr": "0"
+          }
+        },
+        "cycles_collecte": 518000,
+        "io_entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "io_fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "disque_intact": true,
+        "image": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677",
+        "zero_ecriture_efi": false,
+        "evenements": {
+          "'apic-msi'": 4,
+          "'apm-io'": 6
+        },
+        "coupe_entree": 16319,
+        "coupe_sortie": 17217,
+        "sha_disque_final": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677"
+      },
+      "ambigu": {
+        "topologie": "direct",
+        "magasin": "nominal",
+        "statut": 16,
+        "rapport": {
+          "adresse": 29216792,
+          "entree": 28968080,
+          "arret": 28933840,
+          "base": 28909568,
+          "statut": 16,
+          "tables": 6,
+          "dmar": 1,
+          "drhd": 2,
+          "noeuds": [],
+          "arena": 618418,
+          "vivants": 0,
+          "sortie_efi": 28961536
+        },
+        "modele": {
+          "unites": {},
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "pci_efi": {
+          "0000:00:00.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:01.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:02.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:1f.0": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          },
+          "0000:00:1f.2": {
+            "unite_candidate": "unknown",
+            "rmrr": "unknown"
+          },
+          "0000:00:1f.3": {
+            "unite_candidate": "none",
+            "rmrr": "0"
+          }
+        },
+        "cycles_collecte": 447000,
+        "io_entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "io_fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "disque_intact": true,
+        "image": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677",
+        "zero_ecriture_efi": false,
+        "evenements": {
+          "'apm-io'": 6,
+          "'apic-msi'": 3
+        },
+        "coupe_entree": 16319,
+        "coupe_sortie": 17123,
+        "sha_disque_final": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677"
+      },
+      "invalide": {
+        "topologie": "direct",
+        "magasin": "nominal",
+        "statut": 5,
+        "rapport": {
+          "adresse": 29216792,
+          "entree": 28968080,
+          "arret": 28933840,
+          "base": 28909568,
+          "statut": 5,
+          "tables": 0,
+          "dmar": 0,
+          "drhd": 0,
+          "noeuds": [],
+          "arena": 3828,
+          "vivants": 0,
+          "sortie_efi": 28961536
+        },
+        "modele": {
+          "unites": {},
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "pci_efi": {},
+        "cycles_collecte": null,
+        "io_entree": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "io_fin": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 0,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 0,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "disque_intact": true,
+        "image": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677",
+        "zero_ecriture_efi": false,
+        "evenements": {
+          "'apm-io'": 6
+        },
+        "coupe_entree": 16319,
+        "coupe_sortie": 16841,
+        "sha_disque_final": "733a8b60ab0d8085fa4525bf2291411a3b41cecfedda4fe41c1b60f1ffa78677"
+      }
+    },
+    "qemu": "QEMU emulator version 11.1.3",
+    "firmware": "32807682a9e5c0e2d192ecb6077941d4be8bcfa6b9cd6e60830c3a9f48c0555a",
+    "efi_qualifie": false
+  },
+  "actif": {
+    "modele": "f46d87c83a72ddea961b2b02a357c66b34c8b424f5613658262567e516f79f99",
+    "boot_fat": "6db1856b7b2f531329352e7638bf7e172fc0e920680f87f9db000588e09b7329",
+    "magasin": "7a7158cea006f04067bbbb7dbe9b0617699541008e03c3977bb976ca63854f2a",
+    "firmware": "8664d02804a125496c28b5a155c6f86517bc80d266462665240f305ff96ddc6c",
+    "tables_autorisees": [
+      1114112,
+      1118208,
+      1122304,
+      1126400,
+      1130496,
+      1134592,
+      1171456,
+      1175552,
+      1179648,
+      1183744
+    ],
+    "donnees_autorisees": [
+      1146880,
+      1150976,
+      1155072,
+      1159168,
+      1163264,
+      1167360,
+      1187840,
+      1191936,
+      1196032,
+      1200128,
+      1204224,
+      1208320,
+      1212416,
+      1216512,
+      1220608,
+      1224704,
+      1228800,
+      1232896,
+      1236992,
+      1241088,
+      1245184,
+      1249280,
+      1253376,
+      1257472,
+      1261568,
+      1265664,
+      1269760,
+      1273856
+    ],
+    "garde": {
+      "debut_attente": "2026-11-27T23:10:41.579812+00:00",
+      "acquisition": "2026-11-27T23:10:41.580228+00:00",
+      "attente_s": 0.0004259590059518814,
+      "liberation": "2026-11-27T23:10:43.660262+00:00"
+    },
+    "registres": {
+      "unites": {
+        "0xfed90000": {
+          "ver": 16,
+          "cap": 9282482383832942214,
+          "ecap": 15732570,
+          "gsts": 3288334336,
+          "rtaddr": 1114112
+        }
+      },
+      "pci": {
+        "0000:00:00.0": {
+          "ident": 700481670,
+          "cmd": 0,
+          "classe_revision": 100663296,
+          "header": 0
+        },
+        "0000:00:06.0": {
+          "ident": 1055542,
+          "cmd": 1026,
+          "classe_revision": 17302018,
+          "header": 0
+        },
+        "0000:00:07.0": {
+          "ident": 272702196,
+          "cmd": 0,
+          "classe_revision": 33554433,
+          "header": 0
+        },
+        "0000:00:1f.0": {
+          "ident": 689471622,
+          "cmd": 0,
+          "classe_revision": 100728834,
+          "header": 128
+        },
+        "0000:00:1f.3": {
+          "ident": 691044486,
+          "cmd": 0,
+          "classe_revision": 201654274,
+          "header": 128
+        }
+      },
+      "ecam": [
+        [
+          3758096384,
+          4026531839
+        ]
+      ]
+    },
+    "domaines": {
+      "48": {
+        "did": 1,
+        "mappings": [
+          {
+            "iova": 33554432,
+            "cadre": 1146880,
+            "droits": 1
+          },
+          {
+            "iova": 33558528,
+            "cadre": 1150976,
+            "droits": 2
+          },
+          {
+            "iova": 33562624,
+            "cadre": 1155072,
+            "droits": 1
+          },
+          {
+            "iova": 33566720,
+            "cadre": 1159168,
+            "droits": 2
+          },
+          {
+            "iova": 33570816,
+            "cadre": 1163264,
+            "droits": 2
+          },
+          {
+            "iova": 33574912,
+            "cadre": 1167360,
+            "droits": 1
+          }
+        ]
+      },
+      "56": {
+        "did": 3,
+        "mappings": [
+          {
+            "iova": 268435456,
+            "cadre": 1187840,
+            "droits": 1
+          },
+          {
+            "iova": 268439552,
+            "cadre": 1191936,
+            "droits": 1
+          },
+          {
+            "iova": 268443648,
+            "cadre": 1196032,
+            "droits": 2
+          },
+          {
+            "iova": 268447744,
+            "cadre": 1200128,
+            "droits": 1
+          },
+          {
+            "iova": 268451840,
+            "cadre": 1204224,
+            "droits": 1
+          },
+          {
+            "iova": 268455936,
+            "cadre": 1208320,
+            "droits": 2
+          },
+          {
+            "iova": 268460032,
+            "cadre": 1212416,
+            "droits": 2
+          },
+          {
+            "iova": 268464128,
+            "cadre": 1216512,
+            "droits": 2
+          },
+          {
+            "iova": 268468224,
+            "cadre": 1220608,
+            "droits": 2
+          },
+          {
+            "iova": 268472320,
+            "cadre": 1224704,
+            "droits": 2
+          },
+          {
+            "iova": 268476416,
+            "cadre": 1228800,
+            "droits": 2
+          },
+          {
+            "iova": 268480512,
+            "cadre": 1232896,
+            "droits": 2
+          },
+          {
+            "iova": 268484608,
+            "cadre": 1236992,
+            "droits": 2
+          },
+          {
+            "iova": 268488704,
+            "cadre": 1241088,
+            "droits": 2
+          },
+          {
+            "iova": 268492800,
+            "cadre": 1245184,
+            "droits": 1
+          },
+          {
+            "iova": 268496896,
+            "cadre": 1249280,
+            "droits": 1
+          },
+          {
+            "iova": 268500992,
+            "cadre": 1253376,
+            "droits": 1
+          },
+          {
+            "iova": 268505088,
+            "cadre": 1257472,
+            "droits": 1
+          },
+          {
+            "iova": 268509184,
+            "cadre": 1261568,
+            "droits": 1
+          },
+          {
+            "iova": 268513280,
+            "cadre": 1265664,
+            "droits": 1
+          },
+          {
+            "iova": 268517376,
+            "cadre": 1269760,
+            "droits": 1
+          },
+          {
+            "iova": 268521472,
+            "cadre": 1273856,
+            "droits": 1
+          }
+        ]
+      }
+    },
+    "recus": [
+      [
+        "48",
+        "1",
+        "1",
+        "1",
+        "2",
+        "96"
+      ],
+      [
+        "56",
+        "3",
+        "2",
+        "1",
+        "3",
+        "144"
+      ]
+    ],
+    "io": {
+      "stockage": {
+        "unmap_operations": 0,
+        "failed_zone_append_operations": 0,
+        "failed_wr_operations": 0,
+        "failed_rd_operations": 0,
+        "wr_bytes": 0,
+        "failed_unmap_operations": 0,
+        "failed_flush_operations": 0,
+        "invalid_unmap_operations": 0,
+        "flush_operations": 0,
+        "wr_operations": 0,
+        "unmap_bytes": 0,
+        "rd_bytes": 0,
+        "invalid_flush_operations": 0,
+        "zone_append_operations": 0,
+        "rd_operations": 0,
+        "zone_append_bytes": 0,
+        "invalid_zone_append_operations": 0,
+        "invalid_wr_operations": 0,
+        "invalid_rd_operations": 0
+      }
+    },
+    "ns_capture": 18792166,
+    "trace_avant": 19572,
+    "trace_apres": 19572,
+    "pages": {
+      "0x110000": "3c0d6896f8676c7ead59da1dfc0d0c1880cda48fee6e1f45db64abf350d0a0dd",
+      "0x111000": "d6e1ad7ce302a404b78216581bd8aab253537f95d27b4453a78f722de5825e20",
+      "0x112000": "a405f4ce4d0fa3cd807595e4926aa8014625da835453afb88b0d8df679394ec9",
+      "0x113000": "6d623cbd152cf5fea1743ed0ed2c30c012305655d7f91af0070e171bb613ef5c",
+      "0x114000": "b6748a712d6518c71ba5f02e890996500ccb39aa6c5c19c66e7db208c8164b5d",
+      "0x115000": "c4fed1a8ffb399608d9814cadb4999a2153a83be45d1d8d8f314285daa990e74",
+      "0x11e000": "b0d3b3869e7d75f76526b6e559a9cb19f53a6b60e96c2efc962a35da47603a04",
+      "0x11f000": "0ff653ab55061540bcc9f15701e90191ec7730065f1e506dcbccf86711503758",
+      "0x120000": "279f05323ae53c16cacd0a70a6e24a84436add9b983395cc1ca8c723b8833732",
+      "0x121000": "a06b6c9efd08cbecdef00ac54a57f1339d8482ebdc0153a80121b55ed5f7480b"
+    },
+    "namespace": "bb9f8df61474d25e71fa00722318cd387396ca1736605e1248821cc0de3d3af8",
+    "deux_modeles": "qemu-system-x86_64: -device intel-iommu: QEMU does not support multiple vIOMMUs for x86 yet."
+  },
+  "performance": {
+    "garde": {
+      "debut_attente": "2026-11-27T23:08:21.100423+00:00",
+      "acquisition": "2026-11-27T23:08:21.100785+00:00",
+      "attente_s": 0.00036800000816583633,
+      "liberation": "2026-11-27T23:08:47.342110+00:00"
+    },
+    "paires": [
+      {
+        "profil": "5h",
+        "topologie": "direct",
+        "paire": 0,
+        "duree_ns": 30268333,
+        "arena": 515334,
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85"
+      },
+      {
+        "profil": "5i",
+        "topologie": "direct",
+        "paire": 0,
+        "duree_ns": 20728417,
+        "arena": 56704,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e"
+      },
+      {
+        "profil": "5i",
+        "topologie": "direct",
+        "paire": 1,
+        "duree_ns": 21400916,
+        "arena": 56704,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e"
+      },
+      {
+        "profil": "5h",
+        "topologie": "direct",
+        "paire": 1,
+        "duree_ns": 30466541,
+        "arena": 515334,
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85"
+      },
+      {
+        "profil": "5h",
+        "topologie": "direct",
+        "paire": 2,
+        "duree_ns": 30380250,
+        "arena": 515334,
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85"
+      },
+      {
+        "profil": "5i",
+        "topologie": "direct",
+        "paire": 2,
+        "duree_ns": 20535417,
+        "arena": 56704,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e"
+      },
+      {
+        "profil": "5h",
+        "topologie": "pont",
+        "paire": 0,
+        "duree_ns": 32077375,
+        "arena": 616566,
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85"
+      },
+      {
+        "profil": "5i",
+        "topologie": "pont",
+        "paire": 0,
+        "duree_ns": 19851874,
+        "arena": 56704,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e"
+      },
+      {
+        "profil": "5i",
+        "topologie": "pont",
+        "paire": 1,
+        "duree_ns": 19819500,
+        "arena": 56704,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e"
+      },
+      {
+        "profil": "5h",
+        "topologie": "pont",
+        "paire": 1,
+        "duree_ns": 32049541,
+        "arena": 616566,
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85"
+      },
+      {
+        "profil": "5h",
+        "topologie": "pont",
+        "paire": 2,
+        "duree_ns": 31083625,
+        "arena": 616566,
+        "image": "ba76da52b76c4195712f7874128fb8011f997871971eadd98aee5e44ddf2bc85"
+      },
+      {
+        "profil": "5i",
+        "topologie": "pont",
+        "paire": 2,
+        "duree_ns": 20218251,
+        "arena": 56704,
+        "image": "45653ed69bcd6593b4890e40e6a20a2132409d63865e0aa40db47a23fb5b2c5e"
+      }
+    ]
+  },
+  "base": "4489fce73d8fe66b3406679dbb6d564d05a6c54d"
+}

@@ -124,10 +124,21 @@ class Debug:
             raise RuntimeError("Arrêt invité inattendu")
 
 
-def snapshot(q):
+def snapshot(q, ram_journal=False):
     q.call("pmemsave", val=0, size=RAM, filename="memoire.bin")
     data = Path("memoire.bin").read_bytes()
     Path("memoire.bin").unlink()
+    if ram_journal:
+        mark = b"NOVA5I-RAM-TRACE"
+        found = [m.start() for m in re.finditer(mark, data)
+                 if m.start()+32 <= len(data) and struct.unpack_from("<Q",data,m.start()+16)[0] == m.start()]
+        if len(found) != 1:
+            raise ValueError("Journal terminal 5I absent ou ambigu")
+        i = found[0]
+        size = struct.unpack_from("<Q",data,i+24)[0]
+        if size > 24576 or i+32+size > len(data):
+            raise ValueError("Journal 5I hors bornes")
+        Path("journal-5i.txt").write_text(data[i+32:i+32+size].decode("ascii"))
     pos = 0
     while True:
         pos = data.find(MAGIC, pos)
@@ -186,6 +197,10 @@ def guest(
     usb_connected=True,
     observe=None,
     extra_events=(),
+    observe_reset=False,
+    interval_events=(),
+    stop_at_entry=False,
+    measure_duration=False,
 ):
     for source in (media, variables, firmware, media.parent / "diagnostic.img"):
         if not source.is_file():
@@ -279,7 +294,10 @@ def guest(
             try:
                 q = Qmp(proc)
                 start = q.stats()
+                if observe_reset and expected and observe:
+                    observe(q, "reset")
                 q.events(True, extra_events)
+                elapsed_ns = None
                 boundary = None
                 rip = None
                 handoff = None
@@ -293,17 +311,49 @@ def guest(
                         raise RuntimeError("RIP entrée")
                     debug.remove(expected["entree"])
                     before = q.stats()
+                    if stop_at_entry:
+                        if not observe or not interval_events:
+                            raise ValueError("Capture suspendue non instrumentée")
+                        for event in interval_events:
+                            q.call("trace-event-set-state", name=event, enable=True)
+                        cut = Path("transactions.log").stat().st_size
+                        observe(q, "entree")
+                        after = q.stats()
+                        if cut != Path("transactions.log").stat().st_size or before != after:
+                            raise ValueError("Transaction lors de la capture suspendue")
+                        if debug.pc() != expected["entree"] or q.call("query-status")["running"]:
+                            raise ValueError("Le processeur a quitté le point de capture")
+                        # Garder le débogueur connecté jusqu'à la fin du processus :
+                        # une déconnexion pourrait libérer le vCPU avant la terminaison.
+                        proc.terminate()
+                        proc.wait(timeout=5)
+                        debug.sock.close()
+                        if cut != Path("transactions.log").stat().st_size:
+                            raise ValueError("Transaction lors de la terminaison")
+                        return dict(rip=expected["entree"], avant=before, apres=after,
+                                    trace_octets=cut, image=digest(media), magasin=digest(variables),
+                                    disque_intact=internal_hash == digest(Path("interne.raw")))
+                    for event in interval_events:
+                        q.call("trace-event-set-state", name=event, enable=True)
+                    boundary = Path("transactions.log").stat().st_size
                     if observe:
                         observe(q, "entree")
-                    boundary = Path("transactions.log").stat().st_size
+                    if measure_duration:
+                        resume_ns = time.perf_counter_ns()
                     debug.resume()
+                    if measure_duration:
+                        elapsed_ns = time.perf_counter_ns() - resume_ns
                     if debug.pc() != expected["sortie_efi"]:
                         raise RuntimeError("RIP sortie des services EFI")
                     debug.remove(expected["sortie_efi"])
                     handoff = Path("transactions.log").stat().st_size
                     if observe:
                         observe(q, "sortie")
+                    if measure_duration:
+                        resume_ns = time.perf_counter_ns()
                     debug.resume()
+                    if measure_duration:
+                        elapsed_ns += time.perf_counter_ns() - resume_ns
                     rip = debug.pc()
                     if rip != expected["arret"]:
                         raise RuntimeError(
@@ -345,13 +395,15 @@ def guest(
                     after = q.stats()
                 if observe:
                     observe(q, "fin")
+                for event in interval_events:
+                    q.call("trace-event-set-state", name=event, enable=False)
                 q.events(False, extra_events)
                 regs = q.call(
                     "human-monitor-command", **{"command-line": "info registers"}
                 )
                 Path("cpu-final.txt").write_text(regs)
                 halted = "HLT=1" in regs
-                report = snapshot(q)
+                report = snapshot(q, ram_journal=observe_reset)
                 flags = re.search(r"RFL=([0-9a-fA-F]+)", regs)
                 pc = re.search(r"RIP=([0-9a-fA-F]+)", regs)
                 terminal_pc = int(pc[1], 16) if pc else None
@@ -381,6 +433,7 @@ def guest(
             ):
                 bme[(model + b" " + bdf).decode()] = int(value, 16)
         return dict(
+            **({"duree_invite_ns": elapsed_ns} if measure_duration else {}),
             topologie=topology,
             image=digest(media),
             magasin=digest(variables),
