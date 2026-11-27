@@ -1,0 +1,18 @@
+[package]
+name = "novaos-gestionnaire-sim"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[dependencies]
+sha2 = { version = "0.10.9", default-features = false }
+novaos-catalogue = { path = "../catalogue-pilotes" }
+
+[dev-dependencies]
+ed25519-dalek = { version = "=2.2.0", default-features = false }
+
+[profile.release]
+overflow-checks = true
