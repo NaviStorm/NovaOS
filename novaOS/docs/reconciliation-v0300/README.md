@@ -8,6 +8,7 @@
 |---|---|
 | Quelles fonctions le serveur devra-t-il démontrer et de quoi dépendent-elles ? | [Matrice des exigences serveur, des commandes et des profils applicatifs](exigences-serveur.md) |
 | Comment la MOA pourra-t-elle accepter ou refuser un candidat ? | [Seize étapes de bout en bout](acceptation-serveur.md) et [trois épreuves de compilation native sur les deux architectures](acceptation-serveur.md#compilation-native-depuis-nsh) |
+| Quels protocoles, rôles et refus conditionnent la première stable depuis le 27 novembre 2026 ? | [Matrice réseau et contrôles communs](acceptation-serveur.md#matrice-réseau) · [Jalons proposés](proposition.md#jalons-réseau-proposés) · [Arbitrages restants](arbitrages.md#arbitrages-réseau-restants) |
 | Quel est le périmètre de la phase 1 v0.20.0 ? | [Bibliothèque système Rust et cycle de vie des threads](contrat-rust-threads.md) |
 | Comment un enfant de nsh accède-t-il à une donnée surprotégée et que devient ce droit après restauration ? | [Identités, délégations et garde des clés](contrat-autorisations.md) · [Limites et options du stockage P9](dependances-p9.md) |
 | Quels numéros et choix attendent encore une validation MOA/MOE ? | [Répartition proposée et dépendances critiques](proposition.md) |

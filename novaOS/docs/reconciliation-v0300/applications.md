@@ -29,12 +29,14 @@ L’objectif de bibliothèque attribué à v0.19.0 dans le mandat de recherche r
 
 ## H — Réseau
 
+**Lecture du registre historique.** Les options conditionnelles H01–H12 ci-dessous datent du premier audit. Depuis le 27 novembre 2026, le profil stable exige les deux familles IP et tous les protocoles du [périmètre approuvé](exigences-serveur.md#périmètre-réseau-approuvé). Les solutions transitoires du tableau concernent les bancs intermédiaires. [Rôles et preuves de la stable](acceptation-serveur.md#matrice-réseau)
+
 L’arbre des pilotes et le catalogue des programmes ne contiennent pas de pile réseau ni de client réseau invité identifié. Les connexions réseau éventuelles de l’hôte de développement ou du moniteur QEMU ne qualifient aucun protocole de NovaOS. Le jalon réseau de la matrice historique est confronté aux capacités des pilotes (G), à la session (D) et au choix du profil stable. [Pilotes de la source publiée](../../kernel/src/hardware) · [Catalogue des programmes](../../../components/Cargo.toml) · [Ancien inventaire matériel](https://github.com/NaviStorm/NovaOS/blob/a602051c9f3f1119552dd51a6b58ffc64285c556/novaOS/docs/audit-v0.30.0/inventaire-materiel-confiance.md)
 
 | ID et besoin | Prérequis et composant à concevoir | Priorité et risque | Épreuve future et solution transitoire |
 |---|---|---|---|
 | H01 IPv4 | Lien Ethernet virtuel isolé, buffers et service réseau utilisateur. | P1 du profil connecté. Taille de trame et fragments non bornés épuiseraient la mémoire. | Échange entre deux invités isolés, MTU et trames tronquées avec pic mémoire borné. Profil hors ligne jusque-là. |
-| H02 IPv6 | Découverte de voisins, adressage, MTU et politique de filtrage IPv6. | P1 si double pile annoncée. Une voie IPv6 oubliée contournerait la politique IPv4. | Échange local IPv6, voisin absent, même règle de refus sur les deux familles. Publier IPv4 seul si choisi. |
+| H02 IPv6 | Découverte de voisins, adressage, MTU et politique de filtrage IPv6. | P1 si double pile annoncée. Une voie IPv6 oubliée contournerait la politique IPv4. | Échange local IPv6, voisin absent, même règle de refus sur les deux familles. Le banc IPv4 seul constitue une étape intermédiaire. La stable exige les deux familles. |
 | H03 TCP | IP et horloge monotone, table de connexions et quotas. | P1 si flux fiables offerts. Risques de fuite après expiration et de blocage sous perte. | Transfert avec perte/ordre inversé puis fermeture et récupération des crédits. Aucune promesse de flux fiable avant l’essai. |
 | H04 UDP | IP, démultiplexage par point de terminaison, tailles et quotas. | P1 du socle DNS/DHCP. Un client peut monopoliser les buffers. | Deux clients, datagrammes tronqués, file pleine, retour des buffers. Commencer par un seul lien isolé. |
 | H05 ICMP / ICMPv6 | IP, règles de contrôle et limitation des réponses. | P1 pour un profil IP utilisable et diagnostiquable. | Taille maximale, destination inaccessible et rythme borné. Compteurs de lien locaux en attendant. |

@@ -131,6 +131,16 @@ Dans le tableau, `<service>` accepte le nom canonique ou l’ID enregistré dans
 
 **État des sources auditées.** Les deux aides générales partagent déjà un synopsis. Les cinq noms ci-dessus et les ID numériques sont résolus par le client. La liste affiche le nom, l’ID et l’état. L’aide par sous-commande, les exemples dans l’aide et la colonne de démarrage restent à réaliser. Le registre des commandes et les verbes intégrés de `nsh` ne proposent pas `man service` dans cette révision. Son implémentation et sa qualification relèvent d’un chantier ultérieur avant la stable. [Catalogue des commandes](../../../components/libraries/command.rs) · [Commandes de nsh](../../../components/shell/builtins.rs) · [Commande actuelle](../../../components/shell/services.rs) · [Recette prévue](acceptation-serveur.md#commande-service-dans-nsh)
 
+## Périmètre réseau approuvé
+
+La décision MOA du 27 novembre 2026 impose chaque protocole et fonction de la [matrice de recette](acceptation-serveur.md#matrice-réseau). Chaque service applicatif s’exécute dans un processus utilisateur isolé, en Rust avec priorité au code mémoire sûr. Chaque processus reçoit les seules capacités explicites nécessaires à son rôle (écoute, connexion, interface, volume ou journal). La pile conserve une ABI native et le noyau reste indépendant de POSIX.
+
+Les services serveur sont désactivés par défaut. Leur activation exige une autorisation explicite. NovaAuth centralise l’authentification lorsque applicable et associe les identités authentifiées par les mécanismes standards du protocole aux principaux locaux. Les contrôles portent sur la portée déléguée et la fraîcheur des droits, y compris en cours de session. Journaliser les accès admis et refusés avec principal, service, objet et résultat, en protégeant les secrets. Le superviseur doit pouvoir redémarrer un service indépendamment du noyau et solder ou isoler ses opérations en vol.
+
+Chiffrer les communications lorsque applicable. SMB 3.1.1 impose la signature, la prise en charge du chiffrement et l’intégration Kerberos/Active Directory. Les services de fichiers accèdent aux objets par le VFS et NovaFS dans les limites des droits délégués. La qualification inclut les ACL, la surprotection et le retrait des handles dérivés. Pour iSCSI, déléguer un volume bloc dédié et préserver l’exclusivité d’écriture. Toute évolution de P9 ou du contrat de publication exige son arbitrage propre. [Autorisations](contrat-autorisations.md) · [Dépendances P9](dependances-p9.md)
+
+**Exclusions obligatoires.** Telnet, FTP non chiffré, SMBv1, NFSv2 et NFSv3, SSL, TLS 1.0 et TLS 1.1, SNMPv1 et SNMPv2c, PPTP. Aucun mécanisme de repli automatique vers ces protocoles. Vérifier sur le pair et dans le journal le refus de chaque variante. [Recette des exclusions](acceptation-serveur.md#contrôles-communs-du-réseau)
+
 ## Contrats d’isolation du réseau à qualifier
 
 | Frontière proposée | Autorité et dépendances | Preuve à obtenir |
