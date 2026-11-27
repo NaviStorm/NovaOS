@@ -3,6 +3,8 @@ use crate::{Error, Result, inventory::Attachment, next, resources::Use};
 use alloc::vec::Vec;
 pub const HEADER: usize = 32;
 pub const MAX_DATA: usize = 128;
+/// Premier octet du détail d'un REFUSE émis avant effet faute de preuve.
+pub const PROOF_MISSING: u8 = 0x80;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Role {
     Discovery,

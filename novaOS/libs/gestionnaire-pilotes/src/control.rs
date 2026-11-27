@@ -147,6 +147,12 @@ impl Manager<'_, '_> {
         }
         let reply = self.dispatch(binding, r, selection).unwrap_or_else(|e| {
             let mut reply = Reply::refused(e);
+            if e == Error::Uncertain {
+                // L'oracle reste incertain, mais la garde a refusé la mutation
+                // avant effet. Son accusé peut libérer la place de clôture.
+                reply.status = Status::Refused;
+                reply.digest[0] = crate::ipc::PROOF_MISSING;
+            }
             reply.value = r.revision;
             reply.generation = r.body.generation;
             reply

@@ -106,7 +106,7 @@ def main():
     cmd([*cargo, "fmt", "-p", "novaos-gestionnaire-sim", "--", "--check"], env=env)
     for target in ("aarch64-apple-darwin", "x86_64-apple-darwin"):
         suite(CAT, target, 26)
-        suite(ROOT, target, 27)
+        suite(ROOT, target, 28)
         for series in range(1, 4):
             log("Série", series, target, "quantiles ns [p50, p95, p99, max]")
             measures(target, "endurance_256_et_mesures")

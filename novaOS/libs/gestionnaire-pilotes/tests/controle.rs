@@ -410,3 +410,57 @@ fn saturation_des_soixante_quatre_recus_et_retrait() {
     assert_eq!(m.usage().unwrap().receipts, 64);
     assert_eq!(m.group(sl(0)).unwrap().state(), State::Revoking);
 }
+
+#[test]
+fn preuve_differee_et_unique_credit_de_cloture() {
+    let p = lab::policy();
+    let c = catalog(&p, 1);
+    let mut m = Manager::new(
+        1,
+        &c,
+        1,
+        Use {
+            receipts: 1,
+            ..Use::LAB
+        },
+        Use::default(),
+        None,
+        0,
+    )
+    .unwrap();
+    m.refresh(1, true, [node(0)]).unwrap();
+    let reserved = reserve(&mut m, 0, 1);
+    let lease = m.group(sl(0)).unwrap().lease().unwrap();
+    let rec = m.step(reserved, Event::Uncertain).unwrap();
+    let q = m.step(rec, Event::Quarantine).unwrap();
+    let cap = link(&mut m, Role::Supervisor, 2, Some(q.attachment));
+    let held = m.group(sl(0)).unwrap().held();
+    let request = packet(Op::Reconcile, cap, 1, q);
+    let denied = send(&mut m, cap, request).unwrap();
+    assert_eq!(
+        (denied.status, denied.digest[0]),
+        (Status::Refused, PROOF_MISSING)
+    );
+    assert_eq!(send(&mut m, cap, request), Ok(denied));
+    let ack = |request: Request, id: u64, reply: Reply| {
+        let mut req = receipt(cap, request, id, reply.generation);
+        req.op = Op::Ack;
+        req.revision = reply.value;
+        req
+    };
+    assert_eq!(send(&mut m, cap, ack(request, 2, denied)), Ok(denied));
+    assert_eq!(m.group(sl(0)).unwrap().held(), held);
+    assert_eq!(m.group(sl(0)).unwrap().stamp(), q);
+    m.evidence(proof(lease, 1, PAGES)).unwrap();
+    for id in [3, 5] {
+        let request = packet(Op::Reconcile, cap, id, m.group(sl(0)).unwrap().stamp());
+        let confirmed = send(&mut m, cap, request).unwrap();
+        assert_eq!(confirmed.status, Status::Confirmed);
+        assert_eq!(
+            send(&mut m, cap, ack(request, id + 1, confirmed)),
+            Ok(confirmed)
+        );
+    }
+    assert_eq!(m.group(sl(0)).unwrap().state(), State::Returned);
+    assert_eq!(m.usage().unwrap().receipts, 0);
+}
