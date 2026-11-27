@@ -253,3 +253,54 @@ fn feuilles_obsoletes_et_quota_de_processus() {
         Err(Error::Stale)
     );
 }
+
+#[test]
+fn dernier_handle_et_derniere_attente_globale() {
+    let p = lab::policy();
+    let c = catalog(&p, 1);
+    let initial = Use {
+        pages: 16,
+        processes: 1,
+        nodes: 31,
+        waits: 31,
+        ..Use::default()
+    };
+    let mut m = Manager::new(1, &c, 1, Use::LAB, initial, None, 0).unwrap();
+    m.declare_existing_actor(4, 0, 31).unwrap();
+    m.refresh(1, true, [node(0), node(1)]).unwrap();
+    let d = m.discover(sl(0)).unwrap();
+    let too_many = Binding {
+        owner: 1,
+        peer: 4,
+        role: Role::Service,
+        group: Some(d.attachment),
+    };
+    assert_eq!(m.open_link(too_many).unwrap_err(), Error::Full);
+    let cap = m
+        .agreed(Binding {
+            owner: 3,
+            peer: 1,
+            role: Role::Supervisor,
+            group: Some(d.attachment),
+        })
+        .unwrap();
+    let v = checked(&mut m, d).unwrap();
+    let r = m.reserve(v, 16, 1, 1).unwrap();
+    let a = activate(&mut m, r);
+    let d = m.discover(sl(1)).unwrap();
+    let v = checked(&mut m, d).unwrap();
+    let used = m.usage().unwrap();
+    assert_eq!(used.waits, 32);
+    assert_eq!(m.reserve(v, 17, 2, 2), Err(Error::Full));
+    assert_eq!(m.usage().unwrap(), used);
+    assert_eq!(
+        send(&mut m, cap, packet(Op::Suspend, cap, 1, a)),
+        Err(Error::Full)
+    );
+    assert_eq!(
+        send(&mut m, cap, packet(Op::Revoke, cap, 2, a))
+            .unwrap()
+            .status,
+        Status::Confirmed
+    );
+}

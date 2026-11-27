@@ -185,7 +185,7 @@ fn toutes_les_transitions_et_tous_les_refus() {
 fn recus_partiels_generations_et_quarantaine() {
     let p = lab::policy();
     let c = catalog(&p, 1);
-    let mut m = sim(&c, 2);
+    let mut m = sim(&c, 3);
     let a = reserve(&mut m, 0, 1);
     let a = activate(&mut m, a);
     let independent = reserve(&mut m, 1, 2);
@@ -196,7 +196,7 @@ fn recus_partiels_generations_et_quarantaine() {
         m.authorize(leaf, l.holder, l.incarnation, Right::DmaWrite, "rx")
             .is_ok()
     );
-    for right in [Right::DmaRead, Right::Irq] {
+    for right in [Right::DmaRead, Right::Irq, Right::Mmio] {
         assert!(
             m.authorize(leaf, l.holder, l.incarnation, right, "rx")
                 .is_err()
@@ -219,6 +219,11 @@ fn recus_partiels_generations_et_quarantaine() {
     let rec = m.step(stop, Event::Reconcile).unwrap();
     let q = m.step(rec, Event::Quarantine).unwrap();
     assert_eq!(m.step(q, Event::Reconcile), Err(Error::Uncertain));
+    let other = m.discover(sl(2)).unwrap();
+    let other = checked(&mut m, other).unwrap();
+    let held = m.usage().unwrap();
+    assert_eq!(m.reserve(other, 18, 3, l.domain), Err(Error::Conflict));
+    assert_eq!(m.usage().unwrap(), held);
     let foreign = m.group(sl(1)).unwrap().lease().unwrap();
     assert!(m.evidence(proof(foreign, 1, 1)).is_err());
     assert!(

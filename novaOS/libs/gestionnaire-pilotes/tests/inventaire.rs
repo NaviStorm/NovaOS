@@ -179,6 +179,10 @@ fn plateformes_virtuelles_parents_et_vues_incompletes() {
     b.needs = sl(3).bit();
     assert_eq!(inv.refresh(2, true, [a, b]), Err(Error::Conflict));
     assert_eq!(inv.revision(), 1);
+    let mut unknown = node(7);
+    unknown.identity = Bus::Unknown;
+    inv.refresh(2, true, [unknown]).unwrap();
+    assert_eq!(inv.scope(sl(7)), Err(Error::Denied));
 }
 #[test]
 fn trente_deux_groupes_et_soixante_quatre_catalogues() {
