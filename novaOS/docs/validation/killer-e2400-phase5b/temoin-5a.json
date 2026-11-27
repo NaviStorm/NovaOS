@@ -1,0 +1,87 @@
+{
+  "revision": "7c3bb99a2f63326818024ac8e498ec329c6ad345",
+  "rustc": "rustc 1.99.1 (58cf8f9c3 2026-10-13)\nbinary: rustc\ncommit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67\ncommit-date: 2026-10-13\nhost: aarch64-apple-darwin\nrelease: 1.99.1\nLLVM version: 23.1.1",
+  "macos": "27.2.1",
+  "abi": 48,
+  "elf": "32a0f922323952e6696a02d7a6c1bbd7265c49761435589ce3043d476a758316",
+  "hotes": {
+    "aarch64": {
+      "e2400": {
+        "machine": "arm64",
+        "translation": "0",
+        "tests": [
+          21,
+          12,
+          7,
+          0
+        ],
+        "journal": "3aa7a358a8edb0ec337e2ad037d1cd55ecb0e0af17ddf8ce8cf4bc5c0e9a616e"
+      },
+      "gestionnaire": {
+        "tests": 28,
+        "journal": "731cb30423f6188bad6958e8bba0be45b981b73fddd35fd1ddbe7566282158db",
+        "groupe_octets": 400,
+        "registre_32": 12800,
+        "cycles": 256,
+        "delta": 0,
+        "cycle_ns_p50_p95_p99_max": [
+          630333,
+          775333,
+          830458,
+          900334
+        ]
+      }
+    },
+    "x86_64": {
+      "e2400": {
+        "machine": "x86_64",
+        "translation": "1",
+        "tests": [
+          21,
+          12,
+          7,
+          0
+        ],
+        "journal": "5212107ef1ff17224ec143bc179aa0c8caf4dbc8f1da82cd612ed1b42f0d9e71"
+      },
+      "gestionnaire": {
+        "tests": 28,
+        "journal": "af3ac52fd4342c2df04c14ba7c8aac6525e03d16e181eb21f63dfb1c0ea4f16c",
+        "groupe_octets": 400,
+        "registre_32": 12800,
+        "cycles": 256,
+        "delta": 0,
+        "cycle_ns_p50_p95_p99_max": [
+          1512417,
+          1534250,
+          1549208,
+          1585750
+        ]
+      }
+    }
+  },
+  "q35": {
+    "base": "908976948ba58fc85e7fe38bfc315f689ed1c44e",
+    "revision": "7c3bb99a2f63326818024ac8e498ec329c6ad345",
+    "ovmf": {
+      "edk2-x86_64-code.fd": "33090cc07675baa5190d9f1e84bf5176b33bcbfa9bacac522961150cdb6dbb2a",
+      "edk2-i386-vars.fd": "5d2ac383371b408398accee7ec27c8c09ea5b74a0de0ceea6513388b15be5d1e"
+    },
+    "cpu": "max",
+    "modele": "q35",
+    "vcpus": 1,
+    "ram_mio": 256,
+    "acceleration": "tcg",
+    "nic": "none",
+    "elf": "32a0f922323952e6696a02d7a6c1bbd7265c49761435589ce3043d476a758316",
+    "noyau": "a112274016f9faee5584cbef5afe619ae1c3476c320637e960c712fbf424937e",
+    "banc": "3ca6ede5131c13e2bb53c50ee08241449e520c77f7366b87c838d874902c7af2",
+    "qemu": "QEMU emulator version 11.1.3",
+    "debut_attente": "2026-11-27T16:39:30.961921+00:00",
+    "acquisition": "2026-11-27T16:39:30.962424+00:00",
+    "attente_s": 0.0005123330047354102,
+    "liberation": "2026-11-27T16:39:34.316970+00:00",
+    "journal": "d33fabcea7e5e4c1757038575f638192588b3f3d045f97c96e3ecbe25ce51b73"
+  },
+  "archive_sha256": "830959c547e41a2974db61e9a465f66eeea7e7a626e59974023341a2f431ab35"
+}
