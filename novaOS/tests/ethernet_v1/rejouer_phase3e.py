@@ -49,11 +49,12 @@ def main():
         lancer("port_q35_stockage.py","duo-retrait",cible/"duo-retrait.elf",out/"refus/q35",temoin,archives,
                outils/"limine-enroll",temoin/"novaFS/target/aarch64-apple-darwin/release/novafs")
     elif a.lot == "mmio":
-        for cas in ("reset-court", *MMIO):
+        for cas in ("reset-court", "reset-sans-option", *MMIO):
             options = ["--modele-recus",out/"modele-mmio/construction.json"] if cas in MMIO else []
             if cas != "mmio-absent":
                 options.append("--trace-registres")
-            lancer("port_qemu.py","arm",cas,images/"reset-court/arm.elf",out/"observations"/cas/"arm/1",
+            image = "reset-sans-option" if cas == "reset-sans-option" else "reset-court"
+            lancer("port_qemu.py","arm",cas,images/image/"arm.elf",out/"observations"/cas/"arm/1",
                    temoin,archives,outils/"limine-enroll",outils/"BOOTAA64.EFI","--limine-arm",outils/"limine-a72.EFI",
                    "--source-elf",NOYAU,"--cycle-vie",*options)
     elif a.lot == "ethernet":
