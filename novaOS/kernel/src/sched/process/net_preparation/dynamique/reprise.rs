@@ -862,13 +862,24 @@ pub(crate) fn reception_active(g: u64, n: u64) -> bool {
     })
     .is_some()
 }
-pub(crate) fn port_collecte() -> bool {
+pub(crate) fn port_collecte(#[cfg(feature="net-q35-duo")] groupe: [Pid;3]) -> bool {
     let lock = SESSION.lock();
     let Some(s) = lock.as_ref() else { return false };
     let (Some(m), Some(l)) = (s.manager.as_ref(), s.launcher.as_ref()) else {
         return false;
     };
     with(|k| {
+        #[cfg(feature="net-q35-duo")]
+        {
+            // Les processus du volume ont leur propre bail. Contrôler chacun des
+            // trois PID Ethernet récoltés, les deux contrôleurs et leurs identités.
+            let vivant = |pid: Pid| k.processes.slots.iter().flatten()
+                .any(|p| p.pid == pid && p.space.is_some());
+            groupe.iter().all(|&p| !vivant(p) && k.ipc.racines_pilotes(p)==0)
+                && vivant(m.child.pid) && vivant(l.child.pid)
+        }
+        #[cfg(not(feature="net-q35-duo"))]
+        {
         let mut n = 0;
         for process in k.processes.slots.iter().flatten() {
             if process.space.is_some() {
@@ -879,6 +890,7 @@ pub(crate) fn port_collecte() -> bool {
             }
         }
         n == 2
+        }
     })
 }
 pub(crate) fn etat_port(g: u64) -> bool {

@@ -7,6 +7,7 @@ import re
 from pathlib import Path
 import shutil
 import subprocess
+import sys
 import tarfile
 import tempfile
 
@@ -49,7 +50,7 @@ def main():
                    help="Assembler le gestionnaire dynamique Q35 et le retrait individuel 3D")
     a = p.parse_args()
     if a.phase4f and (not a.phase3d or a.sonder_garde or not a.cas or
-                     set(a.cas) - {"duo-retrait", "duo-differe", "duo-absent"}):
+                     set(a.cas) - {"port", "duo-retrait", "duo-differe", "duo-absent"}):
         p.error("4F exige le retrait individuel, différé ou absent, sur Q35 double")
     if a.sonder_garde and (not a.phase3d or a.cas != ["duo-retrait"]):
         p.error("La sonde de garde exige --phase3d --cas duo-retrait")
@@ -131,6 +132,16 @@ def main():
             elf = a.sortie / f"{cas}.elf"
             shutil.copyfile(root/"target/x86_64-unknown-none/release/novaos", elf)
             result["elf"][cas] = hashlib.sha256(elf.read_bytes()).hexdigest()
+            if a.phase4f:
+                sys.path.insert(0, str(NOVA/"tests"))
+                from gestionnaire_4d.qualifier import elf as segments
+                (out,) = [p.parent for p in (root/"target/x86_64-unknown-none/release").glob("build/novaos-*/out/gestionnaire.elf")]
+                result.setdefault("images_4f", {})[cas] = {
+                    "noyau": segments(elf),
+                    "acteurs": {n:segments(out/n) for n in ("gestionnaire.elf", "pair.elf", "net_preparation.bin",
+                                                            "ethernet_port.bin", "ethernet_client.bin")},
+                    "paquet": hashlib.sha256((out/"pilote.pkg01").read_bytes()).hexdigest(),
+                }
         (a.sortie / "sources.json").write_text(json.dumps(result, indent=2) + "\n")
 
 

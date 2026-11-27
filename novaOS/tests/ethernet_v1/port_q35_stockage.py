@@ -181,7 +181,7 @@ def main():
             if panne_qi:
                 oracle = retrait_duo.attente_commune
             rapport["stockage"] = oracle(out, a.cas, a.lecteur, avant, pair)
-            if "sonde_garde_sha256" in construction or (construction.get("gestionnaire_4f") and a.cas != "duo-absent"):
+            if "sonde_garde_sha256" in construction or (construction.get("gestionnaire_4f") and a.cas in ("duo-retrait","duo-differe")):
                 serie = (out / "serie.log").read_text()
                 sonde = re.findall(r"E3E garde readmission=refusee candidat=(\d+) generation=(\d+) disque=(\d+) epoque_ipc=(\d+) cid=(\d+) dma=(\d+)", serie)
                 if len(sonde) != 1:

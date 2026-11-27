@@ -57,7 +57,7 @@ def construire(cas, archive, revision=None):
                rustc=output(env["RUSTC"], "-V"), scenario=cas, cas=CAS[cas])
     if cas != "statique":
         out, = [p.parent for p in source.glob("build/novaos-*/out/gestionnaire.elf")]
-        doc["acteurs"] = {name:elf(out/name) for name in ("gestionnaire.elf", "pair.elf", "net_preparation.bin")}
+        doc["acteurs"] = {name:elf(out/name) for name in ("gestionnaire.elf", "pair.elf", "net_preparation.bin", "ethernet_port.bin", "ethernet_client.bin")}
         payload = (out/"net_preparation.bin").read_bytes()
         package = (out/"pilote.pkg01").read_bytes()
         if package[int.from_bytes(package[:4],"little")+68:] != payload or payload[18:20] != b"\x3e\x00":

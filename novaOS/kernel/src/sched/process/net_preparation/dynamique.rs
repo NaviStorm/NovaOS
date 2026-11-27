@@ -186,6 +186,29 @@ fn stop(child: Child) -> Outcome {
 }
 
 /// Mesure imbriquée indépendante de l'échantillon de sélection ou de scellement.
+#[cfg(feature = "gestionnaire-4f")]
+static INTERVALLE: crate::sched::sync::Mutex<Option<(&'static str, u64, u64)>> =
+    crate::sched::sync::Mutex::new(None);
+
+#[cfg(feature = "gestionnaire-4f")]
+fn terminer_intervalle(minimum: u64, fin: u64, suivant: Option<&'static str>) -> u64 {
+    let mut courant = INTERVALLE.lock();
+    let (phase, debut, precedent) = courant.take().expect("cycle Q35 ouvert");
+    let total = precedent.min(minimum);
+    *courant = suivant.map(|nom| (nom, fin, total));
+    hal::log(format_args!("F4 physique phase={phase} avant={debut} minimum={minimum} apres={fin} pic={}",
+        debut.saturating_sub(minimum)));
+    total
+}
+
+// Chaque allocation du noyau met déjà à jour ce minimum sous le verrou des cadres.
+// Les trois intervalles contigus couvrent aussi la réconciliation et la collecte.
+#[cfg(feature = "gestionnaire-4f")]
+pub(super) fn intervalle(nom: &'static str) {
+    let (min, fin) = heap::with_pages(|m| Ok((m.cycle_minimum(true).unwrap(), m.free_pages()))).unwrap();
+    terminer_intervalle(min, fin, Some(nom));
+}
+
 pub(crate) struct Cycle {
     initial: u64,
 }
@@ -196,6 +219,8 @@ impl Cycle {
             Ok(m.free_pages())
         })
         .unwrap();
+        #[cfg(feature = "gestionnaire-4f")]
+        { *INTERVALLE.lock() = Some(("admission", initial, initial)); }
         Self { initial }
     }
 }
@@ -205,6 +230,8 @@ impl Drop for Cycle {
         reprise::fin();
         let (min, end) =
             heap::with_pages(|m| Ok((m.cycle_minimum(false).unwrap(), m.free_pages()))).unwrap();
+        #[cfg(feature = "gestionnaire-4f")]
+        let min = terminer_intervalle(min, end, None);
         hal::log(format_args!(
             "D4 cycle avant={} minimum={min} apres={end} pic={} ipc={} dma={}",
             self.initial,

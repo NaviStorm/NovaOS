@@ -442,6 +442,8 @@ pub(crate) fn ethernet_actor(
     mut operation: impl FnMut(u64, usize, &mut [u8]) -> Result<usize, u64>,
     stockage_partage: bool,
 ) -> bool {
+    #[cfg(feature = "gestionnaire-4f")]
+    super::dynamique::intervalle("trafic");
     let (base, case, generation) = (acteur.base, acteur.case, acteur.generation);
     let (driver, service, client, hw, [front, backend]) = acteur.groupe.take().unwrap();
     let (pid, sp, cp) = (driver.0, service.0, client.0);
@@ -621,6 +623,8 @@ pub(crate) fn ethernet_actor(
             break;
         }
     }
+    #[cfg(feature = "gestionnaire-4f")]
+    super::dynamique::intervalle("retrait");
     CLIENT_PID.store(0, Relaxed);
     with(|s| s.ipc.lab_close_sender(pid, hw));
     #[cfg(gestionnaire_reprise)]
@@ -690,7 +694,7 @@ pub(crate) fn ethernet_actor(
     let fin = heap::audit(false).free_pages;
     hal::log(format_args!("ETH3 cadres avant={base} apres={fin}"));
     #[cfg(gestionnaire_reprise)]
-    let compte_port=super::dynamique::reprise::port_collecte();
+    let compte_port=super::dynamique::reprise::port_collecte(#[cfg(feature="net-q35-duo")] [pid, sp, cp]);
     #[cfg(not(gestionnaire_reprise))]
     let compte_port=base==fin || stockage_partage;
     status.is_ok()

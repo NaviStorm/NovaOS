@@ -10,7 +10,7 @@ index 8e357401182f518159e10762b96626f43813ae07..a0d83ad9777183ad7e5ffb4ddb8fc736
 +    // Cette image fermée exige le contrôleur partagé et son bail NVMe identifié.
 +    Err(Error::Route)
 diff --git a/novaOS/kernel/src/hardware/vtd_lab/duo.rs b/novaOS/kernel/src/hardware/vtd_lab/duo.rs
-index 9e55ec373e9aa2a71755fa59cbfb05d7fce47860..1cc3d6807489879cf6e4f67993a8c3677992781a 100644
+index 9e55ec373e9aa2a71755fa59cbfb05d7fce47860..5bd209757219c3347b750258cde8be1fdd9678cb 100644
 --- a/novaOS/kernel/src/hardware/vtd_lab/duo.rs
 +++ b/novaOS/kernel/src/hardware/vtd_lab/duo.rs
 @@ -245,0 +246,8 @@ impl Engine {
@@ -22,6 +22,20 @@ index 9e55ec373e9aa2a71755fa59cbfb05d7fce47860..1cc3d6807489879cf6e4f67993a8c367
 +        vue[8..].copy_from_slice(&self.duo.frames[4..]);
 +        super::super::net_q35::gestionnaire::enregistrer_double(self.regs, vue, next,
 +            owner, lease.owner(), lease.epoch()).map_err(|_| Error::Quarantine)?;
+@@ -335 +343,10 @@ impl Engine {
+-        self.invalider_nic(lost)?;
++        // Le seul parcours normal passe par retire_network et son Drain consommé
++        // pour le titulaire. Un candidat abandonné conserve ses cadres chez Engine.
++        if lost || !self.duo.delegated {return Err(Error::Quarantine);}
++        self.invalider_nic(false)?;
++        let id = (self.duo.owner, self.duo.generation);
++        if self.wait_snapshot() != (self.cookie, u64::from(self.tail), u64::from(self.tail))
++            || !self.clean_nvme(self.lease.ok_or(Error::Quarantine)?)
++            || !super::super::net_q35::gestionnaire::autoriser_double(id, self.cookie, self.duo.frames) {
++            return Err(Error::Quarantine);
++        }
+@@ -336,0 +354 @@ impl Engine {
++        super::super::net_q35::gestionnaire::restitue(id.1);
 diff --git a/novaOS/kernel/src/memory/mod.rs b/novaOS/kernel/src/memory/mod.rs
 index 35baf9f924be3406f47e836743ad42bd1c679b69..6d17ce21b50c67870654ca7f3577284a4e8cd4d2 100644
 --- a/novaOS/kernel/src/memory/mod.rs
@@ -43,7 +57,7 @@ index 35baf9f924be3406f47e836743ad42bd1c679b69..6d17ce21b50c67870654ca7f3577284a
 -            self.staging.resident()
 +            self.staging.resident(), r.elf_headers
 diff --git a/novaOS/kernel/src/sched/process/nvme.rs b/novaOS/kernel/src/sched/process/nvme.rs
-index 7d0ce7609acccd94de7ab68ade073a373abca4b1..77b21d60841f207bff894e5979b1f05983f87054 100644
+index 7d0ce7609acccd94de7ab68ade073a373abca4b1..58fdfc2224b38067aa14da1693698a4e8a56532c 100644
 --- a/novaOS/kernel/src/sched/process/nvme.rs
 +++ b/novaOS/kernel/src/sched/process/nvme.rs
 @@ -160,0 +161 @@ fn supervise(
@@ -71,7 +85,7 @@ index 7d0ce7609acccd94de7ab68ade073a373abca4b1..77b21d60841f207bff894e5979b1f059
 @@ -453 +472,12 @@ fn exercise(
 -        let actor = super::net_preparation::EthernetActor::reserve(domain.network_epoch()?).ok_or("instance NIC")?;
 +        use crate::hardware::net_q35::selectionner_port;
-+        if !matches!(option_env!("NOVAOS_ETH3_CASE"), Some("duo-retrait" | "duo-absent" | "duo-differe")) {
++        if !matches!(option_env!("NOVAOS_ETH3_CASE"), Some("port" | "duo-retrait" | "duo-absent" | "duo-differe")) {
 +            return Err("profil double 4F fermé");
 +        }
 +        let (mesure, mut decision) = selectionner_port()?;
