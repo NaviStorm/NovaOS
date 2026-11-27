@@ -557,7 +557,7 @@ pub(crate) fn net_p9() -> Result<()> {
             let cycles = match option_env!("NOVAOS_ETH3_CASE") {
                 Some("cycles-256") => 256,
                 Some("cycles" | "cycles-court") => 4,
-                Some("rattrapage" | "recu-arm-differe") => 2,
+                Some("rattrapage" | "recu-arm-differe" | "reset-court" | "reset-iommu-differe") => 2,
                 _ => 1,
             };
             #[cfg(not(feature="ethernet-v1-port"))]
@@ -608,7 +608,7 @@ pub(crate) fn net_p9() -> Result<()> {
                     return Err(Error::Fault);
                 }
                 hal::log(format_args!("E3C retrait differe VirtIO-IOMMU generation={generation} numero={numero} anciennes_references_refusees=true epingles_nic={epingles} lecture_flush=true"));
-                if option_env!("NOVAOS_ETH3_CASE") == Some("recu-arm-absent") {
+                if matches!(option_env!("NOVAOS_ETH3_CASE"), Some("recu-arm-absent" | "reset-iommu-absent")) {
                     Err(Error::Quarantine)
                 } else {
                     let resultat = Preparation::reprendre_retrait(generation, numero);

@@ -2,6 +2,8 @@
 use super::io::EMPTY;
 use super::*;
 use crate::{memory, sched::sync::Mutex};
+#[cfg(feature="ethernet-v1-port")]
+mod reset;
 static QUARANTAINE: Mutex<Option<Preparation>> = Mutex::new(None);
 pub(super) struct Preparation {
     pub(super) domaine: domain::Domain,
@@ -9,6 +11,8 @@ pub(super) struct Preparation {
     pub(super) nic: Device,
     #[cfg(feature="ethernet-v1-port")]
     retrait_differe: Option<u64>,
+    #[cfg(feature="ethernet-v1-port")]
+    reset_negocie: bool,
 }
 static ISR_PREPARATION: AtomicU64 = AtomicU64::new(0);
 static ETAT_IRQ: AtomicU64 = AtomicU64::new(0);
@@ -96,7 +100,14 @@ impl Preparation {
         if nic.msix.is_some() {
             return Err(Error::Route);
         }
-        #[cfg(feature = "net-event-idx")]
+        #[cfg(feature="ethernet-v1-port")]
+        let reset_negocie = if reset::profil() {
+            super::net_event::negocier_reset(&nic)?
+        } else {
+            super::net_event::negocier(&nic)?;
+            false
+        };
+        #[cfg(all(feature = "net-event-idx", not(feature="ethernet-v1-port")))]
         super::net_event::negocier(&nic)?;
         #[cfg(not(feature = "net-event-idx"))]
         nic.start((1 << 32) | (1 << 33) | (1 << 5))?;
@@ -107,6 +118,8 @@ impl Preparation {
             nic,
             #[cfg(feature="ethernet-v1-port")]
             retrait_differe: None,
+            #[cfg(feature="ethernet-v1-port")]
+            reset_negocie,
         };
         for n in 0..22 {
             let r = Frame::allocate().and_then(|f| {
@@ -180,6 +193,8 @@ impl Preparation {
         // Les 22 mappings sont acquittés avant publication d'un premier descripteur.
         #[cfg(feature="ethernet-v1-port")]
         let mut preuve = None;
+        #[cfg(feature="ethernet-v1-port")]
+        let mut files_confirmees = false;
         let resultat = (|| {
             self.domaine.faults_preparation()?;
             let mut port = super::net_trames::Port::nouveau(&self.nic, &self.cadres)?;
@@ -200,13 +215,22 @@ impl Preparation {
                 hal::timer::armer_spi_reseau(false)?;
             }
             let debut = hal::timer::counter();
-            let ok = crate::sched::process::net_preparation::ethernet(
-                self.domaine.generation(),
-                pendant,
-                |tag, len, copie| {
+            #[cfg(feature="ethernet-v1-port")]
+            let acteur = if reset::profil() {
+                Some(crate::sched::process::net_preparation::port_v1::EthernetActor::reserve(self.domaine.generation())
+                    .ok_or(Error::State)?)
+            } else { None };
+            #[cfg(feature="ethernet-v1-port")]
+            let titulaire = acteur.as_ref().map(|a| a.titulaire_dma());
+            let operation = |tag, len, copie: &mut [u8]| {
                     if tag == 5 {
                         #[cfg(feature="ethernet-v1-port")]
                         {
+                            if let Some(id) = titulaire && self.reset_negocie {
+                                let recu = reset::retirer(&self.nic, id);
+                                files_confirmees = recu.is_some_and(|r| r.confirme(id, self.domaine.generation()));
+                                hal::log(format_args!("E3E files pilote={} incarnation={} generation={} confirmees={files_confirmees}", id.0, id.1, id.2));
+                            }
                             preuve = port.sceller(self.domaine.generation()).ok();
                             return preuve.map(|_| 0).ok_or(crate::abi::REFUSED);
                         }
@@ -220,8 +244,15 @@ impl Preparation {
                         hal::timer::purger_spi_reseau().and_then(|()|hal::timer::armer_spi_reseau(false)).map_err(|_|crate::abi::REFUSED)?;
                     }
                     port.demande(tag, len, copie, ETAT_IRQ.load(Ordering::Acquire) == 0x101)
-                },
-            );
+                };
+            #[cfg(feature="ethernet-v1-port")]
+            let ok = if let Some(a) = acteur {
+                crate::sched::process::net_preparation::port_v1::ethernet_actor(a, pendant, operation, false)
+            } else {
+                crate::sched::process::net_preparation::ethernet(self.domaine.generation(), pendant, operation)
+            };
+            #[cfg(not(feature="ethernet-v1-port"))]
+            let ok = crate::sched::process::net_preparation::ethernet(self.domaine.generation(), pendant, operation);
             let irq = ETAT_IRQ.load(Ordering::Acquire);
             let cycles = hal::timer::counter() - debut;
             hal::log(format_args!(
@@ -256,7 +287,11 @@ impl Preparation {
             return resultat;
         }
         #[cfg(feature="ethernet-v1-port")]
-        return self.recuperer(preuve.ok_or(Error::Quarantine)?);
+        return if files_confirmees && preuve.is_some() {
+            self.retrait_complet()
+        } else {
+            self.recuperer(preuve.ok_or(Error::Quarantine)?)
+        };
         #[cfg(not(feature="ethernet-v1-port"))]
         self.fermer()
     }
@@ -275,7 +310,7 @@ impl Preparation {
             bail.retrait_differe = Some(n);
             n
         };
-        if matches!(option_env!("NOVAOS_ETH3_CASE"), Some("recu-arm-differe" | "recu-arm-absent")) {
+        if matches!(option_env!("NOVAOS_ETH3_CASE"), Some("recu-arm-differe" | "recu-arm-absent" | "reset-iommu-differe" | "reset-iommu-absent")) {
             // Le contrôleur peut déjà avoir enregistré le succès. Le propriétaire du
             // bail n'en reçoit aucune notification lors de ce premier passage.
             let q = QUARANTAINE.lock();

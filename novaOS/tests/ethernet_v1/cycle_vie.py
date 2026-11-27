@@ -11,6 +11,13 @@ CAS = {"cycles-256": 0, "port": 0, "cycles": 0, "court": 8, "cycles-court": 8, "
        "segment-interrompu": 23, "rattrapage": 23, "recu-collecte": 24, "echo1514": 13}
 
 
+RESET = {"reset-court":8, "reset-differe":8, "reset-absent":8, "reset-invalide":8,
+         "reset-sans-option":8, "reset-iommu-absent":8, "reset-iommu-differe":8,
+         "reset-deces":3, "reset-revocation":6, "reset-incertain":4}
+NOUVEAUX += tuple(RESET)
+CAS.update(RESET)
+
+
 def exiger(ok, objet):
     if not ok:
         raise ValueError(f"Cycle de vie DMA : {objet}")
@@ -21,7 +28,7 @@ def nombre_cycles(cas, arch):
         return 256
     if cas == "cycles" or (cas == "cycles-court" and arch == "q35"):
         return 4
-    return 2 if cas in ("rattrapage", "recu-vtd-differe", "recu-arm-differe") else 1
+    return 2 if cas in ("rattrapage", "recu-vtd-differe", "recu-arm-differe", "reset-court", "reset-iommu-differe") else 1
 
 
 def pages_retenues(rx, tx):
@@ -155,6 +162,28 @@ def preuve_qi(vm, qt, serie, retire):
     return dict(racine=root,queue=queue,statut=statut,iqh=head,iqt=tail,cookie=cookie,
                 racine_vide=vide,descripteurs=commandes)
 
+def verifier_reset(cas, c, serie, generations):
+    actif = cas != "reset-sans-option"
+    valide = actif and cas not in ("reset-invalide", "reset-absent")
+    pci = c["capacite_pci_arm"]
+    exiger(pci["bar"] == 4 and pci["offset"] == 0 and pci["champ_queue_reset_dans_capacite"]
+           and pci["bit_40_offert"] == actif and pci["bit_40_negocie"] == actif, pci)
+    acquits = re.findall(r"E3E reset file=(\d+) pid=(\d+) generation=(\d+) queue_reset=0 queue_enable=0", serie)
+    preuves = re.findall(r"E3E files pilote=(\d+) incarnation=(\d+) generation=(\d+) confirmees=(true|false)", serie)
+    sessions = re.findall(r"ETH3 session .*?pilote=(\d+) .*?generation_materiel=(\d+)", serie)
+    exiger(len(preuves) == (len(generations) if actif else 0), preuves)
+    attendus = []
+    for (pid, inc, gen, ok), session in zip(preuves, sessions):
+        exiger((pid,gen) == session and int(inc) > 0 and (ok=="true") == valide, (session, preuves))
+        attendus += [(f,pid,gen) for f in (["0"] if cas == "reset-absent" else ["0","1"])]
+    exiger(acquits == attendus, acquits)
+    if cas == "reset-absent":
+        exiger("reset TX non transmis queue_enable=1" in serie, cas)
+    if cas == "reset-differe":
+        exiger("livraison reset TX differee" in serie, cas)
+    return valide
+
+
 def verifier(out, c, serie):
     cas, arch = c["cas"], c["arch"]
     mode = CAS[cas]
@@ -178,12 +207,12 @@ def verifier(out, c, serie):
     exiger(len(bilans)==cycles and all(int(b[0])==mode for b in bilans),bilans)
     attentes={0:144,8:1,3:4,4:4,6:4,23:0,24:8,13:13312}
     exiger(c["trames_par_sens"] == cycles*attentes[mode] and c["erreur_pair"] is None, c["trames_par_sens"])
-    if cas in ("recu-arm-differe", "recu-vtd-differe", "recu-arm-absent"):
+    if cas in ("recu-arm-differe", "recu-vtd-differe", "recu-arm-absent", "reset-iommu-absent", "reset-iommu-differe"):
         differes = re.findall(r"E3C retrait differe (VirtIO-IOMMU|VT-d) generation=(\d+) (?:numero|cookie)=(\d+) anciennes_references_refusees=true epingles(?:_nic)?=(\d+)", serie)
         exiger(len(differes)==cycles and [int(d[1]) for d in differes]==generations
                and len({d[2] for d in differes})==cycles and
                all((d[0], int(d[3]))==(("VirtIO-IOMMU",22) if arch=="arm" else ("VT-d",30)) for d in differes), differes)
-    if cas in ("recu-arm-differe", "recu-arm-absent"):
+    if cas in ("recu-arm-differe", "recu-arm-absent", "reset-iommu-absent", "reset-iommu-differe"):
         exiger(serie.count("epingles_nic=22 lecture_flush=true") == cycles, "E/S pendant la quarantaine")
     if cas=="deces-recu-tx-absent":
         exiger("E3C recu TX retenu" in serie and arrets[0][2:4]==("0","4") and int(arrets[0][5],16)==15, arrets)
@@ -208,14 +237,19 @@ def verifier(out, c, serie):
                     cadres_cpu=cpu,ram=ram)
     if arch=="arm":
         retenues = set(range(22)) if absent else pages_retenues(int(arrets[-1][4],16),int(arrets[-1][5],16))
-        sans_livraison = cas == "recu-arm-absent"
+        confirme = False
+        if cas in RESET:
+            confirme = verifier_reset(cas, c, serie, generations)
+            if confirme:
+                retenues = set()
+        sans_livraison = cas in ("recu-arm-absent", "reset-iommu-absent")
         if sans_livraison:
             retenues = set(range(22))
         if not absent and not sans_livraison:
             retrait=re.findall(r"E3C VirtIO-IOMMU generation=(\d+) rendus=(\d+) quarantaine=(\d+) detache=(true|false)",serie)
             exiger(len(retrait)==cycles,retrait)
             for a,s in zip(arrets,retrait):
-                n=len(pages_retenues(int(a[4],16),int(a[5],16)))
+                n=0 if confirme else len(pages_retenues(int(a[4],16),int(a[5],16)))
                 exiger(a[0]==s[0] and int(s[1])==22-n and int(s[2])==n and (s[3]=="true")==(n==0),s)
         if retenues:
             exiger(f"rattachement refuse generation={generations[-1]}" in serie and

@@ -249,6 +249,11 @@ pub(crate) struct EthernetActor {
 impl EthernetActor {
     pub(crate) fn reserve(generation: u64) -> Option<Self> {
         let case = match option_env!("NOVAOS_ETH3_CASE") {
+            Some("reset-court" | "reset-differe" | "reset-invalide" | "reset-absent" |
+                 "reset-sans-option" | "reset-iommu-absent" | "reset-iommu-differe") => 8,
+            Some("reset-deces") => 3,
+            Some("reset-revocation") => 6,
+            Some("reset-incertain") => 4,
             Some("data") => 2,
             Some("veille") => 7,
             Some("court" | "cycles-court" | "preuve-absente" | "recu-vtd-absent" | "recu-vtd-differe") => 8,
@@ -306,6 +311,12 @@ impl EthernetActor {
         hal::log(format_args!("E3C admission generation={generation} precedente={precedente} ancienne_capacite_valide={ancienne_valide} generation_verrouillee=true"));
         Some(acteur)
     }
+    #[cfg(target_arch = "aarch64")]
+    pub(crate) fn titulaire_dma(&self) -> (u64, u64, u64) {
+        let pid = self.groupe.as_ref().unwrap().0.0;
+        (pid.number, with(|s| s.processes.get(pid).instance.serial), self.generation)
+    }
+
     #[cfg(feature = "net-q35-duo")]
     pub(crate) fn owner(&self) -> u64 {
         let (pilote, _, _, _, _) = self.groupe.as_ref().unwrap();

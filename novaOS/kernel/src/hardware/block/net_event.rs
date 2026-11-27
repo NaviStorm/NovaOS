@@ -5,6 +5,15 @@ use crate::hal;
 const REQUIS: u64 = (1 << 32) | (1 << 33) | (1 << 5) | (1 << 29);
 
 pub(super) fn negocier(nic: &Device) -> Result<()> {
+    negocier_options(nic, 0).map(|_| ())
+}
+
+#[cfg(all(target_arch = "aarch64", feature = "ethernet-v1-port"))]
+pub(super) fn negocier_reset(nic: &Device) -> Result<bool> {
+    negocier_options(nic, 1 << 40).map(|masque| masque & (1 << 40) != 0)
+}
+
+fn negocier_options(nic: &Device, options: u64) -> Result<u64> {
     if nic.cfg.get(4, 2) & 0x404 != 0x400 || nic.msix.is_some() {
         return Err(Error::Route);
     }
@@ -13,13 +22,15 @@ pub(super) fn negocier(nic: &Device) -> Result<()> {
         nic.common.w32(0, bank);
         offre |= u64::from(nic.common.r32(4)) << (bank * 32);
     }
-    let verification = nic.start(REQUIS).and_then(|()| {
+    let masque = REQUIS | (offre & options);
+    if masque & (1 << 40) != 0 { nic.common.sub(58, 2)?; }
+    let verification = nic.start(masque).and_then(|()| {
         let mut relu = 0u64;
         for bank in 0..2 {
             nic.common.w32(8, bank);
             relu |= u64::from(nic.common.r32(12)) << (bank * 32);
         }
-        if offre & REQUIS != REQUIS || relu != REQUIS || nic.common.r8(20) != 11 {
+        if offre & REQUIS != REQUIS || relu != masque || nic.common.r8(20) != 11 {
             return Err(Error::Feature);
         }
         if nic.cfg.get(4, 2) & 0x404 != 0x400 {
@@ -40,7 +51,7 @@ pub(super) fn negocier(nic: &Device) -> Result<()> {
         ));
         return Err(cause);
     }
-    Ok(())
+    Ok(masque)
 }
 
 #[cfg(target_arch = "x86_64")]

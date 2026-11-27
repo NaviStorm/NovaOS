@@ -128,7 +128,7 @@ class Pair:
             numero %= 144
         elif self.cas == "duo-reouverture":
             numero %= 4
-        elif self.cas in ("cycles-court", "recu-vtd-differe"):
+        elif self.cas in ("cycles-court", "recu-vtd-differe", "reset-court", "reset-iommu-differe"):
             numero = 0
         if self.cas in ("mixte100k", "historique100k"):
             return self.ref.trame_longue(numero,retour)
@@ -340,6 +340,8 @@ def main():
             for i, value in enumerate(args):
                 if value == "-netdev":
                     args[i+1] = re.sub(r"fd=\d+", f"fd={guest.fileno()}", args[i+1])
+                elif a.arch == "arm" and a.cas == "reset-sans-option" and value == "-device" and args[i+1].startswith("virtio-net-pci,"):
+                    args[i+1] += ",queue_reset=off"
                 elif value in ("-serial", "-debugcon"):
                     args[i+1] = "file:" + str(out/Path(args[i+1]).name)
                 elif value == "-drive":
@@ -381,7 +383,7 @@ def main():
                             time.sleep(.1)
                         qmp(vm,"stop")
                         final=capture(vm,out,"fin",a.arch=="arm")
-                        if a.arch=="arm" and a.cas=="court" and a.cycle_vie:
+                        if a.arch=="arm" and (a.cas=="court" or a.cas.startswith("reset-")) and a.cycle_vie:
                             report["capacite_pci_arm"]=cycle_vie.capacite_pci_arm(vm, serial)
                         if final["pci_command"] & 4:
                             raise ValueError("BME du NIC toujours actif à la fin")
