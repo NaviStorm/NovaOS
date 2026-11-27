@@ -18,6 +18,8 @@ Le premier lancement dynamique d’un pilote VirtIO-net a été exercé sous Nov
 
 La relève du gestionnaire et du lanceur dans la même époque a été exercée sous QEMU AArch64. Le superviseur conserve le bail et les cadres exposés jusqu’aux preuves de restitution. A5 reste partiel. [Autorité, endurance et quarantaines de phase 4E.1](phase4e1-v0.25.0.md)
 
+Le profil Q35 x86_64 exerce le même gestionnaire en Ring 3, avec contrôle du retrait individuel du NIC pendant le bail NVMe. [Intégration, reprise et qualification 4F](phase4f-v0.25.0.md)
+
 ## Frontières d’autorité
 
 ```mermaid
