@@ -16,6 +16,8 @@ Le catalogue expérimental hors ligne de phase 4B vérifie les signatures et con
 
 Le premier lancement dynamique d’un pilote VirtIO-net a été exercé sous NovaOS AArch64, dans le profil QEMU mono-groupe autorisé par A4. [Lancement, consommation réelle et qualification 4D](phase4d-v0.25.0.md)
 
+La relève du gestionnaire et du lanceur dans la même époque a été exercée sous QEMU AArch64. Le superviseur conserve le bail et les cadres exposés jusqu’aux preuves de restitution. A5 reste partiel. [Autorité, endurance et quarantaines de phase 4E.1](phase4e1-v0.25.0.md)
+
 ## Frontières d’autorité
 
 ```mermaid

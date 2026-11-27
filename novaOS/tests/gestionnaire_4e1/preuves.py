@@ -56,7 +56,7 @@ def verifier_chronologie(cas, serie):
     if cas=="non-corroborable" or cas=="journal-perdu":
         exiger("E3C rattachement refuse" in serie and "E41 gel cause=" in serie,"gel et refus de rattachement")
 
-def verifier_controleur(defaut,pieces,captures,boots,source):
+def verifier_controleur(defaut,pieces,captures,boots,source,plateforme):
     from gestionnaire_4e1.controleur import verifier as verifier_defaut
     sys.path.insert(0,str(NOVA/"tests/ethernet_v1"))
     construction=lire(defaut/"image/construction.json")
@@ -71,6 +71,7 @@ def verifier_controleur(defaut,pieces,captures,boots,source):
         c=lire(dossier/"campagne.json")
         texte=(dossier/"serie.log").read_text()
         exiger(c["succes"] and c["elf"]==construction["elf"]["arm"] and c["commit_sources"]==construction["commit"],"image du diagnostic")
+        exiger(not c["sources_suivies_modifiees"] and all(c[k]==v for k,v in plateforme.items()),"lanceur ou plateforme du diagnostic")
         oracle=verifier_defaut(dossier,c,texte)
         # Les clés de domaines numériques sont représentées par des chaînes en JSON.
         exiger(json.loads(json.dumps(oracle))==c["cycle_vie"],"relecture du diagnostic")
@@ -169,7 +170,7 @@ def capsule(archive,temoin,hotes,defaut,sortie):
         for nom in ("campagne.json","serie.log","pair.pcap.gz","fin.json","reset.json"):
             pieces[f"temoin-4d/{n}/{nom}"]=racine/nom
     pieces["temoin-4d/construction.json"]=temoin/"images/reset-court/construction.json"
-    diagnostic=verifier_controleur(defaut,pieces,captures,boots,source)
+    diagnostic=verifier_controleur(defaut,pieces,captures,boots,source,reference)
     sortie.mkdir(parents=True,exist_ok=True)
     bilan=dict(revision=source,plateforme=reference,totaux=tous,profils=profils,memoire=observations,
                volume_p9=capturer_volume(archive),temoin_4d=baseline,defaut_commun=diagnostic,
@@ -179,7 +180,7 @@ def capsule(archive,temoin,hotes,defaut,sortie):
     index={nom:dict(octets=p.stat().st_size,sha256=sha(p)) for nom,p in sorted(pieces.items())}
     write(sortie/"inventaire.json",index)
     paquet=sortie/"preuves.tar.gz"
-    with paquet.open("wb") as f,gzip.GzipFile(fileobj=f,filename="",mtime=0,compresslevel=6) as gz,tarfile.open(fileobj=gz,mode="w|") as tar:
+    with paquet.open("wb") as f,gzip.GzipFile(fileobj=f,mode="wb",filename="",mtime=0,compresslevel=6) as gz,tarfile.open(fileobj=gz,mode="w|") as tar:
         for nom,p in sorted(pieces.items()):
             info=tarfile.TarInfo(nom);info.size=index[nom]["octets"]
             with p.open("rb") as src:tar.addfile(info,src)
