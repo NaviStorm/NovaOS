@@ -260,6 +260,7 @@ def main():
     p.add_argument("--cycle-vie", action="store_true", help="Vérifier les reçus et la mémoire du profil 3C")
     p.add_argument("--source-elf", help="Révision de construction attestée par le manifeste SHA256 voisin")
     p.add_argument("--delai", type=int, default=90)
+    p.add_argument("--esp-verifiee", action="store_true", help="Réécrire aussi les secteurs nuls alloués et relire l’ELF sur la copie FAT32 ARM")
     p.add_argument("--cpu-max", action="store_true", help="Témoin ArmVirt avec RNDR et chargeur direct")
     p.add_argument("--limine-arm", type=Path, help="Second étage Limine de laboratoire identifié")
     a = p.parse_args()
@@ -347,11 +348,15 @@ def main():
                     fp.seek(1024*1024)
                     if fp.read(3) != b"\xeb\x58\x90":
                         raise ValueError("ESP historique introuvable")
-                    fat = construire(a.elf, 512, scenario="net-arm-p9", relais_boot=None if a.cpu_max or a.cas=='temoin16' else a.relais, chargeur_labo=a.limine_arm)
+                    fat = construire(a.elf, 512, scenario="net-arm-p9", relais_boot=None if a.cpu_max or a.cas=='temoin16' else a.relais, chargeur_labo=a.limine_arm, inclure_secteurs_nuls=a.esp_verifiee)
                     for i in range(0, len(fat), 516):
                         sector, = struct.unpack_from("<I", fat, i)
                         fp.seek(1024*1024 + sector*512)
                         fp.write(fat[i+4:i+516])
+                    if a.esp_verifiee:
+                        from relecture_esp import verifier
+                        fp.flush()
+                        report["elf_relu_esp"] = verifier(fp, 1024*1024, report["elf"])
                 tpm_socket = stack.enter_context(tpm(tmp,out,"labo"))
                 report["firmware"] = digest(tmp/"code.fd")
                 report["limine_arm"] = digest(a.limine_arm or NOVA/"third_party/limine/BOOTAA64.EFI")

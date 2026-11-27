@@ -32,7 +32,7 @@ def nom_long(nom, court):
     return entree
 
 
-def construire(elf, secteur, *, scenario="systeme-gpt", relais_boot=None, chargeur_labo=None):
+def construire(elf, secteur, *, scenario="systeme-gpt", relais_boot=None, chargeur_labo=None, inclure_secteurs_nuls=False):
     if scenario not in ("systeme-gpt", "smp-test", "smp-fp", "smp-arret", "net-arm-p9"):
         raise ValueError("Scénario EFI inconnu")
     taille = (60 if secteur == 512 else 264) * 2**20 // secteur
@@ -103,7 +103,7 @@ def construire(elf, secteur, *, scenario="systeme-gpt", relais_boot=None, charge
         i = reserve + off // secteur
         secteurs[i] = secteurs[i+fat] = table[off:off+secteur]
     return b"".join(struct.pack("<I", i) + bytes(b).ljust(secteur, b"\0")
-                    for i,b in sorted(secteurs.items()) if any(b))
+                    for i,b in sorted(secteurs.items()) if inclure_secteurs_nuls or any(b))
 
 
 if __name__ == "__main__":
