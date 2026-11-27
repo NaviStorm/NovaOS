@@ -183,6 +183,23 @@ def compresser_trace(trace):
     trace.unlink(missing_ok=True)
 
 
+def demarrer(exe, revision, cas, dest):
+    if not (dest/"campagne.json").exists():
+        outils = BASE/"archives-ethernet-phase3/reproduction-8bd3f9c"
+        cmd = [sys.executable, "-B", PORT, "q35", CAS[cas], exe, dest, BASE/"pilote-virtio-net",
+               BASE/"archives-virtio-net", outils/"limine-enroll", outils/"BOOTAA64.EFI",
+               "--source-elf", revision, "--cycle-vie", "--delai", "1200" if cas == "endurance" else "300"]
+        if cas != "statique":
+            cmd.extend(["--gestionnaire-4f", cas])
+        subprocess.run(cmd, check=True)
+    campagne = json.loads((dest/"campagne.json").read_text())
+    if campagne["elf"] != sha(exe) or campagne["commit_sources"] != revision:
+        raise ValueError(("Image ou révision au démarrage", dest))
+    controler(cas, dest)
+    compresser_trace(dest/"qemu.trace")
+    return campagne
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("archive", type=lambda s:Path(s).resolve())
@@ -193,18 +210,8 @@ def main():
     a = p.parse_args()
     exe,rev = construire(a.cas,a.archive,a.revision)
     if a.compiler: return
-    outils = BASE/"archives-ethernet-phase3/reproduction-8bd3f9c"
-    for n in range(1,a.boots+1):
-        dest = a.archive/"simple"/a.cas/str(n)
-        if not (dest/"campagne.json").exists():
-            cmd = [sys.executable,"-B",PORT,"q35",CAS[a.cas],exe,dest,BASE/"pilote-virtio-net",
-                   BASE/"archives-virtio-net", outils/"limine-enroll", outils/"BOOTAA64.EFI",
-                   "--source-elf",rev,"--cycle-vie","--delai","1200" if a.cas=="endurance" else "300"]
-            if a.cas!="statique":
-                cmd.extend(["--gestionnaire-4f",a.cas])
-            subprocess.run(cmd,check=True)
-        controler(a.cas,dest)
-        compresser_trace(dest/"qemu.trace")
+    for n in range(1, a.boots + 1):
+        demarrer(exe, rev, a.cas, a.archive/"simple"/a.cas/str(n))
     if a.boots>1 and a.cas!="statique":
         epochs = {json.loads((a.archive/"simple"/a.cas/str(n)/"reprise.json").read_text())["boot"] for n in range(1,a.boots+1)}
         if len(epochs)!=a.boots: raise ValueError("Démarrages distincts attendus")
