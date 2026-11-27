@@ -1,0 +1,473 @@
+=== 4B 0eea6bc694533afc4ab037d08b6c40cf28e1103b ===
+Hôte macOS-27.2.1-arm64-arm-64bit-Mach-O rustc 1.99.1 (58cf8f9c3 2026-10-13)
+Invocations Darwin aarch64-apple-darwin
+org.novaos.lab.port aarch64 [1, 0, 0] ["rx"]
+org.novaos.lab.port x86_64 [1, 0, 0] ["rx"]
+
+running 5 tests
+i....
+test result: ok. 4 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 6 tests
+......
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+..
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 6 tests
+......
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 2 tests
+..
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Série 1 aarch64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=683 construction_pic=3844 taille=120 catalogue=32 plan=344 entrée=528 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=31024 retenu=1962
+parseur blanc 16K pic=134536
+resolution ns 125 209
+maximal parseur_pic=228488 modele=16897 admission_pic=228488 catalogue=17425 selection_pic=1527 plan=355 p50_ns=4541 p99_ns=6416
+signature enveloppe ns 31167 42750
+admission complete ns 107875 141541
+n=1 catalogue=2492 admission_pic=31072 selection_pic=1527 plan=280 p50_ns=292 p99_ns=417 id=org.novaos.lab.port00
+n=16 catalogue=39872 admission_pic=68452 selection_pic=1527 plan=280 p50_ns=459 p99_ns=542 id=org.novaos.lab.port15
+n=32 catalogue=79744 admission_pic=108324 selection_pic=1527 plan=280 p50_ns=666 p99_ns=875 id=org.novaos.lab.port31
+n=64 catalogue=159488 admission_pic=192752 selection_pic=1527 plan=280 p50_ns=875 p99_ns=1250 id=org.novaos.lab.port63
+64 eligibles selection_pic=1805 p50_ns=19417 p99_ns=29417
+64 maximaux catalogue=1115200 admission_pic=1326239
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.15s
+
+
+Série 2 aarch64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=683 construction_pic=3844 taille=120 catalogue=32 plan=344 entrée=528 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=31024 retenu=1962
+parseur blanc 16K pic=134536
+resolution ns 84 209
+maximal parseur_pic=228488 modele=16897 admission_pic=228488 catalogue=17425 selection_pic=1527 plan=355 p50_ns=4542 p99_ns=6375
+signature enveloppe ns 31125 43708
+admission complete ns 108708 148917
+n=1 catalogue=2492 admission_pic=31072 selection_pic=1527 plan=280 p50_ns=333 p99_ns=458 id=org.novaos.lab.port00
+n=16 catalogue=39872 admission_pic=68452 selection_pic=1527 plan=280 p50_ns=458 p99_ns=625 id=org.novaos.lab.port15
+n=32 catalogue=79744 admission_pic=108324 selection_pic=1527 plan=280 p50_ns=667 p99_ns=750 id=org.novaos.lab.port31
+n=64 catalogue=159488 admission_pic=192752 selection_pic=1527 plan=280 p50_ns=917 p99_ns=1209 id=org.novaos.lab.port63
+64 eligibles selection_pic=1805 p50_ns=19250 p99_ns=30125
+64 maximaux catalogue=1115200 admission_pic=1326239
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.15s
+
+
+Série 3 aarch64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=683 construction_pic=3844 taille=120 catalogue=32 plan=344 entrée=528 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=31024 retenu=1962
+parseur blanc 16K pic=134536
+resolution ns 125 167
+maximal parseur_pic=228488 modele=16897 admission_pic=228488 catalogue=17425 selection_pic=1527 plan=355 p50_ns=4500 p99_ns=6458
+signature enveloppe ns 32083 43416
+admission complete ns 106291 148709
+n=1 catalogue=2492 admission_pic=31072 selection_pic=1527 plan=280 p50_ns=292 p99_ns=334 id=org.novaos.lab.port00
+n=16 catalogue=39872 admission_pic=68452 selection_pic=1527 plan=280 p50_ns=458 p99_ns=625 id=org.novaos.lab.port15
+n=32 catalogue=79744 admission_pic=108324 selection_pic=1527 plan=280 p50_ns=625 p99_ns=708 id=org.novaos.lab.port31
+n=64 catalogue=159488 admission_pic=192752 selection_pic=1527 plan=280 p50_ns=958 p99_ns=1292 id=org.novaos.lab.port63
+64 eligibles selection_pic=1805 p50_ns=18625 p99_ns=27125
+64 maximaux catalogue=1115200 admission_pic=1326239
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.15s
+
+
+__TEXT	__DATA	__OBJC	others	dec	hex
+819200	16384	0	4295360512	4296196096	10012c000
+Invocations Darwin x86_64-apple-darwin
+org.novaos.lab.port aarch64 [1, 0, 0] ["rx"]
+org.novaos.lab.port x86_64 [1, 0, 0] ["rx"]
+
+running 5 tests
+i....
+test result: ok. 4 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 6 tests
+......
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+..
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 6 tests
+......
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 2 tests
+..
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Série 1 x86_64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=683 construction_pic=3844 taille=120 catalogue=32 plan=344 entrée=528 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=31024 retenu=1962
+parseur blanc 16K pic=134536
+resolution ns 208 334
+maximal parseur_pic=228488 modele=16897 admission_pic=228488 catalogue=17425 selection_pic=1527 plan=354 p50_ns=6792 p99_ns=9542
+signature enveloppe ns 52666 70250
+admission complete ns 187625 208917
+n=1 catalogue=2492 admission_pic=31072 selection_pic=1527 plan=279 p50_ns=1083 p99_ns=1375 id=org.novaos.lab.port00
+n=16 catalogue=39872 admission_pic=68452 selection_pic=1527 plan=279 p50_ns=1333 p99_ns=1625 id=org.novaos.lab.port15
+n=32 catalogue=79744 admission_pic=108324 selection_pic=1527 plan=279 p50_ns=1666 p99_ns=1709 id=org.novaos.lab.port31
+n=64 catalogue=159488 admission_pic=192752 selection_pic=1527 plan=279 p50_ns=2375 p99_ns=3042 id=org.novaos.lab.port63
+64 eligibles selection_pic=1804 p50_ns=66333 p99_ns=83333
+64 maximaux catalogue=1115200 admission_pic=1326239
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.28s
+
+
+Série 2 x86_64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=683 construction_pic=3844 taille=120 catalogue=32 plan=344 entrée=528 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=31024 retenu=1962
+parseur blanc 16K pic=134536
+resolution ns 209 334
+maximal parseur_pic=228488 modele=16897 admission_pic=228488 catalogue=17425 selection_pic=1527 plan=354 p50_ns=6792 p99_ns=9459
+signature enveloppe ns 53875 63875
+admission complete ns 187333 205417
+n=1 catalogue=2492 admission_pic=31072 selection_pic=1527 plan=279 p50_ns=1042 p99_ns=1334 id=org.novaos.lab.port00
+n=16 catalogue=39872 admission_pic=68452 selection_pic=1527 plan=279 p50_ns=1375 p99_ns=1417 id=org.novaos.lab.port15
+n=32 catalogue=79744 admission_pic=108324 selection_pic=1527 plan=279 p50_ns=1708 p99_ns=2042 id=org.novaos.lab.port31
+n=64 catalogue=159488 admission_pic=192752 selection_pic=1527 plan=279 p50_ns=2333 p99_ns=2542 id=org.novaos.lab.port63
+64 eligibles selection_pic=1804 p50_ns=65125 p99_ns=87500
+64 maximaux catalogue=1115200 admission_pic=1326239
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.28s
+
+
+Série 3 x86_64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=683 construction_pic=3844 taille=120 catalogue=32 plan=344 entrée=528 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=31024 retenu=1962
+parseur blanc 16K pic=134536
+resolution ns 209 334
+maximal parseur_pic=228488 modele=16897 admission_pic=228488 catalogue=17425 selection_pic=1527 plan=354 p50_ns=7084 p99_ns=10042
+signature enveloppe ns 54792 69250
+admission complete ns 188625 211458
+n=1 catalogue=2492 admission_pic=31072 selection_pic=1527 plan=279 p50_ns=1000 p99_ns=1125 id=org.novaos.lab.port00
+n=16 catalogue=39872 admission_pic=68452 selection_pic=1527 plan=279 p50_ns=1333 p99_ns=1500 id=org.novaos.lab.port15
+n=32 catalogue=79744 admission_pic=108324 selection_pic=1527 plan=279 p50_ns=1667 p99_ns=2167 id=org.novaos.lab.port31
+n=64 catalogue=159488 admission_pic=192752 selection_pic=1527 plan=279 p50_ns=2333 p99_ns=2916 id=org.novaos.lab.port63
+64 eligibles selection_pic=1804 p50_ns=65417 p99_ns=79500
+64 maximaux catalogue=1115200 admission_pic=1326239
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.28s
+
+
+__TEXT	__DATA	__OBJC	others	dec	hex
+909312	24576	0	4295307264	4296241152	100137000
+Objet nu aarch64-unknown-none-softfloat
+   text	   data	    bss	    dec	    hex	filename
+ 198509	      0	      0	 198509	  3076d	CARGO_TARGET_DIR/temoin/aarch64-unknown-none-softfloat/release/catalogue-4b-mesure.o
+Sections objet nu aarch64-unknown-none-softfloat {'code': 180668, 'constantes': 6953, 'donnees': 0, 'bss': 0}
+Objet nu x86_64-unknown-none
+   text	   data	    bss	    dec	    hex	filename
+ 266590	      0	      0	 266590	  4115e	CARGO_TARGET_DIR/temoin/x86_64-unknown-none/release/catalogue-4b-mesure.o
+Sections objet nu x86_64-unknown-none {'code': 254887, 'constantes': 11703, 'donnees': 0, 'bss': 0}
+Pile Darwin réservée 143360
+aarch64-apple-darwin 28 100ecdb22da36efa64d5bac64f0bc2337c64629047c4d5803a8ebcf7ac2356e5
+Pile Darwin réservée 131072
+x86_64-apple-darwin 28 100ecdb22da36efa64d5bac64f0bc2337c64629047c4d5803a8ebcf7ac2356e5
+=== 4B.1 319eb8793140a5a90da1136983e9af98019decea ===
+Hôte macOS-27.2.1-arm64-arm-64bit-Mach-O rustc 1.99.1 (58cf8f9c3 2026-10-13)
+Invocations Darwin aarch64-apple-darwin
+org.novaos.lab.port aarch64 [1, 0, 0] ["rx"]
+org.novaos.lab.port x86_64 [1, 0, 0] ["rx"]
+
+running 7 tests
+i......
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 6 tests
+......
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+....
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 2 tests
+..
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 6 tests
+......
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 2 tests
+..
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Série 1 aarch64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=299 construction_pic=1396 taille=120 catalogue=40 plan=344 entrée=88 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=8856 retenu=754
+parseur blanc 16K pic=8856
+resolution ns 83 167
+maximal parseur_pic=56424 modele=16241 admission_pic=56424 catalogue=16472 selection_pic=56424 plan=355 p50_ns=68083 p99_ns=80750
+signature enveloppe ns 33625 41167
+admission complete ns 114875 133042
+index_objets n=1 (88, 1295)
+n=1 catalogue=1383 admission_pic=8856 selection_pic=8856 plan=280 p50_ns=10333 p99_ns=13125 id=org.novaos.lab.port00
+index_objets n=16 (1408, 20720)
+n=16 catalogue=22128 admission_pic=29601 selection_pic=8856 plan=280 p50_ns=9958 p99_ns=13208 id=org.novaos.lab.port15
+index_objets n=32 (2816, 41440)
+n=32 catalogue=44256 admission_pic=51729 selection_pic=8856 plan=280 p50_ns=10167 p99_ns=12917 id=org.novaos.lab.port31
+index_objets n=64 (5632, 82880)
+n=64 catalogue=88512 admission_pic=95985 selection_pic=8856 plan=280 p50_ns=10250 p99_ns=13375 id=org.novaos.lab.port63
+64 eligibles selection_pic=9134 p50_ns=653625 p99_ns=719209
+64 maximaux catalogue=1054208 admission_pic=1094160
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.89s
+
+
+Série 2 aarch64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=299 construction_pic=1396 taille=120 catalogue=40 plan=344 entrée=88 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=8856 retenu=754
+parseur blanc 16K pic=8856
+resolution ns 83 125
+maximal parseur_pic=56424 modele=16241 admission_pic=56424 catalogue=16472 selection_pic=56424 plan=355 p50_ns=65833 p99_ns=78417
+signature enveloppe ns 33625 42541
+admission complete ns 114333 137500
+index_objets n=1 (88, 1295)
+n=1 catalogue=1383 admission_pic=8856 selection_pic=8856 plan=280 p50_ns=10416 p99_ns=13334 id=org.novaos.lab.port00
+index_objets n=16 (1408, 20720)
+n=16 catalogue=22128 admission_pic=29601 selection_pic=8856 plan=280 p50_ns=10250 p99_ns=13125 id=org.novaos.lab.port15
+index_objets n=32 (2816, 41440)
+n=32 catalogue=44256 admission_pic=51729 selection_pic=8856 plan=280 p50_ns=10250 p99_ns=13166 id=org.novaos.lab.port31
+index_objets n=64 (5632, 82880)
+n=64 catalogue=88512 admission_pic=95985 selection_pic=8856 plan=280 p50_ns=10250 p99_ns=13042 id=org.novaos.lab.port63
+64 eligibles selection_pic=9134 p50_ns=647875 p99_ns=737875
+64 maximaux catalogue=1054208 admission_pic=1094160
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.88s
+
+
+Série 3 aarch64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=299 construction_pic=1396 taille=120 catalogue=40 plan=344 entrée=88 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=8856 retenu=754
+parseur blanc 16K pic=8856
+resolution ns 83 166
+maximal parseur_pic=56424 modele=16241 admission_pic=56424 catalogue=16472 selection_pic=56424 plan=355 p50_ns=66792 p99_ns=78917
+signature enveloppe ns 33708 39208
+admission complete ns 114333 139333
+index_objets n=1 (88, 1295)
+n=1 catalogue=1383 admission_pic=8856 selection_pic=8856 plan=280 p50_ns=10125 p99_ns=13125 id=org.novaos.lab.port00
+index_objets n=16 (1408, 20720)
+n=16 catalogue=22128 admission_pic=29601 selection_pic=8856 plan=280 p50_ns=10125 p99_ns=13000 id=org.novaos.lab.port15
+index_objets n=32 (2816, 41440)
+n=32 catalogue=44256 admission_pic=51729 selection_pic=8856 plan=280 p50_ns=10083 p99_ns=12833 id=org.novaos.lab.port31
+index_objets n=64 (5632, 82880)
+n=64 catalogue=88512 admission_pic=95985 selection_pic=8856 plan=280 p50_ns=9500 p99_ns=13209 id=org.novaos.lab.port63
+64 eligibles selection_pic=9134 p50_ns=644625 p99_ns=750917
+64 maximaux catalogue=1054208 admission_pic=1094160
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.88s
+
+
+__TEXT	__DATA	__OBJC	others	dec	hex
+507904	16384	0	4295213056	4295737344	1000bc000
+Invocations Darwin x86_64-apple-darwin
+org.novaos.lab.port aarch64 [1, 0, 0] ["rx"]
+org.novaos.lab.port x86_64 [1, 0, 0] ["rx"]
+
+running 7 tests
+i......
+test result: ok. 6 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 6 tests
+......
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 4 tests
+....
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+
+running 2 tests
+..
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 6 tests
+......
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 2 tests
+..
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+Série 1 x86_64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=299 construction_pic=1396 taille=120 catalogue=40 plan=344 entrée=88 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=8856 retenu=754
+parseur blanc 16K pic=8856
+resolution ns 167 209
+maximal parseur_pic=56424 modele=16241 admission_pic=56424 catalogue=16472 selection_pic=56424 plan=354 p50_ns=128125 p99_ns=152000
+signature enveloppe ns 54958 65166
+admission complete ns 192417 219791
+index_objets n=1 (88, 1295)
+n=1 catalogue=1383 admission_pic=8856 selection_pic=8856 plan=279 p50_ns=22084 p99_ns=32250 id=org.novaos.lab.port00
+index_objets n=16 (1408, 20720)
+n=16 catalogue=22128 admission_pic=29601 selection_pic=8856 plan=279 p50_ns=22167 p99_ns=28250 id=org.novaos.lab.port15
+index_objets n=32 (2816, 41440)
+n=32 catalogue=44256 admission_pic=51729 selection_pic=8856 plan=279 p50_ns=22125 p99_ns=26916 id=org.novaos.lab.port31
+index_objets n=64 (5632, 82880)
+n=64 catalogue=88512 admission_pic=95985 selection_pic=8856 plan=279 p50_ns=22250 p99_ns=28709 id=org.novaos.lab.port63
+64 eligibles selection_pic=9133 p50_ns=1452292 p99_ns=1658708
+64 maximaux catalogue=1054208 admission_pic=1094160
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 1.89s
+
+
+Série 2 x86_64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=299 construction_pic=1396 taille=120 catalogue=40 plan=344 entrée=88 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=8856 retenu=754
+parseur blanc 16K pic=8856
+resolution ns 167 250
+maximal parseur_pic=56424 modele=16241 admission_pic=56424 catalogue=16472 selection_pic=56424 plan=354 p50_ns=129667 p99_ns=199917
+signature enveloppe ns 54917 69209
+admission complete ns 193917 230875
+index_objets n=1 (88, 1295)
+n=1 catalogue=1383 admission_pic=8856 selection_pic=8856 plan=279 p50_ns=22708 p99_ns=27916 id=org.novaos.lab.port00
+index_objets n=16 (1408, 20720)
+n=16 catalogue=22128 admission_pic=29601 selection_pic=8856 plan=279 p50_ns=22334 p99_ns=28625 id=org.novaos.lab.port15
+index_objets n=32 (2816, 41440)
+n=32 catalogue=44256 admission_pic=51729 selection_pic=8856 plan=279 p50_ns=22416 p99_ns=28750 id=org.novaos.lab.port31
+index_objets n=64 (5632, 82880)
+n=64 catalogue=88512 admission_pic=95985 selection_pic=8856 plan=279 p50_ns=22458 p99_ns=33000 id=org.novaos.lab.port63
+64 eligibles selection_pic=9133 p50_ns=1460583 p99_ns=1642042
+64 maximaux catalogue=1054208 admission_pic=1094160
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 1.91s
+
+
+Série 3 x86_64-apple-darwin
+
+running 1 test
+test selection::tests::mesures::catalogue ... politique tas=299 construction_pic=1396 taille=120 catalogue=40 plan=344 entrée=88 ressource=128 dependance=88 liaison=104 signataire=128
+parseur brut=1293 pic=8856 retenu=754
+parseur blanc 16K pic=8856
+resolution ns 167 250
+maximal parseur_pic=56424 modele=16241 admission_pic=56424 catalogue=16472 selection_pic=56424 plan=354 p50_ns=128959 p99_ns=152792
+signature enveloppe ns 55375 83500
+admission complete ns 194000 258000
+index_objets n=1 (88, 1295)
+n=1 catalogue=1383 admission_pic=8856 selection_pic=8856 plan=279 p50_ns=22333 p99_ns=36375 id=org.novaos.lab.port00
+index_objets n=16 (1408, 20720)
+n=16 catalogue=22128 admission_pic=29601 selection_pic=8856 plan=279 p50_ns=22458 p99_ns=34000 id=org.novaos.lab.port15
+index_objets n=32 (2816, 41440)
+n=32 catalogue=44256 admission_pic=51729 selection_pic=8856 plan=279 p50_ns=22458 p99_ns=28416 id=org.novaos.lab.port31
+index_objets n=64 (5632, 82880)
+n=64 catalogue=88512 admission_pic=95985 selection_pic=8856 plan=279 p50_ns=22500 p99_ns=30459 id=org.novaos.lab.port63
+64 eligibles selection_pic=9133 p50_ns=1468250 p99_ns=1671125
+64 maximaux catalogue=1054208 admission_pic=1094160
+ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 6 filtered out; finished in 1.92s
+
+
+__TEXT	__DATA	__OBJC	others	dec	hex
+557056	20480	0	4295180288	4295757824	1000c1000
+Objet nu aarch64-unknown-none-softfloat
+   text	   data	    bss	    dec	    hex	filename
+  93948	      0	      0	  93948	  16efc	CARGO_TARGET_DIR/aarch64-unknown-none-softfloat/release/catalogue-4b-mesure.o
+Sections objet nu aarch64-unknown-none-softfloat {'code': 82212, 'constantes': 2736, 'donnees': 0, 'bss': 0}
+Objet nu x86_64-unknown-none
+   text	   data	    bss	    dec	    hex	filename
+  95874	      0	      0	  95874	  17682	CARGO_TARGET_DIR/x86_64-unknown-none/release/catalogue-4b-mesure.o
+Sections objet nu x86_64-unknown-none {'code': 93172, 'constantes': 2702, 'donnees': 0, 'bss': 0}
+Pile Darwin réservée 143360
+Budget cumulé nominal 21150
+Budget cumulé maximal 130445
+Budget cumulé lignes 21150
+Budget cumulé echappe 21176
+Allocations injectées admission 88
+Allocations injectées 176
+Allocations injectées 14
+aarch64-apple-darwin 28 100ecdb22da36efa64d5bac64f0bc2337c64629047c4d5803a8ebcf7ac2356e5
+Pile Darwin réservée 131072
+Budget cumulé nominal 21150
+Budget cumulé maximal 130445
+Budget cumulé lignes 21150
+Budget cumulé echappe 21176
+Allocations injectées admission 88
+Allocations injectées 176
+Allocations injectées 14
+x86_64-apple-darwin 28 100ecdb22da36efa64d5bac64f0bc2337c64629047c4d5803a8ebcf7ac2356e5
+28 plans ou décisions identiques entre révisions et architectures

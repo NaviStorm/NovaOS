@@ -1,5 +1,7 @@
 # NovaOS v0.25.0 — Catalogue de pilotes hors ligne, phase 4B
 
+[Maîtrise mémoire, qualification et budget d’intégration de phase 4B.1](PHASE4B1.md)
+
 **Révision Rust qualifiée** `621321850cffdd92fd54682ce04b42bb273e5752`, depuis l’architecture 4A `05b5788476735a97450ca490c0b86ad07c3ff8d7`. La bibliothèque `no_std + alloc` vérifie et sélectionne des pilotes pour un inventaire fourni par le banc. Le catalogue publie un plan en mémoire seulement après vérification de l’éligibilité, des droits, des dépendances et des quotas. L’admission vérifie les images de toutes les ISA annoncées. Un refus conserve le catalogue antérieur.
 
 [Schéma v1 et protocole de confiance](SCHEMA.md) · [Exemple appelant l’API publique](examples/selection.rs) · [Vecteurs signés](vecteurs/) · [Décision durable proposée et prérequis 4C](AUTORITE.md) · [Architecture de référence](../../docs/gestionnaire-pilotes/README.md)
