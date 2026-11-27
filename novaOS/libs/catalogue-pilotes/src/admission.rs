@@ -39,18 +39,31 @@ pub(crate) fn verify(
     }
     let k = distribution::public_key(key).map_err(|_| Error::Signature)?;
     let sig = Signature::from_slice(signature).map_err(|_| Error::Signature)?;
-    let mut msg = Vec::with_capacity(domain.len() + 4 + payload.len());
+    let mut msg = Vec::new();
+    msg.try_reserve_exact(domain.len() + 4 + payload.len())
+        .map_err(|_| Error::NoMemory)?;
     msg.extend_from_slice(domain);
     msg.extend_from_slice(&(payload.len() as u32).to_le_bytes());
     msg.extend_from_slice(payload);
     k.verify_strict(&msg, &sig).map_err(|_| Error::Signature)
+}
+pub(crate) struct Record {
+    pub(crate) origin: Origin,
+    pub(crate) policy_revision: u64,
+    pub(crate) security_epoch: u32,
+    pub(crate) id: String,
+    pub(crate) kind: Kind,
+    pub(crate) version: Version,
+
+    pub(crate) sha256: [u8; 32],
+    pub(crate) dependencies: Vec<Dependency>,
 }
 impl Policy {
     pub fn new(
         revision: u64,
         origin: Origin,
         floor: u32,
-        signers: Vec<Signer>,
+        mut signers: Vec<Signer>,
         system_key: [u8; 32],
     ) -> Result<Self> {
         if revision == 0 || floor == 0 || signers.len() > 64 {
@@ -80,6 +93,23 @@ impl Policy {
                 return Err(Error::Denied);
             }
         }
+        // La capacité excédentaire des chaînes et du trousseau appartient à
+        // l'appelant. Le catalogue ne la conserve pas dans la politique.
+        for k in &mut signers {
+            for name in [&mut k.publisher, &mut k.key_id] {
+                if name.capacity() != name.len() {
+                    *name = bounded::copy_str(name)?;
+                }
+            }
+        }
+        if signers.capacity() != signers.len() {
+            let mut packed = Vec::new();
+            packed
+                .try_reserve_exact(signers.len())
+                .map_err(|_| Error::NoMemory)?;
+            packed.append(&mut signers);
+            signers = packed;
+        }
         Ok(Self {
             blocked: Vec::new(),
             revision,
@@ -96,6 +126,9 @@ impl Policy {
             if self.blocked.len() >= 64 {
                 return Err(Error::Limit);
             }
+            self.blocked
+                .try_reserve_exact(1)
+                .map_err(|_| Error::NoMemory)?;
             self.blocked.push(digest);
         }
         self.resources
@@ -123,19 +156,6 @@ impl Policy {
     }
     /// Le profil et son graphe sont attestés par l'autorité système indépendante.
     pub fn add_resource(&mut self, record: &[u8], artifact: &[u8], sig: &[u8]) -> Result<()> {
-        #[derive(Deserialize)]
-        #[serde(deny_unknown_fields)]
-        struct Record {
-            origin: Origin,
-            policy_revision: u64,
-            security_epoch: u32,
-            id: String,
-            kind: Kind,
-            version: Version,
-            #[serde(deserialize_with = "schema::hexbytes")]
-            sha256: [u8; 32],
-            dependencies: Vec<Dependency>,
-        }
         if self.resources.len() >= 64 || artifact.len() > 4 * 1024 * 1024 {
             return Err(Error::Limit);
         }
@@ -168,6 +188,9 @@ impl Policy {
         {
             return Err(Error::Conflict);
         }
+        self.resources
+            .try_reserve_exact(1)
+            .map_err(|_| Error::NoMemory)?;
         self.resources.push(Resource {
             id: r.id,
             kind: r.kind,
@@ -183,6 +206,14 @@ impl<'a> Catalog<'a> {
     pub fn new(policy: &'a Policy) -> Self {
         Self {
             policy,
+            decode_limit: MAX_DECODE_HEAP,
+            entries: Vec::new(),
+        }
+    }
+    pub fn with_decode_limit(policy: &'a Policy, bytes: usize) -> Self {
+        Self {
+            policy,
+            decode_limit: bytes.min(MAX_DECODE_HEAP),
             entries: Vec::new(),
         }
     }
@@ -197,7 +228,7 @@ impl<'a> Catalog<'a> {
         if blobs.len() > 8 {
             return Err(Error::Limit);
         }
-        let m: Manifest = schema::decode(raw)?;
+        let m: Manifest = decode::decode(raw, self.decode_limit)?;
         m.validate()?;
         let policy = self.policy;
         let hash = digest(raw);
@@ -208,10 +239,11 @@ impl<'a> Catalog<'a> {
         {
             return Err(Error::Revoked);
         }
-        let k = policy
+        let (issuer, k) = policy
             .signers
             .iter()
-            .find(|k| {
+            .enumerate()
+            .find(|(_, k)| {
                 k.key_id == m.signing_key_id && k.publisher == m.publisher && k.origin == m.origin
             })
             .ok_or(Error::Denied)?;
@@ -268,42 +300,6 @@ impl<'a> Catalog<'a> {
             }
         }
 
-        if self
-            .entries
-            .iter()
-            .any(|e| e.manifest.id == m.id && e.manifest.publisher != m.publisher)
-        {
-            return Err(Error::Conflict);
-        }
-        let slot = match self.entries.binary_search_by(|e| {
-            e.manifest
-                .id
-                .cmp(&m.id)
-                .then(e.manifest.version.cmp(&m.version))
-        }) {
-            Ok(i) => {
-                return if self.entries[i].digest == hash {
-                    Ok(hash)
-                } else {
-                    Err(Error::Conflict)
-                };
-            }
-            Err(i) => i,
-        };
-        if self.entries.len() >= 64 {
-            return Err(Error::Limit);
-        }
-        self.entries
-            .try_reserve_exact(1)
-            .map_err(|_| Error::Limit)?;
-        self.entries.insert(
-            slot,
-            Entry {
-                manifest: m,
-                digest: hash,
-                priority: k.priority,
-            },
-        );
-        Ok(hash)
+        self.publish(raw, &m, hash, issuer as u8, k.priority)
     }
 }

@@ -1,5 +1,5 @@
 use super::*;
-use alloc::collections::BTreeSet;
+
 use serde::Deserializer;
 pub const MAX_MANIFEST: usize = 16384;
 
@@ -23,18 +23,19 @@ pub(crate) fn hexbytes<'de, D: Deserializer<'de>, const N: usize>(
     }
     Ok(out)
 }
-pub(crate) fn decode<'a, T: Deserialize<'a>>(b: &'a [u8]) -> Result<T> {
-    if b.len() > MAX_MANIFEST {
-        return Err(Error::Limit);
-    }
-    toml::from_str(core::str::from_utf8(b).map_err(|_| Error::Format)?).map_err(|_| Error::Format)
+pub(crate) fn decode<T: crate::decode::Read>(b: &[u8]) -> Result<T> {
+    crate::decode::decode(b, crate::MAX_DECODE_HEAP)
 }
-fn unique<T: Ord>(seq: impl IntoIterator<Item = T>) -> bool {
-    let mut seen = BTreeSet::new();
-    seq.into_iter().all(|v| seen.insert(v))
+fn unique<I: Iterator + Clone>(seq: I) -> bool
+where
+    I::Item: PartialEq,
+{
+    seq.clone()
+        .enumerate()
+        .all(|(i, v)| !seq.clone().take(i).any(|old| old == v))
 }
 fn names(items: &[String]) -> bool {
-    items.len() <= 32 && items.iter().all(|s| name(s)) && unique(items)
+    items.len() <= 32 && items.iter().all(|s| name(s)) && unique(items.iter())
 }
 pub(crate) fn deps(ds: &[Dependency]) -> bool {
     ds.len() <= 16
@@ -80,7 +81,7 @@ impl Manifest {
             || self.provides.is_empty()
             || self.provides.len() > 32
             || !self.provides.iter().all(|s| interface(s))
-            || !unique(&self.provides)
+            || !unique(self.provides.iter())
             || self.matches.is_empty()
             || !self
                 .matches
@@ -97,7 +98,7 @@ impl Manifest {
                 .any(|v| self.required_caps.contains(v))
             || self.image.is_empty()
             || self.image.len() != c.architectures.len()
-            || !unique(&c.architectures)
+            || !unique(c.architectures.iter())
             || !unique(self.image.iter().map(|i| &i.isa))
             || !self.image.iter().all(|i| {
                 matches!(i.isa.as_str(), "aarch64" | "x86_64")

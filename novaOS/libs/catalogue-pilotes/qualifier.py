@@ -39,3 +39,15 @@ for isa in ("aarch64-unknown-none-softfloat","x86_64-unknown-none"):
     path=BUILD/isa/"release/catalogue-4b-mesure.o"
     build("rustc",isa,"--lib","--",f"--emit=obj={path}",extra={"RUSTFLAGS":flags})
     run([size,str(path)])
+
+    sections = run([size, "-A", str(path)], output=True)
+    totals = dict(code=0, constantes=0, donnees=0, bss=0)
+    for line in sections.splitlines():
+        fields = line.split()
+        if len(fields) < 2 or not fields[1].isdigit():
+            continue
+        name, length = fields[0], int(fields[1])
+        for prefix, category in [(".text","code"),(".rodata","constantes"),(".data","donnees"),(".bss","bss")]:
+            if name == prefix or name.startswith(prefix + "."):
+                totals[category] += length
+    print("Sections objet nu", isa, totals, flush=True)

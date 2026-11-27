@@ -7,7 +7,13 @@ extern crate std;
 use alloc::{string::String, vec::Vec};
 use serde::Deserialize;
 mod admission;
+mod bounded;
+mod decode;
+mod document;
+pub use bounded::MAX_DECODE_HEAP;
+mod index;
 mod limits;
+use index::Entry;
 mod schema;
 pub use admission::{Blob, Origin, Signer};
 pub use schema::MAX_MANIFEST;
@@ -23,6 +29,7 @@ pub type Version = [u32; 3];
 pub type Result<T> = core::result::Result<T, Error>;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Error {
+    NoMemory,
     Format,
     Limit,
     Signature,
@@ -81,12 +88,8 @@ pub struct Policy {
 }
 pub struct Catalog<'a> {
     policy: &'a Policy,
+    decode_limit: usize,
     entries: Vec<Entry>,
-}
-struct Entry {
-    manifest: Manifest,
-    digest: [u8; 32],
-    priority: u16,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]

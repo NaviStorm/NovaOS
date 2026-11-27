@@ -90,7 +90,10 @@ impl Catalog<'_> {
             if pin.is_some_and(|v| v != entry.digest) {
                 continue;
             }
-            let m = &entry.manifest;
+            if !entry.possible(&t.bus) {
+                continue;
+            }
+            let m: crate::Manifest = crate::decode::decode(entry.raw(), self.decode_limit)?;
             if m.class != t.class
                 || m.compat.abi_major != t.abi
                 || t.os < m.compat.os_min
@@ -129,6 +132,7 @@ impl Catalog<'_> {
             }
             let bindings = match resolve(&m.dependency, &self.policy.resources) {
                 Ok(result) => result,
+                Err(Error::NoMemory) => return Err(Error::NoMemory),
                 Err(e) => {
                     failure.get_or_insert(e);
                     continue;
@@ -186,28 +190,26 @@ impl Catalog<'_> {
                     conflict = false;
                 }
             }
-            let mut caps = m.required_caps.clone();
-            caps.extend(
-                m.optional_caps
-                    .iter()
-                    .filter(|v| options_ready && t.caps.contains(&v.as_str()))
-                    .cloned(),
-            );
-            caps.sort();
+            let mut caps = m.required_caps;
+            let allowed = |v: &String| options_ready && t.caps.contains(&v.as_str());
+            caps.try_reserve_exact(m.optional_caps.iter().filter(|v| allowed(v)).count())
+                .map_err(|_| Error::NoMemory)?;
+            caps.extend(m.optional_caps.into_iter().filter(allowed));
+            caps.sort_unstable();
             best = Some((
                 rank,
                 Plan {
-                    driver: m.id.clone(),
+                    driver: m.id,
                     version: m.version,
                     manifest: entry.digest,
                     executable: image.elf_sha256,
                     object: image.package_sha256,
                     authority_revision: self.policy.revision,
                     inventory_revision: t.revision,
-                    attachment: t.attachment.into(),
-                    isa: t.isa.into(),
-                    hardware: m.hardware.clone(),
-                    quotas: m.quotas.clone(),
+                    attachment: crate::bounded::copy_str(t.attachment)?,
+                    isa: crate::bounded::copy_str(t.isa)?,
+                    hardware: m.hardware,
+                    quotas: m.quotas,
                     caps,
                     resources: bindings,
                 },

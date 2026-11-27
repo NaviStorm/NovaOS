@@ -1,5 +1,5 @@
 use crate::{Dependency, Error, Kind, Resource, Result, Version};
-use alloc::{collections::BTreeMap, string::String, vec::Vec};
+use alloc::{string::String, vec::Vec};
 
 /// Vue canonique d'une dépendance, copiée dans le plan en ordre d'identifiant.
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -16,19 +16,20 @@ pub fn resolve(needs: &[Dependency], resources: &[Resource]) -> Result<Vec<Bindi
     if needs.len() > 16 || resources.len() > 64 {
         return Err(Error::Limit);
     }
-    let mut done = BTreeMap::new();
+    let mut done = Vec::new();
     let mut active = Vec::new();
     let mut edges = 0usize;
     for need in needs {
         visit(need, resources, &mut done, &mut active, &mut edges)?;
     }
-    Ok(done.into_values().collect())
+    done.sort_unstable_by(|a, b| a.id.cmp(&b.id));
+    Ok(done)
 }
 
 fn visit<'a>(
     need: &Dependency,
     resources: &'a [Resource],
-    done: &mut BTreeMap<&'a str, Binding>,
+    done: &mut Vec<Binding>,
     active: &mut Vec<&'a str>,
     edges: &mut usize,
 ) -> Result<()> {
@@ -52,7 +53,7 @@ fn visit<'a>(
     if active.contains(&node.id.as_str()) {
         return Err(Error::Cycle);
     }
-    if let Some(old) = done.get(node.id.as_str()) {
+    if let Some(old) = done.iter().find(|b| b.id == node.id) {
         if old.sha256 != node.digest || old.version != node.version || old.kind != node.kind {
             return Err(Error::Conflict);
         }
@@ -61,21 +62,20 @@ fn visit<'a>(
     if node.dependencies.len() > 16 {
         return Err(Error::Limit);
     }
+    active.try_reserve_exact(1).map_err(|_| Error::NoMemory)?;
     active.push(&node.id);
     for child in &node.dependencies {
         visit(child, resources, done, active, edges)?;
     }
     active.pop();
-    done.insert(
-        &node.id,
-        Binding {
-            id: node.id.clone(),
-            version: node.version,
-            kind: node.kind,
-            sha256: node.digest,
-            record_digest: node.record_digest,
-        },
-    );
+    done.try_reserve_exact(1).map_err(|_| Error::NoMemory)?;
+    done.push(Binding {
+        id: crate::bounded::copy_str(&node.id)?,
+        version: node.version,
+        kind: node.kind,
+        sha256: node.digest,
+        record_digest: node.record_digest,
+    });
     Ok(())
 }
 

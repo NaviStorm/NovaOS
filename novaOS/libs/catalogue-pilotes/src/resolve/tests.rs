@@ -52,3 +52,18 @@ fn absences_et_version() {
     dep.min = [1, 1, 0];
     assert_eq!(resolve(&[dep], &[node("a", &[])]), Err(Error::Dependency));
 }
+
+#[test]
+fn chaine_profonde_et_budget_des_references() {
+    let ids: Vec<_> = (0..64).map(|i| alloc::format!("service-{i:02}")).collect();
+    let mut graph: Vec<_> = ids.iter().map(|id| node(id, &[])).collect();
+    for (i, r) in graph.iter_mut().take(63).enumerate() {
+        r.dependencies.push(need(&ids[i + 1]));
+    }
+    let root = [need(&ids[0])];
+    assert_eq!(resolve(&root, &graph).unwrap().len(), 64);
+    graph[63].dependencies.push(need(&ids[0]));
+    assert_eq!(resolve(&root, &graph), Err(Error::Limit));
+    graph[61].dependencies = vec![need(&ids[2])];
+    assert_eq!(resolve(&root, &graph), Err(Error::Cycle));
+}

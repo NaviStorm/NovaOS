@@ -357,6 +357,8 @@ dependencies = [
  "serde",
  "sha2 0.10.9",
  "toml",
+ "toml_datetime",
+ "toml_parser",
 ]
 
 [[package]]
