@@ -46,7 +46,7 @@ def main():
     p.add_argument("--cas", nargs="+", choices=("port", "deces", "duo-retrait", "duo-differe", "duo-absent",
                    "duo-sans-reset", "duo-cycles", "duo-reouverture", "duo-postdisque", "duo-concurrence", "duo-disque", "duo-wait-absent", "duo-wait-tardif"))
     p.add_argument("--sonder-garde", action="store_true", help="Observer le refus de réadmission après restitution sur un bail NVMe actif")
-    p.add_argument("--phase4f", choices=("nominal", "deces-observe", "lanceur-observe", "reconciliation"),
+    p.add_argument("--phase4f", choices=("nominal", "deces-observe", "lanceur-observe", "reconciliation", "gestionnaire-actif", "lanceur-actif"),
                    help="Assembler le gestionnaire dynamique Q35 et le retrait individuel 3D")
     a = p.parse_args()
     if a.phase4f and (not a.phase3d or a.sonder_garde or not a.cas or
