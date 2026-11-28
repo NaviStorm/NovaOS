@@ -1,0 +1,48 @@
+ab23fed06d8f7fe6ae28d587755efff948f8161a
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+binary: rustc
+commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+commit-date: 2026-10-13
+host: aarch64-apple-darwin
+release: 1.99.1
+LLVM version: 23.1.1
+aarch64-apple-darwin STANDARD
+test classes_des_controleurs_et_fonction_inconnue ... ok
+test rejet_des_objets_internes_alteres ... ok
+test selection_du_catalogue_signe_et_refus_du_conflit ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+x86_64-apple-darwin STANDARD
+test classes_des_controleurs_et_fonction_inconnue ... ok
+test rejet_des_objets_internes_alteres ... ok
+test selection_du_catalogue_signe_et_refus_du_conflit ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+Tests hôte aarch64-apple-darwin
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+Tests hôte x86_64-apple-darwin
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+Bibliothèque no_std compilée pour x86_64-unknown-uefi
+Bibliothèque no_std compilée pour x86_64-unknown-none
+Bibliothèque no_std compilée pour aarch64-unknown-none-softfloat
+48 sélecteurs ABI
+arm64 : géométrie 5O
+Ran 6 tests in 0.116s
+OK
+arm64 : profil 5R
+Ran 11 tests in 0.154s
+OK
+39 démarrages distincts, 783 pièces, signatures, tables VT-d, E/S et écrans vérifiés.
+arm64 5 cellules STANDARD vérifiées, PCI, traces, compteurs SATA, image GPT/FAT32 et PE concordants
+x86_64 : géométrie 5O
+Ran 6 tests in 0.128s
+OK
+x86_64 : profil 5R
+Ran 11 tests in 0.236s
+OK
+39 démarrages distincts, 783 pièces, signatures, tables VT-d, E/S et écrans vérifiés.
+x86_64 5 cellules STANDARD vérifiées, PCI, traces, compteurs SATA, image GPT/FAT32 et PE concordants
+da718b3944579c3b53e82c1f489eeecd7899ea5097b8a899bb5f884e49665355  novaOS/build/5w/rust/x86_64-unknown-uefi/release/standard.efi
+da718b3944579c3b53e82c1f489eeecd7899ea5097b8a899bb5f884e49665355  novaOS/build/5w/repro-rust/x86_64-unknown-uefi/release/standard.efi
+69406008b7518c2627b53669a53f59a8f82f9bc3c4da9061d21cdc681533765a  novaOS/build/5w/renforce/x86_64-unknown-uefi/release/diagnostic-5r.efi
+69406008b7518c2627b53669a53f59a8f82f9bc3c4da9061d21cdc681533765a  novaOS/build/5w/renforce-base/x86_64-unknown-uefi/release/diagnostic-5r.efi
+actif {'statut': 16, 'confiance': 2, 'arena': 2880, 'vivants': 0} {'rd_operations': 0, 'wr_operations': 0, 'flush_operations': 0, 'unmap_operations': 0, 'rd_bytes': 0, 'wr_bytes': 0}
+inactif {'statut': 16, 'confiance': 2, 'arena': 2880, 'vivants': 0} {'rd_operations': 0, 'wr_operations': 0, 'flush_operations': 0, 'unmap_operations': 0, 'rd_bytes': 0, 'wr_bytes': 0}

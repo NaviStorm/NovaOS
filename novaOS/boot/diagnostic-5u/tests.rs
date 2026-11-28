@@ -537,3 +537,30 @@ fn refuse_mmio_declare_ram_et_limites_arithmetiques() {
         assert_eq!(inv.comparer(&p, &e.vue(), &e.vue()), Err(Refus::Plage));
     }
 }
+
+#[test]
+fn couverture_declaree_sans_autorite_sur_les_alias() {
+    let mut fs = fonctions();
+    for f in &mut fs {
+        f.titulaire = None;
+    }
+    let t = table(&[explicite(), defaut()]);
+    let c = decrire(&t, &fs).unwrap();
+    assert_eq!(c.unites, [U1, U2]);
+    assert_eq!(c.affectations.len(), fs.len());
+    for (f, unite) in fs.iter().zip(c.affectations) {
+        assert_eq!(
+            unite,
+            if f.adresse == PONT || f.adresse.pci().bus == 4 {
+                U1
+            } else {
+                U2
+            }
+        );
+    }
+    assert!(matches!(
+        Inventaire::decouvrir(&[&t], &fs),
+        Err(Refus::Alias)
+    ));
+    assert!(decrire(&table(&[defaut(), defaut()]), &fs).is_err());
+}

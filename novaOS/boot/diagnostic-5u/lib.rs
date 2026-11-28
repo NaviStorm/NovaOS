@@ -159,6 +159,18 @@ impl<'a> Inventaire<'a> {
     /// Une table DMAR ACPI et l'inventaire PCI complet déclaré par l'appelant.
     /// Le succès décrit la couverture de ces données et ne concède aucun droit.
     pub fn decouvrir(tables: &[&[u8]], fs: &'a [Fonction]) -> Resultat<Self> {
+        let inv = Self::resoudre(tables, fs)?;
+        for (i, f) in fs.iter().enumerate() {
+            let owner = f.titulaire.ok_or(Refus::Alias)?;
+            let j = inv.index(owner).map_err(|_| Refus::Alias)?;
+            if fs[j].titulaire != Some(owner) || inv.affectation[i] != inv.affectation[j] {
+                return Err(Refus::Alias);
+            }
+        }
+        Ok(inv)
+    }
+
+    fn resoudre(tables: &[&[u8]], fs: &'a [Fonction]) -> Resultat<Self> {
         let [t] = tables else {
             return Err(Refus::Table);
         };
@@ -251,13 +263,6 @@ impl<'a> Inventaire<'a> {
                     .1;
             }
         }
-        for (i, f) in fs.iter().enumerate() {
-            let owner = f.titulaire.ok_or(Refus::Alias)?;
-            let j = inv.index(owner).map_err(|_| Refus::Alias)?;
-            if fs[j].titulaire != Some(owner) || inv.affectation[i] != inv.affectation[j] {
-                return Err(Refus::Alias);
-            }
-        }
         Ok(inv)
     }
 
@@ -276,6 +281,26 @@ impl<'a> Inventaire<'a> {
     pub fn nombre_unites(&self) -> usize {
         self.unites.len()
     }
+}
+
+/// Affectations déclarées par ACPI, dans l’ordre des fonctions fournies.
+/// Ce type ne peut pas être utilisé pour vérifier un bail ou accorder un droit.
+pub struct CouvertureDeclaree {
+    pub unites: Vec<u64>,
+    pub affectations: Vec<u64>,
+}
+
+pub fn decrire(table: &[u8], fs: &[Fonction]) -> Resultat<CouvertureDeclaree> {
+    let inv = Inventaire::resoudre(&[table], fs)?;
+    let mut affectations = Vec::new();
+    affectations
+        .try_reserve_exact(fs.len())
+        .map_err(|_| Refus::Limite)?;
+    affectations.extend_from_slice(&inv.affectation[..fs.len()]);
+    Ok(CouvertureDeclaree {
+        unites: inv.unites,
+        affectations,
+    })
 }
 
 #[cfg(test)]

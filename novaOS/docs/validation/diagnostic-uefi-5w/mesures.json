@@ -1,0 +1,995 @@
+{
+  "ovmf": "32807682a9e5c0e2d192ecb6077941d4be8bcfa6b9cd6e60830c3a9f48c0555a",
+  "qemu": "QEMU emulator version 11.1.3",
+  "image": "79ee5d200f5e90bca19be8f06011dd8cd0b080f086e4f300005a338b55e20060",
+  "cas": {
+    "actif-dmar": {
+      "stimulus": null,
+      "entree": {
+        "interne": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 4608,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 6,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "materiel": {
+          "unites": {
+            "0xfed90000": {
+              "ver": 16,
+              "cap": 9282482383832942086,
+              "ecap": 15732554,
+              "gsts": 0,
+              "rtaddr": 0
+            }
+          },
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 286331444,
+              "cmd": 7,
+              "classe_revision": 50331650,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:03.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "variables": "33c0e33eabd7420ae5ae8eb1ac003babcfc31bf590d5daea9aae507b25e14874"
+      },
+      "fin": {
+        "interne": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 4608,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 6,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "materiel": {
+          "unites": {
+            "0xfed90000": {
+              "ver": 16,
+              "cap": 9282482383832942086,
+              "ecap": 15732554,
+              "gsts": 0,
+              "rtaddr": 0
+            }
+          },
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 286331444,
+              "cmd": 7,
+              "classe_revision": 50331650,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:03.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "variables": "33c0e33eabd7420ae5ae8eb1ac003babcfc31bf590d5daea9aae507b25e14874"
+      },
+      "reset": {
+        "unmap_operations": 0,
+        "failed_zone_append_operations": 0,
+        "failed_wr_operations": 0,
+        "failed_rd_operations": 0,
+        "wr_bytes": 0,
+        "failed_unmap_operations": 0,
+        "failed_flush_operations": 0,
+        "invalid_unmap_operations": 0,
+        "flush_operations": 0,
+        "wr_operations": 0,
+        "unmap_bytes": 0,
+        "rd_bytes": 0,
+        "invalid_flush_operations": 0,
+        "zone_append_operations": 0,
+        "rd_operations": 0,
+        "zone_append_bytes": 0,
+        "invalid_zone_append_operations": 0,
+        "invalid_wr_operations": 0,
+        "invalid_rd_operations": 0
+      },
+      "trace": {
+        "apm_io_write": 6,
+        "pci_cfg_write": 0,
+        "vtd_reg_write": 0,
+        "ide_bus_exec_cmd": 0,
+        "ahci_cmd_done": 0,
+        "usb_msd_cmd_submit": 0,
+        "e1000e_tx_descr": 0,
+        "e1000e_rx_descr": 0
+      },
+      "bornes": [
+        3824784,
+        3807056
+      ],
+      "journal": [
+        "NovaOS | STANDARD | Diagnostic UEFI x86_64",
+        "NovaOS: Secure Boot actif - EFI admis par la politique UEFI",
+        "Protection DMA avant chargement : INDETERMINEE",
+        "Catalogue de laboratoire : signatures des manifestes et ELF verifiees",
+        "Origine : USB declare par UEFI | sans attestation du media",
+        "CPU AuthenticAMD signature 00000663 | RAM UEFI 62 Mio, libres 4 Mio",
+        "ACPI 7 tables | CPU actifs MADT 2 | PCIe 1 fenetres, 7 fonctions",
+        "VT-d : 1 DRHD declares | traduction et droits effectifs indetermines",
+        "PCI 0000:00:00.0 id=29c08086 classe=060000 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "Graphique 1234:1111 sur 0000:00:01.0",
+        "PCI 0000:00:01.0 id=11111234 classe=030000 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "USB 1b36:000d sur 0000:00:02.0",
+        "PCI 0000:00:02.0 id=000d1b36 classe=0c0330 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "Reseau 8086:10d3 sur 0000:00:03.0",
+        "PCI 0000:00:03.0 id=10d38086 classe=020000 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "PCI 0000:00:1f.0 id=29188086 classe=060100 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "Stockage 8086:2922 sur 0000:00:1f.2",
+        "PCI 0000:00:1f.2 id=29228086 classe=010601 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "PCI 0000:00:1f.3 id=29308086 classe=0c0500 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "Pilote compatible : ioapic (catalogue de laboratoire)",
+        "Controleurs : USB 1 | reseau 1 | graphique 1 | stockage 1 | autres 3",
+        "Pilotes selectionnes 1 | conflits 1 | activations 0",
+        "Isolation pour activation : NON ETABLIE | aucun peripherique active",
+        "Inventaire termine | journal en RAM | arret local"
+      ],
+      "disque_intact": true,
+      "arret_cpu": true
+    },
+    "inactif-sans-dmar": {
+      "stimulus": null,
+      "entree": {
+        "interne": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 4608,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 6,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "materiel": {
+          "unites": {},
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 286331444,
+              "cmd": 7,
+              "classe_revision": 50331650,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:03.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:04.0": {
+              "ident": 334646,
+              "cmd": 7,
+              "classe_revision": 16711680,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "variables": "79661836c19eef04467a225d3083b6802aac863aa19eec5adf6f3d799faa3fd3"
+      },
+      "fin": {
+        "interne": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 4608,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 6,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "materiel": {
+          "unites": {},
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 286331444,
+              "cmd": 7,
+              "classe_revision": 50331650,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:03.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:04.0": {
+              "ident": 334646,
+              "cmd": 7,
+              "classe_revision": 16711680,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "variables": "79661836c19eef04467a225d3083b6802aac863aa19eec5adf6f3d799faa3fd3"
+      },
+      "reset": {
+        "unmap_operations": 0,
+        "failed_zone_append_operations": 0,
+        "failed_wr_operations": 0,
+        "failed_rd_operations": 0,
+        "wr_bytes": 0,
+        "failed_unmap_operations": 0,
+        "failed_flush_operations": 0,
+        "invalid_unmap_operations": 0,
+        "flush_operations": 0,
+        "wr_operations": 0,
+        "unmap_bytes": 0,
+        "rd_bytes": 0,
+        "invalid_flush_operations": 0,
+        "zone_append_operations": 0,
+        "rd_operations": 0,
+        "zone_append_bytes": 0,
+        "invalid_zone_append_operations": 0,
+        "invalid_wr_operations": 0,
+        "invalid_rd_operations": 0
+      },
+      "trace": {
+        "apm_io_write": 6,
+        "pci_cfg_write": 0,
+        "vtd_reg_write": 0,
+        "ide_bus_exec_cmd": 0,
+        "ahci_cmd_done": 0,
+        "usb_msd_cmd_submit": 0,
+        "e1000e_tx_descr": 0,
+        "e1000e_rx_descr": 0
+      },
+      "bornes": [
+        3824784,
+        3807056
+      ],
+      "journal": [
+        "NovaOS | STANDARD | Diagnostic UEFI x86_64",
+        "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "Protection DMA avant chargement : INDETERMINEE",
+        "Catalogue de laboratoire : signatures des manifestes et ELF verifiees",
+        "Origine : USB declare par UEFI | sans attestation du media",
+        "CPU AuthenticAMD signature 00000663 | RAM UEFI 62 Mio, libres 4 Mio",
+        "ACPI 6 tables | CPU actifs MADT 2 | PCIe 1 fenetres, 8 fonctions",
+        "VT-d : table DMAR absente | isolation DMA non etablie",
+        "PCI 0000:00:00.0 id=29c08086 classe=060000 BME=1 DRHD=None pilote=aucun",
+        "Graphique 1234:1111 sur 0000:00:01.0",
+        "PCI 0000:00:01.0 id=11111234 classe=030000 BME=1 DRHD=None pilote=aucun",
+        "USB 1b36:000d sur 0000:00:02.0",
+        "PCI 0000:00:02.0 id=000d1b36 classe=0c0330 BME=1 DRHD=None pilote=aucun",
+        "Reseau 8086:10d3 sur 0000:00:03.0",
+        "PCI 0000:00:03.0 id=10d38086 classe=020000 BME=1 DRHD=None pilote=aucun",
+        "PCI 0000:00:04.0 id=00051b36 classe=00ff00 BME=1 DRHD=None pilote=aucun",
+        "PCI 0000:00:1f.0 id=29188086 classe=060100 BME=1 DRHD=None pilote=aucun",
+        "Stockage 8086:2922 sur 0000:00:1f.2",
+        "PCI 0000:00:1f.2 id=29228086 classe=010601 BME=1 DRHD=None pilote=aucun",
+        "PCI 0000:00:1f.3 id=29308086 classe=0c0500 BME=1 DRHD=None pilote=aucun",
+        "Pilote compatible : ioapic (catalogue de laboratoire)",
+        "Controleurs : USB 1 | reseau 1 | graphique 1 | stockage 1 | autres 4",
+        "Pilotes selectionnes 1 | conflits 1 | activations 0",
+        "Isolation pour activation : NON ETABLIE | aucun peripherique active",
+        "Inventaire termine | journal en RAM | arret local"
+      ],
+      "disque_intact": true,
+      "arret_cpu": true
+    },
+    "inactif-tes-actif": {
+      "stimulus": {
+        "origine": "banc uniquement, apr\u00e8s LoadImage, avant premi\u00e8re instruction",
+        "avant": {
+          "ver": 16,
+          "cap": 9282482383832942086,
+          "ecap": 15732554,
+          "gsts": 0,
+          "rtaddr": 0
+        },
+        "apres": {
+          "ver": 16,
+          "cap": 9282482383832942086,
+          "ecap": 15732554,
+          "gsts": 3221225472,
+          "rtaddr": 62328832
+        },
+        "racine_sans_entree": 62328832
+      },
+      "entree": {
+        "interne": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 4608,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 6,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "materiel": {
+          "unites": {
+            "0xfed90000": {
+              "ver": 16,
+              "cap": 9282482383832942086,
+              "ecap": 15732554,
+              "gsts": 3221225472,
+              "rtaddr": 62328832
+            }
+          },
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 286331444,
+              "cmd": 7,
+              "classe_revision": 50331650,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:03.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "variables": "79661836c19eef04467a225d3083b6802aac863aa19eec5adf6f3d799faa3fd3"
+      },
+      "fin": {
+        "interne": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 4608,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 6,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "materiel": {
+          "unites": {
+            "0xfed90000": {
+              "ver": 16,
+              "cap": 9282482383832942086,
+              "ecap": 15732554,
+              "gsts": 3221225472,
+              "rtaddr": 62328832
+            }
+          },
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 286331444,
+              "cmd": 7,
+              "classe_revision": 50331650,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:03.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "variables": "79661836c19eef04467a225d3083b6802aac863aa19eec5adf6f3d799faa3fd3"
+      },
+      "reset": {
+        "unmap_operations": 0,
+        "failed_zone_append_operations": 0,
+        "failed_wr_operations": 0,
+        "failed_rd_operations": 0,
+        "wr_bytes": 0,
+        "failed_unmap_operations": 0,
+        "failed_flush_operations": 0,
+        "invalid_unmap_operations": 0,
+        "flush_operations": 0,
+        "wr_operations": 0,
+        "unmap_bytes": 0,
+        "rd_bytes": 0,
+        "invalid_flush_operations": 0,
+        "zone_append_operations": 0,
+        "rd_operations": 0,
+        "zone_append_bytes": 0,
+        "invalid_zone_append_operations": 0,
+        "invalid_wr_operations": 0,
+        "invalid_rd_operations": 0
+      },
+      "trace": {
+        "apm_io_write": 6,
+        "pci_cfg_write": 0,
+        "vtd_reg_write": 0,
+        "ide_bus_exec_cmd": 0,
+        "ahci_cmd_done": 0,
+        "usb_msd_cmd_submit": 0,
+        "e1000e_tx_descr": 0,
+        "e1000e_rx_descr": 0
+      },
+      "bornes": [
+        3824784,
+        3807056
+      ],
+      "journal": [
+        "NovaOS | STANDARD | Diagnostic UEFI x86_64",
+        "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "Protection DMA avant chargement : INDETERMINEE",
+        "Catalogue de laboratoire : signatures des manifestes et ELF verifiees",
+        "Origine : USB declare par UEFI | sans attestation du media",
+        "CPU AuthenticAMD signature 00000663 | RAM UEFI 62 Mio, libres 4 Mio",
+        "ACPI 8 tables | CPU actifs MADT 2 | PCIe 1 fenetres, 7 fonctions",
+        "VT-d : 1 DRHD declares | traduction et droits effectifs indetermines",
+        "PCI 0000:00:00.0 id=29c08086 classe=060000 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "Graphique 1234:1111 sur 0000:00:01.0",
+        "PCI 0000:00:01.0 id=11111234 classe=030000 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "USB 1b36:000d sur 0000:00:02.0",
+        "PCI 0000:00:02.0 id=000d1b36 classe=0c0330 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "Reseau 8086:10d3 sur 0000:00:03.0",
+        "PCI 0000:00:03.0 id=10d38086 classe=020000 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "PCI 0000:00:1f.0 id=29188086 classe=060100 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "Stockage 8086:2922 sur 0000:00:1f.2",
+        "PCI 0000:00:1f.2 id=29228086 classe=010601 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "PCI 0000:00:1f.3 id=29308086 classe=0c0500 BME=1 DRHD=Some(fed90000) pilote=aucun",
+        "Pilote compatible : ioapic (catalogue de laboratoire)",
+        "Controleurs : USB 1 | reseau 1 | graphique 1 | stockage 1 | autres 3",
+        "Pilotes selectionnes 1 | conflits 1 | activations 0",
+        "Isolation pour activation : NON ETABLIE | aucun peripherique active",
+        "Inventaire termine | journal en RAM | arret local"
+      ],
+      "disque_intact": true,
+      "arret_cpu": true
+    },
+    "inactif-refus": {
+      "stimulus": null,
+      "entree": {
+        "interne": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 4608,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 6,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "materiel": {
+          "unites": {
+            "0xfed90000": {
+              "ver": 16,
+              "cap": 9282482383832942086,
+              "ecap": 15732554,
+              "gsts": 0,
+              "rtaddr": 0
+            }
+          },
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 286331444,
+              "cmd": 7,
+              "classe_revision": 50331650,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:03.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "variables": "79661836c19eef04467a225d3083b6802aac863aa19eec5adf6f3d799faa3fd3"
+      },
+      "fin": {
+        "interne": {
+          "unmap_operations": 0,
+          "failed_zone_append_operations": 0,
+          "failed_wr_operations": 0,
+          "failed_rd_operations": 0,
+          "wr_bytes": 0,
+          "failed_unmap_operations": 0,
+          "failed_flush_operations": 0,
+          "invalid_unmap_operations": 0,
+          "flush_operations": 0,
+          "wr_operations": 0,
+          "unmap_bytes": 0,
+          "rd_bytes": 4608,
+          "invalid_flush_operations": 0,
+          "zone_append_operations": 0,
+          "rd_operations": 6,
+          "zone_append_bytes": 0,
+          "invalid_zone_append_operations": 0,
+          "invalid_wr_operations": 0,
+          "invalid_rd_operations": 0
+        },
+        "materiel": {
+          "unites": {
+            "0xfed90000": {
+              "ver": 16,
+              "cap": 9282482383832942086,
+              "ecap": 15732554,
+              "gsts": 0,
+              "rtaddr": 0
+            }
+          },
+          "pci": {
+            "0000:00:00.0": {
+              "ident": 700481670,
+              "cmd": 7,
+              "classe_revision": 100663296,
+              "header": 0
+            },
+            "0000:00:01.0": {
+              "ident": 286331444,
+              "cmd": 7,
+              "classe_revision": 50331650,
+              "header": 0
+            },
+            "0000:00:02.0": {
+              "ident": 858934,
+              "cmd": 7,
+              "classe_revision": 201535489,
+              "header": 0
+            },
+            "0000:00:03.0": {
+              "ident": 282296454,
+              "cmd": 7,
+              "classe_revision": 33554432,
+              "header": 0
+            },
+            "0000:00:1f.0": {
+              "ident": 689471622,
+              "cmd": 7,
+              "classe_revision": 100728834,
+              "header": 128
+            },
+            "0000:00:1f.2": {
+              "ident": 690126982,
+              "cmd": 7,
+              "classe_revision": 17170690,
+              "header": 128
+            },
+            "0000:00:1f.3": {
+              "ident": 691044486,
+              "cmd": 7,
+              "classe_revision": 201654274,
+              "header": 128
+            }
+          },
+          "ecam": [
+            [
+              3758096384,
+              4026531839
+            ]
+          ]
+        },
+        "variables": "79661836c19eef04467a225d3083b6802aac863aa19eec5adf6f3d799faa3fd3"
+      },
+      "reset": {
+        "unmap_operations": 0,
+        "failed_zone_append_operations": 0,
+        "failed_wr_operations": 0,
+        "failed_rd_operations": 0,
+        "wr_bytes": 0,
+        "failed_unmap_operations": 0,
+        "failed_flush_operations": 0,
+        "invalid_unmap_operations": 0,
+        "flush_operations": 0,
+        "wr_operations": 0,
+        "unmap_bytes": 0,
+        "rd_bytes": 0,
+        "invalid_flush_operations": 0,
+        "zone_append_operations": 0,
+        "rd_operations": 0,
+        "zone_append_bytes": 0,
+        "invalid_zone_append_operations": 0,
+        "invalid_wr_operations": 0,
+        "invalid_rd_operations": 0
+      },
+      "trace": {
+        "apm_io_write": 6,
+        "pci_cfg_write": 0,
+        "vtd_reg_write": 0,
+        "ide_bus_exec_cmd": 0,
+        "ahci_cmd_done": 0,
+        "usb_msd_cmd_submit": 0,
+        "e1000e_tx_descr": 0,
+        "e1000e_rx_descr": 0
+      },
+      "bornes": [
+        3824784,
+        3807056
+      ],
+      "journal": [
+        "NovaOS | STANDARD | Diagnostic UEFI x86_64",
+        "NovaOS: Secure Boot inactif - chaine de demarrage non authentifiee",
+        "Protection DMA avant chargement : INDETERMINEE",
+        "STANDARD REFUS 6 : authentification du catalogue | arret local"
+      ],
+      "disque_intact": true,
+      "arret_cpu": true
+    },
+    "actif-refus-firmware": {
+      "refus_ovmf": true,
+      "repli_sata": true,
+      "aucune_option": true,
+      "avant": {
+        "unmap_operations": 0,
+        "failed_zone_append_operations": 0,
+        "failed_wr_operations": 0,
+        "failed_rd_operations": 0,
+        "wr_bytes": 0,
+        "failed_unmap_operations": 0,
+        "failed_flush_operations": 0,
+        "invalid_unmap_operations": 0,
+        "flush_operations": 0,
+        "wr_operations": 0,
+        "unmap_bytes": 0,
+        "rd_bytes": 0,
+        "invalid_flush_operations": 0,
+        "zone_append_operations": 0,
+        "rd_operations": 0,
+        "zone_append_bytes": 0,
+        "invalid_zone_append_operations": 0,
+        "invalid_wr_operations": 0,
+        "invalid_rd_operations": 0
+      },
+      "apres": {
+        "unmap_operations": 0,
+        "failed_zone_append_operations": 0,
+        "failed_wr_operations": 0,
+        "failed_rd_operations": 0,
+        "wr_bytes": 0,
+        "failed_unmap_operations": 0,
+        "failed_flush_operations": 0,
+        "invalid_unmap_operations": 0,
+        "flush_operations": 0,
+        "wr_operations": 0,
+        "unmap_bytes": 0,
+        "rd_bytes": 46592,
+        "invalid_flush_operations": 0,
+        "zone_append_operations": 0,
+        "rd_operations": 58,
+        "zone_append_bytes": 0,
+        "invalid_zone_append_operations": 0,
+        "invalid_wr_operations": 0,
+        "invalid_rd_operations": 0
+      },
+      "disque_intact": true
+    }
+  },
+  "magasin_actif": "536a14c41cd779445d77aeccd00bc2fe35f4aa68918f6108d7254a709d321e40",
+  "magasin_inactif": "d7c1216315bd8c7d2cca49bcb7b9c99d3e86340f052b1b88456c476ab5455135"
+}

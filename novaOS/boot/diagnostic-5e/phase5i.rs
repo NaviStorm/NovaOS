@@ -39,7 +39,7 @@ fn read(p: *mut pci_io::Protocol, reg: Reg) -> Result<u32, u64> {
     }
 }
 
-fn functions(bs: &efi::BootServices, windows: &[acpi::Ecam]) -> Result<Vec<Function>, u64> {
+pub(crate) fn functions(bs: &efi::BootServices, windows: &[acpi::Ecam]) -> Result<Vec<Function>, u64> {
     let mut handles = [ptr::null_mut(); MAX_HANDLES];
     let mut bytes = mem::size_of_val(&handles);
     let s = unsafe {

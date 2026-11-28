@@ -99,7 +99,7 @@ Les images de développement se construisent aujourd’hui depuis le workspace N
 
 ## Feuille de route
 
-NovaOS vise une image générique par architecture et une autorité de signature indépendante. Le propriétaire choisit le mode Secure Boot. Les contrôles des paquets restent obligatoires dans les deux modes. La protection DMA et les conditions de démarrage physique restent à qualifier. [Décision 5H](novaOS/docs/reconciliation-v0300/decisions.md#decision-5h)
+NovaOS vise une image générique par architecture et une autorité de signature indépendante. Le propriétaire choisit le mode Secure Boot. Les contrôles des paquets restent obligatoires dans les deux modes. Le diagnostic STANDARD peut inventorier un PC avec une protection DMA antérieure indéterminée. Le profil RENFORCÉ exige la preuve de cette protection dès avant chargement. Le premier essai physique du MSI reste soumis à A8. [Décision 5H](novaOS/docs/reconciliation-v0300/decisions.md#decision-5h) · [Profils et qualification 5W](novaOS/docs/diagnostic-uefi-5w.md)
 
 Le serveur devra prendre en charge les usages déclarés de bout en bout sur **QEMU x86_64**, référence principale, et **QEMU AArch64**, seconde référence obligatoire. Les critères couvrent l’installation autonome, les comptes et ACL, les données surprotégées, les threads utilisateur, la CLI/TUI, le réseau double pile et son pare-feu, les services, le serveur SSH, le client SSH, les transferts SFTP et la reprise après incident. L’équivalence avec un serveur Linux s’évalue sur ces usages. Le Tecra A50-J reste une cible physique expérimentale. [Décisions MOA](novaOS/docs/reconciliation-v0300/decisions.md) · [Parcours serveur bloquants](novaOS/docs/reconciliation-v0300/acceptation-serveur.md)
 

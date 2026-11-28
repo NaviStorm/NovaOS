@@ -125,3 +125,7 @@ Référence de départ `4489fce73d8fe66b3406679dbb6d564d05a6c54d`. Le mandat 5I 
 | Drainage et restitution | Autorisés pour un lot distinct en laboratoire. Exiger un bail lié au titulaire, à l’incarnation et à la génération, la clôture ciblée des transactions et les reçus d’invalidation pour chaque page. Quarantaine si la preuve manque. |
 
 L’ABI et les droits des applications restent ceux de 5H. A8 est fermé. [Matrice, preuves et conditions de 5J](../diagnostic-uefi-5i.md)
+
+## Décision MOE 5W révisée du 28 novembre 2026 — Démarrage UEFI standard
+
+Le MSI GE62 6QC reste la première cible physique. Pour STANDARD, la MOE admet une protection DMA antérieure indéterminée pour le diagnostic passif, affichée comme telle. La vérification interne des composants signés demeure obligatoire. Une future activation DMA par NovaOS exige des protections établies et contrôlées. RENFORCÉ conserve les garanties 5I–5V et refuse les preuves manquantes. Le choix du profil est explicite. L’autorisation d’essai physique A8 reste fermée. [Décision, mesures et conditions opérateur](../diagnostic-uefi-5w.md)

@@ -42,7 +42,7 @@ def ram_reader(q):
     return read
 
 
-def tables(q):
+def tables(q, visiter=None):
     if q.call("query-status")["running"]:
         raise ValueError("CPU actif")
     read = ram_reader(q)
@@ -113,6 +113,8 @@ def tables(q):
     out = {}
     for (ptr,) in struct.iter_unpack("<Q", root[36:]):
         blob = table(ptr)
+        if visiter is not None:
+            visiter(ptr, blob)
         if blob[:4] not in (b"MCFG", b"DMAR", b"FACP"):
             continue
         key = blob[:4].decode()
