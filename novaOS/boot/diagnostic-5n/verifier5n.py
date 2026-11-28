@@ -1,6 +1,7 @@
 """Contre-lecture hors VM des structures sur disque et des décisions du banc."""
 
 import argparse
+from contextlib import ExitStack
 import gzip
 import io
 import json
@@ -73,8 +74,13 @@ def geometry(data):
 
 
 def fat_files(data, extent, name):
+    with ExitStack() as vues:
+        return _fat_files(data, extent, name, vues)
+
+
+def _fat_files(data, extent, name, vues):
     start, size = extent
-    b = memoryview(data)[start : start + size]
+    b = vues.enter_context(memoryview(data)[start : start + size])
     ss, cluster, reserved, fats = struct.unpack_from("<HBHB", b, 11)
     total, fat = struct.unpack_from("<2I", b, 32)
     (root,) = struct.unpack_from("<I", b, 44)
@@ -90,7 +96,7 @@ def fat_files(data, extent, name):
     base = reserved + fats * fat
     count = total - base
     require(count >= 65525 and fat * ss >= 4 * (count + 2), "Type FAT32")
-    table = b[reserved * ss : (reserved + fat) * ss]
+    table = vues.enter_context(b[reserved * ss : (reserved + fat) * ss])
     require(table == b[(reserved + fat) * ss : base * ss], "Deux FAT différentes")
     used = set()
 
@@ -142,9 +148,13 @@ def fat_files(data, extent, name):
                 )
                 files[path] = bytes(content[:length])
 
-    walk(root, "")
-    (free,) = struct.unpack_from("<I", b, ss + 488)
-    require(free == count - len(used), "FSInfo")
+    try:
+        walk(root, "")
+        (free,) = struct.unpack_from("<I", b, ss + 488)
+        require(free == count - len(used), "FSInfo")
+    finally:
+        # La fermeture récursive garde une vue du mmap jusqu’au prochain GC.
+        del walk
     return files
 
 

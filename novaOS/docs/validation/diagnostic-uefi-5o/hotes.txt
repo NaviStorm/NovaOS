@@ -1,0 +1,160 @@
+arm64 3.9.6
+Phase 5o
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.071s
+
+OK
+Phase 5n
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.448s
+
+OK
+Phase 5m
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.103s
+
+OK
+Phase 5l
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.070s
+
+OK
+Phase 5k
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 0.001s
+
+OK
+Phase 5j
+..........
+----------------------------------------------------------------------
+Ran 10 tests in 0.002s
+
+OK
+Phase 5i
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK
+12 verdicts GOP, 2 projections, 11 cas USB, 1 démarrage avec journaux, 2 magasins et image 68 Mio vérifiés.
+GPT, deux FAT32, PE 5M, 20 démarrages mesurés, 8 rapports et 24 fichiers contre-lus
+x86_64 3.9.6
+Phase 5o
+.....
+----------------------------------------------------------------------
+Ran 5 tests in 0.114s
+
+OK
+Phase 5n
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.737s
+
+OK
+Phase 5m
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.199s
+
+OK
+Phase 5l
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.105s
+
+OK
+Phase 5k
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 0.001s
+
+OK
+Phase 5j
+..........
+----------------------------------------------------------------------
+Ran 10 tests in 0.002s
+
+OK
+Phase 5i
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK
+12 verdicts GOP, 2 projections, 11 cas USB, 1 démarrage avec journaux, 2 magasins et image 68 Mio vérifiés.
+GPT, deux FAT32, PE 5M, 20 démarrages mesurés, 8 rapports et 24 fichiers contre-lus
+python3 scripts/generate_abi.py --check
+bilan.json: OK
+hotes.txt: OK
+laboratoire.tar.gz: OK
+observations.tar.gz: OK
+rejeu.json: OK
+hotes.txt: OK
+laboratoire.tar.gz: OK
+observations.tar.gz: OK
+hotes.txt: OK
+modules.tar.gz: OK
+observations.tar.gz: OK
+modules.tar.gz: OK
+observations.tar.gz: OK
+regression-5k.tar.gz: OK
+hotes.txt: OK
+observations.tar.gz: OK
+supports.tar.gz: OK
+hotes.txt: OK
+captures/bds.json: OK
+captures/observations.json: OK
+captures/rapports.zip: OK
+fsck.txt: OK
+hotes.txt: OK
+lecture-linux.json: OK
+lecture-macos.json: OK
+lecture-windows.json: OK
+lecture-windows.png: OK
+modes.json: OK
+novaos-x86_64.img.gz: OK
+relecture-finale.txt: OK
+12 fichiers aux 4 capacités relus avec le vérificateur livré
+arm64, contrôle final des vues FAT et de la contre-lecture
+test_capacite_incompatible (test_image5o.ImageTests) ... ok
+test_capacite_non_ronde_et_miroir (test_image5o.ImageTests) ... ok
+test_fat_invalide_libere_les_vues_du_mmap (test_image5o.ImageTests) ... ok
+test_fichier_creux_et_repli_dense (test_image5o.ImageTests) ... ok
+test_refuse_donnees_etrangeres_et_journal_modifie (test_image5o.ImageTests) ... ok
+test_sorties_existantes_et_liens (test_image5o.ImageTests) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.083s
+
+OK
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.442s
+
+OK
+12 verdicts GOP, 2 projections, 11 cas USB, 1 démarrage avec journaux, 2 magasins et image 68 Mio vérifiés.
+GPT, deux FAT32, PE 5M, 20 démarrages mesurés, 8 rapports et 24 fichiers contre-lus
+x86_64, contrôle final des vues FAT et de la contre-lecture
+test_capacite_incompatible (test_image5o.ImageTests) ... ok
+test_capacite_non_ronde_et_miroir (test_image5o.ImageTests) ... ok
+test_fat_invalide_libere_les_vues_du_mmap (test_image5o.ImageTests) ... ok
+test_fichier_creux_et_repli_dense (test_image5o.ImageTests) ... ok
+test_refuse_donnees_etrangeres_et_journal_modifie (test_image5o.ImageTests) ... ok
+test_sorties_existantes_et_liens (test_image5o.ImageTests) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.125s
+
+OK
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.744s
+
+OK
+12 verdicts GOP, 2 projections, 11 cas USB, 1 démarrage avec journaux, 2 magasins et image 68 Mio vérifiés.
+GPT, deux FAT32, PE 5M, 20 démarrages mesurés, 8 rapports et 24 fichiers contre-lus

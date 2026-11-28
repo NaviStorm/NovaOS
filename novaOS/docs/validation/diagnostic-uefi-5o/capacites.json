@@ -1,0 +1,97 @@
+{
+  "capacites": [
+    {
+      "octets": 71303168,
+      "secondaire_lba": 139263,
+      "partitions": {
+        "NOVAOS": [
+          1048576,
+          34603008
+        ],
+        "NOVALOGS": [
+          35651584,
+          34603008
+        ]
+      },
+      "fichiers_prealloues": 24,
+      "alloues": 753664,
+      "sha256": "a4dd3d96739b0821f955a4e4e14524516b100e557d333739a6cecda23d31d7cb",
+      "sha_copie": "a4dd3d96739b0821f955a4e4e14524516b100e557d333739a6cecda23d31d7cb",
+      "octets_alloues_copie": 753664,
+      "generation_us": 22079,
+      "controle_us": 8062,
+      "copie_controles_us": 14051,
+      "sha_us": 26535
+    },
+    {
+      "octets": 1073741824,
+      "secondaire_lba": 2097151,
+      "partitions": {
+        "NOVAOS": [
+          1048576,
+          34603008
+        ],
+        "NOVALOGS": [
+          35651584,
+          34603008
+        ]
+      },
+      "fichiers_prealloues": 24,
+      "alloues": 753664,
+      "sha256": "0dc7ea17e70d8a9d0dec539c9fcdec62a3845547ab580fb859fc509f03004f35",
+      "sha_copie": "0dc7ea17e70d8a9d0dec539c9fcdec62a3845547ab580fb859fc509f03004f35",
+      "octets_alloues_copie": 753664,
+      "generation_us": 1754,
+      "controle_us": 7601,
+      "copie_controles_us": 13819,
+      "sha_us": 407529
+    },
+    {
+      "octets": 8589934592,
+      "secondaire_lba": 16777215,
+      "partitions": {
+        "NOVAOS": [
+          1048576,
+          34603008
+        ],
+        "NOVALOGS": [
+          35651584,
+          34603008
+        ]
+      },
+      "fichiers_prealloues": 24,
+      "alloues": 753664,
+      "sha256": "2f45864a2b9ced6cb447bc374ab8c71ef2ec5250d874ec61fe24c1607a967e02",
+      "sha_copie": "2f45864a2b9ced6cb447bc374ab8c71ef2ec5250d874ec61fe24c1607a967e02",
+      "octets_alloues_copie": 753664,
+      "generation_us": 2397,
+      "controle_us": 7242,
+      "copie_controles_us": 13212,
+      "sha_us": 3092837
+    },
+    {
+      "octets": 17179869184,
+      "secondaire_lba": 33554431,
+      "partitions": {
+        "NOVAOS": [
+          1048576,
+          34603008
+        ],
+        "NOVALOGS": [
+          35651584,
+          34603008
+        ]
+      },
+      "fichiers_prealloues": 24,
+      "alloues": 753664,
+      "sha256": "33a731dbc3ce2d340f705e80c5aabe005c76e780344480867a74d709cbb15816",
+      "sha_copie": "33a731dbc3ce2d340f705e80c5aabe005c76e780344480867a74d709cbb15816",
+      "octets_alloues_copie": 753664,
+      "generation_us": 2850,
+      "controle_us": 8249,
+      "copie_controles_us": 16631,
+      "sha_us": 6420058
+    }
+  ],
+  "pic_rss_octets_darwin": 37175296
+}

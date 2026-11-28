@@ -1,0 +1,53 @@
+{
+  "original": "dd0e83543b732a6b0497e63f106fb064c25b0034591c84d471e585d901a0d671",
+  "copie": "bf41a49e08223f8e0a0192371d8fb79602faf56e4c0a58a5ad79624a54f2ed8f",
+  "variables": {
+    "CustomMode": {
+      "avant": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "apres": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "attributs": 3,
+      "horodatage_avant": "None",
+      "horodatage_apres": "None"
+    },
+    "KEK": {
+      "avant": "f7b69ebd6b7ea5e08747a80187e97bebc6a6aceb5e82999b637fd6b8b707d5b3",
+      "apres": "f7b69ebd6b7ea5e08747a80187e97bebc6a6aceb5e82999b637fd6b8b707d5b3",
+      "attributs": 39,
+      "horodatage_avant": "2026-11-26 23:36:10+00:00",
+      "horodatage_apres": "2026-11-26 23:36:10+00:00"
+    },
+    "PK": {
+      "avant": "469735e2a7d596eef588ccf67214e12fe606d2691571d3e525d77cbe1db056dd",
+      "apres": "469735e2a7d596eef588ccf67214e12fe606d2691571d3e525d77cbe1db056dd",
+      "attributs": 39,
+      "horodatage_avant": "2026-11-26 23:36:10+00:00",
+      "horodatage_apres": "2026-11-26 23:36:10+00:00"
+    },
+    "SecureBootEnable": {
+      "avant": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a",
+      "apres": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a",
+      "attributs": 3,
+      "horodatage_avant": "None",
+      "horodatage_apres": "None"
+    },
+    "db": {
+      "avant": "9d759361fb86b48332cd7da19bdc6d2863e6269e14949906c6deb143fdb675f3",
+      "apres": "b6a0a349a7e8814472b65723189b62fd4b6ac41a892ed44c0e701ffe81ed93af",
+      "attributs": 39,
+      "horodatage_avant": "2026-11-26 23:36:10+00:00",
+      "horodatage_apres": "2026-11-26 23:36:10+00:00"
+    },
+    "dbx": {
+      "avant": "857a88a42c81314554bbc397ec3ce5f6249db5e27c887d3d476635e12443260f",
+      "apres": "857a88a42c81314554bbc397ec3ce5f6249db5e27c887d3d476635e12443260f",
+      "attributs": 39,
+      "horodatage_avant": "2026-11-27 23:36:10.386433+00:00",
+      "horodatage_apres": "2026-11-27 23:36:10.386433+00:00"
+    }
+  },
+  "ajouts": [
+    "6dd1672126dead963358ddb8c1895d91431b8389d1673db8e944aab9e314c44b"
+  ],
+  "taille": 540672,
+  "octets_differents": 187
+}

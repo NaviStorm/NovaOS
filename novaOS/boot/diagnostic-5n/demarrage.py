@@ -50,7 +50,7 @@ def count(q):
             )
         }
         for r in rows
-        if r.get("device") in ("usb5n", "interne")
+        if r.get("device") in ("usb5n", "clone5n", "interne")
     }
 
 
@@ -87,17 +87,35 @@ def directory(p):
         os.chdir(old)
 
 
-def boot(folder, fw, mode, medium, base=None, duplicate=None, temoin=False):
+def boot(
+    folder,
+    fw,
+    mode,
+    medium,
+    base=None,
+    duplicate=None,
+    temoin=False,
+    *,
+    image_test=None,
+    variables_test=None,
+    ecran=False,
+):
     folder.mkdir(mode=0o700)
     pe = (
         public_member("hors-db.efi", HORS_DB)
         if temoin
         else public_member("valide.efi", PE_SHA)
     )
+    if image_test is not None:
+        pe = image_test
     meta = pe_info(pe)
     require(empreinte(fw.read_bytes()) == FIRMWARE, "Firmware hors profil")
     with directory(folder):
-        Path("variables.fd").write_bytes(public_member(mode + ".fd", STORES[mode]))
+        Path("variables.fd").write_bytes(
+            public_member(mode + ".fd", STORES[mode])
+            if variables_test is None
+            else variables_test
+        )
         canary = bytes(range(256)) * (4096 * 4)
         Path("interne.raw").write_bytes(canary)
         args = [
@@ -147,6 +165,8 @@ def boot(folder, fw, mode, medium, base=None, duplicate=None, temoin=False):
             "-D",
             "transactions.log",
         ]
+        if ecran:
+            args += ["-device", "VGA,id=ecran,romfile="]
         files = [medium] if duplicate is None else [medium, duplicate]
         fds = []
         for index, f in enumerate(files, 1):
@@ -212,7 +232,7 @@ def boot(folder, fw, mode, medium, base=None, duplicate=None, temoin=False):
                     )
                     result = dict(
                         mode=mode,
-                        temoin=HORS_DB,
+                        temoin=empreinte(pe),
                         decision="EFI_ACCESS_DENIED",
                         lancement=False,
                         compteurs_terminal=count(q),
@@ -247,6 +267,8 @@ def boot(folder, fw, mode, medium, base=None, duplicate=None, temoin=False):
                     require(dbg.pc() == entry, "Premier RIP")
                     dbg.remove(entry)
                     before = count(q)
+                    if ecran:
+                        q.call("screendump", filename="avant.ppm")
                     sections = sections_chargees(pe, base)
                     for name, (rva, size, expected) in sections.items():
                         require(
@@ -259,6 +281,13 @@ def boot(folder, fw, mode, medium, base=None, duplicate=None, temoin=False):
                     dbg.resume()
                     require(dbg.pc() == halt, "RIP terminal")
                     rec = record(ram(q, base, meta["taille"]), base)
+                    if ecran:
+                        q.call("screendump", filename="apres.ppm")
+                        require(
+                            Path("avant.ppm").read_bytes()
+                            == Path("apres.ppm").read_bytes(),
+                            "Pixels modifiés malgré le refus USB",
+                        )
                     after = count(q)
                     trace = Path("transactions.log").read_bytes()[cut:]
                     require(

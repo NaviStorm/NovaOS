@@ -1,0 +1,34 @@
+diff --git a/novaOS/boot/diagnostic-5e/Cargo.toml b/novaOS/boot/diagnostic-5e/Cargo.toml
+index e080cd1162eae837d9c76264164cb2a8d66c862f..47ce0aa5cb32bdd564ba9ecceac2d1e50c1771fe 100644
+--- a/novaOS/boot/diagnostic-5e/Cargo.toml
++++ b/novaOS/boot/diagnostic-5e/Cargo.toml
+@@ -14,6 +14,7 @@ r-efi = "=6.0.0"
+ novaos-catalogue = { path = "../../libs/catalogue-pilotes" }
+
+ [features]
++diagnostic-5o = ["diagnostic-5m"]
+ firmware = []
+ diagnostic-5m = ["diagnostic-5h", "dep:ed25519-dalek"]
+ diagnostic-5j = ["diagnostic-5h"]
+diff --git a/novaOS/boot/diagnostic-5m/entree.rs b/novaOS/boot/diagnostic-5m/entree.rs
+index 65627e4802eb9e751895ecaff6ce1b3ce6467345..f1d99e8c31fbe000557b006363a9273e432031f7 100644
+--- a/novaOS/boot/diagnostic-5m/entree.rs
++++ b/novaOS/boot/diagnostic-5m/entree.rs
+@@ -157,6 +157,9 @@ fn examiner(h: efi::Handle, st: &efi::SystemTable, r: &mut Resultat) -> Result<(
+         novaos_catalogue::Error::Elf => 18,
+         _ => 14u64,
+     })?;
++    #[cfg(feature = "diagnostic-5o")]
++    return ecran::afficher(st, &carte, r, &ram[..fin]);
++    #[cfg(not(feature = "diagnostic-5o"))]
+     Ok(())
+ }
+
+@@ -187,3 +190,7 @@ fn arret() -> ! {
+ fn panique(_: &core::panic::PanicInfo) -> ! {
+     arret()
+ }
++
++#[cfg(feature = "diagnostic-5o")]
++#[path = "../diagnostic-5o/ecran.rs"]
++mod ecran;

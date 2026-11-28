@@ -1,0 +1,42 @@
+{
+  "original": "dd0e83543b732a6b0497e63f106fb064c25b0034591c84d471e585d901a0d671",
+  "copie": "bf41a49e08223f8e0a0192371d8fb79602faf56e4c0a58a5ad79624a54f2ed8f",
+  "apres_arret": {
+    "unique-actif-68": {
+      "PK": true,
+      "KEK": true,
+      "dbx": true,
+      "db": true
+    },
+    "unique-actif-1024": {
+      "PK": true,
+      "KEK": true,
+      "dbx": true,
+      "db": true
+    },
+    "unique-actif-8192": {
+      "PK": true,
+      "KEK": true,
+      "dbx": true,
+      "db": true
+    },
+    "unique-actif-16384": {
+      "PK": true,
+      "KEK": true,
+      "dbx": true,
+      "db": true
+    },
+    "ambigu-actif-68": {
+      "PK": true,
+      "KEK": true,
+      "dbx": true,
+      "db": true
+    },
+    "hors-db-actif-68": {
+      "PK": true,
+      "KEK": true,
+      "dbx": true,
+      "db": true
+    }
+  }
+}
