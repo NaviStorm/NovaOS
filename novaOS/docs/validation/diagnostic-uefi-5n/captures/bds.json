@@ -1,0 +1,92 @@
+{
+  "standard-01-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "standard-02-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "standard-03-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "standard-04-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "standard-05-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "standard-06-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "standard-07-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "standard-08-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "standard-09-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "standard-10-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "grand-dd-01-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "grand-dd-02-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "grand-ajuste-01-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "sans-logs-01-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "fat-alteree-01-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "ambigu-01-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "coupures-01-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "coupures-02-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "coupures-03-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "coupures-04-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ],
+  "temoin-actif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "failed to load Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0): Access Denied",
+    "No bootable option or device was found.",
+    "Press any key to enter the Boot Manager Menu."
+  ],
+  "temoin-inactif": [
+    "loading Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)"
+  ]
+}

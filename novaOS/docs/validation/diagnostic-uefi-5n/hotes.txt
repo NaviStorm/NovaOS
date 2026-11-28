@@ -1,0 +1,93 @@
+arm64 3.9.6
+test_alias_du_fichier_detenu (test_support.SupportTests) ... ok
+test_capacite_non_entiere_en_mio (test_support.SupportTests) ... ok
+test_dd_sur_plus_grand_et_secteur_etranger (test_support.SupportTests) ... ok
+test_deux_crcs_et_FAT_miroir (test_support.SupportTests) ... ok
+test_echec_entre_synchronisation_et_sceau (test_support.SupportTests) ... ok
+test_echec_identite_ESP_et_ancienne_somme (test_support.SupportTests) ... ok
+test_format_des_donnees_exportees (test_support.SupportTests) ... ok
+test_nominal_chaine_repertoire (test_support.SupportTests) ... ok
+test_reproduction_et_sortie_exclusive (test_support.SupportTests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.487s
+
+OK
+actif valide 3 0
+actif altere 2 25
+actif signataire 2 25
+actif reserve 2 26
+actif absent 2 23
+actif perime 1 24
+actif manifeste 3 6
+actif paquet 3 18
+actif reutilise 0 None
+actif substitution 0 None
+actif refus-db 0 None
+inactif valide 4 0
+inactif altere 2 25
+inactif signataire 1 25
+inactif reserve 2 26
+inactif absent 1 23
+inactif perime 1 24
+inactif manifeste 3 6
+inactif paquet 3 18
+inactif reutilise 0 None
+inactif substitution 0 None
+21 décisions, 16 transitions EFI, 35 EOI.
+x86_64 3.9.6
+test_alias_du_fichier_detenu (test_support.SupportTests) ... ok
+test_capacite_non_entiere_en_mio (test_support.SupportTests) ... ok
+test_dd_sur_plus_grand_et_secteur_etranger (test_support.SupportTests) ... ok
+test_deux_crcs_et_FAT_miroir (test_support.SupportTests) ... ok
+test_echec_entre_synchronisation_et_sceau (test_support.SupportTests) ... ok
+test_echec_identite_ESP_et_ancienne_somme (test_support.SupportTests) ... ok
+test_format_des_donnees_exportees (test_support.SupportTests) ... ok
+test_nominal_chaine_repertoire (test_support.SupportTests) ... ok
+test_reproduction_et_sortie_exclusive (test_support.SupportTests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.845s
+
+OK
+actif valide 3 0
+actif altere 2 25
+actif signataire 2 25
+actif reserve 2 26
+actif absent 2 23
+actif perime 1 24
+actif manifeste 3 6
+actif paquet 3 18
+actif reutilise 0 None
+actif substitution 0 None
+actif refus-db 0 None
+inactif valide 4 0
+inactif altere 2 25
+inactif signataire 1 25
+inactif reserve 2 26
+inactif absent 1 23
+inactif perime 1 24
+inactif manifeste 3 6
+inactif paquet 3 18
+inactif reutilise 0 None
+inactif substitution 0 None
+21 décisions, 16 transitions EFI, 35 EOI.
+bilan.json: OK
+hotes.txt: OK
+laboratoire.tar.gz: OK
+observations.tar.gz: OK
+rejeu.json: OK
+hotes.txt: OK
+laboratoire.tar.gz: OK
+observations.tar.gz: OK
+hotes.txt: OK
+modules.tar.gz: OK
+observations.tar.gz: OK
+modules.tar.gz: OK
+observations.tar.gz: OK
+regression-5k.tar.gz: OK
+hotes.txt: OK
+observations.tar.gz: OK
+supports.tar.gz: OK
+hotes.txt: OK
+python3 scripts/generate_abi.py --check

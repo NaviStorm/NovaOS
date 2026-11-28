@@ -1,0 +1,110 @@
+{
+  "actif": {
+    "mode": "actif",
+    "temoin": "1995f6f368ddc088500602a5fa4e13f9bd2325b24f4cf9d6122307e488266909",
+    "decision": "EFI_ACCESS_DENIED",
+    "lancement": false,
+    "compteurs_terminal": {
+      "interne": {
+        "rd_operations": 40,
+        "wr_operations": 0,
+        "flush_operations": 0,
+        "unmap_operations": 0,
+        "rd_bytes": 32768,
+        "wr_bytes": 0
+      },
+      "usb5n": {
+        "rd_operations": 97,
+        "wr_operations": 0,
+        "flush_operations": 0,
+        "unmap_operations": 0,
+        "rd_bytes": 1143808,
+        "wr_bytes": 0
+      }
+    },
+    "vm_arretee": true,
+    "interne_intact": true
+  },
+  "inactif": {
+    "mode_banc": "inactif",
+    "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+    "supports_usb": 1,
+    "fdset": "/dev/fdset/1",
+    "lecture_seule": true,
+    "pe": "1995f6f368ddc088500602a5fa4e13f9bd2325b24f4cf9d6122307e488266909",
+    "sections_verifiees": 5,
+    "entree": 3887120,
+    "hlt": 3883440,
+    "compteurs_reset": {
+      "interne": {
+        "rd_operations": 0,
+        "wr_operations": 0,
+        "flush_operations": 0,
+        "unmap_operations": 0,
+        "rd_bytes": 0,
+        "wr_bytes": 0
+      },
+      "usb5n": {
+        "rd_operations": 0,
+        "wr_operations": 0,
+        "flush_operations": 0,
+        "unmap_operations": 0,
+        "rd_bytes": 0,
+        "wr_bytes": 0
+      }
+    },
+    "compteurs_entree": {
+      "interne": {
+        "rd_operations": 0,
+        "wr_operations": 0,
+        "flush_operations": 0,
+        "unmap_operations": 0,
+        "rd_bytes": 0,
+        "wr_bytes": 0
+      },
+      "usb5n": {
+        "rd_operations": 33,
+        "wr_operations": 0,
+        "flush_operations": 0,
+        "unmap_operations": 0,
+        "rd_bytes": 407552,
+        "wr_bytes": 0
+      }
+    },
+    "compteurs_hlt": {
+      "interne": {
+        "rd_operations": 0,
+        "wr_operations": 0,
+        "flush_operations": 0,
+        "unmap_operations": 0,
+        "rd_bytes": 0,
+        "wr_bytes": 0
+      },
+      "usb5n": {
+        "rd_operations": 33,
+        "wr_operations": 0,
+        "flush_operations": 0,
+        "unmap_operations": 0,
+        "rd_bytes": 407552,
+        "wr_bytes": 0
+      }
+    },
+    "trace_commandes_sata_octets": 0,
+    "inventaire_classes_pci": [
+      262,
+      1536,
+      1537,
+      3075,
+      3077
+    ],
+    "verdict": {
+      "statut": 16,
+      "confiance": 2,
+      "arena": 2832,
+      "vivants": 0
+    },
+    "dma_precoce_usb": "indeterminee",
+    "vm_arretee": true,
+    "interne_intact": true
+  }
+}

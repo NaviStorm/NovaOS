@@ -1,0 +1,2235 @@
+{
+  "schema": 1,
+  "qemu": "QEMU emulator version 11.1.3",
+  "image": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+  "magasins": {
+    "actif": "dd0e83543b732a6b0497e63f106fb064c25b0034591c84d471e585d901a0d671",
+    "inactif": "8c09b326b45951f539619b4d0f33e5e8fdbafa1cca9b173468f9df7e4a7725e0"
+  },
+  "cas": {
+    "standard-01-actif": {
+      "observation": {
+        "mode_banc": "actif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "7c9f39f0b3b645ca",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "actif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "BOOT0001",
+      "refus_export": "",
+      "sha_avant": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+      "sha_apres": "7959ed4d5757a66694085c5b915631f0e007012c288c0714572caff1b72acf3b"
+    },
+    "standard-02-inactif": {
+      "observation": {
+        "mode_banc": "inactif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "102ac3764ab8f31f",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "inactif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "BOOT0002",
+      "refus_export": "",
+      "sha_avant": "7959ed4d5757a66694085c5b915631f0e007012c288c0714572caff1b72acf3b",
+      "sha_apres": "47636bb5ddf6f7d7fc6d728dd6ad261c88f550a7a6704d2cd8152984e4fcf8b5"
+    },
+    "standard-03-actif": {
+      "observation": {
+        "mode_banc": "actif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "0bfab7a950773106",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "actif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "BOOT0003",
+      "refus_export": "",
+      "sha_avant": "47636bb5ddf6f7d7fc6d728dd6ad261c88f550a7a6704d2cd8152984e4fcf8b5",
+      "sha_apres": "bbe0a329e5b7badffe3376f44a7119a2d09cfdf1ef47f42f5d2a1813ae3be9c0"
+    },
+    "standard-04-inactif": {
+      "observation": {
+        "mode_banc": "inactif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "37e10ef0baf84795",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "inactif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "BOOT0004",
+      "refus_export": "",
+      "sha_avant": "bbe0a329e5b7badffe3376f44a7119a2d09cfdf1ef47f42f5d2a1813ae3be9c0",
+      "sha_apres": "a03d4ee27e38a155ba88b76b469ae83fff8f0da40bfb1b2245cf939dd81c7b12"
+    },
+    "standard-05-actif": {
+      "observation": {
+        "mode_banc": "actif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "8f207c280b7e7489",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "actif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "BOOT0005",
+      "refus_export": "",
+      "sha_avant": "a03d4ee27e38a155ba88b76b469ae83fff8f0da40bfb1b2245cf939dd81c7b12",
+      "sha_apres": "61dccbcb150bf6ef32dbb97e9640a08a711fd9f289b0e4bc4924a2c51e5353e0"
+    },
+    "standard-06-inactif": {
+      "observation": {
+        "mode_banc": "inactif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "50821163b39dcb4a",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "inactif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "BOOT0006",
+      "refus_export": "",
+      "sha_avant": "61dccbcb150bf6ef32dbb97e9640a08a711fd9f289b0e4bc4924a2c51e5353e0",
+      "sha_apres": "8d8a9cb1a53263d9898a0fbdce486a8ef2d4d5c888fa0c224d316dfe892c6d92"
+    },
+    "standard-07-actif": {
+      "observation": {
+        "mode_banc": "actif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "fab6fd4e77a1e6d5",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "actif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "BOOT0007",
+      "refus_export": "",
+      "sha_avant": "8d8a9cb1a53263d9898a0fbdce486a8ef2d4d5c888fa0c224d316dfe892c6d92",
+      "sha_apres": "a256eecc8d55404697c97bd4b7b3f7b92d20ff69fbba9833e6205c35600863ad"
+    },
+    "standard-08-inactif": {
+      "observation": {
+        "mode_banc": "inactif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "8fed783489d01195",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "inactif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "BOOT0008",
+      "refus_export": "",
+      "sha_avant": "a256eecc8d55404697c97bd4b7b3f7b92d20ff69fbba9833e6205c35600863ad",
+      "sha_apres": "898b5ded8baf2af6e7937e14f926d3c20c405dca1715c9e240bbd621225a8781"
+    },
+    "standard-09-actif": {
+      "observation": {
+        "mode_banc": "actif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "a8174a88050f0a51",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "actif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "",
+      "refus_export": "NOVALOGS saturée",
+      "sha_avant": "898b5ded8baf2af6e7937e14f926d3c20c405dca1715c9e240bbd621225a8781",
+      "sha_apres": "898b5ded8baf2af6e7937e14f926d3c20c405dca1715c9e240bbd621225a8781"
+    },
+    "standard-10-inactif": {
+      "observation": {
+        "mode_banc": "inactif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "b7355c43214b044e",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "inactif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "",
+      "refus_export": "Sceau ou ancien rapport altéré",
+      "sha_avant": "2601a7b286fde7d8e2ebaf84b52f2245250bff2375247809080723e00eddab5f",
+      "sha_apres": "2601a7b286fde7d8e2ebaf84b52f2245250bff2375247809080723e00eddab5f"
+    },
+    "grand-dd-01-actif": {
+      "observation": {
+        "mode_banc": "actif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "b78e267e48fe9b88",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "actif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "",
+      "refus_export": "GPT secondaire hors fin du support",
+      "sha_avant": "f3a5d477853899958b491c7d893bd63c52d78b47d073b90d6f615b6999bcc382",
+      "sha_apres": "f3a5d477853899958b491c7d893bd63c52d78b47d073b90d6f615b6999bcc382"
+    },
+    "grand-dd-02-inactif": {
+      "observation": {
+        "mode_banc": "inactif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "5afbd0ac9e84c838",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "inactif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "",
+      "refus_export": "GPT secondaire hors fin du support",
+      "sha_avant": "f3a5d477853899958b491c7d893bd63c52d78b47d073b90d6f615b6999bcc382",
+      "sha_apres": "f3a5d477853899958b491c7d893bd63c52d78b47d073b90d6f615b6999bcc382"
+    },
+    "grand-ajuste-01-actif": {
+      "observation": {
+        "mode_banc": "actif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "3d85af1f57b83151",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "actif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "BOOT0001",
+      "refus_export": "",
+      "sha_avant": "b79f64481a9e4081aeac8dbc1e54ddf92db885a735a32c45750048f80384bd94",
+      "sha_apres": "8cc774a4e8b2f1790e017ab47217af8de185bfc96b8e4548c854f928779bca41"
+    },
+    "sans-logs-01-actif": {
+      "observation": {
+        "mode_banc": "actif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 29241360,
+        "hlt": 29237680,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 26,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 402432,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 26,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 402432,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "51c9047eede56b92",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "actif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "",
+      "refus_export": "Profil GPT/FAT32 ou contenu EFI altéré",
+      "sha_avant": "e175e14ae864538d4a59c2b8cdf605d2deeda859af814ca25c4f7506e4cb8df8",
+      "sha_apres": "e175e14ae864538d4a59c2b8cdf605d2deeda859af814ca25c4f7506e4cb8df8"
+    },
+    "fat-alteree-01-actif": {
+      "observation": {
+        "mode_banc": "actif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "5193b0132f63d767",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "actif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "",
+      "refus_export": "Profil GPT/FAT32 ou contenu EFI altéré",
+      "sha_avant": "f34eda2b65a55e5b341040295347e9e63e419ad1cbf048b8d6cc764fb9c6b59d",
+      "sha_apres": "f34eda2b65a55e5b341040295347e9e63e419ad1cbf048b8d6cc764fb9c6b59d"
+    },
+    "ambigu-01-actif": {
+      "observation": {
+        "mode_banc": "actif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 2,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "2c5e593e6bfe3e69",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "actif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "",
+      "refus_export": "Identité USB ambiguë",
+      "sha_avant": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+      "sha_apres": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92"
+    },
+    "coupures-01-inactif": {
+      "observation": {
+        "mode_banc": "inactif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "7bcb4c56beeb5bfe",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "inactif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "",
+      "refus_export": "Interruption simulée après synchronisation",
+      "sha_avant": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+      "sha_apres": "0477214365b74a8ff6c21aed08422cd543dfd1c0377e72d85080150a26965516"
+    },
+    "coupures-02-inactif": {
+      "observation": {
+        "mode_banc": "inactif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "90870e7710d3c267",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "inactif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "BOOT0002",
+      "refus_export": "",
+      "sha_avant": "0477214365b74a8ff6c21aed08422cd543dfd1c0377e72d85080150a26965516",
+      "sha_apres": "67d7d2cbefb1b9196b0a77d200dc3212c0410770de61b12ef15c934825d4f439"
+    },
+    "coupures-03-inactif": {
+      "observation": {
+        "mode_banc": "inactif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "3010b33f18a2e3f4",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "inactif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "",
+      "refus_export": "Coupure simulée pendant le sceau",
+      "sha_avant": "67d7d2cbefb1b9196b0a77d200dc3212c0410770de61b12ef15c934825d4f439",
+      "sha_apres": "b4f11e2c23dadd32fa1dec5a5fd0698f8fe2c438451d2436a3791615948f01f5"
+    },
+    "coupures-04-inactif": {
+      "observation": {
+        "mode_banc": "inactif",
+        "origine": "starting Boot0001 \"UEFI QEMU QEMU USB HARDDRIVE 1-0000:00:01.0-1\" from PciRoot(0x0)/Pci(0x1,0x0)/USB(0x0,0x0)",
+        "supports_usb": 1,
+        "fdset": "/dev/fdset/1",
+        "lecture_seule": true,
+        "pe": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+        "sections_verifiees": 5,
+        "entree": 3887120,
+        "hlt": 3883440,
+        "compteurs_reset": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_entree": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "compteurs_hlt": {
+          "interne": {
+            "rd_operations": 0,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 0,
+            "wr_bytes": 0
+          },
+          "usb5n": {
+            "rd_operations": 33,
+            "wr_operations": 0,
+            "flush_operations": 0,
+            "unmap_operations": 0,
+            "rd_bytes": 407552,
+            "wr_bytes": 0
+          }
+        },
+        "trace_commandes_sata_octets": 0,
+        "inventaire_classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "verdict": {
+          "statut": 16,
+          "confiance": 2,
+          "arena": 2832,
+          "vivants": 0
+        },
+        "dma_precoce_usb": "indeterminee",
+        "vm_arretee": true,
+        "interne_intact": true
+      },
+      "rapport": {
+        "schema": "novaos.diagnostic/5n",
+        "demarrage": "6ecbd338a7e09668",
+        "date_utc": null,
+        "origine_date": "horloge invitée non attestée",
+        "verdict": "refus",
+        "motif": "Transfert de confiance 5M absent sur USB (16)",
+        "secure_boot_diagnostic": "indéterminé",
+        "secure_boot_banc": "inactif",
+        "dma_avant_chargement": "indéterminée",
+        "inventaire_source": "QMP",
+        "classes_pci": [
+          262,
+          1536,
+          1537,
+          3075,
+          3077
+        ],
+        "io_interne_pendant_diagnostic": 0,
+        "activation_pilotes": false
+      },
+      "emplacement": "",
+      "refus_export": "Sceau ou ancien rapport altéré",
+      "sha_avant": "b4f11e2c23dadd32fa1dec5a5fd0698f8fe2c438451d2436a3791615948f01f5",
+      "sha_apres": "b4f11e2c23dadd32fa1dec5a5fd0698f8fe2c438451d2436a3791615948f01f5"
+    }
+  },
+  "copies": {
+    "standard": {
+      "capacite_mio": 68,
+      "source": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+      "support_avant": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+      "prefixe_identique": true
+    },
+    "grand-dd": {
+      "capacite_mio": 96,
+      "source": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+      "support_avant": "f3a5d477853899958b491c7d893bd63c52d78b47d073b90d6f615b6999bcc382",
+      "prefixe_identique": true
+    },
+    "grand-ajuste": {
+      "capacite_mio": 96,
+      "source": "b79f64481a9e4081aeac8dbc1e54ddf92db885a735a32c45750048f80384bd94",
+      "support_avant": "b79f64481a9e4081aeac8dbc1e54ddf92db885a735a32c45750048f80384bd94",
+      "prefixe_identique": true
+    },
+    "sans-logs": {
+      "capacite_mio": 68,
+      "source": "e175e14ae864538d4a59c2b8cdf605d2deeda859af814ca25c4f7506e4cb8df8",
+      "support_avant": "e175e14ae864538d4a59c2b8cdf605d2deeda859af814ca25c4f7506e4cb8df8",
+      "prefixe_identique": true
+    },
+    "fat-alteree": {
+      "capacite_mio": 68,
+      "source": "f34eda2b65a55e5b341040295347e9e63e419ad1cbf048b8d6cc764fb9c6b59d",
+      "support_avant": "f34eda2b65a55e5b341040295347e9e63e419ad1cbf048b8d6cc764fb9c6b59d",
+      "prefixe_identique": true
+    },
+    "ambigu": {
+      "capacite_mio": 68,
+      "source": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+      "support_avant": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+      "prefixe_identique": true
+    },
+    "coupures": {
+      "capacite_mio": 68,
+      "source": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+      "support_avant": "c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92",
+      "prefixe_identique": true
+    }
+  }
+}

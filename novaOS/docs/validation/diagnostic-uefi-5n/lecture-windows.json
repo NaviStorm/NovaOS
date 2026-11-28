@@ -1,0 +1,9 @@
+{
+  "lecteur": "Windows PE ARM64",
+  "fichiers_identiques": 24,
+  "methode": "ReadFile et comparaison octet par octet avec le CD de référence",
+  "archive_sha256": "ea7b0e7e111491b08ce597d63a82de17497afff08ce5baa61f0262dabb47037e",
+  "temoin_sha256": "88ca43fd8958f749cd3c3a3de8ec1849e001074e11f11ee184f4e0846e0e9b4a",
+  "capture_ppm_sha256": "56e8e14235d539dd72e98c595324ae487116e49d459c1b383c028fff4bca5eab",
+  "ecran": "NOVASN FAT SUCCESS 24"
+}

@@ -1,0 +1,35 @@
+arm64 3.9.6
+test_alias_du_fichier_detenu (test_support.SupportTests) ... ok
+test_capacite_non_entiere_en_mio (test_support.SupportTests) ... ok
+test_dd_sur_plus_grand_et_secteur_etranger (test_support.SupportTests) ... ok
+test_deux_crcs_et_FAT_miroir (test_support.SupportTests) ... ok
+test_echec_entre_synchronisation_et_sceau (test_support.SupportTests) ... ok
+test_echec_identite_ESP_et_ancienne_somme (test_support.SupportTests) ... ok
+test_format_des_donnees_exportees (test_support.SupportTests) ... ok
+test_nominal_chaine_repertoire (test_support.SupportTests) ... ok
+test_reproduction_et_sortie_exclusive (test_support.SupportTests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.432s
+
+OK
+GPT, deux FAT32, PE 5M, 20 démarrages mesurés, 8 rapports et 24 fichiers contre-lus
+c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92
+x86_64 3.9.6
+test_alias_du_fichier_detenu (test_support.SupportTests) ... ok
+test_capacite_non_entiere_en_mio (test_support.SupportTests) ... ok
+test_dd_sur_plus_grand_et_secteur_etranger (test_support.SupportTests) ... ok
+test_deux_crcs_et_FAT_miroir (test_support.SupportTests) ... ok
+test_echec_entre_synchronisation_et_sceau (test_support.SupportTests) ... ok
+test_echec_identite_ESP_et_ancienne_somme (test_support.SupportTests) ... ok
+test_format_des_donnees_exportees (test_support.SupportTests) ... ok
+test_nominal_chaine_repertoire (test_support.SupportTests) ... ok
+test_reproduction_et_sortie_exclusive (test_support.SupportTests) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.774s
+
+OK
+GPT, deux FAT32, PE 5M, 20 démarrages mesurés, 8 rapports et 24 fichiers contre-lus
+c69df9dc41cf5cfff7bf0fb81765f3287111656ad6c8575bdb2db8d94d2e9c92
+48
