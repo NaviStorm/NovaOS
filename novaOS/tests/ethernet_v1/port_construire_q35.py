@@ -62,7 +62,16 @@ def main():
     p.add_argument("--sonder-garde", action="store_true", help="Observer le refus de réadmission après restitution sur un bail NVMe actif")
     p.add_argument("--phase4f", choices=("nominal", "deces-observe", "lanceur-observe", "reconciliation", "gestionnaire-actif", "lanceur-actif"),
                    help="Assembler le gestionnaire dynamique Q35 et le retrait individuel 3D")
+    p.add_argument("--sonder-5l", action="store_true", help="Exercer READ et FLUSH après la panne QI commune, sur la copie de laboratoire")
+    p.add_argument("--iqe-5l", action="store_true", help="5L : descripteur réservé lors du retrait NIC sur le namespace fictif")
+    p.add_argument("--chrono-5l", action="store_true", help="Chronométrer le retrait individuel du profil de laboratoire")
     a = p.parse_args()
+    if a.chrono_5l and (not a.phase3d or a.phase4f or a.sonder_garde or a.cas != ["duo-retrait"]):
+        p.error("La chronométrie 5L exige le retrait individuel")
+    if a.iqe_5l and (not a.phase3d or a.phase4f or a.sonder_5l or a.sonder_garde or a.cas != ["duo-retrait"]):
+        p.error("IQE 5L exige le retrait individuel de laboratoire")
+    if a.sonder_5l and (not a.phase3d or a.phase4f or a.sonder_garde or not a.cas or set(a.cas) - {"duo-wait-absent","duo-wait-tardif"}):
+        p.error("La sonde 5L exige un profil de panne commune 3D")
     if a.phase4f and (not a.phase3d or a.sonder_garde or not a.cas or
                      set(a.cas) - {"port", "duo-cycles", "duo-retrait", "duo-differe", "duo-absent"}):
         p.error("4F exige le retrait individuel, différé ou absent, sur Q35 double")
@@ -101,6 +110,35 @@ def main():
                 sonde = root / "novaOS/tests/ethernet_v1/sonde_garde_q35.patch"
                 subprocess.run(["git", "apply", "--check", str(sonde)], cwd=root, check=True)
                 subprocess.run(["git", "apply", str(sonde)], cwd=root, check=True)
+            if a.sonder_5l or a.iqe_5l or a.chrono_5l:
+                source = root / "novaOS/kernel/src/hardware/vtd_lab/duo.rs"
+                appel = "        self.nic_wait(false,lost)?;"
+                texte = source.read_text()
+                if git("hash-object",source).decode().strip() != "9e55ec373e9aa2a71755fa59cbfb05d7fce47860" or texte.count(appel) != 1:
+                    raise ValueError("Chemin de confirmation NIC non identifié")
+                source.write_text(texte.replace(appel,
+                    "        let t0 = hal::timer::counter();\n"
+                    "        let resultat = self.nic_wait(false,lost);\n"
+                    "        let dt = hal::timer::counter().wrapping_sub(t0);\n"
+                    '        hal::log(format_args!("NOVA5L invalidation resultat={resultat:?} ticks={dt}"));\n'
+                    "        resultat?;"))
+            if a.iqe_5l:
+                source = root / "novaOS/kernel/src/hardware/vtd_lab.rs"
+                ancre = "            (descriptors.1, 0),"
+                texte = source.read_text()
+                if git("hash-object",source).decode().strip() != "e00495a3f2a82cfe3f545043e74adefea6fa2d55" or texte.count(ancre) != 1:
+                    raise ValueError("Effecteur de laboratoire non identifié")
+                # Seul le deuxième mot bas de la quatrième publication peut devenir nul.
+                source.write_text(texte.replace(ancre,
+                    "            (if self.cookie == 4 && self.tail == 144 && descriptors == ((56u64 << 32) | (3 << 16) | 0x31, (3 << 16) | 0xe2) { 0 } else { descriptors.1 }, 0),"))
+            if a.sonder_5l:
+                sonde_5l = NOVA / "boot/diagnostic-5l/sonde-apres-panne.rs.inc"
+                source = root / "novaOS/kernel/src/sched/process/nvme.rs"
+                ancre = '    retirement.map_err(|_| "retrait non confirme")?;'
+                texte = source.read_text()
+                if git("hash-object",source).decode().strip() != "7d0ce7609acccd94de7ab68ade073a373abca4b1" or texte.count(ancre) != 1:
+                    raise ValueError("Superviseur du banc 5L non identifié")
+                source.write_text(texte.replace(ancre,sonde_5l.read_text()+ancre))
             raccord = {name: git("hash-object", root / name).decode().strip() for name in sources}
             raccord["patch_sha256"] = hashlib.sha256(patch.read_bytes()).hexdigest()
         if a.phase4f:
@@ -127,6 +165,10 @@ def main():
         env["RUSTC"] = subprocess.check_output(["rustup", "which", "--toolchain", "stable", "rustc"], text=True).strip()
         result = dict(port=revision, audit=AUDIT, modules=sources, elf={},
                       rustc=subprocess.check_output([env["RUSTC"], "-V"], text=True).strip())
+        if a.iqe_5l:
+            result["iqe_active_5l"] = True
+        if a.sonder_5l:
+            result["sonde_5l_sha256"] = hashlib.sha256(sonde_5l.read_bytes()).hexdigest()
         result["raccord_3d"] = raccord
         features = "net-q35-duo"
         if a.phase4f:

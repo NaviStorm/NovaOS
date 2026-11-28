@@ -67,10 +67,15 @@ def main():
     for nom in ("elf", "sortie", "temoin", "archive", "limine", "lecteur"):
         p.add_argument(nom, type=lambda s: Path(s).resolve())
     p.add_argument("--instantane", action="store_true", help="Relire sous QTest le domaine NVMe pendant la conservation des 26 cadres NIC")
+    p.add_argument("--panne-stockage-actif", choices=("wait","iqe"), help="5L : exercer un WAIT manquant ou une faute IQE pendant le bail de stockage")
     a = p.parse_args()
+    if a.panne_stockage_actif and (a.cas != "duo-retrait" or a.instantane):
+        p.error("La panne en activité exige le profil de retrait individuel")
     panne_qi = {"duo-wait-absent": "absent", "duo-wait-tardif": "tardif"}.get(a.cas)
     if a.instantane and a.cas not in ("duo-differe", "duo-absent"):
         p.error("L’instantané nécessite un reçu de retrait en attente de livraison")
+    if a.panne_stockage_actif == "wait":
+        panne_qi = "absent"
     if subprocess.check_output(["git", "-C", a.temoin, "rev-parse", "HEAD"], text=True).strip() != AUDIT:
         raise ValueError("Source du profil")
     sys.path[:0] = [str(a.temoin / "novaOS/tests"), str(a.temoin / "novaOS/scripts")]
@@ -96,6 +101,8 @@ def main():
     rapport = dict(succes=False, cas=a.cas, audit=AUDIT, modele=digest(Path(args[0])),
                    elf=digest(a.elf), graine=digest(seed), lecteur=digest(a.lecteur))
     construction = json.loads((a.elf.parent / "sources.json").read_text())
+    if bool(construction.get("iqe_active_5l")) != (a.panne_stockage_actif == "iqe"):
+        raise ValueError("ELF et profil de faute 5L différents")
     if construction["audit"] != AUDIT or construction["elf"].get(a.cas) != rapport["elf"]:
         raise ValueError("ELF différent du manifeste de construction")
     rapport["commit_sources"] = construction["port"]
@@ -162,6 +169,10 @@ def main():
                                     time.sleep(.002 if a.instantane else .1)
                                 qmp(vm, "stop")
                                 rapport["pci_final"] = pci_etat(stream, capture(vm,out,"fin",False))
+                                if a.panne_stockage_actif:
+                                    sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"boot/diagnostic-5l"))
+                                    from stockage import domaine_final
+                                    rapport["domaine_5l"] = domaine_final(vm,stream,serie,out,a.panne_stockage_actif=="iqe")
                                 if panne_qi:
                                     from virtio_net_duo_attente import registres
                                     rapport["qi_incertaine"] = registres(vm, stream, serie, panne_qi, mode)
@@ -180,7 +191,12 @@ def main():
             oracle = retrait_duo.verifier if a.cas in retrait_duo.CAS else verifier
             if panne_qi:
                 oracle = retrait_duo.attente_commune
-            rapport["stockage"] = oracle(out, a.cas, a.lecteur, avant, pair)
+            if a.panne_stockage_actif:
+                sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"boot/diagnostic-5l"))
+                from stockage import verifier_actif
+                rapport["stockage"] = verifier_actif(out, a.lecteur, avant, pair, a.panne_stockage_actif)
+            else:
+                rapport["stockage"] = oracle(out, a.cas, a.lecteur, avant, pair)
             if "sonde_garde_sha256" in construction or (construction.get("gestionnaire_4f") and a.cas in ("duo-retrait","duo-differe")):
                 serie = (out / "serie.log").read_text()
                 sonde = re.findall(r"E3E garde readmission=refusee candidat=(\d+) generation=(\d+) disque=(\d+) epoque_ipc=(\d+) cid=(\d+) dma=(\d+)", serie)

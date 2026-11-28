@@ -317,33 +317,7 @@ class Materiel:
         )
 
 
-def essai(out, j, mode, observer=None, faute_qi=False):
-    out.mkdir()
-    os.chdir(out)
-    exe = exact(
-        j / "modele5j/build/qemu-system-x86_64",
-        "085ed32ca433172258c779258f435cb44388e5e6f64d9d8fd816c1fd4f27791e",
-    )
-    fw = exact(
-        j / "ovmf5j-b/Build/OvmfX64/RELEASE_CLANGDWARF/FV/OVMF_CODE.fd",
-        "1f767a982e7af4702235e957763ab052f29ae0bdf9f84ee08f03379ef82a70b7",
-    )
-    fat = exact(
-        j / "qualification5j/diagnostic.img",
-        "f2783c0d4b93157fd4f46118a11ce6e4f36943f6e8c2ddb62342b1bffefcf88c",
-    )
-    var = exact(
-        j / "qualification5j" / (mode + ".fd"),
-        {
-            "nominal": "e04b60150458454c7f9608209ac7358058c2bb566ddf254e455330c065b1411b",
-            "inactif": "8c09b326b45951f539619b4d0f33e5e8fdbafa1cca9b173468f9df7e4a7725e0",
-        }[mode],
-    )
-    epoch = uuid.uuid4().bytes
-    Path("epoch.bin").write_bytes(b"NOVA5J-BOOT-EPOC" + epoch)
-    disk = Path("interne.raw")
-    disk.write_bytes(hashlib.sha256(b"namespace 5K").digest() * (131072))
-    digest = hashlib.sha256(disk.read_bytes()).hexdigest()
+def arguments_q35(exe, fw, fat, var):
     args = [
         exe,
         "-machine",
@@ -424,6 +398,37 @@ def essai(out, j, mode, observer=None, faute_qi=False):
         "vtd_inv_desc_wait_sw",
     ):
         args.extend(["-trace", ev])
+    return args
+
+
+def essai(out, j, mode, observer=None, faute_qi=False):
+    out.mkdir()
+    os.chdir(out)
+    exe = exact(
+        j / "modele5j/build/qemu-system-x86_64",
+        "085ed32ca433172258c779258f435cb44388e5e6f64d9d8fd816c1fd4f27791e",
+    )
+    fw = exact(
+        j / "ovmf5j-b/Build/OvmfX64/RELEASE_CLANGDWARF/FV/OVMF_CODE.fd",
+        "1f767a982e7af4702235e957763ab052f29ae0bdf9f84ee08f03379ef82a70b7",
+    )
+    fat = exact(
+        j / "qualification5j/diagnostic.img",
+        "f2783c0d4b93157fd4f46118a11ce6e4f36943f6e8c2ddb62342b1bffefcf88c",
+    )
+    var = exact(
+        j / "qualification5j" / (mode + ".fd"),
+        {
+            "nominal": "e04b60150458454c7f9608209ac7358058c2bb566ddf254e455330c065b1411b",
+            "inactif": "8c09b326b45951f539619b4d0f33e5e8fdbafa1cca9b173468f9df7e4a7725e0",
+        }[mode],
+    )
+    epoch = uuid.uuid4().bytes
+    Path("epoch.bin").write_bytes(b"NOVA5J-BOOT-EPOC" + epoch)
+    disk = Path("interne.raw")
+    disk.write_bytes(hashlib.sha256(b"namespace 5K").digest() * (131072))
+    digest = hashlib.sha256(disk.read_bytes()).hexdigest()
+    args = arguments_q35(exe, fw, fat, var)
     with (
         open("trace.log", "xb") as log,
         subprocess.Popen(

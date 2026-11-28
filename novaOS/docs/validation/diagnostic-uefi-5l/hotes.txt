@@ -1,0 +1,127 @@
+Base 5K 405d83338ac510e385eb5573458a8192d1080db7
+Python système Darwin, lecteur NovaFS P9 ARM64 natif appelé par les deux interpréteurs.
+
+arm64 3.9.6
+test_aucun_reemploi_avant_les_deux_caches (test_ats.Caches) ... ok
+test_cache_inconnu (test_ats.Caches) ... ok
+test_drainage_incomplet (test_ats.Caches) ... ok
+test_invalidation_non_confirmee (test_ats.Caches) ... ok
+test_panne_commune_et_reponse_tardive (test_ats.Caches) ... ok
+test_portee_du_recu (test_ats.Caches) ... ok
+test_pages_separees (test_preuves.Observations) ... ok
+test_recu_divergent_et_domaine (test_preuves.Observations) ... ok
+test_source_smi (test_preuves.Observations) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.071s
+
+OK
+test_attribution (test_apic.ExceptionMinuterie) ... ok
+test_ecriture_supplementaire (test_apic.ExceptionMinuterie) ... ok
+test_exception_bornee (test_apic.ExceptionMinuterie) ... ok
+test_irq_peripherique (test_apic.ExceptionMinuterie) ... ok
+test_lacunes_et_ecritures_divergentes (test_apic.ExceptionMinuterie) ... ok
+test_attente_retardee_absente_contradictoire (test_restitution.Restitution) ... ok
+test_bail (test_restitution.Restitution) ... ok
+test_disparition_en_vol (test_restitution.Restitution) ... ok
+test_effacement_partiel (test_restitution.Restitution) ... ok
+test_faute_commune_ou_tables_changees (test_restitution.Restitution) ... ok
+test_invalidation_non_commandee (test_restitution.Restitution) ... ok
+test_recu_autre_autorite (test_restitution.Restitution) ... ok
+test_recu_unique_et_lie_au_bail (test_restitution.Restitution) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.001s
+
+OK
+test_conflits_physiques_et_rmrr (test_contrat.Contrat) ... ok
+test_deux_unites_disjointes (test_contrat.Contrat) ... ok
+test_identites_et_alias (test_contrat.Contrat) ... ok
+test_permission_et_domaine (test_contrat.Contrat) ... ok
+test_provenance_tables (test_contrat.Contrat) ... ok
+test_receveur_et_transactions (test_contrat.Contrat) ... ok
+test_alias_et_inconnu (test_inventaire.Inventaire) ... ok
+test_attribution (test_inventaire.Inventaire) ... ok
+test_troncature (test_inventaire.Inventaire) ... ok
+test_unite_et_rmrr (test_inventaire.Inventaire) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+OK
+test_bornes_de_copie (test_domaines.Passif) ... ok
+test_cycles_partage_modes_reserves (test_domaines.Passif) ... ok
+test_feuille_directionnelle (test_domaines.Passif) ... ok
+test_modes_et_capacites (test_domaines.Passif) ... ok
+test_refus_sans_provenance (test_domaines.Passif) ... ok
+test_registres_limites_au_modele_et_cpu_arrete (test_domaines.Passif) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK
+Contre-lecture 5L et rejeu 5K avec remontage indépendant des dix images P9 réussis.
+
+x86_64 3.9.6
+test_aucun_reemploi_avant_les_deux_caches (test_ats.Caches) ... ok
+test_cache_inconnu (test_ats.Caches) ... ok
+test_drainage_incomplet (test_ats.Caches) ... ok
+test_invalidation_non_confirmee (test_ats.Caches) ... ok
+test_panne_commune_et_reponse_tardive (test_ats.Caches) ... ok
+test_portee_du_recu (test_ats.Caches) ... ok
+test_pages_separees (test_preuves.Observations) ... ok
+test_recu_divergent_et_domaine (test_preuves.Observations) ... ok
+test_source_smi (test_preuves.Observations) ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.115s
+
+OK
+test_attribution (test_apic.ExceptionMinuterie) ... ok
+test_ecriture_supplementaire (test_apic.ExceptionMinuterie) ... ok
+test_exception_bornee (test_apic.ExceptionMinuterie) ... ok
+test_irq_peripherique (test_apic.ExceptionMinuterie) ... ok
+test_lacunes_et_ecritures_divergentes (test_apic.ExceptionMinuterie) ... ok
+test_attente_retardee_absente_contradictoire (test_restitution.Restitution) ... ok
+test_bail (test_restitution.Restitution) ... ok
+test_disparition_en_vol (test_restitution.Restitution) ... ok
+test_effacement_partiel (test_restitution.Restitution) ... ok
+test_faute_commune_ou_tables_changees (test_restitution.Restitution) ... ok
+test_invalidation_non_commandee (test_restitution.Restitution) ... ok
+test_recu_autre_autorite (test_restitution.Restitution) ... ok
+test_recu_unique_et_lie_au_bail (test_restitution.Restitution) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.002s
+
+OK
+test_conflits_physiques_et_rmrr (test_contrat.Contrat) ... ok
+test_deux_unites_disjointes (test_contrat.Contrat) ... ok
+test_identites_et_alias (test_contrat.Contrat) ... ok
+test_permission_et_domaine (test_contrat.Contrat) ... ok
+test_provenance_tables (test_contrat.Contrat) ... ok
+test_receveur_et_transactions (test_contrat.Contrat) ... ok
+test_alias_et_inconnu (test_inventaire.Inventaire) ... ok
+test_attribution (test_inventaire.Inventaire) ... ok
+test_troncature (test_inventaire.Inventaire) ... ok
+test_unite_et_rmrr (test_inventaire.Inventaire) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.002s
+
+OK
+test_bornes_de_copie (test_domaines.Passif) ... ok
+test_cycles_partage_modes_reserves (test_domaines.Passif) ... ok
+test_feuille_directionnelle (test_domaines.Passif) ... ok
+test_modes_et_capacites (test_domaines.Passif) ... ok
+test_refus_sans_provenance (test_domaines.Passif) ... ok
+test_registres_limites_au_modele_et_cpu_arrete (test_domaines.Passif) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK
+Contre-lecture 5L et rejeu 5K avec remontage indépendant des dix images P9 réussis.
+
+python3 scripts/generate_abi.py --check
+Registre canonique : 48 sélecteurs.
