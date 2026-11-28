@@ -1,0 +1,17 @@
+ZIP 5015883 31707a5fa8f7b98c75832d992c5a159644b4522e3d175cfad0fd8f2343c0d178
+BIOS 8388608 7f2cb85d80b891d785b3729fb41bf0e77c15a6bb78063ba00797b1d3b9b5ec6c
+PDF 971017 6d453a8b44e740daefee5e66c85e4a88bdcf47cca89d8101ca21f14574251f33
+FFS 357 avec_nom 282 sections_examinees 550
+etiquette BootGuardPei 1
+etiquette BootGuardDxe 1
+etiquette VerifyFwBootGuard 1
+etiquette SaInit 1
+etiquette Tcg2Dxe 1
+etiquette Ahci 1
+etiquette AhciSmm 1
+etiquette AhciRecovery 1
+etiquette UsbRt 1
+sections_avec_GUID EDKII_IOMMU_PPI 0
+sections_avec_GUID EDKII_IOMMU_PROTOCOL 0
+sections_avec_GUID EFI_PCI_IO_PROTOCOL 29
+sections_avec_GUID EFI_LOADED_IMAGE_PROTOCOL 133
