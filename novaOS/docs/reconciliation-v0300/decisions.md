@@ -129,3 +129,7 @@ L’ABI et les droits des applications restent ceux de 5H. A8 est fermé. [Matri
 ## Décision MOE 5W révisée du 28 novembre 2026 — Démarrage UEFI standard
 
 Le MSI GE62 6QC reste la première cible physique. Pour STANDARD, la MOE admet une protection DMA antérieure indéterminée pour le diagnostic passif, affichée comme telle. La vérification interne des composants signés demeure obligatoire. Une future activation DMA par NovaOS exige des protections établies et contrôlées. RENFORCÉ conserve les garanties 5I–5V et refuse les preuves manquantes. Le choix du profil est explicite. L’autorisation d’essai physique A8 reste fermée. [Décision, mesures et conditions opérateur](../diagnostic-uefi-5w.md)
+
+## Clôture A8 du 28 novembre 2026 — Premier diagnostic physique STANDARD
+
+La MOA confirme la réussite du seul démarrage STANDARD x86_64 sur le MSI GE62 6QC avec la clé Kingston et Secure Boot inactif, puis le retour à Windows. L’EFI a terminé son inventaire avec zéro activation et une attribution VT-d ambiguë. A8 est clôturé pour ce support et cet essai. Tout nouvel essai physique, toute préparation de clé réelle et le passage au noyau sur matériel requièrent un mandat distinct. [Résultat physique, provenance et limites](../diagnostic-uefi-5y.md) · [Registre des qualifications](../validation/qualifications-demarrage.md)

@@ -39,6 +39,7 @@ flowchart TD
 | Domaine | État | Ce que l’on peut utiliser ou suivre |
 |---|---|---|
 | Démarrage et affichage | Implémenté | UEFI avec Limine, framebuffer et journal série sur les deux architectures. |
+| Diagnostic Live USB x86_64 | Premier essai physique réussi le 28 novembre 2026 | Sur MSI GE62 6QC, le premier EFI STANDARD a terminé l’inventaire depuis la clé Kingston, Secure Boot inactif, avec zéro activation de pilote. La MOA confirme l’arrêt local et le retour à Windows. Le démarrage du noyau complet reste à qualifier sur cette machine. [Registre des qualifications](novaOS/docs/validation/qualifications-demarrage.md) |
 | Mémoire et exécution | Implémenté | Mémoire virtuelle protégée, ELF multipages, tas privés, piles gardées, ordonnanceur SMP préemptif qualifié sur 1, 2 et 4 vCPU et processus isolés en Ring 3 ou EL0. |
 | Applications Rust | SDK 0.2.0 qualifié sur deux ISA | Compilation croisée, admission au catalogue, piles gardées, TLS et collecte unique après transfert du droit de jonction. |
 | ABI et services | Implémenté | Appels système natifs et IPC à capacités entre processus disposant d’espaces d’adressage distincts. |
@@ -99,7 +100,7 @@ Les images de développement se construisent aujourd’hui depuis le workspace N
 
 ## Feuille de route
 
-NovaOS vise une image générique par architecture et une autorité de signature indépendante. Le propriétaire choisit le mode Secure Boot. Les contrôles des paquets restent obligatoires dans les deux modes. Le diagnostic STANDARD peut inventorier un PC avec une protection DMA antérieure indéterminée. Le profil RENFORCÉ exige la preuve de cette protection dès avant chargement. Le premier essai physique du MSI reste soumis à A8. [Décision 5H](novaOS/docs/reconciliation-v0300/decisions.md#decision-5h) · [Profils et qualification 5W](novaOS/docs/diagnostic-uefi-5w.md)
+NovaOS vise une image générique par architecture et une autorité de signature indépendante. Le propriétaire choisit le mode Secure Boot. Les contrôles des paquets restent obligatoires dans les deux modes. Le diagnostic STANDARD peut inventorier un PC avec une protection DMA antérieure indéterminée. Le profil RENFORCÉ exige la preuve de cette protection dès avant chargement. A8 est clôturé pour l’essai MSI du 28 novembre 2026. L’attribution VT-d y est restée ambiguë. L’isolation DMA et l’absence d’E/S internes sur cette machine ne sont pas démontrées. [Relevé physique 5Y](novaOS/docs/diagnostic-uefi-5y.md) · [Décision 5H](novaOS/docs/reconciliation-v0300/decisions.md#decision-5h) · [Profils et qualification 5W](novaOS/docs/diagnostic-uefi-5w.md)
 
 Le serveur devra prendre en charge les usages déclarés de bout en bout sur **QEMU x86_64**, référence principale, et **QEMU AArch64**, seconde référence obligatoire. Les critères couvrent l’installation autonome, les comptes et ACL, les données surprotégées, les threads utilisateur, la CLI/TUI, le réseau double pile et son pare-feu, les services, le serveur SSH, le client SSH, les transferts SFTP et la reprise après incident. L’équivalence avec un serveur Linux s’évalue sur ces usages. Le Tecra A50-J reste une cible physique expérimentale. [Décisions MOA](novaOS/docs/reconciliation-v0300/decisions.md) · [Parcours serveur bloquants](novaOS/docs/reconciliation-v0300/acceptation-serveur.md)
 
