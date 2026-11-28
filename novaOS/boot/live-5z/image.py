@@ -41,7 +41,9 @@ def segments(elf):
     return entree, charges
 
 
-def preparer(out, noyau, outil, chargeur):
+def preparer(out, noyau, outil, chargeur, video=False):
+    temoins = TEMOINS | ({"NOVA6A_JOURNAL", "NOVA6A_EVENEMENTS", "novaos::boot::MP", "novaos::boot::CMDLINE", "novaos::boot::FRAMEBUFFER", "novaos::boot::IMAGE",
+                         "novaos::smp::launch", "novaos::smp::shutdown"} if video else set())
     out.mkdir(parents=True, exist_ok=False)
     attendu = (LIMINE.parent / "SHA256SUMS").read_text().splitlines()
     require(sha256(LIMINE.read_bytes()).hexdigest() + "  BOOTX64.EFI" in attendu, "Limine officiel")
@@ -53,11 +55,11 @@ def preparer(out, noyau, outil, chargeur):
     require(len(bruts) == len(lisibles), "Tables de symboles discordantes")
     for brut, lisible in zip(bruts, lisibles):
         addr, typ, nom = lisible.split(maxsplit=2)
-        if nom in TEMOINS:
+        if nom in temoins:
             raw = brut.split(maxsplit=2)
             require(raw[:2] == [addr, typ] and nom not in gardes, "Symbole témoin ambigu")
             gardes[nom] = raw[2]
-    require(set(gardes) == TEMOINS, "Symbole témoin manquant")
+    require(set(gardes) == temoins, "Symbole témoin manquant")
     subprocess.run(["llvm-objcopy", "--strip-all", *["--keep-symbol=" + s for s in gardes.values()],
                     noyau, out / ROLES[2]], check=True)
     elf = (out / ROLES[2]).read_bytes()
@@ -137,6 +139,7 @@ if __name__ == "__main__":
     prep = op.add_parser("preparer")
     for key in ("stage", "noyau", "enroll", "chargeur"):
         prep.add_argument(key, type=Path)
+    prep.add_argument("--video-6a", action="store_true")
     img = op.add_parser("assembler")
     img.add_argument("stage", type=Path)
     img.add_argument("image", type=Path)
@@ -146,7 +149,7 @@ if __name__ == "__main__":
     ver.add_argument("--sha256", required=True)
     args = sub.parse_args()
     if args.action == "preparer":
-        preparer(args.stage, args.noyau, args.enroll.resolve(), args.chargeur)
+        preparer(args.stage, args.noyau, args.enroll.resolve(), args.chargeur, args.video_6a)
     elif args.action == "assembler":
         construire(args.stage, args.image, octets=args.octets)
     else:

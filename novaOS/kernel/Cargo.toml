@@ -11,6 +11,7 @@ test = false
 bench = false
 
 [features]
+live-video-6a = []
 novaauth-lab = []
 materiel-lab = []
 vtd-lab = ["materiel-lab"]

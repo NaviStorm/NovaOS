@@ -108,6 +108,45 @@ pub struct MemoryInfo {
     pub virtual_base: u64,
 }
 
+#[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+pub(crate) fn surface_live(heritee: bool) -> Option<crate::hardware::framebuffer::Screen> {
+    use limine::memory_map::EntryType;
+    if RETIRED.load(core::sync::atomic::Ordering::Acquire) || BASE.loaded_revision() != Some(3) {
+        return None;
+    }
+    let fb = framebuffer().ok()?;
+    let s = crate::hardware::framebuffer::Screen::from_limine(&fb).ok()?;
+    let (base, bytes) = s.span();
+    let offset = HHDM.get_response()?.offset();
+    let pa = (base as u64).checked_sub(offset)?;
+    let fin = pa.checked_add(bytes as u64)?;
+    let map = MAP.get_response()?.entries();
+    if offset < 0xffff800000000000 || base % 4096 != 0 || bytes > 128 * 1024 * 1024
+        || map.len() > 4096
+    {
+        return None;
+    }
+    let mut couvert = false;
+    for e in map {
+        let end = e.base.checked_add(e.length)?;
+        if e.base < fin && pa < end {
+            if couvert || e.entry_type != EntryType::FRAMEBUFFER || e.base > pa || end < fin {
+                return None;
+            }
+            couvert = true;
+        }
+    }
+    if !couvert {
+        return None;
+    }
+    if heritee {
+        // Ce parcours lit seulement la carte et le HHDM. L'image peut manquer au relais.
+        let info = MemoryInfo { entries: map, offset, physical_base: 0, virtual_base: 0 };
+        crate::memory::surface_heritee(info, base as u64, pa, bytes)?;
+    }
+    Some(s)
+}
+
 pub fn memory() -> Result<MemoryInfo, &'static str> {
     if RETIRED.load(core::sync::atomic::Ordering::Acquire) {
         return Err("Chargeur déjà libéré.");
@@ -147,6 +186,9 @@ pub(crate) fn handoff() -> (
     Result<crate::hardware::framebuffer::Screen, &'static str>,
 ) {
     let args = scenario().to_vec();
+    #[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+    let screen = surface_live(false).ok_or("Surface Live indisponible.");
+    #[cfg(not(all(target_arch = "x86_64", feature = "live-video-6a")))]
     let screen = framebuffer().and_then(|f| crate::hardware::framebuffer::Screen::from_limine(&f));
     RETIRED.store(true, core::sync::atomic::Ordering::Release);
     (args, screen)

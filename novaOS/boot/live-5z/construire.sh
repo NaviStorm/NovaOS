@@ -15,10 +15,18 @@ outil="$b/limine/bin/limine"
 cd novaOS
 export CARGO_TARGET_DIR="$b/rust"
 export RUSTFLAGS="-C no-redzone=yes -C relocation-model=static --remap-path-prefix=$PWD/..=/nova --remap-path-prefix=$PWD=/nova/novaOS --remap-path-prefix=$HOME/.cargo=/cargo --remap-path-prefix=$HOME/.rustup=/rustup"
-make ARCH=x86_64 kernel
-python3 -B "$d/image.py" preparer "$b/stage" "$CARGO_TARGET_DIR/x86_64-unknown-none/release/novaos" "$outil" "$b/limine/bin/BOOTX64.EFI"
+case "${3:-5z}" in
+    5z) make ARCH=x86_64 kernel; set -- ;;
+    6a) capacite=${4:?capacité exacte en octets du fichier disque}
+        make abi-check
+        rustup run stable cargo build --release --locked --target x86_64-unknown-none --features live-video-6a
+        set -- --video-6a ;;
+    *) exit 2 ;;
+esac
+python3 -B "$d/image.py" preparer "$b/stage" "$CARGO_TARGET_DIR/x86_64-unknown-none/release/novaos" "$outil" "$b/limine/bin/BOOTX64.EFI" "$@"
 export NOVA5Z_PLAN="$b/stage/PLAN.BIN"
 export RUSTFLAGS="--remap-path-prefix=$PWD=/nova/novaOS --remap-path-prefix=$HOME/.cargo=/cargo --remap-path-prefix=$HOME/.rustup=/rustup -C link-arg=/timestamp:0 -C link-arg=/debug:none"
 rustup run stable cargo build --offline --locked --manifest-path "$d/Cargo.toml" --target x86_64-unknown-uefi --release
 cp "$CARGO_TARGET_DIR/x86_64-unknown-uefi/release/live.efi" "$b/stage/BOOTX64.EFI"
-python3 -B "$d/image.py" assembler "$b/stage" "$b/novaos-live.img"
+if test "$#" -gt 0; then set -- --octets "$capacite"; fi
+python3 -B "$d/image.py" assembler "$b/stage" "$b/novaos-live.img" "$@"

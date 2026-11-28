@@ -3,6 +3,8 @@ pub(crate) mod firmware;
 mod frames;
 mod probes;
 mod tables;
+#[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+pub(crate) use tables::surface_heritee;
 pub(crate) mod user;
 
 use crate::{

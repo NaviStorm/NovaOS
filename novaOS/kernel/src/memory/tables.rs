@@ -26,6 +26,12 @@ impl Frames {
 
     /// Lit les attributs matériels hérités, y compris ceux des grands blocs.
     pub(super) fn inherited(&self, root: u64, va: u64) -> Result<(u64, u64)> {
+        self.inherited_when(root, va, |_, _| true)
+    }
+
+    fn inherited_when(
+        &self, root: u64, va: u64, mut accepte: impl FnMut(u64, bool) -> bool,
+    ) -> Result<(u64, u64)> {
         let mut table = root;
         for (level, slot) in indices(va).into_iter().enumerate() {
             if !self.covers(table, EntryType::BOOTLOADER_RECLAIMABLE) {
@@ -35,7 +41,11 @@ impl Frames {
             if entry & 1 == 0 {
                 return Err(Error::Missing);
             }
-            if paging::is_leaf(entry, level) {
+            let leaf = paging::is_leaf(entry, level);
+            if !accepte(entry, leaf) {
+                return Err(Error::Verification);
+            }
+            if leaf {
                 let mask = (1 << (39 - level * 9)) - 1;
                 return Ok((
                     (entry & PHYS_MASK & !mask) | (va & mask),
@@ -46,6 +56,23 @@ impl Frames {
         }
         Err(Error::BootTable)
     }
+}
+
+#[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+pub(crate) fn surface_heritee(info: crate::boot::MemoryInfo, va: u64, pa: u64, taille: usize) -> Option<()> {
+    let frames = Frames::new(info).ok()?;
+    let root = paging::root().ok()?;
+    for ajout in (0..taille).step_by(PAGE as usize) {
+        let mut user = true;
+        let (adresse, _) = frames.inherited_when(root, va + ajout as u64, |pte, feuille| {
+            user &= pte & 4 != 0;
+            pte & 2 != 0 && (!feuille || !user)
+        }).ok()?;
+        if adresse != pa + ajout as u64 {
+            return None;
+        }
+    }
+    Some(())
 }
 
 impl AddressSpace {

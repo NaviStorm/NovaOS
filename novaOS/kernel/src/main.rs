@@ -17,6 +17,8 @@ pub mod hal;
 mod hardware;
 mod heap;
 mod input;
+#[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+mod live_video;
 mod memory;
 mod sched;
 mod smp;
@@ -33,12 +35,27 @@ const BANNER: &str = concat!("NovaOS v", env!("CARGO_PKG_VERSION"));
 // Sûreté : seul symbole d’entrée, désigné par ENTRY dans le script de liaison.
 #[unsafe(no_mangle)]
 pub extern "C" fn nova_start() -> ! {
+    #[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+    live_video::debut();
     smp::discover();
     hal::init();
-    let info = boot::memory().unwrap_or_else(|reason| panic!("{reason}"));
+    #[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+    if boot::scenario() != b"smp-test" {
+        live_video::refus(3);
+        panic!("Profil Live non admis");
+    }
+    let info = boot::memory().unwrap_or_else(|reason| {
+        #[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+        live_video::refus(1);
+        panic!("{reason}");
+    });
     // Sûreté : unique appel au point d’entrée Limine, sans AP ni allocateur antérieur.
     let mut memory = unsafe { memory::Memory::init(info) }
-        .unwrap_or_else(|error| panic!("Initialisation mémoire : {error:?}"));
+        .unwrap_or_else(|error| {
+            #[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+            live_video::refus(2);
+            panic!("Initialisation mémoire : {error:?}");
+        });
     log(format_args!("{BANNER}"));
     let scenario = boot::scenario();
     #[cfg(feature = "net-q35-duo")]
@@ -56,6 +73,8 @@ pub extern "C" fn nova_start() -> ! {
     }
     let kernel_space = memory.space_id();
     heap::install(memory);
+    #[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+    live_video::jalon(live_video::MEMOIRE);
     if scenario.starts_with(b"heap-") {
         heap::test(scenario);
     }
@@ -63,6 +82,8 @@ pub extern "C" fn nova_start() -> ! {
 }
 
 fn main_thread() {
+    #[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+    live_video::jalon(live_video::ORDONNANCEUR);
     boot_id::init();
     // Le diagnostic capture les tables tant que le chargeur les possède, sur le BSP seul.
     #[cfg(all(target_arch = "x86_64", feature = "net-q35-lab"))]
@@ -404,5 +425,7 @@ fn interactive(
 #[panic_handler]
 fn panic(info: &PanicInfo<'_>) -> ! {
     hal::interrupts::mask();
+    #[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+    live_video::panique();
     smp::shutdown("panique", format_args!("Panique du noyau : {info}"))
 }

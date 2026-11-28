@@ -91,6 +91,8 @@ pub(crate) fn run() -> ! {
         yield_now();
     }
     hal::log(format_args!("SMP stationnes={} en_ligne=1", n - 1));
+    #[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+    crate::live_video::jalon(crate::live_video::SMP);
     hal::log(format_args!("SMP rendezvous={goal:#x} actifs={n} OK"));
     hal::cpu::halt()
 }

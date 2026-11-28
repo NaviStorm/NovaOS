@@ -14,7 +14,8 @@ import time
 from image import NOVA, admettre, construire
 sys.path[:0] = [str(NOVA / "boot/diagnostic-5e"), str(NOVA / "boot/diagnostic-5i"),
                 str(NOVA / "tests/ethernet_v1")]
-from banc import Qmp, Debug, digest
+from banc import Qmp, Debug
+from hashlib import sha256
 from sonde import state, hmp
 from port_qemu import qualification
 
@@ -24,12 +25,20 @@ TRACE = ("pci_cfg_write", "vtd_reg_write", "ide_bus_exec_cmd", "ahci_cmd_done",
 MASQUE = 0x000ffffffffff000
 
 
+def digest(p):
+    h = sha256()
+    with p.open("rb") as f:
+        for bloc in iter(lambda: f.read(1 << 20), b""):
+            h.update(bloc)
+    return h.hexdigest()
+
+
 def enregistrer(nom, contenu):
     Path(nom).write_text(json.dumps(contenu, indent=2, sort_keys=True) + "\n")
 
 
 @contextmanager
-def machine(dossier, image, fw, magasin, ram, cpus):
+def machine(dossier, image, fw, magasin, ram, cpus, video=True):
     dossier.mkdir()
     avant = Path.cwd()
     os.chdir(dossier)
@@ -39,7 +48,7 @@ def machine(dossier, image, fw, magasin, ram, cpus):
             d.truncate(4 << 20)
         args = ["qemu-system-x86_64", "-machine", "q35,smm=on", "-accel", "tcg,thread=multi",
                 "-cpu", "max", "-m", str(ram), "-smp", str(cpus), "-nodefaults",
-                "-device", "VGA", "-display", "none", "-serial", "file:serie.log",
+                *(["-device", "VGA"] if video else []), "-display", "none", "-serial", "file:serie.log",
                 "-qmp", "stdio", "-monitor", "none", "-S", "-no-reboot", "-no-shutdown",
                 "-gdb", "unix:observateur.sock,server=on,wait=off", "-D", "transactions.log",
                 "-drive", f"if=pflash,unit=0,format=raw,readonly=on,file={fw}",
@@ -76,11 +85,11 @@ def attendre(marque):
     raise ValueError("Jalon absent : " + repr(s[-550:]))
 
 
-def symboles(elf):
+def symboles(elf, supplement=()):
     s = subprocess.check_output(["llvm-nm", "--demangle", "--defined-only", elf], text=True)
     resultat = {}
     for nom in ("nova_start", "novaos::sched::start", "novaos::main_thread",
-                "novaos::boot::MAP", "__image_start", "__text_start", "__rodata_start", "__data_start", "__image_end"):
+                "novaos::boot::MAP", "__image_start", "__text_start", "__rodata_start", "__data_start", "__image_end", *supplement):
         lignes = [l for l in s.splitlines() if l.split(maxsplit=2)[-1] == nom]
         if len(lignes) != 1:
             raise ValueError("Symbole ELF absent ou ambigu : " + nom)
@@ -180,7 +189,7 @@ def controle_pages(q, syms, ram, entrees):
     return dict(cr3=racine, wp=True, nxe=True, groupes=groupes, tables=sorted(tables))
 
 
-def essai(out, stage, fw, magasin, image, ram, cpus, mesure=False):
+def essai(out, stage, fw, magasin, image, ram, cpus, mesure=False, video=None):
     fin = f"SMP rendezvous={((1 << cpus) - 1):#x} actifs={cpus} OK".encode()
     opts = (image, fw, magasin, ram, cpus)
     with machine(out / f"cal-{ram}-{cpus}", *opts) as q:
@@ -189,7 +198,7 @@ def essai(out, stage, fw, magasin, image, ram, cpus, mesure=False):
         entree = int(re.search(rb"NOVA5Z EFI entree=([0-9a-f]+)", s)[1], 16)
     if not mesure:
         return entree
-    syms = symboles(stage / "NOVAOS.ELF")
+    syms = symboles(stage / "NOVAOS.ELF", ("NOVA6A_JOURNAL", "NOVA6A_EVENEMENTS", "novaos::boot::FRAMEBUFFER", "novaos::smp::launch", "novaos::smp::shutdown") if video else ())
     with machine(out / f"nominal-{ram}-{cpus}", *opts) as q:
         d = Debug()
         try:
@@ -216,16 +225,31 @@ def essai(out, stage, fw, magasin, image, ram, cpus, mesure=False):
             etats["retour_ebs"] = instant(q)
             atteindre(d, syms["nova_start"])
             etats["nova_start"] = instant(q)
+            if video:
+                video("entree", q, d, syms)
             carte = relais_memoire(d, syms, stage / "NOVAOS.ELF")
             atteindre(d, syms["novaos::sched::start"])
             etats["apres_memoire"] = instant(q)
+            if video:
+                video("memoire", q, d, syms)
             pages = controle_pages(q, syms, ram, carte)
             atteindre(d, syms["novaos::main_thread"])
             etats["tache_principale"] = instant(q)
+            if video:
+                video("premiere-tache", q, d, syms)
+                atteindre(d, syms["novaos::smp::launch"])
+                video("ordonnanceur", q, d, syms)
+                atteindre(d, syms["novaos::smp::shutdown"])
+                video("smp", q, d, syms)
             q.call("cont")
             attendre(fin)
             attendre(b"SMP arret motif=normal")
+            if video:
+                attendre(b"NOVA6A journal=")
+                time.sleep(.15)
             q.call("stop")
+            if video:
+                video("terminal", q, d, syms)
             etats["rendezvous"] = instant(q)
             for e in TRACE: q.call("trace-event-set-state", name=e, enable=False)
             if canari != digest(Path("interne.raw")):

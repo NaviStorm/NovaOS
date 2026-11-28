@@ -179,5 +179,7 @@ pub(crate) fn shutdown(reason: &str, details: core::fmt::Arguments<'_>) -> ! {
             online & !ack
         ));
     }
+    #[cfg(all(target_arch = "x86_64", feature = "live-video-6a"))]
+    crate::live_video::terminer(reason == "normal" && ack == expected);
     hal::cpu::park_local();
 }
