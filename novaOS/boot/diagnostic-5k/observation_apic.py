@@ -41,15 +41,15 @@ def mem(d, adr, n):
     return data
 
 
-def observer(q, j, cal):
+def observer(q, j, cal, *, diagnostic=None, verifier_entree=None, evenements=TRACE):
     (timer,) = cal["timers"]
     entry = cal["entree"]
-    term = cal["image"] + 0x3578
+    term = cal["image"] + (diagnostic["hlt"] if diagnostic else 0x3578)
     handler, store = timer + 0x4B9, timer + 0x97F
     module = epingle(
         j / "ovmf5j-b/Build/OvmfX64/RELEASE_CLANGDWARF/X64/LocalApicTimerDxe.efi", TIMER
     )
-    image = epingle(j / "supports5j-b/diagnostic.efi", EFI)
+    image = epingle(diagnostic["fichier"], diagnostic["sha256"]) if diagnostic else epingle(j / "supports5j-b/diagnostic.efi", EFI)
     (cpu,) = q.call("query-cpus-fast")
     check(cpu["cpu-index"] == 0, "vCPU inattendu")
     dbg = Debug()
@@ -57,7 +57,7 @@ def observer(q, j, cal):
     dbg.resume()
     check(dbg.pc() == entry, "Entrée inattendue")
     dbg.remove(entry)
-    raw = entry - cal["image"] - 0xC00
+    raw = diagnostic["offset_entree"] if diagnostic else entry - cal["image"] - 0xC00
     check(
         mem(dbg, entry, 16) == image[raw : raw + 16]
         and mem(dbg, term, 3) == b"\xf4\xeb\xfd",
@@ -65,10 +65,12 @@ def observer(q, j, cal):
     )
     for a, b in ((0x4B9, 0x544), (0x962, 0x985)):
         check(mem(dbg, timer + a, b - a) == module[a:b], "Gestionnaire non identifié")
-    for ev in TRACE:
+    for ev in evenements:
         q.call("trace-event-set-state", name=ev, enable=True)
     trace = Path("trace.log")
     start = trace.stat().st_size
+    if verifier_entree:
+        verifier_entree(q, dbg)
     dbg.watch(term)
     dbg.watch(handler)
     terminal = False
@@ -118,7 +120,7 @@ def observer(q, j, cal):
     check(pending is None and terminal, "Fin d'intervalle absente")
     dbg.remove(handler)
     end = trace.stat().st_size
-    for ev in TRACE:
+    for ev in evenements:
         q.call("trace-event-set-state", name=ev, enable=False)
     q.observateur = dbg
     buf = trace.read_bytes()[start:end]
@@ -131,7 +133,7 @@ def observer(q, j, cal):
         debut=start,
         fin=end,
         sha_module=TIMER,
-        sha_diagnostic=EFI,
+        sha_diagnostic=diagnostic["sha256"] if diagnostic else EFI,
     )
     Path("interruptions.json").write_text(json.dumps(proof, indent=2) + "\n")
     verdict = juger(trace.read_bytes(), buf, proof)

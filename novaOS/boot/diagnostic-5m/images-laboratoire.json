@@ -1,0 +1,38 @@
+{
+  "manifeste": {
+    "authenticode": "2bf1740899103294c587721429fe3d0eae870c5268da29da40380418e0aae449",
+    "entree": 12304,
+    "hlt": 8624,
+    "sha256": "f8c08dbddd212e2a9c9da447ee290ce636e652ef22189a22ddb17811ae63d42f",
+    "taille": 4513792,
+    "texte": [
+      4096,
+      1024,
+      198144
+    ]
+  },
+  "paquet": {
+    "authenticode": "02d94ee1b75b68beb307c3057b8ef7805495b36cb44bcec4d25ed72ee1b89cee",
+    "entree": 12304,
+    "hlt": 8624,
+    "sha256": "131fb8818b685d047241adef6f84f6ff2ed3c854508530491e73b748b95f754d",
+    "taille": 4513792,
+    "texte": [
+      4096,
+      1024,
+      198144
+    ]
+  },
+  "valide": {
+    "authenticode": "1608d3971d5cc82934794269bbae834b8586a09d671cbd32c83728c04aa58a74",
+    "entree": 12304,
+    "hlt": 8624,
+    "sha256": "9442959bb9dcfcccba17c8f988684af6615f38e45325fd114c989973ce39a4d7",
+    "taille": 4513792,
+    "texte": [
+      4096,
+      1024,
+      198144
+    ]
+  }
+}

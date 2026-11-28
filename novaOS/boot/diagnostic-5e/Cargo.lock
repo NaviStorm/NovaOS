@@ -364,6 +364,7 @@ dependencies = [
 name = "novaos-diagnostic-uefi"
 version = "0.1.0"
 dependencies = [
+ "ed25519-dalek",
  "novaos-catalogue",
  "r-efi",
  "sha2 0.10.9",

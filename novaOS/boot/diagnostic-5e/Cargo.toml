@@ -8,12 +8,14 @@ publish = false
 [workspace]
 
 [dependencies]
+ed25519-dalek = { version = "=2.2.0", default-features = false, optional = true }
 sha2 = { version = "=0.10.9", default-features = false }
 r-efi = "=6.0.0"
 novaos-catalogue = { path = "../../libs/catalogue-pilotes" }
 
 [features]
 firmware = []
+diagnostic-5m = ["diagnostic-5h", "dep:ed25519-dalek"]
 diagnostic-5j = ["diagnostic-5h"]
 diagnostic-5h = []
 diagnostic-5i = ["diagnostic-5h"]
@@ -30,6 +32,13 @@ bench = false
 name = "diagnostic-5j"
 path = "../diagnostic-5j/entree.rs"
 required-features = ["diagnostic-5j"]
+test = false
+bench = false
+
+[[bin]]
+name = "diagnostic-5m"
+path = "../diagnostic-5m/entree.rs"
+required-features = ["diagnostic-5m"]
 test = false
 bench = false
 
