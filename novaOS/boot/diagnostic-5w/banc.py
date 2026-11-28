@@ -74,6 +74,7 @@ def essai(
     bornes_prevues=None,
     actif_vtd=False,
     inconnu=False,
+    temoin_console=None,
 ):
     dossier.mkdir()
     origine = Path.cwd()
@@ -169,6 +170,8 @@ def essai(
                     debug.remove(debut)
                     if actif_vtd:
                         stimulus = temoin_vtd.installer(q)
+                    if temoin_console is not None:
+                        stimulus = temoin_console(debug)
                     entree = etat(q)
                     for event in EV:
                         q.call("trace-event-set-state", name=event, enable=True)
@@ -231,6 +234,8 @@ def essai(
                 rip = int(re.search(r"RIP=([0-9a-fA-F]+)", regs)[1], 16)
                 if "HLT=1" not in regs or not limites[1] <= rip < limites[1] + 16:
                     raise ValueError("Arrêt CPU de NovaOS non établi")
+                if temoin_console is not None:
+                    Path("registres.txt").write_text(regs)
                 if not bornes_prevues:
                     return limites
                 if (

@@ -1,0 +1,79 @@
+Base 5W c2270ee89ee3b36e25255aeaf456647fcf47cbe2
+aarch64-apple-darwin / standard
+test classes_des_controleurs_et_fonction_inconnue ... ok
+test rejet_des_objets_internes_alteres ... ok
+test selection_du_catalogue_signe_et_refus_du_conflit ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+aarch64-apple-darwin / passif
+test acpi::tests::dmar_portee_et_adresse_unite ... ok
+test acpi::tests::drhd_hors_profil_ne_delivre_pas_de_registres ... ok
+test acpi::tests::drhd_q35_une_unite_portee_non_ambigue ... ok
+test acpi::tests::drhd_refuse_rmrr_unites_multiples_et_portee_manquante ... ok
+test acpi::tests::ecam_ne_peut_pas_designer_la_memoire_des_tables ... ok
+test acpi::tests::iort_cycle_indirect_et_portee_smmu ... ok
+test acpi::tests::iort_plages_reservees_descriptives_bornees ... ok
+test acpi::tests::iort_verifie_noeuds_et_references_de_sortie ... ok
+test acpi::tests::limites_entrees_et_table_inconnue ... ok
+test acpi::tests::madt_srat_verifient_les_sous_structures ... ok
+test acpi::tests::mcfg_refuse_alias_et_depassement ... ok
+test acpi::tests::pointeur_inaccessible_taille_tronquee_et_relecture_incoherente ... ok
+test acpi::tests::pointeurs_dupliques_et_chevauchements_refuses ... ok
+test acpi::tests::racine_32_et_64_et_fenetre_distincte_de_bus_zero ... ok
+test acpi::tests::slit_controle_matrice_et_fadt_taille_selon_revision ... ok
+test acpi::tests::sommes_racines_et_enfants_independantes ... ok
+test acpi::tests::visiteur_borne_avant_publication ... ok
+test firmware::tests::options_efi_externes_refusees ... ok
+test firmware::tests::une_plage_acpi_doit_etre_entierement_lisible ... ok
+test phase5h::tests::remapping_units_are_bounded_and_unambiguous ... ok
+test phase5h::tests::trust_states ... ok
+test phase5i::tests::liste_fermee_registres_pci ... ok
+test tests::plan_ambigu_inconnu_et_plancher ... ok
+test topologie5i::tests::groupes_candidats_stables_et_ponts_ambigus_refuses ... ok
+test topologie5i::tests::longueurs_adresses_et_budget_refuses ... ok
+test topologie5i::tests::priorite_explicite_rmrr_et_ambiguite ... ok
+test topologie5i::tests::scopes_traversent_les_ponts_sans_changer_de_segment ... ok
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+aarch64-apple-darwin / console
+test console_absente_erreur_de_sortie_et_limite_utf16 ... ok
+test phase5h::tests::remapping_units_are_bounded_and_unambiguous ... ok
+test phase5h::tests::trust_states ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+x86_64-apple-darwin / standard
+test classes_des_controleurs_et_fonction_inconnue ... ok
+test rejet_des_objets_internes_alteres ... ok
+test selection_du_catalogue_signe_et_refus_du_conflit ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+x86_64-apple-darwin / passif
+test acpi::tests::dmar_portee_et_adresse_unite ... ok
+test acpi::tests::drhd_hors_profil_ne_delivre_pas_de_registres ... ok
+test acpi::tests::drhd_q35_une_unite_portee_non_ambigue ... ok
+test acpi::tests::drhd_refuse_rmrr_unites_multiples_et_portee_manquante ... ok
+test acpi::tests::ecam_ne_peut_pas_designer_la_memoire_des_tables ... ok
+test acpi::tests::iort_cycle_indirect_et_portee_smmu ... ok
+test acpi::tests::iort_plages_reservees_descriptives_bornees ... ok
+test acpi::tests::iort_verifie_noeuds_et_references_de_sortie ... ok
+test acpi::tests::limites_entrees_et_table_inconnue ... ok
+test acpi::tests::madt_srat_verifient_les_sous_structures ... ok
+test acpi::tests::mcfg_refuse_alias_et_depassement ... ok
+test acpi::tests::pointeur_inaccessible_taille_tronquee_et_relecture_incoherente ... ok
+test acpi::tests::pointeurs_dupliques_et_chevauchements_refuses ... ok
+test acpi::tests::racine_32_et_64_et_fenetre_distincte_de_bus_zero ... ok
+test acpi::tests::slit_controle_matrice_et_fadt_taille_selon_revision ... ok
+test acpi::tests::sommes_racines_et_enfants_independantes ... ok
+test acpi::tests::visiteur_borne_avant_publication ... ok
+test firmware::tests::options_efi_externes_refusees ... ok
+test firmware::tests::une_plage_acpi_doit_etre_entierement_lisible ... ok
+test phase5h::tests::remapping_units_are_bounded_and_unambiguous ... ok
+test phase5h::tests::trust_states ... ok
+test phase5i::tests::liste_fermee_registres_pci ... ok
+test tests::plan_ambigu_inconnu_et_plancher ... ok
+test topologie5i::tests::groupes_candidats_stables_et_ponts_ambigus_refuses ... ok
+test topologie5i::tests::longueurs_adresses_et_budget_refuses ... ok
+test topologie5i::tests::priorite_explicite_rmrr_et_ambiguite ... ok
+test topologie5i::tests::scopes_traversent_les_ponts_sans_changer_de_segment ... ok
+test result: ok. 27 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+x86_64-apple-darwin / console
+test console_absente_erreur_de_sortie_et_limite_utf16 ... ok
+test phase5h::tests::remapping_units_are_bounded_and_unambiguous ... ok
+test phase5h::tests::trust_states ... ok
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

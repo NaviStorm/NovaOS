@@ -1,0 +1,64 @@
+{
+  "pe_octets": 297984,
+  "pe_sha256": "da718b3944579c3b53e82c1f489eeecd7899ea5097b8a899bb5f884e49665355",
+  "authenticode_sha256": "9309d587a9f6886a33d21bb7da49b2baa4a6c84d1e41012d5d32015f8cc38834",
+  "images": [
+    {
+      "octets": 71303168,
+      "secondaire_lba": 139263,
+      "partitions": {
+        "NOVAOS": [
+          1048576,
+          34603008
+        ],
+        "NOVALOGS": [
+          35651584,
+          34603008
+        ]
+      },
+      "fichiers_prealloues": 24,
+      "sha256": "79ee5d200f5e90bca19be8f06011dd8cd0b080f086e4f300005a338b55e20060",
+      "deux_generations_identiques": true,
+      "dd_identique": true,
+      "gpt_alteree_refusee": true
+    },
+    {
+      "octets": 100663808,
+      "secondaire_lba": 196608,
+      "partitions": {
+        "NOVAOS": [
+          1048576,
+          34603008
+        ],
+        "NOVALOGS": [
+          35651584,
+          34603008
+        ]
+      },
+      "fichiers_prealloues": 24,
+      "sha256": "2871a7a30a70bf2ce1a5ac416cf44cd0cee762a178e0260769e82dc4cc04204a",
+      "deux_generations_identiques": true,
+      "dd_identique": true,
+      "gpt_alteree_refusee": true
+    },
+    {
+      "octets": 1073741824,
+      "secondaire_lba": 2097151,
+      "partitions": {
+        "NOVAOS": [
+          1048576,
+          34603008
+        ],
+        "NOVALOGS": [
+          35651584,
+          34603008
+        ]
+      },
+      "fichiers_prealloues": 24,
+      "sha256": "e5179cef1a2142b6345d92c0933626d0ebf5dc5f4397c81626aac5e2ae3f411e",
+      "deux_generations_identiques": true,
+      "dd_identique": true,
+      "gpt_alteree_refusee": true
+    }
+  ]
+}
