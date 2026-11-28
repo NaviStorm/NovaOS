@@ -1,0 +1,29 @@
+[package]
+name = "novaos-live-5z"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+publish = false
+
+[workspace]
+
+[[bin]]
+name = "live"
+path = "entree.rs"
+test = false
+
+[features]
+default = ["diagnostic-5h"]
+diagnostic-5h = []
+
+[dependencies]
+r-efi = "=6.0.0"
+sha2 = { version = "=0.10.9", default-features = false }
+novaos-catalogue = { path = "../../libs/catalogue-pilotes" }
+
+[profile.release]
+panic = "abort"
+lto = true
+overflow-checks = true
+codegen-units = 1
+strip = true

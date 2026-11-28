@@ -117,7 +117,7 @@ def gpt(total):
     return blocks
 
 
-def volume(start, name, pe=None):
+def volume(start, name, pe=None, *, fichiers_racine=()):
     blocks = {}
     table = [0x0FFFFFF8, 0x0FFFFFFF]
 
@@ -154,6 +154,17 @@ def volume(start, name, pe=None):
         first = allocate((len(legal) + S - 1) // S)
         root += secteur_entree(b"LICENCESTXT", first, len(legal))
         blocks[address(first)] = legal
+        for court, long, contenu in fichiers_racine:
+            require(len(court) == 11 and contenu, "Fichier FAT invalide")
+            n = (len(contenu) + S - 1) // S
+            require(len(table) + n <= CLUSTERS + 2, "ESP pleine")
+            first = allocate(n)
+            if long:
+                require(len(long.encode("utf-16-le")) <= 24, "Nom long hors profil")
+                root += nom_long(long, court)
+            root += secteur_entree(court, first, len(contenu))
+            require(len(root) <= S, "Répertoire racine plein")
+            blocks[address(first)] = contenu
     else:
         for slot in range(1, SLOTS + 1):
             sub = allocate(1)

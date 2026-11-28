@@ -1,0 +1,371 @@
+--- a/common/drivers/disk.s2.c
++++ b/common/drivers/disk.s2.c
+@@ -337,69 +336,0 @@
+-}
+-
+-static struct volume *pxe_from_efi_handle(EFI_HANDLE efi_handle) {
+-    static struct volume *vol = NULL;
+-
+-    // There's only one PXE volume
+-    if (vol) {
+-        return vol;
+-    }
+-
+-    EFI_STATUS status;
+-
+-    EFI_GUID pxe_base_code_guid = EFI_PXE_BASE_CODE_PROTOCOL_GUID;
+-    EFI_PXE_BASE_CODE *pxe_base_code = NULL;
+-
+-    status = gBS->HandleProtocol(efi_handle, &pxe_base_code_guid, (void **)&pxe_base_code);
+-    if (status) {
+-        return NULL;
+-    }
+-
+-    if (!pxe_base_code->Mode->DhcpDiscoverValid) {
+-        print("PXE somehow didn't use DHCP?\n");
+-        return NULL;
+-    }
+-
+-    if (pxe_base_code->Mode->UsingIpv6) {
+-        print("Sorry, unsupported: PXE IPv6\n");
+-        return NULL;
+-    }
+-
+-    vol = pxe_bind_volume(efi_handle, pxe_base_code);
+-    return vol;
+-}
+-
+-#define UNIQUE_SECTOR_POOL_SIZE 65536
+-static uint8_t *unique_sector_pool;
+-static bool unique_sectors_calculated = false;
+-
+-static void find_unique_sectors(void);
+-
+-static struct volume *volume_by_unique_sector(void *b2b) {
+-    for (size_t i = 0; i < volume_index_i; i++) {
+-        if (volume_index[i]->unique_sector_valid == false) {
+-            continue;
+-        }
+-
+-        if (memcmp(volume_index[i]->unique_sector_b2b, b2b, BLAKE2B_OUT_BYTES) == 0) {
+-            return volume_index[i];
+-        }
+-    }
+-
+-    return NULL;
+-}
+-
+-// Search for matching hash including invalidated volumes (for collision detection)
+-static struct volume *volume_by_sector_hash(void *b2b) {
+-    for (size_t i = 0; i < volume_index_i; i++) {
+-        if (volume_index[i]->unique_sector_valid == false
+-         && memcmp(volume_index[i]->unique_sector_b2b, (uint8_t[BLAKE2B_OUT_BYTES]){0}, BLAKE2B_OUT_BYTES) == 0) {
+-            // Hash was never set, skip
+-            continue;
+-        }
+-
+-        if (memcmp(volume_index[i]->unique_sector_b2b, b2b, BLAKE2B_OUT_BYTES) == 0) {
+-            return volume_index[i];
+-        }
+-    }
+-
+-    return NULL;
+@@ -598,0 +530,2 @@
++static EFI_HANDLE usb_partition, usb_disk;
++
+@@ -600,6 +533 @@
+-    EFI_STATUS status;
+-
+-    EFI_GUID block_io_guid = BLOCK_IO_PROTOCOL;
+-    EFI_BLOCK_IO *block_io = NULL;
+-
+-    if (is_efi_handle_to_skip(efi_handle)) {
++    if (efi_handle != usb_partition && efi_handle != usb_disk)
+@@ -607,90 +535,2 @@
+-    }
+-
+-    status = gBS->HandleProtocol(efi_handle, &block_io_guid, (void **)&block_io);
+-    if (status) {
+-        return pxe_from_efi_handle(efi_handle);
+-    }
+-
+-    // Try device path matching first (primary method)
+-    struct volume *ret = volume_by_device_path(efi_handle);
+-    if (ret != NULL) {
+-        return ret;
+-    }
+-
+-    // Fallback to unique sector matching
+-    uint64_t bdev_size = ((uint64_t)block_io->Media->LastBlock + 1) * (uint64_t)block_io->Media->BlockSize;
+-    if (bdev_size >= UNIQUE_SECTOR_POOL_SIZE) {
+-        status = block_io->ReadBlocks(block_io, block_io->Media->MediaId,
+-                                      0,
+-                                      UNIQUE_SECTOR_POOL_SIZE,
+-                                      unique_sector_pool);
+-        if (status == 0) {
+-            find_unique_sectors();
+-
+-            uint8_t b2b[BLAKE2B_OUT_BYTES];
+-            blake2b(b2b, unique_sector_pool, UNIQUE_SECTOR_POOL_SIZE);
+-
+-            ret = volume_by_unique_sector(b2b);
+-            if (ret != NULL) {
+-                // Verify size, block size, and partition status match
+-                if (block_io->Media->BlockSize == (uint32_t)ret->sector_size
+-                 && bdev_size == ret->sect_count * 512
+-                 && block_io->Media->LogicalPartition == (ret->partition != 0)) {
+-                    return ret;
+-                }
+-            }
+-        }
+-    }
+-
+-    return NULL;
+-}
+-
+-static void find_unique_sectors(void) {
+-    if (unique_sectors_calculated) {
+-        return;
+-    }
+-    unique_sectors_calculated = true;
+-
+-    EFI_STATUS status;
+-
+-    for (size_t i = 0; i < volume_index_i; i++) {
+-        if ((volume_index[i]->first_sect * 512) % volume_index[i]->sector_size) {
+-            continue;
+-        }
+-
+-        size_t first_sect = (volume_index[i]->first_sect * 512) / volume_index[i]->sector_size;
+-
+-        // sect_count is always in 512-byte sectors
+-        if (volume_index[i]->sect_count * 512 < UNIQUE_SECTOR_POOL_SIZE) {
+-            continue;
+-        }
+-
+-        status = volume_index[i]->block_io->ReadBlocks(
+-                            volume_index[i]->block_io,
+-                            volume_index[i]->block_io->Media->MediaId,
+-                            first_sect,
+-                            UNIQUE_SECTOR_POOL_SIZE,
+-                            unique_sector_pool);
+-        if (status != 0) {
+-            continue;
+-        }
+-
+-        uint8_t b2b[BLAKE2B_OUT_BYTES];
+-        blake2b(b2b, unique_sector_pool, UNIQUE_SECTOR_POOL_SIZE);
+-
+-        // Check for collision BEFORE storing hash (so we don't find ourselves)
+-        // This searches all volumes including previously invalidated ones
+-        struct volume *collision = volume_by_sector_hash(b2b);
+-
+-        // Always store the hash so future volumes can detect collisions
+-        memcpy(volume_index[i]->unique_sector_b2b, b2b, BLAKE2B_OUT_BYTES);
+-
+-        if (collision == NULL) {
+-            volume_index[i]->unique_sector_valid = true;
+-            continue;
+-        }
+-
+-        // Collision found - invalidate both volumes
+-        collision->unique_sector_valid = false;
+-        volume_index[i]->unique_sector_valid = false;
+-    }
++    // The Live profile has no PXE or sector-content fallback.
++    return volume_by_device_path(efi_handle);
+@@ -708,0 +549,57 @@
++// NovaOS Live x86_64: the first EFI has verified the loaded GPT partition
++// on USB. Resolve its whole-media handle before issuing any Block I/O.
++
++
++static void resolve_boot_media(void) {
++    EFI_GUID image_guid = EFI_LOADED_IMAGE_PROTOCOL_GUID;
++    EFI_GUID block_guid = BLOCK_IO_PROTOCOL;
++    EFI_LOADED_IMAGE_PROTOCOL *image = NULL;
++    if (gBS->HandleProtocol(efi_image_handle, &image_guid, (void **)&image) ||
++        !image || !image->DeviceHandle)
++        goto fail;
++    usb_partition = image->DeviceHandle;
++    EFI_DEVICE_PATH_PROTOCOL *path = get_device_path(usb_partition);
++    uint8_t parent[4096];
++    size_t used = 0;
++    bool usb = false;
++    while (path && used + 4 <= sizeof(parent)) {
++        size_t n = DevicePathNodeLength(path);
++        if (n < 4 || n > sizeof(parent) - used || IsDevicePathEnd(path))
++            goto fail;
++        if (path->Type == MEDIA_DEVICE_PATH) {
++            if (path->SubType != MEDIA_HARDDRIVE_DP || n != 42 || !usb ||
++                ((uint8_t *)path)[40] != 2 || ((uint8_t *)path)[41] != 2)
++                goto fail;
++            EFI_DEVICE_PATH_PROTOCOL *tail = (void *)((uint8_t *)path + n);
++            if (tail->Type != END_DEVICE_PATH_TYPE || tail->SubType != END_ENTIRE_DEVICE_PATH_SUBTYPE ||
++                DevicePathNodeLength(tail) != 4)
++                goto fail;
++            memcpy(parent + used, tail, 4);
++            EFI_DEVICE_PATH_PROTOCOL *cursor = (void *)parent;
++            if (gBS->LocateDevicePath(&block_guid, &cursor, &usb_disk) ||
++                !usb_disk || usb_disk == usb_partition || (uint8_t *)cursor != parent + used)
++                goto fail;
++            EFI_DEVICE_PATH_PROTOCOL *actual = get_device_path(usb_disk);
++            size_t offset = 0;
++            while (actual && offset < used + 4) {
++                EFI_DEVICE_PATH_PROTOCOL *expected = (void *)(parent + offset);
++                size_t size = DevicePathNodeLength(expected);
++                if (DevicePathNodeLength(actual) != size || memcmp(actual, expected, size))
++                    goto fail;
++                offset += size;
++                actual = (void *)((uint8_t *)actual + size);
++            }
++            if (offset != used + 4)
++                goto fail;
++            return;
++        }
++        if (path->Type == MESSAGING_DEVICE_PATH && path->SubType == MSG_USB_DP && n == 6)
++            usb = true;
++        memcpy(parent + used, path, n);
++        used += n;
++        path = (void *)((uint8_t *)path + n);
++    }
++fail:
++    panic(false, "NovaOS: no exact USB boot disk");
++}
++
+@@ -711,5 +607,0 @@
+-
+-    unique_sector_pool = ext_mem_alloc(UNIQUE_SECTOR_POOL_SIZE);
+-
+-    EFI_HANDLE tmp_handles[1];
+-
+@@ -717,26 +609,4 @@
+-    EFI_HANDLE *handles = tmp_handles;
+-    UINTN handles_size = sizeof(tmp_handles);
+-
+-    status = gBS->LocateHandle(ByProtocol, &block_io_guid, NULL, &handles_size, handles);
+-
+-    // we only care about the first handle, so ignore if we get EFI_BUFFER_TOO_SMALL
+-    if (status != EFI_BUFFER_TOO_SMALL && status != EFI_SUCCESS) {
+-        EFI_GUID pxe_guid = EFI_PXE_BASE_CODE_PROTOCOL_GUID;
+-        status = gBS->LocateHandle(ByProtocol, &pxe_guid, NULL, &handles_size, handles);
+-        // likewise, all that matters is that the protocol is present
+-        if (status == EFI_BUFFER_TOO_SMALL || status == EFI_SUCCESS) {
+-            return;
+-        }
+-
+-        goto fail;
+-    }
+-
+-    handles = ext_mem_alloc(handles_size);
+-
+-    status = gBS->LocateHandle(ByProtocol, &block_io_guid, NULL, &handles_size, handles);
+-
+-    if (status != EFI_SUCCESS) {
+-fail:
+-        panic(false, "LocateHandle for BLOCK_IO_PROTOCOL failed. Machine not supported by Limine UEFI.");
+-    }
+-
++    void *probe_buffer = ext_mem_alloc(4096);
++    resolve_boot_media();
++    EFI_HANDLE handles[] = {usb_disk, usb_partition};
++    size_t handle_count = SIZEOF_ARRAY(handles);
+@@ -744,2 +613,0 @@
+-
+-    size_t handle_count = handles_size / sizeof(EFI_HANDLE);
+@@ -763 +631 @@
+-        status = drive->ReadBlocks(drive, drive->Media->MediaId, 0, 4096, unique_sector_pool);
++        status = drive->ReadBlocks(drive, drive->Media->MediaId, 0, 4096, probe_buffer);
+@@ -842,2 +710 @@
+-
+-    pmm_free(handles, handles_size);
++    pmm_free(probe_buffer, 4096);
+--- a/common/entry.s3.c
++++ b/common/entry.s3.c
+@@ -94,81 +94,6 @@
+-    boot_volume = NULL;
+-
+-    EFI_HANDLE current_handle = ImageHandle;
+-    for (size_t j = 0; j < 25; j++) {
+-        if (current_handle == NULL) {
+-could_not_match:
+-            print("WARNING: Could not meaningfully match the boot device handle with a volume.\n");
+-            print("         Using the first volume containing a Limine configuration!\n");
+-            print("\n");
+-            print("THIS IS A BUG! Please report this issue upstream.\n");
+-            print("Press any key to continue...\n");
+-            for (;;) {
+-                int ret = pit_sleep_and_quit_on_keypress(65535);
+-                if (ret != 0) {
+-                    break;
+-                }
+-            }
+-
+-            for (size_t i = 0; i < volume_index_i; i++) {
+-                struct file_handle *f;
+-
+-                bool old_cif = case_insensitive_fopen;
+-                case_insensitive_fopen = true;
+-                if (
+-                 false
+-#if defined (UEFI)
+-                 || (f = fopen(volume_index[i], "/EFI/limine/limine.conf")) != NULL
+-                 || (f = fopen(volume_index[i], "/EFI/BOOT/limine.conf")) != NULL
+-#endif
+-                 || (f = fopen(volume_index[i], "/boot/limine/limine.conf")) != NULL
+-                 || (f = fopen(volume_index[i], "/boot/limine.conf")) != NULL
+-                 || (f = fopen(volume_index[i], "/limine/limine.conf")) != NULL
+-                 || (f = fopen(volume_index[i], "/limine.conf")) != NULL
+-                ) {
+-                    goto opened;
+-                }
+-
+-                case_insensitive_fopen = old_cif;
+-                continue;
+-
+-opened:
+-                case_insensitive_fopen = old_cif;
+-
+-                fclose(f);
+-
+-                if (volume_index[i]->backing_dev != NULL) {
+-                    boot_volume = volume_index[i]->backing_dev;
+-                } else {
+-                    boot_volume = volume_index[i];
+-                }
+-
+-                break;
+-            }
+-
+-            if (boot_volume != NULL) {
+-                stage3_common();
+-            }
+-
+-            panic(false, "No volume contained a Limine configuration file");
+-        }
+-
+-        EFI_GUID loaded_img_prot_guid = EFI_LOADED_IMAGE_PROTOCOL_GUID;
+-        EFI_LOADED_IMAGE_PROTOCOL *loaded_image = NULL;
+-
+-        status = gBS->HandleProtocol(current_handle, &loaded_img_prot_guid,
+-                                     (void **)&loaded_image);
+-
+-        if (status) {
+-            goto could_not_match;
+-        }
+-
+-        boot_volume = disk_volume_from_efi_handle(loaded_image->DeviceHandle);
+-
+-        if (boot_volume != NULL) {
+-            stage3_common();
+-        }
+-
+-        current_handle = loaded_image->ParentHandle;
+-    }
+-
+-    goto could_not_match;
++    EFI_GUID image_guid = EFI_LOADED_IMAGE_PROTOCOL_GUID;
++    EFI_LOADED_IMAGE_PROTOCOL *image = NULL;
++    if (gBS->HandleProtocol(ImageHandle, &image_guid, (void **)&image) || !image ||
++        !(boot_volume = disk_volume_from_efi_handle(image->DeviceHandle)) || !boot_volume->partition)
++        panic(false, "NovaOS: no verified USB boot partition");
++    stage3_common();
