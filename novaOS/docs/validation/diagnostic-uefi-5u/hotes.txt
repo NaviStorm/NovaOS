@@ -1,0 +1,68 @@
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+binary: rustc
+commit-hash: 58cf8f9c35b355199727627d07ae34a4e2846d67
+commit-date: 2026-10-13
+host: aarch64-apple-darwin
+release: 1.99.1
+LLVM version: 23.1.1
+Tests hôte aarch64-apple-darwin
+
+running 22 tests
+test tests::alias_inconnu_absent_cyclique_ou_inter_unites ... ok
+test tests::chemin_multisaut_et_pont_irresolu ... ok
+test tests::chevauchement_et_portee_absente ... ok
+test tests::conservation_racine_sata_et_identite_domaine ... ok
+test tests::deux_unites_et_domaines_locaux_ordre_indifferent ... ok
+test tests::domaine_partage_alias_divergent_et_unite_erronee ... ok
+test tests::graphique_explicite_xhci_nic_et_sata_sur_unite_commune ... ok
+test tests::limites_entete_tables_et_structures_inconnues ... ok
+test tests::limites_inclusives_des_unites_et_fonctions ... ok
+test tests::permissions_directionnelles_et_mappings_fermes ... ok
+test tests::politique_ne_peut_preter_le_pe_les_tables_le_mmio_ni_le_stockage ... ok
+test tests::refus_si_sata_change_ou_si_son_mmio_recouvre_un_pret ... ok
+test tests::refuse_mmio_declare_ram_et_limites_arithmetiques ... ok
+test tests::rmrr_appliquee_a_un_alias_et_a_son_titulaire ... ok
+test tests::roles_et_cliche_initial_verifies ... ok
+test tests::segments_et_unite_sans_fonction_dma ... ok
+test tests::traductions_inactives_directes_ats_et_cliche_incomplet ... ok
+test tests::unite_par_defaut_unique_et_derniere_du_segment ... ok
+test topologie5i::tests::groupes_candidats_stables_et_ponts_ambigus_refuses ... ok
+test topologie5i::tests::longueurs_adresses_et_budget_refuses ... ok
+test topologie5i::tests::priorite_explicite_rmrr_et_ambiguite ... ok
+test topologie5i::tests::scopes_traversent_les_ponts_sans_changer_de_segment ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Tests hôte x86_64-apple-darwin
+
+running 22 tests
+test tests::alias_inconnu_absent_cyclique_ou_inter_unites ... ok
+test tests::chemin_multisaut_et_pont_irresolu ... ok
+test tests::chevauchement_et_portee_absente ... ok
+test tests::conservation_racine_sata_et_identite_domaine ... ok
+test tests::deux_unites_et_domaines_locaux_ordre_indifferent ... ok
+test tests::domaine_partage_alias_divergent_et_unite_erronee ... ok
+test tests::graphique_explicite_xhci_nic_et_sata_sur_unite_commune ... ok
+test tests::limites_entete_tables_et_structures_inconnues ... ok
+test tests::limites_inclusives_des_unites_et_fonctions ... ok
+test tests::permissions_directionnelles_et_mappings_fermes ... ok
+test tests::politique_ne_peut_preter_le_pe_les_tables_le_mmio_ni_le_stockage ... ok
+test tests::refus_si_sata_change_ou_si_son_mmio_recouvre_un_pret ... ok
+test tests::refuse_mmio_declare_ram_et_limites_arithmetiques ... ok
+test tests::rmrr_appliquee_a_un_alias_et_a_son_titulaire ... ok
+test tests::roles_et_cliche_initial_verifies ... ok
+test tests::segments_et_unite_sans_fonction_dma ... ok
+test tests::traductions_inactives_directes_ats_et_cliche_incomplet ... ok
+test tests::unite_par_defaut_unique_et_derniere_du_segment ... ok
+test topologie5i::tests::groupes_candidats_stables_et_ponts_ambigus_refuses ... ok
+test topologie5i::tests::longueurs_adresses_et_budget_refuses ... ok
+test topologie5i::tests::priorite_explicite_rmrr_et_ambiguite ... ok
+test topologie5i::tests::scopes_traversent_les_ponts_sans_changer_de_segment ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+Bibliothèque no_std compilée pour x86_64-unknown-uefi
+Bibliothèque no_std compilée pour x86_64-unknown-none
+Bibliothèque no_std compilée pour aarch64-unknown-none-softfloat
+python3 scripts/generate_abi.py --check
+48 sélecteurs ABI
