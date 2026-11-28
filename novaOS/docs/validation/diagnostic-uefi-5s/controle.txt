@@ -1,0 +1,78 @@
+NovaOS v0.25.0 phase 5S. Base 27e5a9fcf8ee6906e604d9314c562d4d7f053903. 28 novembre 2026.
+QEMU 11.1.3 Q35 x86_64 TCG. Deux mesures 5S et deux calibrations, sur le même PE et la même image.
+Darwin arm64 3.9.6
+5R : 4 cellules historiques contre-lues (nominal, surface, deux modes).
+5F : 6 lectures avant admission et 11 avec repli interne sur deux topologies. 5N : 40 lectures sans lancement.
+5S actif : statut 16, confiance indéterminée, cinq sections, écran identique, zéro E/S interne.
+5S inactif : statut 16, confiance indéterminée, cinq sections, écran identique, zéro E/S interne.
+Darwin x86_64 3.9.6
+5R : 4 cellules historiques contre-lues (nominal, surface, deux modes).
+5F : 6 lectures avant admission et 11 avec repli interne sur deux topologies. 5N : 40 lectures sans lancement.
+5S actif : statut 16, confiance indéterminée, cinq sections, écran identique, zéro E/S interne.
+5S inactif : statut 16, confiance indéterminée, cinq sections, écran identique, zéro E/S interne.
+python3 scripts/generate_abi.py --check
+Sélecteurs ABI 48
+Preuves 5i
+bilan.json: OK
+hotes.txt: OK
+laboratoire.tar.gz: OK
+observations.tar.gz: OK
+rejeu.json: OK
+Preuves 5j
+hotes.txt: OK
+laboratoire.tar.gz: OK
+observations.tar.gz: OK
+Preuves 5k
+hotes.txt: OK
+modules.tar.gz: OK
+observations.tar.gz: OK
+Preuves 5l
+modules.tar.gz: OK
+observations.tar.gz: OK
+regression-5k.tar.gz: OK
+hotes.txt: OK
+Preuves 5m
+observations.tar.gz: OK
+supports.tar.gz: OK
+hotes.txt: OK
+Preuves 5n
+captures/bds.json: OK
+captures/observations.json: OK
+captures/rapports.zip: OK
+fsck.txt: OK
+hotes.txt: OK
+lecture-linux.json: OK
+lecture-macos.json: OK
+lecture-windows.json: OK
+lecture-windows.png: OK
+modes.json: OK
+novaos-x86_64.img.gz: OK
+relecture-finale.txt: OK
+Preuves 5o
+capacites.json: OK
+diagnostic-x86_64.efi.gz: OK
+efi.sha256: OK
+hotes.txt: OK
+magasin-ovmf-test.fd.gz: OK
+novaos-x86_64-68mio.img.gz: OK
+observations.zip: OK
+variables-apres-arret.json: OK
+variables.json: OK
+verdict-actif.png: OK
+verdict-inactif.png: OK
+Preuves 5p
+hotes.txt: OK
+observations.zip: OK
+Preuves 5q
+hotes.txt: OK
+observations.zip: OK
+reconstruction.zip: OK
+Preuves 5r
+hotes.txt: OK
+mesures.json: OK
+observations.zip: OK
+rapports.zip: OK
+variables.json: OK
+verdict-actif.png: OK
+verdict-inactif.png: OK
+PowerShell 7.7.0 — 2 blocs analysés, 6 cas fictifs conformes. Aucun appel PnP.
