@@ -1,0 +1,48 @@
+NovaOS v0.25.0 — contrôles 5P du 28 novembre 2026
+Base a69f2a781a411fe8309a62591bf3a249a3c20f06
+
+Darwin arm64 3.9.6 (native)
+python3 -B -m unittest discover -s novaOS/boot/diagnostic-5<phase>
+5I    6 tests réussis    0.001 s
+5J    10 tests réussis    0.001 s
+5K    13 tests réussis    0.001 s
+5L    9 tests réussis    0.072 s
+5M    6 tests réussis    0.113 s
+5N    9 tests réussis    0.517 s
+5O    6 tests réussis    0.080 s
+5P    16 tests réussis    0.001 s
+75 tests réussis, dont 16 nouveaux.
+{"exclusion": 2, "gop": 12, "hub": 2, "usb": 10}
+12 verdicts GOP, 2 projections, 11 cas USB, 1 démarrage avec journaux, 2 magasins et image 68 Mio vérifiés.
+GPT, deux FAT32, PE 5M, 20 démarrages mesurés, 8 rapports et 24 fichiers contre-lus
+
+Darwin x86_64 3.9.6 (Rosetta)
+python3 -B -m unittest discover -s novaOS/boot/diagnostic-5<phase>
+5I    6 tests réussis    0.001 s
+5J    10 tests réussis    0.002 s
+5K    13 tests réussis    0.001 s
+5L    9 tests réussis    0.112 s
+5M    6 tests réussis    0.200 s
+5N    9 tests réussis    0.851 s
+5O    6 tests réussis    0.149 s
+5P    16 tests réussis    0.002 s
+75 tests réussis, dont 16 nouveaux.
+{"exclusion": 2, "gop": 12, "hub": 2, "usb": 10}
+12 verdicts GOP, 2 projections, 11 cas USB, 1 démarrage avec journaux, 2 magasins et image 68 Mio vérifiés.
+GPT, deux FAT32, PE 5M, 20 démarrages mesurés, 8 rapports et 24 fichiers contre-lus
+
+make -C novaOS abi-check
+python3 scripts/generate_abi.py --check
+48 numéros distincts dans le registre ABI.
+
+Empreintes historiques contrôlées par shasum -a 256 -c SHA256SUMS
+5I    5 fichiers conformes
+5J    3 fichiers conformes
+5K    3 fichiers conformes
+5L    4 fichiers conformes
+5M    3 fichiers conformes
+5N    12 fichiers conformes
+5O    11 fichiers conformes
+
+Archive synthétique 5P    256 membres    711716 octets
+SHA-256    e290f1d45749483654ec475bd3e79711cd6e118f2bfb026a0ccea3eaa590c90e
