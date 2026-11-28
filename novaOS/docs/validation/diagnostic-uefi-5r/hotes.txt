@@ -1,0 +1,186 @@
+NovaOS v0.25.0 phase 5R. Base 22ea086542421a24b78557270e985d33fa032b62. Campagne finale.
+rustc 1.99.1 (58cf8f9c3 2026-10-13)
+7f80bf3c42c89162d67fb229b9080e9706c0f7f6a3574978051c1c0c555477a5  novaOS/build/5r/rust/x86_64-unknown-uefi/release/diagnostic-5r.efi
+Darwin arm64 3.9.6
+novaOS/boot/diagnostic-5i
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK
+novaOS/boot/diagnostic-5j
+..........
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+OK
+novaOS/boot/diagnostic-5k
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 0.001s
+
+OK
+novaOS/boot/diagnostic-5l
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.076s
+
+OK
+novaOS/boot/diagnostic-5m
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.108s
+
+OK
+novaOS/boot/diagnostic-5n
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.435s
+
+OK
+novaOS/boot/diagnostic-5o
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.080s
+
+OK
+novaOS/boot/diagnostic-5p
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.001s
+
+OK
+novaOS/boot/diagnostic-5q
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.320s
+
+OK
+novaOS/boot/diagnostic-5r
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.145s
+
+OK
+39 démarrages distincts, 783 pièces, signatures, tables VT-d, E/S et écrans vérifiés.
+Darwin x86_64 3.9.6
+novaOS/boot/diagnostic-5i
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK
+novaOS/boot/diagnostic-5j
+..........
+----------------------------------------------------------------------
+Ran 10 tests in 0.002s
+
+OK
+novaOS/boot/diagnostic-5k
+.............
+----------------------------------------------------------------------
+Ran 13 tests in 0.001s
+
+OK
+novaOS/boot/diagnostic-5l
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.112s
+
+OK
+novaOS/boot/diagnostic-5m
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.201s
+
+OK
+novaOS/boot/diagnostic-5n
+.........
+----------------------------------------------------------------------
+Ran 9 tests in 0.854s
+
+OK
+novaOS/boot/diagnostic-5o
+......
+----------------------------------------------------------------------
+Ran 6 tests in 0.128s
+
+OK
+novaOS/boot/diagnostic-5p
+................
+----------------------------------------------------------------------
+Ran 16 tests in 0.002s
+
+OK
+novaOS/boot/diagnostic-5q
+............
+----------------------------------------------------------------------
+Ran 12 tests in 0.595s
+
+OK
+novaOS/boot/diagnostic-5r
+...........
+----------------------------------------------------------------------
+Ran 11 tests in 0.208s
+
+OK
+39 démarrages distincts, 783 pièces, signatures, tables VT-d, E/S et écrans vérifiés.
+python3 scripts/generate_abi.py --check
+Sélecteurs ABI 48
+Empreintes 5i
+bilan.json: OK
+hotes.txt: OK
+laboratoire.tar.gz: OK
+observations.tar.gz: OK
+rejeu.json: OK
+Empreintes 5j
+hotes.txt: OK
+laboratoire.tar.gz: OK
+observations.tar.gz: OK
+Empreintes 5k
+hotes.txt: OK
+modules.tar.gz: OK
+observations.tar.gz: OK
+Empreintes 5l
+modules.tar.gz: OK
+observations.tar.gz: OK
+regression-5k.tar.gz: OK
+hotes.txt: OK
+Empreintes 5m
+observations.tar.gz: OK
+supports.tar.gz: OK
+hotes.txt: OK
+Empreintes 5n
+captures/bds.json: OK
+captures/observations.json: OK
+captures/rapports.zip: OK
+fsck.txt: OK
+hotes.txt: OK
+lecture-linux.json: OK
+lecture-macos.json: OK
+lecture-windows.json: OK
+lecture-windows.png: OK
+modes.json: OK
+novaos-x86_64.img.gz: OK
+relecture-finale.txt: OK
+Empreintes 5o
+capacites.json: OK
+diagnostic-x86_64.efi.gz: OK
+efi.sha256: OK
+hotes.txt: OK
+magasin-ovmf-test.fd.gz: OK
+novaos-x86_64-68mio.img.gz: OK
+observations.zip: OK
+variables-apres-arret.json: OK
+variables.json: OK
+verdict-actif.png: OK
+verdict-inactif.png: OK
+Empreintes 5p
+hotes.txt: OK
+observations.zip: OK
+Empreintes 5q
+hotes.txt: OK
+observations.zip: OK
+reconstruction.zip: OK
+39 démarrages distincts, 783 pièces, signatures, tables VT-d, E/S et écrans vérifiés.
+Rapports JSON et texte reproduits octet par octet.

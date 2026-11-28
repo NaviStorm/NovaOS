@@ -1,0 +1,154 @@
+{
+  "actif": {
+    "5Q": {
+      "allocations_vivantes": 0,
+      "arene_utilisee": 59416,
+      "chargement_esp_ns": 1683719292,
+      "compteurs_fin": {
+        "interne": {
+          "flush_operations": 0,
+          "rd_bytes": 0,
+          "rd_operations": 0,
+          "unmap_operations": 0,
+          "wr_bytes": 0,
+          "wr_operations": 0
+        },
+        "usb5n": {
+          "flush_operations": 0,
+          "rd_bytes": 34714624,
+          "rd_operations": 554,
+          "unmap_operations": 0,
+          "wr_bytes": 0,
+          "wr_operations": 0
+        }
+      },
+      "efi_instrumente_ns": 68196041,
+      "emission_contrat_ns": 4113293,
+      "eoi_attribues": 5,
+      "epoque": "b32445534fa70928c0451171860a217d",
+      "installation_ns": 290834917,
+      "octets_tables": 73728,
+      "octets_transfert_signe": 3031,
+      "pages_pretees": 27,
+      "pe": "f9577af2b719e0e0bafeec7179bada2f3039fa92cdb3a4592bca80c013f66971",
+      "statut": 40,
+      "transactions": {
+        "achevees": 1685,
+        "soumises": 1685
+      }
+    },
+    "5R": {
+      "allocations_vivantes": 0,
+      "arene_utilisee": 181755,
+      "chargement_esp_ns": 1667044875,
+      "compteurs_fin": {
+        "interne": {
+          "flush_operations": 0,
+          "rd_bytes": 0,
+          "rd_operations": 0,
+          "unmap_operations": 0,
+          "wr_bytes": 0,
+          "wr_operations": 0
+        },
+        "usb5n": {
+          "flush_operations": 0,
+          "rd_bytes": 34714624,
+          "rd_operations": 554,
+          "unmap_operations": 0,
+          "wr_bytes": 0,
+          "wr_operations": 0
+        }
+      },
+      "efi_instrumente_ns": 1647361875,
+      "emission_contrat_ns": 3710040,
+      "eoi_attribues": 128,
+      "epoque": "334d764df419cca434a7a5542b718913",
+      "installation_ns": 272034208,
+      "octets_tables": 73728,
+      "octets_transfert_signe": 3031,
+      "pages_pretees": 27,
+      "pe": "7f80bf3c42c89162d67fb229b9080e9706c0f7f6a3574978051c1c0c555477a5",
+      "statut": 0,
+      "transactions": {
+        "achevees": 1685,
+        "soumises": 1685
+      }
+    }
+  },
+  "inactif": {
+    "5Q": {
+      "allocations_vivantes": 0,
+      "arene_utilisee": 59416,
+      "chargement_esp_ns": 1608176334,
+      "compteurs_fin": {
+        "interne": {
+          "flush_operations": 0,
+          "rd_bytes": 0,
+          "rd_operations": 0,
+          "unmap_operations": 0,
+          "wr_bytes": 0,
+          "wr_operations": 0
+        },
+        "usb5n": {
+          "flush_operations": 0,
+          "rd_bytes": 34714624,
+          "rd_operations": 554,
+          "unmap_operations": 0,
+          "wr_bytes": 0,
+          "wr_operations": 0
+        }
+      },
+      "efi_instrumente_ns": 68447416,
+      "emission_contrat_ns": 3356833,
+      "eoi_attribues": 5,
+      "epoque": "624ca8fb83db967cc0292a7d5199919b",
+      "installation_ns": 264888208,
+      "octets_tables": 73728,
+      "octets_transfert_signe": 3033,
+      "pages_pretees": 27,
+      "pe": "f9577af2b719e0e0bafeec7179bada2f3039fa92cdb3a4592bca80c013f66971",
+      "statut": 40,
+      "transactions": {
+        "achevees": 1685,
+        "soumises": 1685
+      }
+    },
+    "5R": {
+      "allocations_vivantes": 0,
+      "arene_utilisee": 181755,
+      "chargement_esp_ns": 1609975042,
+      "compteurs_fin": {
+        "interne": {
+          "flush_operations": 0,
+          "rd_bytes": 0,
+          "rd_operations": 0,
+          "unmap_operations": 0,
+          "wr_bytes": 0,
+          "wr_operations": 0
+        },
+        "usb5n": {
+          "flush_operations": 0,
+          "rd_bytes": 34714624,
+          "rd_operations": 554,
+          "unmap_operations": 0,
+          "wr_bytes": 0,
+          "wr_operations": 0
+        }
+      },
+      "efi_instrumente_ns": 1396881792,
+      "emission_contrat_ns": 3566873,
+      "eoi_attribues": 111,
+      "epoque": "12e50cf7c4fc8bdb17e4c12829353263",
+      "installation_ns": 269717833,
+      "octets_tables": 73728,
+      "octets_transfert_signe": 3033,
+      "pages_pretees": 27,
+      "pe": "7f80bf3c42c89162d67fb229b9080e9706c0f7f6a3574978051c1c0c555477a5",
+      "statut": 0,
+      "transactions": {
+        "achevees": 1685,
+        "soumises": 1685
+      }
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "ajouts": [
+    "64686cc9127b09aeb1f17ec171f50ba544d4eeb5f6783e6637601802fccbdb1f"
+  ],
+  "copie": "7b7250bb70f9dc0f8e604c30f06041b7f91afc1f57c84e7e45b0ac6079265a52",
+  "octets_differents": 189,
+  "original": "bf41a49e08223f8e0a0192371d8fb79602faf56e4c0a58a5ad79624a54f2ed8f",
+  "taille": 540672,
+  "variables": {
+    "CustomMode": {
+      "apres": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "attributs": 3,
+      "avant": "6e340b9cffb37a989ca544e6bb780a2c78901d3fb33738768511a30617afa01d",
+      "horodatage_apres": "None",
+      "horodatage_avant": "None"
+    },
+    "KEK": {
+      "apres": "f7b69ebd6b7ea5e08747a80187e97bebc6a6aceb5e82999b637fd6b8b707d5b3",
+      "attributs": 39,
+      "avant": "f7b69ebd6b7ea5e08747a80187e97bebc6a6aceb5e82999b637fd6b8b707d5b3",
+      "horodatage_apres": "2026-11-26 23:36:10+00:00",
+      "horodatage_avant": "2026-11-26 23:36:10+00:00"
+    },
+    "PK": {
+      "apres": "469735e2a7d596eef588ccf67214e12fe606d2691571d3e525d77cbe1db056dd",
+      "attributs": 39,
+      "avant": "469735e2a7d596eef588ccf67214e12fe606d2691571d3e525d77cbe1db056dd",
+      "horodatage_apres": "2026-11-26 23:36:10+00:00",
+      "horodatage_avant": "2026-11-26 23:36:10+00:00"
+    },
+    "SecureBootEnable": {
+      "apres": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a",
+      "attributs": 3,
+      "avant": "4bf5122f344554c53bde2ebb8cd2b7e3d1600ad631c385a5d7cce23c7785459a",
+      "horodatage_apres": "None",
+      "horodatage_avant": "None"
+    },
+    "db": {
+      "apres": "b38d53aae9810fadbaeabc214b7057860d0731999671bfc2ddd8cf2eb49a5fc1",
+      "attributs": 39,
+      "avant": "b6a0a349a7e8814472b65723189b62fd4b6ac41a892ed44c0e701ffe81ed93af",
+      "horodatage_apres": "2026-11-26 23:36:10+00:00",
+      "horodatage_avant": "2026-11-26 23:36:10+00:00"
+    },
+    "dbx": {
+      "apres": "857a88a42c81314554bbc397ec3ce5f6249db5e27c887d3d476635e12443260f",
+      "attributs": 39,
+      "avant": "857a88a42c81314554bbc397ec3ce5f6249db5e27c887d3d476635e12443260f",
+      "horodatage_apres": "2026-11-27 23:36:10.386433+00:00",
+      "horodatage_avant": "2026-11-27 23:36:10.386433+00:00"
+    }
+  }
+}

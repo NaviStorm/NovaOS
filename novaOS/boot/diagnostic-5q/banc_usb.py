@@ -131,7 +131,9 @@ def arguments_usb(exe, fw, src, media, case, plugin, files, fds):
         f"fd={src.fileno()},set=1,opaque=usb5q",
         "-drive",
         "if=none,id=usb5n,format=raw,readonly=on,file.driver=file,file.filename=/dev/fdset/1,file.locking=off"
-        + (",throttling.bps-read=4194304" if case == "vol" else ""),
+        + (
+            ",throttling.bps-read=4194304" if case in ("vol", "quarantaine-vol") else ""
+        ),
         "-device",
         "usb-storage,id=cle,bus=xhci.0,port=1,drive=usb5n",
     ]
@@ -234,7 +236,7 @@ def perdre_incarnation(q, hw, box, media, info, ledger):
     )
 
 
-def run(folder, exe, fw, j, media, key, mode, case, plugin):
+def run(folder, exe, fw, j, media, key, mode, case, plugin, diagnostic=None):
     folder.mkdir(mode=0o700)
     with directory(folder), ExitStack() as files:
         src = files.enter_context(lecteur(media))
@@ -244,7 +246,7 @@ def run(folder, exe, fw, j, media, key, mode, case, plugin):
         disk = src.read()
         pos, size = geometry(disk)["NOVAOS"]
         esp = disk[pos : pos + size]
-        pe = chargeur()
+        pe = chargeur() if diagnostic is None else diagnostic.source(case)
         exiger(esp.count(pe) == 1, "PE USB absent ou fragmenté dans le vecteur")
         offset = esp.index(pe)
         bail = Bail(mode, bytes.fromhex(empreinte(pe)), offset, len(pe), key)
@@ -263,6 +265,8 @@ def run(folder, exe, fw, j, media, key, mode, case, plugin):
             ),
             "Magasin inattendu",
         )
+        if diagnostic is not None and mode == "actif" and case != "hors-db":
+            store = diagnostic.magasin(store)
         Path("variables.fd").write_bytes(store)
         canary = bytes(range(256)) * 16384
         Path("interne.raw").write_bytes(canary)
@@ -457,12 +461,61 @@ def run(folder, exe, fw, j, media, key, mode, case, plugin):
                                 q.call("stop")
                                 break
                             elif status == 6:
+                                if diagnostic is not None and case == "hors-db":
+                                    q.call("stop")
+                                    fin = arm_words(hw, box)
+                                    exiger(
+                                        prepare
+                                        and fin[27] == 1
+                                        and fin[28] in ((1 << 63) | 15, (1 << 63) | 26)
+                                        and fin[29] == 0
+                                        and live(
+                                            hw, state(q)["unites"][unit], old, ledger
+                                        )
+                                        == prepare,
+                                        "Refus Secure Boot non attribué",
+                                    )
+                                    save(
+                                        "bilan.json",
+                                        dict(
+                                            info,
+                                            decision="refus-ovmf",
+                                            efi_status=fin[28],
+                                            apres=count(q),
+                                            prets=ledger.loans,
+                                        ),
+                                    )
+                                    return
                                 raise ValueError(
                                     "Refus du firmware " + str(arm_words(hw, box))
                                 )
                             else:
-                                if case == "vol" and "en_vol" not in info:
+                                if (
+                                    case in ("vol", "quarantaine-vol")
+                                    and "en_vol" not in info
+                                ):
                                     observer_vol(hw, box, ledger, info)
+                                    if case == "quarantaine-vol" and "en_vol" in info:
+                                        q.call("stop")
+                                        save_tables(
+                                            "quarantaine.bin",
+                                            live(
+                                                hw,
+                                                state(q)["unites"][unit],
+                                                old,
+                                                ledger,
+                                            ),
+                                        )
+                                        save(
+                                            "bilan.json",
+                                            dict(
+                                                info,
+                                                decision="quarantaine-en-vol",
+                                                prets=ledger.loans,
+                                                apres=count(q),
+                                            ),
+                                        )
+                                        return
                                 time.sleep(0.002)
                         else:
                             raise TimeoutError(
@@ -530,6 +583,22 @@ def run(folder, exe, fw, j, media, key, mode, case, plugin):
                             },
                             "Substitution du PE",
                         )
+                        if diagnostic is not None and case == "substitue":
+                            exiger(
+                                pe != diagnostic.pe and w[27] == 2 and not w[29],
+                                "Image substituée non détectée avant remise",
+                            )
+                            save(
+                                "bilan.json",
+                                dict(
+                                    info,
+                                    decision="refus-pe-substitue",
+                                    sections=sections,
+                                    apres=count(q),
+                                    prets=ledger.loans,
+                                ),
+                            )
+                            return
                         reference = (
                             j
                             / "ovmf5j-b/Build/OvmfX64/RELEASE_CLANGDWARF/X64/QemuRamfbDxe.efi"
@@ -605,6 +674,15 @@ def run(folder, exe, fw, j, media, key, mode, case, plugin):
                             envelope = envelope[:-1] + bytes([envelope[-1] ^ 1])
                         exiger(len(envelope) <= 12000, "Contrat hors du suffixe")
                         qbytes(hw, w[12] + size, envelope)
+                        if diagnostic is not None:
+                            livraison = diagnostic.livrer(
+                                case, envelope, rawpath, contract, key
+                            )
+                            exiger(
+                                len(envelope) <= 8192 and len(livraison) <= 8192 - 344,
+                                "Fenêtres de transmission",
+                            )
+                            qbytes(hw, w[12] + size + 8192, livraison)
                         hw.ecrire(box + 14 * 8, offset)
                         hw.ecrire(box + 15 * 8, len(pe))
                         hw.ecrire(box + 26 * 8, len(envelope))
@@ -665,6 +743,8 @@ def run(folder, exe, fw, j, media, key, mode, case, plugin):
                                 == lease + bail.recu,
                                 "Reçus en RAM",
                             )
+                            if diagnostic is not None:
+                                diagnostic.photographier(mon, w[12] + size, envelope, livraison, "entree")
                             projeter(mon, surface, "avant.ppm")
                             tentry["front"] = ram(mon, surface[0], surface[1])
                             tentry["stats"] = count(mon)
@@ -717,6 +797,15 @@ def run(folder, exe, fw, j, media, key, mode, case, plugin):
                         )
                         elapsed = time.monotonic_ns() - tentry["t"]
                         verdict = recv(q, base, w[25])
+                        if diagnostic is not None:
+                            diagnostic.photographier(q, w[12] + size, envelope, livraison, "arret")
+                        attendu = (
+                            40
+                            if diagnostic is None
+                            else diagnostic.rapport(
+                                case, verdict, q, base, w[25], contract
+                            )
+                        )
                         projeter(q, surface, "apres.ppm")
                         back = ram(q, surface[0], surface[1])
                         front = tentry["front"]
@@ -724,7 +813,8 @@ def run(folder, exe, fw, j, media, key, mode, case, plugin):
                         exiger(
                             hw.lire(box + 29 * 8) == 1
                             and verdict["epoque"] == epoch
-                            and front != back
+                            and (front != back)
+                            == (diagnostic is None or diagnostic.rendu(case))
                             and all(
                                 front[y * stride + 544 * 4 : (y + 1) * stride]
                                 == back[y * stride + 544 * 4 : (y + 1) * stride]
@@ -749,7 +839,7 @@ def run(folder, exe, fw, j, media, key, mode, case, plugin):
                             "Commande inattendue",
                         )
                         exiger(
-                            verdict["statut"] == 40
+                            verdict["statut"] == attendu
                             and verdict["confiance"] == w[23]
                             and live(hw, state(q)["unites"][unit], old, ledger)
                             == prepare,
@@ -782,7 +872,11 @@ def run(folder, exe, fw, j, media, key, mode, case, plugin):
                             "bilan.json",
                             dict(
                                 info,
-                                decision="refus-affiche",
+                                decision=(
+                                    "refus-affiche"
+                                    if diagnostic is None
+                                    else diagnostic.decision(case)
+                                ),
                                 verdict=verdict,
                                 apres=fin,
                                 duree_efi_ns=elapsed,

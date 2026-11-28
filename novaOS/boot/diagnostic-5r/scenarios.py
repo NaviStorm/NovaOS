@@ -1,0 +1,38 @@
+"""Verdicts attendus du profil Q35 et champs publics du rapport invité."""
+
+CAS = {
+    "nominal": 0,
+    "vol": 0,
+    "absent": 50,
+    "altere": 51,
+    "autorite": 51,
+    "epoque": 52,
+    "reutilise": 52,
+    "mapping": 55,
+    "en-cours": 56,
+    "origine": 54,
+    "identite-pe": 53,
+    "manifeste": 6,
+    "elf": 18,
+    "surface": 44,
+    "substitue": None,
+    "clone": None,
+    "reconnexion": None,
+    "hors-db": None,
+    "substitution-contrat": 57,
+    "quarantaine-vol": None,
+}
+CHAMPS = [
+    "usb",
+    "rid",
+    "port",
+    "pages",
+    "tables",
+    "pci",
+    "ioapic",
+    "hpet",
+    "drhd",
+    "compatibles",
+    "conflits",
+    "activation",
+]
