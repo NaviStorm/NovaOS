@@ -1,0 +1,60 @@
+arm64 3.9.6
+test_attribution (test_apic.ExceptionMinuterie) ... ok
+test_ecriture_supplementaire (test_apic.ExceptionMinuterie) ... ok
+test_exception_bornee (test_apic.ExceptionMinuterie) ... ok
+test_irq_peripherique (test_apic.ExceptionMinuterie) ... ok
+test_lacunes_et_ecritures_divergentes (test_apic.ExceptionMinuterie) ... ok
+test_attente_retardee_absente_contradictoire (test_restitution.Restitution) ... ok
+test_bail (test_restitution.Restitution) ... ok
+test_disparition_en_vol (test_restitution.Restitution) ... ok
+test_effacement_partiel (test_restitution.Restitution) ... ok
+test_faute_commune_ou_tables_changees (test_restitution.Restitution) ... ok
+test_invalidation_non_commandee (test_restitution.Restitution) ... ok
+test_recu_autre_autorite (test_restitution.Restitution) ... ok
+test_recu_unique_et_lie_au_bail (test_restitution.Restitution) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.001s
+
+OK
+5 démarrages EDU, 5 démarrages NIC/NVMe et 2 intervalles EFI vérifiés.
+----------------------------------------------------------------------
+Ran 10 tests in 0.001s
+
+OK
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK
+x86_64 3.9.6
+test_attribution (test_apic.ExceptionMinuterie) ... ok
+test_ecriture_supplementaire (test_apic.ExceptionMinuterie) ... ok
+test_exception_bornee (test_apic.ExceptionMinuterie) ... ok
+test_irq_peripherique (test_apic.ExceptionMinuterie) ... ok
+test_lacunes_et_ecritures_divergentes (test_apic.ExceptionMinuterie) ... ok
+test_attente_retardee_absente_contradictoire (test_restitution.Restitution) ... ok
+test_bail (test_restitution.Restitution) ... ok
+test_disparition_en_vol (test_restitution.Restitution) ... ok
+test_effacement_partiel (test_restitution.Restitution) ... ok
+test_faute_commune_ou_tables_changees (test_restitution.Restitution) ... ok
+test_invalidation_non_commandee (test_restitution.Restitution) ... ok
+test_recu_autre_autorite (test_restitution.Restitution) ... ok
+test_recu_unique_et_lie_au_bail (test_restitution.Restitution) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.001s
+
+OK
+5 démarrages EDU, 5 démarrages NIC/NVMe et 2 intervalles EFI vérifiés.
+----------------------------------------------------------------------
+Ran 10 tests in 0.002s
+
+OK
+----------------------------------------------------------------------
+Ran 6 tests in 0.001s
+
+OK
+python3 scripts/generate_abi.py --check
+12 cellules Q35, 12 époques, compteurs bloc, refus, reçus EFI et héritage vérifiés.
+5 namespaces remontés par le lecteur NovaFS P9 indépendant.
+5 démarrages EDU, 5 démarrages NIC/NVMe et 2 intervalles EFI vérifiés.
